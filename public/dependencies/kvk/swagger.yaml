@@ -1,0 +1,354 @@
+openapi: 3.1.0
+info:
+  title: Ophalen Organisaties op basis van het BSN voor Mijn Overheid
+  version: 1.0.0
+  contact: 
+    email: marcel.vanden.brink@kvk.nl
+    name: Marcel van den Brink
+  description: 'Het ophalen van een lijst met één of meerdere organisaties van een Natuurlijk Persoon op basis van het Burger Service Nummer (BSN).'
+
+servers:
+  - url: "https://localhost/"
+
+paths:
+  /mijnoverheid/mijnorganisaties:
+    post:
+      parameters:
+        - name: taal
+          in: query
+          schema:
+            type: string
+            enum:
+              - nl
+              - en
+          required: false
+          description: Taal waarin de labels worden teruggegeven om meertaligheid van Mijn Overheid te kunnen ondersteunen. Default waarde is 'nl'
+          examples:
+            Taal param Nederlands:
+              value: "nl"
+            Taal param Engels:
+              value: "en"
+        - name: page
+          in: query
+          schema:
+            type: integer
+      requestBody:
+        description: request body met BSN voor het ophalen van lijst met Organisaties van de persoon
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MijnOverheidOrganisatiesRequestBody'
+      responses:
+        '200':
+          description: Lijst met organisaties
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MijnOverheidOrganisatiesResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    MijnOverheidOrganisatiesRequestBody:
+      required: 
+        - bsn
+      properties:
+        bsn:
+          $ref: '#/components/schemas/BSN'
+    
+    MijnOverheidOrganisatiesResponse:
+      description: Lijst met 0, 1 of meer organisaties waar de natuurlijk persoon een functie vervult
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        organisaties:
+          type: array
+          description: Lijst van organisaties is per default gesorteerd op KVK nummer van laag naar hoog
+          items:
+            $ref: '#/components/schemas/Organisatie'
+        itemAttributeLabels:
+          $ref: '#/components/schemas/ItemAttributeLabels'
+
+    ItemAttributeLabels:
+      description: Meertalige labels voor alle velden in de response
+      type: object
+      properties:
+        kvkNummer:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "KVK-nummer", toelichting: "" }
+            - { label: "KVK number", toelichting: "" }
+        administratieveHandelsnaam:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "Handelsnaam", toelichting: "Een handelsnaam is de naam van een bedrijf." }
+            - { label: "Trade name", toelichting: "B1 translation not yet available" }
+        rechtsvorm:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "Rechtsvorm", toelichting: "Een rechtsvorm is de juridische vorm van een organisatie." }
+            - { label: "Legal form", toelichting: "B1 translation not yet available" }
+        functies:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "Functies", toelichting: "" }
+            - { label: "Positions", toelichting: "" }
+        sbi:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "SBI-code", toelichting: "De SBI-code is een cijfercode die alle bedrijven en organisaties krijgen, die duidelijk maakt wat hun activiteiten zijn. SBI staat voor Standaard Bedrijfsindeling." }
+            - { label: "SBI code", toelichting: "B1 translation not yet available" }
+        telefoonnummer:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "Telefoonnummer", toelichting: "" }
+            - { label: "Phone number", toelichting: "" }
+        email:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "E-mailadres", toelichting: "" }
+            - { label: "Email address", toelichting: "" }
+        website:
+          type: object
+          $ref: '#/components/schemas/ItemAttributeObject'
+          examples:
+            - { label: "Website", toelichting: "" }
+            - { label: "Website", toelichting: "" }
+
+    ItemAttributeObject:
+      type: object
+      description: Item attribuut object bestaat uit een label en een toelichting. Toelichting is een (i) op het scherm van Mijn Overheid in B1 taalniveau. Label is de tekst voor de waarde op het scherm in de juiste taal
+      properties:
+        label:
+          type: string
+        toelichting:
+          type: string
+
+    BSN:
+      description: Burger Service Nummer
+      type: string
+      minLength: 9
+      maxLength: 9
+      pattern: '^\d{9}$'
+      examples:
+        - "123456789"
+
+    Metadata:
+      description: Metadata van het KVK Mijn Overheid Response bericht
+      type: object
+      examples:
+        - {
+            $scheme: "kvkMijnOrganisatiesMijnOverheid",
+            version: "1.0.0"
+          }
+      properties:
+        $scheme:
+          description: Schema naam
+          type: string
+        version:
+          description: Schema versie nummer
+          type: string
+
+    Pagination:
+      description: Pagina beschrijving
+      type: object
+      examples:
+        - {
+            currentPage: 1,
+            itemsPerPage: 10,
+            from: 1,
+            to: 10,
+            totalItems: 15,
+            lastPage: 2,
+            next: {
+              "href": "https://localhost/mijnoverheid/mijnorganisaties?taal=nl&page=2"
+            },
+            previous: {
+              "href": "https://localhost/mijnoverheid/mijnorganisaties?taal=nl&page=1"
+            }
+          }
+      properties:
+        currentPage:
+          description: Huidige pagina
+          type: number
+        itemsPerPage:
+          description: Aantal organisaties per pagina
+          type: number
+        from:
+          description: Organisatie item nummer op deze pagina
+          type: number
+        to:
+          description: Organisatie item nummer als laatste op deze pagina
+          type: number
+        totalItems:
+          description: Totaal aantal organisaties
+          type: number
+        lastPage:
+          description: Laatste pagina nummer
+          type: number
+        next:
+          type: object
+          description: Link naar de volgende pagina
+          $ref: '#/components/schemas/Href'
+        previous:
+          type: object
+          description: Link naar de vorige pagina
+          $ref: '#/components/schemas/Href'
+
+    Organisatie:
+      type: object
+      required:
+        - kvkNummer
+        - rechtsvorm
+        - functies
+        - _links
+      properties:
+        kvkNummer:
+          description: Het KVK nummer dat is toegekend aan een onderneming en/of rechtsvorm
+          type: string
+          minLength: 8
+          maxLength: 8
+          examples: 
+            - '50000004'
+          pattern: '^\d{8}$'
+        administratieveHandelsnaam:
+          description: De naam van de organisatie, dit kan de statutaire naam, naam van de personenvennootschap of eerste handelsnaam van de hoofdvestiging zijn
+          type: string
+          examples: 
+            - Stichting De juiste naam
+        rechtsvorm:
+          description: De rechtsvorm van de onderneming en/of rechtspersoon
+          type: string
+          examples:
+            - Eenmanszaak
+            - Stichting
+            - Besloten Vennootschap
+        functies:
+          $ref: '#/components/schemas/Functies'
+        sbi:
+          $ref: '#/components/schemas/SBI'
+        telefoonnummer:
+          description: Het telefoonnummer van de onderneming en/of rechtsvorm 
+          type: string
+          examples:
+            - "0031-0123456789"
+            - "+31-0123456789"
+            - "0123-456789"
+        email:
+          description: Emailadres van de onderneming en/of rechtsvorm
+          type: string
+          examples:
+            - "mijn@overheid.nl"
+        website:
+          description: Website van de onderneming en/of rechtsvorm
+          type: string
+          examples:
+            - "https://www.test.org"
+        _links:
+          title: URI links
+          $ref: '#/components/schemas/Links'
+
+    Links:
+      type: object
+      required:
+        - self
+      examples:
+        - {
+            self: {
+                href: "https://www.kvk.nl/mijn-kvk/organisaties/#/50000004",
+                linkText: "https://www.kvk.nl/mijn-kvk",
+                ariaLabel: "Bekijk en wijzig alle gegevens van Stichting De juiste naam bij KVK"
+              }
+          }
+      properties:
+        self:
+          type: object
+          required:
+            - href
+            - linkText
+            - ariaLabel
+          description: Link naar de organisatie op Mijn KVK
+          properties:
+            href:
+              $ref: '#/components/schemas/Href'
+            linkText:
+              type: string
+              description: label tekst van de link naar de organisatie op Mijn KVK
+            ariaLabel:
+              type: string
+              description: Aria label voor de link t.b.v. accessability 
+
+    Href:
+      type: string
+      description: URI Link
+
+    SBI:
+      description: De SBI-code met omschrijving van de onderneming en/of rechtspersoon, de hoofdactiviteit van de organisatie
+      type: string
+      examples:
+        - "0010 activiteiten code"
+
+    Functies:
+      description: Een lijst met functies
+      type: array
+      items:
+        $ref: '#/components/schemas/Functie'
+
+    Functie:
+      description: De functie van de persoon voor de organisatie
+      type: string
+      examples:
+        - "Eigenaar"
+        - "Bestuurder"
+
+    ProblemDetails:
+      description: Standaard error response object gebaseerd op https://tools.ietf.org/html/rfc7807.
+      type: object
+      required:
+        - title
+        - instance
+      properties:
+        title:
+          type: string
+          description: Error object omschrijving
+        instance:
+          type: string
+          description: URI of pad dat werd aangeroepen
+        detail:
+          type: string
+          description: Ontwikkelaarsvriendelijke informatie met betrekking tot de error
+        type:
+          type: string
+          description: URI conform RFC7807
