@@ -18,7 +18,6 @@ const ProfielHistoryPicker = ({ kvkNummer }: { kvkNummer: string }) => {
         kvkNummer,
         datetime,
       });
-      console.log(data);
 
       if (status == 200) {
         setProfiel(data?.Onderneming ?? {});

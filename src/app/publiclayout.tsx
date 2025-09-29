@@ -121,7 +121,8 @@ const PublicRootLayout = () => {
 
               <ul className="list-inside list-disc">
                 <li>
-                  <span className="font-semibold">Gebruikersnaam:</span> bedrijf
+                  <span className="font-semibold">Gebruikersnaam:</span>{" "}
+                  gebruiker1, gebruiker2 of gebruiker3, bedrijf
                 </li>
                 <li>
                   <span className="font-semibold">Wachtwoord:</span> password
@@ -129,8 +130,15 @@ const PublicRootLayout = () => {
               </ul>
 
               <p>
-                Na het inloggen komt u op de hoofdpagina. Rechtsboven kunt u het
-                bedrijf wijzigen om verschillende scenario’s te verkennen.
+                Gebruiker 1 heeft bsn <b>000000036</b> en heeft 1 onderneming.
+                <br></br>
+                Gebruiker 2 heeft bsn <b>000000024</b> en heeft 2 ondernemingen.
+                <br></br>
+                Gebruiker 3 heeft bsn <b>000000012</b> en heeft 3 ondernemingen.
+                <br></br>
+                Bedrijf is een mock van eherkenning en is dus voor 1
+                onderneming.
+                <br></br>
               </p>
             </div>
           </Card>

@@ -6,8 +6,15 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Navigation from "../navigation";
 import ChevronIcon from "@/components/icons/chevronIcon";
+import { components } from "@/network/kvk/generated";
 
-const Header = ({ kvk }: { kvk: string }) => {
+const Header = ({
+  kvk,
+  kvkOpties,
+}: {
+  kvk: string;
+  kvkOpties: components["schemas"]["MijnOverheidOrganisatiesResponse"];
+}) => {
   const [menuOpened, setMenuOpened] = useState(false);
   const mobileMenuRef = useRef<HTMLDialogElement>(null);
 
@@ -17,11 +24,10 @@ const Header = ({ kvk }: { kvk: string }) => {
       mobileMenuRef.current.close();
   }, [menuOpened]);
 
-
   return (
     <>
       <header className="border-primary mb-3 border-b-2 bg-white shadow">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 md:gap-x-4 px-2 md:grid-rows-[auto_minmax(0,1fr)]">
+        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 px-2 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4">
           <button
             type="button"
             onClick={() => setMenuOpened(true)}
@@ -51,7 +57,7 @@ const Header = ({ kvk }: { kvk: string }) => {
           <div className="col-3 row-1 flex items-center justify-between md:col-start-1 md:col-end-4 md:row-2 md:pb-2.5">
             <h1 className="text-h4 md:text-h1">MijnOverheidZakelijk</h1>
             <div className="hidden md:flex">
-              <ProfileSelect selectedKvK={kvk} />
+              <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
               <button
                 type="button"
                 className="hover-up ml-16 cursor-pointer font-semibold"
@@ -81,7 +87,10 @@ const Header = ({ kvk }: { kvk: string }) => {
         className={`fixed inset-0 z-1 w-[288px] backdrop:bg-black/50 md:hidden`}
         onClick={() => setMenuOpened(false)}
       >
-        <div className="flex flex-col gap-4" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="flex flex-col gap-4"
+          onClick={(e) => e.stopPropagation()}
+        >
           <button
             type="button"
             onClick={() => setMenuOpened(false)}
@@ -93,7 +102,7 @@ const Header = ({ kvk }: { kvk: string }) => {
 
           <Navigation />
           <div className="px-2">
-            <ProfileSelect selectedKvK={kvk} />
+            <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
           </div>
           <button
             type="button"

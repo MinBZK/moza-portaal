@@ -7,10 +7,14 @@ declare module "next-auth" {
       email: string;
 
       /** Custom fields */
-      kvknummer: string;
+      bsn: string;
       preferred_username: string;
     } & DefaultSession["user"];
 
     accessToken?: string;
+    idToken?: string;
+  }
+  interface Profile {
+    bsn: string;
   }
 }

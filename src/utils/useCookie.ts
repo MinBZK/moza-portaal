@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 import { z, ZodSchema } from "zod";
 
-// All the cookies that can be set, should have a schema associated with them for soem validation
+// All the cookies that can be set, should have a schema associated with them for some validation
 const schemas = {
   loginMethod: z.enum(["digid", "eherkenning"]),
+  opties: z.string(),
 } as const satisfies Record<string, ZodSchema>;
 
 // Helper to get a cookie value by name

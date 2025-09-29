@@ -4,7 +4,7 @@ import Providers from "./providers";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
 import { auth } from "@/auth";
-import { getKvkFromCookie } from "@/utils/kvknummer";
+import { getKvkFromCookie, getKvkOptionsFromCookie } from "@/utils/kvknummer";
 import { Footer } from "@/layouts/footer";
 import Breadcrumb from "@/layouts/breadcrumb";
 import PublicRootLayout from "./publiclayout";
@@ -21,6 +21,7 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   const kvk = await getKvkFromCookie();
+  const kvkOpties = await getKvkOptionsFromCookie();
 
   return (
     <html lang="en">
@@ -29,7 +30,7 @@ export default async function RootLayout({
           <PublicRootLayout />
         ) : (
           <Providers session={session}>
-            <Header kvk={kvk!} />
+            <Header kvk={kvk!} kvkOpties={kvkOpties} />
             <main className="border-b-ro-blue after:bg-ro-blue relative border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
               <div className="container mx-auto px-2 py-4">
                 <div className="grid max-w-screen-xl grid-cols-4 justify-between gap-4">

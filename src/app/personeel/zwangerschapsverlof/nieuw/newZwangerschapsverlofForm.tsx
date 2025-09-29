@@ -33,7 +33,6 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
       onSubmit: zwangerschapsverlofSchema,
     },
     onSubmit: ({ value: values }) => {
-      console.log(values);
 
       mutate(
         { body: values },

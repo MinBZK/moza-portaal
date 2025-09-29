@@ -29,7 +29,6 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
       onSubmit: subsidieSchema,
     },
     onSubmit: ({ value: values }) => {
-      console.log(values);
       mutate({ body: values }, { onSuccess: () => router.push("/zaken") });
     },
   });

@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit",
     "generate:profiel": "openapi-typescript ./dependencies/profiel-service/swagger.json -o ./src/network/profiel/generated.ts",
     "generate:omc": "openapi-typescript ./dependencies/omc/swagger.json -o ./src/network/omc/generated.ts",
-    "generate:mock": "openapi-typescript ./dependencies/mock/swagger.json -o ./src/network/mock/generated.ts"
+    "generate:mock": "openapi-typescript ./dependencies/mock/swagger.json -o ./src/network/mock/generated.ts",
+    "generate:kvk": "openapi-typescript ./dependencies/kvk/swagger.yaml -o ./src/network/kvk/generated.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
@@ -21,7 +22,7 @@
     "date-fns": "^4.1.0",
     "msw": "^2.8.2",
     "next": "15.3.1",
-    "next-auth": "^5.0.0-beta.28",
+    "next-auth": "^5.0.0-beta.29",
     "openapi-fetch": "^0.14.0",
     "openapi-react-query": "^0.5.0",
     "react": "^19.0.0",

@@ -30,7 +30,6 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
       onSubmit: parkeervergunningSchema,
     },
     onSubmit: ({ value: values }) => {
-      console.log(values);
       mutate({ body: values }, { onSuccess: () => router.push("/zaken") });
     },
   });
