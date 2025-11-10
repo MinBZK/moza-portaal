@@ -7,7 +7,9 @@
   "paths": {
     "/auditlogs/{kvkNummer}": {
       "get": {
-        "tags": ["AuditLog"],
+        "tags": [
+          "AuditLog"
+        ],
         "parameters": [
           {
             "name": "kvkNummer",
@@ -51,7 +53,9 @@
     },
     "/auth/generate-token": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -61,7 +65,9 @@
     },
     "/ondernemingen/{kvkNummer}": {
       "get": {
-        "tags": ["Profiel"],
+        "tags": [
+          "Profiel"
+        ],
         "parameters": [
           {
             "name": "kvkNummer",
@@ -96,7 +102,9 @@
         }
       },
       "put": {
-        "tags": ["Profiel"],
+        "tags": [
+          "Profiel"
+        ],
         "parameters": [
           {
             "name": "kvkNummer",
@@ -138,7 +146,9 @@
         }
       },
       "delete": {
-        "tags": ["Profiel"],
+        "tags": [
+          "Profiel"
+        ],
         "parameters": [
           {
             "name": "kvkNummer",
@@ -175,7 +185,9 @@
     },
     "/ondernemingen/{kvkNummer}/{timestamp}": {
       "get": {
-        "tags": ["Profiel"],
+        "tags": [
+          "Profiel"
+        ],
         "parameters": [
           {
             "name": "kvkNummer",
@@ -221,7 +233,9 @@
     },
     "/ondernemingen/EmailBekend/{kvkNummer}": {
       "get": {
-        "tags": ["Profiel"],
+        "tags": [
+          "Profiel"
+        ],
         "parameters": [
           {
             "name": "kvkNummer",
@@ -252,6 +266,35 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/ondernemingen/{kvkNummer}/verify": {
+      "post": {
+        "tags": [
+          "Profiel"
+        ],
+        "parameters": [
+          {
+            "name": "kvkNummer",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -336,7 +379,9 @@
         "additionalProperties": false
       },
       "AuditLogResponse": {
-        "required": ["OndernemingAuditLog"],
+        "required": [
+          "OndernemingAuditLog"
+        ],
         "type": "object",
         "properties": {
           "OndernemingAuditLog": {
@@ -414,7 +459,12 @@
         "additionalProperties": false
       },
       "DienstType": {
-        "enum": ["Alles", "Financien", "Personeelszaken", "Anders"],
+        "enum": [
+          "Alles",
+          "Financien",
+          "Personeelszaken",
+          "Anders"
+        ],
         "type": "string"
       },
       "Eigenaar": {
@@ -633,6 +683,9 @@
             "type": "string",
             "nullable": true
           },
+          "emailVerified": {
+            "type": "boolean"
+          },
           "emails": {
             "type": "array",
             "items": {
@@ -678,7 +731,10 @@
         "additionalProperties": false
       },
       "ProfielResponse": {
-        "required": ["KvkProfiel", "Onderneming"],
+        "required": [
+          "KvkProfiel",
+          "Onderneming"
+        ],
         "type": "object",
         "properties": {
           "Onderneming": {
@@ -829,7 +885,7 @@
   },
   "security": [
     {
-      "Bearer": []
+      "Bearer": [ ]
     }
   ]
 }

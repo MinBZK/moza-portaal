@@ -20,7 +20,11 @@ const InstellingenPage = async () => {
   return (
     <>
       <h1 className="text-h1">Instellingen</h1>
-      <EmailCard currentEmail={profiel.Onderneming.email!} kvkNummer={kvk!} />
+      <EmailCard
+        currentEmail={profiel.Onderneming.email!}
+        kvkNummer={kvk!}
+        emailVerified={profiel.Onderneming.emailVerified!}
+      />
       <ProfielEvents kvkNummer={kvk!} />
       <ProfielHistoryPicker kvkNummer={kvk!} />
     </>

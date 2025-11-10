@@ -22,18 +22,18 @@ export const Notification = ({
   variant = "information",
   header,
 }: {
-  text: string;
+  text?: string;
   variant?: "information" | "warning" | "error" | "success";
   header?: string;
 }) => {
   return (
     <div className={NotificationTV({ variant })} role="alert">
-      <div className="flex">
-        <div className="py-1">
+      <div className="">
+        <div className="flex">
           <Icon variant={variant} />
+          {header && <p className="ms-2 font-bold">{header}</p>}
         </div>
-        <div className="ml-2">
-          {header && <p className="font-bold">{header}</p>}
+        <div className="ms-7">
           <span className="whitespace-pre-line">{text}</span>
         </div>
       </div>
