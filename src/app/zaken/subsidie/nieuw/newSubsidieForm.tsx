@@ -1,6 +1,6 @@
 "use client";
-import Card from "@/components/card";
-import Button from "@/components/button";
+
+import { Button, Card } from "@/components/nl-design-system";
 import FormField, { FieldInfo } from "@/components/form/formField";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
@@ -34,8 +34,7 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">Nieuwe subsidie aanvragen</h2>
+    <Card heading={"Nieuwe subsidie aanvragen"} className="flex flex-col gap-4">
       <form
         onSubmit={(e) => {
           e.preventDefault();

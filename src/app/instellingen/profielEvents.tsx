@@ -1,4 +1,4 @@
-import Card from "@/components/card";
+import { Card, Heading, Paragraph } from "@/components/nl-design-system";
 import profielClient from "@/network/profiel";
 
 const ProfielEvents = async ({ kvkNummer }: { kvkNummer: string }) => {
@@ -8,12 +8,11 @@ const ProfielEvents = async ({ kvkNummer }: { kvkNummer: string }) => {
   );
 
   return (
-    <Card className="space-y-4">
-      <h2 className="text-2xl">Geschiedenis</h2>
-      <p>
+    <Card heading={"Geschiedenis"} className="space-y-4">
+      <Paragraph>
         Hier ziet u wanneer u of iemand anders binnen uw organisatie de email
         instellingen heeft aangepast
-      </p>
+      </Paragraph>
 
       <div>
         <div className="relative flex flex-col items-start">
@@ -24,10 +23,12 @@ const ProfielEvents = async ({ kvkNummer }: { kvkNummer: string }) => {
               <div className="absolute -left-[22px] flex h-4 w-4 items-center justify-center rounded-full bg-gray-400"></div>
 
               <div>
-                <h3 className="text-sm font-semibold">
+                <Heading level={3} className="text-sm font-semibold">
                   {event.field} {event.action} door {event.performedBy}
-                </h3>
-                <p className="text-xs text-gray-500">{event.performedAt}</p>
+                </Heading>
+                <Paragraph className="text-xs text-gray-500">
+                  {event.performedAt}
+                </Paragraph>
               </div>
             </div>
           ))}

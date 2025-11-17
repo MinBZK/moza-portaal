@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import Card from "@/components/card";
+import { Card } from "@/components/nl-design-system";
 import { signIn } from "next-auth/react";
 import { Footer } from "@/layouts/footer";
 import { useCookie } from "@/utils/useCookie";
@@ -97,8 +97,11 @@ const PublicRootLayout = () => {
 
       <main className="border-b-ro-blue after:bg-ro-blue relative -mt-[80px] border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
         <div className="container mx-auto w-full space-y-5 px-4 py-4 md:w-3/5">
-          <Card className="space-y-5">
-            <h1 className="text-3xl">Wat is MijnOverheidZakelijk?</h1>
+          <Card
+            headingLevel={1}
+            heading="Wat is MijnOverheidZakelijk?"
+            className="space-y-5"
+          >
             <div className="space-y-4 border-t border-neutral-200 pt-4">
               <p>
                 Dit is een prototype-website voor het project{" "}
@@ -143,20 +146,17 @@ const PublicRootLayout = () => {
             </div>
           </Card>
 
-          <Card className="flex flex-col items-center gap-6 p-6 md:flex-row">
-            <div className="text-center md:text-left">
-              <h2 className="mb-4 text-xl">Meer weten?</h2>
-              <p className="mb-4 list-inside list-disc space-y-1 text-gray-800">
-                Ga naar{" "}
-                <Link
-                  href="https://www.mijnoverheidzakelijk.nl/"
-                  className="text-blue-500 underline"
-                >
-                  https://www.mijnoverheidzakelijk.nl
-                </Link>{" "}
-                voor meer informatie zoals documentatie en de designs
-              </p>
-            </div>
+          <Card heading={"Meer weten?"}>
+            <p className="list-inside list-disc space-y-1 text-gray-800">
+              Ga naar{" "}
+              <Link
+                href="https://www.mijnoverheidzakelijk.nl/"
+                className="text-blue-500 underline"
+              >
+                https://www.mijnoverheidzakelijk.nl
+              </Link>{" "}
+              voor meer informatie zoals documentatie en de designs
+            </p>
           </Card>
         </div>
       </main>

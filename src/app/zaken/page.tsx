@@ -1,5 +1,4 @@
-import Button from "@/components/button";
-import Card from "@/components/card";
+import { Button, Card } from "@/components/nl-design-system";
 import zakenClient from "@/network/mock";
 import { components } from "@/network/mock/generated";
 import { getKvkFromCookie } from "@/utils/kvknummer";
@@ -18,8 +17,7 @@ const Zaken = async () => {
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 w-full space-y-5 md:col-span-12">
-        <Card className="space-y-4">
-          <h2 className="text-2xl">Nieuwe aanvraag</h2>
+        <Card heading={"Nieuwe aanvraag"} className="space-y-4">
           <div className="flex flex-col gap-2">
             <Link href="/zaken/parkeervergunning/nieuw">
               <Button>Parkeervergunning aanvragen</Button>
@@ -30,8 +28,10 @@ const Zaken = async () => {
             </Link>
           </div>
         </Card>
-        <Card className="space-y-4 overflow-x-auto">
-          <h1 className="mb-6 text-2xl">Lopende aanvragen</h1>
+        <Card
+          heading={"Lopende aanvragen"}
+          className="space-y-4 overflow-x-auto"
+        >
           <table className="w-full border border-gray-200">
             <thead className="bg-gray-100">
               <tr>

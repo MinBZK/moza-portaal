@@ -1,6 +1,7 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
+
+import { Button, Card } from "@/components/nl-design-system";
+import {} from "@/components/nl-design-system";
 import FormField from "@/components/form/formField";
 import { useCreateParkeervergunning } from "@/network/mock/hooks/createParkeervergunning/useCreateParkeervergunning";
 import { useForm } from "@tanstack/react-form";
@@ -35,8 +36,10 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">Nieuwe parkeervergunning aanvragen</h2>
+    <Card
+      heading={"Nieuwe parkeervergunning aanvragen"}
+      className="flex flex-col gap-4"
+    >
       <form
         onSubmit={(e) => {
           e.preventDefault();

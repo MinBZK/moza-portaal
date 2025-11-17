@@ -1,5 +1,5 @@
 "use client";
-import Card from "@/components/card";
+import { Button, Card, Paragraph } from "@/components/nl-design-system";
 import { components } from "@/network/profiel/generated";
 import { getOndernemingByDate } from "@/network/profiel/hooks/getOndernemingProfielByDate/action";
 import { useForm } from "@tanstack/react-form";
@@ -31,12 +31,11 @@ const ProfielHistoryPicker = ({ kvkNummer }: { kvkNummer: string }) => {
     useState<components["schemas"]["Onderneming"]>();
 
   return (
-    <Card className="space-y-4">
-      <h2 className="text-2xl">Wat was mijn profiel in het verleden</h2>
-      <p>
+    <Card heading="Wat was mijn profiel in het verleden" className="space-y-4">
+      <Paragraph>
         Let op, we laten het profiel zien zoals het wat op de geselecteerde
         datum om 12:00 in de middag
-      </p>
+      </Paragraph>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -59,12 +58,7 @@ const ProfielHistoryPicker = ({ kvkNummer }: { kvkNummer: string }) => {
             </div>
           )}
         </form.Field>
-        <button
-          type="submit"
-          className="rounded bg-blue-600 px-4 py-2 text-white"
-        >
-          Bekijk profiel
-        </button>
+        <Button type="submit">Bekijk profiel</Button>
       </form>
 
       {profiel && (

@@ -8,6 +8,9 @@ import { getKvkFromCookie, getKvkOptionsFromCookie } from "@/utils/kvknummer";
 import { Footer } from "@/layouts/footer";
 import Breadcrumb from "@/layouts/breadcrumb";
 import PublicRootLayout from "./publiclayout";
+import "@/styles/design-tokens.css"; // design tokens importeren (local copy)
+import "@rijkshuisstijl-community/components-css/dist/index.css"; // css importeren
+import "../components/nl-design-system/overrides.css"; // eigen css overrides
 
 export const metadata: Metadata = {
   title: "Mijn overheid zakelijk",
@@ -25,7 +28,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-[#fafafa]">
+      <body className="rhc-theme moza-theme-overrides bg-[#fafafa]">
         {!session ? (
           <PublicRootLayout />
         ) : (

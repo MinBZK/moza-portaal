@@ -1,9 +1,14 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
+
+import {
+  Alert,
+  Button,
+  Card,
+  Heading,
+  IconButton,
+  Paragraph,
+} from "@/components/nl-design-system";
 import FormField from "@/components/form/formField";
-import { Icon } from "@/components/icons/infoIcon";
-import { Notification } from "@/components/notifications";
 import { usePostVerifyEmail } from "@/network/profiel/hooks/postVerifyEmail/usePostVerifyEmail";
 import { useUpdateOndernemenEmail } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
 import { useForm } from "@tanstack/react-form";
@@ -33,22 +38,28 @@ const EmailNotifications = ({
   <>
     {isSuccesful && (
       <>
-        <Notification variant="success" header="Instellingen zijn opgeslagen" />
+        <Alert type="ok">
+          <Paragraph>Uw wijzigingen zijn succesvol opgeslagen.</Paragraph>
+        </Alert>
         {showVerification && (
-          <Notification
-            variant="information"
-            header="Persoonlijke code verzonden"
-            text={`U ontvangt nu en e-mail op ${newEmail} met een code om te controleren of het e-mailadres werkt en van u is. Deze code is 15 minuten geldig.`}
-          />
+          <Alert type="info">
+            <Paragraph>
+              U ontvangt nu en e-mail op {newEmail} met een code om te
+              controleren of het e-mailadres werkt en van u is. Deze code is 15
+              minuten geldig.
+            </Paragraph>
+          </Alert>
         )}
       </>
     )}
     {showVerification && (
-      <Notification
-        variant="warning"
-        header="E-mailadres niet geverifeerd"
-        text="Uw e-mailadres is nog niet geverifeerd. U moet uw e-mailadres eerst verifiëren. Daarna kunt u meldingen van MijnOverheidZakelijk ontvangen"
-      />
+      <Alert type="warning">
+        <Paragraph>
+          Uw e-mailadres is nog niet geverifieerd. U moet uw e-mailadres eerst
+          verifiëren. Daarna kunt u meldingen van MijnOverheidZakelijk
+          ontvangen.
+        </Paragraph>
+      </Alert>
     )}
   </>
 );
@@ -171,8 +182,7 @@ export const EmailCard = ({
         newEmail={newEmail}
         showVerification={showVerification}
       />
-      <Card className="flex flex-col gap-4">
-        <h2 className="text-h2">E-mailadres</h2>
+      <Card heading={"E-mailadres"}>
         <div className="border-b-1 border-gray-200 pb-2">
           <form
             className="grid grid-cols-2 gap-4 *:py-4"
@@ -194,15 +204,15 @@ export const EmailCard = ({
             </div>
             <div className="grid grid-cols-1">
               <div className="text-right">
-                <Icon
-                  variant="information"
-                  handleClick={() => setShowExtraInfo(!showExtraInfo)}
+                <IconButton
+                  icon="info"
+                  onClick={() => setShowExtraInfo(!showExtraInfo)}
                 />
                 {showExtraInfo && (
                   <div className="bg-blue-200 px-4 py-2">
-                    <Icon
-                      variant="information"
-                      handleClick={() => setShowExtraInfo(false)}
+                    <IconButton
+                      icon="info"
+                      onClick={() => setShowExtraInfo(false)}
                     />
                     <span className="ml-1">
                       Het e-mailadres waarop uw bedrijf meldingen van de

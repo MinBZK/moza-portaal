@@ -1,8 +1,12 @@
 "use client";
 
-import Button from "@/components/button";
-import Card from "@/components/card";
-import { Notification } from "@/components/notifications";
+import {
+  Button,
+  Card,
+  Alert,
+  Heading,
+  Paragraph,
+} from "@/components/nl-design-system";
 
 export type ErrorBoundaryProps = {
   error: Error & { digest?: string };
@@ -12,8 +16,13 @@ export type ErrorBoundaryProps = {
 export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   return (
     <div className="*:mb-4">
-      <Notification variant="error" header="Error" text={error.message} />
-      <Card>
+      <Alert type="error">
+        <Heading level={2} appearanceLevel={3}>
+          Error
+        </Heading>
+        <Paragraph>{error.message}</Paragraph>
+      </Alert>
+      <Card heading={undefined}>
         <Button type={"button"} onClick={() => reset()}>
           Probeer opnieuw
         </Button>
