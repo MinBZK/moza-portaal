@@ -1,6 +1,6 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
+
+import { Button, Card } from "@/components/nl-design-system";
 import FormField from "@/components/form/formField";
 import { useUpdateZwangerschapsverlof } from "@/network/mock/hooks/updateZwangerschapsverlof/useUpdateZwangerschapsverlof";
 import { useForm } from "@tanstack/react-form";
@@ -23,7 +23,6 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
       onSubmit: zwangerschapsverlofSchema,
     },
     onSubmit: ({ value: values }) => {
-
       mutate(
         { body: values, id: zaakId },
         {
@@ -36,10 +35,10 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">
-        Opmerking aan zwangerschapsverlofaanvraag toevoegen
-      </h2>
+    <Card
+      heading={"Opmerking aan zwangerschapsverlofaanvraag toevoegen"}
+      className="flex flex-col gap-4"
+    >
       <form
         onSubmit={(e) => {
           e.preventDefault();

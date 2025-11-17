@@ -1,0 +1,17 @@
+:root {
+  /* font-size: 12px; */
+}
+
+.moza-theme-overrides {
+  /* --utrecht-breadcrumb-nav-font-size: 1rem; */
+  /* 1.25rem in Utrecht by default (20px) */
+  /* --breadcrumb-nav-separator-icon-size: 20px; */
+  /* 24px; default */
+  --utrecht-document-font-family:
+    "RijksoverheidSansWebText", "-apple-system", "BlinkMacSystemFont",
+    "Segoe UI", "Roboto", "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji", sans-serif;
+
+  --rhc-card-inline-size: 100%;
+}

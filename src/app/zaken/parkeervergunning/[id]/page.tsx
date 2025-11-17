@@ -1,7 +1,7 @@
 import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
-import Card from "@/components/card";
+import { Card } from "@/components/nl-design-system";
 
 const ParkeervergunningDetail = async ({
   params,
@@ -16,8 +16,7 @@ const ParkeervergunningDetail = async ({
   const aanvraag = data as components["schemas"]["VngAanvraagResponse"];
 
   return (
-    <Card>
-      <h1 className="mb-6 text-2xl font-bold">Parkeervergunning details</h1>
+    <Card heading={"Parkeervergunning details"} headingLevel={1}>
       <div className="space-y-2">
         <div>
           <strong>Referentie:</strong> {aanvraag.referentie}

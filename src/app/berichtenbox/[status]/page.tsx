@@ -1,7 +1,10 @@
-import Card from "@/components/card";
+import React from "react";
 import ChevronIcon from "@/components/icons/chevronIcon";
 import { IconText } from "@/components/iconText";
-import { Notification } from "@/components/notifications";
+import { Alert, Card, Heading } from "@/components/nl-design-system";
+import { InlineLink } from "@/components/nl-design-system/nextIntegration/InlineLink";
+import { Paragraph } from "@/components/nl-design-system";
+import { BerichtenboxTableRow } from "@/components/BerichtenboxTableRow";
 import Link from "next/link";
 
 const Tab = ({ label, activeTab }: { label: string; activeTab: string }) => {
@@ -16,75 +19,6 @@ const Tab = ({ label, activeTab }: { label: string; activeTab: string }) => {
   );
 };
 
-export const BerichtenboxTableRow = ({ index }: { index: number }) => {
-  return (
-    <tr className="cursor-pointer border-b border-neutral-200 hover:bg-gray-100">
-      <td className="w-2/6 max-w-2/6 py-2">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            className="h-4 w-4 appearance-none rounded-sm border-2 border-gray-500 bg-white"
-          />
-          {index === 0 ? (
-            <span className="flex flex-row items-center gap-2 pl-3 font-bold">
-              <span className="circle h-2 w-2 rounded-full bg-red-500"></span>
-              <span>Belastingdienst</span>
-            </span>
-          ) : (
-            <span className="pl-3">Belastingdienst</span>
-          )}
-        </div>
-      </td>
-      <td className="w-3/6 max-w-3/6 py-2 px-2">
-        {index === 0 ? (
-          <span className="text-blue-text hover:underline">
-            Aanslag belastingen 2025
-          </span>
-        ) : (
-          <span className="text-gray hover:text-blue-text hover:underline">
-            Aanslag belastingen 2025
-          </span>
-        )}
-      </td>
-      <td className="w-1/6 max-w-1/6 py-2">
-        <div className="flex items-center">
-          <svg
-            fill="#000000"
-            width="15px"
-            height="20px"
-            viewBox="0 0 32 32"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              xmlns="http://www.w3.org/2000/svg"
-              d="M23.679 32a6.263 6.263 0 0 1-4.472-1.874L4.59 15.314c-3.453-3.5-3.453-9.192 0-12.691a8.786 8.786 0 0 1 12.523 0L28.152 13.81c.494.5.494 1.312 0 1.812a1.252 1.252 0 0 1-1.79 0L15.325 4.436a6.278 6.278 0 0 0-8.946 0c-2.465 2.5-2.465 6.565 0 9.065l14.618 14.812a3.767 3.767 0 0 0 5.367 0 3.89 3.89 0 0 0 .095-5.339L11.743 8.062a1.256 1.256 0 0 0-1.788 0 1.295 1.295 0 0 0 0 1.812l11.041 11.188c.494.5.494 1.311 0 1.813-.495.5-1.295.5-1.79 0L8.168 11.686a3.884 3.884 0 0 1 0-5.436 3.766 3.766 0 0 1 5.366-.001l14.619 14.813c2.464 2.499 2.464 6.565 0 9.064A6.265 6.265 0 0 1 23.679 32"
-              fill="#282828"
-              fillRule="evenodd"
-            />
-          </svg>
-          <span className="pl-1">21/02/2025</span>
-
-          <svg
-            fill="#077ec8"
-            version="1.1"
-            baseProfile="tiny"
-            width="20px"
-            height="20px"
-            viewBox="0 0 42 42"
-            className="pl-2"
-          >
-            <polygon
-              fillRule="evenodd"
-              points="13.933,1 34,21.068 14.431,40.637 9.498,35.704 24.136,21.068 9,5.933 "
-            />
-          </svg>
-        </div>
-      </td>
-    </tr>
-  );
-};
-
 const BerichtenboxPage = async ({
   params,
 }: {
@@ -95,10 +29,10 @@ const BerichtenboxPage = async ({
   //staat een redirect in next.config.ts dat /berichtenbox -> /berichtenbox/inbox gaat
   return (
     <>
-      <h1 className="text-h1">Mijn Berichtenbox</h1>
+      <Heading level={1}>Mijn Berichtenbox</Heading>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12 w-full space-y-5 md:col-span-8">
-          <Card>
+          <Card heading={undefined}>
             <div className="space-y-5">
               <div className="flex w-full space-x-2 border-b-1 border-neutral-200">
                 <Tab label={"Inbox"} activeTab={status} />
@@ -106,23 +40,23 @@ const BerichtenboxPage = async ({
                 <Tab label={"Prullenbak"} activeTab={status} />
               </div>
               <div className="w-full overflow-x-auto">
-              <table className="table-auto text-left border-spacing-4 w-[100%]">
-                <thead className="bg-blue-gray-50 text-primary border-primary mb-4 border-b">
-                  <tr>
-                    {/* ik snap niet waarom mijnoverheid.nl dit niet gewoon links uitlijnt, 
+                <table className="w-[100%] table-auto border-spacing-4 text-left">
+                  <thead className="bg-blue-gray-50 text-primary border-primary mb-4 border-b">
+                    <tr>
+                      {/* ik snap niet waarom mijnoverheid.nl dit niet gewoon links uitlijnt, 
                       het staat halverwege de checkbox / text?  daarom de pl-5
                       */}
-                    <th className="py-2 pl-5">Afzender</th>
-                    <th className="py-2">Onderwerp</th>
-                    <th className="py-2">Ontvangen</th>
-                  </tr>
-                </thead>
-                <tbody className="w-full">
-                  {Array.from(Array(10).keys()).map((x) => (
-                    <BerichtenboxTableRow index={x} key={x} />
-                  ))}
-                </tbody>
-              </table>
+                      <th className="py-2 pl-5">Afzender</th>
+                      <th className="py-2">Onderwerp</th>
+                      <th className="py-2">Ontvangen</th>
+                    </tr>
+                  </thead>
+                  <tbody className="w-full">
+                    {Array.from(Array(10).keys()).map((x) => (
+                      <BerichtenboxTableRow index={x} key={x} />
+                    ))}
+                  </tbody>
+                </table>
               </div>
               <div className="flex items-center">
                 <input
@@ -207,22 +141,22 @@ const BerichtenboxPage = async ({
                 </div>
               </div>
 
-              <Notification
-                text={
-                  "Meer informatie over de berichtenbox. Uw zakelijke brievenbus van de overheid."
-                }
-              />
+              <Alert type="info">
+                <Paragraph>
+                  Meer informatie over de berichtenbox. Uw zakelijke brievenbus
+                  van de overheid.
+                </Paragraph>
+              </Alert>
             </div>
           </Card>
 
-          <Card>
+          <Card heading={"Uw E-mailadres(sen) aanpassen"}>
             <div className="space-y-5">
-              <h2 className="text-2xl">Uw E-mailadres(sen) aanpassen</h2>
-              <p>
+              <Paragraph>
                 Wilt u de e-mailadres(sen) waarop u meldingen ontvangt aanpassen
                 of aanpassen welke organisaties u digitaal berichten mogen
                 sturen? Dit staat onder Bedrijfsprofiel
-              </p>
+              </Paragraph>
 
               <Link
                 className="text-primary flex font-bold"
@@ -248,25 +182,25 @@ const BerichtenboxPage = async ({
           </Card>
         </div>
         <div className="col-span-12 md:col-span-4">
-          <Card>
+          <Card heading={"Bent u gemachtigd voor iemand anders?"}>
             <div className="space-y-4">
-              <h2 className="text-2xl">
-                Bent u gemachtigd voor iemand anders?
-              </h2>
-              <p>U kunt hier uw machtiging ophalen en gebruiken.</p>
-              <a href="#" className="text-blue-text hover-up font-bold">
+              <Paragraph>
+                U kunt hier uw machtiging ophalen en gebruiken.
+              </Paragraph>
+              <InlineLink href="#">
                 <span className="flex flex-row items-center gap-2">
                   <IconText IconAfter={ChevronIcon}>
                     {"Haal machtigingen op"}
                   </IconText>
                 </span>
-              </a>
+              </InlineLink>
 
-              <Notification
-                text={
-                  "Ondek hoe u gemachtigd kunt worden om diditale post van iemand anders te lezen."
-                }
-              />
+              <Alert type="info">
+                <Paragraph>
+                  Ontdek hoe u gemachtigd kunt worden om digitale post van
+                  iemand anders te lezen.
+                </Paragraph>
+              </Alert>
             </div>
           </Card>
         </div>

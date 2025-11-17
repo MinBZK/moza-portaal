@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useImperativeHandle, forwardRef } from "react";
-import Button from "./button";
+import { Button } from "@/components/nl-design-system";
 
 const CountdownBar = forwardRef(function CountdownBar(
   { onComplete }: { onComplete: () => void },

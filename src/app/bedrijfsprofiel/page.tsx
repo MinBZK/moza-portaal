@@ -1,4 +1,4 @@
-import Card from "@/components/card";
+import { Card } from "@/components/nl-design-system";
 import profielClient from "@/network/profiel";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 
@@ -34,9 +34,8 @@ const IdentiteitPage = async () => {
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 w-full space-y-5 md:col-span-8">
         <h1 className="text-h1">Mijn bedrijfsprofiel</h1>
-        <Card>
+        <Card heading={"Algemeen"}>
           <div className="grid grid-cols-1 gap-4 divide-y-1 divide-neutral-300 *:py-4">
-            <h2 className="text-h2">Algemeen</h2>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Detail label="Naam" value={profiel.KvkProfiel.naam} />
               <Detail

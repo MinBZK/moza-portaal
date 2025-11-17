@@ -3,6 +3,7 @@ import { getKvkFromCookie } from "@/utils/kvknummer";
 import { EmailCard } from "./emailCard";
 import ProfielHistoryPicker from "./profielHistoryPicker";
 import ProfielEvents from "./profielEvents";
+import { Heading } from "@rijkshuisstijl-community/components-react";
 
 const InstellingenPage = async () => {
   const kvk = await getKvkFromCookie();
@@ -19,7 +20,7 @@ const InstellingenPage = async () => {
 
   return (
     <>
-      <h1 className="text-h1">Instellingen</h1>
+      <Heading level={1}>Instellingen</Heading>
       <EmailCard
         currentEmail={profiel.Onderneming.email!}
         kvkNummer={kvk!}

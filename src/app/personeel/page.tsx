@@ -1,9 +1,9 @@
-import Button from "@/components/button";
-import Card from "@/components/card";
+import { Button, Card } from "@/components/nl-design-system";
 import zakenClient from "@/network/mock";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { format } from "date-fns";
-import Link from "next/link";
+import { InlineLink } from "@/components/nl-design-system/nextIntegration/InlineLink";
+
 const Personeel = async () => {
   const kvk = await getKvkFromCookie();
   const { data } = await zakenClient.GET("/uwv/meldingen/{bedrijfsKvk}", {
@@ -14,16 +14,14 @@ const Personeel = async () => {
     <>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12 w-full space-y-5 md:col-span-12">
-          <Card className="space-y-4">
-            <h2 className="text-2xl">Nieuwe meldingen</h2>
+          <Card heading={"Nieuwe meldingen"} className="space-y-4">
             <div className="flex flex-col gap-2">
-              <Link href="/personeel/zwangerschapsverlof/nieuw">
+              <InlineLink href="/personeel/zwangerschapsverlof/nieuw">
                 <Button>Zwangerschapsverlof melden</Button>
-              </Link>
+              </InlineLink>
             </div>
           </Card>
-          <Card className="space-y-4">
-            <h2 className="text-2xl">Lopende meldingen</h2>
+          <Card heading={"Lopende meldingen"} className="space-y-4">
             <table className="w-full border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
@@ -46,12 +44,12 @@ const Personeel = async () => {
                       </td>
 
                       <td className="px-4 py-2">
-                        <Link
+                        <InlineLink
                           className="text-blue-400 underline"
                           href={`/personeel/zwangerschapsverlof/${item.referentie}`}
                         >
                           Opmerking toevoegen
-                        </Link>
+                        </InlineLink>
                       </td>
                     </tr>
                   );

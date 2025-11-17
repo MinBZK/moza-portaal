@@ -1,115 +1,119 @@
-import ChevronIcon from "@/components/icons/chevronIcon";
-import { ExternalLinkIcon } from "@/components/icons/externalLinkIcon";
-import { IconText } from "@/components/iconText";
-import { ReactNode } from "react";
+"use client";
 
-const FooterLinkItem = ({
-  href = "#",
-  children,
-}: {
-  href?: string;
-  children: ReactNode;
-}) => {
-  return (
-    <li className="hover-up">
-      <a href={href}>
-        <IconText IconBefore={ChevronIcon}>{children}</IconText>
-      </a>
-    </li>
-  );
-};
+import {
+  LinkList,
+  Footer as RhsFooter,
+} from "@rijkshuisstijl-community/components-react";
+import { Icon } from "@/components/nl-design-system";
+import { LinkListLink } from "@/components/nl-design-system/nextIntegration/LinkListLink";
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-t-[#282828] bg-[#535353] py-8 text-white shadow-[0_50vh_0_50vh_#535353]">
-      <div className="mx-auto grid max-w-[1260px] grid-cols-1 justify-between gap-x-4 gap-y-8 px-2 sm:grid-cols-2 md:grid-cols-4">
-        <nav aria-labelledby="over-deze-site" className="flex flex-col gap-5">
-          <h3 id="over-deze-site" className="text-h3">
-            Over deze site
-          </h3>
-          <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Wat is MijnOverheid Zakelijk</FooterLinkItem>
-            <FooterLinkItem>Toegankelijkheid</FooterLinkItem>
-            <FooterLinkItem>Sitemap</FooterLinkItem>
-            <FooterLinkItem>English</FooterLinkItem>
-          </ul>
-        </nav>
-        <nav
-          aria-labelledby="gegevensverwerking"
-          className="flex flex-col gap-3"
-        >
-          <h3 id="gegevensverwerking" className="text-h3">
-            Gegevensverwerking
-          </h3>
-          <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Veiligheid</FooterLinkItem>
-            <FooterLinkItem>Privacyverklaring</FooterLinkItem>
-            <FooterLinkItem>Wet- en regelgeving</FooterLinkItem>
-          </ul>
-        </nav>
-        <nav aria-labelledby="service" className="flex flex-col gap-3">
-          <h3 id="service" className="text-h3">
-            Service
-          </h3>
-          <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Mededelingen</FooterLinkItem>
-            <FooterLinkItem>Herken oplichting</FooterLinkItem>
-            <FooterLinkItem>Veelgestelde vragen</FooterLinkItem>
-            <FooterLinkItem>Contact</FooterLinkItem>
-            <FooterLinkItem>Klachtafhandeling</FooterLinkItem>
-          </ul>
-        </nav>
-        <nav aria-labelledby="partners" className="flex flex-col gap-3">
-          <h3 id="partners" className="text-h3">
-            Partners
-          </h3>
-          <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Aangesloten organisaties</FooterLinkItem>
-            <li className="hover-up">
-              <a
-                href={"https://www.overheid.nl/"}
-                target="_blank"
-                rel="noopener noreferrer"
+    <RhsFooter
+      appearanceLevel={3}
+      background="primary-filled"
+      backtotop
+      columns={[
+        {
+          appearanceLevel: 3,
+          children: (
+            <LinkList>
+              <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                Wat is MijnOverheid Zakelijk
+              </LinkListLink>
+              <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                Toegankelijkheid
+              </LinkListLink>
+              <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                Sitemap
+              </LinkListLink>
+              <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                Vacatures
+              </LinkListLink>
+              <LinkListLink
+                href="#"
+                lang="en"
+                icon={<Icon icon="chevron-right" />}
               >
-                <IconText
-                  IconBefore={ExternalLinkIcon}
-                  iconProps={{ className: "w-4" }}
-                >
-                  {"Overheid.nl"}
-                </IconText>
-              </a>
-            </li>
-            <li className="hover-up">
-              <a
-                href={"https://www.rijksoverheid.nl/"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <IconText
-                  IconBefore={ExternalLinkIcon}
-                  iconProps={{ className: "w-4" }}
-                >
-                  {"Rijksoverheid.nl"}
-                </IconText>
-              </a>
-            </li>
-            <li className="hover-up">
-              <a
-                href={"https://www.rvig.nl/mfo-burgers"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <IconText
-                  IconBefore={ExternalLinkIcon}
-                  iconProps={{ className: "w-4" }}
-                >
-                  {"Meldpunt Fouten in Overheidsregistraties"}
-                </IconText>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </footer>
+                English
+              </LinkListLink>
+            </LinkList>
+          ),
+          heading: "Over deze site",
+        },
+        {
+          appearanceLevel: 3,
+          children: (
+            <>
+              <LinkList>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Veiligheid
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Privacyverklaring
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Wet- en regelgeving
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Copyright
+                </LinkListLink>
+              </LinkList>
+            </>
+          ),
+          heading: "Gegevensverwerking",
+        },
+        {
+          appearanceLevel: 3,
+          children: (
+            <>
+              <LinkList>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Mededelingen
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Herken oplichting
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Veelgestelde vragen
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Contact
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Klachtafhandeling
+                </LinkListLink>
+              </LinkList>
+            </>
+          ),
+          heading: "Service",
+        },
+        {
+          appearanceLevel: 3,
+          children: (
+            <>
+              <LinkList>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Overheid.nl
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Rijksoverheid.nl{" "}
+                </LinkListLink>
+                <LinkListLink href="#" icon={<Icon icon="chevron-right" />}>
+                  Meldpunt Fouten in Overheidsregistraties{" "}
+                </LinkListLink>
+              </LinkList>
+            </>
+          ),
+          heading: "Aangesloten organisaties",
+        },
+      ]}
+      heading="Mijn Overheid Zakelijk"
+      subFooter={
+        <LinkList>
+          <LinkListLink href="#">Privacy</LinkListLink>
+        </LinkList>
+      }
+    />
   );
 };

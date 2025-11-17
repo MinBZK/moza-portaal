@@ -1,6 +1,6 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
+
+import { Button, Card } from "@/components/nl-design-system";
 import FormField from "@/components/form/formField";
 import { useCreateZwangerschapsverlof } from "@/network/mock/hooks/createZwangerschapsverlof/useCreateZwangerschapsverlof";
 import { useForm } from "@tanstack/react-form";
@@ -33,7 +33,6 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
       onSubmit: zwangerschapsverlofSchema,
     },
     onSubmit: ({ value: values }) => {
-
       mutate(
         { body: values },
         {
@@ -46,8 +45,10 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">Nieuw zwangerschapsverlof melden</h2>
+    <Card
+      heading={"Nieuw zwangerschapsverlof melden"}
+      className="flex flex-col gap-4"
+    >
       <form
         onSubmit={(e) => {
           e.preventDefault();

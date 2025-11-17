@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/card";
+import { Card } from "@/components/nl-design-system";
 import { ErrorBoundary, ErrorBoundaryProps } from "@/components/ErrorBoundary";
 
 export default function GlobalError(props: ErrorBoundaryProps) {
@@ -11,8 +11,7 @@ export default function GlobalError(props: ErrorBoundaryProps) {
       </head>
       <body>
         <main className="container p-6">
-          <Card>
-            <h1 className="text-h1">Er is iets misgegaan...</h1>
+          <Card heading={"Er is iets misgegaan..."} headingLevel={1}>
             <ErrorBoundary {...props} />
           </Card>
         </main>

@@ -1,5 +1,5 @@
 {
-  "name": "voorkant",
+  "name": "moza-portaal",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,10 +15,19 @@
     "generate:kvk": "openapi-typescript ./dependencies/kvk/swagger.yaml -o ./src/network/kvk/generated.ts"
   },
   "dependencies": {
+    "@amsterdam/design-system-assets": "^1.1.0",
+    "@amsterdam/design-system-css": "^2.0.1",
+    "@amsterdam/design-system-react": "^2.0.2",
+    "@amsterdam/design-system-react-icons": "^1.1.0",
+    "@amsterdam/design-system-tokens": "^2.0.0",
     "@faker-js/faker": "^9.7.0",
     "@heroicons/react": "^2.2.0",
+    "@rijkshuisstijl-community/components-css": "^7.0.0",
+    "@rijkshuisstijl-community/components-react": "^6.0.1",
+    "@rijkshuisstijl-community/design-tokens": "file:../rijkshuisstijl-community/proprietary/design-tokens",
     "@tanstack/react-form": "^1.11.1",
     "@tanstack/react-query": "^5.76.1",
+    "@utrecht/component-library-react": "^10.3.9",
     "date-fns": "^4.1.0",
     "msw": "^2.8.2",
     "next": "15.3.1",
