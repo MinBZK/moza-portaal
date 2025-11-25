@@ -1,6 +1,6 @@
 import { Accordion } from "@/components/Accordion";
 import Button from "@/components/button";
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import { IconText } from "@/components/iconText";
 import ChevronIcon from "@/components/icons/chevronIcon";
 import { Notification } from "@/components/notifications";

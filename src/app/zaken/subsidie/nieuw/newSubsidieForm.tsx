@@ -1,5 +1,5 @@
 "use client";
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import Button from "@/components/button";
 import FormField, { FieldInfo } from "@/components/form/formField";
 import { useForm } from "@tanstack/react-form";

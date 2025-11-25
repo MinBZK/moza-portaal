@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Icon } from "../icons/infoIcon";
 import { tv } from "tailwind-variants";
 
@@ -22,20 +22,18 @@ export const Notification = ({
   variant = "information",
   header,
 }: {
-  text?: string;
+  text?: ReactNode;
   variant?: "information" | "warning" | "error" | "success";
-  header?: string;
+  header?: ReactNode;
 }) => {
   return (
     <div className={NotificationTV({ variant })} role="alert">
       <div className="">
-        <div className="flex">
+        <div className="flex flex-row items-start gap-3">
           <Icon variant={variant} />
-          {header && <p className="ms-2 font-bold">{header}</p>}
+          {header}
         </div>
-        <div className="ms-7">
-          <span className="whitespace-pre-line">{text}</span>
-        </div>
+        <div className="ms-7 whitespace-pre-line">{text}</div>
       </div>
     </div>
   );

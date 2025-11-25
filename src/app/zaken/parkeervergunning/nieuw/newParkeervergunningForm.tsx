@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/button";
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import FormField from "@/components/form/formField";
 import { useCreateParkeervergunning } from "@/network/mock/hooks/createParkeervergunning/useCreateParkeervergunning";
 import { useForm } from "@tanstack/react-form";

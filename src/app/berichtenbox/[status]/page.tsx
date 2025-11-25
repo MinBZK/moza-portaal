@@ -1,20 +1,9 @@
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import ChevronIcon from "@/components/icons/chevronIcon";
 import { IconText } from "@/components/iconText";
 import { Notification } from "@/components/notifications";
+import { Tab, Tabs } from "@/components/Tabs";
 import Link from "next/link";
-
-const Tab = ({ label, activeTab }: { label: string; activeTab: string }) => {
-  const isActive = label.toLowerCase() == activeTab.toLocaleLowerCase();
-  return (
-    <Link
-      href={`/berichtenbox/${label.toLowerCase()}`}
-      className={`px-2 py-1 ${isActive && "border-primary border-b-3 font-extrabold"}`}
-    >
-      {label}
-    </Link>
-  );
-};
 
 export const BerichtenboxTableRow = ({ index }: { index: number }) => {
   return (
@@ -35,7 +24,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
           )}
         </div>
       </td>
-      <td className="w-3/6 max-w-3/6 py-2 px-2">
+      <td className="w-3/6 max-w-3/6 px-2 py-2">
         {index === 0 ? (
           <span className="text-blue-text hover:underline">
             Aanslag belastingen 2025
@@ -100,29 +89,41 @@ const BerichtenboxPage = async ({
         <div className="col-span-12 w-full space-y-5 md:col-span-8">
           <Card>
             <div className="space-y-5">
-              <div className="flex w-full space-x-2 border-b-1 border-neutral-200">
-                <Tab label={"Inbox"} activeTab={status} />
-                <Tab label={"Archief"} activeTab={status} />
-                <Tab label={"Prullenbak"} activeTab={status} />
-              </div>
+              <Tabs>
+                <Tab
+                  href={`/berichtenbox/inbox`}
+                  label={"Inbox"}
+                  isActive={status === "inbox"}
+                />
+                <Tab
+                  href={`/berichtenbox/archief`}
+                  label={"Archief"}
+                  isActive={status === "archief"}
+                />
+                <Tab
+                  href={`/berichtenbox/prullenbak`}
+                  label={"Prullenbak"}
+                  isActive={status === "prullenbak"}
+                />
+              </Tabs>
               <div className="w-full overflow-x-auto">
-              <table className="table-auto text-left border-spacing-4 w-[100%]">
-                <thead className="bg-blue-gray-50 text-primary border-primary mb-4 border-b">
-                  <tr>
-                    {/* ik snap niet waarom mijnoverheid.nl dit niet gewoon links uitlijnt, 
+                <table className="w-[100%] table-auto border-spacing-4 text-left">
+                  <thead className="bg-blue-gray-50 text-primary border-primary mb-4 border-b">
+                    <tr>
+                      {/* ik snap niet waarom mijnoverheid.nl dit niet gewoon links uitlijnt, 
                       het staat halverwege de checkbox / text?  daarom de pl-5
                       */}
-                    <th className="py-2 pl-5">Afzender</th>
-                    <th className="py-2">Onderwerp</th>
-                    <th className="py-2">Ontvangen</th>
-                  </tr>
-                </thead>
-                <tbody className="w-full">
-                  {Array.from(Array(10).keys()).map((x) => (
-                    <BerichtenboxTableRow index={x} key={x} />
-                  ))}
-                </tbody>
-              </table>
+                      <th className="py-2 pl-5">Afzender</th>
+                      <th className="py-2">Onderwerp</th>
+                      <th className="py-2">Ontvangen</th>
+                    </tr>
+                  </thead>
+                  <tbody className="w-full">
+                    {Array.from(Array(10).keys()).map((x) => (
+                      <BerichtenboxTableRow index={x} key={x} />
+                    ))}
+                  </tbody>
+                </table>
               </div>
               <div className="flex items-center">
                 <input

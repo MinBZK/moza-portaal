@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/button";
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import { Notification } from "@/components/notifications";
 
 export type ErrorBoundaryProps = {

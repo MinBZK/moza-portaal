@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/button";
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import FormField from "@/components/form/formField";
 import { useCreateZwangerschapsverlof } from "@/network/mock/hooks/createZwangerschapsverlof/useCreateZwangerschapsverlof";
 import { useForm } from "@tanstack/react-form";
@@ -33,7 +33,6 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
       onSubmit: zwangerschapsverlofSchema,
     },
     onSubmit: ({ value: values }) => {
-
       mutate(
         { body: values },
         {

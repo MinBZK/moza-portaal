@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@layer properties, theme, base, components, utilities, moza-overrides;
+
 @font-face {
   font-family: "RijksoverheidSansWebText";
   src: url("./fonts/RijksoverheidSansWebText.woff") format("woff");
@@ -94,9 +96,47 @@
 
   --breakpoint-xs: 640px;
   --breakpoint-sm: 768px;
-  --breakpoint-md: 1024px;
-  --breakpoint-lg: 1280px;
-  --breakpoint-xl: 1536px;
+  --breakpoint-md: 992px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1600px;
+}
+
+@layer moza-overrides {
+  /* container max-sizes are covered in tailwind.config.ts */
+  .container {
+    padding-inline: 12px;
+    max-inline-size: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* sm: 768px */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px;
+    }
+  }
+
+  /* md: 992px */
+  @media (min-width: 992px) {
+    .container {
+      max-width: 960px;
+    }
+  }
+
+  /* lg: 1200px */
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1140px;
+    }
+  }
+
+  /* xl: 1600px */
+  @media (min-width: 1600px) {
+    .container {
+      max-width: 1540px;
+    }
+  }
 }
 
 .hover-up {

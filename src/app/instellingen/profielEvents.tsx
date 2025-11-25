@@ -1,4 +1,4 @@
-import Card from "@/components/card";
+import Card from "@/components/Card";
 import profielClient from "@/network/profiel";
 
 const ProfielEvents = async ({ kvkNummer }: { kvkNummer: string }) => {
