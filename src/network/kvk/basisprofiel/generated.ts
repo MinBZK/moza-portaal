@@ -4,510 +4,510 @@
  */
 
 export interface paths {
-    "/basisprofielen/{kvkNummer}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Voor een specifiek bedrijf basisinformatie opvragen. */
-        get: operations["getBasisprofielByKvkNummer"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/basisprofielen/{kvkNummer}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/basisprofielen/{kvkNummer}/eigenaar": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Voor een specifiek bedrijf eigenaar informatie opvragen. */
-        get: operations["getEigenaar"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Voor een specifiek bedrijf basisinformatie opvragen. */
+    get: operations["getBasisprofielByKvkNummer"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/basisprofielen/{kvkNummer}/eigenaar": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/basisprofielen/{kvkNummer}/hoofdvestiging": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Voor een specifiek bedrijf hoofdvestigingsinformatie opvragen. */
-        get: operations["getHoofdvestiging"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Voor een specifiek bedrijf eigenaar informatie opvragen. */
+    get: operations["getEigenaar"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/basisprofielen/{kvkNummer}/hoofdvestiging": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/basisprofielen/{kvkNummer}/vestigingen": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Voor een specifiek bedrijf een lijst met vestigingen opvragen. */
-        get: operations["getVestigingen"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Voor een specifiek bedrijf hoofdvestigingsinformatie opvragen. */
+    get: operations["getHoofdvestiging"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/basisprofielen/{kvkNummer}/vestigingen": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    /** Voor een specifiek bedrijf een lijst met vestigingen opvragen. */
+    get: operations["getVestigingen"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        Links: {
-            [key: string]: components["schemas"]["Link"];
-        };
-        VestigingBasis: {
-            /** @description Vestigingsnummer: uniek nummer dat bestaat uit 12 cijfers */
-            vestigingsnummer?: string;
-            /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-            kvkNummer?: string;
-            /** @description De naam waaronder een onderneming of vestiging handelt */
-            eersteHandelsnaam?: string;
-            /** @description Hoofdvestiging (Ja/Nee) */
-            indHoofdvestiging?: string;
-            /** @description Indicatie of het adres is afgeschermd */
-            indAdresAfgeschermd?: string;
-            /** @description Commerciele vestiging  (Ja/Nee) */
-            indCommercieleVestiging?: string;
-            volledigAdres?: string;
-            _links?: components["schemas"]["Links"];
-        };
-        VestigingList: {
-            /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-            kvkNummer?: string;
-            /** Format: int64 */
-            aantalCommercieleVestigingen?: number;
-            /** Format: int64 */
-            aantalNietCommercieleVestigingen?: number;
-            /** Format: int64 */
-            totaalAantalVestigingen?: number;
-            vestigingen?: components["schemas"]["VestigingBasis"][];
-            _links?: components["schemas"]["Links"];
-        };
-        Adres: {
-            /** @description Correspondentieadres en/of bezoekadres */
-            type?: string;
-            /** @description Indicatie of het adres is afgeschermd */
-            indAfgeschermd?: string;
-            volledigAdres?: string;
-            straatnaam?: string;
-            /** Format: int32 */
-            huisnummer?: number;
-            huisletter?: string;
-            huisnummerToevoeging?: string;
-            toevoegingAdres?: string;
-            postcode?: string;
-            /** Format: int32 */
-            postbusnummer?: number;
-            plaats?: string;
-            straatHuisnummer?: string;
-            postcodeWoonplaats?: string;
-            regio?: string;
-            land?: string;
-            geoData?: components["schemas"]["GeoData"];
-        };
-        /** @description Basisregistratie Adressen en Gebouwen gegevens uit het kadaster */
-        GeoData: {
-            /** @description Unieke BAG id */
-            addresseerbaarObjectId?: string;
-            /** @description Unieke BAG nummeraanduiding id */
-            nummerAanduidingId?: string;
-            /**
-             * Format: double
-             * @description Lengtegraad
-             */
-            gpsLatitude?: number;
-            /**
-             * Format: double
-             * @description Breedtegraad
-             */
-            gpsLongitude?: number;
-            /**
-             * Format: double
-             * @description Rijksdriehoek X-coördinaat
-             */
-            rijksdriehoekX?: number;
-            /**
-             * Format: double
-             * @description Rijksdriehoek Y-coördinaat
-             */
-            rijksdriehoekY?: number;
-            /**
-             * Format: double
-             * @description Rijksdriehoek Z-coördinaat
-             */
-            rijksdriehoekZ?: number;
-        };
-        /** @description Alle namen waaronder een vestiging handelt (op volgorde van registreren). Dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging. */
-        Handelsnaam: {
-            naam?: string;
-            /** Format: int32 */
-            volgorde?: number;
-        };
-        MaterieleRegistratie: {
-            /** @description Startdatum onderneming */
-            datumAanvang?: string;
-            /** @description Einddatum onderneming */
-            datumEinde?: string;
-        };
-        /** @description Code beschrijving van SBI activiteiten conform SBI 2008 (Standard Industrial Classification). Er wordt geen maximering toegepast in de resultaten. Zie ook KVK.nl/sbi */
-        SBIActiviteit: {
-            sbiCode?: string;
-            sbiOmschrijving?: string;
-            indHoofdactiviteit?: string;
-        };
-        Vestiging: {
-            /** @description Vestigingsnummer: uniek nummer dat bestaat uit 12 cijfers */
-            vestigingsnummer?: string;
-            /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-            kvkNummer?: string;
-            /** @description Rechtspersonen Samenwerkingsverbanden Informatie Nummer (dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging). */
-            rsin?: string;
-            /** @description Hiermee geeft de onderneming aan geen ongevraagde reclame per post of verkoop aan de deur te willen ontvangen */
-            indNonMailing?: string;
-            /** @description Registratiedatum onderneming in HR */
-            formeleRegistratiedatum?: string;
-            materieleRegistratie?: components["schemas"]["MaterieleRegistratie"];
-            /** @description De naam van de vestiging wanneer er statuten geregistreerd zijn. */
-            statutaireNaam?: string;
-            /** @description De naam waaronder een onderneming of vestiging handelt */
-            eersteHandelsnaam?: string;
-            /** @description Hoofdvestiging (Ja/Nee) */
-            indHoofdvestiging?: string;
-            /** @description Commerciele vestiging  (Ja/Nee) */
-            indCommercieleVestiging?: string;
-            /** @description Aantal voltijd werkzame personen */
-            voltijdWerkzamePersonen?: number;
-            /** @description Totaal aantal werkzame personen */
-            totaalWerkzamePersonen?: number;
-            /** @description Aantal deeltijd werkzame personen */
-            deeltijdWerkzamePersonen?: number;
-            /** @description Alle namen waaronder een vestiging handelt (op volgorde van registreren). Dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging. */
-            handelsnamen?: components["schemas"]["Handelsnaam"][];
-            adressen?: components["schemas"]["Adres"][];
-            websites?: string[];
-            /** @description Code beschrijving van SBI activiteiten conform SBI 2008 (Standard Industrial Classification). Er wordt geen maximering toegepast in de resultaten. Zie ook KVK.nl/sbi */
-            sbiActiviteiten?: components["schemas"]["SBIActiviteit"][];
-            _links?: components["schemas"]["Links"];
-        };
-        Eigenaar: {
-            /** @description Rechtspersonen Samenwerkingsverbanden Informatie Nummer */
-            rsin?: string;
-            rechtsvorm?: string;
-            uitgebreideRechtsvorm?: string;
-            adressen?: components["schemas"]["Adres"][];
-            websites?: string[];
-            _links?: components["schemas"]["Links"];
-        };
-        Basisprofiel: {
-            /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-            kvkNummer?: string;
-            /** @description Hiermee geeft de onderneming aan geen ongevraagde reclame per post of verkoop aan de deur te willen ontvangen */
-            indNonMailing?: string;
-            /** @description Naam onder Maatschappelijke Activiteit */
-            naam?: string;
-            /** @description Registratiedatum onderneming in HR */
-            formeleRegistratiedatum?: string;
-            materieleRegistratie?: components["schemas"]["MaterieleRegistratie"];
-            /**
-             * Format: int32
-             * @description Totaal aantal werkzame personen
-             */
-            totaalWerkzamePersonen?: number;
-            /** @description De naam van de onderneming wanneer er statuten geregistreerd zijn. */
-            statutaireNaam?: string;
-            /** @description Alle namen waaronder een onderneming of vestiging handelt (op volgorde van registreren) */
-            handelsnamen?: components["schemas"]["Handelsnaam"][];
-            /** @description Code beschrijving van SBI activiteiten conform SBI 2008 (Standard Industrial Classification). Er wordt geen maximering toegepast in de resultaten. Zie ook KVK.nl/sbi */
-            sbiActiviteiten?: components["schemas"]["SBIActiviteit"][];
-            _links?: components["schemas"]["Links"];
-            _embedded?: components["schemas"]["EmbeddedContainer"];
-        };
-        EmbeddedContainer: {
-            hoofdvestiging?: components["schemas"]["Vestiging"];
-            eigenaar?: components["schemas"]["Eigenaar"];
-        };
-        Link: {
-            href?: string;
-            hreflang?: string;
-            title?: string;
-            type?: string;
-            deprecation?: string;
-            profile?: string;
-            name?: string;
-            templated?: boolean;
-        };
-        Error: {
-            fout?: components["schemas"]["Fout"][];
-        };
-        Fout: {
-            /** @description Foutcode */
-            code?: string;
-            /** @description Omschrijving van de foutmelding */
-            omschrijving?: string;
-        };
+  schemas: {
+    Links: {
+      [key: string]: components["schemas"]["Link"];
     };
-    responses: {
-        /** @description Een opgegeven parameter is niet valide */
-        BadRequest: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/hal+json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Geen of onjuiste apikey aangeleverd */
-        Unauthorized: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/hal+json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Niet geautoriseerd voor deze operatie */
-        Forbidden: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/hal+json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Er zijn geen resultaten gevonden aan de hand van de opgegeven parameter(s) */
-        NotFound: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/hal+json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Opgegeven Accept header wordt niet ondersteund */
-        NotAcceptable: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/hal+json": components["schemas"]["Error"];
-            };
-        };
-        /** @description Er is een interne fout opgetreden */
-        InternalServerError: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/hal+json": components["schemas"]["Error"];
-            };
-        };
+    VestigingBasis: {
+      /** @description Vestigingsnummer: uniek nummer dat bestaat uit 12 cijfers */
+      vestigingsnummer?: string;
+      /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+      kvkNummer?: string;
+      /** @description De naam waaronder een onderneming of vestiging handelt */
+      eersteHandelsnaam?: string;
+      /** @description Hoofdvestiging (Ja/Nee) */
+      indHoofdvestiging?: string;
+      /** @description Indicatie of het adres is afgeschermd */
+      indAdresAfgeschermd?: string;
+      /** @description Commerciele vestiging  (Ja/Nee) */
+      indCommercieleVestiging?: string;
+      volledigAdres?: string;
+      _links?: components["schemas"]["Links"];
     };
-    parameters: never;
-    requestBodies: never;
-    headers: {
-        api_version: string;
-        warning: string;
+    VestigingList: {
+      /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+      kvkNummer?: string;
+      /** Format: int64 */
+      aantalCommercieleVestigingen?: number;
+      /** Format: int64 */
+      aantalNietCommercieleVestigingen?: number;
+      /** Format: int64 */
+      totaalAantalVestigingen?: number;
+      vestigingen?: components["schemas"]["VestigingBasis"][];
+      _links?: components["schemas"]["Links"];
     };
-    pathItems: never;
+    Adres: {
+      /** @description Correspondentieadres en/of bezoekadres */
+      type?: string;
+      /** @description Indicatie of het adres is afgeschermd */
+      indAfgeschermd?: string;
+      volledigAdres?: string;
+      straatnaam?: string;
+      /** Format: int32 */
+      huisnummer?: number;
+      huisletter?: string;
+      huisnummerToevoeging?: string;
+      toevoegingAdres?: string;
+      postcode?: string;
+      /** Format: int32 */
+      postbusnummer?: number;
+      plaats?: string;
+      straatHuisnummer?: string;
+      postcodeWoonplaats?: string;
+      regio?: string;
+      land?: string;
+      geoData?: components["schemas"]["GeoData"];
+    };
+    /** @description Basisregistratie Adressen en Gebouwen gegevens uit het kadaster */
+    GeoData: {
+      /** @description Unieke BAG id */
+      addresseerbaarObjectId?: string;
+      /** @description Unieke BAG nummeraanduiding id */
+      nummerAanduidingId?: string;
+      /**
+       * Format: double
+       * @description Lengtegraad
+       */
+      gpsLatitude?: number;
+      /**
+       * Format: double
+       * @description Breedtegraad
+       */
+      gpsLongitude?: number;
+      /**
+       * Format: double
+       * @description Rijksdriehoek X-coördinaat
+       */
+      rijksdriehoekX?: number;
+      /**
+       * Format: double
+       * @description Rijksdriehoek Y-coördinaat
+       */
+      rijksdriehoekY?: number;
+      /**
+       * Format: double
+       * @description Rijksdriehoek Z-coördinaat
+       */
+      rijksdriehoekZ?: number;
+    };
+    /** @description Alle namen waaronder een vestiging handelt (op volgorde van registreren). Dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging. */
+    Handelsnaam: {
+      naam?: string;
+      /** Format: int32 */
+      volgorde?: number;
+    };
+    MaterieleRegistratie: {
+      /** @description Startdatum onderneming */
+      datumAanvang?: string;
+      /** @description Einddatum onderneming */
+      datumEinde?: string;
+    };
+    /** @description Code beschrijving van SBI activiteiten conform SBI 2008 (Standard Industrial Classification). Er wordt geen maximering toegepast in de resultaten. Zie ook KVK.nl/sbi */
+    SBIActiviteit: {
+      sbiCode?: string;
+      sbiOmschrijving?: string;
+      indHoofdactiviteit?: string;
+    };
+    Vestiging: {
+      /** @description Vestigingsnummer: uniek nummer dat bestaat uit 12 cijfers */
+      vestigingsnummer?: string;
+      /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+      kvkNummer?: string;
+      /** @description Rechtspersonen Samenwerkingsverbanden Informatie Nummer (dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging). */
+      rsin?: string;
+      /** @description Hiermee geeft de onderneming aan geen ongevraagde reclame per post of verkoop aan de deur te willen ontvangen */
+      indNonMailing?: string;
+      /** @description Registratiedatum onderneming in HR */
+      formeleRegistratiedatum?: string;
+      materieleRegistratie?: components["schemas"]["MaterieleRegistratie"];
+      /** @description De naam van de vestiging wanneer er statuten geregistreerd zijn. */
+      statutaireNaam?: string;
+      /** @description De naam waaronder een onderneming of vestiging handelt */
+      eersteHandelsnaam?: string;
+      /** @description Hoofdvestiging (Ja/Nee) */
+      indHoofdvestiging?: string;
+      /** @description Commerciele vestiging  (Ja/Nee) */
+      indCommercieleVestiging?: string;
+      /** @description Aantal voltijd werkzame personen */
+      voltijdWerkzamePersonen?: number;
+      /** @description Totaal aantal werkzame personen */
+      totaalWerkzamePersonen?: number;
+      /** @description Aantal deeltijd werkzame personen */
+      deeltijdWerkzamePersonen?: number;
+      /** @description Alle namen waaronder een vestiging handelt (op volgorde van registreren). Dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging. */
+      handelsnamen?: components["schemas"]["Handelsnaam"][];
+      adressen?: components["schemas"]["Adres"][];
+      websites?: string[];
+      /** @description Code beschrijving van SBI activiteiten conform SBI 2008 (Standard Industrial Classification). Er wordt geen maximering toegepast in de resultaten. Zie ook KVK.nl/sbi */
+      sbiActiviteiten?: components["schemas"]["SBIActiviteit"][];
+      _links?: components["schemas"]["Links"];
+    };
+    Eigenaar: {
+      /** @description Rechtspersonen Samenwerkingsverbanden Informatie Nummer */
+      rsin?: string;
+      rechtsvorm?: string;
+      uitgebreideRechtsvorm?: string;
+      adressen?: components["schemas"]["Adres"][];
+      websites?: string[];
+      _links?: components["schemas"]["Links"];
+    };
+    Basisprofiel: {
+      /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+      kvkNummer?: string;
+      /** @description Hiermee geeft de onderneming aan geen ongevraagde reclame per post of verkoop aan de deur te willen ontvangen */
+      indNonMailing?: string;
+      /** @description Naam onder Maatschappelijke Activiteit */
+      naam?: string;
+      /** @description Registratiedatum onderneming in HR */
+      formeleRegistratiedatum?: string;
+      materieleRegistratie?: components["schemas"]["MaterieleRegistratie"];
+      /**
+       * Format: int32
+       * @description Totaal aantal werkzame personen
+       */
+      totaalWerkzamePersonen?: number;
+      /** @description De naam van de onderneming wanneer er statuten geregistreerd zijn. */
+      statutaireNaam?: string;
+      /** @description Alle namen waaronder een onderneming of vestiging handelt (op volgorde van registreren) */
+      handelsnamen?: components["schemas"]["Handelsnaam"][];
+      /** @description Code beschrijving van SBI activiteiten conform SBI 2008 (Standard Industrial Classification). Er wordt geen maximering toegepast in de resultaten. Zie ook KVK.nl/sbi */
+      sbiActiviteiten?: components["schemas"]["SBIActiviteit"][];
+      _links?: components["schemas"]["Links"];
+      _embedded?: components["schemas"]["EmbeddedContainer"];
+    };
+    EmbeddedContainer: {
+      hoofdvestiging?: components["schemas"]["Vestiging"];
+      eigenaar?: components["schemas"]["Eigenaar"];
+    };
+    Link: {
+      href?: string;
+      hreflang?: string;
+      title?: string;
+      type?: string;
+      deprecation?: string;
+      profile?: string;
+      name?: string;
+      templated?: boolean;
+    };
+    Error: {
+      fout?: components["schemas"]["Fout"][];
+    };
+    Fout: {
+      /** @description Foutcode */
+      code?: string;
+      /** @description Omschrijving van de foutmelding */
+      omschrijving?: string;
+    };
+  };
+  responses: {
+    /** @description Een opgegeven parameter is niet valide */
+    BadRequest: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/hal+json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Geen of onjuiste apikey aangeleverd */
+    Unauthorized: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/hal+json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Niet geautoriseerd voor deze operatie */
+    Forbidden: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/hal+json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Er zijn geen resultaten gevonden aan de hand van de opgegeven parameter(s) */
+    NotFound: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/hal+json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Opgegeven Accept header wordt niet ondersteund */
+    NotAcceptable: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/hal+json": components["schemas"]["Error"];
+      };
+    };
+    /** @description Er is een interne fout opgetreden */
+    InternalServerError: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/hal+json": components["schemas"]["Error"];
+      };
+    };
+  };
+  parameters: never;
+  requestBodies: never;
+  headers: {
+    api_version: string;
+    warning: string;
+  };
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    getBasisprofielByKvkNummer: {
-        parameters: {
-            query?: {
-                geoData?: boolean;
-            };
-            header?: never;
-            path: {
-                /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-                kvkNummer: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    "api-version": components["headers"]["api_version"];
-                    warning: components["headers"]["warning"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Basisprofiel"];
-                    "application/hal+json": components["schemas"]["Basisprofiel"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            403: components["responses"]["Forbidden"];
-            404: components["responses"]["NotFound"];
-            406: components["responses"]["NotAcceptable"];
-            500: components["responses"]["InternalServerError"];
-            /** @description Er is een onverwachte fout opgetreden */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                    "application/hal+json": components["schemas"]["Error"];
-                };
-            };
-        };
+  getBasisprofielByKvkNummer: {
+    parameters: {
+      query?: {
+        geoData?: boolean;
+      };
+      header?: never;
+      path: {
+        /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+        kvkNummer: string;
+      };
+      cookie?: never;
     };
-    getEigenaar: {
-        parameters: {
-            query?: {
-                geoData?: boolean;
-            };
-            header?: never;
-            path: {
-                /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-                kvkNummer: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "api-version": components["headers"]["api_version"];
+          warning: components["headers"]["warning"];
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    "api-version": components["headers"]["api_version"];
-                    warning: components["headers"]["warning"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Eigenaar"];
-                    "application/hal+json": components["schemas"]["Eigenaar"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            403: components["responses"]["Forbidden"];
-            404: components["responses"]["NotFound"];
-            406: components["responses"]["NotAcceptable"];
-            500: components["responses"]["InternalServerError"];
-            /** @description Er is een onverwachte fout opgetreden */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                    "application/hal+json": components["schemas"]["Error"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["Basisprofiel"];
+          "application/hal+json": components["schemas"]["Basisprofiel"];
         };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+      406: components["responses"]["NotAcceptable"];
+      500: components["responses"]["InternalServerError"];
+      /** @description Er is een onverwachte fout opgetreden */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+          "application/hal+json": components["schemas"]["Error"];
+        };
+      };
     };
-    getHoofdvestiging: {
-        parameters: {
-            query?: {
-                geoData?: boolean;
-            };
-            header?: never;
-            path: {
-                /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-                kvkNummer: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    "api-version": components["headers"]["api_version"];
-                    warning: components["headers"]["warning"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Vestiging"];
-                    "application/hal+json": components["schemas"]["Vestiging"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            403: components["responses"]["Forbidden"];
-            404: components["responses"]["NotFound"];
-            406: components["responses"]["NotAcceptable"];
-            500: components["responses"]["InternalServerError"];
-            /** @description Er is een onverwachte fout opgetreden */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                    "application/hal+json": components["schemas"]["Error"];
-                };
-            };
-        };
+  };
+  getEigenaar: {
+    parameters: {
+      query?: {
+        geoData?: boolean;
+      };
+      header?: never;
+      path: {
+        /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+        kvkNummer: string;
+      };
+      cookie?: never;
     };
-    getVestigingen: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
-                kvkNummer: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "api-version": components["headers"]["api_version"];
+          warning: components["headers"]["warning"];
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    "api-version": components["headers"]["api_version"];
-                    warning: components["headers"]["warning"];
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["VestigingList"];
-                    "application/hal+json": components["schemas"]["VestigingList"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-            401: components["responses"]["Unauthorized"];
-            403: components["responses"]["Forbidden"];
-            404: components["responses"]["NotFound"];
-            406: components["responses"]["NotAcceptable"];
-            500: components["responses"]["InternalServerError"];
-            /** @description Er is een onverwachte fout opgetreden */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                    "application/hal+json": components["schemas"]["Error"];
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["Eigenaar"];
+          "application/hal+json": components["schemas"]["Eigenaar"];
         };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+      406: components["responses"]["NotAcceptable"];
+      500: components["responses"]["InternalServerError"];
+      /** @description Er is een onverwachte fout opgetreden */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+          "application/hal+json": components["schemas"]["Error"];
+        };
+      };
     };
+  };
+  getHoofdvestiging: {
+    parameters: {
+      query?: {
+        geoData?: boolean;
+      };
+      header?: never;
+      path: {
+        /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+        kvkNummer: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "api-version": components["headers"]["api_version"];
+          warning: components["headers"]["warning"];
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Vestiging"];
+          "application/hal+json": components["schemas"]["Vestiging"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+      406: components["responses"]["NotAcceptable"];
+      500: components["responses"]["InternalServerError"];
+      /** @description Er is een onverwachte fout opgetreden */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+          "application/hal+json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
+  getVestigingen: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers */
+        kvkNummer: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          "api-version": components["headers"]["api_version"];
+          warning: components["headers"]["warning"];
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["VestigingList"];
+          "application/hal+json": components["schemas"]["VestigingList"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+      406: components["responses"]["NotAcceptable"];
+      500: components["responses"]["InternalServerError"];
+      /** @description Er is een onverwachte fout opgetreden */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Error"];
+          "application/hal+json": components["schemas"]["Error"];
+        };
+      };
+    };
+  };
 }

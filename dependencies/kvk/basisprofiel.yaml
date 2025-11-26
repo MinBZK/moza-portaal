@@ -5,10 +5,12 @@ info:
   version: "1.4.0"
 servers:
   - url: https://api.kvk.nl/test/api/v1
-    description: Test API (uses Staat der Nederlanden Private Root CA – G1 certificate
+    description:
+      Test API (uses Staat der Nederlanden Private Root CA – G1 certificate
       chain)
   - url: https://api.kvk.nl/api/v1
-    description: Production API (uses Staat der Nederlanden Private Root CA – G1 certificate
+    description:
+      Production API (uses Staat der Nederlanden Private Root CA – G1 certificate
       chain)
 paths:
   /basisprofielen/{kvkNummer}:
@@ -32,41 +34,41 @@ paths:
             type: boolean
             default: false
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             api-version:
-              $ref: '#/components/headers/api_version'
+              $ref: "#/components/headers/api_version"
             warning:
-              $ref: '#/components/headers/warning'
+              $ref: "#/components/headers/warning"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Basisprofiel'
+                $ref: "#/components/schemas/Basisprofiel"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Basisprofiel'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/Basisprofiel"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
         default:
           description: Er is een onverwachte fout opgetreden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
       security:
         - ApiKeyAuth: []
   /basisprofielen/{kvkNummer}/eigenaar:
@@ -90,41 +92,41 @@ paths:
             type: boolean
             default: false
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             api-version:
-              $ref: '#/components/headers/api_version'
+              $ref: "#/components/headers/api_version"
             warning:
-              $ref: '#/components/headers/warning'
+              $ref: "#/components/headers/warning"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Eigenaar'
+                $ref: "#/components/schemas/Eigenaar"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Eigenaar'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/Eigenaar"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
         default:
           description: Er is een onverwachte fout opgetreden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
       security:
         - ApiKeyAuth: []
   /basisprofielen/{kvkNummer}/hoofdvestiging:
@@ -148,41 +150,41 @@ paths:
             type: boolean
             default: false
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             api-version:
-              $ref: '#/components/headers/api_version'
+              $ref: "#/components/headers/api_version"
             warning:
-              $ref: '#/components/headers/warning'
+              $ref: "#/components/headers/warning"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vestiging'
+                $ref: "#/components/schemas/Vestiging"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Vestiging'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/Vestiging"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
         default:
           description: Er is een onverwachte fout opgetreden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
       security:
         - ApiKeyAuth: []
   /basisprofielen/{kvkNummer}/vestigingen:
@@ -200,41 +202,41 @@ paths:
             pattern: "^[0-9]{8}$"
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           headers:
             api-version:
-              $ref: '#/components/headers/api_version'
+              $ref: "#/components/headers/api_version"
             warning:
-              $ref: '#/components/headers/warning'
+              $ref: "#/components/headers/warning"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VestigingList'
+                $ref: "#/components/schemas/VestigingList"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/VestigingList'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '406':
-          $ref: '#/components/responses/NotAcceptable'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                $ref: "#/components/schemas/VestigingList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/NotAcceptable"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
         default:
           description: Er is een onverwachte fout opgetreden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
       security:
         - ApiKeyAuth: []
 components:
@@ -242,7 +244,7 @@ components:
     Links:
       type: object
       additionalProperties:
-        $ref: '#/components/schemas/Link'
+        $ref: "#/components/schemas/Link"
     VestigingBasis:
       type: object
       properties:
@@ -267,7 +269,7 @@ components:
         volledigAdres:
           type: string
         _links:
-          $ref: '#/components/schemas/Links'
+          $ref: "#/components/schemas/Links"
     VestigingList:
       type: object
       properties:
@@ -286,9 +288,9 @@ components:
         vestigingen:
           type: array
           items:
-            $ref: '#/components/schemas/VestigingBasis'
+            $ref: "#/components/schemas/VestigingBasis"
         _links:
-          $ref: '#/components/schemas/Links'
+          $ref: "#/components/schemas/Links"
     Adres:
       type: object
       properties:
@@ -327,7 +329,7 @@ components:
         land:
           type: string
         geoData:
-          $ref: '#/components/schemas/GeoData'
+          $ref: "#/components/schemas/GeoData"
     GeoData:
       type: object
       properties:
@@ -385,7 +387,8 @@ components:
           type: string
         indHoofdactiviteit:
           type: string
-      description: Code beschrijving van SBI activiteiten conform SBI 2008 (Standard
+      description:
+        Code beschrijving van SBI activiteiten conform SBI 2008 (Standard
         Industrial Classification). Er wordt geen maximering toegepast in de resultaten.
         Zie ook KVK.nl/sbi
     Vestiging:
@@ -399,20 +402,23 @@ components:
           description: "Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers"
         rsin:
           type: string
-          description: Rechtspersonen Samenwerkingsverbanden Informatie Nummer (dit
+          description:
+            Rechtspersonen Samenwerkingsverbanden Informatie Nummer (dit
             outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging).
         indNonMailing:
           type: string
-          description: Hiermee geeft de onderneming aan geen ongevraagde reclame per
+          description:
+            Hiermee geeft de onderneming aan geen ongevraagde reclame per
             post of verkoop aan de deur te willen ontvangen
         formeleRegistratiedatum:
           type: string
           description: Registratiedatum onderneming in HR
         materieleRegistratie:
-          $ref: '#/components/schemas/MaterieleRegistratie'
+          $ref: "#/components/schemas/MaterieleRegistratie"
         statutaireNaam:
           type: string
-          description: De naam van de vestiging wanneer er statuten geregistreerd
+          description:
+            De naam van de vestiging wanneer er statuten geregistreerd
             zijn.
         eersteHandelsnaam:
           type: string
@@ -436,24 +442,25 @@ components:
           type: array
           description: Alle namen waaronder een vestiging handelt (op volgorde van registreren). Dit outputveld wordt niet vermeld in de EmbeddedCointainer van hoofdvestiging.
           items:
-            $ref: '#/components/schemas/Handelsnaam'
+            $ref: "#/components/schemas/Handelsnaam"
         adressen:
           type: array
           items:
-            $ref: '#/components/schemas/Adres'
+            $ref: "#/components/schemas/Adres"
         websites:
           type: array
           items:
             type: string
         sbiActiviteiten:
           type: array
-          description: Code beschrijving van SBI activiteiten conform SBI 2008 (Standard
+          description:
+            Code beschrijving van SBI activiteiten conform SBI 2008 (Standard
             Industrial Classification). Er wordt geen maximering toegepast in de resultaten.
             Zie ook KVK.nl/sbi
           items:
-            $ref: '#/components/schemas/SBIActiviteit'
+            $ref: "#/components/schemas/SBIActiviteit"
         _links:
-          $ref: '#/components/schemas/Links'
+          $ref: "#/components/schemas/Links"
     Eigenaar:
       type: object
       properties:
@@ -467,13 +474,13 @@ components:
         adressen:
           type: array
           items:
-            $ref: '#/components/schemas/Adres'
+            $ref: "#/components/schemas/Adres"
         websites:
           type: array
           items:
             type: string
         _links:
-          $ref: '#/components/schemas/Links'
+          $ref: "#/components/schemas/Links"
     Basisprofiel:
       type: object
       properties:
@@ -482,7 +489,8 @@ components:
           description: "Nederlands Kamer van Koophandel nummer: bestaat uit 8 cijfers"
         indNonMailing:
           type: string
-          description: Hiermee geeft de onderneming aan geen ongevraagde reclame per
+          description:
+            Hiermee geeft de onderneming aan geen ongevraagde reclame per
             post of verkoop aan de deur te willen ontvangen
         naam:
           type: string
@@ -491,39 +499,42 @@ components:
           type: string
           description: Registratiedatum onderneming in HR
         materieleRegistratie:
-          $ref: '#/components/schemas/MaterieleRegistratie'
+          $ref: "#/components/schemas/MaterieleRegistratie"
         totaalWerkzamePersonen:
           type: integer
           description: Totaal aantal werkzame personen
           format: int32
         statutaireNaam:
           type: string
-          description: De naam van de onderneming wanneer er statuten geregistreerd
+          description:
+            De naam van de onderneming wanneer er statuten geregistreerd
             zijn.
         handelsnamen:
           type: array
-          description: Alle namen waaronder een onderneming of vestiging handelt (op
+          description:
+            Alle namen waaronder een onderneming of vestiging handelt (op
             volgorde van registreren)
           items:
-            $ref: '#/components/schemas/Handelsnaam'
+            $ref: "#/components/schemas/Handelsnaam"
         sbiActiviteiten:
           type: array
-          description: Code beschrijving van SBI activiteiten conform SBI 2008 (Standard
+          description:
+            Code beschrijving van SBI activiteiten conform SBI 2008 (Standard
             Industrial Classification). Er wordt geen maximering toegepast in de resultaten.
             Zie ook KVK.nl/sbi
           items:
-            $ref: '#/components/schemas/SBIActiviteit'
+            $ref: "#/components/schemas/SBIActiviteit"
         _links:
-          $ref: '#/components/schemas/Links'
+          $ref: "#/components/schemas/Links"
         _embedded:
-          $ref: '#/components/schemas/EmbeddedContainer'
+          $ref: "#/components/schemas/EmbeddedContainer"
     EmbeddedContainer:
       type: object
       properties:
         hoofdvestiging:
-          $ref: '#/components/schemas/Vestiging'
+          $ref: "#/components/schemas/Vestiging"
         eigenaar:
-          $ref: '#/components/schemas/Eigenaar'
+          $ref: "#/components/schemas/Eigenaar"
     Link:
       type: object
       properties:
@@ -549,7 +560,7 @@ components:
         fout:
           type: array
           items:
-            $ref: '#/components/schemas/Fout'
+            $ref: "#/components/schemas/Fout"
     Fout:
       type: object
       properties:
@@ -565,52 +576,55 @@ components:
       content:
         application/hal+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     Unauthorized:
       description: Geen of onjuiste apikey aangeleverd
       content:
         application/hal+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     Forbidden:
       description: Niet geautoriseerd voor deze operatie
       content:
         application/hal+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     NotFound:
       description: Er zijn geen resultaten gevonden aan de hand van de opgegeven parameter(s)
       content:
         application/hal+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     NotAcceptable:
       description: Opgegeven Accept header wordt niet ondersteund
       content:
         application/hal+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
     InternalServerError:
       description: Er is een interne fout opgetreden
       content:
         application/hal+json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
   headers:
     api_version:
       schema:
         type: string
-        description: Geeft een specifieke API-versie aan in de context van een specifieke
+        description:
+          Geeft een specifieke API-versie aan in de context van een specifieke
           aanroep.
         example: 1.0.0
     warning:
       schema:
         type: string
-        description: zie RFC 7234. In het geval een major versie wordt uitgefaseerd,
+        description:
+          zie RFC 7234. In het geval een major versie wordt uitgefaseerd,
           gebruiken we warn-code 299 ("Miscellaneous Persistent Warning") en het API
           end-point (inclusief versienummer) als de warn-agent van de warning, gevolgd
           door de warn-text met de human-readable waarschuwing
-        example: '299 https://api.kvk.nl/api/v1/basisprofielen/ "Deze versie van de API is verouderd
+        example:
+          '299 https://api.kvk.nl/api/v1/basisprofielen/ "Deze versie van de API is verouderd
           en zal uit dienst worden genomen op 2025-02-01. Raadpleeg voor meer informatie
           hier de documentatie: https://developers.kvk.nl/apis/basisprofiel".'
   securitySchemes:

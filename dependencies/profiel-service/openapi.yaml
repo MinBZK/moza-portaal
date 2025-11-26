@@ -26,7 +26,8 @@ components:
       required:
         - type
         - waarde
-      description: Request object voor het toevoegen van een contactgegeven aan een
+      description:
+        Request object voor het toevoegen van een contactgegeven aan een
         partij
       properties:
         afdeling:
@@ -166,7 +167,8 @@ paths:
   /api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}:
     put:
       summary: Update contactgegeven van een partij
-      description: "Werk type, waarde en afdeling van een contactgegeven bij. Identificatie\
+      description:
+        "Werk type, waarde en afdeling van een contactgegeven bij. Identificatie\
         \ kan niet aangepast worden."
       tags:
         - Profiel
@@ -196,7 +198,8 @@ paths:
           description: Bad Request
     post:
       summary: Toevoegen nieuwe contactgegeven voor een partij
-      description: Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende
+      description:
+        Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende
         partijen.
       tags:
         - Profiel
@@ -327,7 +330,8 @@ paths:
   /api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}:
     put:
       summary: Update voorkeur van een partij
-      description: "Werk type, waarde en afdeling van een voorkeur bij. Identificatie\
+      description:
+        "Werk type, waarde en afdeling van een voorkeur bij. Identificatie\
         \ kan niet aangepast worden."
       tags:
         - Profiel
@@ -357,7 +361,8 @@ paths:
           description: Bad Request
     post:
       summary: Toevoegen nieuwe voorkeur voor een partij
-      description: Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende
+      description:
+        Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende
         partijen.
       tags:
         - Profiel

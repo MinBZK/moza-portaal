@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateEmail } from "./action";
 import { components } from "@/network/profiel/generated";
 
-export const useUpdateOndernemenEmail = () =>
+export const useUpdateOndernemengContactvoorkeur = () =>
   useMutation({
     mutationFn: ({
       identificatieNummer,

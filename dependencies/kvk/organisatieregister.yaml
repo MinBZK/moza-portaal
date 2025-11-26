@@ -2,10 +2,10 @@ openapi: 3.1.0
 info:
   title: Ophalen Organisaties op basis van het BSN voor Mijn Overheid
   version: 1.0.0
-  contact: 
+  contact:
     email: marcel.vanden.brink@kvk.nl
     name: Marcel van den Brink
-  description: 'Het ophalen van een lijst met één of meerdere organisaties van een Natuurlijk Persoon op basis van het Burger Service Nummer (BSN).'
+  description: "Het ophalen van een lijst met één of meerdere organisaties van een Natuurlijk Persoon op basis van het Burger Service Nummer (BSN)."
 
 servers:
   - url: "https://localhost/"
@@ -37,62 +37,62 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MijnOverheidOrganisatiesRequestBody'
+              $ref: "#/components/schemas/MijnOverheidOrganisatiesRequestBody"
       responses:
-        '200':
+        "200":
           description: Lijst met organisaties
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MijnOverheidOrganisatiesResponse'
-        '400':
+                $ref: "#/components/schemas/MijnOverheidOrganisatiesResponse"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
+                $ref: "#/components/schemas/ProblemDetails"
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
+                $ref: "#/components/schemas/ProblemDetails"
 
 components:
   schemas:
     MijnOverheidOrganisatiesRequestBody:
-      required: 
+      required:
         - bsn
       properties:
         bsn:
-          $ref: '#/components/schemas/BSN'
-    
+          $ref: "#/components/schemas/BSN"
+
     MijnOverheidOrganisatiesResponse:
       description: Lijst met 0, 1 of meer organisaties waar de natuurlijk persoon een functie vervult
       properties:
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: "#/components/schemas/Metadata"
         pagination:
-          $ref: '#/components/schemas/Pagination'
+          $ref: "#/components/schemas/Pagination"
         organisaties:
           type: array
           description: Lijst van organisaties is per default gesorteerd op KVK nummer van laag naar hoog
           items:
-            $ref: '#/components/schemas/Organisatie'
+            $ref: "#/components/schemas/Organisatie"
         itemAttributeLabels:
-          $ref: '#/components/schemas/ItemAttributeLabels'
+          $ref: "#/components/schemas/ItemAttributeLabels"
 
     ItemAttributeLabels:
       description: Meertalige labels voor alle velden in de response
@@ -100,49 +100,67 @@ components:
       properties:
         kvkNummer:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
             - { label: "KVK-nummer", toelichting: "" }
             - { label: "KVK number", toelichting: "" }
         administratieveHandelsnaam:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
-            - { label: "Handelsnaam", toelichting: "Een handelsnaam is de naam van een bedrijf." }
-            - { label: "Trade name", toelichting: "B1 translation not yet available" }
+            - {
+                label: "Handelsnaam",
+                toelichting: "Een handelsnaam is de naam van een bedrijf.",
+              }
+            - {
+                label: "Trade name",
+                toelichting: "B1 translation not yet available",
+              }
         rechtsvorm:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
-            - { label: "Rechtsvorm", toelichting: "Een rechtsvorm is de juridische vorm van een organisatie." }
-            - { label: "Legal form", toelichting: "B1 translation not yet available" }
+            - {
+                label: "Rechtsvorm",
+                toelichting: "Een rechtsvorm is de juridische vorm van een organisatie.",
+              }
+            - {
+                label: "Legal form",
+                toelichting: "B1 translation not yet available",
+              }
         functies:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
             - { label: "Functies", toelichting: "" }
             - { label: "Positions", toelichting: "" }
         sbi:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
-            - { label: "SBI-code", toelichting: "De SBI-code is een cijfercode die alle bedrijven en organisaties krijgen, die duidelijk maakt wat hun activiteiten zijn. SBI staat voor Standaard Bedrijfsindeling." }
-            - { label: "SBI code", toelichting: "B1 translation not yet available" }
+            - {
+                label: "SBI-code",
+                toelichting: "De SBI-code is een cijfercode die alle bedrijven en organisaties krijgen, die duidelijk maakt wat hun activiteiten zijn. SBI staat voor Standaard Bedrijfsindeling.",
+              }
+            - {
+                label: "SBI code",
+                toelichting: "B1 translation not yet available",
+              }
         telefoonnummer:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
             - { label: "Telefoonnummer", toelichting: "" }
             - { label: "Phone number", toelichting: "" }
         email:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
             - { label: "E-mailadres", toelichting: "" }
             - { label: "Email address", toelichting: "" }
         website:
           type: object
-          $ref: '#/components/schemas/ItemAttributeObject'
+          $ref: "#/components/schemas/ItemAttributeObject"
           examples:
             - { label: "Website", toelichting: "" }
             - { label: "Website", toelichting: "" }
@@ -169,10 +187,7 @@ components:
       description: Metadata van het KVK Mijn Overheid Response bericht
       type: object
       examples:
-        - {
-            $scheme: "kvkMijnOrganisatiesMijnOverheid",
-            version: "1.0.0"
-          }
+        - { $scheme: "kvkMijnOrganisatiesMijnOverheid", version: "1.0.0" }
       properties:
         $scheme:
           description: Schema naam
@@ -192,12 +207,14 @@ components:
             to: 10,
             totalItems: 15,
             lastPage: 2,
-            next: {
-              "href": "https://localhost/mijnoverheid/mijnorganisaties?taal=nl&page=2"
-            },
-            previous: {
-              "href": "https://localhost/mijnoverheid/mijnorganisaties?taal=nl&page=1"
-            }
+            next:
+              {
+                "href": "https://localhost/mijnoverheid/mijnorganisaties?taal=nl&page=2",
+              },
+            previous:
+              {
+                "href": "https://localhost/mijnoverheid/mijnorganisaties?taal=nl&page=1",
+              },
           }
       properties:
         currentPage:
@@ -221,11 +238,11 @@ components:
         next:
           type: object
           description: Link naar de volgende pagina
-          $ref: '#/components/schemas/Href'
+          $ref: "#/components/schemas/Href"
         previous:
           type: object
           description: Link naar de vorige pagina
-          $ref: '#/components/schemas/Href'
+          $ref: "#/components/schemas/Href"
 
     Organisatie:
       type: object
@@ -240,13 +257,13 @@ components:
           type: string
           minLength: 8
           maxLength: 8
-          examples: 
-            - '50000004'
+          examples:
+            - "50000004"
           pattern: '^\d{8}$'
         administratieveHandelsnaam:
           description: De naam van de organisatie, dit kan de statutaire naam, naam van de personenvennootschap of eerste handelsnaam van de hoofdvestiging zijn
           type: string
-          examples: 
+          examples:
             - Stichting De juiste naam
         rechtsvorm:
           description: De rechtsvorm van de onderneming en/of rechtspersoon
@@ -256,11 +273,11 @@ components:
             - Stichting
             - Besloten Vennootschap
         functies:
-          $ref: '#/components/schemas/Functies'
+          $ref: "#/components/schemas/Functies"
         sbi:
-          $ref: '#/components/schemas/SBI'
+          $ref: "#/components/schemas/SBI"
         telefoonnummer:
-          description: Het telefoonnummer van de onderneming en/of rechtsvorm 
+          description: Het telefoonnummer van de onderneming en/of rechtsvorm
           type: string
           examples:
             - "0031-0123456789"
@@ -278,7 +295,7 @@ components:
             - "https://www.test.org"
         _links:
           title: URI links
-          $ref: '#/components/schemas/Links'
+          $ref: "#/components/schemas/Links"
 
     Links:
       type: object
@@ -286,11 +303,12 @@ components:
         - self
       examples:
         - {
-            self: {
+            self:
+              {
                 href: "https://www.kvk.nl/mijn-kvk/organisaties/#/50000004",
                 linkText: "https://www.kvk.nl/mijn-kvk",
-                ariaLabel: "Bekijk en wijzig alle gegevens van Stichting De juiste naam bij KVK"
-              }
+                ariaLabel: "Bekijk en wijzig alle gegevens van Stichting De juiste naam bij KVK",
+              },
           }
       properties:
         self:
@@ -302,13 +320,13 @@ components:
           description: Link naar de organisatie op Mijn KVK
           properties:
             href:
-              $ref: '#/components/schemas/Href'
+              $ref: "#/components/schemas/Href"
             linkText:
               type: string
               description: label tekst van de link naar de organisatie op Mijn KVK
             ariaLabel:
               type: string
-              description: Aria label voor de link t.b.v. accessability 
+              description: Aria label voor de link t.b.v. accessability
 
     Href:
       type: string
@@ -324,7 +342,7 @@ components:
       description: Een lijst met functies
       type: array
       items:
-        $ref: '#/components/schemas/Functie'
+        $ref: "#/components/schemas/Functie"
 
     Functie:
       description: De functie van de persoon voor de organisatie
