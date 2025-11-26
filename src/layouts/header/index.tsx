@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Navigation from "../navigation";
 import ChevronIcon from "@/components/icons/chevronIcon";
-import { components } from "@/network/kvk/generated";
+import { components } from "@/network/kvk/organisatieregister/generated";
 
 const Header = ({
   kvk,

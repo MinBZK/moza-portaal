@@ -4,467 +4,598 @@
  */
 
 export interface paths {
-    "/auditlogs/{kvkNummer}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: {
-                    ascending?: boolean;
-                };
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["AuditLogResponse"];
-                        "application/json": components["schemas"]["AuditLogResponse"];
-                        "text/json": components["schemas"]["AuditLogResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/auth/generate-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    /**
+     * Update contactgegeven van een partij
+     * @description Werk type, waarde en afdeling van een contactgegeven bij. Identificatie kan niet aangepast worden.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
         };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["ContactgegevenUpdateRequest"];
         };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
+      responses: {
+        /** @description Contactgegeven succesvol bijgewerkt */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Contactgegeven of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/ondernemingen/{kvkNummer}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    /**
+     * Toevoegen nieuwe contactgegeven voor een partij
+     * @description Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende partijen.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
         };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ProfielResponse"];
-                        "application/json": components["schemas"]["ProfielResponse"];
-                        "text/json": components["schemas"]["ProfielResponse"];
-                    };
-                };
-            };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["ContactgegevenRequest"];
         };
-        put: {
-            parameters: {
-                query?: {
-                    email?: string;
-                };
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ProfielResponse"];
-                        "application/json": components["schemas"]["ProfielResponse"];
-                        "text/json": components["schemas"]["ProfielResponse"];
-                    };
-                };
-            };
+      };
+      responses: {
+        /** @description Contactgegeven succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        post?: never;
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ProfielResponse"];
-                        "application/json": components["schemas"]["ProfielResponse"];
-                        "text/json": components["schemas"]["ProfielResponse"];
-                    };
-                };
-            };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/ondernemingen/{kvkNummer}/{timestamp}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                    timestamp: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["ProfielResponse"];
-                        "application/json": components["schemas"]["ProfielResponse"];
-                        "text/json": components["schemas"]["ProfielResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}/{contactgegevenId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/ondernemingen/EmailBekend/{kvkNummer}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Verwijder contactgegeven van een partij
+     * @description Verwijdert een contactgegeven volledig
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          contactgegevenId: number;
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
         };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": boolean;
-                        "application/json": boolean;
-                        "text/json": boolean;
-                    };
-                };
-            };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Contactgegeven succesvol verwijderd */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+        /** @description Contactgegeven of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/ondernemingen/{kvkNummer}/verify": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: {
-                    code?: string;
-                };
-                header?: never;
-                path: {
-                    kvkNummer: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/dienstverlener": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get?: never;
+    put?: never;
+    /** Add Dienstverlener */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["DienstverlenerRequest"];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/dienstverlener/{DienstverlenerNaam}/afdelingen": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Voegt een afdeling toe aan een dienstverlener
+     * @description Voegt een nieuwe afdeling toe met beschrijving
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          DienstverlenerNaam: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["AfdelingRequest"];
+        };
+      };
+      responses: {
+        /** @description Afdeling succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Dienstverlener niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/dienstverlener/{naam}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get Afdelingen Dienstverlener */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          naam: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/emailverificatie/{email}/{verificatiecode}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Get Afdelingen Dienstverlener */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          email: string;
+          verificatiecode: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Update voorkeur van een partij
+     * @description Werk type, waarde en afdeling van een voorkeur bij. Identificatie kan niet aangepast worden.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["VoorkeurUpdateRequest"];
+        };
+      };
+      responses: {
+        /** @description Voorkeur succesvol bijgewerkt */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Voorkeur of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    /**
+     * Toevoegen nieuwe voorkeur voor een partij
+     * @description Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende partijen.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["VoorkeurRequest"];
+        };
+      };
+      responses: {
+        /** @description Voorkeur succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}/{voorkeurId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Verwijder voorkeur van een partij
+     * @description Verwijdert een voorkeur volledig
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
+          voorkeurId: number;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Voorkeur succesvol verwijderd */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Voorkeur of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/{identificatieType}/{identificatieNummer}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Ophalen profiel van een partij
+     * @description Haalt het profiel op van een partij
+     */
+    get: {
+      parameters: {
+        query?: {
+          afdelingBeschrijving?: string;
+          dienstverlener?: string;
+          oin?: string;
+        };
+        header?: never;
+        path: {
+          identificatieNummer: string;
+          identificatieType: components["schemas"]["IdentificatieType"];
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Partij succesvol opgehaald */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["PartijResponse"];
+          };
+        };
+        /** @description Partij niet gevonden of is verwijderd */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        Adres: {
-            type?: string | null;
-            indAfgeschermd?: string | null;
-            volledigAdres?: string | null;
-            straatnaam?: string | null;
-            /** Format: int32 */
-            huisnummer?: number;
-            huisletter?: string | null;
-            huisnummerToevoeging?: string | null;
-            toevoegingAdres?: string | null;
-            postcode?: string | null;
-            /** Format: int32 */
-            postbusnummer?: number;
-            plaats?: string | null;
-            straatHuisnummer?: string | null;
-            postcodeWoonplaats?: string | null;
-            regio?: string | null;
-            land?: string | null;
-            geoData?: components["schemas"]["GeoData"];
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        AuditLogResponse: {
-            OndernemingAuditLog: components["schemas"]["OndernemingAuditLog"][] | null;
-        };
-        Basisprofiel: {
-            kvkNummer?: string | null;
-            indNonMailing?: string | null;
-            naam?: string | null;
-            formeleRegistratiedatum?: string | null;
-            materieleRegistratie?: components["schemas"]["MaterieleRegistratie"];
-            /** Format: int32 */
-            totaalWerkzamePersonen?: number;
-            statutaireNaam?: string | null;
-            handelsnamen?: components["schemas"]["Handelsnaam"][] | null;
-            sbiActiviteiten?: components["schemas"]["SBIActiviteit"][] | null;
-            _links?: {
-                [key: string]: components["schemas"]["Link"];
-            } | null;
-            _embedded?: components["schemas"]["EmbeddedContainer"];
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** @enum {string} */
-        DienstType: "Alles" | "Financien" | "Personeelszaken" | "Anders";
-        Eigenaar: {
-            rsin?: string | null;
-            rechtsvorm?: string | null;
-            uitgebreideRechtsvorm?: string | null;
-            adressen?: components["schemas"]["Adres"][] | null;
-            websites?: string[] | null;
-            _links?: {
-                [key: string]: components["schemas"]["Link"];
-            } | null;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        EmailModel: {
-            email?: string | null;
-            dienstType?: components["schemas"]["DienstType"];
-        };
-        EmbeddedContainer: {
-            hoofdvestiging?: components["schemas"]["Vestiging"];
-            eigenaar?: components["schemas"]["Eigenaar"];
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        GeoData: {
-            addresseerbaarObjectId?: string | null;
-            nummerAanduidingId?: string | null;
-            /** Format: double */
-            gpsLatitude?: number;
-            /** Format: double */
-            gpsLongitude?: number;
-            /** Format: double */
-            rijksdriehoekX?: number;
-            /** Format: double */
-            rijksdriehoekY?: number;
-            /** Format: double */
-            rijksdriehoekZ?: number;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        Handelsnaam: {
-            naam?: string | null;
-            /** Format: int32 */
-            volgorde?: number;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        Link: {
-            href?: string | null;
-            hreflang?: string | null;
-            title?: string | null;
-            type?: string | null;
-            deprecation?: string | null;
-            profile?: string | null;
-            name?: string | null;
-            templated?: boolean;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        MaterieleRegistratie: {
-            datumAanvang?: string | null;
-            datumEinde?: string | null;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        Onderneming: {
-            kvkNummer?: string | null;
-            email?: string | null;
-            emailVerified?: boolean;
-            emails?: components["schemas"]["EmailModel"][] | null;
-        };
-        OndernemingAuditLog: {
-            /** Format: int32 */
-            ondernemingId?: number;
-            action?: string | null;
-            field?: string | null;
-            oldValue?: string | null;
-            newValue?: string | null;
-            performedBy?: string | null;
-            /** Format: date-time */
-            performedAt?: string;
-        };
-        ProfielResponse: {
-            Onderneming: components["schemas"]["Onderneming"];
-            KvkProfiel: components["schemas"]["Basisprofiel"];
-            UwvProfiel?: unknown;
-        };
-        SBIActiviteit: {
-            sbiCode?: string | null;
-            sbiOmschrijving?: string | null;
-            indHoofdactiviteit?: string | null;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
-        Vestiging: {
-            vestigingsnummer?: string | null;
-            kvkNummer?: string | null;
-            rsin?: string | null;
-            indNonMailing?: string | null;
-            formeleRegistratiedatum?: string | null;
-            materieleRegistratie?: components["schemas"]["MaterieleRegistratie"];
-            statutaireNaam?: string | null;
-            eersteHandelsnaam?: string | null;
-            indHoofdvestiging?: string | null;
-            indCommercieleVestiging?: string | null;
-            /** Format: int32 */
-            voltijdWerkzamePersonen?: number;
-            /** Format: int32 */
-            totaalWerkzamePersonen?: number;
-            /** Format: int32 */
-            deeltijdWerkzamePersonen?: number;
-            handelsnamen?: components["schemas"]["Handelsnaam"][] | null;
-            adressen?: components["schemas"]["Adres"][] | null;
-            websites?: string[] | null;
-            sbiActiviteiten?: components["schemas"]["SBIActiviteit"][] | null;
-            _links?: {
-                [key: string]: components["schemas"]["Link"];
-            } | null;
-            additionalProperties?: {
-                [key: string]: unknown;
-            } | null;
-        };
+  schemas: {
+    /** @description Request object voor het toevoegen van een afdeling aan een dienstverlener */
+    AfdelingRequest: {
+      beschrijving: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    AfdelingResponse: {
+      beschrijving?: string;
+    };
+    /** @enum {string} */
+    ContactType: "Email" | "Telefoonnummer" | "Adres";
+    /** @description Request object voor het toevoegen van een contactgegeven aan een partij */
+    ContactgegevenRequest: {
+      afdeling?: string;
+      type: components["schemas"]["ContactType"];
+      waarde: string;
+    };
+    ContactgegevenResponse: {
+      /** Format: int64 */
+      id?: number;
+      type?: components["schemas"]["ContactType"];
+      waarde?: string;
+      isGeverifieerd?: boolean;
+      afdeling?: components["schemas"]["AfdelingResponse"];
+    };
+    ContactgegevenUpdateRequest: {
+      afdeling?: string;
+      type: components["schemas"]["ContactType"];
+      waarde: string;
+      /** Format: int64 */
+      id?: number;
+    };
+    /** @description Request object voor het toevoegen van een dienstverlener */
+    DienstverlenerRequest: {
+      naam: string;
+      oin: string;
+    };
+    IdentificatieResponse: {
+      identificatieType?: components["schemas"]["IdentificatieType"];
+      identificatieNummer?: string;
+    };
+    /** @enum {string} */
+    IdentificatieType: "BSN" | "KVK" | "RSIN";
+    /** @description Request object voor extra informatie meesturen bij van een Partij */
+    PartijRequest: {
+      dienstverlener?: string;
+      dienstverlenerOin?: string;
+      afdelingBeschrijving?: string;
+    };
+    PartijResponse: {
+      /** Format: int64 */
+      partijId?: number;
+      identificaties?: components["schemas"]["IdentificatieResponse"][];
+      voorkeuren?: components["schemas"]["VoorkeurResponse"][];
+      contactgegevens?: components["schemas"]["ContactgegevenResponse"][];
+    };
+    VoorkeurRequest: {
+      voorkeurType: components["schemas"]["VoorkeurType"];
+      waarde: string;
+    };
+    VoorkeurResponse: {
+      /** Format: int64 */
+      id?: number;
+      voorkeurType?: components["schemas"]["VoorkeurType"];
+      waarde?: string;
+    };
+    /** @enum {string} */
+    VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema";
+    VoorkeurUpdateRequest: {
+      voorkeurType: components["schemas"]["VoorkeurType"];
+      waarde: string;
+      /** Format: int64 */
+      id?: number;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export type operations = Record<string, never>;

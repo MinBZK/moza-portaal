@@ -1,7 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
-import { putEmailAction } from "./action";
+import { updateEmail } from "./action";
+import { components } from "@/network/profiel/generated";
 
 export const useUpdateOndernemenEmail = () =>
   useMutation({
-    mutationFn: putEmailAction,
+    mutationFn: ({
+      identificatieNummer,
+      identificatieType,
+      body,
+    }: {
+      identificatieNummer: string;
+      identificatieType: components["schemas"]["IdentificatieType"];
+      body: components["schemas"]["ContactgegevenUpdateRequest"];
+    }) => updateEmail(identificatieNummer, identificatieType, body),
   });

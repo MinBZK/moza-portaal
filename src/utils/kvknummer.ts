@@ -1,5 +1,5 @@
 "use server";
-import { components } from "@/network/kvk/generated";
+import { components } from "@/network/kvk/organisatieregister/generated";
 import { cookies } from "next/headers";
 
 export async function getKvkFromCookie() {

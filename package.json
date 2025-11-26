@@ -9,10 +9,11 @@
     "lint": "next lint",
     "prettier": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "generate:profiel": "openapi-typescript ./dependencies/profiel-service/swagger.json -o ./src/network/profiel/generated.ts",
+    "generate:profiel": "openapi-typescript ./dependencies/profiel-service/openapi.yaml -o ./src/network/profiel/generated.ts",
     "generate:omc": "openapi-typescript ./dependencies/omc/swagger.json -o ./src/network/omc/generated.ts",
     "generate:mock": "openapi-typescript ./dependencies/mock/swagger.json -o ./src/network/mock/generated.ts",
-    "generate:kvk": "openapi-typescript ./dependencies/kvk/swagger.yaml -o ./src/network/kvk/generated.ts"
+    "generate:kvk:organisatieregister": "openapi-typescript dependencies/kvk/organisatieregister.yaml -o ./src/network/kvk/organisatieregister/generated.ts",
+    "generate:kvk:basisprofiel": "openapi-typescript dependencies/kvk/basisprofiel.yaml -o ./src/network/kvk/basisprofiel/generated.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
