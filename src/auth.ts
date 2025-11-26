@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Keycloak from "next-auth/providers/keycloak";
 import { setOptionCookies, updateKvkCookie } from "./utils/kvknummer";
-import { GetKvknummersByBsn } from "./network/kvk/fetchers/getKvknummersByBsn";
+import { GetKvknummersByBsn } from "@/network/kvk/organisatieregister/fetchers/getKvknummersByBsn";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: false,
@@ -23,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.preferred_username = profile.preferred_username;
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
-
+        console.log(profile);
         const kvkOpties = await GetKvknummersByBsn(profile.bsn);
         setOptionCookies(kvkOpties);
         if (kvkOpties.organisaties && kvkOpties.organisaties.length > 0) {

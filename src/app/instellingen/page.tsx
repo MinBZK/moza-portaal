@@ -6,14 +6,14 @@ import ProfielEvents from "./profielEvents";
 
 const InstellingenPage = async () => {
   const kvk = await getKvkFromCookie();
-  const { data: profiel, response } = await profielClient.GET(
-    "/ondernemingen/{kvkNummer}",
+  const { data, response } = await profielClient.GET(
+    "/api/profielservice/v1/{identificatieType}/{identificatieNummer}",
     {
-      params: { path: { kvkNummer: kvk! } },
+      params: { path: { identificatieType: "KVK", identificatieNummer: kvk! } },
     },
   );
 
-  if (!profiel || response.status != 200) {
+  if (!data || response.status != 200) {
     throw new Error("Server-side error occurred");
   }
 
@@ -21,12 +21,13 @@ const InstellingenPage = async () => {
     <>
       <h1 className="text-h1">Instellingen</h1>
       <EmailCard
-        currentEmail={profiel.Onderneming.email!}
+        currentEmail={data.contactgegevens![0].waarde ?? ""}
+        id={data.contactgegevens![0].id}
         kvkNummer={kvk!}
-        emailVerified={profiel.Onderneming.emailVerified!}
+        emailVerified={data.contactgegevens![0].isGeverifieerd ?? false}
       />
-      <ProfielEvents kvkNummer={kvk!} />
-      <ProfielHistoryPicker kvkNummer={kvk!} />
+      {/*<ProfielEvents kvkNummer={kvk!} />*/}
+      {/*<ProfielHistoryPicker kvkNummer={kvk!} />*/}
     </>
   );
 };

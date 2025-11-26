@@ -8,7 +8,7 @@ import { usePostVerifyEmail } from "@/network/profiel/hooks/postVerifyEmail/useP
 import { useUpdateOndernemenEmail } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
-import { z } from "zod";
+import { string, z } from "zod";
 
 const emailSchema = z.object({
   email: z
@@ -131,13 +131,15 @@ export const EmailCard = ({
   currentEmail,
   emailVerified,
   kvkNummer,
+  id,
 }: {
   currentEmail: string;
   emailVerified: boolean;
   kvkNummer: string;
+  id?: number;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isSuccesful, setIsSuccessful] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
   const [showVerification, setShowVerification] = useState(
     !!currentEmail && !emailVerified,
   );
@@ -152,12 +154,20 @@ export const EmailCard = ({
     validators: { onSubmit: emailSchema },
     onSubmit: ({ value: values }) => {
       mutate(
-        { kvkNummer, email: values.email },
         {
-          onSuccess: (response) => {
+          identificatieNummer: kvkNummer.toString(),
+          identificatieType: "KVK",
+          body: {
+            id,
+            type: "Email",
+            waarde: values.email,
+          },
+        },
+        {
+          onSuccess: () => {
             setIsSuccessful(true);
-            setNewEmail(response?.Onderneming.email ?? "");
-            setShowVerification(!response?.Onderneming.emailVerified);
+            setNewEmail(values.email);
+            setShowVerification(false);
           },
         },
       );
@@ -167,7 +177,7 @@ export const EmailCard = ({
   return (
     <>
       <EmailNotifications
-        isSuccesful={isSuccesful}
+        isSuccesful={isSuccessful}
         newEmail={newEmail}
         showVerification={showVerification}
       />
