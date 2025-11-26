@@ -72,7 +72,6 @@ const Home = async () => {
     },
   );
 
-  console.log(response);
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 w-full space-y-6 md:col-span-9">
