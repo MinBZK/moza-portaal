@@ -1,8 +1,8 @@
 import React from "react";
 import { getKvkFromCookie } from "@/utils/kvknummer";
-import { ContactEditBox } from "@/app/contactgegevens/_contactEditBox";
+import { ContactEditBox } from "@/app/contactgegevens/[type]/_contactEditBox";
 import { getProfielInformation } from "@/network/profiel/hooks/getProfielInformation/action";
-import CopyNotificatie from "@/app/contactgegevens/copyNotificatie";
+import CopyNotificatie from "@/app/contactgegevens/[type]/copyNotificatie";
 
 const Zakelijk = async () => {
   const kvk = await getKvkFromCookie();
