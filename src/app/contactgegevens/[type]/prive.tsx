@@ -1,7 +1,7 @@
 import React from "react";
 import { getProfielInformation } from "@/network/profiel/hooks/getProfielInformation/action";
 import { auth } from "@/auth";
-import { ContactEditBox } from "@/app/contactgegevens/_contactEditBox";
+import { ContactEditBox } from "@/app/contactgegevens/[type]/_contactEditBox";
 
 const Prive = async () => {
   const session = await auth();
