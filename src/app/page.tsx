@@ -75,18 +75,20 @@ const Home = async () => {
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 w-full space-y-6 md:col-span-9">
-        {response.status == 404 ||
-          (response.status == 200 &&
-            data?.contactgegevens?.filter((c) => c.type == "Email").length ==
-              0 && (
-              <Notification
-                variant={"warning"}
-                header="E-mailadres nog niet gekoppeld"
-                text={
-                  "Uw bedrijf heeft nog geen e-mailadres gekoppeld aan het bedrijfsprofiel. \nGa naar het tabblad Bedrijfsprofiel en vul hier het e-mailadres in.\n Zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates."
-                }
-              />
-            ))}
+        {(response.status === 404 ||
+          (response.status === 200 &&
+            data?.contactgegevens?.filter((x) => x.type === "Email").length ===
+              0)) && (
+          <Notification
+            variant={"warning"}
+            header="E-mailadres nog niet gekoppeld"
+            text={
+              "Uw heeft nog geen zakelijke e-mailadres omgenomen in uw contactgegevens." +
+              "\nGa naar het tabblad contactgegevens en vul hier uw zakelijke e-mailadres in," +
+              "\n zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates."
+            }
+          />
+        )}
 
         <h1 className="text-h1">
           <span>{"Welkom gemachtigde voor KVK nummer: "}</span>
