@@ -1,5 +1,5 @@
 "use client";
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import { components } from "@/network/profiel/generated";
 import { getOndernemingByDate } from "@/network/profiel/hooks/getOndernemingProfielByDate/action";
 import { useForm } from "@tanstack/react-form";

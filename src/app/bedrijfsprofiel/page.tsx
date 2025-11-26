@@ -1,4 +1,4 @@
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import profielClient from "@/network/profiel";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 

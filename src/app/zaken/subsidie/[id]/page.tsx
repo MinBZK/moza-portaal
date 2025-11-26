@@ -1,7 +1,7 @@
 import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
-import Card from "@/components/Card";
+import Card from "@/components/card";
 
 const SubsidieDetail = async ({
   params,

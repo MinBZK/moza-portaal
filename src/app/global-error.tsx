@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import { ErrorBoundary, ErrorBoundaryProps } from "@/components/ErrorBoundary";
 
 export default function GlobalError(props: ErrorBoundaryProps) {

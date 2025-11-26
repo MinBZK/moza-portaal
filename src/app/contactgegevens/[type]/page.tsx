@@ -1,4 +1,4 @@
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import { Tab, Tabs } from "@/components/Tabs";
 import { ContactEditBox } from "./_contactEditBox";
 import { Notification } from "@/components/notifications";

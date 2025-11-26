@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/button";
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import FormField from "@/components/form/formField";
 import { useUpdateZwangerschapsverlof } from "@/network/mock/hooks/updateZwangerschapsverlof/useUpdateZwangerschapsverlof";
 import { useForm } from "@tanstack/react-form";

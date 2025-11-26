@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import { signIn } from "next-auth/react";
 import { Footer } from "@/layouts/footer";
 import { useCookie } from "@/utils/useCookie";

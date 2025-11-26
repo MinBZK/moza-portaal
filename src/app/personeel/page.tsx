@@ -1,5 +1,5 @@
 import Button from "@/components/button";
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import zakenClient from "@/network/mock";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { format } from "date-fns";

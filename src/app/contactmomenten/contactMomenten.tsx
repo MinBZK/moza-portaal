@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import ContactMoment from "@/components/ContactMoment";
 import CountdownBar from "@/components/CountdownBar";
 import { getContactMomenten } from "@/network/omc/fetchers/getContactMomenten";

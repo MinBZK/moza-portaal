@@ -1,4 +1,4 @@
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import ChevronIcon from "@/components/icons/chevronIcon";
 import { IconText } from "@/components/iconText";
 import { Notification } from "@/components/notifications";
