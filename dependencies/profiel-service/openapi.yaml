@@ -1,0 +1,459 @@
+---
+openapi: 3.1.0
+components:
+  schemas:
+    AfdelingRequest:
+      type: object
+      required:
+        - beschrijving
+      description: Request object voor het toevoegen van een afdeling aan een dienstverlener
+      properties:
+        beschrijving:
+          type: string
+    AfdelingResponse:
+      type: object
+      properties:
+        beschrijving:
+          type: string
+    ContactType:
+      type: string
+      enum:
+        - Email
+        - Telefoonnummer
+        - Adres
+    ContactgegevenRequest:
+      type: object
+      required:
+        - type
+        - waarde
+      description:
+        Request object voor het toevoegen van een contactgegeven aan een
+        partij
+      properties:
+        afdeling:
+          type: string
+        type:
+          $ref: "#/components/schemas/ContactType"
+        waarde:
+          type: string
+    ContactgegevenResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          $ref: "#/components/schemas/ContactType"
+        waarde:
+          type: string
+        isGeverifieerd:
+          type: boolean
+        afdeling:
+          $ref: "#/components/schemas/AfdelingResponse"
+    ContactgegevenUpdateRequest:
+      type: object
+      required:
+        - type
+        - waarde
+      properties:
+        afdeling:
+          type: string
+        type:
+          $ref: "#/components/schemas/ContactType"
+        waarde:
+          type: string
+        id:
+          type: integer
+          format: int64
+    DienstverlenerRequest:
+      type: object
+      required:
+        - naam
+        - oin
+      description: Request object voor het toevoegen van een dienstverlener
+      properties:
+        naam:
+          type: string
+        oin:
+          type: string
+    IdentificatieResponse:
+      type: object
+      properties:
+        identificatieType:
+          $ref: "#/components/schemas/IdentificatieType"
+        identificatieNummer:
+          type: string
+    IdentificatieType:
+      type: string
+      enum:
+        - BSN
+        - KVK
+        - RSIN
+    PartijRequest:
+      type: object
+      description: Request object voor extra informatie meesturen bij van een Partij
+      properties:
+        dienstverlener:
+          type: string
+        dienstverlenerOin:
+          type: string
+        afdelingBeschrijving:
+          type: string
+    PartijResponse:
+      type: object
+      properties:
+        partijId:
+          type: integer
+          format: int64
+        identificaties:
+          type: array
+          items:
+            $ref: "#/components/schemas/IdentificatieResponse"
+        voorkeuren:
+          type: array
+          items:
+            $ref: "#/components/schemas/VoorkeurResponse"
+        contactgegevens:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContactgegevenResponse"
+    VoorkeurRequest:
+      type: object
+      required:
+        - voorkeurType
+        - waarde
+      properties:
+        voorkeurType:
+          $ref: "#/components/schemas/VoorkeurType"
+        waarde:
+          type: string
+    VoorkeurResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        voorkeurType:
+          $ref: "#/components/schemas/VoorkeurType"
+        waarde:
+          type: string
+    VoorkeurType:
+      type: string
+      enum:
+        - WebsiteTaal
+        - MagGebeldWorden
+        - WebsiteThema
+    VoorkeurUpdateRequest:
+      type: object
+      required:
+        - voorkeurType
+        - waarde
+      properties:
+        voorkeurType:
+          $ref: "#/components/schemas/VoorkeurType"
+        waarde:
+          type: string
+        id:
+          type: integer
+          format: int64
+tags:
+  - name: Dienstverlener
+    description: Endpoints voor het beheren van dienstverleners en afdelingen
+  - name: EmailVerificatie
+    description: Endpoints voor het verifieren van emails
+  - name: Profiel
+    description: Endpoints voor het beheren van partijen
+paths:
+  /api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}:
+    put:
+      summary: Update contactgegeven van een partij
+      description:
+        "Werk type, waarde en afdeling van een contactgegeven bij. Identificatie\
+        \ kan niet aangepast worden."
+      tags:
+        - Profiel
+      parameters:
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactgegevenUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Contactgegeven succesvol bijgewerkt
+        "404":
+          description: Contactgegeven of partij niet gevonden
+        "400":
+          description: Bad Request
+    post:
+      summary: Toevoegen nieuwe contactgegeven voor een partij
+      description:
+        Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende
+        partijen.
+      tags:
+        - Profiel
+      parameters:
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactgegevenRequest"
+        required: true
+      responses:
+        "201":
+          description: Contactgegeven succesvol toegevoegd
+        "400":
+          description: Bad Request
+  /api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}/{contactgegevenId}:
+    delete:
+      summary: Verwijder contactgegeven van een partij
+      description: Verwijdert een contactgegeven volledig
+      tags:
+        - Profiel
+      parameters:
+        - name: contactgegevenId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+      responses:
+        "204":
+          description: Contactgegeven succesvol verwijderd
+        "404":
+          description: Contactgegeven of partij niet gevonden
+  /api/profielservice/v1/dienstverlener:
+    post:
+      tags:
+        - Dienstverlener
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DienstverlenerRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Add Dienstverlener
+  /api/profielservice/v1/dienstverlener/{DienstverlenerNaam}/afdelingen:
+    post:
+      summary: Voegt een afdeling toe aan een dienstverlener
+      description: Voegt een nieuwe afdeling toe met beschrijving
+      tags:
+        - Dienstverlener
+      parameters:
+        - name: DienstverlenerNaam
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AfdelingRequest"
+        required: true
+      responses:
+        "201":
+          description: Afdeling succesvol toegevoegd
+        "404":
+          description: Dienstverlener niet gevonden
+        "400":
+          description: Bad Request
+  /api/profielservice/v1/dienstverlener/{naam}:
+    get:
+      tags:
+        - Dienstverlener
+      parameters:
+        - name: naam
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+      summary: Get Afdelingen Dienstverlener
+  /api/profielservice/v1/emailverificatie/{email}/{verificatiecode}:
+    post:
+      tags:
+        - EmailVerificatie
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: verificatiecode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+      summary: Get Afdelingen Dienstverlener
+  /api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}:
+    put:
+      summary: Update voorkeur van een partij
+      description:
+        "Werk type, waarde en afdeling van een voorkeur bij. Identificatie\
+        \ kan niet aangepast worden."
+      tags:
+        - Profiel
+      parameters:
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoorkeurUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: Voorkeur succesvol bijgewerkt
+        "404":
+          description: Voorkeur of partij niet gevonden
+        "400":
+          description: Bad Request
+    post:
+      summary: Toevoegen nieuwe voorkeur voor een partij
+      description:
+        Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende
+        partijen.
+      tags:
+        - Profiel
+      parameters:
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoorkeurRequest"
+        required: true
+      responses:
+        "201":
+          description: Voorkeur succesvol toegevoegd
+        "400":
+          description: Bad Request
+  /api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}/{voorkeurId}:
+    delete:
+      summary: Verwijder voorkeur van een partij
+      description: Verwijdert een voorkeur volledig
+      tags:
+        - Profiel
+      parameters:
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+        - name: voorkeurId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: Voorkeur succesvol verwijderd
+        "404":
+          description: Voorkeur of partij niet gevonden
+  /api/profielservice/v1/{identificatieType}/{identificatieNummer}:
+    get:
+      summary: Ophalen profiel van een partij
+      description: Haalt het profiel op van een partij
+      tags:
+        - Profiel
+      parameters:
+        - name: identificatieNummer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: identificatieType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/IdentificatieType"
+        - name: afdelingBeschrijving
+          in: query
+          schema:
+            type: string
+        - name: dienstverlener
+          in: query
+          schema:
+            type: string
+        - name: oin
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Partij succesvol opgehaald
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PartijResponse"
+        "404":
+          description: Partij niet gevonden of is verwijderd
+info:
+  title: profiel-service API
+  version: 1.0.0-SNAPSHOT

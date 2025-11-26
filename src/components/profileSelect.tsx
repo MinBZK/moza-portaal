@@ -2,7 +2,7 @@ import { updateKvkCookie } from "@/utils/kvknummer";
 import React, { useEffect, useRef, useState } from "react";
 import { AvatarIcon } from "./icons/avatarIcon";
 import ChevronIcon from "./icons/chevronIcon";
-import { components } from "@/network/kvk/generated";
+import { components } from "@/network/kvk/organisatieregister/generated";
 import { useCookie } from "@/utils/useCookie";
 
 const ProfileSelect = ({

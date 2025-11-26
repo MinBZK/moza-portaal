@@ -23,7 +23,6 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
       onSubmit: zwangerschapsverlofSchema,
     },
     onSubmit: ({ value: values }) => {
-
       mutate(
         { body: values, id: zaakId },
         {

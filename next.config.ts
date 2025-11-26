@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         destination: "/berichtenbox/inbox",
         permanent: true,
       },
+      {
+        source: "/contactgegevens",
+        destination: "/contactgegevens/prive",
+        permanent: true,
+      },
     ];
   },
 };

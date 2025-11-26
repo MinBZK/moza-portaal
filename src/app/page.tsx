@@ -66,32 +66,27 @@ const accordionItems = [
 const Home = async () => {
   const kvk = await getKvkFromCookie();
   const { data, response } = await profielClient.GET(
-    "/ondernemingen/EmailBekend/{kvkNummer}",
+    "/api/profielservice/v1/{identificatieType}/{identificatieNummer}",
     {
-      params: { path: { kvkNummer: kvk! } },
+      params: { path: { identificatieType: "KVK", identificatieNummer: kvk! } },
     },
   );
 
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 w-full space-y-6 md:col-span-9">
-        {response.status != 200 ? (
-          <Notification
-            header="Er ging iets fout"
-            text={"Er is een probleem met een achter liggend system"}
-            variant={"error"}
-          />
-        ) : (
-          !data && (
-            <Notification
-              variant={"warning"}
-              header="E-mailadres nog niet gekoppeld"
-              text={
-                "Uw bedrijf heeft nog geen e-mailadres gekoppeld aan het bedrijfsprofiel. \nGa naar het tabblad Bedrijfsprofiel en vul hier het e-mailadres in.\n Zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates."
-              }
-            />
-          )
-        )}
+        {response.status == 404 ||
+          (response.status == 200 &&
+            data?.contactgegevens?.filter((c) => c.type == "Email").length ==
+              0 && (
+              <Notification
+                variant={"warning"}
+                header="E-mailadres nog niet gekoppeld"
+                text={
+                  "Uw bedrijf heeft nog geen e-mailadres gekoppeld aan het bedrijfsprofiel. \nGa naar het tabblad Bedrijfsprofiel en vul hier het e-mailadres in.\n Zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates."
+                }
+              />
+            ))}
 
         <h1 className="text-h1">
           <span>{"Welkom gemachtigde voor KVK nummer: "}</span>

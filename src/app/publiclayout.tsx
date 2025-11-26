@@ -13,7 +13,7 @@ const PublicRootLayout = () => {
   return (
     <div className="flex min-h-[100vh] flex-col">
       <header className="border-b-0 bg-transparent bg-[url(/public-background.png)] bg-cover bg-center pb-[100px]">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-4 px-2 md:grid-rows-[auto_minmax(0,1fr)]">
+        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-4 md:grid-rows-[auto_minmax(0,1fr)]">
           <Image
             src="/logo.png"
             alt="Logo"
@@ -96,7 +96,7 @@ const PublicRootLayout = () => {
       </header>
 
       <main className="border-b-ro-blue after:bg-ro-blue relative -mt-[80px] border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
-        <div className="container mx-auto w-full space-y-5 px-4 py-4 md:w-3/5">
+        <div className="container mx-auto w-full space-y-5 py-4 md:w-3/5">
           <Card className="space-y-5">
             <h1 className="text-3xl">Wat is MijnOverheidZakelijk?</h1>
             <div className="space-y-4 border-t border-neutral-200 pt-4">

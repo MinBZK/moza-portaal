@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Navigation from "../navigation";
 import ChevronIcon from "@/components/icons/chevronIcon";
-import { components } from "@/network/kvk/generated";
+import { components } from "@/network/kvk/organisatieregister/generated";
 
 const Header = ({
   kvk,
@@ -26,18 +26,19 @@ const Header = ({
 
   return (
     <>
-      <header className="border-primary mb-3 border-b-2 bg-white shadow">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 px-2 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4">
+      <header className="border-primary mb-3 min-h-[50px] border-b-2 bg-white shadow">
+        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4">
           <button
             type="button"
             onClick={() => setMenuOpened(true)}
-            className="col-1 row-1 flex items-center gap-2 md:hidden"
+            className="col-1 row-1 flex items-center gap-[6px] px-[5px] md:hidden"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="16"
               viewBox="0 0 16 16"
+              height="16"
               width="16"
+              className="mt-1"
             >
               <path
                 d="M2.5 12h11a1 1 0 0 1 0 2h-11a1 1 0 0 1 0-2zm11-5a1 1 0 0 1 0 2h-11a1 1 0 1 1 0-2zm0-5a1 1 0 0 1 0 2h-11a1 1 0 1 1 0-2z"
@@ -45,17 +46,27 @@ const Header = ({
                 fillRule="evenodd"
               />
             </svg>
-            <span className="font-bold">menu</span>
+            <span className="pt-[2px] text-[14px] font-bold tracking-wide">
+              menu
+            </span>
           </button>
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            width={44}
-            height={78}
-            className="col-2 row-1 w-[32px] pb-2 md:w-[44px]"
-          />
-          <div className="col-3 row-1 flex items-center justify-between md:col-start-1 md:col-end-4 md:row-2 md:pb-2.5">
-            <h1 className="text-h4 md:text-h1">MijnOverheidZakelijk</h1>
+          {/* This logo should be just positioned in the perfect center, but MOBu did some weird incorrect styling instead: */}
+          <div className="relative col-2 row-1 grid h-[44px] w-[28px] content-end md:h-[78px]">
+            <div className="bg-ro-blue absolute top-0 left-0 h-[100%] w-[28px] md:w-[44px]">
+              <Image
+                src="/logo-rijksoverheid-wapen.svg"
+                alt="Rijksoverheid Logo"
+                width={44}
+                height={88}
+                className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
+              />
+            </div>
+          </div>
+
+          <div className="col-3 row-1 flex items-center justify-between pt-0 md:col-start-1 md:col-end-4 md:row-2 md:pt-[6px] md:pb-2.5">
+            <h1 className="text-h4 md:text-h1 pt-2 md:pt-0">
+              MijnOverheidZakelijk
+            </h1>
             <div className="hidden md:flex">
               <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
               <button
