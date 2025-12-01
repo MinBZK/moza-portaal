@@ -17,21 +17,24 @@ const Header = ({
 }) => {
   const [menuOpened, setMenuOpened] = useState(false);
   const mobileMenuRef = useRef<HTMLDialogElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (menuOpened && mobileMenuRef.current) mobileMenuRef.current.showModal();
     if (menuOpened === false && mobileMenuRef.current)
       mobileMenuRef.current.close();
+    if (menuOpened === true && closeButtonRef.current)
+      closeButtonRef.current.focus();
   }, [menuOpened]);
 
   return (
     <>
       <header className="border-primary mb-3 min-h-[50px] border-b-2 bg-white shadow">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4">
+        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 gap-y-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4 md:gap-y-[22px] md:pb-[5px]">
           <button
             type="button"
             onClick={() => setMenuOpened(true)}
-            className="col-1 row-1 flex items-center gap-[6px] px-[5px] md:hidden"
+            className="col-1 row-1 flex w-fit items-center gap-[6px] px-[5px] md:hidden"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +55,10 @@ const Header = ({
           </button>
           {/* This logo should be just positioned in the perfect center, but MOBu did some weird incorrect styling instead: */}
           <div className="relative col-2 row-1 grid h-[44px] w-[28px] content-end md:h-[78px]">
-            <div className="bg-ro-blue absolute top-0 left-0 h-[100%] w-[28px] md:w-[44px]">
+            <a
+              href="/"
+              className="bg-ro-blue absolute top-0 left-0 block h-[100%] w-[28px] md:w-[44px]"
+            >
               <Image
                 src="/logo-rijksoverheid-wapen.svg"
                 alt="Rijksoverheid Logo"
@@ -60,34 +66,36 @@ const Header = ({
                 height={88}
                 className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
               />
-            </div>
+            </a>
           </div>
 
-          <div className="col-3 row-1 flex items-center justify-between pt-0 md:col-start-1 md:col-end-4 md:row-2 md:pt-[6px] md:pb-2.5">
-            <h1 className="text-h4 md:text-h1 pt-2 md:pt-0">
+          <div className="col-3 row-1 flex items-end justify-between md:col-start-1 md:col-end-4 md:row-2">
+            <h1 className="text-h4 md:text-h1 pb-1 md:pb-0">
               MijnOverheidZakelijk
             </h1>
-            <div className="hidden md:flex">
+            <div className="hidden gap-10 md:flex md:pr-[4px]">
               <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
               <button
                 type="button"
-                className="hover-up ml-16 cursor-pointer font-semibold"
+                className="hover-up cursor-pointer"
                 onClick={() => {
                   SignOutAction();
                 }}
               >
-                <svg
-                  className="text-primary mr-1 inline-block h-4 w-4 align-[-0.1rem]"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 32 32"
-                >
-                  <path
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    d="M16.512 0a1.81 1.81 0 1 1 0 3.62c-4.032 0-7.405.2-10.027.597-.642.097-1.119.492-1.214 1.005-.42 2.282-.65 6.11-.65 10.778s.23 8.496.65 10.779c.095.513.57.906 1.214 1.004 2.622.395 5.995.597 10.027.597a1.81 1.81 0 1 1 0 3.62c-4.212 0-7.768-.214-10.567-.637-2.194-.33-3.856-1.873-4.235-3.93C1.093 24.072 1 18.828 1 16v-.382c.009-2.897.12-7.834.71-11.05C2.09 2.51 3.75.967 5.944.635 8.744.214 12.3 0 16.512 0zm3.477 7.84a1.814 1.814 0 0 1 2.56 0l6.888 6.887.056.07c.06.065.118.13.168.206.034.05.059.104.086.158.027.051.059.1.081.153.026.063.041.128.06.193.014.049.033.096.043.146.024.117.036.235.036.355a1.86 1.86 0 0 1-.036.354c-.01.053-.03.102-.045.154-.019.061-.033.124-.058.185-.024.06-.058.113-.09.17-.025.047-.046.095-.076.14-.067.1-.142.194-.227.278l-6.87 6.87a1.811 1.811 0 1 1-2.561-2.56l3.782-3.78H10.64a1.811 1.811 0 0 1 0-3.622h13.146l-3.796-3.796a1.81 1.81 0 0 1 0-2.56z"
-                  ></path>
-                </svg>
-                Uitloggen
+                <div className="flex flex-row items-center gap-0.5">
+                  <svg
+                    className="text-primary mr-1 inline-block h-4 w-4 align-[-0.1rem]"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      d="M16.512 0a1.81 1.81 0 1 1 0 3.62c-4.032 0-7.405.2-10.027.597-.642.097-1.119.492-1.214 1.005-.42 2.282-.65 6.11-.65 10.778s.23 8.496.65 10.779c.095.513.57.906 1.214 1.004 2.622.395 5.995.597 10.027.597a1.81 1.81 0 1 1 0 3.62c-4.212 0-7.768-.214-10.567-.637-2.194-.33-3.856-1.873-4.235-3.93C1.093 24.072 1 18.828 1 16v-.382c.009-2.897.12-7.834.71-11.05C2.09 2.51 3.75.967 5.944.635 8.744.214 12.3 0 16.512 0zm3.477 7.84a1.814 1.814 0 0 1 2.56 0l6.888 6.887.056.07c.06.065.118.13.168.206.034.05.059.104.086.158.027.051.059.1.081.153.026.063.041.128.06.193.014.049.033.096.043.146.024.117.036.235.036.355a1.86 1.86 0 0 1-.036.354c-.01.053-.03.102-.045.154-.019.061-.033.124-.058.185-.024.06-.058.113-.09.17-.025.047-.046.095-.076.14-.067.1-.142.194-.227.278l-6.87 6.87a1.811 1.811 0 1 1-2.561-2.56l3.782-3.78H10.64a1.811 1.811 0 0 1 0-3.622h13.146l-3.796-3.796a1.81 1.81 0 0 1 0-2.56z"
+                    ></path>
+                  </svg>
+                  <span className="font-bold">Uitloggen</span>
+                </div>
               </button>
             </div>
           </div>
@@ -95,7 +103,7 @@ const Header = ({
       </header>
       <dialog
         ref={mobileMenuRef}
-        className={`fixed inset-0 z-1 w-[288px] backdrop:bg-black/50 md:hidden`}
+        className={`fixed inset-0 z-1 max-h-full w-[288px] backdrop:bg-black/50 md:hidden`}
         onClick={() => setMenuOpened(false)}
       >
         <div
@@ -105,10 +113,11 @@ const Header = ({
           <button
             type="button"
             onClick={() => setMenuOpened(false)}
-            className="flex gap-2 p-4"
+            className="flex w-fit gap-2 p-2"
+            ref={closeButtonRef}
           >
             <ChevronIcon className="stroke-primary w-4 rotate-180" />
-            <span className="font-bold">menu</span>
+            <span className="text-sm font-bold">menu</span>
           </button>
 
           <Navigation />

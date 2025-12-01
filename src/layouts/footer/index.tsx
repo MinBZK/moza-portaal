@@ -21,7 +21,7 @@ const FooterLinkItem = ({
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-t-[#282828] bg-[#535353] py-8 text-white shadow-[0_50vh_0_50vh_#535353]">
+    <footer className="border-t border-t-[#282828] bg-[#535353] px-2 py-8 text-white shadow-[0_50vh_0_50vh_#535353]">
       <div className="mx-auto grid max-w-[1260px] grid-cols-1 justify-between gap-x-4 gap-y-8 px-2 sm:grid-cols-2 md:grid-cols-4">
         <nav aria-labelledby="over-deze-site" className="flex flex-col gap-5">
           <h3 id="over-deze-site" className="text-h3">

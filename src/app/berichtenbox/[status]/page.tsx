@@ -85,9 +85,9 @@ const BerichtenboxPage = async ({
   return (
     <>
       <h1 className="text-h1">Mijn Berichtenbox</h1>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 w-full space-y-5 md:col-span-8">
-          <Card>
+      <div className="grid grid-cols-[auto_397px] gap-6">
+        <div className="col-span-2 w-full space-y-5 xl:col-span-1">
+          <Card className="pt-4!">
             <div className="space-y-5">
               <Tabs>
                 <Tab
@@ -248,14 +248,14 @@ const BerichtenboxPage = async ({
             </div>
           </Card>
         </div>
-        <div className="col-span-12 md:col-span-4">
+        <div className="col-span-2 xl:col-span-1">
           <Card>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <h2 className="text-2xl">
                 Bent u gemachtigd voor iemand anders?
               </h2>
               <p>U kunt hier uw machtiging ophalen en gebruiken.</p>
-              <a href="#" className="text-blue-text hover-up font-bold">
+              <a href="#" className="text-primary hover-up font-bold">
                 <span className="flex flex-row items-center gap-2">
                   <IconText IconAfter={ChevronIcon}>
                     {"Haal machtigingen op"}
@@ -265,7 +265,7 @@ const BerichtenboxPage = async ({
 
               <Notification
                 text={
-                  "Ondek hoe u gemachtigd kunt worden om diditale post van iemand anders te lezen."
+                  "Ontdek hoe u gemachtigd kunt worden om diditale post van iemand anders te lezen."
                 }
               />
             </div>
