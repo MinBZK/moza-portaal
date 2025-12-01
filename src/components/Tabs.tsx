@@ -4,7 +4,7 @@ export const Tabs = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       role="tablist"
-      className="flex w-full space-x-2 border-b-1 border-neutral-200"
+      className="mx-[-16px] flex w-[calc(100%_+_32px)] border-b-1 border-neutral-200 px-[16px] sm:mx-[-32px] sm:w-[calc(100%_+_64px)] sm:px-[32px] lg:mx-[-40px] lg:w-[calc(100%_+_80px)] lg:px-[40px]"
     >
       {children}
     </div>
@@ -24,9 +24,9 @@ export const Tab = ({
     <Link
       role="tab"
       href={href}
-      className={`px-2 py-1 ${isActive && "border-primary border-b-3 font-extrabold"}`}
+      className={`px-4 py-1 ${isActive && "border-primary cursor-pointer border-b-4 font-extrabold"}`}
     >
-      {label}
+      <span className="hover-up">{label}</span>
     </Link>
   );
 };

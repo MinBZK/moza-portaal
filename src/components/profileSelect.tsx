@@ -41,11 +41,9 @@ const ProfileSelect = ({
   if (loginMethod === "eherkenning" || opties.length == 1) {
     // In eHernning mode, you can only have one active company-profile
     return (
-      <div className="flex flex-row gap-2">
-        <AvatarIcon className="stroke-primary" />
-        <span className="font-semibold">
-          {selectedProfile?.administratieveHandelsnaam}
-        </span>
+      <div className="flex flex-row items-center gap-2">
+        <AvatarIcon className="h-[14px] w-[14px]" />
+        <span>{selectedProfile?.administratieveHandelsnaam}</span>
       </div>
     );
   }
@@ -58,7 +56,7 @@ const ProfileSelect = ({
           className="border-primary flex cursor-pointer items-center gap-2 justify-self-end rounded-lg border p-2"
           onClick={() => setOpen(!open)}
         >
-          <AvatarIcon className="stroke-primary" />
+          <AvatarIcon className="h-[14px] w-[14px]" />
           <span className="font-semibold">
             {selectedProfile?.administratieveHandelsnaam}
           </span>

@@ -4,6 +4,7 @@ import React from "react";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import ChevronIcon from "@/components/icons/chevronIcon";
 
 const Breadcrumb = () => {
   const paths = usePathname();
@@ -13,15 +14,19 @@ const Breadcrumb = () => {
   if (pathNames.length == 0) {
     return;
   }
-  const separator = <span className="px-2"> {">"} </span>;
+  const separator = <ChevronIcon className="h-[12px] w-[12px]" />;
   return (
-    <div>
-      <ul className="flex">
-        <li className={""}>
-          <Link
-            href={"/"}
-            className="text-blue-text text-sub uppercase hover:underline"
-          >
+    <>
+      <Link
+        href={"/"}
+        className="text-blue-text text-sub flex items-center gap-2 px-1 pt-1.5 hover:underline sm:hidden"
+      >
+        <ChevronIcon className="w-[10px] rotate-180" />
+        Home
+      </Link>
+      <ul className="m-0 hidden items-center gap-[7px] sm:flex">
+        <li>
+          <Link href={"/"} className="text-blue-text text-sub hover:underline">
             Home
           </Link>
         </li>
@@ -34,7 +39,7 @@ const Breadcrumb = () => {
               <li className={""}>
                 <Link
                   href={href}
-                  className={`text-sub uppercase ${href == paths ? "text-black" : "text-blue-text hover:underline"}`}
+                  className={`text-sub ${href == paths ? "text-black" : "text-blue-text hover:underline"}`}
                 >
                   {itemLink}
                 </Link>
@@ -44,7 +49,7 @@ const Breadcrumb = () => {
           );
         })}
       </ul>
-    </div>
+    </>
   );
 };
 

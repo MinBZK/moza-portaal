@@ -6,7 +6,7 @@ import { tv } from "tailwind-variants";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const NotificationTV = tv({
-  base: "px-4 py-2 shadow-md",
+  base: "p-3 shadow-md",
   variants: {
     variant: {
       information: "bg-blue-100",
@@ -23,7 +23,7 @@ const NotificationTV = tv({
 export const Notification = ({
   text,
   variant = "information",
-  header,
+  header = "Test",
   onClose,
 }: {
   text?: ReactNode;
@@ -39,19 +39,21 @@ export const Notification = ({
   };
   return isVisible ? (
     <div className={NotificationTV({ variant })} role="alert">
-      <div className="relative">
+      <div className="relative grid grid-cols-[auto_1fr_auto] items-start gap-2">
+        <div className="mt-0.5 flex flex-row items-start gap-3">
+          <Icon variant={variant} />
+        </div>
+        <div className="flex flex-col gap-2 whitespace-pre-line">
+          <div>{header}</div>
+          <div>{text}</div>
+        </div>
         <button
           onClick={handleClose}
-          className="absolute top-0 right-0 p-1 text-gray-500 hover:text-gray-700"
+          className="mt-0.5 text-gray-500 hover:text-gray-700"
           aria-label="Close notification"
         >
           {variant != "error" && <XMarkIcon className="h-5 w-5" />}
         </button>
-        <div className="flex flex-row items-start gap-3 pr-8">
-          <Icon variant={variant} />
-          {header}
-        </div>
-        <div className="ms-7 whitespace-pre-line">{text}</div>
       </div>
     </div>
   ) : null;
