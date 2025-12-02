@@ -12,10 +12,18 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   {
-    ignores: ["src/network/generated/**"],
+    ignores: ["src/network/generated/**", ".next/**"],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   ...pluginQuery.configs["flat/recommended"],
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;

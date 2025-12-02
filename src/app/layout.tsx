@@ -24,7 +24,7 @@ export default async function RootLayout({
   const kvkOpties = await getKvkOptionsFromCookie();
 
   return (
-    <html lang="en">
+    <html lang="en" className="">
       <body className="bg-[#fafafa]">
         {!session ? (
           <PublicRootLayout />

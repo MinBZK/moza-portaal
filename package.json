@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives --max-warnings=0",
     "prettier": "prettier --write .",
     "type-check": "tsc --noEmit",
     "generate:profiel": "openapi-typescript ./dependencies/profiel-service/openapi.yaml -o ./src/network/profiel/generated.ts",
