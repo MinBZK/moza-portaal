@@ -38,3 +38,14 @@ export const updateEmail = async (
     return response.response.status;
   }
 };
+
+export const verifyEmail = async (
+  body: components["schemas"]["EmailVerificatieRequest"],
+) => {
+  const response = await profielClient.POST(
+    "/api/profielservice/v1/emailverificatie",
+    { body },
+  );
+  console.log(response);
+  return response.response.status;
+};
