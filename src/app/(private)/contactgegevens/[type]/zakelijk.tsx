@@ -1,49 +1,54 @@
-import React from "react";
+"use client";
+
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { ContactEditBox } from "@/app/(private)/contactgegevens/[type]/_contactEditBox";
-import { getProfielInformation } from "@/network/profiel/hooks/getProfielInformation/action";
 import CopyNotificatie from "@/app/(private)/contactgegevens/[type]/copyNotificatie";
+import { useEffect, useState } from "react";
+import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
 
-const Zakelijk = async () => {
-  const kvk = await getKvkFromCookie();
+const Zakelijk = () => {
+  const [kvk, setKvk] = useState<string | undefined | null>(null);
+  useEffect(() => {
+    getKvkFromCookie().then(setKvk);
+  }, []);
 
-  const { data, status } = await getProfielInformation({
-    identificatieType: "KVK",
-    identificatieNummer: kvk!,
-  });
-  if (status != 200 && status != 404) {
-    throw new Error("Server-side error occurred");
+  const { data, status } = useGetProfielInformation("KVK", kvk ?? "");
+
+  const email = data?.data?.contactgegevens?.find(
+    ({ type }) => type === "Email",
+  );
+  const telefoonnummer = data?.data?.contactgegevens?.find(
+    ({ type }) => type === "Telefoonnummer",
+  );
+
+  if (status === "pending" || kvk == null) return null;
+
+  if (status === "error") {
+    return <div>Server-side error occurred</div>;
   }
-
-  const email = data?.contactgegevens?.filter((x) => x.type == "Email")[0];
-  const telefoonnummer = data?.contactgegevens?.filter(
-    (x) => x.type == "Telefoonnummer",
-  )[0];
 
   return (
     <div className="flex w-full flex-col gap-4 overflow-x-auto">
       <div className="flex flex-col gap-0 bg-neutral-100 p-4">
         <ContactEditBox
-          id={email?.id ?? undefined}
           name={"Email"}
           label={"E-mailadres"}
-          value={email?.waarde ?? ""}
+          contactGegeven={email}
           idenType={"KVK"}
           idenValue={kvk!}
         />
         <hr className="my-3 border-neutral-300" />
 
         <ContactEditBox
-          id={telefoonnummer?.id ?? undefined}
           name={"Telefoonnummer"}
           label={"Telefoonnummer"}
-          value={telefoonnummer?.waarde ?? ""}
+          contactGegeven={telefoonnummer}
           idenType={"KVK"}
           idenValue={kvk!}
         />
       </div>
 
-      {status == 404 && <CopyNotificatie kvkNummer={kvk!} />}
+      {data?.status === 404 && <CopyNotificatie kvkNummer={kvk!} />}
     </div>
   );
 };
