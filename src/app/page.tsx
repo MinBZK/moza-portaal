@@ -11,27 +11,27 @@ import Link from "next/link";
 
 const accordionItems = [
   {
-    title: "Wat is MijnOverheidZakelijk?",
+    title: "Wat is MijnOverheid Zakelijk?",
     content: (
       <p>
-        MijnOverheidZakelijk is uw centrale platform voor het veilig en
+        MijnOverheid Zakelijk is uw centrale platform voor het veilig en
         efficiënt beheren van zakelijke overheidszaken. Alles op één plek,
         speciaal afgestemd op de behoeften van de zakelijke gebruiker.
       </p>
     ),
   },
   {
-    title: "Wat kan ik doen via MijnOverheidZakelijk?",
+    title: "Wat kan ik doen via MijnOverheid Zakelijk?",
     content: (
       <p>
         Van het ontvangen van berichten van overheidsinstanties tot het
         raadplegen van digitale post en het regelen van lopende zaken:
-        MijnOverheidZakelijk biedt overzicht, gemak en betrouwbaarheid.
+        MijnOverheid Zakelijk biedt overzicht, gemak en betrouwbaarheid.
       </p>
     ),
   },
   {
-    title: "Voor wie is MijnOverheidZakelijk bedoeld?",
+    title: "Voor wie is MijnOverheid Zakelijk bedoeld?",
     content: (
       <div className="fle-col flex gap-4">
         <p>
@@ -113,16 +113,16 @@ const Home = async () => {
           </Link>
         </Card>
         <Card>
-          <h2 className="text-h2">Wat is MijnOverheidZakelijk?</h2>
+          <h2 className="text-h2">Wat is MijnOverheid Zakelijk?</h2>
           <p className="py-4">
-            MijnOverheidZakelijk is uw centrale platform voor het veilig en
+            MijnOverheid Zakelijk is uw centrale platform voor het veilig en
             efficiënt beheren van zakelijke overheidszaken. Of u nu ondernemer
             bent, een organisatie vertegenwoordigt of als intermediair optreedt
             — via dit portaal heeft u altijd en overal inzicht in belangrijke
             overheidscommunicatie. <br />
             Van het ontvangen van berichten van overheidsinstanties tot het
             raadplegen van digitale post en het regelen van lopende zaken:
-            MijnOverheidZakelijk biedt overzicht, gemak en betrouwbaarheid.
+            MijnOverheid Zakelijk biedt overzicht, gemak en betrouwbaarheid.
             Alles op één plek, speciaal afgestemd op de behoeften van de
             zakelijke gebruiker. <br />
             Maak uw administratie eenvoudiger, werk efficiënter samen met de

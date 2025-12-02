@@ -71,7 +71,7 @@ const Header = ({
 
           <div className="col-3 row-1 flex items-end justify-between md:col-start-1 md:col-end-4 md:row-2">
             <h1 className="text-h4 md:text-h1 pb-1 md:pb-0">
-              MijnOverheidZakelijk
+              MijnOverheid Zakelijk
             </h1>
             <div className="hidden gap-10 md:flex md:pr-[4px]">
               <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
