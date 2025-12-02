@@ -38,3 +38,18 @@ export const updateEmail = async (
     return response.response.status;
   }
 };
+
+export const verifyEmail = async (email: string, verificatiecode: string) => {
+  const response = await profielClient.POST(
+    "/api/profielservice/v1/emailverificatie/{email}/{verificatiecode}",
+    {
+      params: {
+        path: {
+          email,
+          verificatiecode,
+        },
+      },
+    },
+  );
+  return response.response.status;
+};

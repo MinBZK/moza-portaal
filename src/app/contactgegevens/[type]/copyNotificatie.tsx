@@ -4,42 +4,54 @@ import { getProfielInformation } from "@/network/profiel/hooks/getProfielInforma
 import { useUpdateOndernemengContactvoorkeur } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
 import { Notification } from "@/components/notifications";
 import Button from "@/components/button";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 const CopyNotificatie = ({ kvkNummer }: { kvkNummer: string }) => {
   const { mutateAsync } = useUpdateOndernemengContactvoorkeur();
   const session = useSession();
-  const updateZakelijkFromPrive = async () => {
-    console.log("update zakelijk from prive");
-    const bsn = session.data?.user.bsn;
+  const [priveEmail, setPriveEmail] = React.useState<string>("");
+  const [priveTelefoonnummer, setPriveTelefoonnummer] =
+    React.useState<string>("");
 
-    console.log(bsn);
+  const bsn = session.data?.user.bsn;
+
+  useEffect(() => {
+    const getContactInfo = async () => {
+      if (bsn != null) {
+        const { data, status } = await getProfielInformation({
+          identificatieType: "BSN",
+          identificatieNummer: bsn,
+        });
+        if (status != 200 && status != 404) {
+          throw new Error("Server-side error occurred");
+        }
+
+        const availablePriveEmail = data?.contactgegevens?.filter(
+          (x) => x.type == "Email",
+        )[0];
+        const availablePriveTelefoonnummer = data?.contactgegevens?.filter(
+          (x) => x.type == "Telefoonnummer",
+        )[0];
+
+        setPriveEmail(availablePriveEmail?.waarde ?? "");
+        setPriveTelefoonnummer(availablePriveTelefoonnummer?.waarde ?? "");
+      }
+    };
+    getContactInfo();
+  }, [bsn]);
+
+  const updateZakelijkFromPrive = async () => {
     if (!bsn) {
       throw new Error("BSN not found in session");
     }
-
-    const { data, status } = await getProfielInformation({
-      identificatieType: "BSN",
-      identificatieNummer: bsn,
-    });
-    if (status != 200 && status != 404) {
-      throw new Error("Server-side error occurred");
-    }
-
-    const priveEmail = data?.contactgegevens?.filter(
-      (x) => x.type == "Email",
-    )[0];
-    const priveTelefoonnummer = data?.contactgegevens?.filter(
-      (x) => x.type == "Telefoonnummer",
-    )[0];
 
     await mutateAsync({
       identificatieNummer: kvkNummer,
       identificatieType: "KVK",
       body: {
         type: "Email",
-        waarde: priveEmail!.waarde ?? "",
+        waarde: priveEmail,
       },
     });
 
@@ -48,7 +60,7 @@ const CopyNotificatie = ({ kvkNummer }: { kvkNummer: string }) => {
       identificatieType: "KVK",
       body: {
         type: "Telefoonnummer",
-        waarde: priveTelefoonnummer!.waarde ?? "",
+        waarde: priveTelefoonnummer,
       },
     });
 
@@ -56,20 +68,20 @@ const CopyNotificatie = ({ kvkNummer }: { kvkNummer: string }) => {
     // router.refresh();
   };
 
+  // Only show notification if there are private contact details available
+  if (priveEmail === "" && priveTelefoonnummer === "") {
+    return null;
+  }
+
   return (
-    <Notification
-      header={
-        "Wilt u uw privecontactgegevens niet gebruiken voor zakelijke contactgegevens?"
-      }
-      text={
-        <div className="mt-4 flex flex-row gap-3">
-          <Button onClick={updateZakelijkFromPrive}>
-            Privégegevens gebruiken
-          </Button>
-        </div>
-      }
-      variant={"information"}
-    />
+    <Notification variant={"information"}>
+      <h3>
+        {
+          "Wilt u uw privecontactgegevens gebruiken voor zakelijke contactgegevens?"
+        }
+      </h3>
+      <Button onClick={updateZakelijkFromPrive}>Privégegevens gebruiken</Button>
+    </Notification>
   );
 };
 

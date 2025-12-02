@@ -28,20 +28,19 @@ const Prive = async () => {
     <div className="flex w-full flex-col gap-4 overflow-x-auto">
       <div className="flex flex-col gap-0 bg-neutral-100 p-4">
         <ContactEditBox
-          id={email?.id ?? undefined}
           name={"Email"}
           label={"E-mailadres"}
-          value={email?.waarde ?? ""}
+          contactGegeven={email}
           idenType={"BSN"}
           idenValue={bsn}
         />
+
         <hr className="my-3 border-neutral-300" />
 
         <ContactEditBox
-          id={telefoonnummer?.id ?? undefined}
           name={"Telefoonnummer"}
           label={"Telefoonnummer"}
-          value={telefoonnummer?.waarde ?? ""}
+          contactGegeven={telefoonnummer}
           idenType={"BSN"}
           idenValue={bsn}
         />
