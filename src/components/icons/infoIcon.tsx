@@ -24,7 +24,7 @@ export const Icon = ({
   return (
     <svg
       onClick={handleClick}
-      className="inline-block align-[-0.1rem]"
+      className="inline-block h-5 w-5 flex-[1_0_auto] align-[-0.1rem]"
       width="20px"
       height="20px"
       viewBox="0 0 24 24"

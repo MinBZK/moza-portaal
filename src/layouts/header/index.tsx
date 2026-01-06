@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import Navigation from "../navigation";
 import ChevronIcon from "@/components/icons/chevronIcon";
 import { components } from "@/network/kvk/organisatieregister/generated";
+import Link from "next/link";
 
 const Header = ({
   kvk,
@@ -55,7 +56,7 @@ const Header = ({
           </button>
           {/* This logo should be just positioned in the perfect center, but MOBu did some weird incorrect styling instead: */}
           <div className="relative col-2 row-1 grid h-[44px] w-[28px] content-end md:h-[78px]">
-            <a
+            <Link
               href="/"
               className="bg-ro-blue absolute top-0 left-0 block h-[100%] w-[28px] md:w-[44px]"
             >
@@ -66,7 +67,7 @@ const Header = ({
                 height={88}
                 className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="col-3 row-1 flex items-end justify-between md:col-start-1 md:col-end-4 md:row-2">

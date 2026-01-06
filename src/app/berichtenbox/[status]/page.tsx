@@ -208,11 +208,11 @@ const BerichtenboxPage = async ({
                 </div>
               </div>
 
-              <Notification
-                text={
+              <Notification>
+                {
                   "Meer informatie over de berichtenbox. Uw zakelijke brievenbus van de overheid."
                 }
-              />
+              </Notification>
             </div>
           </Card>
 
@@ -263,11 +263,11 @@ const BerichtenboxPage = async ({
                 </span>
               </a>
 
-              <Notification
-                text={
+              <Notification>
+                {
                   "Ontdek hoe u gemachtigd kunt worden om diditale post van iemand anders te lezen."
                 }
-              />
+              </Notification>
             </div>
           </Card>
         </div>

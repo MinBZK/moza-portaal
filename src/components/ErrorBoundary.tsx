@@ -12,7 +12,10 @@ export type ErrorBoundaryProps = {
 export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   return (
     <div className="*:mb-4">
-      <Notification variant="error" header="Error" text={error.message} />
+      <Notification variant="error">
+        <h1>Er is een fout opgetreden</h1>
+        {error.message}
+      </Notification>
       <Card>
         <Button type={"button"} onClick={() => reset()}>
           Probeer opnieuw

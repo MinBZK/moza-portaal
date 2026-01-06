@@ -14,7 +14,7 @@ const ContactgegevensPage = async ({
     <>
       <h1 className="text-h1">Contactgegevens</h1>
       <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 w-full space-y-5 md:col-span-8">
+        <div className="col-span-12 w-full space-y-5 lg:col-span-9">
           <Card>
             <div className="space-y-5">
               <Tabs>

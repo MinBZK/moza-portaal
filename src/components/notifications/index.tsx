@@ -21,14 +21,12 @@ const NotificationTV = tv({
 });
 
 export const Notification = ({
-  text,
+  children,
   variant = "information",
-  header = "Test",
   onClose,
 }: {
-  text?: ReactNode;
+  children?: ReactNode;
   variant?: "information" | "warning" | "error" | "success";
-  header?: ReactNode;
   onClose?: () => void;
 }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -43,9 +41,8 @@ export const Notification = ({
         <div className="mt-0.5 flex flex-row items-start gap-3">
           <Icon variant={variant} />
         </div>
-        <div className="flex flex-col gap-2 whitespace-pre-line">
-          <div>{header}</div>
-          <div>{text}</div>
+        <div className="flex flex-col gap-4 whitespace-pre-line">
+          {children}
         </div>
         <button
           onClick={handleClose}
