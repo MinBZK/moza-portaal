@@ -11,10 +11,8 @@ const CopyNotificatie = ({ kvkNummer }: { kvkNummer: string }) => {
   const { mutateAsync } = useUpdateOndernemengContactvoorkeur();
   const session = useSession();
   const updateZakelijkFromPrive = async () => {
-    console.log("update zakelijk from prive");
     const bsn = session.data?.user.bsn;
 
-    console.log(bsn);
     if (!bsn) {
       throw new Error("BSN not found in session");
     }
