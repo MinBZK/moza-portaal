@@ -23,7 +23,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.preferred_username = profile.preferred_username;
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
-        console.log(profile);
         const kvkOpties = await GetKvknummersByBsn(profile.bsn);
         setOptionCookies(kvkOpties);
         if (kvkOpties.organisaties && kvkOpties.organisaties.length > 0) {

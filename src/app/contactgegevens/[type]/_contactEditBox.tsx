@@ -74,7 +74,6 @@ export const ContactEditBox = ({
           },
           {
             onSuccess: () => {
-              console.log("success", newValue, id, name, "");
               setIsEditing(false);
               // setStatus("available");
             },
