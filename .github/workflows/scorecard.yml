@@ -12,7 +12,7 @@ on:
   schedule:
     - cron: '24 12 * * 0'
   push:
-    branches: [ "main", "github-badges" ]
+    branches: [ "main" ]
 
 # Declare default permissions as read only.
 permissions: read-all
