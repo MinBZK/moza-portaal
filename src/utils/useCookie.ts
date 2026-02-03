@@ -37,7 +37,7 @@ export function useCookie<K extends keyof typeof schemas>(name: K) {
     const parsed = schemas[name].safeParse(
       typeof value === "string" ? value : JSON.parse(value),
     );
-    return parsed.success ? parsed.data : null;
+    return parsed.success ? (parsed.data as Value) : null;
   }, [name]);
 
   // Set cookie with validation
