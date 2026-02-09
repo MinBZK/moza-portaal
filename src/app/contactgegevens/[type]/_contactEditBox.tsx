@@ -78,7 +78,7 @@ export const ContactEditBox = ({
               // setStatus("available");
             },
             onError: (error: Error) => {
-              console.log(error);
+              console.error(error);
             },
           },
         );

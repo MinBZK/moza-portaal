@@ -8,6 +8,7 @@ import { getKvkFromCookie, getKvkOptionsFromCookie } from "@/utils/kvknummer";
 import { Footer } from "@/layouts/footer";
 import Breadcrumb from "@/layouts/breadcrumb";
 import PublicRootLayout from "./publiclayout";
+import { getFlagsFromServerCookie } from "./actions";
 
 export const metadata: Metadata = {
   title: "Mijn overheid zakelijk",
@@ -19,12 +20,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const flags = await getFlagsFromServerCookie();
   const session = await auth();
   const kvk = await getKvkFromCookie();
   const kvkOpties = await getKvkOptionsFromCookie();
 
   return (
-    <html lang="en">
+    <html lang="en" className="">
       <body className="bg-[#fafafa]">
         {!session ? (
           <PublicRootLayout />
@@ -35,7 +37,7 @@ export default async function RootLayout({
               <div className="container mx-auto py-1.5">
                 <div className="grid max-w-screen-xl grid-cols-[288px_1fr_1fr_1fr] justify-between gap-3">
                   <div className="hidden md:col-span-1 md:block">
-                    <Navigation />
+                    <Navigation flags={flags} />
                   </div>
                   <div className="col-span-4 md:col-span-3 md:pt-[9px]">
                     <Breadcrumb />
