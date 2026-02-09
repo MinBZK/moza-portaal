@@ -1,3 +1,4 @@
+import { featureFlagsSchema } from "@/app/instellingen/_featureFlags";
 import { useCallback } from "react";
 import { z, ZodSchema } from "zod";
 
@@ -5,6 +6,7 @@ import { z, ZodSchema } from "zod";
 const schemas = {
   loginMethod: z.enum(["digid", "eherkenning"]),
   opties: z.string(),
+  flags: featureFlagsSchema,
 } as const satisfies Record<string, ZodSchema>;
 
 // Helper to get a cookie value by name

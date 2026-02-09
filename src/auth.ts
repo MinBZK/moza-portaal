@@ -23,13 +23,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.preferred_username = profile.preferred_username;
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
-        const kvkOpties = await GetKvknummersByBsn(profile.bsn);
-        setOptionCookies(kvkOpties);
-        if (kvkOpties.organisaties && kvkOpties.organisaties.length > 0) {
-          updateKvkCookie(kvkOpties.organisaties[0].kvkNummer);
-        } else {
-          updateKvkCookie("");
-        }
+        // const kvkOpties = await GetKvknummersByBsn(profile.bsn);
+        // setOptionCookies(kvkOpties);
+        // if (kvkOpties.organisaties && kvkOpties.organisaties.length > 0) {
+        //   updateKvkCookie(kvkOpties.organisaties[0].kvkNummer);
+        // } else {
+        //   updateKvkCookie("");
+        // }
       }
       return token;
     },
