@@ -1,5 +1,5 @@
 import { getKvkFromCookie } from "@/utils/kvknummer";
-import Bedrijfsprofiel from "@/app/bedrijfsprofiel/bedrijfsprofiel";
+import Bedrijfsprofiel from "@/app/bedrijfsgegevens/bedrijfsgegevens";
 
 const IdentiteitPage = async () => {
   const kvk = await getKvkFromCookie();
