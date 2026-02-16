@@ -79,15 +79,17 @@ const Home = async () => {
           (response.status === 200 &&
             data?.contactgegevens?.filter((x) => x.type === "Email").length ===
               0)) && (
-          <Notification
-            variant={"warning"}
-            header="E-mailadres nog niet gekoppeld"
-            text={
-              "Uw heeft nog geen zakelijke e-mailadres omgenomen in uw contactgegevens." +
-              "\nGa naar het tabblad contactgegevens en vul hier uw zakelijke e-mailadres in," +
-              "\n zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates."
-            }
-          />
+          <Notification variant={"warning"}>
+            <h2 className="text-xl">{`Uw heeft nog geen zakelijke e-mailadres omgenomen in uw contactgegevens.`}</h2>
+            <p>
+              Ga naar{" "}
+              <Link className="underline" href="/contactgegevens">
+                uw contactgegevens
+              </Link>{" "}
+              en vul hier uw zakelijke e-mailadres in, zo weten wij hoe we uw
+              organisatie kunnen bereiken met belangrijke berichten en updates.
+            </p>
+          </Notification>
         )}
 
         <h1 className="text-h1">

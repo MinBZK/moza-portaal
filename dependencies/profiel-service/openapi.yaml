@@ -13,6 +13,9 @@ components:
     AfdelingResponse:
       type: object
       properties:
+        id:
+          type: integer
+          format: int64
         beschrijving:
           type: string
     ContactType:
@@ -30,8 +33,9 @@ components:
         Request object voor het toevoegen van een contactgegeven aan een
         partij
       properties:
-        afdeling:
-          type: string
+        afdelingId:
+          type: integer
+          format: int64
         type:
           $ref: "#/components/schemas/ContactType"
         waarde:
@@ -56,8 +60,9 @@ components:
         - type
         - waarde
       properties:
-        afdeling:
-          type: string
+        afdelingId:
+          type: integer
+          format: int64
         type:
           $ref: "#/components/schemas/ContactType"
         waarde:
@@ -75,6 +80,23 @@ components:
         naam:
           type: string
         oin:
+          type: string
+    EmailVerificatieRequest:
+      type: object
+      required:
+        - email
+        - identificatieNummer
+        - identificatieType
+        - verificatieCode
+      description: Request object voor het verifiëren van een emailadres
+      properties:
+        email:
+          type: string
+        identificatieNummer:
+          type: string
+        identificatieType:
+          $ref: "#/components/schemas/IdentificatieType"
+        verificatieCode:
           type: string
     IdentificatieResponse:
       type: object
@@ -160,7 +182,7 @@ tags:
   - name: Dienstverlener
     description: Endpoints voor het beheren van dienstverleners en afdelingen
   - name: EmailVerificatie
-    description: Endpoints voor het verifieren van emails
+    description: Endpoints voor het verifiëren van emails
   - name: Profiel
     description: Endpoints voor het beheren van partijen
 paths:
@@ -192,6 +214,9 @@ paths:
       responses:
         "200":
           description: Contactgegeven succesvol bijgewerkt
+          content:
+            application/json:
+              schema: {}
         "404":
           description: Contactgegeven of partij niet gevonden
         "400":
@@ -266,6 +291,9 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
         "400":
           description: Bad Request
       summary: Add Dienstverlener
@@ -307,26 +335,29 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema: {}
       summary: Get Afdelingen Dienstverlener
-  /api/profielservice/v1/emailverificatie/{email}/{verificatiecode}:
+  /api/profielservice/v1/emailverificatie:
     post:
       tags:
         - EmailVerificatie
-      parameters:
-        - name: email
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: verificatiecode
-          in: path
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailVerificatieRequest"
+        required: true
       responses:
         "200":
           description: OK
-      summary: Get Afdelingen Dienstverlener
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+      summary: Post Email Verificatie
   /api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}:
     put:
       summary: Update voorkeur van een partij
@@ -355,6 +386,9 @@ paths:
       responses:
         "200":
           description: Voorkeur succesvol bijgewerkt
+          content:
+            application/json:
+              schema: {}
         "404":
           description: Voorkeur of partij niet gevonden
         "400":
