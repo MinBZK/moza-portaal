@@ -2,91 +2,12 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  useFeatureFlagsStore,
-  useHydratedFeatureFlags,
-} from "@/stores/featureFlags";
+import { defaultFlags, FeatureFlags } from "@/app/instellingen/_featureFlags";
 
-const NavigationSkeleton = () => {
-  return (
-    <div className="animate-pulse space-y-6 pt-1 md:ml-[-12px]">
-      <ul>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-20 rounded bg-gray-200"></div>
-          </div>
-        </li>
-      </ul>
-
-      <ul>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-32 rounded bg-gray-200"></div>
-          </div>
-        </li>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-40 rounded bg-gray-200"></div>
-          </div>
-        </li>
-      </ul>
-
-      <ul>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-36 rounded bg-gray-200"></div>
-          </div>
-        </li>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-36 rounded bg-gray-200"></div>
-          </div>
-        </li>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-28 rounded bg-gray-200"></div>
-          </div>
-        </li>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-32 rounded bg-gray-200"></div>
-          </div>
-        </li>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-36 rounded bg-gray-200"></div>
-          </div>
-        </li>
-      </ul>
-
-      <ul>
-        <li className="mb-1.5">
-          <div className="flex items-start gap-4 rounded-md px-4 py-1">
-            <div className="mt-1 h-5 w-5 rounded bg-gray-200"></div>
-            <div className="h-5 w-28 rounded bg-gray-200"></div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  );
-};
-
-const Navigation = () => {
+const Navigation = ({ flags = defaultFlags }: { flags: FeatureFlags }) => {
   const pathname = usePathname();
-  const isHydrated = useHydratedFeatureFlags();
-  const currentFlags = useFeatureFlagsStore((s) => s.flags);
 
-  const hasAnyTrueFlag = Object.values(currentFlags).some((flag) => flag);
-
-  if (!isHydrated) return <NavigationSkeleton />;
+  const hasAnyTrueFlag = Object.values(flags).some((flag) => flag === true);
 
   return (
     <div className="space-y-6 pt-1 md:ml-[-12px]">
@@ -130,7 +51,7 @@ const Navigation = () => {
 
       {hasAnyTrueFlag && (
         <ul>
-          {currentFlags.feature_MijnZaken && (
+          {flags.feature_MijnZaken && (
             <SidebarMenuItem
               currentPage={pathname}
               text={"Mijn Zaken (Beta)"}
@@ -142,7 +63,7 @@ const Navigation = () => {
               />
             </SidebarMenuItem>
           )}
-          {currentFlags.feature_MijnTaken && (
+          {flags.feature_MijnTaken && (
             <SidebarMenuItem
               currentPage={pathname}
               text={"Mijn Taken (Beta)"}
@@ -154,7 +75,7 @@ const Navigation = () => {
               />
             </SidebarMenuItem>
           )}
-          {currentFlags.feature_MijnProducten && (
+          {flags.feature_MijnProducten && (
             <SidebarMenuItem
               currentPage={pathname}
               text={"Mijn Producten (Beta)"}
@@ -166,7 +87,7 @@ const Navigation = () => {
               />
             </SidebarMenuItem>
           )}
-          {currentFlags.feature_RegelRecht && (
+          {flags.feature_RegelRecht && (
             <SidebarMenuItem
               currentPage={pathname}
               text={"RegelRecht (Beta)"}
