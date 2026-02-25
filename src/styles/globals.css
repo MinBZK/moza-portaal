@@ -1,6 +1,8 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @layer properties, theme, base, components, utilities, moza-overrides;
+
 
 @font-face {
   font-family: "RijksoverheidSansWebText";
