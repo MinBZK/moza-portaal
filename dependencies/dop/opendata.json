@@ -1,0 +1,1779 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Ondernemersplein.overheid.nl Open Data API",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://opendata.ondernemersplein.nl"
+    }
+  ],
+  "paths": {
+    "/api/articles": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "List and filter articles",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter on a search string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter on one or multiple article types (a.k.a. additionalType). These are supported types:\r\nartikel-nl, regel-nl, wetswijziging-nl, subsidie-nl, page-nl, video.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "description": "Filter on one or multiple subjects.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging offset filter. Default value is 0 when not specified.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging limit filter. Default value is 20 when not specified. Max value is 200.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Sort order. Articles can be ordered by two attributes: dateModified and additionalType. The\r\nfollowing order tokens represent the order filtering of those two attributes in ascending and descending orders:\r\nmodified:desc, modified:asc, modified (same as modified:asc), type:desc, type:asc, type (same as type:asc). Example:\r\norder=modified:desc,type:desc",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticlesContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/articles": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "List and filter articles",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filter on a search string.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter on one or multiple article types (a.k.a. additionalType). These are supported types:\r\nartikel-nl, regel-nl, wetswijziging-nl, subsidie-nl, page-nl, video.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "description": "Filter on one or multiple subjects.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging offset filter. Default value is 0 when not specified.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging limit filter. Default value is 20 when not specified. Max value is 200.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Sort order. Articles can be ordered by two attributes: dateModified and additionalType. The\r\nfollowing order tokens represent the order filtering of those two attributes in ascending and descending orders:\r\nmodified:desc, modified:asc, modified (same as modified:asc), type:desc, type:asc, type (same as type:asc). Example:\r\norder=modified:desc,type:desc",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticlesContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/articles/{id}": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Get article by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of article. ID has a numerical value. Example: 274863",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/articles/{id}": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Get article by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of article. ID has a numerical value. Example: 274863",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "List and filter events",
+        "parameters": [
+          {
+            "name": "regions",
+            "in": "query",
+            "description": "Filter on one or multiple regions/provinces (case-insensitive). Examples: noord-holland, limburg.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "description": "Filter on location (city) of event venues (case-insensitive). Location filter overrides regions filter when both are\r\nspecified while the location (city) is situated outside of the specified regions (provinces). Examples:\r\namsterdam, utrecht.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "description": "Filter on address of event venues.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "postalCode",
+            "in": "query",
+            "description": "Filter on postal code of event venues.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subjects",
+            "in": "query",
+            "description": "Filter on one or multiple subjects (case-insensitive). Examples: bedrijf starten, personeel.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Filter on period. Supported values: comingweek, comingmonth, comingyear (default).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging offset filter. Default value is 0 when not specified.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging limit filter. Default value is 20 when not specified. Max value is 200.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventsContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/events": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "List and filter events",
+        "parameters": [
+          {
+            "name": "regions",
+            "in": "query",
+            "description": "Filter on one or multiple regions/provinces (case-insensitive). Examples: noord-holland, limburg.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "description": "Filter on location (city) of event venues (case-insensitive). Location filter overrides regions filter when both are\r\nspecified while the location (city) is situated outside of the specified regions (provinces). Examples:\r\namsterdam, utrecht.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "description": "Filter on address of event venues.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "postalCode",
+            "in": "query",
+            "description": "Filter on postal code of event venues.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subjects",
+            "in": "query",
+            "description": "Filter on one or multiple subjects (case-insensitive). Examples: bedrijf starten, personeel.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Filter on period. Supported values: comingweek, comingmonth, comingyear (default).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging offset filter. Default value is 0 when not specified.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging limit filter. Default value is 20 when not specified. Max value is 200.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventsContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/events/{id}": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get event by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event. ID has a numerical value. Example: 394528.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/events/{id}": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get event by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event. ID has a numerical value. Example: 394528.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/subsidies": {
+      "get": {
+        "tags": ["Subsidies"],
+        "summary": "List and filter subsidies",
+        "parameters": [
+          {
+            "name": "subjects",
+            "in": "query",
+            "description": "Filter on one or multiple subjects (case-insensitive). Examples: agrosector, internationaal\r\nondernemen.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "regions",
+            "in": "query",
+            "description": "Filter on one or multiple regions/provinces (case-insensitive). Examples: noord-holland,\r\nzuid-holland.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "regulationType",
+            "in": "query",
+            "description": "Filter on regulation type (case-insensitive). Examples: krediet, subsidie.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging offset filter. Default value is 0 when not specified.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging limit filter. Default value is 20 when not specified. Max value is 200.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubsidiesContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/subsidies": {
+      "get": {
+        "tags": ["Subsidies"],
+        "summary": "List and filter subsidies",
+        "parameters": [
+          {
+            "name": "subjects",
+            "in": "query",
+            "description": "Filter on one or multiple subjects (case-insensitive). Examples: agrosector, internationaal\r\nondernemen.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "regions",
+            "in": "query",
+            "description": "Filter on one or multiple regions/provinces (case-insensitive). Examples: noord-holland,\r\nzuid-holland.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "regulationType",
+            "in": "query",
+            "description": "Filter on regulation type (case-insensitive). Examples: krediet, subsidie.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging offset filter. Default value is 0 when not specified.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging limit filter. Default value is 20 when not specified. Max value is 200.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubsidiesContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/subsidies/{id}": {
+      "get": {
+        "tags": ["Subsidies"],
+        "summary": "Get subsidy by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of subsidy. ID has a numerical value. Example: 275610.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubsidieContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/subsidies/{id}": {
+      "get": {
+        "tags": ["Subsidies"],
+        "summary": "Get subsidy by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of subsidy. ID has a numerical value. Example: 275610.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubsidieContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/themes": {
+      "get": {
+        "tags": ["Themes"],
+        "summary": "List all themes",
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemesContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/themes/{id}": {
+      "get": {
+        "tags": ["Themes"],
+        "summary": "Get theme by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of theme. ID has a numerical value. Example: 270107.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/themes/{id}/subjectsview": {
+      "get": {
+        "tags": ["Themes"],
+        "summary": "Get theme by ID (articles grouped by subject)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of theme. ID has a numerical value. Example: 270107.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeSubjectsContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/themes/featuredarticles": {
+      "get": {
+        "tags": ["Themes"],
+        "summary": "List all themes with their featured articles",
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemesWithFeaturedArticleContract"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/system/version": {
+      "get": {
+        "tags": ["Version"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/system/version/info": {
+      "get": {
+        "tags": ["Version"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ArticleContract": {
+        "type": "object",
+        "properties": {
+          "headLine": {
+            "type": "string",
+            "description": "Article title.",
+            "nullable": true
+          },
+          "about": {
+            "type": "string",
+            "description": "Article short description.",
+            "nullable": true
+          },
+          "additionalType": {
+            "type": "string",
+            "description": "Article type (a.k.a. additionalType). Article types include: artikel-nl, regel-nl, subsidie-nl,\r\nwetswijziging-nl, video.",
+            "nullable": true
+          },
+          "articleBody": {
+            "type": "string",
+            "description": "Article content body (HTML).",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Article URL.",
+            "nullable": true
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Article meta keywords.",
+            "nullable": true
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Author"
+            },
+            "description": "Article authors. Note: field naming of 'author' is singular, but author field contains an array of authors.",
+            "nullable": true
+          },
+          "publisher": {
+            "$ref": "#/components/schemas/Author"
+          },
+          "isPartOf": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartItem"
+            },
+            "description": "List of other articles that are related (referenced) to the same article.",
+            "nullable": true
+          },
+          "hasPart": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartItem"
+            },
+            "description": "Related articles.",
+            "nullable": true
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Subjects",
+            "nullable": true
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Creation date.",
+            "nullable": true
+          },
+          "datePublished": {
+            "type": "string",
+            "description": "Last published date.",
+            "nullable": true
+          },
+          "inLanguage": {
+            "type": "string",
+            "description": "Locale.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Article ID",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of an article."
+      },
+      "ArticleSummary": {
+        "type": "object",
+        "properties": {
+          "headLine": {
+            "type": "string",
+            "description": "Article title.",
+            "nullable": true
+          },
+          "additionalType": {
+            "type": "string",
+            "description": "Article type (a.k.a. additionalType). Article types include: artikel-nl, regel-nl, subsidie-nl,\r\nwetswijziging-nl, video.",
+            "nullable": true
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Article URL.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Article ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents an article summary."
+      },
+      "ArticlesContract": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of article summaries.",
+            "nullable": true
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PagingInfo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a list of article summaries."
+      },
+      "Author": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Author name.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Author website.",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "description": "Author logo.",
+            "nullable": true
+          },
+          "payoff": {
+            "type": "string",
+            "description": "Author payoff.",
+            "nullable": true,
+            "example": "Eén antwoord van de overheid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represent a content author."
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Contact name.",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact e-mail.",
+            "nullable": true
+          },
+          "twitter": {
+            "type": "string",
+            "description": "Contact twitter handle.",
+            "nullable": true
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactPhone"
+            },
+            "description": "Contact phones information.",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactLink"
+            },
+            "description": "Contact links.",
+            "nullable": true
+          },
+          "forums": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactLink"
+            },
+            "description": "Contact forum.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents contact information."
+      },
+      "ContactLink": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Contact link title.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Contact link description.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Contact link URL.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContactPhone": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Contact name.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Contact description.",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact telephone number.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EventContract": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Event name.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Event short description.",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Event content body (HTML).",
+            "nullable": true
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Event subjects.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Event URL.",
+            "nullable": true
+          },
+          "rate": {
+            "type": "string",
+            "description": "Admission fee statement.",
+            "nullable": true
+          },
+          "duration": {
+            "type": "string",
+            "description": "Event duration.",
+            "nullable": true
+          },
+          "organizer": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Event organizers. Note: field naming of 'organizer' is singular, but organizer field contains an array of arganizers.",
+            "nullable": true
+          },
+          "inLanguage": {
+            "type": "string",
+            "description": "Locale.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "venues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventVenue"
+            },
+            "description": "List of event venues.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Event ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of an event."
+      },
+      "EventSummary": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Event name.",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Event short description.",
+            "nullable": true
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Event subjects.",
+            "nullable": true
+          },
+          "rate": {
+            "type": "string",
+            "description": "Admission fee statement.",
+            "nullable": true
+          },
+          "duration": {
+            "type": "string",
+            "description": "Event duration.",
+            "nullable": true
+          },
+          "venues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventVenueSummary"
+            },
+            "description": "List of event venues.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Event ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents an event summary."
+      },
+      "EventVenue": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Venue name.",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Event start date and time.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Event end date and time.",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "description": "Venue location (city).",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "description": "Venue address.",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Venue postal code.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Venue website.",
+            "nullable": true
+          },
+          "registrationUrl": {
+            "type": "string",
+            "description": "Registration URL.",
+            "nullable": true
+          },
+          "map": {
+            "type": "string",
+            "description": "Venue location on Google Maps.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the location where an event takes place."
+      },
+      "EventVenueSummary": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "Venue location (city).",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Venue website.",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Event start date and time.",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Event end date and time.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a summary of an event venue."
+      },
+      "EventsContract": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventSummary"
+            },
+            "description": "List of event summaries.",
+            "nullable": true
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PagingInfo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a list of event summaries."
+      },
+      "PagingInfo": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "description": "Pagination offset.",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Pagination limit.",
+            "format": "int32"
+          },
+          "returned": {
+            "type": "integer",
+            "description": "Pagination number of returned result.",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "description": "Pagination total number of result.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents pagination data of a result list."
+      },
+      "PartItem": {
+        "type": "object",
+        "properties": {
+          "partType": {
+            "type": "string",
+            "description": "Part item type. (A part type describes the relation of a part item with its containting article). Part types include: further-info, parent,\r\nanswer, related, external, legislation, amendment.",
+            "nullable": true
+          },
+          "additionalType": {
+            "type": "string",
+            "description": "Article type (a.k.a. additionalType). Article types include: artikel-nl, regel-nl, subsidie-nl, wetswijziging-nl, video.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Part item (article) ID.",
+            "nullable": true
+          },
+          "headLine": {
+            "type": "string",
+            "description": "Parent item (article) title.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Part item (article) URL.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a related article that is referenced inside the .hasPart or .isPartOf field of an article."
+      },
+      "SubsidieContract": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Subsidy title.",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Subsidy content body (HTML).",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Subsidy short description.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Subsidy URL.",
+            "nullable": true
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Subsidy subjects.",
+            "nullable": true
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Subsidy applicable regions.",
+            "nullable": true
+          },
+          "regulationType": {
+            "type": "string",
+            "description": "Regulation type.",
+            "nullable": true,
+            "example": "subsidie, prijs, krediet, fiscale stimuleringsmaatregel."
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "Creation date.",
+            "nullable": true
+          },
+          "datePublished": {
+            "type": "string",
+            "description": "Publish date.",
+            "nullable": true
+          },
+          "inLanguage": {
+            "type": "string",
+            "description": "Locale.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Subsidy ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a subsidy."
+      },
+      "SubsidieSummary": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Subsidy title.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Subsidy URL.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Subsidy ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a summary of a subsidy."
+      },
+      "SubsidiesContract": {
+        "type": "object",
+        "properties": {
+          "subsidies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubsidieSummary"
+            },
+            "description": "List of subsidy summaries.",
+            "nullable": true
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PagingInfo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a list of subsidy summaries."
+      },
+      "ThemeContract": {
+        "type": "object",
+        "properties": {
+          "headLine": {
+            "type": "string",
+            "description": "Theme title.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Theme URL.",
+            "nullable": true
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of related articles.",
+            "nullable": true
+          },
+          "subsidies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of related subsidies.",
+            "nullable": true
+          },
+          "legislature": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of related legislature.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Theme ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a theme."
+      },
+      "ThemeSubject": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Themesubject title.",
+            "nullable": true
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of related articles.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ThemeSubjectsContract": {
+        "type": "object",
+        "properties": {
+          "headLine": {
+            "type": "string",
+            "description": "Theme title.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Theme URL.",
+            "nullable": true
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThemeSubject"
+            },
+            "nullable": true
+          },
+          "subsidies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of related subsidies.",
+            "nullable": true
+          },
+          "legislature": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of related legislature.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a subjecttheme."
+      },
+      "ThemeSummary": {
+        "type": "object",
+        "properties": {
+          "headLine": {
+            "type": "string",
+            "description": "Theme title.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Theme URL.",
+            "nullable": true
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Theme ID.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a theme summary."
+      },
+      "ThemeSummaryWithFeaturedArticles": {
+        "type": "object",
+        "properties": {
+          "headLine": {
+            "type": "string",
+            "description": "Theme title.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "Theme URL.",
+            "nullable": true
+          },
+          "dateModified": {
+            "type": "string",
+            "description": "Last modified date.",
+            "nullable": true
+          },
+          "identifier": {
+            "type": "string",
+            "description": "Theme ID.",
+            "nullable": true
+          },
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleSummary"
+            },
+            "description": "List of featured articles.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a theme summary with featured articles."
+      },
+      "ThemesContract": {
+        "type": "object",
+        "properties": {
+          "themes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThemeSummary"
+            },
+            "description": "List of themes.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the datacontract of a list of theme summaries."
+      },
+      "ThemesWithFeaturedArticleContract": {
+        "type": "object",
+        "properties": {
+          "themes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThemeSummaryWithFeaturedArticles"
+            },
+            "description": "List of featured articles.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a list of theme summaries with featured articles."
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Articles",
+      "description": "Articles listing, filtering and lookup."
+    },
+    {
+      "name": "Events",
+      "description": "Eevents listing, filtering and lookup."
+    },
+    {
+      "name": "Subsidies",
+      "description": "Subsidies listing, filtering and lookup."
+    },
+    {
+      "name": "Themes",
+      "description": "Themes listing and lookup."
+    },
+    {
+      "name": "Version"
+    }
+  ]
+}
