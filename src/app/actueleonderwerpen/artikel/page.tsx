@@ -122,7 +122,7 @@ const ArtikelPage = async ({
                     pageNumbers.push("end-ellipsis");
                   }
 
-                  return pageNumbers.map((pageNum, index) => {
+                  return pageNumbers.map((pageNum) => {
                     if (typeof pageNum === "string") {
                       return (
                         <span

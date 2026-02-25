@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { defaultFlags, FeatureFlags } from "@/app/instellingen/_featureFlags";
 
-const Navigation = ({ flags = defaultFlags }: { flags: FeatureFlags }) => {
+const Navigation = ({ flags = defaultFlags }: { flags?: FeatureFlags }) => {
   const pathname = usePathname();
 
   const hasAnyTrueFlag = Object.values(flags).some((flag) => flag === true);
