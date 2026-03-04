@@ -1,6 +1,7 @@
 import ChevronIcon from "@/components/icons/chevronIcon";
 import { ExternalLinkIcon } from "@/components/icons/externalLinkIcon";
 import { IconText } from "@/components/iconText";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 const FooterLinkItem = ({
@@ -12,9 +13,9 @@ const FooterLinkItem = ({
 }) => {
   return (
     <li className="hover-up">
-      <a href={href}>
+      <Link href={href}>
         <IconText IconBefore={ChevronIcon}>{children}</IconText>
-      </a>
+      </Link>
     </li>
   );
 };
@@ -28,10 +29,14 @@ export const Footer = () => {
             Over deze site
           </h3>
           <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Wat is MijnOverheid Zakelijk</FooterLinkItem>
-            <FooterLinkItem>Toegankelijkheid</FooterLinkItem>
-            <FooterLinkItem>Sitemap</FooterLinkItem>
-            <FooterLinkItem>English</FooterLinkItem>
+            <FooterLinkItem href="/wat-is-mijnoverheid-zakelijk">
+              Wat is MijnOverheid Zakelijk
+            </FooterLinkItem>
+            <FooterLinkItem href="/toegankelijkheid">
+              Toegankelijkheid
+            </FooterLinkItem>
+            <FooterLinkItem href="/sitemap">Sitemap</FooterLinkItem>
+            <FooterLinkItem href="/english">English</FooterLinkItem>
           </ul>
         </nav>
         <nav
@@ -42,9 +47,13 @@ export const Footer = () => {
             Gegevensverwerking
           </h3>
           <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Veiligheid</FooterLinkItem>
-            <FooterLinkItem>Privacyverklaring</FooterLinkItem>
-            <FooterLinkItem>Wet- en regelgeving</FooterLinkItem>
+            <FooterLinkItem href="/veiligheid">Veiligheid</FooterLinkItem>
+            <FooterLinkItem href="/privacyverklaring">
+              Privacyverklaring
+            </FooterLinkItem>
+            <FooterLinkItem href="/wet-en-regelgeving">
+              Wet- en regelgeving
+            </FooterLinkItem>
           </ul>
         </nav>
         <nav aria-labelledby="service" className="flex flex-col gap-3">
@@ -52,11 +61,17 @@ export const Footer = () => {
             Service
           </h3>
           <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Mededelingen</FooterLinkItem>
-            <FooterLinkItem>Herken oplichting</FooterLinkItem>
-            <FooterLinkItem>Veelgestelde vragen</FooterLinkItem>
-            <FooterLinkItem>Contact</FooterLinkItem>
-            <FooterLinkItem>Klachtafhandeling</FooterLinkItem>
+            <FooterLinkItem href="/mededelingen">Mededelingen</FooterLinkItem>
+            <FooterLinkItem href="/herken-oplichting">
+              Herken oplichting
+            </FooterLinkItem>
+            <FooterLinkItem href="/veelgestelde-vragen">
+              Veelgestelde vragen
+            </FooterLinkItem>
+            <FooterLinkItem href="/contact">Contact</FooterLinkItem>
+            <FooterLinkItem href="/klachtafhandeling">
+              Klachtafhandeling
+            </FooterLinkItem>
           </ul>
         </nav>
         <nav aria-labelledby="partners" className="flex flex-col gap-3">
@@ -64,7 +79,9 @@ export const Footer = () => {
             Partners
           </h3>
           <ul className="flex flex-col gap-4">
-            <FooterLinkItem>Aangesloten organisaties</FooterLinkItem>
+            <FooterLinkItem href="/aangesloten-organisaties">
+              Aangesloten organisaties
+            </FooterLinkItem>
             <li className="hover-up">
               <a
                 href={"https://www.overheid.nl/"}
