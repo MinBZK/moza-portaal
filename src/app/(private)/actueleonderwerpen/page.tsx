@@ -46,7 +46,7 @@ const Actueleonderwerpen = async () => {
                       })}
                     </time>
                     <Link
-                      href={`/actueleonderwerpen/artikel/${article.identifier}`}
+                      href={`/src/app/(private)/actueleonderwerpen/artikel/${article.identifier}`}
                       className="group-hover:text-primary text-neutral-900 transition-colors"
                     >
                       {article.headLine}
@@ -59,7 +59,7 @@ const Actueleonderwerpen = async () => {
             </div>
             <div className="flex items-center justify-between">
               <Link
-                href="/actueleonderwerpen/artikel"
+                href="/src/app/(private)/actueleonderwerpen/artikel"
                 className="text-primary hover:underline"
               >
                 Bekijk alle artikelen

@@ -4,8 +4,8 @@ import {
   defaultFlags,
   FeatureFlagKey,
   FeatureFlags,
-} from "@/app/instellingen/_featureFlags";
-import { setFeatureFlagsCookie } from "../actions";
+} from "@/app/(private)/instellingen/_featureFlags";
+import { setFeatureFlagsCookie } from "../../actions";
 
 export const ToggleFeature = ({
   flags,

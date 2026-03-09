@@ -4,7 +4,7 @@ import {
   defaultFlags,
   FeatureFlags,
   featureFlagsSchema,
-} from "@/app/instellingen/_featureFlags";
+} from "@/app/(private)/instellingen/_featureFlags";
 import { cookies } from "next/headers";
 
 // We can't use the useCookie hook here, because it's meant for client-side usage. Instead, we directly interact with the cookies API provided by Next.js in server actions.

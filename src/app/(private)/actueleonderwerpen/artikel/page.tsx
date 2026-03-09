@@ -58,7 +58,7 @@ const ArtikelPage = async ({
                       })}
                     </time>
                     <Link
-                      href={`/actueleonderwerpen/artikel/${article.identifier}`}
+                      href={`/src/app/(private)/actueleonderwerpen/artikel/${article.identifier}`}
                       className="group-hover:text-primary text-neutral-900 transition-colors"
                     >
                       {article.headLine}
@@ -80,7 +80,7 @@ const ArtikelPage = async ({
                 {/* First page button */}
                 {currentPage > 1 && (
                   <Link
-                    href={`/actueleonderwerpen/artikel?page=1`}
+                    href={`/src/app/(private)/actueleonderwerpen/artikel?page=1`}
                     className="rounded border border-neutral-300 px-3 py-2 text-sm hover:bg-neutral-50"
                     title="Eerste pagina"
                   >
@@ -91,7 +91,7 @@ const ArtikelPage = async ({
                 {/* Previous page button */}
                 {currentPage > 1 && (
                   <Link
-                    href={`/actueleonderwerpen/artikel?page=${currentPage - 1}`}
+                    href={`/src/app/(private)/actueleonderwerpen/artikel?page=${currentPage - 1}`}
                     className="rounded border border-neutral-300 px-3 py-2 text-sm hover:bg-neutral-50"
                     title="Vorige pagina"
                   >
@@ -148,7 +148,7 @@ const ArtikelPage = async ({
                     return (
                       <Link
                         key={pageNum}
-                        href={`/actueleonderwerpen/artikel?page=${pageNum}`}
+                        href={`/src/app/(private)/actueleonderwerpen/artikel?page=${pageNum}`}
                         className="rounded border border-neutral-300 px-3 py-2 text-sm hover:bg-neutral-50"
                       >
                         {pageNum}
@@ -160,7 +160,7 @@ const ArtikelPage = async ({
                 {/* Next page button */}
                 {currentPage < totalPages && (
                   <Link
-                    href={`/actueleonderwerpen/artikel?page=${currentPage + 1}`}
+                    href={`/src/app/(private)/actueleonderwerpen/artikel?page=${currentPage + 1}`}
                     className="rounded border border-neutral-300 px-3 py-2 text-sm hover:bg-neutral-50"
                     title="Volgende pagina"
                   >
@@ -171,7 +171,7 @@ const ArtikelPage = async ({
                 {/* Last page button */}
                 {currentPage < totalPages && (
                   <Link
-                    href={`/actueleonderwerpen/artikel?page=${totalPages}`}
+                    href={`/src/app/(private)/actueleonderwerpen/artikel?page=${totalPages}`}
                     className="rounded border border-neutral-300 px-3 py-2 text-sm hover:bg-neutral-50"
                     title="Laatste pagina"
                   >

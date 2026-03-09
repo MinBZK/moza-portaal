@@ -2,7 +2,10 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { defaultFlags, FeatureFlags } from "@/app/instellingen/_featureFlags";
+import {
+  defaultFlags,
+  FeatureFlags,
+} from "@/app/(private)/instellingen/_featureFlags";
 
 const Navigation = ({ flags = defaultFlags }: { flags?: FeatureFlags }) => {
   const pathname = usePathname();

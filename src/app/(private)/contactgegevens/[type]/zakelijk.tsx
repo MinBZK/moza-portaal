@@ -1,19 +1,15 @@
 import React from "react";
+import { getKvkFromCookie } from "@/utils/kvknummer";
+import { ContactEditBox } from "@/app/(private)/contactgegevens/[type]/_contactEditBox";
 import { getProfielInformation } from "@/network/profiel/hooks/getProfielInformation/action";
-import { auth } from "@/auth";
-import { ContactEditBox } from "@/app/contactgegevens/[type]/_contactEditBox";
+import CopyNotificatie from "@/app/(private)/contactgegevens/[type]/copyNotificatie";
 
-const Prive = async () => {
-  const session = await auth();
-  const bsn = session?.user.bsn;
-
-  if (!bsn) {
-    throw new Error("BSN not found in session");
-  }
+const Zakelijk = async () => {
+  const kvk = await getKvkFromCookie();
 
   const { data, status } = await getProfielInformation({
-    identificatieType: "BSN",
-    identificatieNummer: bsn,
+    identificatieType: "KVK",
+    identificatieNummer: kvk!,
   });
   if (status != 200 && status != 404) {
     throw new Error("Server-side error occurred");
@@ -32,8 +28,8 @@ const Prive = async () => {
           name={"Email"}
           label={"E-mailadres"}
           value={email?.waarde ?? ""}
-          idenType={"BSN"}
-          idenValue={bsn}
+          idenType={"KVK"}
+          idenValue={kvk!}
         />
         <hr className="my-3 border-neutral-300" />
 
@@ -42,12 +38,14 @@ const Prive = async () => {
           name={"Telefoonnummer"}
           label={"Telefoonnummer"}
           value={telefoonnummer?.waarde ?? ""}
-          idenType={"BSN"}
-          idenValue={bsn}
+          idenType={"KVK"}
+          idenValue={kvk!}
         />
       </div>
+
+      {status == 404 && <CopyNotificatie kvkNummer={kvk!} />}
     </div>
   );
 };
 
-export default Prive;
+export default Zakelijk;
