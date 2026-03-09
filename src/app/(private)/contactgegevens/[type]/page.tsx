@@ -1,7 +1,7 @@
 import Card from "@/components/card";
 import { Tab, Tabs } from "@/components/Tabs";
-import Prive from "@/app/contactgegevens/[type]/prive";
-import Zakelijk from "@/app/contactgegevens/[type]/zakelijk";
+import Prive from "@/app/(private)/contactgegevens/[type]/prive";
+import Zakelijk from "@/app/(private)/contactgegevens/[type]/zakelijk";
 
 const ContactgegevensPage = async ({
   params,

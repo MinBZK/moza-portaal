@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { getFlagsFromServerCookie } from "../actions";
+import { getFlagsFromServerCookie } from "../../actions";
 import { ToggleFeature } from "./_toggleFeature";
 
 const Page = async () => {

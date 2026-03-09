@@ -4,23 +4,29 @@ import Link from "next/link";
 import Image from "next/image";
 import Card from "@/components/card";
 import { signIn } from "next-auth/react";
-import { Footer } from "@/layouts/footer";
 import { useCookie } from "@/utils/useCookie";
 
-const PublicRootLayout = () => {
+const PublicPage = () => {
   const { set } = useCookie("loginMethod");
 
   return (
     <div className="flex min-h-[100vh] flex-col">
       <header className="border-b-0 bg-transparent bg-[url(/public-background.png)] bg-cover bg-center pb-[100px]">
         <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-4 md:grid-rows-[auto_minmax(0,1fr)]">
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            width={44}
-            height={78}
-            className="col-2 row-1 w-[32px] pb-2 md:w-[44px]"
-          />
+          <div className="relative col-2 row-1 mx-auto grid h-[44px] w-[28px] content-end md:h-[78px] md:w-[44px]">
+            <Link
+              href="/"
+              className="bg-ro-blue absolute top-0 left-0 block h-[100%] w-[28px] md:w-[44px]"
+            >
+              <Image
+                src="/logo-rijksoverheid-wapen.svg"
+                alt="Rijksoverheid Logo"
+                width={44}
+                height={88}
+                className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
+              />
+            </Link>
+          </div>
         </div>
         <div className="relative mt-10 flex flex-col items-center justify-center space-y-12 px-4 text-center text-white">
           <h1 className="mb-4 text-4xl font-extrabold">
@@ -33,7 +39,7 @@ const PublicRootLayout = () => {
           <button
             onClick={() => {
               set("digid");
-              signIn();
+              signIn(undefined, { callbackUrl: "/" });
             }}
             className="flex cursor-pointer items-center gap-2 rounded-md bg-[#e17000] px-4 py-2 font-semibold text-white shadow-md hover:bg-orange-600"
           >
@@ -59,7 +65,7 @@ const PublicRootLayout = () => {
           <button
             onClick={() => {
               set("eherkenning");
-              signIn();
+              signIn(undefined, { callbackUrl: "/" });
             }}
             className="flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 font-semibold text-black shadow-md hover:bg-gray-100"
           >
@@ -162,9 +168,8 @@ const PublicRootLayout = () => {
           </Card>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
 
-export default PublicRootLayout;
+export default PublicPage;
