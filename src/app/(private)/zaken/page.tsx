@@ -21,11 +21,11 @@ const Zaken = async () => {
         <Card className="space-y-4">
           <h2 className="text-2xl">Nieuwe aanvraag</h2>
           <div className="flex flex-col gap-2">
-            <Link href="/src/app/(private)/zaken/parkeervergunning/nieuw">
+            <Link href="/zaken/parkeervergunning/nieuw">
               <Button>Parkeervergunning aanvragen</Button>
             </Link>
 
-            <Link href="/src/app/(private)/zaken/subsidie/nieuw">
+            <Link href="/zaken/subsidie/nieuw">
               <Button>Subsidie aanvragen</Button>
             </Link>
           </div>

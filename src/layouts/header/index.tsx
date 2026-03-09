@@ -82,7 +82,7 @@ const Header = ({
                 <button
                   type="button"
                   className="hover-up cursor-pointer font-bold"
-                  onClick={() => signIn()}
+                  onClick={() => signIn(undefined, { callbackUrl: "/" })}
                 >
                   Inloggen
                 </button>
@@ -144,7 +144,7 @@ const Header = ({
               <button
                 type="button"
                 className="hover-up cursor-pointer p-4 font-bold"
-                onClick={() => signIn()}
+                onClick={() => signIn(undefined, { callbackUrl: "/" })}
               >
                 Inloggen
               </button>

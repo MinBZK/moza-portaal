@@ -17,7 +17,7 @@ const Personeel = async () => {
           <Card className="space-y-4">
             <h2 className="text-2xl">Nieuwe meldingen</h2>
             <div className="flex flex-col gap-2">
-              <Link href="/src/app/(private)/personeel/zwangerschapsverlof/nieuw">
+              <Link href="/personeel/zwangerschapsverlof/nieuw">
                 <Button>Zwangerschapsverlof melden</Button>
               </Link>
             </div>
@@ -48,7 +48,7 @@ const Personeel = async () => {
                       <td className="px-4 py-2">
                         <Link
                           className="text-blue-400 underline"
-                          href={`/src/app/(private)/personeel/zwangerschapsverlof/${item.referentie}`}
+                          href={`/personeel/zwangerschapsverlof/${item.referentie}`}
                         >
                           Opmerking toevoegen
                         </Link>
