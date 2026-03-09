@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { Accordion } from "@/components/Accordion";
 import Button from "@/components/button";
 import Card from "@/components/card";
@@ -66,15 +65,13 @@ const accordionItems = [
 
 const Dashboard = async () => {
   const kvk = await getKvkFromCookie();
-  console.log("kvk", kvk);
+
   const { data, response } = await profielClient.GET(
     "/api/profielservice/v1/{identificatieType}/{identificatieNummer}",
     {
       params: { path: { identificatieType: "KVK", identificatieNummer: kvk! } },
     },
   );
-
-  console.log("data", response);
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -83,15 +80,13 @@ const Dashboard = async () => {
           (response.status === 200 &&
             data?.contactgegevens?.filter((x) => x.type === "Email").length ===
               0)) && (
-          <Notification
-            variant={"warning"}
-            header="E-mailadres nog niet gekoppeld"
-            text={
-              "Uw heeft nog geen zakelijke e-mailadres omgenomen in uw contactgegevens." +
-              "\nGa naar het tabblad contactgegevens en vul hier uw zakelijke e-mailadres in," +
-              "\n zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates."
-            }
-          />
+          <Notification variant={"warning"}>
+            <h2 className="font-bold">E-mailadres nog niet gekoppeld</h2>
+            <p>
+              {`Uw heeft nog geen zakelijke e-mailadres omgenomen in uw contactgegevens.
+              Ga naar het tabblad contactgegevens en vul hier uw zakelijke e-mailadres in, zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates.`}
+            </p>
+          </Notification>
         )}
 
         <h1 className="text-h1">

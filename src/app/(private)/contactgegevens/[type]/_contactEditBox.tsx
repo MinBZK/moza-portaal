@@ -220,8 +220,8 @@ export const ContactEditBox = ({
                       ref={inputRef}
                       id={`verificationCode-field-${name}-${id}`}
                       className="w-1/4 border border-gray-300 bg-white px-1"
-                      placeholder="bv: 12345"
-                      maxLength={5}
+                      placeholder="bv: 123456"
+                      maxLength={6}
                       type="text"
                       value={verificationCode}
                       onChange={(e) => {
