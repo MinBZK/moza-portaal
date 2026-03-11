@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { getKvkFromCookie } from "@/utils/kvknummer";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
 import { useAddPostcodeVoorkeur } from "@/network/profiel/hooks/addPostcodeVoorkeur/useAddPostcodeVoorkeur";
 import { useDeletePostcodeVoorkeur } from "@/network/profiel/hooks/deletePostcodeVoorkeur/useDeletePostcodeVoorkeur";
@@ -14,8 +14,10 @@ const normalizePostcode = (pc: string) =>
   pc.toUpperCase().replace(/\s/g, "");
 
 const PostcodesBeheer = () => {
-  const { data: session, status: sessionStatus } = useSession();
-  const kvkNummer = session?.user?.bsn;
+  const [kvkNummer, setKvkNummer] = useState<string | undefined | null>(null);
+  useEffect(() => {
+    getKvkFromCookie().then(setKvkNummer);
+  }, []);
   const queryClient = useQueryClient();
 
   const { data: profielData, status: profielStatus } =
@@ -32,7 +34,7 @@ const PostcodesBeheer = () => {
     (v) => v.voorkeurType === "PostcodeInUwBuurt",
   );
 
-  if (sessionStatus === "loading" || profielStatus === "pending") return null;
+  if (kvkNummer == null || profielStatus === "pending") return null;
 
   const handleAdd = () => {
     setError("");

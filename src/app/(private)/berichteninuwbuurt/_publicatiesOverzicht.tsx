@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { getKvkFromCookie } from "@/utils/kvknummer";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
 import { getPublicatiesByPostcodes } from "@/network/sru/fetchers/getPublicatiesByPostcodes";
 import PublicatieCard from "./_publicatieCard";
@@ -10,8 +10,10 @@ import PublicatieCard from "./_publicatieCard";
 const PAGE_SIZE = 5;
 
 const PublicatiesOverzicht = () => {
-  const { data: session, status: sessionStatus } = useSession();
-  const kvkNummer = session?.user?.bsn;
+  const [kvkNummer, setKvkNummer] = useState<string | undefined | null>(null);
+  useEffect(() => {
+    getKvkFromCookie().then(setKvkNummer);
+  }, []);
 
   const { data: profielData, status: profielStatus } =
     useGetProfielInformation("KVK", kvkNummer ?? "");
@@ -33,7 +35,7 @@ const PublicatiesOverzicht = () => {
     enabled: postcodes.length > 0,
   });
 
-  if (sessionStatus === "loading" || profielStatus === "pending") return null;
+  if (kvkNummer == null || profielStatus === "pending") return null;
 
   const visible = publicaties.slice(0, visibleCount);
 

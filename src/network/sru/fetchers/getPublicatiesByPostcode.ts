@@ -2,6 +2,7 @@
 
 import { XMLParser } from "fast-xml-parser";
 import type { SruPublicatie, SruResponse } from "../types";
+import { textOf, extractArray } from "../xml-helpers";
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -95,20 +96,3 @@ export const getPublicatiesByPostcode = async (
   return { publicaties, totalResults };
 };
 
-// XML elements with attributes are parsed as { "#text": "value", "@_scheme": "..." }
-// Plain text elements are just strings. This handles both cases.
-function textOf(value: unknown): string {
-  if (value == null) return "";
-  if (typeof value === "string" || typeof value === "number") return String(value);
-  if (Array.isArray(value)) return textOf(value[0]);
-  if (typeof value === "object" && "#text" in (value as Record<string, unknown>)) {
-    return String((value as Record<string, unknown>)["#text"]);
-  }
-  return "";
-}
-
-function extractArray(value: unknown): unknown[] {
-  if (Array.isArray(value)) return value;
-  if (value != null) return [value];
-  return [];
-}
