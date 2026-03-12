@@ -165,6 +165,8 @@ components:
         - WebsiteTaal
         - MagGebeldWorden
         - WebsiteThema
+        - PostcodeInUwBuurt
+        - ActueleOnderwerpVoorkeur
     VoorkeurUpdateRequest:
       type: object
       required:

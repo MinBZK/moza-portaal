@@ -612,7 +612,7 @@ export interface components {
             waarde?: string;
         };
         /** @enum {string} */
-        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema";
+        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "PostcodeInUwBuurt" | "ActueleOnderwerpVoorkeur";
         VoorkeurUpdateRequest: {
             voorkeurType: components["schemas"]["VoorkeurType"];
             waarde: string;
