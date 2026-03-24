@@ -3,7 +3,7 @@
 import Card from "@/components/card";
 import { useQuery } from "@tanstack/react-query";
 import { GetBasisprofielByKvkNummer } from "@/network/kvk/basisprofiel/fetchers/getBasisprofielByKvkNummer";
-import { format } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 
 const DetailSkeleton = () => (
   <div className="grid grid-cols-[2fr_3fr_100px] items-center gap-2">
@@ -31,15 +31,8 @@ const Detail = ({
 
 const formatDateString = (dateString: string | null | undefined): string => {
   if (!dateString) return "-";
-  try {
-    const year = dateString.substring(0, 4);
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
-    const date = new Date(`${year}-${month}-${day}`);
-    return format(date, "dd-MM-yyyy");
-  } catch {
-    return dateString;
-  }
+  const date = parse(dateString, "yyyyMMdd", new Date());
+  return isValid(date) ? format(date, "dd-MM-yyyy") : dateString;
 };
 
 const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
