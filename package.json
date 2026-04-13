@@ -17,7 +17,7 @@
     "generate:dop:opendata": "openapi-typescript dependencies/dop/opendata.json -o ./src/network/dop/opendata/generated.ts"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.7.0",
+    "@faker-js/faker": "^10.3.0",
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-form": "^1.11.1",
@@ -42,7 +42,7 @@
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.3.1",
+    "eslint-config-next": "16.2.3",
     "openapi-typescript": "^7.8.0",
     "pa11y": "^9.0.0",
     "pa11y-reporter-html": "^2.0.0",
