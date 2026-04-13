@@ -14,7 +14,7 @@ export interface paths {
         get?: never;
         /**
          * Update contactgegeven van een partij
-         * @description Werk type, waarde en afdeling van een contactgegeven bij. Identificatie kan niet aangepast worden.
+         * @description Werk type, waarde en scope van een contactgegeven bij. Identificatie kan niet aangepast worden.
          */
         put: {
             parameters: {
@@ -194,7 +194,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/profielservice/v1/dienstverlener/{DienstverlenerNaam}/afdelingen": {
+    "/api/profielservice/v1/dienstverlener/{DienstverlenerNaam}/diensten": {
         parameters: {
             query?: never;
             header?: never;
@@ -204,8 +204,8 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Voegt een afdeling toe aan een dienstverlener
-         * @description Voegt een nieuwe afdeling toe met beschrijving
+         * Voegt een dienst toe aan een dienstverlener
+         * @description Voegt een nieuwe dienst toe met beschrijving
          */
         post: {
             parameters: {
@@ -218,11 +218,11 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["AfdelingRequest"];
+                    "application/json": components["schemas"]["DienstRequest"];
                 };
             };
             responses: {
-                /** @description Afdeling succesvol toegevoegd */
+                /** @description Dienst succesvol toegevoegd */
                 201: {
                     headers: {
                         [name: string]: unknown;
@@ -258,7 +258,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Afdelingen Dienstverlener */
+        /** Get Diensten Dienstverlener */
         get: {
             parameters: {
                 query?: never;
@@ -346,7 +346,7 @@ export interface paths {
         get?: never;
         /**
          * Update voorkeur van een partij
-         * @description Werk type, waarde en afdeling van een voorkeur bij. Identificatie kan niet aangepast worden.
+         * @description Werk type, waarde en scope van een voorkeur bij. Identificatie kan niet aangepast worden.
          */
         put: {
             parameters: {
@@ -493,7 +493,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    afdelingBeschrijving?: string;
+                    dienstBeschrijving?: string;
                     dienstverlener?: string;
                     oin?: string;
                 };
@@ -536,37 +536,55 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** @description Request object voor het toevoegen van een afdeling aan een dienstverlener */
-        AfdelingRequest: {
+        /** @description Request object voor het toevoegen van een dienst aan een dienstverlener */
+        DienstRequest: {
             beschrijving: string;
         };
-        AfdelingResponse: {
+        DienstResponse: {
             /** Format: int64 */
             id?: number;
             beschrijving?: string;
         };
         /** @enum {string} */
         ContactType: "Email" | "Telefoonnummer" | "Adres";
+        /** @enum {string} */
+        Taal: "Nederlands" | "Engels" | "Fries" | "Papiaments" | "Nedersaksisch" | "Limburgs";
+        /** @description Scope waarop een contactgegeven of voorkeur betrekking heeft */
+        ScopeRequest: {
+            scopeIdentificatieType?: components["schemas"]["IdentificatieType"];
+            scopeIdentificatieNummer?: string;
+            /** Format: int64 */
+            dienstId?: number;
+        };
+        /** @description Scope waarop een contactgegeven of voorkeur betrekking heeft */
+        ScopeResponse: {
+            partij?: components["schemas"]["IdentificatieResponse"];
+            dienst?: components["schemas"]["DienstResponse"];
+        };
         /** @description Request object voor het toevoegen van een contactgegeven aan een partij */
         ContactgegevenRequest: {
-            /** Format: int64 */
-            afdelingId?: number;
             type: components["schemas"]["ContactType"];
             waarde: string;
+            taal?: components["schemas"]["Taal"];
+            terAttentieVan?: string;
+            scope?: components["schemas"]["ScopeRequest"];
         };
         ContactgegevenResponse: {
             /** Format: int64 */
             id?: number;
             type?: components["schemas"]["ContactType"];
             waarde?: string;
+            taal?: components["schemas"]["Taal"];
+            terAttentieVan?: string;
             isGeverifieerd?: boolean;
-            afdeling?: components["schemas"]["AfdelingResponse"];
+            scope?: components["schemas"]["ScopeResponse"];
         };
         ContactgegevenUpdateRequest: {
-            /** Format: int64 */
-            afdelingId?: number;
             type: components["schemas"]["ContactType"];
             waarde: string;
+            taal?: components["schemas"]["Taal"];
+            terAttentieVan?: string;
+            scope?: components["schemas"]["ScopeRequest"];
             /** Format: int64 */
             id?: number;
         };
@@ -592,7 +610,7 @@ export interface components {
         PartijRequest: {
             dienstverlener?: string;
             dienstverlenerOin?: string;
-            afdelingBeschrijving?: string;
+            dienstBeschrijving?: string;
         };
         PartijResponse: {
             /** Format: int64 */
@@ -604,18 +622,21 @@ export interface components {
         VoorkeurRequest: {
             voorkeurType: components["schemas"]["VoorkeurType"];
             waarde: string;
+            scope?: components["schemas"]["ScopeRequest"];
         };
         VoorkeurResponse: {
             /** Format: int64 */
             id?: number;
             voorkeurType?: components["schemas"]["VoorkeurType"];
             waarde?: string;
+            scope?: components["schemas"]["ScopeResponse"];
         };
         /** @enum {string} */
-        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "PostcodeInUwBuurt" | "ActueleOnderwerpVoorkeur";
+        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "PostcodeInUwBuurt" | "ActueleOnderwerpVoorkeur" | "Aanhef";
         VoorkeurUpdateRequest: {
             voorkeurType: components["schemas"]["VoorkeurType"];
             waarde: string;
+            scope?: components["schemas"]["ScopeRequest"];
             /** Format: int64 */
             id?: number;
         };
