@@ -12,31 +12,7 @@ import { Notification } from "@/components/notifications";
 import { EditIcon } from "@/components/icons/editIcon";
 import { CheckCircleIcon } from "@/components/icons/checkCircleIcon";
 import { useQueryClient } from "@tanstack/react-query";
-
-const ButtonBase = ({
-  className,
-  onClick,
-  children,
-  type = "button",
-  icon,
-}: {
-  className?: string;
-  onClick?: () => void;
-  children: React.ReactNode;
-  type?: "button" | "submit" | "reset";
-  icon?: React.ReactNode;
-}) => {
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`text-primary ml-auto flex cursor-pointer items-center gap-2 hover:underline ${className}`}
-    >
-      {icon}
-      {children}
-    </button>
-  );
-};
+import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
 const contactSchemas = {
   Email: z.string().email("Voer een geldig e-mailadres in"),
@@ -228,7 +204,7 @@ export const ContactEditBox = ({
                         setVerificationCode(e.target.value);
                       }}
                     />
-                    <ButtonBase
+                    <EditBoxButton
                       icon={<CheckCircleIcon />}
                       type="submit"
                       onClick={() => {
@@ -236,7 +212,7 @@ export const ContactEditBox = ({
                       }}
                     >
                       Verifieer
-                    </ButtonBase>
+                    </EditBoxButton>
                   </div>
                 </div>
               )}
@@ -247,7 +223,7 @@ export const ContactEditBox = ({
         </div>
         <div>
           {fieldState !== "edit" ? (
-            <ButtonBase
+            <EditBoxButton
               icon={<EditIcon />}
               onClick={() => {
                 setFieldState("edit");
@@ -257,13 +233,13 @@ export const ContactEditBox = ({
               }}
             >
               Aanpassen
-            </ButtonBase>
+            </EditBoxButton>
           ) : (
             <div className="flex flex-col gap-0">
-              <ButtonBase type="submit">
+              <EditBoxButton type="submit">
                 <span className="hover:underline">Opslaan</span>
-              </ButtonBase>
-              <ButtonBase
+              </EditBoxButton>
+              <EditBoxButton
                 type="button"
                 onClick={() => {
                   setFieldState("view");
@@ -274,7 +250,7 @@ export const ContactEditBox = ({
                 }}
               >
                 <span className="hover:underline">Annuleren</span>
-              </ButtonBase>
+              </EditBoxButton>
             </div>
           )}
         </div>

@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { components } from "@/network/profiel/generated";
-import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateAanhefVoorkeur/useUpdateAanhefVoorkeur";
+import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
 import { EditIcon } from "@/components/icons/editIcon";
 import { useQueryClient } from "@tanstack/react-query";
+import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
 export const AanhefEditBox = ({
   idenType,
@@ -22,6 +23,10 @@ export const AanhefEditBox = ({
   const queryClient = useQueryClient();
 
   const [newValue, setNewValue] = useState(voorkeur?.waarde || "");
+
+  useEffect(() => {
+    setNewValue(voorkeur?.waarde || "");
+  }, [voorkeur?.waarde]);
 
   return (
     <form
@@ -85,36 +90,27 @@ export const AanhefEditBox = ({
         </div>
         <div>
           {fieldState !== "edit" ? (
-            <button
-              type="button"
+            <EditBoxButton
+              icon={<EditIcon />}
               onClick={() => {
                 setFieldState("edit");
                 requestAnimationFrame(() => inputRef.current?.focus());
               }}
-              className="text-primary ml-auto flex cursor-pointer items-center gap-2 hover:underline"
             >
-              <EditIcon />
               Aanpassen
-            </button>
+            </EditBoxButton>
           ) : (
-            <div className="flex flex-col gap-0">
-              <button
-                type="submit"
-                className="text-primary ml-auto flex cursor-pointer items-center gap-2 hover:underline"
-              >
-                Opslaan
-              </button>
-              <button
-                type="button"
+            <div className="flex flex-col">
+              <EditBoxButton type="submit">Opslaan</EditBoxButton>
+              <EditBoxButton
                 onClick={() => {
                   setFieldState("view");
                   setErrorMessage(undefined);
                   setNewValue(voorkeur?.waarde || "");
                 }}
-                className="text-primary ml-auto flex cursor-pointer items-center gap-2 hover:underline"
               >
                 Annuleren
-              </button>
+              </EditBoxButton>
             </div>
           )}
         </div>
