@@ -632,7 +632,7 @@ export interface components {
             scope?: components["schemas"]["ScopeResponse"];
         };
         /** @enum {string} */
-        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "PostcodeInUwBuurt" | "ActueleOnderwerpVoorkeur" | "Aanhef";
+        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "Aanhef";
         VoorkeurUpdateRequest: {
             voorkeurType: components["schemas"]["VoorkeurType"];
             waarde: string;

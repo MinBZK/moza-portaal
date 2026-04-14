@@ -207,8 +207,6 @@ components:
         - WebsiteTaal
         - MagGebeldWorden
         - WebsiteThema
-        - PostcodeInUwBuurt
-        - ActueleOnderwerpVoorkeur
         - Aanhef
     VoorkeurUpdateRequest:
       type: object
