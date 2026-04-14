@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueries } from "@tanstack/react-query";
-import { getArticles } from "@/network/ondernemersplein/fetchers/getArticles";
+import { getArticles } from "@/network/actualiteiten/fetchers/getArticles";
 import { SUBJECT_GROUPS } from "./_voorkeurenBeheer";
 
 const ALL_SUBJECTS = SUBJECT_GROUPS.flatMap((g) => g.subjects);

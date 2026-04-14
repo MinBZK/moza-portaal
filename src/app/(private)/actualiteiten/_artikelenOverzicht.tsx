@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { TYPE_LABELS, TYPE_COLORS } from "./_articleTypes";
-import type { components } from "@/network/dop/opendata/generated";
+import type { components } from "@/network/actualiteiten/generated";
 
-type ArticleSummary = components["schemas"]["ArticleSummary"];
+type ArticleSummary = components["schemas"]["EnrichedArticle"];
 
 const PAGE_SIZE = 10;
 
@@ -17,10 +17,11 @@ const ArtikelenOverzicht = ({
   status: "pending" | "error" | "success";
 }) => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  useEffect(() => {
+  const [prevArticles, setPrevArticles] = useState(articles);
+  if (articles !== prevArticles) {
+    setPrevArticles(articles);
     setVisibleCount(PAGE_SIZE);
-  }, [articles]);
+  }
 
   const visible = articles.slice(0, visibleCount);
 

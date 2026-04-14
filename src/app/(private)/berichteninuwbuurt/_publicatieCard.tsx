@@ -1,5 +1,7 @@
 import Link from "next/link";
-import type { SruPublicatie } from "@/network/sru/types";
+import type { components } from "@/network/actualiteiten/generated";
+
+type SruPublicatie = components["schemas"]["SruPublicatie"];
 
 const isReadableUrl = (url: string) =>
   url && !url.endsWith(".xml") && !url.includes("/metadata/");
@@ -13,12 +15,12 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
       })
     : "";
 
-  const externalUrl = isReadableUrl(publicatie.preferredUrl)
-    ? publicatie.preferredUrl
+  const externalUrl = isReadableUrl(publicatie.preferredUrl ?? "")
+    ? publicatie.preferredUrl ?? ""
     : publicatie.bronUrl || "";
   const hasExternalLink = !!externalUrl;
   const description = publicatie.abstract || "";
-  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id)}`;
+  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id ?? "")}`;
 
   return (
     <div className="flex items-start justify-between gap-2 py-2">

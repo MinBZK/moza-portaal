@@ -2,92 +2,79 @@
 
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
-import { getArticles } from "@/network/ondernemersplein/fetchers/getArticles";
-import { getSubsidies } from "@/network/ondernemersplein/fetchers/getSubsidies";
-import { getPublicatiesByPostcodes } from "@/network/sru/fetchers/getPublicatiesByPostcodes";
-import type { components } from "@/network/dop/opendata/generated";
-import type { SruPublicatie } from "@/network/sru/types";
-import { VOORKEUR_TYPE_ONDERWERP, type SectionKey } from "./_voorkeurenBeheer";
+import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
+import { getArticles } from "@/network/actualiteiten/fetchers/getArticles";
+import { getSubsidies } from "@/network/actualiteiten/fetchers/getSubsidies";
+import { getBerichten } from "@/network/actualiteiten/fetchers/getBerichten";
+import type { components } from "@/network/actualiteiten/generated";
+import { type SectionKey } from "./_voorkeurenBeheer";
 
-type ArticleSummary = components["schemas"]["ArticleSummary"];
-type SubsidieSummary = components["schemas"]["SubsidieSummary"];
+type EnrichedArticle = components["schemas"]["EnrichedArticle"];
+type EnrichedSubsidie = components["schemas"]["EnrichedSubsidie"];
+type SruPublicatie = components["schemas"]["SruPublicatie"];
 
 const INFORMATIE_TYPES = new Set(["artikel-nl", "stepbystep", "video"]);
 const REGELGEVING_TYPES = new Set(["regel-nl", "wetswijziging-nl"]);
 
 export interface ActualiteitenData {
-  // Filtered article lists
-  informatieArticles: ArticleSummary[];
-  regelgevingArticles: ArticleSummary[];
-  subsidies: SubsidieSummary[];
+  informatieArticles: EnrichedArticle[];
+  regelgevingArticles: EnrichedArticle[];
+  subsidies: EnrichedSubsidie[];
   subsidiesTotal: number;
   berichten: SruPublicatie[];
-  // Loading states
   articlesStatus: "pending" | "error" | "success";
   subsidiesStatus: "pending" | "error" | "success";
   berichtenStatus: "pending" | "error" | "success";
-  // Counts
   sectionCounts: Record<SectionKey, number | null>;
-  // Postcodes info
   hasPostcodes: boolean;
   postcodes: string[];
-  // Whether subject filters are active
   hasSubjectFilter: boolean;
-  // Currently selected subjects
   selectedSubjects: string[];
 }
 
 export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
-  const { data: profielData, status: profielStatus } =
-    useGetProfielInformation("KVK", kvkNummer);
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
+    "KVK",
+    kvkNummer,
+  );
 
-  const voorkeuren = profielData?.data?.voorkeuren ?? [];
-
-  const selectedSubjects = voorkeuren
-    .filter((v) => v.voorkeurType === VOORKEUR_TYPE_ONDERWERP)
-    .map((v) => v.waarde!)
+  const selectedSubjects = (voorkeuren?.onderwerpen ?? [])
+    .map((v) => v.onderwerp!)
     .filter(Boolean);
 
-  const postcodes = voorkeuren
-    .filter((v) => v.voorkeurType === "PostcodeInUwBuurt")
-    .map((v) => v.waarde!)
+  const postcodes = (voorkeuren?.postcodes ?? [])
+    .map((v) => v.postcode!)
     .filter(Boolean);
 
-  // Single articles fetch — no type filter, split client-side
-  const { data: allArticles, status: articlesStatus } = useQuery({
-    queryKey: ["articles", "all", selectedSubjects],
+  const { data: articlesData, status: articlesStatus } = useQuery({
+    queryKey: ["actualiteiten", "articles", selectedSubjects],
     queryFn: () =>
       getArticles({
         subjects: selectedSubjects.length > 0 ? selectedSubjects : undefined,
-        limit: 200,
       }),
     staleTime: 1000 * 60 * 60,
-    enabled: profielStatus !== "pending",
+    enabled: voorkeurenStatus !== "pending",
   });
 
-  // Single subsidies fetch
   const { data: subsidieData, status: subsidiesStatus } = useQuery({
-    queryKey: ["subsidies", selectedSubjects],
+    queryKey: ["actualiteiten", "subsidies", selectedSubjects],
     queryFn: () =>
       getSubsidies({
         subjects: selectedSubjects.length > 0 ? selectedSubjects : undefined,
-        limit: 200,
       }),
     staleTime: 1000 * 60 * 60,
-    enabled: profielStatus !== "pending",
+    enabled: voorkeurenStatus !== "pending",
   });
 
-  // Berichten fetch — only depends on postcodes, not subjects
-  const { data: allPublicaties, status: berichtenStatus } = useQuery({
-    queryKey: ["publicaties", "postcodes", postcodes],
-    queryFn: () => getPublicatiesByPostcodes(postcodes),
+  const { data: berichtenData, status: berichtenStatus } = useQuery({
+    queryKey: ["actualiteiten", "berichten", kvkNummer],
+    queryFn: () => getBerichten("KVK", kvkNummer),
     staleTime: 1000 * 60 * 60,
     enabled: postcodes.length > 0,
   });
 
   return useMemo(() => {
-    const articles = allArticles?.articles ?? [];
+    const articles = articlesData?.articles ?? [];
 
     const informatieArticles = articles.filter((a) =>
       INFORMATIE_TYPES.has(a.additionalType ?? ""),
@@ -98,26 +85,13 @@ export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
 
     const subsidies = subsidieData?.subsidies ?? [];
     const subsidiesTotal = subsidieData?.total ?? 0;
+    const berichten = berichtenData ?? [];
 
-    // Filter berichten by subject keywords client-side
-    const allBerichten = allPublicaties ?? [];
-    let berichten: SruPublicatie[];
-    if (selectedSubjects.length === 0) {
-      berichten = allBerichten;
-    } else {
-      const keywords = selectedSubjects.map((s) => s.toLowerCase());
-      berichten = allBerichten.filter((pub) => {
-        const haystack =
-          `${pub.title} ${pub.subject} ${pub.abstract}`.toLowerCase();
-        return keywords.some((kw) => haystack.includes(kw));
-      });
-    }
-
-    // Section counts derived from the same data
     const sectionCounts: Record<SectionKey, number | null> = {
-      berichten: postcodes.length > 0 ? (allPublicaties ? berichten.length : null) : 0,
-      informatie: allArticles ? informatieArticles.length : null,
-      regelgeving: allArticles ? regelgevingArticles.length : null,
+      berichten:
+        postcodes.length > 0 ? (berichtenData ? berichten.length : null) : 0,
+      informatie: articlesData ? informatieArticles.length : null,
+      regelgeving: articlesData ? regelgevingArticles.length : null,
       subsidies: subsidieData ? subsidiesTotal : null,
     };
 
@@ -127,12 +101,14 @@ export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
       subsidies,
       subsidiesTotal,
       berichten,
-      articlesStatus: profielStatus === "pending" ? "pending" : articlesStatus,
-      subsidiesStatus: profielStatus === "pending" ? "pending" : subsidiesStatus,
+      articlesStatus:
+        voorkeurenStatus === "pending" ? "pending" : articlesStatus,
+      subsidiesStatus:
+        voorkeurenStatus === "pending" ? "pending" : subsidiesStatus,
       berichtenStatus:
         postcodes.length === 0
           ? "success"
-          : profielStatus === "pending"
+          : voorkeurenStatus === "pending"
             ? "pending"
             : berichtenStatus,
       sectionCounts,
@@ -142,12 +118,12 @@ export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
       selectedSubjects,
     };
   }, [
-    allArticles,
+    articlesData,
     subsidieData,
-    allPublicaties,
+    berichtenData,
     selectedSubjects,
     postcodes,
-    profielStatus,
+    voorkeurenStatus,
     articlesStatus,
     subsidiesStatus,
     berichtenStatus,

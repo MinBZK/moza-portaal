@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
-import { useAddOnderwerpVoorkeur } from "@/network/profiel/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
-import { useDeleteOnderwerpVoorkeur } from "@/network/profiel/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
+import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
+import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
+import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
 
 export const SUBJECT_GROUPS: { label: string; subjects: string[] }[] = [
   {
@@ -70,8 +69,6 @@ export const SUBJECT_GROUPS: { label: string; subjects: string[] }[] = [
   },
 ];
 
-export const VOORKEUR_TYPE_ONDERWERP = "ActueleOnderwerpVoorkeur" as const;
-
 export type SectionKey = "berichten" | "informatie" | "regelgeving" | "subsidies";
 
 export const SECTION_LABELS: Record<SectionKey, string> = {
@@ -94,58 +91,42 @@ const VoorkeurenSidebar = ({
   sectionCounts: Record<SectionKey, number | null>;
   subjectCounts: Record<string, number | null>;
 }) => {
-  const queryClient = useQueryClient();
-
-  const { data: profielData, status: profielStatus } =
-    useGetProfielInformation("KVK", kvkNummer);
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
+    "KVK",
+    kvkNummer,
+  );
 
   const addMutation = useAddOnderwerpVoorkeur();
   const deleteMutation = useDeleteOnderwerpVoorkeur();
 
-  const voorkeuren = profielData?.data?.voorkeuren ?? [];
-  const onderwerpVoorkeuren = voorkeuren.filter(
-    (v) => v.voorkeurType === VOORKEUR_TYPE_ONDERWERP,
-  );
+  const onderwerpVoorkeuren = voorkeuren?.onderwerpen ?? [];
   const selectedSubjects = onderwerpVoorkeuren
-    .map((v) => v.waarde!)
+    .map((v) => v.onderwerp!)
     .filter(Boolean);
 
   const isMutating = addMutation.isPending || deleteMutation.isPending;
 
   const handleToggle = (subject: string) => {
-    const existing = onderwerpVoorkeuren.find((v) => v.waarde === subject);
+    const existing = onderwerpVoorkeuren.find((v) => v.onderwerp === subject);
     if (existing && existing.id != null) {
-      deleteMutation.mutate(
-        {
-          identificatieNummer: kvkNummer,
-          identificatieType: "KVK",
-          voorkeurId: existing.id,
-        },
-        {
-          onSuccess: () =>
-            queryClient.invalidateQueries({ queryKey: ["profiel"] }),
-        },
-      );
+      deleteMutation.mutate({
+        identificatieType: "KVK",
+        identificatieNummer: kvkNummer,
+        id: existing.id,
+      });
     } else {
-      addMutation.mutate(
-        {
-          identificatieNummer: kvkNummer,
-          identificatieType: "KVK",
-          onderwerp: subject,
-        },
-        {
-          onSuccess: () =>
-            queryClient.invalidateQueries({ queryKey: ["profiel"] }),
-        },
-      );
+      addMutation.mutate({
+        identificatieType: "KVK",
+        identificatieNummer: kvkNummer,
+        onderwerp: subject,
+      });
     }
   };
 
-  if (!kvkNummer || profielStatus === "pending") return null;
+  if (!kvkNummer || voorkeurenStatus === "pending") return null;
 
   return (
     <nav className="space-y-1" aria-label="Filters">
-      {/* Section visibility toggles */}
       <h2 className="mb-2 text-lg font-bold text-[#154273]">Secties</h2>
       <div className="mb-4 space-y-1 border-b border-neutral-200 pb-4">
         {(Object.keys(SECTION_LABELS) as SectionKey[]).map((key) => {
@@ -172,7 +153,6 @@ const VoorkeurenSidebar = ({
 
       <h2 className="mb-3 text-lg font-bold text-[#154273]">Onderwerpen</h2>
 
-      {/* Collapsible filter groups */}
       {SUBJECT_GROUPS.map((group) => (
         <FilterGroup
           key={group.label}

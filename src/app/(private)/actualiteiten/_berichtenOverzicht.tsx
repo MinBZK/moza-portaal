@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import type { SruPublicatie } from "@/network/sru/types";
+import type { components } from "@/network/actualiteiten/generated";
+
+type SruPublicatie = components["schemas"]["SruPublicatie"];
 
 const PAGE_SIZE = 5;
 
@@ -20,10 +22,11 @@ const BerichtenOverzicht = ({
   hasSubjectFilter: boolean;
 }) => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  useEffect(() => {
+  const [prevBerichten, setPrevBerichten] = useState(berichten);
+  if (berichten !== prevBerichten) {
+    setPrevBerichten(berichten);
     setVisibleCount(PAGE_SIZE);
-  }, [berichten]);
+  }
 
   if (!hasPostcodes) {
     return (
@@ -91,7 +94,7 @@ function PublicatieRow({ publicatie }: { publicatie: SruPublicatie }) {
     : "";
 
   const description = publicatie.abstract || "";
-  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id)}`;
+  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id ?? "")}`;
 
   return (
     <div className="py-3">

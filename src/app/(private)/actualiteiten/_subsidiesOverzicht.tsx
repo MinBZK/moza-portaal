@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TYPE_COLORS } from "./_articleTypes";
-import type { components } from "@/network/dop/opendata/generated";
+import type { components } from "@/network/actualiteiten/generated";
 
-type SubsidieSummary = components["schemas"]["SubsidieSummary"];
+type SubsidieSummary = components["schemas"]["EnrichedSubsidie"];
 
 const PAGE_SIZE = 10;
 
@@ -16,10 +16,11 @@ const SubsidiesOverzicht = ({
   status: "pending" | "error" | "success";
 }) => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  useEffect(() => {
+  const [prevSubsidies, setPrevSubsidies] = useState(subsidies);
+  if (subsidies !== prevSubsidies) {
+    setPrevSubsidies(subsidies);
     setVisibleCount(PAGE_SIZE);
-  }, [subsidies]);
+  }
 
   const visible = subsidies.slice(0, visibleCount);
 

@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getKvkFromCookie } from "@/utils/kvknummer";
-import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
-import { getPublicatiesByPostcodes } from "@/network/sru/fetchers/getPublicatiesByPostcodes";
+import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
+import { getBerichten } from "@/network/actualiteiten/fetchers/getBerichten";
 import PublicatieCard from "./_publicatieCard";
 
 const PAGE_SIZE = 5;
@@ -15,27 +15,24 @@ const PublicatiesOverzicht = () => {
     getKvkFromCookie().then(setKvkNummer);
   }, []);
 
-  const { data: profielData, status: profielStatus } =
-    useGetProfielInformation("KVK", kvkNummer ?? "");
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
+    "KVK",
+    kvkNummer ?? "",
+  );
 
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const voorkeuren = profielData?.data?.voorkeuren ?? [];
-  const postcodes = voorkeuren
-    .filter((v) => v.voorkeurType === "PostcodeInUwBuurt")
-    .map((v) => v.waarde!)
+  const postcodes = (voorkeuren?.postcodes ?? [])
+    .map((v) => v.postcode!)
     .filter(Boolean);
 
-  const {
-    data: publicaties = [],
-    status: pubStatus,
-  } = useQuery({
-    queryKey: ["publicaties", postcodes],
-    queryFn: () => getPublicatiesByPostcodes(postcodes),
-    enabled: postcodes.length > 0,
+  const { data: publicaties = [], status: pubStatus } = useQuery({
+    queryKey: ["actualiteiten", "berichten", kvkNummer, postcodes],
+    queryFn: () => getBerichten("KVK", kvkNummer!),
+    enabled: Boolean(kvkNummer) && postcodes.length > 0,
   });
 
-  if (kvkNummer == null || profielStatus === "pending") return null;
+  if (kvkNummer == null || voorkeurenStatus === "pending") return null;
 
   const visible = publicaties.slice(0, visibleCount);
 

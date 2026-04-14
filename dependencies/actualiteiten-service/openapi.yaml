@@ -1,0 +1,517 @@
+---
+openapi: 3.1.0
+tags:
+- name: Articles
+  description: "Ondernemersplein articles, enriched with subjects and filtered in-memory"
+- name: Berichten
+  description: Bekendmakingen uit de Overheid.nl SRU voor de postcode-voorkeuren van
+    de partij
+- name: Health
+  description: Liveness probe
+- name: Ingestion
+  description: Cache refresh status per source
+- name: Subsidies
+  description: "Ondernemersplein subsidies, enriched and filtered in-memory"
+- name: Voorkeuren
+  description: "Postcode-, onderwerp- en favoriet-voorkeuren per partij (via koppelcode)"
+components:
+  schemas:
+    ArticlesResponse:
+      type: object
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/EnrichedArticle"
+        total:
+          type: integer
+          format: int32
+    EnrichedArticle:
+      type: object
+      properties:
+        identifier:
+          type: string
+        headLine:
+          type: string
+        additionalType:
+          type: string
+        url:
+          type: string
+        dateModified:
+          type: string
+        subjects:
+          type: array
+          items:
+            type: string
+    EnrichedSubsidie:
+      type: object
+      properties:
+        identifier:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        dateModified:
+          type: string
+        subjects:
+          type: array
+          items:
+            type: string
+        regions:
+          type: array
+          items:
+            type: string
+    FavorietItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        articleId:
+          type: string
+        articleType:
+          type: string
+        addedAt:
+          $ref: "#/components/schemas/Instant"
+    FavorietRequest:
+      type: object
+      properties:
+        articleId:
+          type: string
+        articleType:
+          type: string
+    Instant:
+      type: string
+      format: date-time
+      examples:
+      - 2022-03-10T16:15:50Z
+    OnderwerpItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        onderwerp:
+          type: string
+    OnderwerpRequest:
+      type: object
+      properties:
+        onderwerp:
+          type: string
+    PostcodeItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        postcode:
+          type: string
+    PostcodeRequest:
+      type: object
+      properties:
+        postcode:
+          type: string
+    SruPublicatie:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        creator:
+          type: string
+        modified:
+          type: string
+        abstract:
+          type: string
+        preferredUrl:
+          type: string
+        bronUrl:
+          type: string
+        postcodes:
+          type: array
+          items:
+            type: string
+        productArea:
+          type: string
+        audience:
+          type: string
+        subject:
+          type: string
+        publicatienaam:
+          type: string
+    SubsidiesResponse:
+      type: object
+      properties:
+        subsidies:
+          type: array
+          items:
+            $ref: "#/components/schemas/EnrichedSubsidie"
+        total:
+          type: integer
+          format: int32
+    VoorkeurenResponse:
+      type: object
+      properties:
+        postcodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostcodeItem"
+        onderwerpen:
+          type: array
+          items:
+            $ref: "#/components/schemas/OnderwerpItem"
+        favorieten:
+          type: array
+          items:
+            $ref: "#/components/schemas/FavorietItem"
+paths:
+  /api/actualiteitenservice/v1/articles:
+    get:
+      summary: Lijst artikelen
+      description: Haalt een gefilterde lijst artikelen op. Service houdt een enriched
+        cache met alle artikelen (inclusief subjects uit het detail-endpoint); filteren
+        gebeurt in-memory.
+      tags:
+      - Articles
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: search
+        in: query
+        schema:
+          type: string
+      - name: subject
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: type
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArticlesResponse"
+  /api/actualiteitenservice/v1/berichten/{identificatieType}/{identificatieNummer}:
+    get:
+      summary: Berichten voor een partij
+      description: "Leest de postcode-voorkeuren van de partij uit, haalt per postcode\
+        \ bekendmakingen op uit de SRU (gecached), en retourneert een gededupliceerde,\
+        \ op datum gesorteerde lijst."
+      tags:
+      - Berichten
+      parameters:
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SruPublicatie"
+  /api/actualiteitenservice/v1/health:
+    get:
+      tags:
+      - Health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+      summary: Ping
+  /api/actualiteitenservice/v1/ingestion-status:
+    get:
+      summary: Status van bronnen
+      description: Laatste succesvolle refresh per bron. Portaal gebruikt dit voor
+        de 'laatst bijgewerkt' indicator.
+      tags:
+      - Ingestion
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                  format: date-time
+                  examples:
+                  - 2022-03-10T16:15:50Z
+  /api/actualiteitenservice/v1/subsidies:
+    get:
+      summary: Lijst subsidies
+      description: Haalt een gefilterde lijst subsidies op. Service houdt een enriched
+        cache met alle subsidies (inclusief subjects/regions uit het detail-endpoint);
+        filteren gebeurt in-memory.
+      tags:
+      - Subsidies
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: region
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: subject
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubsidiesResponse"
+  /api/actualiteitenservice/v1/voorkeuren/favoriet/{identificatieType}/{identificatieNummer}:
+    post:
+      summary: Voeg favoriet artikel toe
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavorietRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+  /api/actualiteitenservice/v1/voorkeuren/favoriet/{identificatieType}/{identificatieNummer}/{id}:
+    delete:
+      summary: Verwijder favoriet artikel
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+  /api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}:
+    post:
+      summary: Voeg onderwerp-voorkeur toe
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OnderwerpRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+  /api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}/{id}:
+    delete:
+      summary: Verwijder onderwerp-voorkeur
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+  /api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}:
+    post:
+      summary: Voeg postcode-voorkeur toe
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostcodeRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "400":
+          description: Bad Request
+  /api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}/{id}:
+    delete:
+      summary: Verwijder postcode-voorkeur
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+  /api/actualiteitenservice/v1/voorkeuren/{identificatieType}/{identificatieNummer}:
+    get:
+      summary: Alle voorkeuren voor een partij
+      tags:
+      - Voorkeuren
+      parameters:
+      - name: identificatieNummer
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: identificatieType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoorkeurenResponse"
+info:
+  title: actualiteiten-service API
+  version: 1.0.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value

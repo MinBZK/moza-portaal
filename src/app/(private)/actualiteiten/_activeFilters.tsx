@@ -1,51 +1,40 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
-import { useDeleteOnderwerpVoorkeur } from "@/network/profiel/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
-import { VOORKEUR_TYPE_ONDERWERP } from "./_voorkeurenBeheer";
+import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
+import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
 
 const ActiveFilters = ({ kvkNummer }: { kvkNummer: string }) => {
-  const queryClient = useQueryClient();
-
-  const { data: profielData, status: profielStatus } =
-    useGetProfielInformation("KVK", kvkNummer);
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
+    "KVK",
+    kvkNummer,
+  );
 
   const deleteMutation = useDeleteOnderwerpVoorkeur();
 
-  const voorkeuren = profielData?.data?.voorkeuren ?? [];
-  const onderwerpVoorkeuren = voorkeuren.filter(
-    (v) => v.voorkeurType === VOORKEUR_TYPE_ONDERWERP && v.id != null,
+  const onderwerpVoorkeuren = (voorkeuren?.onderwerpen ?? []).filter(
+    (v) => v.id != null,
   );
 
-  const handleDelete = (voorkeurId: number) => {
-    deleteMutation.mutate(
-      {
-        identificatieNummer: kvkNummer,
-        identificatieType: "KVK",
-        voorkeurId,
-      },
-      {
-        onSuccess: () =>
-          queryClient.invalidateQueries({ queryKey: ["profiel"] }),
-      },
-    );
-  };
+  const handleDelete = (id: number) =>
+    deleteMutation.mutate({
+      identificatieType: "KVK",
+      identificatieNummer: kvkNummer,
+      id,
+    });
 
   const handleDeleteAll = async () => {
     for (const v of onderwerpVoorkeuren) {
       await deleteMutation.mutateAsync({
-        identificatieNummer: kvkNummer,
         identificatieType: "KVK",
-        voorkeurId: v.id!,
+        identificatieNummer: kvkNummer,
+        id: v.id!,
       });
     }
-    queryClient.invalidateQueries({ queryKey: ["profiel"] });
   };
 
   if (
     !kvkNummer ||
-    profielStatus === "pending" ||
+    voorkeurenStatus === "pending" ||
     onderwerpVoorkeuren.length === 0
   )
     return null;
@@ -59,7 +48,7 @@ const ActiveFilters = ({ kvkNummer }: { kvkNummer: string }) => {
           disabled={deleteMutation.isPending}
           className="inline-flex items-center gap-1 rounded bg-[#d9ebf7] px-2.5 py-1 text-xs font-medium text-[#154273] hover:bg-[#b8d4ec] disabled:opacity-50"
         >
-          {v.waarde}
+          {v.onderwerp}
           <span aria-hidden="true">&times;</span>
         </button>
       ))}

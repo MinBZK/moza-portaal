@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { components } from "@/network/profiel/generated";
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
 import { EditIcon } from "@/components/icons/editIcon";
@@ -32,10 +32,11 @@ export const TaalEditBox = ({
   const queryClient = useQueryClient();
 
   const [newValue, setNewValue] = useState(voorkeur?.waarde || "");
-
-  useEffect(() => {
+  const [prevWaarde, setPrevWaarde] = useState(voorkeur?.waarde);
+  if (voorkeur?.waarde !== prevWaarde) {
+    setPrevWaarde(voorkeur?.waarde);
     setNewValue(voorkeur?.waarde || "");
-  }, [voorkeur?.waarde]);
+  }
 
   return (
     <form
