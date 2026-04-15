@@ -3,9 +3,7 @@
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
 import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
 import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
-import { SUBJECT_GROUPS } from "./_voorkeurenBeheer";
-
-const ALL_SUBJECTS = SUBJECT_GROUPS.flatMap((g) => g.subjects);
+import { SUBJECT_GROUPS, ALL_SUBJECTS } from "./_subjectGroups";
 
 const VoorkeurenTopbar = ({ kvkNummer }: { kvkNummer: string }) => {
   const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(

@@ -1,73 +1,29 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { TYPE_LABELS, TYPE_COLORS } from "./_articleTypes";
+import PaginatedList, { type QueryStatus } from "./_paginatedList";
 import type { components } from "@/network/actualiteiten/generated";
 
 type ArticleSummary = components["schemas"]["EnrichedArticle"];
-
-const PAGE_SIZE = 10;
 
 const ArtikelenOverzicht = ({
   articles,
   status,
 }: {
   articles: ArticleSummary[];
-  status: "pending" | "error" | "success";
-}) => {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [prevArticles, setPrevArticles] = useState(articles);
-  if (articles !== prevArticles) {
-    setPrevArticles(articles);
-    setVisibleCount(PAGE_SIZE);
-  }
+  status: QueryStatus;
+}) => (
+  <PaginatedList
+    items={articles}
+    status={status}
+    emptyMessage="Geen resultaten gevonden."
+    getKey={(a) => a.identifier ?? ""}
+    renderItem={(a) => <ArticleRow article={a} />}
+  />
+);
 
-  const visible = articles.slice(0, visibleCount);
-
-  return (
-    <div className="space-y-6">
-      {status === "pending" ? (
-        <p className="text-sm text-neutral-600">Laden...</p>
-      ) : status === "error" ? (
-        <p className="text-sm text-red-600">
-          Er ging iets mis bij het laden. Probeer het later opnieuw.
-        </p>
-      ) : articles.length === 0 ? (
-        <p className="text-sm text-neutral-600">
-          Geen resultaten gevonden.
-        </p>
-      ) : (
-        <>
-          <div className="divide-y divide-neutral-200">
-            {visible.map((article) => (
-              <ArticleRow key={article.identifier} article={article} />
-            ))}
-          </div>
-          {visibleCount < articles.length && (
-            <button
-              onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-              className="rounded bg-[#154273] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0e2f54]"
-            >
-              Meer laden
-            </button>
-          )}
-        </>
-      )}
-    </div>
-  );
-};
-
-function ArticleRow({
-  article,
-}: {
-  article: {
-    identifier?: string | null;
-    headLine?: string | null;
-    additionalType?: string | null;
-    dateModified?: string | null;
-  };
-}) {
+function ArticleRow({ article }: { article: ArticleSummary }) {
   const date = article.dateModified
     ? new Date(article.dateModified).toLocaleDateString("nl-NL", {
         day: "numeric",
@@ -100,9 +56,7 @@ function ArticleRow({
             </Link>
           </h4>
         </div>
-        {date && (
-          <p className="mt-0.5 text-sm text-neutral-600">{date}</p>
-        )}
+        {date && <p className="mt-0.5 text-sm text-neutral-600">{date}</p>}
       </div>
     </div>
   );

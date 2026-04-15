@@ -7,7 +7,7 @@ import { getArticles } from "@/network/actualiteiten/fetchers/getArticles";
 import { getSubsidies } from "@/network/actualiteiten/fetchers/getSubsidies";
 import { getBerichten } from "@/network/actualiteiten/fetchers/getBerichten";
 import type { components } from "@/network/actualiteiten/generated";
-import { type SectionKey } from "./_voorkeurenBeheer";
+import { type SectionKey } from "./_subjectGroups";
 
 type EnrichedArticle = components["schemas"]["EnrichedArticle"];
 type EnrichedSubsidie = components["schemas"]["EnrichedSubsidie"];

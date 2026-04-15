@@ -2,10 +2,8 @@
 
 import { type ReactNode, useState } from "react";
 import Card from "@/components/card";
-import VoorkeurenSidebar, {
-  type SectionKey,
-  SECTION_LABELS,
-} from "./_voorkeurenBeheer";
+import VoorkeurenSidebar from "./_voorkeurenBeheer";
+import { type SectionKey, SECTION_LABELS } from "./_subjectGroups";
 import VoorkeurenTopbar from "./_voorkeurenTopbar";
 import ActiveFilters from "./_activeFilters";
 import ArtikelenOverzicht from "./_artikelenOverzicht";
