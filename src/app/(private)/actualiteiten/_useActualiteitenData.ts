@@ -28,7 +28,6 @@ export interface ActualiteitenData {
   sectionCounts: Record<SectionKey, number | null>;
   hasPostcodes: boolean;
   postcodes: string[];
-  hasSubjectFilter: boolean;
   selectedSubjects: string[];
 }
 
@@ -114,7 +113,6 @@ export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
       sectionCounts,
       hasPostcodes: postcodes.length > 0,
       postcodes,
-      hasSubjectFilter: selectedSubjects.length > 0,
       selectedSubjects,
     };
   }, [

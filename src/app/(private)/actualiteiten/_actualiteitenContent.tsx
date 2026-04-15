@@ -44,7 +44,6 @@ const ActualiteitenContent = ({ kvkNummer }: { kvkNummer: string }) => {
             status={data.berichtenStatus}
             hasPostcodes={data.hasPostcodes}
             postcodes={data.postcodes}
-            hasSubjectFilter={data.hasSubjectFilter}
           />
         </CollapsibleSection>
       )}

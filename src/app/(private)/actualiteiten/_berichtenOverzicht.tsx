@@ -13,13 +13,11 @@ const BerichtenOverzicht = ({
   status,
   hasPostcodes,
   postcodes,
-  hasSubjectFilter,
 }: {
   berichten: SruPublicatie[];
   status: "pending" | "error" | "success";
   hasPostcodes: boolean;
   postcodes: string[];
-  hasSubjectFilter: boolean;
 }) => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [prevBerichten, setPrevBerichten] = useState(berichten);
@@ -55,8 +53,7 @@ const BerichtenOverzicht = ({
         </p>
       ) : berichten.length === 0 ? (
         <p className="text-sm text-neutral-600">
-          Geen berichten gevonden
-          {hasSubjectFilter ? " voor uw filters" : ""}.
+          Geen berichten gevonden.
         </p>
       ) : (
         <>
@@ -78,7 +75,6 @@ const BerichtenOverzicht = ({
 
       <p className="text-xs text-neutral-400">
         Op basis van uw postcodes: {postcodes.join(", ")}
-        {hasSubjectFilter && " — gefilterd op uw onderwerpen"}
       </p>
     </div>
   );
