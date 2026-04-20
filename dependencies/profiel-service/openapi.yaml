@@ -30,9 +30,8 @@ components:
         - Nederlands
         - Engels
         - Fries
-        - Papiaments
-        - Nedersaksisch
-        - Limburgs
+        - Papiamento
+        - Papiamentu
     ScopeRequest:
       type: object
       description: Scope waarop een contactgegeven of voorkeur betrekking heeft
