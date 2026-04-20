@@ -659,5 +659,5 @@ type ReadonlyArray<T> = [
 export const contactTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["ContactType"]> = ["Email", "Telefoonnummer", "Adres"];
 export const taalValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["Taal"]> = ["Nederlands", "Engels", "Fries", "Papiamento", "Papiamentu"];
 export const identificatieTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["IdentificatieType"]> = ["BSN", "KVK", "RSIN"];
-export const voorkeurTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]> = ["WebsiteTaal", "MagGebeldWorden", "WebsiteThema", "PostcodeInUwBuurt", "ActueleOnderwerpVoorkeur", "Aanhef"];
+export const voorkeurTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]> = ["WebsiteTaal", "MagGebeldWorden", "WebsiteThema", "Aanhef"];
 export type operations = Record<string, never>;
