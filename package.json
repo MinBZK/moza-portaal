@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives --max-warnings=0",
     "prettier": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "generate:profiel": "openapi-typescript ./dependencies/profiel-service/openapi.yaml -o ./src/network/profiel/generated.ts",
+    "generate:profiel": "openapi-typescript ./dependencies/profiel-service/openapi.yaml -o ./src/network/profiel/generated.ts --enum-values",
     "generate:omc": "openapi-typescript ./dependencies/omc/swagger.json -o ./src/network/omc/generated.ts",
     "generate:mock": "openapi-typescript ./dependencies/mock/swagger.json -o ./src/network/mock/generated.ts",
     "generate:kvk:organisatieregister": "openapi-typescript dependencies/kvk/organisatieregister.yaml -o ./src/network/kvk/organisatieregister/generated.ts",
@@ -21,7 +21,7 @@
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-form": "^1.11.1",
-    "@tanstack/react-query": "^5.76.1",
+    "@tanstack/react-query": "^5.90.20",
     "date-fns": "^4.1.0",
     "fast-xml-parser": "^5.5.0",
     "msw": "^2.8.2",
@@ -32,7 +32,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.2.3",
     "tailwind-variants": "^1.0.0",
-    "zod": "^4.3.5"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

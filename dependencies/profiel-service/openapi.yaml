@@ -2,15 +2,15 @@
 openapi: 3.1.0
 components:
   schemas:
-    AfdelingRequest:
+    DienstRequest:
       type: object
       required:
         - beschrijving
-      description: Request object voor het toevoegen van een afdeling aan een dienstverlener
+      description: Request object voor het toevoegen van een dienst aan een dienstverlener
       properties:
         beschrijving:
           type: string
-    AfdelingResponse:
+    DienstResponse:
       type: object
       properties:
         id:
@@ -24,6 +24,33 @@ components:
         - Email
         - Telefoonnummer
         - Adres
+    Taal:
+      type: string
+      enum:
+        - Nederlands
+        - Engels
+        - Fries
+        - Papiamento
+        - Papiamentu
+    ScopeRequest:
+      type: object
+      description: Scope waarop een contactgegeven of voorkeur betrekking heeft
+      properties:
+        scopeIdentificatieType:
+          $ref: "#/components/schemas/IdentificatieType"
+        scopeIdentificatieNummer:
+          type: string
+        dienstId:
+          type: integer
+          format: int64
+    ScopeResponse:
+      type: object
+      description: Scope waarop een contactgegeven of voorkeur betrekking heeft
+      properties:
+        partij:
+          $ref: "#/components/schemas/IdentificatieResponse"
+        dienst:
+          $ref: "#/components/schemas/DienstResponse"
     ContactgegevenRequest:
       type: object
       required:
@@ -33,13 +60,16 @@ components:
         Request object voor het toevoegen van een contactgegeven aan een
         partij
       properties:
-        afdelingId:
-          type: integer
-          format: int64
         type:
           $ref: "#/components/schemas/ContactType"
         waarde:
           type: string
+        taal:
+          $ref: "#/components/schemas/Taal"
+        terAttentieVan:
+          type: string
+        scope:
+          $ref: "#/components/schemas/ScopeRequest"
     ContactgegevenResponse:
       type: object
       properties:
@@ -50,23 +80,30 @@ components:
           $ref: "#/components/schemas/ContactType"
         waarde:
           type: string
+        taal:
+          $ref: "#/components/schemas/Taal"
+        terAttentieVan:
+          type: string
         isGeverifieerd:
           type: boolean
-        afdeling:
-          $ref: "#/components/schemas/AfdelingResponse"
+        scope:
+          $ref: "#/components/schemas/ScopeResponse"
     ContactgegevenUpdateRequest:
       type: object
       required:
         - type
         - waarde
       properties:
-        afdelingId:
-          type: integer
-          format: int64
         type:
           $ref: "#/components/schemas/ContactType"
         waarde:
           type: string
+        taal:
+          $ref: "#/components/schemas/Taal"
+        terAttentieVan:
+          type: string
+        scope:
+          $ref: "#/components/schemas/ScopeRequest"
         id:
           type: integer
           format: int64
@@ -119,7 +156,7 @@ components:
           type: string
         dienstverlenerOin:
           type: string
-        afdelingBeschrijving:
+        dienstBeschrijving:
           type: string
     PartijResponse:
       type: object
@@ -149,6 +186,8 @@ components:
           $ref: "#/components/schemas/VoorkeurType"
         waarde:
           type: string
+        scope:
+          $ref: "#/components/schemas/ScopeRequest"
     VoorkeurResponse:
       type: object
       properties:
@@ -159,6 +198,8 @@ components:
           $ref: "#/components/schemas/VoorkeurType"
         waarde:
           type: string
+        scope:
+          $ref: "#/components/schemas/ScopeResponse"
     VoorkeurType:
       type: string
       enum:
@@ -167,6 +208,7 @@ components:
         - WebsiteThema
         - PostcodeInUwBuurt
         - ActueleOnderwerpVoorkeur
+        - Aanhef
     VoorkeurUpdateRequest:
       type: object
       required:
@@ -177,12 +219,14 @@ components:
           $ref: "#/components/schemas/VoorkeurType"
         waarde:
           type: string
+        scope:
+          $ref: "#/components/schemas/ScopeRequest"
         id:
           type: integer
           format: int64
 tags:
   - name: Dienstverlener
-    description: Endpoints voor het beheren van dienstverleners en afdelingen
+    description: Endpoints voor het beheren van dienstverleners en diensten
   - name: EmailVerificatie
     description: Endpoints voor het verifiëren van emails
   - name: Profiel
@@ -192,7 +236,7 @@ paths:
     put:
       summary: Update contactgegeven van een partij
       description:
-        "Werk type, waarde en afdeling van een contactgegeven bij. Identificatie\
+        "Werk type, waarde en scope van een contactgegeven bij. Identificatie\
         \ kan niet aangepast worden."
       tags:
         - Profiel
@@ -299,10 +343,10 @@ paths:
         "400":
           description: Bad Request
       summary: Add Dienstverlener
-  /api/profielservice/v1/dienstverlener/{DienstverlenerNaam}/afdelingen:
+  /api/profielservice/v1/dienstverlener/{DienstverlenerNaam}/diensten:
     post:
-      summary: Voegt een afdeling toe aan een dienstverlener
-      description: Voegt een nieuwe afdeling toe met beschrijving
+      summary: Voegt een dienst toe aan een dienstverlener
+      description: Voegt een nieuwe dienst toe met beschrijving
       tags:
         - Dienstverlener
       parameters:
@@ -315,11 +359,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AfdelingRequest"
+              $ref: "#/components/schemas/DienstRequest"
         required: true
       responses:
         "201":
-          description: Afdeling succesvol toegevoegd
+          description: Dienst succesvol toegevoegd
         "404":
           description: Dienstverlener niet gevonden
         "400":
@@ -340,7 +384,7 @@ paths:
           content:
             application/json:
               schema: {}
-      summary: Get Afdelingen Dienstverlener
+      summary: Get Diensten Dienstverlener
   /api/profielservice/v1/emailverificatie:
     post:
       tags:
@@ -364,7 +408,7 @@ paths:
     put:
       summary: Update voorkeur van een partij
       description:
-        "Werk type, waarde en afdeling van een voorkeur bij. Identificatie\
+        "Werk type, waarde en scope van een voorkeur bij. Identificatie\
         \ kan niet aangepast worden."
       tags:
         - Profiel
@@ -469,7 +513,7 @@ paths:
           required: true
           schema:
             $ref: "#/components/schemas/IdentificatieType"
-        - name: afdelingBeschrijving
+        - name: dienstBeschrijving
           in: query
           schema:
             type: string
