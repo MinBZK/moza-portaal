@@ -548,7 +548,7 @@ export interface components {
         /** @enum {string} */
         ContactType: "Email" | "Telefoonnummer" | "Adres";
         /** @enum {string} */
-        Taal: "Nederlands" | "Engels" | "Fries" | "Papiaments" | "Nedersaksisch" | "Limburgs";
+        Taal: "Nederlands" | "Engels" | "Fries" | "Papiamento" | "Papiamentu";
         /** @description Scope waarop een contactgegeven of voorkeur betrekking heeft */
         ScopeRequest: {
             scopeIdentificatieType?: components["schemas"]["IdentificatieType"];
@@ -648,4 +648,16 @@ export interface components {
     pathItems: never;
 }
 export type $defs = Record<string, never>;
+type FlattenedDeepRequired<T> = {
+    [K in keyof T]-?: FlattenedDeepRequired<T[K] extends unknown[] | undefined | null ? Extract<T[K], unknown[]>[number] : T[K]>;
+};
+type ReadonlyArray<T> = [
+    Exclude<T, undefined>
+] extends [
+    unknown[]
+] ? Readonly<Exclude<T, undefined>> : Readonly<Exclude<T, undefined>[]>;
+export const contactTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["ContactType"]> = ["Email", "Telefoonnummer", "Adres"];
+export const taalValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["Taal"]> = ["Nederlands", "Engels", "Fries", "Papiamento", "Papiamentu"];
+export const identificatieTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["IdentificatieType"]> = ["BSN", "KVK", "RSIN"];
+export const voorkeurTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]> = ["WebsiteTaal", "MagGebeldWorden", "WebsiteThema", "PostcodeInUwBuurt", "ActueleOnderwerpVoorkeur", "Aanhef"];
 export type operations = Record<string, never>;

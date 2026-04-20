@@ -1,20 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { components } from "@/network/profiel/generated";
+import { components, taalValues } from "@/network/profiel/generated";
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
 import { EditIcon } from "@/components/icons/editIcon";
 import { useQueryClient } from "@tanstack/react-query";
 import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
-const taalOpties: components["schemas"]["Taal"][] = [
-  "Nederlands",
-  "Engels",
-  "Fries",
-  "Papiaments",
-  "Nedersaksisch",
-  "Limburgs",
-];
 
 export const TaalEditBox = ({
   idenType,
@@ -86,7 +78,7 @@ export const TaalEditBox = ({
                 onChange={(e) => setNewValue(e.target.value)}
               >
                 <option value="">Selecteer een taal</option>
-                {taalOpties.map((taal) => (
+                {taalValues.map((taal) => (
                   <option key={taal} value={taal}>
                     {taal}
                   </option>
