@@ -565,8 +565,6 @@ export interface components {
         ContactgegevenRequest: {
             type: components["schemas"]["ContactType"];
             waarde: string;
-            taal?: components["schemas"]["Taal"];
-            terAttentieVan?: string;
             scope?: components["schemas"]["ScopeRequest"];
         };
         ContactgegevenResponse: {
@@ -574,16 +572,17 @@ export interface components {
             id?: number;
             type?: components["schemas"]["ContactType"];
             waarde?: string;
-            taal?: components["schemas"]["Taal"];
-            terAttentieVan?: string;
             isGeverifieerd?: boolean;
+            nogSteedsValide?: boolean;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            lastUpdated?: string;
             scope?: components["schemas"]["ScopeResponse"];
         };
         ContactgegevenUpdateRequest: {
             type: components["schemas"]["ContactType"];
             waarde: string;
-            taal?: components["schemas"]["Taal"];
-            terAttentieVan?: string;
             scope?: components["schemas"]["ScopeRequest"];
             /** Format: int64 */
             id?: number;
@@ -629,6 +628,10 @@ export interface components {
             id?: number;
             voorkeurType?: components["schemas"]["VoorkeurType"];
             waarde?: string;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            lastUpdated?: string;
             scope?: components["schemas"]["ScopeResponse"];
         };
         /** @enum {string} */

@@ -31,19 +31,14 @@ export interface ActualiteitenData {
   selectedSubjects: string[];
 }
 
-export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
-  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
-    "KVK",
-    kvkNummer,
+export function useActualiteitenData(): ActualiteitenData {
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
+
+  const selectedSubjects = (voorkeuren?.onderwerpen ?? []).map(
+    (v) => v.onderwerp,
   );
 
-  const selectedSubjects = (voorkeuren?.onderwerpen ?? [])
-    .map((v) => v.onderwerp!)
-    .filter(Boolean);
-
-  const postcodes = (voorkeuren?.postcodes ?? [])
-    .map((v) => v.postcode!)
-    .filter(Boolean);
+  const postcodes = (voorkeuren?.postcodes ?? []).map((v) => v.postcode);
 
   const { data: articlesData, status: articlesStatus } = useQuery({
     queryKey: ["actualiteiten", "articles", selectedSubjects],
@@ -66,8 +61,8 @@ export function useActualiteitenData(kvkNummer: string): ActualiteitenData {
   });
 
   const { data: berichtenData, status: berichtenStatus } = useQuery({
-    queryKey: ["actualiteiten", "berichten", kvkNummer],
-    queryFn: () => getBerichten("KVK", kvkNummer),
+    queryKey: ["actualiteiten", "berichten"],
+    queryFn: () => getBerichten(),
     staleTime: 1000 * 60 * 60,
     enabled: postcodes.length > 0,
   });

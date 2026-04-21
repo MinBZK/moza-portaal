@@ -3,48 +3,31 @@
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
 import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
 
-const ActiveFilters = ({ kvkNummer }: { kvkNummer: string }) => {
-  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
-    "KVK",
-    kvkNummer,
-  );
+const ActiveFilters = () => {
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const deleteMutation = useDeleteOnderwerpVoorkeur();
 
-  const onderwerpVoorkeuren = (voorkeuren?.onderwerpen ?? []).filter(
-    (v) => v.id != null,
-  );
+  const onderwerpVoorkeuren = voorkeuren?.onderwerpen ?? [];
 
-  const handleDelete = (id: number) =>
-    deleteMutation.mutate({
-      identificatieType: "KVK",
-      identificatieNummer: kvkNummer,
-      id,
-    });
+  const handleDelete = (id: number) => deleteMutation.mutate({ id });
 
   const handleDeleteAll = async () => {
     for (const v of onderwerpVoorkeuren) {
-      await deleteMutation.mutateAsync({
-        identificatieType: "KVK",
-        identificatieNummer: kvkNummer,
-        id: v.id!,
-      });
+      await deleteMutation.mutateAsync({ id: v.id });
     }
   };
 
-  if (
-    !kvkNummer ||
-    voorkeurenStatus === "pending" ||
-    onderwerpVoorkeuren.length === 0
-  )
+  if (voorkeurenStatus === "pending" || onderwerpVoorkeuren.length === 0) {
     return null;
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-2">
       {onderwerpVoorkeuren.map((v) => (
         <button
           key={v.id}
-          onClick={() => handleDelete(v.id!)}
+          onClick={() => handleDelete(v.id)}
           disabled={deleteMutation.isPending}
           className="inline-flex items-center gap-1 rounded bg-[#d9ebf7] px-2.5 py-1 text-xs font-medium text-[#154273] hover:bg-[#b8d4ec] disabled:opacity-50"
         >

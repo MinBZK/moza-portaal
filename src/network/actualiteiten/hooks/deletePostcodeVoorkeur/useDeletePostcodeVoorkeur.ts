@@ -4,15 +4,7 @@ import { deletePostcodeVoorkeur } from "./action";
 export const useDeletePostcodeVoorkeur = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      identificatieType,
-      identificatieNummer,
-      id,
-    }: {
-      identificatieType: string;
-      identificatieNummer: string;
-      id: number;
-    }) => deletePostcodeVoorkeur(identificatieType, identificatieNummer, id),
+    mutationFn: ({ id }: { id: number }) => deletePostcodeVoorkeur(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
     },

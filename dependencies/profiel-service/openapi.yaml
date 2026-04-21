@@ -64,10 +64,6 @@ components:
           $ref: "#/components/schemas/ContactType"
         waarde:
           type: string
-        taal:
-          $ref: "#/components/schemas/Taal"
-        terAttentieVan:
-          type: string
         scope:
           $ref: "#/components/schemas/ScopeRequest"
     ContactgegevenResponse:
@@ -80,12 +76,16 @@ components:
           $ref: "#/components/schemas/ContactType"
         waarde:
           type: string
-        taal:
-          $ref: "#/components/schemas/Taal"
-        terAttentieVan:
-          type: string
         isGeverifieerd:
           type: boolean
+        nogSteedsValide:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
         scope:
           $ref: "#/components/schemas/ScopeResponse"
     ContactgegevenUpdateRequest:
@@ -97,10 +97,6 @@ components:
         type:
           $ref: "#/components/schemas/ContactType"
         waarde:
-          type: string
-        taal:
-          $ref: "#/components/schemas/Taal"
-        terAttentieVan:
           type: string
         scope:
           $ref: "#/components/schemas/ScopeRequest"
@@ -198,6 +194,12 @@ components:
           $ref: "#/components/schemas/VoorkeurType"
         waarde:
           type: string
+        createdAt:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
         scope:
           $ref: "#/components/schemas/ScopeResponse"
     VoorkeurType:

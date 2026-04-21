@@ -21,12 +21,12 @@ const DEFAULT_SECTIONS: Record<SectionKey, boolean> = {
   subsidies: true,
 };
 
-const ActualiteitenContent = ({ kvkNummer }: { kvkNummer: string }) => {
+const ActualiteitenContent = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("sidebar");
   const [visibleSections, setVisibleSections] =
     useState<Record<SectionKey, boolean>>(DEFAULT_SECTIONS);
 
-  const data = useActualiteitenData(kvkNummer);
+  const data = useActualiteitenData();
   const subjectCounts = useSubjectCounts();
 
   const toggleSection = (key: SectionKey) => {
@@ -116,7 +116,6 @@ const ActualiteitenContent = ({ kvkNummer }: { kvkNummer: string }) => {
           <aside className="w-full shrink-0 lg:w-64">
             <Card className="sticky top-4">
               <VoorkeurenSidebar
-                kvkNummer={kvkNummer}
                 visibleSections={visibleSections}
                 onToggleSection={toggleSection}
                 sectionCounts={data.sectionCounts}
@@ -127,7 +126,7 @@ const ActualiteitenContent = ({ kvkNummer }: { kvkNummer: string }) => {
 
           {/* Main content */}
           <div className="min-w-0 flex-1 space-y-6">
-            <ActiveFilters kvkNummer={kvkNummer} />
+            <ActiveFilters />
             {sections}
           </div>
         </div>
@@ -138,7 +137,7 @@ const ActualiteitenContent = ({ kvkNummer }: { kvkNummer: string }) => {
             <p className="text-sm text-neutral-600">
               Selecteer onderwerpen om relevante artikelen en informatie te zien.
             </p>
-            <VoorkeurenTopbar kvkNummer={kvkNummer} />
+            <VoorkeurenTopbar />
 
             {/* Section toggles inline */}
             <div className="flex flex-wrap gap-3 border-t border-neutral-200 pt-3">

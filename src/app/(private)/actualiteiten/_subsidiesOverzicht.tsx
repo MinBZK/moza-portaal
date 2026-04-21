@@ -17,7 +17,7 @@ const SubsidiesOverzicht = ({
     items={subsidies}
     status={status}
     emptyMessage="Geen subsidies gevonden."
-    getKey={(s) => s.identifier ?? ""}
+    getKey={(s) => s.identifier}
     renderItem={(s) => <SubsidieRow subsidie={s} />}
   />
 );

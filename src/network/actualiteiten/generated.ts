@@ -49,7 +49,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/berichten/{identificatieType}/{identificatieNummer}": {
+    "/api/actualiteitenservice/v1/berichten": {
         parameters: {
             query?: never;
             header?: never;
@@ -57,17 +57,14 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Berichten voor een partij
+         * Berichten voor de ingelogde partij
          * @description Leest de postcode-voorkeuren van de partij uit, haalt per postcode bekendmakingen op uit de SRU (gecached), en retourneert een gededupliceerde, op datum gesorteerde lijst.
          */
         get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    identificatieNummer: string;
-                    identificatieType: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;
@@ -214,7 +211,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/favoriet/{identificatieType}/{identificatieNummer}": {
+    "/api/actualiteitenservice/v1/voorkeuren": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Alle voorkeuren voor de ingelogde partij */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["VoorkeurenResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/actualiteitenservice/v1/voorkeuren/favoriet": {
         parameters: {
             query?: never;
             header?: never;
@@ -228,10 +261,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    identificatieNummer: string;
-                    identificatieType: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody: {
@@ -264,7 +294,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/favoriet/{identificatieType}/{identificatieNummer}/{id}": {
+    "/api/actualiteitenservice/v1/voorkeuren/favoriet/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -281,8 +311,6 @@ export interface paths {
                 header?: never;
                 path: {
                     id: number;
-                    identificatieNummer: string;
-                    identificatieType: string;
                 };
                 cookie?: never;
             };
@@ -304,7 +332,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}": {
+    "/api/actualiteitenservice/v1/voorkeuren/onderwerp": {
         parameters: {
             query?: never;
             header?: never;
@@ -318,10 +346,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    identificatieNummer: string;
-                    identificatieType: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody: {
@@ -354,7 +379,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}/{id}": {
+    "/api/actualiteitenservice/v1/voorkeuren/onderwerp/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -371,8 +396,6 @@ export interface paths {
                 header?: never;
                 path: {
                     id: number;
-                    identificatieNummer: string;
-                    identificatieType: string;
                 };
                 cookie?: never;
             };
@@ -394,7 +417,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}": {
+    "/api/actualiteitenservice/v1/voorkeuren/postcode": {
         parameters: {
             query?: never;
             header?: never;
@@ -408,10 +431,7 @@ export interface paths {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    identificatieNummer: string;
-                    identificatieType: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody: {
@@ -444,7 +464,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}/{id}": {
+    "/api/actualiteitenservice/v1/voorkeuren/postcode/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -461,8 +481,6 @@ export interface paths {
                 header?: never;
                 path: {
                     id: number;
-                    identificatieNummer: string;
-                    identificatieType: string;
                 };
                 cookie?: never;
             };
@@ -484,56 +502,17 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/actualiteitenservice/v1/voorkeuren/{identificatieType}/{identificatieNummer}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Alle voorkeuren voor een partij */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    identificatieNummer: string;
-                    identificatieType: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["VoorkeurenResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         ArticlesResponse: {
-            articles?: components["schemas"]["EnrichedArticle"][];
+            articles: components["schemas"]["EnrichedArticle"][];
             /** Format: int32 */
             total?: number;
         };
         EnrichedArticle: {
-            identifier?: string;
+            identifier: string;
             headLine?: string;
             additionalType?: string;
             url?: string;
@@ -541,7 +520,7 @@ export interface components {
             subjects?: string[];
         };
         EnrichedSubsidie: {
-            identifier?: string;
+            identifier: string;
             title?: string;
             url?: string;
             dateModified?: string;
@@ -550,10 +529,10 @@ export interface components {
         };
         FavorietItem: {
             /** Format: int64 */
-            id?: number;
-            articleId?: string;
-            articleType?: string;
-            addedAt?: components["schemas"]["Instant"];
+            id: number;
+            articleId: string;
+            articleType: string;
+            addedAt: components["schemas"]["Instant"];
         };
         FavorietRequest: {
             articleId?: string;
@@ -566,23 +545,23 @@ export interface components {
         Instant: string;
         OnderwerpItem: {
             /** Format: int64 */
-            id?: number;
-            onderwerp?: string;
+            id: number;
+            onderwerp: string;
         };
         OnderwerpRequest: {
             onderwerp?: string;
         };
         PostcodeItem: {
             /** Format: int64 */
-            id?: number;
-            postcode?: string;
+            id: number;
+            postcode: string;
         };
         PostcodeRequest: {
             postcode?: string;
         };
         SruPublicatie: {
-            id?: string;
-            title?: string;
+            id: string;
+            title: string;
             type?: string;
             creator?: string;
             modified?: string;
@@ -596,14 +575,14 @@ export interface components {
             publicatienaam?: string;
         };
         SubsidiesResponse: {
-            subsidies?: components["schemas"]["EnrichedSubsidie"][];
+            subsidies: components["schemas"]["EnrichedSubsidie"][];
             /** Format: int32 */
             total?: number;
         };
         VoorkeurenResponse: {
-            postcodes?: components["schemas"]["PostcodeItem"][];
-            onderwerpen?: components["schemas"]["OnderwerpItem"][];
-            favorieten?: components["schemas"]["FavorietItem"][];
+            postcodes: components["schemas"]["PostcodeItem"][];
+            onderwerpen: components["schemas"]["OnderwerpItem"][];
+            favorieten: components["schemas"]["FavorietItem"][];
         };
     };
     responses: never;

@@ -5,37 +5,23 @@ import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderw
 import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
 import { SUBJECT_GROUPS, ALL_SUBJECTS } from "./_subjectGroups";
 
-const VoorkeurenTopbar = ({ kvkNummer }: { kvkNummer: string }) => {
-  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
-    "KVK",
-    kvkNummer,
-  );
+const VoorkeurenTopbar = () => {
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const addMutation = useAddOnderwerpVoorkeur();
   const deleteMutation = useDeleteOnderwerpVoorkeur();
 
   const onderwerpVoorkeuren = voorkeuren?.onderwerpen ?? [];
-  const selectedSubjects = onderwerpVoorkeuren
-    .map((v) => v.onderwerp!)
-    .filter(Boolean);
+  const selectedSubjects = onderwerpVoorkeuren.map((v) => v.onderwerp);
 
   const isMutating = addMutation.isPending || deleteMutation.isPending;
 
   const handleAdd = (subject: string) =>
-    addMutation.mutate({
-      identificatieType: "KVK",
-      identificatieNummer: kvkNummer,
-      onderwerp: subject,
-    });
+    addMutation.mutate({ onderwerp: subject });
 
-  const handleDelete = (id: number) =>
-    deleteMutation.mutate({
-      identificatieType: "KVK",
-      identificatieNummer: kvkNummer,
-      id,
-    });
+  const handleDelete = (id: number) => deleteMutation.mutate({ id });
 
-  if (!kvkNummer || voorkeurenStatus === "pending") return null;
+  if (voorkeurenStatus === "pending") return null;
 
   const availableSubjects = ALL_SUBJECTS.filter(
     (s) => !selectedSubjects.includes(s),
@@ -45,24 +31,22 @@ const VoorkeurenTopbar = ({ kvkNummer }: { kvkNummer: string }) => {
     <div className="space-y-3">
       {onderwerpVoorkeuren.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {onderwerpVoorkeuren.map((v) =>
-            v.id != null ? (
-              <span
-                key={v.id}
-                className="inline-flex items-center gap-1 rounded-full bg-[#d9ebf7] px-3 py-1 text-sm text-[#154273]"
+          {onderwerpVoorkeuren.map((v) => (
+            <span
+              key={v.id}
+              className="inline-flex items-center gap-1 rounded-full bg-[#d9ebf7] px-3 py-1 text-sm text-[#154273]"
+            >
+              {v.onderwerp}
+              <button
+                onClick={() => handleDelete(v.id)}
+                disabled={isMutating}
+                className="ml-1 text-[#154273]/50 hover:text-red-600 disabled:opacity-50"
+                title="Verwijderen"
               >
-                {v.onderwerp}
-                <button
-                  onClick={() => handleDelete(v.id!)}
-                  disabled={isMutating}
-                  className="ml-1 text-[#154273]/50 hover:text-red-600 disabled:opacity-50"
-                  title="Verwijderen"
-                >
-                  &times;
-                </button>
-              </span>
-            ) : null,
-          )}
+                &times;
+              </button>
+            </span>
+          ))}
         </div>
       )}
 

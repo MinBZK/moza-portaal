@@ -11,51 +11,36 @@ import {
 } from "./_subjectGroups";
 
 const VoorkeurenSidebar = ({
-  kvkNummer,
   visibleSections,
   onToggleSection,
   sectionCounts,
   subjectCounts,
 }: {
-  kvkNummer: string;
   visibleSections: Record<SectionKey, boolean>;
   onToggleSection: (key: SectionKey) => void;
   sectionCounts: Record<SectionKey, number | null>;
   subjectCounts: Record<string, number | null>;
 }) => {
-  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
-    "KVK",
-    kvkNummer,
-  );
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const addMutation = useAddOnderwerpVoorkeur();
   const deleteMutation = useDeleteOnderwerpVoorkeur();
 
   const onderwerpVoorkeuren = voorkeuren?.onderwerpen ?? [];
-  const selectedSubjects = onderwerpVoorkeuren
-    .map((v) => v.onderwerp!)
-    .filter(Boolean);
+  const selectedSubjects = onderwerpVoorkeuren.map((v) => v.onderwerp);
 
   const isMutating = addMutation.isPending || deleteMutation.isPending;
 
   const handleToggle = (subject: string) => {
     const existing = onderwerpVoorkeuren.find((v) => v.onderwerp === subject);
-    if (existing && existing.id != null) {
-      deleteMutation.mutate({
-        identificatieType: "KVK",
-        identificatieNummer: kvkNummer,
-        id: existing.id,
-      });
+    if (existing) {
+      deleteMutation.mutate({ id: existing.id });
     } else {
-      addMutation.mutate({
-        identificatieType: "KVK",
-        identificatieNummer: kvkNummer,
-        onderwerp: subject,
-      });
+      addMutation.mutate({ onderwerp: subject });
     }
   };
 
-  if (!kvkNummer || voorkeurenStatus === "pending") return null;
+  if (voorkeurenStatus === "pending") return null;
 
   return (
     <nav className="space-y-1" aria-label="Filters">

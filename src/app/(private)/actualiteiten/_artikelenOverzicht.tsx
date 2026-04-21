@@ -18,7 +18,7 @@ const ArtikelenOverzicht = ({
     items={articles}
     status={status}
     emptyMessage="Geen resultaten gevonden."
-    getKey={(a) => a.identifier ?? ""}
+    getKey={(a) => a.identifier}
     renderItem={(a) => <ArticleRow article={a} />}
   />
 );

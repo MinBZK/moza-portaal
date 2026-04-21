@@ -20,7 +20,7 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
     : publicatie.bronUrl || "";
   const hasExternalLink = !!externalUrl;
   const description = publicatie.abstract || "";
-  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id ?? "")}`;
+  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id)}`;
 
   return (
     <div className="flex items-start justify-between gap-2 py-2">
@@ -30,7 +30,7 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
             href={detailHref}
             className="text-[#01689b] underline decoration-1 underline-offset-2 hover:decoration-2"
           >
-            {publicatie.title || "Onbekende titel"}
+            {publicatie.title}
           </Link>
         </h3>
         {(date || description) && (

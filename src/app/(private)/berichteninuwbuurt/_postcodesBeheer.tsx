@@ -17,10 +17,7 @@ const PostcodesBeheer = () => {
     getKvkFromCookie().then(setKvkNummer);
   }, []);
 
-  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
-    "KVK",
-    kvkNummer ?? "",
-  );
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const addMutation = useAddPostcodeVoorkeur();
   const deleteMutation = useDeletePostcodeVoorkeur();
@@ -52,21 +49,12 @@ const PostcodesBeheer = () => {
     }
 
     addMutation.mutate(
-      {
-        identificatieType: "KVK",
-        identificatieNummer: kvkNummer!,
-        postcode: normalized,
-      },
+      { postcode: normalized },
       { onSuccess: () => setNewPostcode("") },
     );
   };
 
-  const handleDelete = (id: number) =>
-    deleteMutation.mutate({
-      identificatieType: "KVK",
-      identificatieNummer: kvkNummer!,
-      id,
-    });
+  const handleDelete = (id: number) => deleteMutation.mutate({ id });
 
   return (
     <div>
@@ -83,7 +71,7 @@ const PostcodesBeheer = () => {
             >
               {v.postcode}
               <button
-                onClick={() => handleDelete(v.id!)}
+                onClick={() => handleDelete(v.id)}
                 disabled={deleteMutation.isPending}
                 className="ml-1 text-neutral-400 hover:text-red-600 disabled:opacity-50"
                 title="Verwijderen"

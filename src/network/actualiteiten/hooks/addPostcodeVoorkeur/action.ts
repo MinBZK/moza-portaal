@@ -1,16 +1,14 @@
 "use server";
 
 import actualiteitenClient from "@/network/actualiteiten";
+import { getAuthHeaders } from "@/network/authHeaders";
 
-export const addPostcodeVoorkeur = async (
-  identificatieType: string,
-  identificatieNummer: string,
-  postcode: string,
-) => {
+export const addPostcodeVoorkeur = async (postcode: string) => {
+  const headers = await getAuthHeaders();
   const response = await actualiteitenClient.POST(
-    "/api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}",
+    "/api/actualiteitenservice/v1/voorkeuren/postcode",
     {
-      params: { path: { identificatieType, identificatieNummer } },
+      headers,
       body: { postcode: postcode.toUpperCase().replace(/\s/g, "") },
     },
   );

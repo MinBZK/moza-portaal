@@ -1,16 +1,14 @@
 "use server";
 
 import actualiteitenClient from "@/network/actualiteiten";
+import { getAuthHeaders } from "@/network/authHeaders";
 
-export const addOnderwerpVoorkeur = async (
-  identificatieType: string,
-  identificatieNummer: string,
-  onderwerp: string,
-) => {
+export const addOnderwerpVoorkeur = async (onderwerp: string) => {
+  const headers = await getAuthHeaders();
   const response = await actualiteitenClient.POST(
-    "/api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}",
+    "/api/actualiteitenservice/v1/voorkeuren/onderwerp",
     {
-      params: { path: { identificatieType, identificatieNummer } },
+      headers,
       body: { onderwerp },
     },
   );

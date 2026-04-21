@@ -13,11 +13,13 @@ tags:
 - name: Subsidies
   description: "Ondernemersplein subsidies, enriched and filtered in-memory"
 - name: Voorkeuren
-  description: "Postcode-, onderwerp- en favoriet-voorkeuren per partij (via koppelcode)"
+  description: "Postcode-, onderwerp- en favoriet-voorkeuren per partij"
 components:
   schemas:
     ArticlesResponse:
       type: object
+      required:
+      - articles
       properties:
         articles:
           type: array
@@ -28,6 +30,8 @@ components:
           format: int32
     EnrichedArticle:
       type: object
+      required:
+      - identifier
       properties:
         identifier:
           type: string
@@ -45,6 +49,8 @@ components:
             type: string
     EnrichedSubsidie:
       type: object
+      required:
+      - identifier
       properties:
         identifier:
           type: string
@@ -64,6 +70,11 @@ components:
             type: string
     FavorietItem:
       type: object
+      required:
+      - id
+      - articleId
+      - articleType
+      - addedAt
       properties:
         id:
           type: integer
@@ -88,6 +99,9 @@ components:
       - 2022-03-10T16:15:50Z
     OnderwerpItem:
       type: object
+      required:
+      - id
+      - onderwerp
       properties:
         id:
           type: integer
@@ -101,6 +115,9 @@ components:
           type: string
     PostcodeItem:
       type: object
+      required:
+      - id
+      - postcode
       properties:
         id:
           type: integer
@@ -114,6 +131,9 @@ components:
           type: string
     SruPublicatie:
       type: object
+      required:
+      - id
+      - title
       properties:
         id:
           type: string
@@ -145,6 +165,8 @@ components:
           type: string
     SubsidiesResponse:
       type: object
+      required:
+      - subsidies
       properties:
         subsidies:
           type: array
@@ -155,6 +177,10 @@ components:
           format: int32
     VoorkeurenResponse:
       type: object
+      required:
+      - postcodes
+      - onderwerpen
+      - favorieten
       properties:
         postcodes:
           type: array
@@ -211,25 +237,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ArticlesResponse"
-  /api/actualiteitenservice/v1/berichten/{identificatieType}/{identificatieNummer}:
+  /api/actualiteitenservice/v1/berichten:
     get:
-      summary: Berichten voor een partij
+      summary: Berichten voor de ingelogde partij
       description: "Leest de postcode-voorkeuren van de partij uit, haalt per postcode\
         \ bekendmakingen op uit de SRU (gecached), en retourneert een gededupliceerde,\
         \ op datum gesorteerde lijst."
       tags:
       - Berichten
-      parameters:
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: OK
@@ -310,22 +325,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubsidiesResponse"
-  /api/actualiteitenservice/v1/voorkeuren/favoriet/{identificatieType}/{identificatieNummer}:
+  /api/actualiteitenservice/v1/voorkeuren:
+    get:
+      summary: Alle voorkeuren voor de ingelogde partij
+      tags:
+      - Voorkeuren
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoorkeurenResponse"
+  /api/actualiteitenservice/v1/voorkeuren/favoriet:
     post:
       summary: Voeg favoriet artikel toe
       tags:
       - Voorkeuren
-      parameters:
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -340,7 +356,7 @@ paths:
               schema: {}
         "400":
           description: Bad Request
-  /api/actualiteitenservice/v1/voorkeuren/favoriet/{identificatieType}/{identificatieNummer}/{id}:
+  /api/actualiteitenservice/v1/voorkeuren/favoriet/{id}:
     delete:
       summary: Verwijder favoriet artikel
       tags:
@@ -352,38 +368,17 @@ paths:
         schema:
           type: integer
           format: int64
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema: {}
-  /api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}:
+  /api/actualiteitenservice/v1/voorkeuren/onderwerp:
     post:
       summary: Voeg onderwerp-voorkeur toe
       tags:
       - Voorkeuren
-      parameters:
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -398,7 +393,7 @@ paths:
               schema: {}
         "400":
           description: Bad Request
-  /api/actualiteitenservice/v1/voorkeuren/onderwerp/{identificatieType}/{identificatieNummer}/{id}:
+  /api/actualiteitenservice/v1/voorkeuren/onderwerp/{id}:
     delete:
       summary: Verwijder onderwerp-voorkeur
       tags:
@@ -410,38 +405,17 @@ paths:
         schema:
           type: integer
           format: int64
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema: {}
-  /api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}:
+  /api/actualiteitenservice/v1/voorkeuren/postcode:
     post:
       summary: Voeg postcode-voorkeur toe
       tags:
       - Voorkeuren
-      parameters:
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
           application/json:
@@ -456,7 +430,7 @@ paths:
               schema: {}
         "400":
           description: Bad Request
-  /api/actualiteitenservice/v1/voorkeuren/postcode/{identificatieType}/{identificatieNummer}/{id}:
+  /api/actualiteitenservice/v1/voorkeuren/postcode/{id}:
     delete:
       summary: Verwijder postcode-voorkeur
       tags:
@@ -468,45 +442,12 @@ paths:
         schema:
           type: integer
           format: int64
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema: {}
-  /api/actualiteitenservice/v1/voorkeuren/{identificatieType}/{identificatieNummer}:
-    get:
-      summary: Alle voorkeuren voor een partij
-      tags:
-      - Voorkeuren
-      parameters:
-      - name: identificatieNummer
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: identificatieType
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VoorkeurenResponse"
 info:
   title: actualiteiten-service API
   version: 1.0.0-SNAPSHOT

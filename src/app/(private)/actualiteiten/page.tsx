@@ -13,7 +13,7 @@ const ActualiteitenPage = async () => {
     <>
       <h1 className="text-4xl">Actualiteiten</h1>
 
-      <ActualiteitenContent kvkNummer={kvk} />
+      <ActualiteitenContent />
     </>
   );
 };

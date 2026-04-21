@@ -4,15 +4,8 @@ import { addOnderwerpVoorkeur } from "./action";
 export const useAddOnderwerpVoorkeur = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      identificatieType,
-      identificatieNummer,
-      onderwerp,
-    }: {
-      identificatieType: string;
-      identificatieNummer: string;
-      onderwerp: string;
-    }) => addOnderwerpVoorkeur(identificatieType, identificatieNummer, onderwerp),
+    mutationFn: ({ onderwerp }: { onderwerp: string }) =>
+      addOnderwerpVoorkeur(onderwerp),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
     },

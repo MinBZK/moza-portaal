@@ -4,15 +4,8 @@ import { addPostcodeVoorkeur } from "./action";
 export const useAddPostcodeVoorkeur = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      identificatieType,
-      identificatieNummer,
-      postcode,
-    }: {
-      identificatieType: string;
-      identificatieNummer: string;
-      postcode: string;
-    }) => addPostcodeVoorkeur(identificatieType, identificatieNummer, postcode),
+    mutationFn: ({ postcode }: { postcode: string }) =>
+      addPostcodeVoorkeur(postcode),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
     },

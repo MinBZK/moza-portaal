@@ -15,21 +15,16 @@ const PublicatiesOverzicht = () => {
     getKvkFromCookie().then(setKvkNummer);
   }, []);
 
-  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren(
-    "KVK",
-    kvkNummer ?? "",
-  );
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const postcodes = (voorkeuren?.postcodes ?? [])
-    .map((v) => v.postcode!)
-    .filter(Boolean);
+  const postcodes = (voorkeuren?.postcodes ?? []).map((v) => v.postcode);
 
   const { data: publicaties = [], status: pubStatus } = useQuery({
-    queryKey: ["actualiteiten", "berichten", kvkNummer, postcodes],
-    queryFn: () => getBerichten("KVK", kvkNummer!),
-    enabled: Boolean(kvkNummer) && postcodes.length > 0,
+    queryKey: ["actualiteiten", "berichten", postcodes],
+    queryFn: () => getBerichten(),
+    enabled: postcodes.length > 0,
   });
 
   if (kvkNummer == null || voorkeurenStatus === "pending") return null;

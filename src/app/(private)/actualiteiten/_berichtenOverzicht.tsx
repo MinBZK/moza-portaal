@@ -39,7 +39,7 @@ const BerichtenOverzicht = ({
         status={status}
         pageSize={5}
         emptyMessage="Geen berichten gevonden."
-        getKey={(p, i) => p.id || p.preferredUrl || String(i)}
+        getKey={(p) => p.id}
         renderItem={(p) => <PublicatieRow publicatie={p} />}
         containerClassName="space-y-4"
       />
@@ -60,7 +60,7 @@ function PublicatieRow({ publicatie }: { publicatie: SruPublicatie }) {
     : "";
 
   const description = publicatie.abstract || "";
-  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id ?? "")}`;
+  const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id)}`;
 
   return (
     <div className="py-3">
@@ -69,7 +69,7 @@ function PublicatieRow({ publicatie }: { publicatie: SruPublicatie }) {
           href={detailHref}
           className="text-[#01689b] underline decoration-1 underline-offset-2 hover:decoration-2"
         >
-          {publicatie.title || "Onbekende titel"}
+          {publicatie.title}
         </Link>
       </h4>
       {(date || description) && (
