@@ -30,7 +30,7 @@ const PublicPage = () => {
         </div>
         <div className="relative mt-10 flex flex-col items-center justify-center space-y-12 px-4 text-center text-white">
           <h1 className="mb-4 text-4xl font-extrabold">
-            MijnOverheid Zakelijk
+            MijnOverheid Zakelijk (prototype)
           </h1>
           <p className="">
             Uw zakelijke communicatie met de overheid op één plek
@@ -106,7 +106,9 @@ const PublicPage = () => {
       <main className="border-b-ro-blue after:bg-ro-blue relative -mt-[80px] border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
         <div className="container mx-auto w-full space-y-5 py-4 md:w-3/5">
           <Card className="space-y-5">
-            <h1 className="text-3xl">Wat is MijnOverheid Zakelijk?</h1>
+            <h1 className="text-3xl">
+              Wat is het prototype van MijnOverheid Zakelijk?
+            </h1>
             <div className="space-y-4 border-t border-neutral-200 pt-4">
               <p>
                 Dit is een prototype-website voor het project{" "}
@@ -119,7 +121,13 @@ const PublicPage = () => {
               <p>
                 <span className="underline">Let op:</span> deze website bevat{" "}
                 <span className="underline">geen</span> echte DigiD/E-Herkenning
-                koppeling.
+                koppeling.{" "}
+              </p>
+              <p className="font-bold">
+                <span>
+                  Vul hier dan ook <span className="underline">geen</span>{" "}
+                  persoonlijke gegevens in!
+                </span>
               </p>
 
               <p>
