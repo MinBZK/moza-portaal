@@ -1,27 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { getKvkFromCookie } from "@/utils/kvknummer";
-import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
-import { useAddPostcodeVoorkeur } from "@/network/profiel/hooks/addPostcodeVoorkeur/useAddPostcodeVoorkeur";
-import { useDeletePostcodeVoorkeur } from "@/network/profiel/hooks/deletePostcodeVoorkeur/useDeletePostcodeVoorkeur";
+import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
+import { useAddPostcodeVoorkeur } from "@/network/actualiteiten/hooks/addPostcodeVoorkeur/useAddPostcodeVoorkeur";
+import { useDeletePostcodeVoorkeur } from "@/network/actualiteiten/hooks/deletePostcodeVoorkeur/useDeletePostcodeVoorkeur";
 
 const POSTCODE_REGEX = /^[1-9][0-9]{3}(\s?[A-Za-z]{2})?$/;
 const MAX_POSTCODES = 10;
 
-const normalizePostcode = (pc: string) =>
-  pc.toUpperCase().replace(/\s/g, "");
+const normalizePostcode = (pc: string) => pc.toUpperCase().replace(/\s/g, "");
 
 const PostcodesBeheer = () => {
   const [kvkNummer, setKvkNummer] = useState<string | undefined | null>(null);
   useEffect(() => {
     getKvkFromCookie().then(setKvkNummer);
   }, []);
-  const queryClient = useQueryClient();
 
-  const { data: profielData, status: profielStatus } =
-    useGetProfielInformation("KVK", kvkNummer ?? "");
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const addMutation = useAddPostcodeVoorkeur();
   const deleteMutation = useDeletePostcodeVoorkeur();
@@ -29,12 +25,9 @@ const PostcodesBeheer = () => {
   const [newPostcode, setNewPostcode] = useState("");
   const [error, setError] = useState("");
 
-  const voorkeuren = profielData?.data?.voorkeuren ?? [];
-  const postcodeVoorkeuren = voorkeuren.filter(
-    (v) => v.voorkeurType === "PostcodeInUwBuurt",
-  );
+  const postcodeVoorkeuren = voorkeuren?.postcodes ?? [];
 
-  if (kvkNummer == null || profielStatus === "pending") return null;
+  if (kvkNummer == null || voorkeurenStatus === "pending") return null;
 
   const handleAdd = () => {
     setError("");
@@ -45,7 +38,7 @@ const PostcodesBeheer = () => {
       return;
     }
 
-    if (postcodeVoorkeuren.some((v) => v.waarde === normalized)) {
+    if (postcodeVoorkeuren.some((v) => v.postcode === normalized)) {
       setError("Deze postcode is al toegevoegd.");
       return;
     }
@@ -56,34 +49,12 @@ const PostcodesBeheer = () => {
     }
 
     addMutation.mutate(
-      {
-        identificatieNummer: kvkNummer!,
-        identificatieType: "KVK",
-        postcode: normalized,
-      },
-      {
-        onSuccess: () => {
-          setNewPostcode("");
-          queryClient.invalidateQueries({ queryKey: ["profiel"] });
-        },
-      },
+      { postcode: normalized },
+      { onSuccess: () => setNewPostcode("") },
     );
   };
 
-  const handleDelete = (voorkeurId: number) => {
-    deleteMutation.mutate(
-      {
-        identificatieNummer: kvkNummer!,
-        identificatieType: "KVK",
-        voorkeurId,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["profiel"] });
-        },
-      },
-    );
-  };
+  const handleDelete = (id: number) => deleteMutation.mutate({ id });
 
   return (
     <div>
@@ -98,9 +69,9 @@ const PostcodesBeheer = () => {
               key={v.id}
               className="inline-flex items-center gap-1 rounded bg-neutral-100 px-3 py-1 font-mono text-sm"
             >
-              {v.waarde}
+              {v.postcode}
               <button
-                onClick={() => handleDelete(v.id!)}
+                onClick={() => handleDelete(v.id)}
                 disabled={deleteMutation.isPending}
                 className="ml-1 text-neutral-400 hover:text-red-600 disabled:opacity-50"
                 title="Verwijderen"

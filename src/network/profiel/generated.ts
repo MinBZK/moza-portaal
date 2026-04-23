@@ -565,8 +565,6 @@ export interface components {
         ContactgegevenRequest: {
             type: components["schemas"]["ContactType"];
             waarde: string;
-            taal?: components["schemas"]["Taal"];
-            terAttentieVan?: string;
             scope?: components["schemas"]["ScopeRequest"];
         };
         ContactgegevenResponse: {
@@ -574,16 +572,17 @@ export interface components {
             id?: number;
             type?: components["schemas"]["ContactType"];
             waarde?: string;
-            taal?: components["schemas"]["Taal"];
-            terAttentieVan?: string;
             isGeverifieerd?: boolean;
+            nogSteedsValide?: boolean;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            lastUpdated?: string;
             scope?: components["schemas"]["ScopeResponse"];
         };
         ContactgegevenUpdateRequest: {
             type: components["schemas"]["ContactType"];
             waarde: string;
-            taal?: components["schemas"]["Taal"];
-            terAttentieVan?: string;
             scope?: components["schemas"]["ScopeRequest"];
             /** Format: int64 */
             id?: number;
@@ -629,10 +628,14 @@ export interface components {
             id?: number;
             voorkeurType?: components["schemas"]["VoorkeurType"];
             waarde?: string;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            lastUpdated?: string;
             scope?: components["schemas"]["ScopeResponse"];
         };
         /** @enum {string} */
-        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "PostcodeInUwBuurt" | "ActueleOnderwerpVoorkeur" | "Aanhef";
+        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "Aanhef";
         VoorkeurUpdateRequest: {
             voorkeurType: components["schemas"]["VoorkeurType"];
             waarde: string;
@@ -659,5 +662,5 @@ type ReadonlyArray<T> = [
 export const contactTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["ContactType"]> = ["Email", "Telefoonnummer", "Adres"];
 export const taalValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["Taal"]> = ["Nederlands", "Engels", "Fries", "Papiamento", "Papiamentu"];
 export const identificatieTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["IdentificatieType"]> = ["BSN", "KVK", "RSIN"];
-export const voorkeurTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]> = ["WebsiteTaal", "MagGebeldWorden", "WebsiteThema", "PostcodeInUwBuurt", "ActueleOnderwerpVoorkeur", "Aanhef"];
+export const voorkeurTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]> = ["WebsiteTaal", "MagGebeldWorden", "WebsiteThema", "Aanhef"];
 export type operations = Record<string, never>;

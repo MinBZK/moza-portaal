@@ -1,10 +1,8 @@
 "use client";
 
 import { useQueries } from "@tanstack/react-query";
-import { getArticles } from "@/network/ondernemersplein/fetchers/getArticles";
-import { SUBJECT_GROUPS } from "./_voorkeurenBeheer";
-
-const ALL_SUBJECTS = SUBJECT_GROUPS.flatMap((g) => g.subjects);
+import { getArticles } from "@/network/actualiteiten/fetchers/getArticles";
+import { ALL_SUBJECTS } from "./_subjectGroups";
 
 export function useSubjectCounts(): Record<string, number | null> {
   const queries = useQueries({

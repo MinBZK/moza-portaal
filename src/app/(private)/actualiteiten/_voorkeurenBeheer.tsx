@@ -1,151 +1,49 @@
 "use client";
 
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
-import { useAddOnderwerpVoorkeur } from "@/network/profiel/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
-import { useDeleteOnderwerpVoorkeur } from "@/network/profiel/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
-
-export const SUBJECT_GROUPS: { label: string; subjects: string[] }[] = [
-  {
-    label: "Personeel",
-    subjects: [
-      "Personeel",
-      "Personeel aannemen en inhuren",
-      "Personeel ontslaan",
-      "Arbeidsvoorwaarden",
-      "Arbeidsomstandigheden en ziekte",
-      "Loon en vergoedingen",
-      "Buitenlands personeel",
-      "Identiteit van uw personeel",
-    ],
-  },
-  {
-    label: "Bedrijfsvoering",
-    subjects: [
-      "Bedrijfsvoering",
-      "Administratie",
-      "Juridische zaken",
-      "Verzekeringen en uitkeringen",
-      "Beveiliging en preventie",
-    ],
-  },
-  {
-    label: "Belastingen en financiën",
-    subjects: ["Belastingen en heffingen"],
-  },
-  {
-    label: "Internationaal ondernemen",
-    subjects: [
-      "Internationaal ondernemen",
-      "Exporteren",
-      "Importeren",
-      "Zakelijk vervoer en logistiek",
-    ],
-  },
-  {
-    label: "Duurzaamheid en omgeving",
-    subjects: [
-      "Klimaat, energie en natuur",
-      "Energie",
-      "Omgevingswet",
-      "Bedrijfshuisvesting",
-    ],
-  },
-  {
-    label: "Product, dienst en innovatie",
-    subjects: [
-      "Product, dienst en innovatie",
-      "Productveiligheid en verpakking",
-      "Verkoopvoorwaarden en reclame",
-    ],
-  },
-  {
-    label: "Bedrijf starten of stoppen",
-    subjects: [
-      "Bedrijf starten of overnemen",
-      "Bedrijf stoppen of overdragen",
-      "Bedrijf stoppen of failliet gaan",
-    ],
-  },
-];
-
-export const VOORKEUR_TYPE_ONDERWERP = "ActueleOnderwerpVoorkeur" as const;
-
-export type SectionKey = "berichten" | "informatie" | "regelgeving" | "subsidies";
-
-export const SECTION_LABELS: Record<SectionKey, string> = {
-  berichten: "Berichten over uw buurt",
-  informatie: "Informatie",
-  regelgeving: "Wetten en regelgeving",
-  subsidies: "Subsidies en financiering",
-};
+import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
+import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
+import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
+import {
+  SUBJECT_GROUPS,
+  SECTION_LABELS,
+  type SectionKey,
+} from "./_subjectGroups";
 
 const VoorkeurenSidebar = ({
-  kvkNummer,
   visibleSections,
   onToggleSection,
   sectionCounts,
   subjectCounts,
 }: {
-  kvkNummer: string;
   visibleSections: Record<SectionKey, boolean>;
   onToggleSection: (key: SectionKey) => void;
   sectionCounts: Record<SectionKey, number | null>;
   subjectCounts: Record<string, number | null>;
 }) => {
-  const queryClient = useQueryClient();
-
-  const { data: profielData, status: profielStatus } =
-    useGetProfielInformation("KVK", kvkNummer);
+  const { data: voorkeuren, status: voorkeurenStatus } = useGetVoorkeuren();
 
   const addMutation = useAddOnderwerpVoorkeur();
   const deleteMutation = useDeleteOnderwerpVoorkeur();
 
-  const voorkeuren = profielData?.data?.voorkeuren ?? [];
-  const onderwerpVoorkeuren = voorkeuren.filter(
-    (v) => v.voorkeurType === VOORKEUR_TYPE_ONDERWERP,
-  );
-  const selectedSubjects = onderwerpVoorkeuren
-    .map((v) => v.waarde!)
-    .filter(Boolean);
+  const onderwerpVoorkeuren = voorkeuren?.onderwerpen ?? [];
+  const selectedSubjects = onderwerpVoorkeuren.map((v) => v.onderwerp);
 
   const isMutating = addMutation.isPending || deleteMutation.isPending;
 
   const handleToggle = (subject: string) => {
-    const existing = onderwerpVoorkeuren.find((v) => v.waarde === subject);
-    if (existing && existing.id != null) {
-      deleteMutation.mutate(
-        {
-          identificatieNummer: kvkNummer,
-          identificatieType: "KVK",
-          voorkeurId: existing.id,
-        },
-        {
-          onSuccess: () =>
-            queryClient.invalidateQueries({ queryKey: ["profiel"] }),
-        },
-      );
+    const existing = onderwerpVoorkeuren.find((v) => v.onderwerp === subject);
+    if (existing) {
+      deleteMutation.mutate({ id: existing.id });
     } else {
-      addMutation.mutate(
-        {
-          identificatieNummer: kvkNummer,
-          identificatieType: "KVK",
-          onderwerp: subject,
-        },
-        {
-          onSuccess: () =>
-            queryClient.invalidateQueries({ queryKey: ["profiel"] }),
-        },
-      );
+      addMutation.mutate({ onderwerp: subject });
     }
   };
 
-  if (!kvkNummer || profielStatus === "pending") return null;
+  if (voorkeurenStatus === "pending") return null;
 
   return (
     <nav className="space-y-1" aria-label="Filters">
-      {/* Section visibility toggles */}
       <h2 className="mb-2 text-lg font-bold text-[#154273]">Secties</h2>
       <div className="mb-4 space-y-1 border-b border-neutral-200 pb-4">
         {(Object.keys(SECTION_LABELS) as SectionKey[]).map((key) => {
@@ -172,7 +70,6 @@ const VoorkeurenSidebar = ({
 
       <h2 className="mb-3 text-lg font-bold text-[#154273]">Onderwerpen</h2>
 
-      {/* Collapsible filter groups */}
       {SUBJECT_GROUPS.map((group) => (
         <FilterGroup
           key={group.label}

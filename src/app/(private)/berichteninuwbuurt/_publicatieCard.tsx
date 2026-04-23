@@ -1,5 +1,7 @@
 import Link from "next/link";
-import type { SruPublicatie } from "@/network/sru/types";
+import type { components } from "@/network/actualiteiten/generated";
+
+type SruPublicatie = components["schemas"]["SruPublicatie"];
 
 const isReadableUrl = (url: string) =>
   url && !url.endsWith(".xml") && !url.includes("/metadata/");
@@ -13,8 +15,8 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
       })
     : "";
 
-  const externalUrl = isReadableUrl(publicatie.preferredUrl)
-    ? publicatie.preferredUrl
+  const externalUrl = isReadableUrl(publicatie.preferredUrl ?? "")
+    ? publicatie.preferredUrl ?? ""
     : publicatie.bronUrl || "";
   const hasExternalLink = !!externalUrl;
   const description = publicatie.abstract || "";
@@ -28,7 +30,7 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
             href={detailHref}
             className="text-[#01689b] underline decoration-1 underline-offset-2 hover:decoration-2"
           >
-            {publicatie.title || "Onbekende titel"}
+            {publicatie.title}
           </Link>
         </h3>
         {(date || description) && (
