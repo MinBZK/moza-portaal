@@ -22,7 +22,7 @@
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-form": "^1.11.1",
-    "@tanstack/react-query": "^5.90.20",
+    "@tanstack/react-query": "^5.100.7",
     "date-fns": "^4.1.0",
     "fast-xml-parser": "^5.5.0",
     "msw": "^2.8.2",
