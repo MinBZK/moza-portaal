@@ -10,12 +10,14 @@ export const useUpdateVoorkeur = () =>
       voorkeurType,
       waarde,
       id,
+      scope,
     }: {
       identificatieNummer: string;
       identificatieType: components["schemas"]["IdentificatieType"];
       voorkeurType: components["schemas"]["VoorkeurType"];
       waarde: string;
-      id?: number;
+      id?: string;
+      scope?: components["schemas"]["ScopeRequest"];
     }) =>
       updateVoorkeur(
         identificatieNummer,
@@ -23,5 +25,6 @@ export const useUpdateVoorkeur = () =>
         voorkeurType,
         waarde,
         id,
+        scope,
       ),
   });
