@@ -7,31 +7,28 @@ export const updateEmail = async (
   identificatieNummer: string,
   identificatieType: components["schemas"]["IdentificatieType"],
   body: components["schemas"]["ContactgegevenUpdateRequest"],
+  isDefault: boolean = true, // TODO: caller should decide once multiple emails are supported
 ) => {
   if (body.id) {
-    const response = await profielClient.PUT(
-      "/api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}",
-      {
-        body,
-        params: {
-          path: {
-            identificatieNummer,
-            identificatieType,
-          },
-        },
+    const response = await profielClient.PUT("/api/profielservice/v1/contactgegeven", {
+      body: {
+        ...body,
+        identificatieNummer,
+        identificatieType,
+        isDefault,
       },
-    );
+    });
     return response.response.status;
   } else {
+    const { id: _id, ...postBody } = body;
     const response = await profielClient.POST(
-      "/api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}",
+      "/api/profielservice/v1/contactgegeven",
       {
-        body,
-        params: {
-          path: {
-            identificatieNummer,
-            identificatieType,
-          },
+        body: {
+          ...postBody,
+          identificatieNummer,
+          identificatieType,
+          isDefault,
         },
       },
     );

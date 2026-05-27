@@ -6,20 +6,24 @@ import { components } from "@/network/profiel/generated";
 type TParams = {
   identificatieNummer: string;
   identificatieType: components["schemas"]["IdentificatieType"];
+  dienstverlener?: string;
+  dienstNaam?: string;
 };
 
 export const getProfielInformation = async ({
   identificatieNummer,
   identificatieType,
+  dienstverlener,
+  dienstNaam,
 }: TParams) => {
-  const { data, response } = await profielClient.GET(
-    "/api/profielservice/v1/{identificatieType}/{identificatieNummer}",
+  const { data, response } = await profielClient.POST(
+    "/api/profielservice/v1/partij",
     {
-      params: {
-        path: {
-          identificatieType,
-          identificatieNummer,
-        },
+      body: {
+        identificatieNummer,
+        identificatieType,
+        dienstverlener,
+        dienstNaam,
       },
     },
   );

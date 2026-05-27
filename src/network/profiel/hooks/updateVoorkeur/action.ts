@@ -8,36 +8,31 @@ export const updateVoorkeur = async (
   identificatieType: components["schemas"]["IdentificatieType"],
   voorkeurType: components["schemas"]["VoorkeurType"],
   waarde: string,
-  id?: number,
+  id?: string,
+  scope?: components["schemas"]["ScopeRequest"],
 ) => {
   if (id) {
-    const response = await profielClient.PUT(
-      "/api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}",
-      {
-        body: {
-          id,
-          voorkeurType,
-          waarde,
-        },
-        params: {
-          path: { identificatieNummer, identificatieType },
-        },
+    const response = await profielClient.PUT("/api/profielservice/v1/voorkeur", {
+      body: {
+        id,
+        voorkeurType,
+        waarde,
+        identificatieNummer,
+        identificatieType,
+        scope,
       },
-    );
+    });
     return response.response.status;
   } else {
-    const response = await profielClient.POST(
-      "/api/profielservice/v1/voorkeur/{identificatieType}/{identificatieNummer}",
-      {
-        body: {
-          voorkeurType,
-          waarde,
-        },
-        params: {
-          path: { identificatieNummer, identificatieType },
-        },
+    const response = await profielClient.POST("/api/profielservice/v1/voorkeur", {
+      body: {
+        voorkeurType,
+        waarde,
+        identificatieNummer,
+        identificatieType,
+        scope,
       },
-    );
+    });
     return response.response.status;
   }
 };

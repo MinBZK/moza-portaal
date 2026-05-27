@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { components, taalValues } from "@/network/profiel/generated";
+import { components } from "@/network/profiel/generated";
+
+const taalValues = ["Nederlands", "Engels", "Fries", "Papiamento", "Papiamentu"] as const;
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
 import { EditIcon } from "@/components/icons/editIcon";
 import { useQueryClient } from "@tanstack/react-query";
