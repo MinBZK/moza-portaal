@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { components } from "@/network/profiel/generated";
 import {
   useUpdateOndernemengContactvoorkeur,
   useVerifyEmail,
+  useRequestVerificationCode,
 } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
 import { Icon } from "@/components/icons/infoIcon";
 import { Notification } from "@/components/notifications";
@@ -13,6 +14,8 @@ import { EditIcon } from "@/components/icons/editIcon";
 import { CheckCircleIcon } from "@/components/icons/checkCircleIcon";
 import { useQueryClient } from "@tanstack/react-query";
 import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
+
+const RESEND_COUNTDOWN_SECONDS = 10;
 
 const contactSchemas = {
   Email: z.string().email("Voer een geldig e-mailadres in"),
@@ -41,9 +44,13 @@ export const ContactEditBox = ({
   const [verificationSubmitted, setVerificationSubmitted] =
     useState<boolean>(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(RESEND_COUNTDOWN_SECONDS);
+  const [resendError, setResendError] = useState<string | undefined>();
+  const [resendSuccess, setResendSuccess] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutate: updateEmailMutate } = useUpdateOndernemengContactvoorkeur();
   const { mutate: emailVerifyMutate } = useVerifyEmail();
+  const { mutate: requestVerificationCodeMutate } = useRequestVerificationCode();
 
   const [newValue, setNewValue] = useState(contactGegeven?.waarde || "");
   const [verificationCode, setVerificationCode] = useState("");
@@ -51,6 +58,65 @@ export const ContactEditBox = ({
   const id = contactGegeven?.id;
   const isVerified = contactGegeven?.isGeverifieerd || false;
   const queryClient = useQueryClient();
+
+  const showResendSection =
+    name === "Email" && !isVerified && !!newValue && fieldState !== "edit";
+
+  const storageKey = `resend-end-time-${name}-${idenType}-${idenValue}`;
+
+  // On mount, restore remaining time from sessionStorage so tab switches don't reset the countdown
+  useEffect(() => {
+    const stored = sessionStorage.getItem(storageKey);
+    if (stored) {
+      const remaining = Math.max(0, Math.ceil((parseInt(stored) - Date.now()) / 1000));
+      setResendCountdown(remaining);
+    }
+  }, [storageKey]);
+
+  // Store end time the first time the resend section becomes visible
+  useEffect(() => {
+    if (!showResendSection) return;
+    if (!sessionStorage.getItem(storageKey)) {
+      sessionStorage.setItem(storageKey, (Date.now() + RESEND_COUNTDOWN_SECONDS * 1000).toString());
+    }
+  }, [showResendSection, storageKey]);
+
+  useEffect(() => {
+    if (!showResendSection || resendCountdown === 0) return;
+    const timer = setTimeout(() => setResendCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendCountdown, showResendSection]);
+
+  const handleResendVerification = () => {
+    if (resendCountdown > 0) return;
+    setResendError(undefined);
+    setResendSuccess(false);
+    const endTime = Date.now() + RESEND_COUNTDOWN_SECONDS * 1000;
+    sessionStorage.setItem(storageKey, endTime.toString());
+    setResendCountdown(RESEND_COUNTDOWN_SECONDS);
+    requestVerificationCodeMutate(
+      {
+        body: {
+          email: newValue,
+          identificatieNummer: idenValue,
+          identificatieType: idenType,
+        },
+      },
+      {
+        onSuccess: () => {
+          setResendSuccess(true);
+        },
+        onError: (error: Error) => {
+          const isServiceUnavailable = error.message === "SERVICE_UNAVAILABLE";
+          setResendError(
+            isServiceUnavailable
+              ? "De verificatieservice is momenteel niet beschikbaar. Probeer het later opnieuw."
+              : "Er is een fout opgetreden bij het aanvragen van de verificatiecode. Probeer het later opnieuw.",
+          );
+        },
+      },
+    );
+  };
 
   return (
     <form
@@ -87,6 +153,11 @@ export const ContactEditBox = ({
             {
               onSuccess: () => {
                 setFieldState("view");
+                const newEndTime = Date.now() + RESEND_COUNTDOWN_SECONDS * 1000;
+                sessionStorage.setItem(storageKey, newEndTime.toString());
+                setResendCountdown(RESEND_COUNTDOWN_SECONDS);
+                setResendError(undefined);
+                setResendSuccess(false);
                 queryClient.invalidateQueries({
                   queryKey: ["profiel", idenType, idenValue],
                 });
@@ -161,9 +232,6 @@ export const ContactEditBox = ({
                     } else {
                       setErrorMessage(undefined);
                     }
-                  } else if (hasSubmitted && name !== "Email") {
-                    // Clear error message for non-email fields after submission
-                    setErrorMessage(undefined);
                   }
                 }}
               />
@@ -177,46 +245,7 @@ export const ContactEditBox = ({
               </div>
             </div>
           ) : newValue ? (
-            <div className="flex flex-col gap-6">
-              <span>{newValue}</span>
-              {!isVerified && (
-                <div className="flex flex-col gap-2">
-                  <Notification variant="warning">
-                    {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.`}
-                  </Notification>
-
-                  <div className="flex flex-row items-center gap-3">
-                    <label
-                      htmlFor={`verificationCode-field-${name}-${id}`}
-                      className="font-bold"
-                    >
-                      {"Verificatiecode:"}
-                    </label>
-                    <input
-                      ref={inputRef}
-                      id={`verificationCode-field-${name}-${id}`}
-                      className="w-1/4 border border-gray-300 bg-white px-1"
-                      placeholder="bv: 123456"
-                      maxLength={6}
-                      type="text"
-                      value={verificationCode}
-                      onChange={(e) => {
-                        setVerificationCode(e.target.value);
-                      }}
-                    />
-                    <EditBoxButton
-                      icon={<CheckCircleIcon />}
-                      type="submit"
-                      onClick={() => {
-                        setVerificationSubmitted(true);
-                      }}
-                    >
-                      Verifieer
-                    </EditBoxButton>
-                  </div>
-                </div>
-              )}
-            </div>
+            <span>{newValue}</span>
           ) : (
             <span className="text-neutral-500 italic">Niet opgegeven</span>
           )}
@@ -254,6 +283,60 @@ export const ContactEditBox = ({
             </div>
           )}
         </div>
+        {showResendSection && (
+          <>
+            <div />
+            <div className="flex flex-col gap-2">
+              <Notification variant="warning">
+                {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
+              </Notification>
+              {resendSuccess && (
+                <Notification variant="success" onClose={() => setResendSuccess(false)}>
+                  {`Er is een nieuwe verificatiecode verzonden naar ${newValue}.`}
+                </Notification>
+              )}
+              {resendError && (
+                <Notification variant="error">{resendError}</Notification>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={resendCountdown === 0 ? handleResendVerification : undefined}
+              className={`self-center text-primary ml-auto text-right text-sm ${resendCountdown === 0 ? "cursor-pointer hover:underline" : "cursor-default"}`}
+            >
+              {resendCountdown > 0
+                ? `Opnieuw verificatiecode aanvragen in ${resendCountdown} seconden`
+                : "Opnieuw verificatiecode aanvragen"}
+            </button>
+            <div />
+            <div className="flex flex-row items-center gap-3">
+              <label
+                htmlFor={`verificationCode-field-${name}-${id}`}
+                className="font-bold"
+              >
+                {"Verificatiecode:"}
+              </label>
+              <input
+                ref={inputRef}
+                id={`verificationCode-field-${name}-${id}`}
+                className="w-1/4 border border-gray-300 bg-white px-1"
+                placeholder="bv: 123456"
+                maxLength={6}
+                type="text"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+              />
+              <EditBoxButton
+                icon={<CheckCircleIcon />}
+                type="submit"
+                onClick={() => setVerificationSubmitted(true)}
+              >
+                Verifieer
+              </EditBoxButton>
+            </div>
+            <div />
+          </>
+        )}
       </div>
     </form>
   );
