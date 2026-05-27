@@ -44,7 +44,12 @@ export const ContactEditBox = ({
   const [verificationSubmitted, setVerificationSubmitted] =
     useState<boolean>(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [resendCountdown, setResendCountdown] = useState(RESEND_COUNTDOWN_SECONDS);
+  const [resendCountdown, setResendCountdown] = useState(() => {
+    if (typeof window === "undefined") return RESEND_COUNTDOWN_SECONDS;
+    const stored = sessionStorage.getItem(`resend-end-time-${name}-${idenType}-${idenValue}`);
+    if (!stored) return RESEND_COUNTDOWN_SECONDS;
+    return Math.max(0, Math.ceil((parseInt(stored) - Date.now()) / 1000));
+  });
   const [resendError, setResendError] = useState<string | undefined>();
   const [resendSuccess, setResendSuccess] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -63,15 +68,6 @@ export const ContactEditBox = ({
     name === "Email" && !isVerified && !!newValue && fieldState !== "edit";
 
   const storageKey = `resend-end-time-${name}-${idenType}-${idenValue}`;
-
-  // On mount, restore remaining time from sessionStorage so tab switches don't reset the countdown
-  useEffect(() => {
-    const stored = sessionStorage.getItem(storageKey);
-    if (stored) {
-      const remaining = Math.max(0, Math.ceil((parseInt(stored) - Date.now()) / 1000));
-      setResendCountdown(remaining);
-    }
-  }, [storageKey]);
 
   // Store end time the first time the resend section becomes visible
   useEffect(() => {
