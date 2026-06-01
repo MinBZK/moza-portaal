@@ -36,6 +36,19 @@ export const updateEmail = async (
   }
 };
 
+export const requestVerificationCode = async (
+  body: components["schemas"]["EmailVerificatieCodeAanvraagRequest"],
+) => {
+  const response = await profielClient.POST(
+    "/api/profielservice/v1/emailverificatie/code",
+    { body },
+  );
+  if (response.response.status === 503) {
+    throw new Error("SERVICE_UNAVAILABLE");
+  }
+  return response.response.status;
+};
+
 export const verifyEmail = async (
   body: components["schemas"]["EmailVerificatieRequest"],
 ) => {
@@ -43,6 +56,5 @@ export const verifyEmail = async (
     "/api/profielservice/v1/emailverificatie",
     { body },
   );
-  console.log(response);
   return response.response.status;
 };
