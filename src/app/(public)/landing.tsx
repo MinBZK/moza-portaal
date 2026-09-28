@@ -6,7 +6,11 @@ import Card from "@/components/card";
 import { signIn } from "next-auth/react";
 import { useCookie } from "@/utils/useCookie";
 import {
-  Hero,
+  PreHeading,
+  Heading,
+  Paragraph,
+  LinkButton,
+  Icon,
   RoundedCorner,
 } from "@rijkshuisstijl-community/components-react";
 
@@ -15,16 +19,35 @@ const PublicPage = () => {
 
   return (
     <div className="utrecht-page-body">
-      <RoundedCorner
-        alt="Nature"
-        as="img"
-        position="start-end"
-        src="/bg-full-zakelijk.webp"
-        style={{
-          height: "auto",
-          width: "50%",
-        }}
-      />
+      <div className="mox-landing-hero">
+        <div className="mox-landing-hero-text">
+          <PreHeading
+            heading={<Heading level={1}>MijnOverheid Zakelijk</Heading>}
+          >
+            Pre-heading
+          </PreHeading>
+          <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
+          <LinkButton>
+            Inloggen
+            <Icon icon="chevron-right" />
+          </LinkButton>
+        </div>
+        <RoundedCorner
+          alt="Nature"
+          as="img"
+          position="start-end"
+          src="/bg-full-zakelijk.webp"
+          style={{
+            height: "auto",
+            width: "auto",
+          }}
+        />
+      </div>
+      <div className="mox-landing-info">
+        <div>
+          <Heading level={2}>Berichtenbox</Heading>
+        </div>
+      </div>
 
       <header className="border-b-0 bg-transparent bg-[url(/public-background.png)] bg-cover bg-center pb-[100px]">
         <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-4 md:grid-rows-[auto_minmax(0,1fr)]">

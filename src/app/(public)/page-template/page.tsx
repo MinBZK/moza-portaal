@@ -1,3 +1,4 @@
+import { ExpandableCheckboxGroupDemo } from "./_expandableCheckboxGroupDemo";
 import LanguageSelect from "@/components/languageSelect";
 import {
   Hero,
@@ -25,7 +26,6 @@ import {
   LinkListCard,
   Listbox,
   ListboxOption,
-  ExpandableCheckboxGroup,
   FormFieldCheckboxGroup,
   FormFieldCheckboxOption,
   FormFieldRadioGroup,
@@ -214,33 +214,7 @@ const TemplatePage = async () => {
         <FormFieldRadio name="radio-group-name" label="Radio 3" />
       </FormFieldRadioGroup>
 
-      <ExpandableCheckboxGroup
-        legend="Framework"
-        maxVisible={3}
-        options={[
-          {
-            label: "React",
-            value: "value",
-          },
-          {
-            label: "CSS",
-            value: "value2",
-          },
-          {
-            label: "Angular",
-            value: "value3",
-          },
-          {
-            label: "Web Component",
-            value: "value4",
-          },
-          {
-            label: "Vue",
-            value: "value5",
-          },
-        ]}
-        selectedOptions={[]}
-      />
+      <ExpandableCheckboxGroupDemo />
 
       <FileInput
         allowedFileTypes=".doc,.docx,.xlsx,.pdf,.zip,.jpg,.png,.bmp,.gif"

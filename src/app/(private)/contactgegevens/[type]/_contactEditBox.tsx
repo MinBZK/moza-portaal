@@ -23,7 +23,7 @@ const contactSchemas = {
     .string() // kan nog stricter met regex voor NL nummers
     .min(8, "Voer een geldig Nederlands telefoonnummer in")
     .max(18, "Voer een geldig Nederlands telefoonnummer in"),
-  Adres: z.string(), // komt niet voor als veld
+  ApplicatieId: z.string(), // komt niet voor als veld
 } as const satisfies Record<components["schemas"]["ContactType"], z.ZodTypeAny>;
 
 export const ContactEditBox = ({

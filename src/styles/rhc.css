@@ -38,6 +38,9 @@
   --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
   --utrecht-separator-color: var(--rhc-color-transparent);
 
+  --mox-landing-hero-background: var(--rhc-color-core-50);
+  --mox-landing-info-background: var(--rhc-color-core-500);
+
   /* Maatvoering en afstand wijzigingen t.o.v. RHC */
   --rhc-border-width-lg: 4px;
   --rhc-nav-bar-border-block-end-width: var(--rhc-border-width-lg);
@@ -64,6 +67,36 @@ body {
 }
 
 .rhc-theme.mox-theme {
+
+  /* Landing pagina */
+  .mox-landing-hero {
+    background: var(--mox-landing-hero-background);
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+
+  .mox-landing-info {
+    background: var(--mox-landing-info-background);
+    color: var(--rhc-color-wit);
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+
+  .mox-landing-hero-text {
+    align-content: flex-end;
+    display: grid;
+    flex-direction: column;
+    gap: var(--rhc-card-column-gap);
+    padding-block-end: var(--rhc-hero-message-padding-block-end);
+    padding-block-start: var(--rhc-hero-message-padding-block-start);
+    padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+    padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+
+    button {
+      padding: 0;
+      width: fit-content;
+    }
+  }
 
   /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
     dezelfde kolom beginnen als de inhoud (`rhc-grid__cell-t-9`). RHC heeft daar
