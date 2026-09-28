@@ -1,4 +1,6 @@
 import "@/styles/globals.css";
+import "@/styles/rogier-styles.css";
+
 import type { Metadata } from "next";
 import { Footer } from "@/layouts/footer";
 
