@@ -41,7 +41,7 @@ const Header = ({
 
   return (
     <>
-      <PageHeader>
+      <PageHeader className={signedIn ? undefined : "header-landing"}>
         <Logo organisation="" subtitle="">
           <img src="/beeldmerk-rijksoverheid.svg" alt="" />
         </Logo>

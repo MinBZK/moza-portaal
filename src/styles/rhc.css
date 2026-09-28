@@ -49,6 +49,10 @@
   --rhc-sidenav-link-padding-inline-start: var(--rhc-space-md);
   --nl-number-badge-padding-block: var(--rhc-space-2xs);
   --nl-number-badge-padding-inline: var(--rhc-space-2xs);
+  --rhc-hero-message-padding-block-end: var(--rhc-space-4xl);
+  --rhc-hero-message-padding-block-start: var(--rhc-space-4xl);
+  --rhc-hero-message-padding-inline-end: var(--rhc-space-4xl);
+  --rhc-hero-message-padding-inline-start: var(--rhc-space-4xl);
 
   /* Kaders */
   --rhc-data-summary-item-border-width: 0;
@@ -69,21 +73,51 @@ body {
 .rhc-theme.mox-theme {
 
   /* Landing pagina */
+  .header-landing .rhc-nav-bar__container {
+    border-block-end: none;
+  }
+
   .mox-landing-hero {
-    background: var(--mox-landing-hero-background);
     display: grid;
     grid-template-columns: 50% 50%;
+    height: calc(var(--rhc-size-lint)*10);
   }
 
   .mox-landing-info {
     background: var(--mox-landing-info-background);
-    color: var(--rhc-color-wit);
     display: grid;
     grid-template-columns: 50% 50%;
+
+    >div {
+      padding-block-end: var(--rhc-hero-message-padding-block-end);
+      padding-block-start: var(--rhc-hero-message-padding-block-start);
+      padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+      padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+    }
+
+    .nl-heading--level-2,
+    .nl-paragraph,
+    ul,
+    ::marker {
+      color: var(--rhc-color-wit);
+    }
+
+  }
+
+  .mox-landing-demo-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-card-column-gap);
+    padding-block-end: var(--rhc-hero-message-padding-block-end);
+    padding-block-start: var(--rhc-hero-message-padding-block-start);
+    padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+    padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+
   }
 
   .mox-landing-hero-text {
     align-content: flex-end;
+    background: var(--mox-landing-hero-background);
     display: grid;
     flex-direction: column;
     gap: var(--rhc-card-column-gap);
@@ -92,10 +126,30 @@ body {
     padding-inline-end: var(--rhc-hero-message-padding-inline-end);
     padding-inline-start: var(--rhc-hero-message-padding-inline-start);
 
-    button {
+    .utrecht-link-button {
       padding: 0;
       width: fit-content;
     }
+  }
+
+  .mox-login-digid,
+  .mox-login-eherkenning {
+    align-items: center;
+    background: var(--rhc-color-oranje-500);
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--rhc-color-wit);
+    display: inline-flex;
+    gap: var(--nl-button-column-gap);
+    padding-block-end: var(--nl-button-padding-block-end);
+    padding-block-start: var(--nl-button-padding-block-start);
+    padding-inline-end: var(--nl-button-padding-inline-end);
+    padding-inline-start: var(--nl-button-padding-inline-start);
+    width: fit-content;
+  }
+
+  .mox-login-eherkenning {
+    background: var(--rhc-color-wit);
+    color: var(--rhc-color-zwart);
   }
 
   /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
