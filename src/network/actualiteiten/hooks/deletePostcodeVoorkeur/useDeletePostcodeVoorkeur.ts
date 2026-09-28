@@ -6,7 +6,9 @@ export const useDeletePostcodeVoorkeur = () => {
   return useMutation({
     mutationFn: ({ id }: { id: number }) => deletePostcodeVoorkeur(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
+      queryClient.invalidateQueries({
+        queryKey: ["actualiteiten", "voorkeuren"],
+      });
     },
   });
 };

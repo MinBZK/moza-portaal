@@ -1,8 +1,15 @@
 import "@/styles/globals.css";
-import "@/styles/rogier-styles.css";
+
+import "@rijkshuisstijl-community/design-tokens/dist/index.css"; // NLDS RHC design tokens importeren
+import "@rijkshuisstijl-community/components-css/dist/index.css"; // NLDS RHC CSS importeren
+import "@rijkshuisstijl-community/grid-css/dist/index.css"; // NLDS RHC grid
+
+import "@/styles/rhc.css"; // Mox-afwijkingen, na RHC zodat ze de basis kunnen overschrijven
 
 import type { Metadata } from "next";
 import { Footer } from "@/layouts/footer";
+
+import { SkipLink } from "@rijkshuisstijl-community/components-react";
 
 export const metadata: Metadata = {
   title: "Mijn overheid zakelijk",
@@ -16,12 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="">
-      <body className="bg-[#fafafa]">
-        <div className="pointer-events-none fixed top-0 right-0 z-[9999] h-[120px] w-[220px] overflow-visible">
-          <div className="absolute top-[60px] right-[-60px] w-[300px] rotate-45 bg-red-600 py-2 text-center text-lg font-bold text-white shadow-lg">
-            DEMO WEBSITE
-          </div>
-        </div>
+      <body className="rhc-theme mox-theme">
+        <SkipLink href="#main">Naar de hoofdinhoud</SkipLink>
         {children}
         <Footer />
       </body>

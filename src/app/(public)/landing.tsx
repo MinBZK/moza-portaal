@@ -5,12 +5,27 @@ import Image from "next/image";
 import Card from "@/components/card";
 import { signIn } from "next-auth/react";
 import { useCookie } from "@/utils/useCookie";
+import {
+  Hero,
+  RoundedCorner,
+} from "@rijkshuisstijl-community/components-react";
 
 const PublicPage = () => {
   const { set } = useCookie("loginMethod");
 
   return (
-    <div className="flex min-h-[100vh] flex-col">
+    <div className="utrecht-page-body">
+      <RoundedCorner
+        alt="Nature"
+        as="img"
+        position="start-end"
+        src="/bg-full-zakelijk.webp"
+        style={{
+          height: "auto",
+          width: "50%",
+        }}
+      />
+
       <header className="border-b-0 bg-transparent bg-[url(/public-background.png)] bg-cover bg-center pb-[100px]">
         <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-4 md:grid-rows-[auto_minmax(0,1fr)]">
           <div className="relative col-2 row-1 mx-auto grid h-[44px] w-[28px] content-end md:h-[78px] md:w-[44px]">
@@ -102,7 +117,6 @@ const PublicPage = () => {
           </button>
         </div>
       </header>
-
       <main className="border-b-ro-blue after:bg-ro-blue relative -mt-[80px] border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
         <div className="container mx-auto w-full space-y-5 py-4 md:w-3/5">
           <Card className="space-y-5">

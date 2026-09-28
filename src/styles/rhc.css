@@ -1,0 +1,142 @@
+/* Mox: afwijkingen op de Rijkshuisstijl. Alleen uitzonderingen, geen kopie van RHC.
+   Bewust niet in @layer: de RHC-pakketten zijn volledig unlayered en unlayered
+   CSS wint altijd van layered CSS. In een layer doen deze regels niets. */
+
+@font-face {
+  font-family: "RijksSansVF";
+  src: url("./fonts/RijksSansVF-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "RijksSansVF";
+  src: url("./fonts/RijksSansVF-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+.rhc-theme.mox-theme {
+  /* Pagina-layout */
+  --utrecht-page-body-padding-block-end: var(--rhc-space-max-2xl);
+
+  /* Typografische wijzigingen t.o.v. RHC */
+  --nl-heading-level-1-font-size: 2rem;
+  --nl-heading-level-2-font-size: 1.75rem;
+  --nl-heading-level-3-font-size: 1.5rem;
+  --nl-paragraph-font-size: 1.125rem;
+  --nl-number-badge-font-size: var(--rhc-text-font-size-sm);
+  --nl-data-badge-font-size: 0.875rem;
+  --rhc-data-summary-item-key-font-weight: var(--rhc-text-font-weight-semi-bold);
+  --rhc-navigation-list-item-label-font-weight: var(--rhc-text-font-weight-semi-bold);
+
+  /* Kleurwijzigingen t.o.v. RHC */
+  --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
+  --nl-heading-level-1-color: var(--rhc-color-core-500);
+  --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
+  --utrecht-separator-color: var(--rhc-color-transparent);
+
+  /* Maatvoering en afstand wijzigingen t.o.v. RHC */
+  --rhc-border-width-lg: 4px;
+  --rhc-nav-bar-border-block-end-width: var(--rhc-border-width-lg);
+  --rhc-sidenav-link-padding-block-end: var(--rhc-space-md);
+  --rhc-sidenav-link-padding-block-start: var(--rhc-space-md);
+  --rhc-sidenav-link-padding-inline-start: var(--rhc-space-md);
+  --nl-number-badge-padding-block: var(--rhc-space-2xs);
+  --nl-number-badge-padding-inline: var(--rhc-space-2xs);
+
+  /* Kaders */
+  --rhc-data-summary-item-border-width: 0;
+
+  /* NavigationList */
+  --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
+}
+
+body {
+  background: var(--mox-color-page-background, var(--rhc-color-wit));
+  color: var(--rhc-color-foreground-default);
+  font-family: var(--rhc-text-font-family-default);
+  font-size: var(--rhc-text-font-size-md);
+  font-weight: var(--rhc-text-font-weight-default);
+  line-height: var(--rhc-text-line-height-md);
+}
+
+.rhc-theme.mox-theme {
+
+  /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
+    dezelfde kolom beginnen als de inhoud (`rhc-grid__cell-t-9`). RHC heeft daar
+    geen class voor. */
+  @media screen and (width >=768px) {
+    .mox-breadcrumb-cell {
+      grid-column: 4 / -1;
+    }
+  }
+
+  /* Pagina-kop */
+  .rhc-language-navigation {
+    margin-inline-start: auto;
+  }
+
+  /* Hoofdnavigatie */
+  .rhc-side-nav {
+    margin-block-end: var(--rhc-space-2xl);
+  }
+
+  .rhc-side-nav__list {
+    margin-inline: var(--rhc-space-md);
+  }
+
+  /* Tailwind preflight zet `[hidden] { display: none !important }`. De NLDS
+    breadcrumb-separator is een `<li hidden>` die zichzelf met een inline style
+    weer toont, en verliest daarvan. Belangrijke declaraties in een layer winnen
+    van belangrijke declaraties erbuiten, dus deze correctie hoort in dezelfde
+    `base`-layer, met hogere specificiteit. */
+  @layer base {
+    .utrecht-breadcrumb-nav__separator[hidden] {
+      display: var(--_utrecht-breadcrumb-nav-separator-display,
+          inline-flex) !important;
+    }
+  }
+
+  /* Layout tuning */
+  .mox-row-gap {
+    display: grid;
+    gap: var(--rhc-space-2xl);
+  }
+
+  .ams-pagination {
+    margin-block: var(--rhc-space-2xl);
+  }
+
+  /* Fixes */
+  .ams-icon {
+    align-self: center;
+    /* verticaal centreren van pictogrammen binnen icoon component, o.a. pagination */
+  }
+
+  /* DataSummary */
+  @media (width > 768px) {
+    .mox-data-summary--columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--rhc-space-lg);
+    }
+  }
+
+  /* NavigationList */
+  .rhc-navigation-list__item-content {
+    align-items: flex-start;
+  }
+
+  .mox-navigation-list--no-start-icon .rhc-navigation-list__item__start-icon {
+    display: none;
+  }
+
+  /* TableHeader */
+  .utrecht-table__header-cell {
+    vertical-align: bottom;
+  }
+
+}

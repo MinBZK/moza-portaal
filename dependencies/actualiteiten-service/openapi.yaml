@@ -1,25 +1,26 @@
 ---
 openapi: 3.1.0
 tags:
-- name: Articles
-  description: "Ondernemersplein articles, enriched with subjects and filtered in-memory"
-- name: Berichten
-  description: Bekendmakingen uit de Overheid.nl SRU voor de postcode-voorkeuren van
-    de partij
-- name: Health
-  description: Liveness probe
-- name: Ingestion
-  description: Cache refresh status per source
-- name: Subsidies
-  description: "Ondernemersplein subsidies, enriched and filtered in-memory"
-- name: Voorkeuren
-  description: "Postcode-, onderwerp- en favoriet-voorkeuren per partij"
+  - name: Articles
+    description: "Ondernemersplein articles, enriched with subjects and filtered in-memory"
+  - name: Berichten
+    description:
+      Bekendmakingen uit de Overheid.nl SRU voor de postcode-voorkeuren van
+      de partij
+  - name: Health
+    description: Liveness probe
+  - name: Ingestion
+    description: Cache refresh status per source
+  - name: Subsidies
+    description: "Ondernemersplein subsidies, enriched and filtered in-memory"
+  - name: Voorkeuren
+    description: "Postcode-, onderwerp- en favoriet-voorkeuren per partij"
 components:
   schemas:
     ArticlesResponse:
       type: object
       required:
-      - articles
+        - articles
       properties:
         articles:
           type: array
@@ -31,7 +32,7 @@ components:
     EnrichedArticle:
       type: object
       required:
-      - identifier
+        - identifier
       properties:
         identifier:
           type: string
@@ -50,7 +51,7 @@ components:
     EnrichedSubsidie:
       type: object
       required:
-      - identifier
+        - identifier
       properties:
         identifier:
           type: string
@@ -71,10 +72,10 @@ components:
     FavorietItem:
       type: object
       required:
-      - id
-      - articleId
-      - articleType
-      - addedAt
+        - id
+        - articleId
+        - articleType
+        - addedAt
       properties:
         id:
           type: integer
@@ -96,12 +97,12 @@ components:
       type: string
       format: date-time
       examples:
-      - 2022-03-10T16:15:50Z
+        - 2022-03-10T16:15:50Z
     OnderwerpItem:
       type: object
       required:
-      - id
-      - onderwerp
+        - id
+        - onderwerp
       properties:
         id:
           type: integer
@@ -116,8 +117,8 @@ components:
     PostcodeItem:
       type: object
       required:
-      - id
-      - postcode
+        - id
+        - postcode
       properties:
         id:
           type: integer
@@ -132,8 +133,8 @@ components:
     SruPublicatie:
       type: object
       required:
-      - id
-      - title
+        - id
+        - title
       properties:
         id:
           type: string
@@ -166,7 +167,7 @@ components:
     SubsidiesResponse:
       type: object
       required:
-      - subsidies
+        - subsidies
       properties:
         subsidies:
           type: array
@@ -178,9 +179,9 @@ components:
     VoorkeurenResponse:
       type: object
       required:
-      - postcodes
-      - onderwerpen
-      - favorieten
+        - postcodes
+        - onderwerpen
+        - favorieten
       properties:
         postcodes:
           type: array
@@ -198,38 +199,39 @@ paths:
   /api/actualiteitenservice/v1/articles:
     get:
       summary: Lijst artikelen
-      description: Haalt een gefilterde lijst artikelen op. Service houdt een enriched
+      description:
+        Haalt een gefilterde lijst artikelen op. Service houdt een enriched
         cache met alle artikelen (inclusief subjects uit het detail-endpoint); filteren
         gebeurt in-memory.
       tags:
-      - Articles
+        - Articles
       parameters:
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: offset
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: search
-        in: query
-        schema:
-          type: string
-      - name: subject
-        in: query
-        schema:
-          type: array
-          items:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: search
+          in: query
+          schema:
             type: string
-      - name: type
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
+        - name: subject
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: type
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         "200":
           description: OK
@@ -240,11 +242,12 @@ paths:
   /api/actualiteitenservice/v1/berichten:
     get:
       summary: Berichten voor de ingelogde partij
-      description: "Leest de postcode-voorkeuren van de partij uit, haalt per postcode\
+      description:
+        "Leest de postcode-voorkeuren van de partij uit, haalt per postcode\
         \ bekendmakingen op uit de SRU (gecached), en retourneert een gededupliceerde,\
         \ op datum gesorteerde lijst."
       tags:
-      - Berichten
+        - Berichten
       responses:
         "200":
           description: OK
@@ -257,7 +260,7 @@ paths:
   /api/actualiteitenservice/v1/health:
     get:
       tags:
-      - Health
+        - Health
       responses:
         "200":
           description: OK
@@ -271,10 +274,11 @@ paths:
   /api/actualiteitenservice/v1/ingestion-status:
     get:
       summary: Status van bronnen
-      description: Laatste succesvolle refresh per bron. Portaal gebruikt dit voor
+      description:
+        Laatste succesvolle refresh per bron. Portaal gebruikt dit voor
         de 'laatst bijgewerkt' indicator.
       tags:
-      - Ingestion
+        - Ingestion
       responses:
         "200":
           description: OK
@@ -286,38 +290,39 @@ paths:
                   type: string
                   format: date-time
                   examples:
-                  - 2022-03-10T16:15:50Z
+                    - 2022-03-10T16:15:50Z
   /api/actualiteitenservice/v1/subsidies:
     get:
       summary: Lijst subsidies
-      description: Haalt een gefilterde lijst subsidies op. Service houdt een enriched
+      description:
+        Haalt een gefilterde lijst subsidies op. Service houdt een enriched
         cache met alle subsidies (inclusief subjects/regions uit het detail-endpoint);
         filteren gebeurt in-memory.
       tags:
-      - Subsidies
+        - Subsidies
       parameters:
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: offset
-        in: query
-        schema:
-          type: integer
-          format: int32
-      - name: region
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
-      - name: subject
-        in: query
-        schema:
-          type: array
-          items:
-            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: region
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: subject
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         "200":
           description: OK
@@ -329,7 +334,7 @@ paths:
     get:
       summary: Alle voorkeuren voor de ingelogde partij
       tags:
-      - Voorkeuren
+        - Voorkeuren
       responses:
         "200":
           description: OK
@@ -341,7 +346,7 @@ paths:
     post:
       summary: Voeg favoriet artikel toe
       tags:
-      - Voorkeuren
+        - Voorkeuren
       requestBody:
         content:
           application/json:
@@ -360,14 +365,14 @@ paths:
     delete:
       summary: Verwijder favoriet artikel
       tags:
-      - Voorkeuren
+        - Voorkeuren
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -378,7 +383,7 @@ paths:
     post:
       summary: Voeg onderwerp-voorkeur toe
       tags:
-      - Voorkeuren
+        - Voorkeuren
       requestBody:
         content:
           application/json:
@@ -397,14 +402,14 @@ paths:
     delete:
       summary: Verwijder onderwerp-voorkeur
       tags:
-      - Voorkeuren
+        - Voorkeuren
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -415,7 +420,7 @@ paths:
     post:
       summary: Voeg postcode-voorkeur toe
       tags:
-      - Voorkeuren
+        - Voorkeuren
       requestBody:
         content:
           application/json:
@@ -434,14 +439,14 @@ paths:
     delete:
       summary: Verwijder postcode-voorkeur
       tags:
-      - Voorkeuren
+        - Voorkeuren
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -452,7 +457,7 @@ info:
   title: actualiteiten-service API
   version: 1.0.0-SNAPSHOT
 servers:
-- url: http://localhost:8080
-  description: Auto generated value
-- url: http://0.0.0.0:8080
-  description: Auto generated value
+  - url: http://localhost:8080
+    description: Auto generated value
+  - url: http://0.0.0.0:8080
+    description: Auto generated value

@@ -3,12 +3,17 @@
 import { useRef, useState } from "react";
 import { components } from "@/network/profiel/generated";
 
-const taalValues = ["Nederlands", "Engels", "Fries", "Papiamento", "Papiamentu"] as const;
+const taalValues = [
+  "Nederlands",
+  "Engels",
+  "Fries",
+  "Papiamento",
+  "Papiamentu",
+] as const;
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
 import { EditIcon } from "@/components/icons/editIcon";
 import { useQueryClient } from "@tanstack/react-query";
 import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
-
 
 export const TaalEditBox = ({
   idenType,

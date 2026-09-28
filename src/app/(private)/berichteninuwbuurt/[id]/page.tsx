@@ -68,11 +68,7 @@ const PublicatieDetailPage = async ({
             </span>
           )}
           {publicatie.creator && <span>{publicatie.creator}</span>}
-          {date && (
-            <span>
-              {date}
-            </span>
-          )}
+          {date && <span>{date}</span>}
         </div>
 
         {/* Details table */}

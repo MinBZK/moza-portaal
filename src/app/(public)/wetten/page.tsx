@@ -1,12 +1,89 @@
-const ActualiteitenPage = async () => {
+import {
+  Heading,
+  Paragraph,
+  Alert,
+  DataSummary,
+  DataSummaryItem,
+  OrderedList,
+  OrderedListItem,
+  ActionGroup,
+  Button,
+} from "@rijkshuisstijl-community/components-react";
+import { Icon } from "@rijkshuisstijl-community/icon-react";
+import PageNumberNavigation from "@/components/pageNumberNavigation";
+import { getDemoWetten } from "@/demo";
+
+const WettenPage = async () => {
+  const wetten = await getDemoWetten();
 
   return (
     <>
-      <h1 className="text-4xl">Actualiteiten</h1>
+      <Heading level={1}>Wetten en regelgeving</Heading>
 
-      <h2>Hello world!</h2>
+      <Alert type="info">
+        <Paragraph>
+          Wetten en regelgeving die mogelijk betrekking hebben op uw bedrijf of
+          branche, geselecteerd op basis van uw bedrijfsprofiel. Door items te
+          bewaren of als niet relevant te markeren helpt u ons de aanbevelingen
+          te verbeteren.
+        </Paragraph>
+      </Alert>
+
+      {wetten.map((wet) => (
+        <div className="rhc-card-as-link" key={wet.id}>
+          <div className="rhc-card-as-link__content">
+            <Heading level={2}>{wet.titel}</Heading>
+            <Paragraph>{wet.samenvatting}</Paragraph>
+
+            <DataSummary appearance="column">
+              <DataSummaryItem itemKey="Status" itemValue={wet.status} />
+              <DataSummaryItem
+                itemKey="Gaat in op"
+                itemValue={wet.ingangsdatum}
+              />
+              <DataSummaryItem itemKey="Voor wie" itemValue={wet.voorWie} />
+            </DataSummary>
+
+            {wet.alinea.map((tekst) => (
+              <Paragraph key={tekst}>{tekst}</Paragraph>
+            ))}
+
+            <Heading level={3}>Wat moet u doen?</Heading>
+            <OrderedList>
+              {wet.stappen.map((stap) => (
+                <OrderedListItem key={stap}>{stap}</OrderedListItem>
+              ))}
+            </OrderedList>
+
+            <ActionGroup direction="row" className="mox-action-group">
+              <Button appearance="secondary-action-button">
+                <Icon icon="favoriet" />
+                Bewaar
+              </Button>
+              <Button appearance="secondary-action-button">
+                <Icon icon="delen" />
+                Deel
+              </Button>
+              <Button appearance="secondary-action-button">
+                <Icon icon="communicatie" />
+                Vraag aan de digitale assistent
+              </Button>
+              <Button appearance="secondary-action-button">
+                <Icon icon="kruis" />
+                Niet relevant voor mij
+              </Button>
+            </ActionGroup>
+
+            <Button appearance="primary-action-button">
+              {wet.websiteLabel}
+            </Button>
+          </div>
+        </div>
+      ))}
+
+      <PageNumberNavigation maxVisiblePages={5} page={1} totalPages={10} />
     </>
   );
 };
 
-export default ActualiteitenPage;
+export default WettenPage;

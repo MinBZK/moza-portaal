@@ -16,7 +16,7 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
     : "";
 
   const externalUrl = isReadableUrl(publicatie.preferredUrl ?? "")
-    ? publicatie.preferredUrl ?? ""
+    ? (publicatie.preferredUrl ?? "")
     : publicatie.bronUrl || "";
   const hasExternalLink = !!externalUrl;
   const description = publicatie.abstract || "";
