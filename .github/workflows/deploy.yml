@@ -26,10 +26,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      # GHCR accepteert alleen image-namen in kleine letters (MinBZK -> minbzk)
+      # GHCR accepteert alleen image-namen in kleine letters (MinBZK -> minbzk).
+      # Elke commit krijgt een eigen tag (pr-<nr>-<sha>), anders ziet ZAD geen
+      # wijziging en blijft de oude container draaien. De tag pr-<nr> wijst
+      # altijd naar de laatste build en wordt gebruikt bij het opruimen.
       - name: Bepaal image-naam
         id: image
-        run: echo "name=${REGISTRY}/${GITHUB_REPOSITORY,,}:pr-${{ github.event.number }}" >> "$GITHUB_OUTPUT"
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          base="${REGISTRY}/${GITHUB_REPOSITORY,,}"
+          echo "name=${base}:pr-${PR_NUMBER}-${HEAD_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "latest=${base}:pr-${PR_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
@@ -46,7 +55,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.image.outputs.name }}
+          tags: |
+            ${{ steps.image.outputs.name }}
+            ${{ steps.image.outputs.latest }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
