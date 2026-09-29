@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const p=require\\('./node_modules/@rijkshuisstijl-community/design-tokens/package.json'\\); console.log\\(JSON.stringify\\(p.exports,null,1\\)\\); console.log\\('files:',p.files\\)\")",
+      "Bash(npx eslint *)",
+      "Bash(curl -s --max-time 25 \"https://rijkshuisstijl-community.vercel.app/index.json\" -o /tmp/sb-index.json -w \"HTTP %{http_code}  size=%{size_download}\\\\n\")",
+      "Bash(cp /tmp/render-bc.mjs ./render-bc.mjs)",
+      "Bash(node ./render-bc.mjs)",
+      "Bash(npx tsc *)",
+      "Bash(grep -nE '^\\\\s+[a-zA-Z]+=\\(\"[^\"]*\"|\\\\{[^}]*\\\\}\\),\\\\s*$' \"src/app/\\(public\\)/page-template/page.tsx\")",
+      "Bash(curl -s http://localhost:3000/page-template)",
+      "Bash(curl -s -o /tmp/pt.html -w \"%{http_code}\\\\n\" http://localhost:3000/page-template)",
+      "Bash(node --input-type=module -e ' *)",
+      "Bash(npx --yes @action-validator/cli .github/workflows/deploy.yml)",
+      "Bash(bash -c 'HEAD_SHA=5d16e7a3e2096e6715ca68d858cce308aadc647a; GITHUB_REPOSITORY=MinBZK/moza-portaal; REGISTRY=ghcr.io; base=\"${REGISTRY}/${GITHUB_REPOSITORY,,}\"; echo \"${base}:pr-69-${HEAD_SHA::7}\"')"
+    ],
+    "additionalDirectories": [
+      "/Users/rogierbarendregt/Documents/GitHub/moza-portaal"
+    ]
+  }
+}

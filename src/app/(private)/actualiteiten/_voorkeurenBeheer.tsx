@@ -51,7 +51,7 @@ const VoorkeurenSidebar = ({
           return (
             <label
               key={key}
-              className="relative flex cursor-pointer items-center gap-2 rounded py-1 pl-1 pr-9 text-sm text-neutral-700 hover:bg-neutral-50"
+              className="relative flex cursor-pointer items-center gap-2 rounded py-1 pr-9 pl-1 text-sm text-neutral-700 hover:bg-neutral-50"
             >
               <input
                 type="checkbox"
@@ -59,10 +59,16 @@ const VoorkeurenSidebar = ({
                 onChange={() => onToggleSection(key)}
                 className="h-4 w-4 shrink-0 rounded border-neutral-300 text-[#007bc7] accent-[#007bc7]"
               />
-              <span className={visibleSections[key] ? "font-medium text-[#154273]" : ""}>
+              <span
+                className={
+                  visibleSections[key] ? "font-medium text-[#154273]" : ""
+                }
+              >
                 {SECTION_LABELS[key]}
               </span>
-              <span className="absolute right-0 w-8 text-right text-xs text-neutral-600">{count ?? ""}</span>
+              <span className="absolute right-0 w-8 text-right text-xs text-neutral-600">
+                {count ?? ""}
+              </span>
             </label>
           );
         })}
@@ -126,7 +132,11 @@ function FilterGroup({
           stroke="currentColor"
           strokeWidth={2}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
       {open && (
@@ -137,7 +147,7 @@ function FilterGroup({
             return (
               <label
                 key={subject}
-                className="relative flex cursor-pointer items-center gap-2 rounded py-1 pl-1 pr-9 text-sm text-neutral-700 hover:bg-neutral-50"
+                className="relative flex cursor-pointer items-center gap-2 rounded py-1 pr-9 pl-1 text-sm text-neutral-700 hover:bg-neutral-50"
               >
                 <input
                   type="checkbox"
@@ -149,7 +159,9 @@ function FilterGroup({
                 <span className={checked ? "font-medium text-[#154273]" : ""}>
                   {subject}
                 </span>
-                <span className="absolute right-0 w-8 text-right text-xs text-neutral-600">{count ?? ""}</span>
+                <span className="absolute right-0 w-8 text-right text-xs text-neutral-600">
+                  {count ?? ""}
+                </span>
               </label>
             );
           })}

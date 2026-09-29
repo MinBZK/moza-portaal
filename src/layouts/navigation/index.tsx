@@ -1,179 +1,126 @@
 "use client";
-import { ReactNode } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { FeatureFlags } from "@/app/(private)/instellingen/_featureFlags";
 import {
-  defaultFlags,
-  FeatureFlags,
-} from "@/app/(private)/instellingen/_featureFlags";
+  SideNav,
+  SideNavList,
+  SideNavItem,
+  SideNavLink,
+  Separator,
+  NumberBadge,
+} from "@rijkshuisstijl-community/components-react";
 
-const Navigation = ({ flags = defaultFlags }: { flags?: FeatureFlags }) => {
-  const pathname = usePathname();
-
-  const hasAnyTrueFlag = Object.values(flags).some((flag) => flag === true);
-
+// flags wordt nog meegegeven door de private layout, maar is (nog) niet in gebruik.
+const Navigation = (_props: { flags?: FeatureFlags }) => {
   return (
-    <div className="space-y-6 pt-1 md:ml-[-12px]">
-      <ul>
-        <SidebarMenuItem currentPage={pathname} text={"Home"} route={"/"}>
-          <g fill="currentColor">
-            <path d="M9 15.75a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 0 0 0 13.5ZM9 18A9 9 0 1 1 9 0a9 9 0 0 1 0 18Z"></path>
-            <circle cx="9" cy="9" r="4.5"></circle>
-          </g>
-        </SidebarMenuItem>
-      </ul>
-
-      <ul>
-        <SidebarMenuItem
-          currentPage={pathname}
-          text={"Bedrijfsgegevens"}
-          route={"/bedrijfsgegevens"}
-        >
-          <path
-            d="M18.3554 4.375H9.29291V3.75C9.29291 3.40481 9.01309 3.125 8.66791 3.125H3.98041C3.63522 3.125 3.35541 3.40481 3.35541 3.75V5.215C5.58328 5.36022 15.8846 6.03344 16.039 6.07441C16.1256 6.09738 16.1563 6.14125 16.1654 6.17938C16.1655 6.19166 16.1721 6.25175 16.162 6.25H1.64491C1.24175 6.25 0.944062 6.62603 1.03656 7.01841L3.24184 16.3934C3.32759 16.7571 3.61 16.875 3.98041 16.875H18.3554C18.7011 16.875 18.9804 16.5948 18.9804 16.25V5C18.9804 4.65478 18.7006 4.375 18.3554 4.375Z"
-            fill="#282828"
-          />
-        </SidebarMenuItem>
-
-        <SidebarMenuItem
-          currentPage={pathname}
-          text={"Contactgegevens"}
-          route={"/contactgegevens"}
-        >
-          <path d="M11.64 0H1.39C1.06 0 0.82 0.25 0.82 0.57V7.57C0.82 7.9 1.06 8.14 1.39 8.14H11.72C12.05 8.14 12.29 7.9 12.29 7.57V0.57C12.29 0.25 11.97 0 11.64 0ZM10.98 1.14L6.51 4.23L2.04 1.14H10.98ZM1.87 2.11L6.26 5.12C6.35 5.2 6.43 5.2 6.51 5.2C6.59 5.2 6.67 5.2 6.75 5.12L11.14 2.11V6.99L8.39 5.12C8.39 5.12 8.31 5.12 8.39 5.2C8.47 5.28 9.98 7.07 9.98 7.07H3.17C3.17 7.07 4.68 5.28 4.76 5.2V5.12L1.87 6.99V2.11ZM13.02 3.25H17.08V4.06H13.02V3.25ZM13.02 5.69H16.26V6.5H13.02V5.69ZM13.02 0.81H17.9V1.63H13.02V0.81ZM5.69 10.33V17.33C5.69 17.65 5.94 17.9 6.26 17.9H16.59C16.91 17.9 17.16 17.65 17.16 17.33V10.33C17.16 10.01 16.91 9.76 16.59 9.76H6.26C5.94 9.76 5.69 10.01 5.69 10.33ZM15.87 10.9L11.39 13.98L6.91 10.9H15.87ZM16.02 16.78L13.15 14.63C13.15 14.63 13.07 14.63 13.15 14.71C13.23 14.8 14.74 16.78 14.74 16.78H7.98C7.98 16.78 9.49 14.8 9.57 14.71C9.65 14.63 9.57 14.63 9.57 14.63L6.75 16.78V11.96L11.23 14.96C11.31 15.04 11.39 15.04 11.39 15.04C11.47 15.04 11.55 15.04 11.63 14.96L16.02 11.96V16.78ZM4.88 13.82H0.82V13.01H4.88V13.82ZM4.88 16.26H1.63V15.45H4.88V16.26ZM4.88 11.39H0V10.57H4.88V11.39Z" />
-        </SidebarMenuItem>
-
-        <SidebarMenuItem
-          currentPage={pathname}
-          text={"Actualiteiten"}
-          route={"/actualiteiten"}
-        >
-          <path d="M3.24 10.44c.176.008.335.064.49.136 1.281.599 2.566 1.191 3.844 1.796.283.134.536.133.816.003 1.282-.597 2.571-1.181 3.851-1.78.392-.184.754-.208 1.138.013.268.152.562.267.84.404.206.1.21.182.015.294-.134.077-.28.136-.422.2-1.832.824-3.666 1.646-5.496 2.477-.282.128-.534.132-.816 0-1.904-.885-3.814-1.761-5.72-2.641-.09-.041-.203-.073-.202-.186.002-.105.114-.13.196-.165.376-.164.754-.325 1.13-.486.106-.046.218-.064.334-.065ZM3.246 7.44c.152-.007.298.045.441.112 1.283.596 2.572 1.184 3.848 1.794.323.154.599.145.912-.002 1.27-.594 2.546-1.174 3.816-1.766.368-.172.716-.191 1.082.006.279.15.576.273.862.411.226.11.235.202.006.314-.471.228-.95.44-1.429.656-1.472.662-2.946 1.32-4.414 1.992-.318.145-.597.149-.917 0-1.821-.85-3.648-1.687-5.474-2.528-.065-.029-.13-.058-.192-.09-.087-.045-.203-.074-.206-.184-.003-.118.12-.14.206-.178.358-.156.718-.306 1.074-.461.127-.055.233-.076.385-.076ZM7.91 7.584c.142.014.272-.046.4-.105l1.821-.819c1.31-.589 2.622-1.178 3.93-1.77.138-.062.326-.109.319-.288-.006-.162-.2-.174-.321-.229-1.451-.672-2.905-1.337-4.358-2.002-.45-.206-.904-.408-1.356-.61-.246-.112-.513-.11-.619-.003-1.981.909-3.963 1.814-5.944 2.722-.086.039-.208.064-.202.182.006.111.122.14.21.181l5.744 2.648c.117.053.234.103.376.093Z" />
-        </SidebarMenuItem>
-
-        <SidebarMenuItem
-          currentPage={pathname}
-          text={"Berichten in uw buurt"}
-          route={"/berichteninuwbuurt"}
-        >
-          <path
-            d="M10 1C5.58 1 2 4.58 2 9s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8Zm0 14.5c-3.58 0-6.5-2.92-6.5-6.5S6.42 2.5 10 2.5s6.5 2.92 6.5 6.5-2.92 6.5-6.5 6.5Zm-.75-10h1.5v5h-1.5V5.5Zm0 6.5h1.5v1.5h-1.5V12Z"
-            fill="#282828"
-          />
-        </SidebarMenuItem>
-      </ul>
-
-      {hasAnyTrueFlag && (
-        <ul>
-          {flags.feature_MijnZaken && (
-            <SidebarMenuItem
-              currentPage={pathname}
-              text={"Mijn Zaken (Beta)"}
-              route={"#"}
-            >
-              <path
-                d="M3.246 7.44c.152-.007.298.045.441.112 1.283.596 2.572 1.184 3.848 1.794.323.154.599.145.912-.002 1.27-.594 2.546-1.174 3.816-1.766.368-.172.716-.191 1.082.006.279.15.576.273.862.411.226.11.235.202.006.314-.471.228-.95.44-1.429.656-1.472.662-2.946 1.32-4.414 1.992-.318.145-.597.149-.917 0-1.821-.85-3.648-1.687-5.474-2.528-.065-.029-.13-.058-.192-.09-.087-.045-.203-.074-.206-.184-.003-.118.12-.14.206-.178.358-.156.718-.306 1.074-.461.127-.055.233-.076.385-.076ZM7.91 7.584c.142.014.272-.046.4-.105l1.821-.819c1.31-.589 2.622-1.178 3.93-1.77.138-.062.326-.109.319-.288-.006-.162-.2-.174-.321-.229-1.451-.672-2.905-1.337-4.358-2.002-.45-.206-.904-.408-1.356-.61-.246-.112-.513-.11-.619-.003-1.981.909-3.963 1.814-5.944 2.722-.086.039-.208.064-.202.182.006.111.122.14.21.181l5.744 2.648c.117.053.234.103.376.093Z"
-                fill="#282828"
-              />
-            </SidebarMenuItem>
-          )}
-          {flags.feature_MijnTaken && (
-            <SidebarMenuItem
-              currentPage={pathname}
-              text={"Mijn Taken (Beta)"}
-              route={"#"}
-            >
-              <path
-                d="M3.246 7.44c.152-.007.298.045.441.112 1.283.596 2.572 1.184 3.848 1.794.323.154.599.145.912-.002 1.27-.594 2.546-1.174 3.816-1.766.368-.172.716-.191 1.082.006.279.15.576.273.862.411.226.11.235.202.006.314-.471.228-.95.44-1.429.656-1.472.662-2.946 1.32-4.414 1.992-.318.145-.597.149-.917 0-1.821-.85-3.648-1.687-5.474-2.528-.065-.029-.13-.058-.192-.09-.087-.045-.203-.074-.206-.184-.003-.118.12-.14.206-.178.358-.156.718-.306 1.074-.461.127-.055.233-.076.385-.076ZM7.91 7.584c.142.014.272-.046.4-.105l1.821-.819c1.31-.589 2.622-1.178 3.93-1.77.138-.062.326-.109.319-.288-.006-.162-.2-.174-.321-.229-1.451-.672-2.905-1.337-4.358-2.002-.45-.206-.904-.408-1.356-.61-.246-.112-.513-.11-.619-.003-1.981.909-3.963 1.814-5.944 2.722-.086.039-.208.064-.202.182.006.111.122.14.21.181l5.744 2.648c.117.053.234.103.376.093Z"
-                fill="#282828"
-              />
-            </SidebarMenuItem>
-          )}
-          {flags.feature_MijnProducten && (
-            <SidebarMenuItem
-              currentPage={pathname}
-              text={"Mijn Producten (Beta)"}
-              route={"#"}
-            >
-              <path
-                d="M3.246 7.44c.152-.007.298.045.441.112 1.283.596 2.572 1.184 3.848 1.794.323.154.599.145.912-.002 1.27-.594 2.546-1.174 3.816-1.766.368-.172.716-.191 1.082.006.279.15.576.273.862.411.226.11.235.202.006.314-.471.228-.95.44-1.429.656-1.472.662-2.946 1.32-4.414 1.992-.318.145-.597.149-.917 0-1.821-.85-3.648-1.687-5.474-2.528-.065-.029-.13-.058-.192-.09-.087-.045-.203-.074-.206-.184-.003-.118.12-.14.206-.178.358-.156.718-.306 1.074-.461.127-.055.233-.076.385-.076ZM7.91 7.584c.142.014.272-.046.4-.105l1.821-.819c1.31-.589 2.622-1.178 3.93-1.77.138-.062.326-.109.319-.288-.006-.162-.2-.174-.321-.229-1.451-.672-2.905-1.337-4.358-2.002-.45-.206-.904-.408-1.356-.61-.246-.112-.513-.11-.619-.003-1.981.909-3.963 1.814-5.944 2.722-.086.039-.208.064-.202.182.006.111.122.14.21.181l5.744 2.648c.117.053.234.103.376.093Z"
-                fill="#282828"
-              />
-            </SidebarMenuItem>
-          )}
-          {flags.feature_RegelRecht && (
-            <SidebarMenuItem
-              currentPage={pathname}
-              text={"RegelRecht (Beta)"}
-              route={"#"}
-            >
-              <path
-                d="M3.246 7.44c.152-.007.298.045.441.112 1.283.596 2.572 1.184 3.848 1.794.323.154.599.145.912-.002 1.27-.594 2.546-1.174 3.816-1.766.368-.172.716-.191 1.082.006.279.15.576.273.862.411.226.11.235.202.006.314-.471.228-.95.44-1.429.656-1.472.662-2.946 1.32-4.414 1.992-.318.145-.597.149-.917 0-1.821-.85-3.648-1.687-5.474-2.528-.065-.029-.13-.058-.192-.09-.087-.045-.203-.074-.206-.184-.003-.118.12-.14.206-.178.358-.156.718-.306 1.074-.461.127-.055.233-.076.385-.076ZM7.91 7.584c.142.014.272-.046.4-.105l1.821-.819c1.31-.589 2.622-1.178 3.93-1.77.138-.062.326-.109.319-.288-.006-.162-.2-.174-.321-.229-1.451-.672-2.905-1.337-4.358-2.002-.45-.206-.904-.408-1.356-.61-.246-.112-.513-.11-.619-.003-1.981.909-3.963 1.814-5.944 2.722-.086.039-.208.064-.202.182.006.111.122.14.21.181l5.744 2.648c.117.053.234.103.376.093Z"
-                fill="#282828"
-              />
-            </SidebarMenuItem>
-          )}
-        </ul>
-      )}
-
-      <ul>
-        <SidebarMenuItem
-          currentPage={pathname}
-          text={"Instellingen"}
-          route={"/instellingen"}
-        >
-          <g fill="currentColor" fillRule="evenodd">
-            <path
-              fill="currentColor"
-              d="M10 7.438A2.568 2.568 0 0 0 7.434 10 2.57 2.57 0 0 0 10 12.564 2.567 2.567 0 0 0 12.565 10 2.565 2.565 0 0 0 10 7.438zm8 2.978a.71.71 0 0 1-.382.596l-1.427.66a1.13 1.13 0 0 0-.548.545l-.08.195c-.089.216-.081.565.017.776l.564 1.431a.688.688 0 0 1-.137.69l-.648.648a.706.706 0 0 1-.688.148l-1.471-.543a1.142 1.142 0 0 0-.77-.007l-.207.086a1.093 1.093 0 0 0-.53.558l-.615 1.411a.685.685 0 0 1-.58.39h-.923a.704.704 0 0 1-.589-.386l-.656-1.412a1.142 1.142 0 0 0-.541-.554l-.208-.086a1.094 1.094 0 0 0-.764.017l-1.441.569a.685.685 0 0 1-.684-.139l-.65-.649a.712.712 0 0 1-.146-.693l.538-1.463c.093-.214.096-.565.007-.78l-.08-.193a1.09 1.09 0 0 0-.554-.535l-1.422-.619A.687.687 0 0 1 2 10.49v-.907a.71.71 0 0 1 .38-.596l1.425-.657c.215-.083.461-.329.55-.544l.08-.196c.09-.216.081-.565-.016-.776l-.563-1.431a.688.688 0 0 1 .136-.689l.648-.648a.705.705 0 0 1 .689-.149l1.475.541c.21.092.557.095.77.006l.203-.084c.21-.088.45-.339.53-.558l.615-1.411A.686.686 0 0 1 9.502 2h.923c.228 0 .494.174.589.386l.655 1.414c.085.217.329.466.541.554l.208.085c.211.088.555.08.763-.017l1.443-.568a.685.685 0 0 1 .684.139l.648.647a.71.71 0 0 1 .146.693l-.536 1.463a1.15 1.15 0 0 0-.007.781l.08.197c.09.215.337.455.554.533l1.421.618a.687.687 0 0 1 .386.586v.905z"
-            ></path>
-          </g>
-        </SidebarMenuItem>
-      </ul>
-    </div>
+    <SideNav>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink current href="/home" icon="home">
+            Home
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <Separator />
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/ondernemingsgegevens" icon="briefcase">
+            Bedrijfsgegevens
+          </SideNavLink>
+        </SideNavItem>
+        <SideNavItem>
+          <SideNavLink href="/inbox" icon="inbox">
+            Berichtenbox
+            <NumberBadge>2</NumberBadge>
+          </SideNavLink>
+        </SideNavItem>
+        <SideNavItem>
+          <SideNavLink href="/aanvragen" icon="activiteit">
+            Lopende zaken
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <Separator />
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/subsidies" icon="nieuws">
+            Subsidies en financiering
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/wetten" icon="publicatie">
+            Wetten en regelgeving
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/omgevingsberichten" icon="locatiemarker">
+            Berichten over uw buurt
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/bewaard" icon="favoriet">
+            Bewaarde items
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/digitale-assistent" icon="comment">
+            Digitale assistent (AI)
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <Separator />
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/belastingen" icon="currency-euro">
+            Belastingen
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/zakelijk-vervoer" icon="car">
+            Zakelijk vervoer
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/medewerkers" icon="user">
+            Personeel en rollen
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/verzuim-en-verlof" icon="user">
+            Ziekte en verlof
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <Separator />
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/dataverwerking" icon="gegevensuitwisseling">
+            Gegevensdeling en dataverwerking
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+      <SideNavList>
+        <SideNavItem>
+          <SideNavLink href="/contactvoorkeuren" icon="instellingen">
+            Contactvoorkeuren
+          </SideNavLink>
+        </SideNavItem>
+      </SideNavList>
+    </SideNav>
   );
 };
-
-function SidebarMenuItem({
-  children,
-  disabled = false,
-  currentPage,
-  text,
-  route,
-  notification = 0,
-}: {
-  children: ReactNode;
-  disabled?: boolean;
-  currentPage: string | null;
-  text: string;
-  route: string;
-  notification?: number;
-}) {
-  const isActive = currentPage?.split("/")[1] === route.split("/")[1];
-  return (
-    <li className={`mb-1.5 ${disabled ? "opacity-50" : ""}`}>
-      <Link
-        aria-disabled={disabled}
-        href={route}
-        className={`flex cursor-pointer items-start gap-4 rounded-md px-4 py-1 text-[18px] break-words hover:bg-neutral-100 md:w-10/12 ${isActive ? "font-bold text-[#01689b] hover:bg-[#d9ebf7]! md:bg-[#d9ebf7]" : ""} `}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 18 18"
-          className={`mt-1 h-5 w-5 ${isActive ? "text-[#01689b]" : "text-black"}`}
-        >
-          {children}
-        </svg>
-        {text}
-
-        {notification > 0 && (
-          <span className="mt-1 ml-auto inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
-            {notification}
-          </span>
-        )}
-      </Link>
-    </li>
-  );
-}
 
 export default Navigation;

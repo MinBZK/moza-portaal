@@ -66,10 +66,10 @@ const accordionItems = [
 const Dashboard = async () => {
   const kvk = await getKvkFromCookie();
 
-  const { data, response } = await profielClient.GET(
-    "/api/profielservice/v1/{identificatieType}/{identificatieNummer}",
+  const { data, response } = await profielClient.POST(
+    "/api/profielservice/v1/partij",
     {
-      params: { path: { identificatieType: "KVK", identificatieNummer: kvk! } },
+      body: { identificatieType: "KVK", identificatieNummer: kvk! },
     },
   );
 

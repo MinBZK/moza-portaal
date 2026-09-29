@@ -90,8 +90,18 @@ const ActualiteitenContent = () => {
             }`}
             title="Filters in zijbalk"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h4v16H3V4zm7 0h11v4H10V4zm0 8h11v4H10v-4z" />
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 4h4v16H3V4zm7 0h11v4H10V4zm0 8h11v4H10v-4z"
+              />
             </svg>
           </button>
           <button
@@ -103,8 +113,18 @@ const ActualiteitenContent = () => {
             }`}
             title="Filters bovenaan"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18v4H3V4zm0 8h18v4H3v-4zm0 8h18v4H3v-4z" />
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 4h18v4H3V4zm0 8h18v4H3v-4zm0 8h18v4H3v-4z"
+              />
             </svg>
           </button>
         </div>
@@ -135,13 +155,16 @@ const ActualiteitenContent = () => {
           <Card className="space-y-4">
             <h2 className="text-2xl font-bold">Uw onderwerpen</h2>
             <p className="text-sm text-neutral-600">
-              Selecteer onderwerpen om relevante artikelen en informatie te zien.
+              Selecteer onderwerpen om relevante artikelen en informatie te
+              zien.
             </p>
             <VoorkeurenTopbar />
 
             {/* Section toggles inline */}
             <div className="flex flex-wrap gap-3 border-t border-neutral-200 pt-3">
-              <span className="text-sm font-semibold text-neutral-500">Secties:</span>
+              <span className="text-sm font-semibold text-neutral-500">
+                Secties:
+              </span>
               {(Object.keys(SECTION_LABELS) as SectionKey[]).map((key) => {
                 const count = data.sectionCounts[key];
                 return (
@@ -155,11 +178,17 @@ const ActualiteitenContent = () => {
                       onChange={() => toggleSection(key)}
                       className="h-4 w-4 shrink-0 rounded border-neutral-300 text-[#007bc7] accent-[#007bc7]"
                     />
-                    <span className={visibleSections[key] ? "font-medium text-[#154273]" : ""}>
+                    <span
+                      className={
+                        visibleSections[key] ? "font-medium text-[#154273]" : ""
+                      }
+                    >
                       {SECTION_LABELS[key]}
                     </span>
                     {count !== null && (
-                      <span className="text-xs text-neutral-600">({count})</span>
+                      <span className="text-xs text-neutral-600">
+                        ({count})
+                      </span>
                     )}
                   </label>
                 );
@@ -199,7 +228,11 @@ function CollapsibleSection({
           stroke="currentColor"
           strokeWidth={2}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
       {open && <div className="mt-4">{children}</div>}

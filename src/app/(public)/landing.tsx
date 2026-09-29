@@ -1,47 +1,41 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import Card from "@/components/card";
 import { signIn } from "next-auth/react";
 import { useCookie } from "@/utils/useCookie";
+import {
+  PreHeading,
+  Heading,
+  Paragraph,
+  LinkButton,
+  Icon,
+  RoundedCorner,
+  UnorderedList,
+  UnorderedListItem,
+  DataSummary,
+  DataSummaryItem,
+  NavigationList,
+  NavigationListItem,
+} from "@rijkshuisstijl-community/components-react";
 
 const PublicPage = () => {
   const { set } = useCookie("loginMethod");
 
   return (
-    <div className="flex min-h-[100vh] flex-col">
-      <header className="border-b-0 bg-transparent bg-[url(/public-background.png)] bg-cover bg-center pb-[100px]">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-4 md:grid-rows-[auto_minmax(0,1fr)]">
-          <div className="relative col-2 row-1 mx-auto grid h-[44px] w-[28px] content-end md:h-[78px] md:w-[44px]">
-            <Link
-              href="/"
-              className="bg-ro-blue absolute top-0 left-0 block h-[100%] w-[28px] md:w-[44px]"
-            >
-              <Image
-                src="/logo-rijksoverheid-wapen.svg"
-                alt="Rijksoverheid Logo"
-                width={44}
-                height={88}
-                className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
-              />
-            </Link>
-          </div>
-        </div>
-        <div className="relative mt-10 flex flex-col items-center justify-center space-y-12 px-4 text-center text-white">
-          <h1 className="mb-4 text-4xl font-extrabold">
-            MijnOverheid Zakelijk (prototype)
-          </h1>
-          <p className="">
-            Uw zakelijke communicatie met de overheid op één plek
-          </p>
-
+    <div className="utrecht-page-body">
+      <div className="mox-landing-hero">
+        <div className="mox-landing-hero-text">
+          <PreHeading
+            heading={<Heading level={1}>MijnOverheid Zakelijk</Heading>}
+          >
+            Pre-heading
+          </PreHeading>
+          <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
           <button
             onClick={() => {
               set("digid");
               signIn(undefined, { callbackUrl: "/" });
             }}
-            className="flex cursor-pointer items-center gap-2 rounded-md bg-[#e17000] px-4 py-2 font-semibold text-white shadow-md hover:bg-orange-600"
+            className="mox-login-digid"
           >
             <svg viewBox="0 0 150 150" width={40} height={40}>
               <path
@@ -56,18 +50,17 @@ const PublicPage = () => {
               <path
                 xmlns="http://www.w3.org/2000/svg"
                 d="M94 77c2 0 3 1 3 3s-1 4-3 4c-3 0-4-2-4-4s1-3 4-3zm3 38h-6V88h6v27zm8 0V79h10c12 0 18 6 18 17 0 13-7 19-19 19h-9zm6-6h4c7 0 12-4 12-13 0-8-5-12-13-12h-3v25z"
-                fill="#E17000"
+                fill="#e17000"
               />
             </svg>
-            <p className="font-extrabold">Inloggen met DigiD</p>
+            <p>Inloggen met DigiD</p>
           </button>
-
           <button
             onClick={() => {
               set("eherkenning");
               signIn(undefined, { callbackUrl: "/" });
             }}
-            className="flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 font-semibold text-black shadow-md hover:bg-gray-100"
+            className="mox-login-eherkenning"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +71,7 @@ const PublicPage = () => {
             >
               <path fill="transparent" d="M0 0h64v64H0z" />
               <path
-                fill="#E2066E"
+                fill="#e2066e"
                 d="M34.706 48h5.305V33.927h-5.305zM34.706 28.826h5.305V16h-5.305zM54.87 16v12.852H43.069l-2.266 5.033H54.87V48h5.29V16z"
               />
               <path
@@ -90,92 +83,144 @@ const PublicPage = () => {
                 d="M13.237 28.83v5.059h12.626l2.331-5.059z"
               />
             </svg>
-            <p className="font-extrabold">Inloggen met E-Herkenning</p>
+            <p>Inloggen met E-Herkenning</p>
           </button>
-
-          <a href="#" className="text-white underline hover:text-blue-300">
+          <LinkButton>
             Bekijk alle inlogmogelijkheden
-          </a>
-
-          <button className="rounded border border-white px-4 py-2 font-bold text-white transition hover:bg-white hover:text-blue-600">
-            Ik ben nieuw
-          </button>
+            <Icon icon="chevron-right" />
+          </LinkButton>
         </div>
-      </header>
-
-      <main className="border-b-ro-blue after:bg-ro-blue relative -mt-[80px] border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
-        <div className="container mx-auto w-full space-y-5 py-4 md:w-3/5">
-          <Card className="space-y-5">
-            <h1 className="text-3xl">
-              Wat is het prototype van MijnOverheid Zakelijk?
-            </h1>
-            <div className="space-y-4 border-t border-neutral-200 pt-4">
-              <p>
-                Dit is een prototype-website voor het project{" "}
-                <strong>MijnOverheid Zakelijk (MOZa)</strong>. Dit betekent dat
-                het een voorlopige versie is, bedoeld om ideeën en
-                functionaliteiten te testen. De inhoud en werking zijn nog in
-                ontwikkeling en kunnen nog wijzigen.
-              </p>
-
-              <p>
-                <span className="underline">Let op:</span> deze website bevat{" "}
-                <span className="underline">geen</span> echte DigiD/E-Herkenning
-                koppeling.{" "}
-              </p>
-              <p className="font-bold">
-                <span>
-                  Vul hier dan ook <span className="underline">geen</span>{" "}
-                  persoonlijke gegevens in!
-                </span>
-              </p>
-
-              <p>
-                Wilt u toch een indruk krijgen van het huidige prototype, dan
-                kunt u inloggen met de volgende testgegevens:
-              </p>
-
-              <ul className="list-inside list-disc">
-                <li>
-                  <span className="font-semibold">Gebruikersnaam:</span>{" "}
-                  gebruiker1, gebruiker2 of gebruiker3, bedrijf
-                </li>
-                <li>
-                  <span className="font-semibold">Wachtwoord:</span> password
-                </li>
-              </ul>
-
-              <p>
-                Gebruiker 1 heeft bsn <b>000000036</b> en heeft 1 onderneming.
-                <br></br>
-                Gebruiker 2 heeft bsn <b>000000024</b> en heeft 2 ondernemingen.
-                <br></br>
-                Gebruiker 3 heeft bsn <b>000000012</b> en heeft 3 ondernemingen.
-                <br></br>
-                Bedrijf is een mock van eherkenning en is dus voor 1
-                onderneming.
-                <br></br>
-              </p>
-            </div>
-          </Card>
-
-          <Card className="flex flex-col items-center gap-6 p-6 md:flex-row">
-            <div className="text-center md:text-left">
-              <h2 className="mb-4 text-xl">Meer weten?</h2>
-              <p className="mb-4 list-inside list-disc space-y-1 text-gray-800">
-                Ga naar{" "}
-                <Link
-                  href="https://www.mijnoverheidzakelijk.nl/"
-                  className="text-blue-500 underline"
-                >
-                  https://www.mijnoverheidzakelijk.nl
-                </Link>{" "}
-                voor meer informatie zoals documentatie en de designs
-              </p>
-            </div>
-          </Card>
+        <RoundedCorner
+          alt="Nature"
+          as="img"
+          position="start-end"
+          src="/bg-full-zakelijk-cropped.webp"
+        />
+      </div>
+      <div className="mox-landing-info">
+        <div>
+          <Heading level={2}>Berichtenbox</Heading>
+          <Paragraph>
+            De Berichtenbox is uw zakelijke digitale brievenbus voor post van de
+            overheid. Bijvoorbeeld post over:
+          </Paragraph>
+          <UnorderedList>
+            <UnorderedListItem>Belastingaangifte</UnorderedListItem>
+            <UnorderedListItem>Vergunningen</UnorderedListItem>
+            <UnorderedListItem>Subsidies</UnorderedListItem>
+          </UnorderedList>
         </div>
-      </main>
+        <div>
+          <Heading level={2}>Uw bedrijfsgegevens</Heading>
+          <Paragraph>
+            Hier ziet u welke gegevens de overheid over uw bedrijf heeft.
+            Bijvoorbeeld gegevens over:
+          </Paragraph>
+          <UnorderedList>
+            <UnorderedListItem>Uw inschrijving bij de KVK</UnorderedListItem>
+            <UnorderedListItem>Btw en loonheffingen</UnorderedListItem>
+            <UnorderedListItem>Uw vestigingen</UnorderedListItem>
+          </UnorderedList>
+        </div>
+      </div>
+
+      <Heading level={2} className="mox-landing-quicklinks-heading">
+        Snel naar
+      </Heading>
+      <div className="mox-landing-quicklinks">
+        <div>
+          <NavigationList className="mox-navigation-list--no-start-icon">
+            <NavigationListItem
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              href="#"
+              icon=""
+              label="Lorem ipsum"
+            />
+            <NavigationListItem
+              description="Pellentesque at lobortis erat, in egestas turpis"
+              href="#"
+              icon=""
+              label="Quisque pharetra"
+            />
+            <NavigationListItem
+              description="Proin imperdiet, tellus eu condimentum cursus"
+              href="#"
+              icon=""
+              label="Integer porttitor massa"
+            />
+          </NavigationList>
+        </div>
+        <div>
+          <NavigationList className="mox-navigation-list--no-start-icon">
+            <NavigationListItem
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              href="#"
+              icon=""
+              label="Phasellus sodales interdum"
+            />
+            <NavigationListItem
+              description="Ut tincidunt fringilla tortor, ut venenatis erat"
+              href="#"
+              icon=""
+              label="Etiam egestas"
+            />
+            <NavigationListItem
+              description="Nullam eget risus eu odio ultrices commodo"
+              href="#"
+              icon=""
+              label="Quisque tempor egestas"
+            />
+          </NavigationList>
+        </div>
+      </div>
+
+      <div className="mox-landing-demo-info">
+        <Heading level={2}>
+          Dit is een demo-prototype van MijnOverheid Zakelijk
+        </Heading>
+        <section>
+          <Paragraph>
+            Dit is een versie bedoeld om ideeën en functionaliteiten te testen.
+            De inhoud en werking zijn in ontwikkeling aan wijziging onderheven.
+          </Paragraph>
+          <Paragraph>
+            Let op: dit prototype bevat <strong>géén</strong> echte DigiD en
+            E-Herkenning koppeling. Vul hier geen persoonlijke gegevens in.
+          </Paragraph>
+          <Paragraph>U kunt inloggen met de volgende testgegevens:</Paragraph>
+          <DataSummary>
+            <DataSummaryItem
+              itemKey="Gebruikersnaam"
+              itemValue="gebruiker1, gebruiker2 of gebruiker3, bedrijf"
+            />
+            <DataSummaryItem itemKey="Wachtwoord" itemValue="password" />
+          </DataSummary>
+          <Paragraph>
+            Gebruiker 1 heeft een onderneming met bsn 000000036.
+          </Paragraph>
+          <Paragraph>
+            Gebruiker 2 heeft twee ondernemingen met bsn 000000024.
+          </Paragraph>
+          <Paragraph>
+            Gebruiker 3 heeft drie onderneming met bsn 000000012.
+          </Paragraph>
+          <Paragraph>
+            Bedrijf is een mock van eHerkenning voor een enkele onderneming.
+          </Paragraph>
+        </section>
+        <section>
+          <Heading level={3}>
+            Wilt u meer weten over MijnOverheid Zakelijk?
+          </Heading>
+          <Paragraph>
+            Ga naar{" "}
+            <a href="https://www.mijnoverheidzakelijk.nl/">
+              mijnoverheidzakelijk.nl
+            </a>{" "}
+            voor meer informatie.
+          </Paragraph>
+        </section>
+      </div>
     </div>
   );
 };

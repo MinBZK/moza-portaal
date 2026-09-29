@@ -5,18 +5,19 @@ components:
     ContactType:
       type: string
       enum:
-      - Email
-      - Telefoonnummer
-      - ApplicatieId
+        - Email
+        - Telefoonnummer
+        - ApplicatieId
     ContactgegevenRequest:
-      description: Request object voor het toevoegen van een contactgegeven aan een
+      description:
+        Request object voor het toevoegen van een contactgegeven aan een
         partij
       type: object
       required:
-      - identificatieType
-      - identificatieNummer
-      - type
-      - waarde
+        - identificatieType
+        - identificatieNummer
+        - type
+        - waarde
       properties:
         identificatieType:
           $ref: "#/components/schemas/IdentificatieType"
@@ -53,10 +54,10 @@ components:
     ContactgegevenUpdateRequest:
       type: object
       required:
-      - identificatieType
-      - identificatieNummer
-      - type
-      - waarde
+        - identificatieType
+        - identificatieNummer
+        - type
+        - waarde
       properties:
         identificatieType:
           $ref: "#/components/schemas/IdentificatieType"
@@ -77,7 +78,7 @@ components:
       description: Request object voor het toevoegen van een dienst aan een dienstverlener
       type: object
       required:
-      - naam
+        - naam
       properties:
         naam:
           type: string
@@ -88,7 +89,7 @@ components:
       description: Request object voor het toevoegen van een dienstverlener
       type: object
       required:
-      - naam
+        - naam
       properties:
         naam:
           type: string
@@ -97,9 +98,9 @@ components:
     EmailVerificatieCodeAanvraagRequest:
       type: object
       required:
-      - email
-      - identificatieNummer
-      - identificatieType
+        - email
+        - identificatieNummer
+        - identificatieType
       properties:
         email:
           type: string
@@ -113,10 +114,10 @@ components:
       description: Request object voor het verifiëren van een emailadres
       type: object
       required:
-      - email
-      - identificatieNummer
-      - identificatieType
-      - verificatieCode
+        - email
+        - identificatieNummer
+        - identificatieType
+        - verificatieCode
       properties:
         email:
           type: string
@@ -152,23 +153,23 @@ components:
     IdentificatieType:
       type: string
       enum:
-      - BSN
-      - KVK
-      - RSIN
+        - BSN
+        - KVK
+        - RSIN
     Instant:
       type: string
       format: date-time
       examples:
-      - 2022-03-10T16:15:50Z
+        - 2022-03-10T16:15:50Z
     OffsetDateTime:
       type: string
       format: date-time
       examples:
-      - 2022-03-10T12:15:50-04:00
+        - 2022-03-10T12:15:50-04:00
     PartijBulkRequest:
       type: object
       required:
-      - identificaties
+        - identificaties
       properties:
         identificaties:
           type: array
@@ -178,8 +179,8 @@ components:
     PartijIdentificatieRequest:
       type: object
       required:
-      - identificatieType
-      - identificatieNummer
+        - identificatieType
+        - identificatieNummer
       properties:
         identificatieType:
           $ref: "#/components/schemas/IdentificatieType"
@@ -190,8 +191,8 @@ components:
       description: Request object voor het ophalen van een Partij
       type: object
       required:
-      - identificatieType
-      - identificatieNummer
+        - identificatieType
+        - identificatieNummer
       properties:
         identificatieType:
           $ref: "#/components/schemas/IdentificatieType"
@@ -240,10 +241,10 @@ components:
     VoorkeurRequest:
       type: object
       required:
-      - identificatieType
-      - identificatieNummer
-      - voorkeurType
-      - waarde
+        - identificatieType
+        - identificatieNummer
+        - voorkeurType
+        - waarde
       properties:
         identificatieType:
           $ref: "#/components/schemas/IdentificatieType"
@@ -276,18 +277,18 @@ components:
     VoorkeurType:
       type: string
       enum:
-      - WebsiteTaal
-      - MagGebeldWorden
-      - WebsiteThema
-      - Aanhef
-      - OntvangViaBerichtenbox
+        - WebsiteTaal
+        - MagGebeldWorden
+        - WebsiteThema
+        - Aanhef
+        - OntvangViaBerichtenbox
     VoorkeurUpdateRequest:
       type: object
       required:
-      - identificatieType
-      - identificatieNummer
-      - voorkeurType
-      - waarde
+        - identificatieType
+        - identificatieNummer
+        - voorkeurType
+        - waarde
       properties:
         identificatieType:
           $ref: "#/components/schemas/IdentificatieType"
@@ -303,20 +304,21 @@ components:
         id:
           $ref: "#/components/schemas/UUID"
 tags:
-- name: Dienstverlener
-  description: Endpoints voor het beheren van dienstverleners en diensten
-- name: EmailVerificatie
-  description: Endpoints voor het verifiëren van emails
-- name: Profiel
-  description: Endpoints voor het beheren van partijen
+  - name: Dienstverlener
+    description: Endpoints voor het beheren van dienstverleners en diensten
+  - name: EmailVerificatie
+    description: Endpoints voor het verifiëren van emails
+  - name: Profiel
+    description: Endpoints voor het beheren van partijen
 paths:
   /api/profielservice/v1/contactgegeven:
     put:
       summary: Update contactgegeven van een partij
-      description: "Werk type, waarde en scope van een contactgegeven bij. Identificatie\
+      description:
+        "Werk type, waarde en scope van een contactgegeven bij. Identificatie\
         \ kan niet aangepast worden."
       tags:
-      - Profiel
+        - Profiel
       requestBody:
         content:
           application/json:
@@ -335,10 +337,11 @@ paths:
           description: Contactgegeven of partij niet gevonden
     post:
       summary: Toevoegen nieuwe contactgegeven voor een partij
-      description: Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende
+      description:
+        Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende
         partijen.
       tags:
-      - Profiel
+        - Profiel
       requestBody:
         content:
           application/json:
@@ -365,13 +368,13 @@ paths:
       summary: Verwijder contactgegeven van een partij
       description: Verwijdert een contactgegeven volledig
       tags:
-      - Profiel
+        - Profiel
       parameters:
-      - name: contactgegevenId
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UUID"
+        - name: contactgegevenId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
       requestBody:
         content:
           application/json:
@@ -388,7 +391,7 @@ paths:
       summary: Voegt een dienstverlener toe
       description: Voegt een nieuwe dienstverlener toe met optionele beschrijving
       tags:
-      - Dienstverlener
+        - Dienstverlener
       requestBody:
         content:
           application/json:
@@ -405,13 +408,13 @@ paths:
       summary: Voegt een dienst toe aan een dienstverlener
       description: Voegt een nieuwe dienst toe met beschrijving
       tags:
-      - Dienstverlener
+        - Dienstverlener
       parameters:
-      - name: dienstverlenerNaam
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: dienstverlenerNaam
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -428,13 +431,13 @@ paths:
       summary: Vraagt gegevens van dienstverlener
       description: Geeft gegevens van gevraagde Dienstverlener terug
       tags:
-      - Dienstverlener
+        - Dienstverlener
       parameters:
-      - name: naam
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: naam
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "201":
           description: Dienstverlener succesvol opgehaald
@@ -443,7 +446,7 @@ paths:
   /api/profielservice/v1/emailverificatie:
     post:
       tags:
-      - EmailVerificatie
+        - EmailVerificatie
       requestBody:
         content:
           application/json:
@@ -466,11 +469,12 @@ paths:
   /api/profielservice/v1/emailverificatie/code:
     post:
       summary: (Opnieuw) aanvragen voor een code van een (al geverifieerde) mail adres
-      description: "Vraagt een email verificatie code aan. Let op, bij het aanmaken\
+      description:
+        "Vraagt een email verificatie code aan. Let op, bij het aanmaken\
         \ van een profiel wordt al een email verificatie code aangevraagd. Dit is\
         \ voor het opnieuw aanvragen van een code."
       tags:
-      - EmailVerificatie
+        - EmailVerificatie
       requestBody:
         content:
           application/json:
@@ -504,7 +508,7 @@ paths:
       summary: Ophalen profiel van een partij
       description: Haalt het profiel op van een partij
       tags:
-      - Profiel
+        - Profiel
       requestBody:
         content:
           application/json:
@@ -525,10 +529,11 @@ paths:
   /api/profielservice/v1/partijen/bulk:
     post:
       summary: Ophalen profielen van meerdere partijen
-      description: Haalt profielen op van meerdere partijen. Niet-gevonden partijen
+      description:
+        Haalt profielen op van meerdere partijen. Niet-gevonden partijen
         worden stilzwijgend weggelaten.
       tags:
-      - Profiel
+        - Profiel
       requestBody:
         content:
           application/json:
@@ -550,10 +555,11 @@ paths:
   /api/profielservice/v1/voorkeur:
     put:
       summary: Update voorkeur van een partij
-      description: "Werk type, waarde en scope van een voorkeur bij. Identificatie\
+      description:
+        "Werk type, waarde en scope van een voorkeur bij. Identificatie\
         \ kan niet aangepast worden."
       tags:
-      - Profiel
+        - Profiel
       requestBody:
         content:
           application/json:
@@ -572,10 +578,11 @@ paths:
           description: Voorkeur of partij niet gevonden
     post:
       summary: Toevoegen nieuwe voorkeur voor een partij
-      description: Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende
+      description:
+        Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende
         partijen.
       tags:
-      - Profiel
+        - Profiel
       requestBody:
         content:
           application/json:
@@ -602,13 +609,13 @@ paths:
       summary: Verwijder voorkeur van een partij
       description: Verwijdert een voorkeur volledig
       tags:
-      - Profiel
+        - Profiel
       parameters:
-      - name: voorkeurId
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UUID"
+        - name: voorkeurId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
       requestBody:
         content:
           application/json:

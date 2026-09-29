@@ -1,185 +1,86 @@
 "use client";
 
-import ProfileSelect from "@/components/profileSelect";
-import { SignOutAction } from "@/utils/auth/signOutAction";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import Navigation from "../navigation";
-import ChevronIcon from "@/components/icons/chevronIcon";
 import { components } from "@/network/kvk/organisatieregister/generated";
+import Image from "next/image";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import {
+  PageHeader,
+  Logo,
+  NavBar,
+} from "@rijkshuisstijl-community/components-react";
+import LanguageSelect from "@/components/languageSelect";
 
+// kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
+// (nog) niet in gebruik in deze header.
 const Header = ({
-  kvk,
-  kvkOpties,
-  isPublic = false,
+  signedIn = true,
 }: {
   kvk?: string;
   kvkOpties?: components["schemas"]["MijnOverheidOrganisatiesResponse"];
   isPublic?: boolean;
+  signedIn?: boolean;
 }) => {
-  const [menuOpened, setMenuOpened] = useState(false);
-  const mobileMenuRef = useRef<HTMLDialogElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (menuOpened && mobileMenuRef.current) mobileMenuRef.current.showModal();
-    if (menuOpened === false && mobileMenuRef.current)
-      mobileMenuRef.current.close();
-    if (menuOpened === true && closeButtonRef.current)
-      closeButtonRef.current.focus();
-  }, [menuOpened]);
-
   return (
     <>
-      <header className="border-primary mb-3 min-h-[50px] border-b-2 bg-white shadow">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 gap-y-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4 md:gap-y-[22px] md:pb-[5px]">
-          <button
-            type="button"
-            onClick={() => setMenuOpened(true)}
-            className="col-1 row-1 flex w-fit items-center gap-[6px] px-[5px] md:hidden"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              height="16"
-              width="16"
-              className="mt-1"
-            >
-              <path
-                d="M2.5 12h11a1 1 0 0 1 0 2h-11a1 1 0 0 1 0-2zm11-5a1 1 0 0 1 0 2h-11a1 1 0 1 1 0-2zm0-5a1 1 0 0 1 0 2h-11a1 1 0 1 1 0-2z"
-                fill="#007bc7"
-                fillRule="evenodd"
-              />
-            </svg>
-            <span className="pt-[2px] text-[14px] font-bold tracking-wide">
-              menu
-            </span>
-          </button>
-          {/* This logo should be just positioned in the perfect center, but MOBu did some weird incorrect styling instead: */}
-          <div className="relative col-2 row-1 grid h-[44px] w-[28px] content-end md:h-[78px]">
-            <Link
-              href="/"
-              className="bg-ro-blue absolute top-0 left-0 block h-[100%] w-[28px] md:w-[44px]"
-            >
-              <Image
-                src="/logo-rijksoverheid-wapen.svg"
-                alt="Rijksoverheid Logo"
-                width={44}
-                height={88}
-                className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
-              />
-            </Link>
-          </div>
-
-          <div className="col-3 row-1 flex items-end justify-between md:col-start-1 md:col-end-4 md:row-2">
-            <h1 className="text-h4 md:text-h1 pb-1 md:pb-0">
-              MijnOverheid Zakelijk (prototype)
-            </h1>
-            <div className="hidden gap-10 md:flex md:pr-[4px]">
-              {isPublic ? (
-                <button
-                  type="button"
-                  className="hover-up cursor-pointer font-bold"
-                  onClick={() => signIn(undefined, { callbackUrl: "/" })}
-                >
-                  Inloggen
-                </button>
-              ) : (
-                <>
-                  {kvkOpties && kvk && (
-                    <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
-                  )}
-                  <button
-                    type="button"
-                    className="hover-up cursor-pointer"
-                    onClick={() => {
-                      SignOutAction();
-                    }}
-                  >
-                    <div className="flex flex-row items-center gap-0.5">
-                      <svg
-                        className="text-primary mr-1 inline-block h-4 w-4 align-[-0.1rem]"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 32 32"
-                      >
-                        <path
-                          fill="currentColor"
-                          fillRule="evenodd"
-                          d="M16.512 0a1.81 1.81 0 1 1 0 3.62c-4.032 0-7.405.2-10.027.597-.642.097-1.119.492-1.214 1.005-.42 2.282-.65 6.11-.65 10.778s.23 8.496.65 10.779c.095.513.57.906 1.214 1.004 2.622.395 5.995.597 10.027.597a1.81 1.81 0 1 1 0 3.62c-4.212 0-7.768-.214-10.567-.637-2.194-.33-3.856-1.873-4.235-3.93C1.093 24.072 1 18.828 1 16v-.382c.009-2.897.12-7.834.71-11.05C2.09 2.51 3.75.967 5.944.635 8.744.214 12.3 0 16.512 0zm3.477 7.84a1.814 1.814 0 0 1 2.56 0l6.888 6.887.056.07c.06.065.118.13.168.206.034.05.059.104.086.158.027.051.059.1.081.153.026.063.041.128.06.193.014.049.033.096.043.146.024.117.036.235.036.355a1.86 1.86 0 0 1-.036.354c-.01.053-.03.102-.045.154-.019.061-.033.124-.058.185-.024.06-.058.113-.09.17-.025.047-.046.095-.076.14-.067.1-.142.194-.227.278l-6.87 6.87a1.811 1.811 0 1 1-2.561-2.56l3.782-3.78H10.64a1.811 1.811 0 0 1 0-3.622h13.146l-3.796-3.796a1.81 1.81 0 0 1 0-2.56z"
-                        ></path>
-                      </svg>
-                      <span className="font-bold">Uitloggen</span>
-                    </div>
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-      <dialog
-        ref={mobileMenuRef}
-        className={`fixed inset-0 z-1 max-h-full w-[288px] backdrop:bg-black/50 md:hidden`}
-        onClick={() => setMenuOpened(false)}
-      >
-        <div
-          className="flex flex-col gap-4"
-          onClick={(e) => e.stopPropagation()}
+      <PageHeader className={signedIn ? undefined : "header-landing"}>
+        <Logo organisation="" subtitle="">
+          <Image
+            src="/beeldmerk-rijksoverheid.svg"
+            alt=""
+            width={50}
+            height={100}
+            unoptimized
+          />
+        </Logo>
+        <NavBar
+          headingItem={{
+            href: "/",
+            id: "heading",
+            label: "MijnOverheid Zakelijk",
+          }}
+          items={[]} // Pagina rendert niet zonder lege items
         >
-          <button
-            type="button"
-            onClick={() => setMenuOpened(false)}
-            className="flex w-fit gap-2 p-2"
-            ref={closeButtonRef}
-          >
-            <ChevronIcon className="stroke-primary w-4 rotate-180" />
-            <span className="text-sm font-bold">menu</span>
-          </button>
-
-          <Navigation />
-          <div className="px-2">
-            {isPublic ? (
-              <button
-                type="button"
-                className="hover-up cursor-pointer p-4 font-bold"
-                onClick={() => signIn(undefined, { callbackUrl: "/" })}
-              >
-                Inloggen
-              </button>
-            ) : (
+          <LanguageSelect
+            selectedLanguage="Nederlands"
+            languages={[
+              { lang: "nl", languageName: "Nederlands", href: "#" },
+              {
+                lang: "en",
+                languageName: "English",
+                localLanguageName: "Engels",
+                href: "#",
+              },
+            ]}
+          />
+          <ul className="rhc-nav-bar__list">
+            <li className="rhc-nav-bar__item"></li>
+            {signedIn ? (
               <>
-                {kvkOpties && kvk && (
-                  <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
-                )}
-                <button
-                  type="button"
-                  className="hover-up cursor-pointer p-4 font-semibold"
-                  onClick={() => {
-                    SignOutAction();
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="text-primary h-4 w-4 align-[-0.1rem]"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 32 32"
-                    >
-                      <path
-                        fill="currentColor"
-                        fillRule="evenodd"
-                        d="M16.512 0a1.81 1.81 0 1 1 0 3.62c-4.032 0-7.405.2-10.027.597-.642.097-1.119.492-1.214 1.005-.42 2.282-.65 6.11-.65 10.778s.23 8.496.65 10.779c.095.513.57.906 1.214 1.004 2.622.395 5.995.597 10.027.597a1.81 1.81 0 1 1 0 3.62c-4.212 0-7.768-.214-10.567-.637-2.194-.33-3.856-1.873-4.235-3.93C1.093 24.072 1 18.828 1 16v-.382c.009-2.897.12-7.834.71-11.05C2.09 2.51 3.75.967 5.944.635 8.744.214 12.3 0 16.512 0zm3.477 7.84a1.814 1.814 0 0 1 2.56 0l6.888 6.887.056.07c.06.065.118.13.168.206.034.05.059.104.086.158.027.051.059.1.081.153.026.063.041.128.06.193.014.049.033.096.043.146.024.117.036.235.036.355a1.86 1.86 0 0 1-.036.354c-.01.053-.03.102-.045.154-.019.061-.033.124-.058.185-.024.06-.058.113-.09.17-.025.047-.046.095-.076.14-.067.1-.142.194-.227.278l-6.87 6.87a1.811 1.811 0 1 1-2.561-2.56l3.782-3.78H10.64a1.811 1.811 0 0 1 0-3.622h13.146l-3.796-3.796a1.81 1.81 0 0 1 0-2.56z"
-                      ></path>
-                    </svg>
-                    Uitloggen
-                  </div>
-                </button>
+                <li className="rhc-nav-bar__item">
+                  <Link className="rhc-nav-bar__link" href="/">
+                    <span className="rhc-nav-bar__label">Robin Vogel</span>
+                  </Link>
+                </li>
+                <li className="rhc-nav-bar__item">
+                  <Link className="rhc-nav-bar__link" href="/">
+                    <span className="rhc-nav-bar__label">Uitloggen</span>
+                  </Link>
+                </li>
               </>
+            ) : (
+              <li className="rhc-nav-bar__item">
+                <Link
+                  className="rhc-nav-bar__link"
+                  href="/home"
+                  prefetch={false}
+                >
+                  <span className="rhc-nav-bar__label">Inloggen</span>
+                </Link>
+              </li>
             )}
-          </div>
-        </div>
-      </dialog>
+          </ul>
+        </NavBar>
+      </PageHeader>
     </>
   );
 };

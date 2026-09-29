@@ -23,7 +23,7 @@ const contactSchemas = {
     .string() // kan nog stricter met regex voor NL nummers
     .min(8, "Voer een geldig Nederlands telefoonnummer in")
     .max(18, "Voer een geldig Nederlands telefoonnummer in"),
-  Adres: z.string(), // komt niet voor als veld
+  ApplicatieId: z.string(), // komt niet voor als veld
 } as const satisfies Record<components["schemas"]["ContactType"], z.ZodTypeAny>;
 
 export const ContactEditBox = ({
@@ -46,7 +46,9 @@ export const ContactEditBox = ({
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(() => {
     if (typeof window === "undefined") return RESEND_COUNTDOWN_SECONDS;
-    const stored = sessionStorage.getItem(`resend-end-time-${name}-${idenType}-${idenValue}`);
+    const stored = sessionStorage.getItem(
+      `resend-end-time-${name}-${idenType}-${idenValue}`,
+    );
     if (!stored) return RESEND_COUNTDOWN_SECONDS;
     return Math.max(0, Math.ceil((parseInt(stored) - Date.now()) / 1000));
   });
@@ -55,7 +57,8 @@ export const ContactEditBox = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutate: updateEmailMutate } = useUpdateOndernemengContactvoorkeur();
   const { mutate: emailVerifyMutate } = useVerifyEmail();
-  const { mutate: requestVerificationCodeMutate } = useRequestVerificationCode();
+  const { mutate: requestVerificationCodeMutate } =
+    useRequestVerificationCode();
 
   const [newValue, setNewValue] = useState(contactGegeven?.waarde || "");
   const [verificationCode, setVerificationCode] = useState("");
@@ -73,7 +76,10 @@ export const ContactEditBox = ({
   useEffect(() => {
     if (!showResendSection) return;
     if (!sessionStorage.getItem(storageKey)) {
-      sessionStorage.setItem(storageKey, (Date.now() + RESEND_COUNTDOWN_SECONDS * 1000).toString());
+      sessionStorage.setItem(
+        storageKey,
+        (Date.now() + RESEND_COUNTDOWN_SECONDS * 1000).toString(),
+      );
     }
   }, [showResendSection, storageKey]);
 
@@ -287,7 +293,10 @@ export const ContactEditBox = ({
                 {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
               </Notification>
               {resendSuccess && (
-                <Notification variant="success" onClose={() => setResendSuccess(false)}>
+                <Notification
+                  variant="success"
+                  onClose={() => setResendSuccess(false)}
+                >
                   {`Er is een nieuwe verificatiecode verzonden naar ${newValue}.`}
                 </Notification>
               )}
@@ -297,8 +306,10 @@ export const ContactEditBox = ({
             </div>
             <button
               type="button"
-              onClick={resendCountdown === 0 ? handleResendVerification : undefined}
-              className={`self-center text-primary ml-auto text-right text-sm ${resendCountdown === 0 ? "cursor-pointer hover:underline" : "cursor-default"}`}
+              onClick={
+                resendCountdown === 0 ? handleResendVerification : undefined
+              }
+              className={`text-primary ml-auto self-center text-right text-sm ${resendCountdown === 0 ? "cursor-pointer hover:underline" : "cursor-default"}`}
             >
               {resendCountdown > 0
                 ? `Opnieuw verificatiecode aanvragen in ${resendCountdown} seconden`

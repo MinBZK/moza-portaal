@@ -1,10 +1,46 @@
 "use client";
 
-import React from "react";
-
+import { Fragment, type ComponentProps } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import ChevronIcon from "@/components/icons/chevronIcon";
+import {
+  BreadcrumbNav,
+  BreadcrumbNavLink,
+  BreadcrumbNavSeparator,
+  Icon,
+} from "@rijkshuisstijl-community/components-react";
+
+const breadcrumbLabels: Record<string, string> = {
+  bedrijfsgegevens: "Bedrijfsgegevens",
+  ondernemingsgegevens: "Bedrijfsgegevens",
+  "lopende-zaken": "Lopende zaken",
+  aanvragen: "Lopende zaken",
+  berichtenbox: "Berichtenbox",
+  inbox: "Berichtenbox",
+  omgevingsberichten: "Berichten over uw buurt",
+  medewerkers: "Personeel en rollen",
+  "verzuim-en-verlof": "Ziekte en verlof",
+  subsidies: "Subsidies en financiering",
+  wetten: "Wetten en regelgeving",
+  berichten: "Berichten over uw buurt",
+  bewaard: "Bewaarde items",
+  "digitale-assistent": "Digitale assistent (AI)",
+  belastingen: "Belastingen",
+  "zakelijk-vervoer": "Zakelijk vervoer",
+  personeel: "Personeel en rollen",
+  "ziekte-verlof": "Ziekte en verlof",
+  dataverwerking: "Gegevensdeling en dataverwerking",
+  contactvoorkeuren: "Contactvoorkeuren",
+};
+
+// next/link mist de classes die Utrecht's eigen Link-component zet, waardoor
+// de link-styling wegvalt. Hier zetten we ze er weer bij.
+const NldsNextLink = ({ className, ...props }: ComponentProps<typeof Link>) => (
+  <Link
+    {...props}
+    className={`utrecht-link utrecht-link--html-a ${className ?? ""}`}
+  />
+);
 
 const Breadcrumb = () => {
   const paths = usePathname();
@@ -14,41 +50,39 @@ const Breadcrumb = () => {
   if (pathNames.length == 0) {
     return;
   }
-  const separator = <ChevronIcon className="h-[12px] w-[12px]" />;
+  const crumbs = pathNames.map((segment, index) => ({
+    href: `/${pathNames.slice(0, index + 1).join("/")}`,
+    label:
+      breadcrumbLabels[segment] ?? segment[0].toUpperCase() + segment.slice(1),
+  }));
+
   return (
     <>
-      <Link
-        href={"/"}
-        className="text-blue-text text-sub flex items-center gap-2 px-1 pt-1.5 hover:underline sm:hidden"
-      >
-        <ChevronIcon className="w-[10px] rotate-180" />
-        Home
-      </Link>
-      <ul className="m-0 hidden items-center gap-[7px] sm:flex">
-        <li>
-          <Link href={"/"} className="text-blue-text text-sub hover:underline">
-            Home
-          </Link>
-        </li>
-        {pathNames.length > 0 && separator}
-        {pathNames.map((link, index) => {
-          const href = `/${pathNames.slice(0, index + 1).join("/")}`;
-          const itemLink = link[0].toUpperCase() + link.slice(1, link.length);
+      <BreadcrumbNav>
+        <BreadcrumbNavLink Link={NldsNextLink} href="/" index={0} rel="home">
+          Home
+        </BreadcrumbNavLink>
+        {crumbs.map((crumb, index) => {
+          const isCurrent = crumb.href === paths;
           return (
-            <React.Fragment key={index}>
-              <li className={""}>
-                <Link
-                  href={href}
-                  className={`text-sub ${href == paths ? "text-black" : "text-blue-text hover:underline"}`}
-                >
-                  {itemLink}
-                </Link>
-              </li>
-              {pathNames.length !== index + 1 && separator}
-            </React.Fragment>
+            <Fragment key={crumb.href}>
+              <BreadcrumbNavSeparator>
+                <Icon icon="chevron-right" />
+              </BreadcrumbNavSeparator>
+              <BreadcrumbNavLink
+                // De huidige pagina krijgt geen href, dus geen next/link
+                Link={isCurrent ? undefined : NldsNextLink}
+                href={crumb.href}
+                index={index + 1}
+                current={isCurrent}
+                disabled={isCurrent}
+              >
+                {crumb.label}
+              </BreadcrumbNavLink>
+            </Fragment>
           );
         })}
-      </ul>
+      </BreadcrumbNav>
     </>
   );
 };

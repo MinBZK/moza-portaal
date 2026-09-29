@@ -53,14 +53,12 @@ const ArtikelDetailPage = async ({
       })
     : "";
 
-  const typeLabel = TYPE_LABELS[article.additionalType ?? ""] ?? article.additionalType;
+  const typeLabel =
+    TYPE_LABELS[article.additionalType ?? ""] ?? article.additionalType;
 
   return (
     <>
-      <Link
-        href="/actualiteiten"
-        className="text-sm text-[#01689b] underline"
-      >
+      <Link href="/actualiteiten" className="text-sm text-[#01689b] underline">
         &larr; Terug naar actualiteiten
       </Link>
 
@@ -110,7 +108,9 @@ const ArtikelDetailPage = async ({
         {/* Related articles */}
         {article.hasPart && article.hasPart.length > 0 && (
           <div>
-            <h3 className="mb-2 text-lg font-semibold">Gerelateerde artikelen</h3>
+            <h3 className="mb-2 text-lg font-semibold">
+              Gerelateerde artikelen
+            </h3>
             <ul className="list-inside list-disc space-y-1">
               {article.hasPart.map((part) => (
                 <li key={part.url}>

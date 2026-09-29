@@ -5,7 +5,8 @@ import { useState, type ReactNode } from "react";
 export type QueryStatus = "pending" | "error" | "success";
 
 const LOADING_MESSAGE = "Laden...";
-const ERROR_MESSAGE = "Er ging iets mis bij het laden. Probeer het later opnieuw.";
+const ERROR_MESSAGE =
+  "Er ging iets mis bij het laden. Probeer het later opnieuw.";
 
 const PaginatedList = <T,>({
   items,

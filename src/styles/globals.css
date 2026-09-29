@@ -1,11 +1,10 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@layer properties, theme, base, components, utilities, moza-overrides;
-
+@layer properties, theme, base, components, utilities, mox-overrides;
 
 @font-face {
-  font-family: "RijksoverheidSansWebText";
+  font-family: "RijksoverheidSansVF";
   src: url("./fonts/RijksoverheidSansWebText.woff") format("woff");
   font-weight: 400;
   font-style: normal;
@@ -23,9 +22,9 @@
 
   body {
     font-family: var(--font-custom);
-    text-rendering: optimizeLegibility;
+    /* text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: grayscale; */
     color: var(--color-black);
     font-size: var(--text-base);
     line-height: var(--text-base--line-height);
@@ -39,9 +38,11 @@
       transform 300ms,
       opacity 300ms;
   }
+
   dialog {
     transform: translateX(-288px);
   }
+
   dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -50,6 +51,7 @@
   dialog[open] {
     transform: translateX(0);
   }
+
   dialog[open]::backdrop {
     opacity: 1;
   }
@@ -59,6 +61,7 @@
       transform: translateX(-288px);
     }
   }
+
   @starting-style {
     dialog[open]::backdrop {
       opacity: 0;
@@ -70,10 +73,14 @@
   --color-primary: #007bc7;
   --color-secondary: #ccf2ff;
 
-  --color-blue-text: #004ca0; /* links */
-  --color-blue-background: #d9ebf7; /* background */
-  --color-ro-blue: #154273; /* RO-blue */
-  --color-blue-menu-item: #01689b; /* menu items */
+  --color-blue-text: #004ca0;
+  /* links */
+  --color-blue-background: #d9ebf7;
+  /* background */
+  --color-ro-blue: #154273;
+  /* RO-blue */
+  --color-blue-menu-item: #01689b;
+  /* menu items */
 
   --color-black: rgb(33, 37, 41);
   --color-gray: dimgray;
@@ -104,58 +111,4 @@
   --breakpoint-md: 992px;
   --breakpoint-lg: 1200px;
   --breakpoint-xl: 1600px;
-}
-
-@layer moza-overrides {
-  /* Focus-visible outline styling */
-  *:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-
-  /* container max-sizes are covered in tailwind.config.ts */
-  .container {
-    padding-inline: 12px;
-    max-inline-size: none;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* sm: 768px */
-  @media (min-width: 768px) {
-    .container {
-      max-width: 720px;
-    }
-  }
-
-  /* md: 992px */
-  @media (min-width: 992px) {
-    .container {
-      max-width: 960px;
-    }
-  }
-
-  /* lg: 1200px */
-  @media (min-width: 1200px) {
-    .container {
-      max-width: 1140px;
-    }
-  }
-
-  /* xl: 1600px */
-  @media (min-width: 1600px) {
-    .container {
-      max-width: 1540px;
-    }
-  }
-}
-
-.hover-up {
-  display: block;
-  transition: transform 0.2s ease-in-out;
-  transform: translateY(0);
-}
-.hover-up:hover {
-  transform: translateY(-2px);
 }

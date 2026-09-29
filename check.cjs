@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const pa11y = require("pa11y");
 const path = require("path");
 const fs = require("fs");

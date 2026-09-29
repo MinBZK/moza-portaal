@@ -7,7 +7,9 @@ export const useAddOnderwerpVoorkeur = () => {
     mutationFn: ({ onderwerp }: { onderwerp: string }) =>
       addOnderwerpVoorkeur(onderwerp),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
+      queryClient.invalidateQueries({
+        queryKey: ["actualiteiten", "voorkeuren"],
+      });
     },
   });
 };

@@ -9,7 +9,7 @@ export default async function Page() {
 
   if (!session) {
     return (
-      <PublicLayout>
+      <PublicLayout withNavigation={false} signedIn={false}>
         <PublicPage />
       </PublicLayout>
     );

@@ -34,19 +34,11 @@ const Prive = () => {
   return (
     <div className="flex w-full flex-col gap-4 overflow-x-auto">
       <div className="flex flex-col gap-0 bg-neutral-100 p-4">
-        <AanhefEditBox
-          voorkeur={aanhef}
-          idenType={"BSN"}
-          idenValue={bsn}
-        />
+        <AanhefEditBox voorkeur={aanhef} idenType={"BSN"} idenValue={bsn} />
 
         <hr className="my-3 border-neutral-300" />
 
-        <TaalEditBox
-          voorkeur={taal}
-          idenType={"BSN"}
-          idenValue={bsn}
-        />
+        <TaalEditBox voorkeur={taal} idenType={"BSN"} idenValue={bsn} />
 
         <hr className="my-3 border-neutral-300" />
 

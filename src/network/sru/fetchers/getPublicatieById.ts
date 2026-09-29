@@ -45,10 +45,13 @@ export const getPublicatieById = async (
   const enrichedData = gzd?.enrichedData;
 
   const spatialValues = extractArray(owmskern?.spatial).map(textOf);
-  const postcodeFromTpmeta = String(tpmeta?.postcodeHuisnummer ?? "").split(" ")[0];
+  const postcodeFromTpmeta = String(tpmeta?.postcodeHuisnummer ?? "").split(
+    " ",
+  )[0];
   const postcodes = [
     ...spatialValues.filter((s) => /^[1-9][0-9]{3}\s?[A-Za-z]{2}$/.test(s)),
-    ...(postcodeFromTpmeta && /^[1-9][0-9]{3}[A-Za-z]{2}$/.test(postcodeFromTpmeta)
+    ...(postcodeFromTpmeta &&
+    /^[1-9][0-9]{3}[A-Za-z]{2}$/.test(postcodeFromTpmeta)
       ? [postcodeFromTpmeta]
       : []),
   ];
@@ -63,9 +66,9 @@ export const getPublicatieById = async (
     modified: String(owmskern?.modified ?? ""),
     abstract: String(
       textOf(owmsmantel?.abstract) ||
-      textOf(owmsmantel?.alternative) ||
-      textOf(owmsmantel?.description) ||
-      "",
+        textOf(owmsmantel?.alternative) ||
+        textOf(owmsmantel?.description) ||
+        "",
     ),
     preferredUrl: String(preferredUrl),
     bronUrl: String(tpmeta?.bronIdentifier ?? ""),
@@ -76,4 +79,3 @@ export const getPublicatieById = async (
     publicatienaam: String(tpmeta?.publicatienaam ?? ""),
   };
 };
-

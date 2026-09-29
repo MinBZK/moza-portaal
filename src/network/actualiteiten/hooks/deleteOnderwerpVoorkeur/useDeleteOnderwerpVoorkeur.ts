@@ -6,7 +6,9 @@ export const useDeleteOnderwerpVoorkeur = () => {
   return useMutation({
     mutationFn: ({ id }: { id: number }) => deleteOnderwerpVoorkeur(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
+      queryClient.invalidateQueries({
+        queryKey: ["actualiteiten", "voorkeuren"],
+      });
     },
   });
 };

@@ -43,5 +43,12 @@ next-env.d.ts
 # pa11y reports
 output
 
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea
+# Claude Code persoonlijke instellingen
+.claude/settings.local.json
+
+# Design token docs
+/docs
