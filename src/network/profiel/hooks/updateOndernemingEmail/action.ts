@@ -15,14 +15,17 @@ export const updateEmail = async (
   isDefault: boolean = true, // TODO: caller should decide once multiple emails are supported
 ) => {
   if (body.id) {
-    const response = await profielClient.PUT("/api/profielservice/v1/contactgegeven", {
-      body: {
-        ...body,
-        identificatieNummer,
-        identificatieType,
-        isDefault,
+    const response = await profielClient.PUT(
+      "/api/profielservice/v1/contactgegeven",
+      {
+        body: {
+          ...body,
+          identificatieNummer,
+          identificatieType,
+          isDefault,
+        },
       },
-    });
+    );
     return response.response.status;
   } else {
     const { id: _id, ...postBody } = body;
