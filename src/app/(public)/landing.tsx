@@ -60,7 +60,7 @@ const PublicPage = () => {
               set("eherkenning");
               signIn(undefined, { callbackUrl: "/" });
             }}
-            className="mox-login-eherkenning gap-2 rounded-md bg-white"
+            className="mox-login-eherkenning"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
