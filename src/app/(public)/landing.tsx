@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import Card from "@/components/card";
 import { signIn } from "next-auth/react";
 import { useCookie } from "@/utils/useCookie";
 import {

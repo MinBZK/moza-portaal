@@ -7,7 +7,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TableCaption,
   AccordionProvider,
   Separator,
   Link,

@@ -1,14 +1,8 @@
 "use client";
 
-import ProfileSelect from "@/components/profileSelect";
-import { SignOutAction } from "@/utils/auth/signOutAction";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import Navigation from "../navigation";
-import ChevronIcon from "@/components/icons/chevronIcon";
 import { components } from "@/network/kvk/organisatieregister/generated";
+import Image from "next/image";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import {
   PageHeader,
   Logo,
@@ -16,10 +10,9 @@ import {
 } from "@rijkshuisstijl-community/components-react";
 import LanguageSelect from "@/components/languageSelect";
 
+// kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
+// (nog) niet in gebruik in deze header.
 const Header = ({
-  kvk,
-  kvkOpties,
-  isPublic = false,
   signedIn = true,
 }: {
   kvk?: string;
@@ -27,23 +20,17 @@ const Header = ({
   isPublic?: boolean;
   signedIn?: boolean;
 }) => {
-  const [menuOpened, setMenuOpened] = useState(false);
-  const mobileMenuRef = useRef<HTMLDialogElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (menuOpened && mobileMenuRef.current) mobileMenuRef.current.showModal();
-    if (menuOpened === false && mobileMenuRef.current)
-      mobileMenuRef.current.close();
-    if (menuOpened === true && closeButtonRef.current)
-      closeButtonRef.current.focus();
-  }, [menuOpened]);
-
   return (
     <>
       <PageHeader className={signedIn ? undefined : "header-landing"}>
         <Logo organisation="" subtitle="">
-          <img src="/beeldmerk-rijksoverheid.svg" alt="" />
+          <Image
+            src="/beeldmerk-rijksoverheid.svg"
+            alt=""
+            width={50}
+            height={100}
+            unoptimized
+          />
         </Logo>
         <NavBar
           headingItem={{

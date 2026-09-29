@@ -18,6 +18,13 @@ const eslintConfig = [
     },
   },
   {
+    // CommonJS-scripts (Node) gebruiken require() by design.
+    files: ["**/*.cjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
     // Demo-data blijft afgezonderd: alleen pagina's mogen eruit importeren,
     // en alleen via de ingang @/demo. Zie src/demo/README.md.
     files: ["src/**/*.{ts,tsx}"],

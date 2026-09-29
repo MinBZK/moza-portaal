@@ -1,11 +1,5 @@
 "use client";
-import { ReactNode } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  defaultFlags,
-  FeatureFlags,
-} from "@/app/(private)/instellingen/_featureFlags";
+import { FeatureFlags } from "@/app/(private)/instellingen/_featureFlags";
 import {
   SideNav,
   SideNavList,
@@ -15,11 +9,8 @@ import {
   NumberBadge,
 } from "@rijkshuisstijl-community/components-react";
 
-const Navigation = ({ flags = defaultFlags }: { flags?: FeatureFlags }) => {
-  const pathname = usePathname();
-
-  const hasAnyTrueFlag = Object.values(flags).some((flag) => flag === true);
-
+// flags wordt nog meegegeven door de private layout, maar is (nog) niet in gebruik.
+const Navigation = (_props: { flags?: FeatureFlags }) => {
   return (
     <SideNav>
       <SideNavList>
@@ -131,42 +122,5 @@ const Navigation = ({ flags = defaultFlags }: { flags?: FeatureFlags }) => {
     </SideNav>
   );
 };
-
-function SidebarMenuItem({
-  children,
-  disabled = false,
-  currentPage,
-  text,
-  route,
-  notification = 0,
-}: {
-  children: ReactNode;
-  disabled?: boolean;
-  currentPage: string | null;
-  text: string;
-  route: string;
-  notification?: number;
-}) {
-  const isActive = currentPage?.split("/")[1] === route.split("/")[1];
-  return (
-    <li
-      className="main-navigation__item"
-      aria-current={isActive ? "page" : undefined}
-    >
-      <Link href={route}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          {children}
-        </svg>
-        {text}
-
-        {notification > 0 && (
-          <span className="mt-1 ml-auto inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
-            {notification}
-          </span>
-        )}
-      </Link>
-    </li>
-  );
-}
 
 export default Navigation;
