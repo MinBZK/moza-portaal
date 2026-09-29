@@ -16,6 +16,8 @@ import {
   UnorderedListItem,
   DataSummary,
   DataSummaryItem,
+  NavigationList,
+  NavigationListItem,
 } from "@rijkshuisstijl-community/components-react";
 
 const PublicPage = () => {
@@ -122,6 +124,56 @@ const PublicPage = () => {
             <UnorderedListItem>Btw en loonheffingen</UnorderedListItem>
             <UnorderedListItem>Uw vestigingen</UnorderedListItem>
           </UnorderedList>
+        </div>
+      </div>
+
+      <Heading level={2} className="mox-landing-quicklinks-heading">
+        Snel naar
+      </Heading>
+      <div className="mox-landing-quicklinks">
+        <div>
+          <NavigationList className="mox-navigation-list--no-start-icon">
+            <NavigationListItem
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              href="#"
+              icon=""
+              label="Lorem ipsum"
+            />
+            <NavigationListItem
+              description="Pellentesque at lobortis erat, in egestas turpis"
+              href="#"
+              icon=""
+              label="Quisque pharetra"
+            />
+            <NavigationListItem
+              description="Proin imperdiet, tellus eu condimentum cursus"
+              href="#"
+              icon=""
+              label="Integer porttitor massa"
+            />
+          </NavigationList>
+        </div>
+        <div>
+          <NavigationList className="mox-navigation-list--no-start-icon">
+            <NavigationListItem
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+              href="#"
+              icon=""
+              label="Phasellus sodales interdum"
+            />
+            <NavigationListItem
+              description="Ut tincidunt fringilla tortor, ut venenatis erat"
+              href="#"
+              icon=""
+              label="Etiam egestas"
+            />
+            <NavigationListItem
+              description="Nullam eget risus eu odio ultrices commodo"
+              href="#"
+              icon=""
+              label="Quisque tempor egestas"
+            />
+          </NavigationList>
         </div>
       </div>
 

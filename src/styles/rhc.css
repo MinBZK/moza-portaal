@@ -132,6 +132,24 @@ body {
     }
   }
 
+  .mox-landing-quicklinks {
+    display: flex;
+
+    div {
+      padding-block-end: var(--rhc-hero-message-padding-block-end);
+      padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+      padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+      width: 50%;
+    }
+  }
+
+  .mox-landing-quicklinks-heading {
+    padding-block-end: var(--rhc-hero-message-padding-block-end);
+    padding-block-start: var(--rhc-hero-message-padding-block-start);
+    padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+    padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+  }
+
   .mox-login-digid,
   .mox-login-eherkenning {
     align-items: center;
