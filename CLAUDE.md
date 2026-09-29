@@ -38,7 +38,7 @@ Kopieer `example.env.local` naar `.env.local`. Nodig: service-URL's (`API_URL_*`
 
 ## Werkwijze
 
-- Code, UI-teksten en commits in het Nederlands. Teksten voor gebruikers op B1-niveau.
+- Code, UI-teksten en commits in het Nederlands. Teksten voor gebruikers volgen de schrijfwijzer: @docs/schrijfwijzer.md
 - Commits: emoji uit de lijst hieronder plus korte Nederlandse zin.
 - Branchnamen: `fix/…`, `feature/…`.
 
@@ -79,3 +79,9 @@ npm run build
 ```
 
 Er zijn nog geen tests; CI draait alleen lint. `check.cjs` doet een pa11y-toegankelijkheidscheck tegen `localhost:3000` en draait handmatig.
+
+## Skills
+
+- UI-wijziging klaar: draai `toegankelijkheid-review`.
+- Nieuwe of gewijzigde UI-tekst: `rijksoverheid-copy`, maar bij tegenstrijdigheid wint docs/schrijfwijzer.md.
+- Nieuwe of gewijzigde gebruikersflow, of states (laden, leeg, fout, succes) en feedback na een actie: `interaction-design`.
