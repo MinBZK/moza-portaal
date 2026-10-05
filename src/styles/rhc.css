@@ -79,6 +79,8 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
     height: calc(var(--rhc-size-lint)*10);
+    background: var(--mox-landing-info-background);
+
   }
 
   .mox-landing-info {

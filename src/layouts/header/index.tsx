@@ -28,6 +28,7 @@ const Header = ({
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    // Outside click handler for Keycloak login dropdown
     function handleClick(e: MouseEvent) {
       if (
         wrapperRef.current &&
@@ -37,8 +38,18 @@ const Header = ({
       }
     }
 
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape" || e.key === "Esc") {
+        setOpenKeycloakLogin(false);
+      }
+    }
+
     document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, []);
 
   return (
