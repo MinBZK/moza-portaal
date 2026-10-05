@@ -19,8 +19,8 @@ import Link from "next/link";
 const PublicPage = () => {
   return (
     <div className="utrecht-page-body">
-      <div className="mox-landing-hero">
-        <div className="mox-landing-hero-text">
+      <div className="mox-landing-hero rhc-rounded-corner rhc-rounded-corner--position-start-end">
+        <div className="mox-landing-hero-text rhc-rounded-corner rhc-rounded-corner--position-end-end">
           <PreHeading
             heading={<Heading level={1}>MijnOverheid Zakelijk</Heading>}
           >
@@ -84,10 +84,10 @@ const PublicPage = () => {
             <Icon icon="chevron-right" />
           </LinkButton>
         </div>
-        <RoundedCorner
-          alt="Nature"
-          as="img"
-          position="start-end"
+        <Image
+          width={1114}
+          height={796}
+          alt="Entrepreneur working on a tablet"
           src="/bg-full-zakelijk-cropped.webp"
         />
       </div>
