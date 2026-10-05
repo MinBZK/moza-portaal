@@ -1,8 +1,19 @@
-/* Tijdelijke styling bovenop RHC componenten die de huidige huisstijl tonen */
+/*
+
+Tijdelijke styling bovenop RHC componenten die de huidige huisstijl tonen
+
+Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nieuwe MO huisstijl die in ontwikkeling (Q1/2027) is te overbruggen. Bij het verwijderen van dit CSS bestand zou de styling terugvallen op RHC (waar via rhc.css al enkele andere tweaks aan plaats hebben gevonden in de context van de richting die de nieuwe MO huisstijl op gaat.
+
+*/
 
 .rhc-theme.mox-theme {
 
 	/* Body */
+	.utrecht-page-body {
+		padding-block-end: 0;
+		padding-block-start: 1.5rem;
+	}
+
 	.utrecht-page-body,
 	.utrecht-page-body__content {
 		background-color: #f3f3f3 !important;
@@ -63,6 +74,15 @@
 
 	.utrecht-accordion__section {
 		border: 0;
+	}
+
+	/* Footer */
+	.rhc-page-footer {
+		background-color: #535353;
+
+		h2 {
+			color: #fff;
+		}
 	}
 
 	/* Typography */
