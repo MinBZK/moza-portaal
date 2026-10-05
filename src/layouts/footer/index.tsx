@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from "@/components/icons/externalLinkIcon";
 import { IconText } from "@/components/iconText";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { Footer as NldsFooter } from "@rijkshuisstijl-community/components-react";
+import { Footer as NldsFooter } from "@/components/rhc";
 
 const FooterLinkItem = ({
   href = "#",
