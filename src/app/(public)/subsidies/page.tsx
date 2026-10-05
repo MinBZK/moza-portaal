@@ -30,7 +30,7 @@ const SubsidiesPage = async () => {
       </Alert>
 
       {subsidies.map((subsidie) => (
-        <div className="rhc-card-as-link" key={subsidie.id}>
+        <div className="mox-card" key={subsidie.id}>
           <div className="rhc-card-as-link__content">
             <Heading level={2}>{subsidie.titel}</Heading>
             <Paragraph>{subsidie.samenvatting}</Paragraph>

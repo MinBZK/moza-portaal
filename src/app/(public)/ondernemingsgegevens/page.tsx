@@ -30,7 +30,7 @@ const OndernemingsgegevensPage = async () => {
         en de Belastingdienst.
       </Paragraph>
 
-      <div className="rhc-card-as-link__content">
+      <div className="mox-card">
         <Heading level={2}>Algemeen</Heading>
         <DataSummary appearance="column" className="mox-data-summary--columns">
           {gegevens.map(({ label, waarde, href }) =>
@@ -56,7 +56,7 @@ const OndernemingsgegevensPage = async () => {
         </Paragraph>
       </div>
 
-      <div className="rhc-card-as-link__content">
+      <div className="mox-card">
         <Heading level={2}>Meer over uw onderneming</Heading>
         <NavigationList className="mox-navigation-list--no-start-icon">
           {onderdelen.map(({ id, titel, beschrijving, href }) => (

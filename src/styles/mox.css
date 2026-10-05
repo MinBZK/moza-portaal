@@ -48,11 +48,21 @@
 	}
 
 	/* Main */
-	.rhc-card-as-link__content {
+	.mox-card,
+	.utrecht-accordion {
 		background-color: #fff;
 		border-radius: 4px;
 		box-shadow: 0 0 6px 0 #b4b4b4;
 		padding: 2rem;
+	}
+
+	/* Accordeon */
+	.utrecht-accordion {
+		padding: 1rem;
+	}
+
+	.utrecht-accordion__section {
+		border: 0;
 	}
 
 	/* Typography */
