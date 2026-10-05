@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateEmail, verifyEmail } from "./action";
+import { updateEmail, verifyEmail, requestVerificationCode } from "./action";
 import { components } from "@/network/profiel/generated";
 
 export const useUpdateOndernemengContactvoorkeur = () =>
@@ -23,4 +23,13 @@ export const useVerifyEmail = () =>
     }: {
       body: components["schemas"]["EmailVerificatieRequest"];
     }) => verifyEmail(body),
+  });
+
+export const useRequestVerificationCode = () =>
+  useMutation({
+    mutationFn: ({
+      body,
+    }: {
+      body: components["schemas"]["EmailVerificatieCodeAanvraagRequest"];
+    }) => requestVerificationCode(body),
   });

@@ -7,36 +7,46 @@ export const updateEmail = async (
   identificatieNummer: string,
   identificatieType: components["schemas"]["IdentificatieType"],
   body: components["schemas"]["ContactgegevenUpdateRequest"],
+  isDefault: boolean = true, // TODO: caller should decide once multiple emails are supported
 ) => {
   if (body.id) {
-    const response = await profielClient.PUT(
-      "/api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}",
-      {
-        body,
-        params: {
-          path: {
-            identificatieNummer,
-            identificatieType,
-          },
-        },
+    const response = await profielClient.PUT("/api/profielservice/v1/contactgegeven", {
+      body: {
+        ...body,
+        identificatieNummer,
+        identificatieType,
+        isDefault,
       },
-    );
+    });
     return response.response.status;
   } else {
+    const { id: _id, ...postBody } = body;
     const response = await profielClient.POST(
-      "/api/profielservice/v1/contactgegeven/{identificatieType}/{identificatieNummer}",
+      "/api/profielservice/v1/contactgegeven",
       {
-        body,
-        params: {
-          path: {
-            identificatieNummer,
-            identificatieType,
-          },
+        body: {
+          ...postBody,
+          identificatieNummer,
+          identificatieType,
+          isDefault,
         },
       },
     );
     return response.response.status;
   }
+};
+
+export const requestVerificationCode = async (
+  body: components["schemas"]["EmailVerificatieCodeAanvraagRequest"],
+) => {
+  const response = await profielClient.POST(
+    "/api/profielservice/v1/emailverificatie/code",
+    { body },
+  );
+  if (response.response.status === 503) {
+    throw new Error("SERVICE_UNAVAILABLE");
+  }
+  return response.response.status;
 };
 
 export const verifyEmail = async (
@@ -46,6 +56,5 @@ export const verifyEmail = async (
     "/api/profielservice/v1/emailverificatie",
     { body },
   );
-  console.log(response);
   return response.response.status;
 };
