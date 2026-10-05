@@ -1,0 +1,68 @@
+/* Tijdelijke styling bovenop RHC componenten die de huidige huisstijl tonen */
+
+.rhc-theme.mox-theme {
+
+	/* Body */
+	.utrecht-page-body,
+	.utrecht-page-body__content {
+		background-color: #f3f3f3 !important;
+	}
+
+	/* Page header */
+	.rhc-nav-bar__container {
+		border-block-end-width: 0;
+	}
+
+	.utrecht-page-header {
+		border-block-end-width: 3px !important;
+	}
+
+	.rhc-nav-bar__list:first-child .rhc-nav-bar__link {
+		color: #3b3b3b;
+		font-size: 1.75rem;
+		font-weight: normal;
+	}
+
+	/* Language nav */
+	.utrecht-page-header__content {
+		position: relative;
+	}
+
+	.rhc-language-navigation {
+		position: absolute;
+		right: 0;
+		top: 1.5rem;
+
+		button {
+			text-decoration: none;
+		}
+
+		.utrecht-icon {
+			display: none;
+		}
+	}
+
+	/* Sidenav */
+	.rhc-side-nav__link {
+		color: #3b3b3b;
+	}
+
+	/* Main */
+	.rhc-card-as-link__content {
+		background-color: #fff;
+		border-radius: 4px;
+		box-shadow: 0 0 6px 0 #b4b4b4;
+		padding: 2rem;
+	}
+
+	/* Typography */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		color: #3b3b3b;
+		font-weight: normal;
+	}
+
+}

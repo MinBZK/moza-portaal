@@ -1,6 +1,4 @@
-/* Mox: afwijkingen op de Rijkshuisstijl. Alleen uitzonderingen, geen kopie van RHC.
-   Bewust niet in @layer: de RHC-pakketten zijn volledig unlayered en unlayered
-   CSS wint altijd van layered CSS. In een layer doen deze regels niets. */
+/* Afwijkingen op de Rijkshuisstijl t.b.v. nieuwe ‘sub-huisstijl’ voor MOx */
 
 @font-face {
   font-family: "RijksSansVF";

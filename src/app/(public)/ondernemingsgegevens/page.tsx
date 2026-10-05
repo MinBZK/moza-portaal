@@ -30,46 +30,46 @@ const OndernemingsgegevensPage = async () => {
         en de Belastingdienst.
       </Paragraph>
 
-      <Heading level={2}>Algemeen</Heading>
-      <DataSummary appearance="column" className="mox-data-summary--columns">
-        {gegevens.map(({ label, waarde, href }) =>
-          href ? (
-            <div key={label} className="rhc-data-summary__item">
-              <dt className="rhc-data-summary__item-key">{label}</dt>
-              <dd className="rhc-data-summary__item-value">
-                <Link href={href}>{waarde}</Link>
-              </dd>
-            </div>
-          ) : (
-            <DataSummaryItem key={label} itemKey={label} itemValue={waarde} />
-          ),
-        )}
-      </DataSummary>
+      <div className="rhc-card-as-link__content">
+        <Heading level={2}>Algemeen</Heading>
+        <DataSummary appearance="column" className="mox-data-summary--columns">
+          {gegevens.map(({ label, waarde, href }) =>
+            href ? (
+              <div key={label} className="rhc-data-summary__item">
+                <dt className="rhc-data-summary__item-key">{label}</dt>
+                <dd className="rhc-data-summary__item-value">
+                  <Link href={href}>{waarde}</Link>
+                </dd>
+              </div>
+            ) : (
+              <DataSummaryItem key={label} itemKey={label} itemValue={waarde} />
+            ),
+          )}
+        </DataSummary>
 
-      <Paragraph>
-        Uw contactgegevens staan bij{" "}
-        <Link inline href="/contactvoorkeuren">
-          Contactvoorkeuren
-        </Link>
-        .
-      </Paragraph>
+        <Paragraph>
+          Uw contactgegevens staan bij{" "}
+          <Link inline href="/contactvoorkeuren">
+            Contactvoorkeuren
+          </Link>
+          .
+        </Paragraph>
+      </div>
 
-      <Separator />
-
-      <Heading level={2}>Meer over uw onderneming</Heading>
-      <NavigationList className="mox-navigation-list--no-start-icon">
-        {onderdelen.map(({ id, titel, beschrijving, href }) => (
-          <NavigationListItem
-            key={id}
-            description={beschrijving}
-            href={href}
-            icon={null}
-            label={titel}
-          />
-        ))}
-      </NavigationList>
-
-      <Separator />
+      <div className="rhc-card-as-link__content">
+        <Heading level={2}>Meer over uw onderneming</Heading>
+        <NavigationList className="mox-navigation-list--no-start-icon">
+          {onderdelen.map(({ id, titel, beschrijving, href }) => (
+            <NavigationListItem
+              key={id}
+              description={beschrijving}
+              href={href}
+              icon={null}
+              label={titel}
+            />
+          ))}
+        </NavigationList>
+      </div>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
       <AccordionProvider
