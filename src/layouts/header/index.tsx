@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import { components } from "@/network/kvk/organisatieregister/generated";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +10,8 @@ import {
   NavBar,
 } from "@rijkshuisstijl-community/components-react";
 import LanguageSelect from "@/components/languageSelect";
+import { useCookie } from "@/utils/useCookie";
+import { useState, useRef, useEffect } from "react";
 
 // kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
 // (nog) niet in gebruik in deze header.
@@ -20,6 +23,24 @@ const Header = ({
   isPublic?: boolean;
   signedIn?: boolean;
 }) => {
+  const { set } = useCookie("loginMethod");
+  const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpenKeycloakLogin(false);
+      }
+    }
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
   return (
     <>
       <PageHeader className={signedIn ? undefined : "header-landing"}>
@@ -69,13 +90,51 @@ const Header = ({
               </>
             ) : (
               <li className="rhc-nav-bar__item">
-                <Link
-                  className="rhc-nav-bar__link"
-                  href="/home"
-                  prefetch={false}
-                >
-                  <span className="rhc-nav-bar__label">Inloggen</span>
-                </Link>
+                {/* Dropdown trigger + menu for Keycloak login with two options */}
+                <div ref={wrapperRef} className="relative inline-block">
+                  <button
+                    onClick={() => setOpenKeycloakLogin((v) => !v)}
+                    className="mox-login-keycloak rounded border px-3 py-1"
+                    aria-expanded={openKeycloakLogin}
+                    aria-haspopup="menu"
+                  >
+                    Keycloak login
+                  </button>
+
+                  {openKeycloakLogin && (
+                    <div className="ring-opacity-5 absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black">
+                      <div
+                        className="py-1"
+                        role="menu"
+                        aria-orientation="vertical"
+                      >
+                        <button
+                          onClick={() => {
+                            set("digid");
+                            signIn(undefined, { callbackUrl: "/" });
+                            setOpenKeycloakLogin(false);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-neutral-100"
+                          role="menuitem"
+                        >
+                          DigiD
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            set("eherkenning");
+                            signIn(undefined, { callbackUrl: "/" });
+                            setOpenKeycloakLogin(false);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-neutral-100"
+                          role="menuitem"
+                        >
+                          E-Herkenning
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </li>
             )}
           </ul>

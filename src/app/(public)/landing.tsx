@@ -1,14 +1,11 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useCookie } from "@/utils/useCookie";
 import {
   PreHeading,
   Heading,
   Paragraph,
   LinkButton,
   Icon,
-  RoundedCorner,
   UnorderedList,
   UnorderedListItem,
   DataSummary,
@@ -16,10 +13,10 @@ import {
   NavigationList,
   NavigationListItem,
 } from "@rijkshuisstijl-community/components-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const PublicPage = () => {
-  const { set } = useCookie("loginMethod");
-
   return (
     <div className="utrecht-page-body">
       <div className="mox-landing-hero">
@@ -30,13 +27,7 @@ const PublicPage = () => {
             Pre-heading
           </PreHeading>
           <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
-          <button
-            onClick={() => {
-              set("digid");
-              signIn(undefined, { callbackUrl: "/" });
-            }}
-            className="mox-login-digid"
-          >
+          <Link href="/home" className="mox-login-digid">
             <svg viewBox="0 0 150 150" width={40} height={40}>
               <path
                 xmlns="http://www.w3.org/2000/svg"
@@ -53,15 +44,9 @@ const PublicPage = () => {
                 fill="#e17000"
               />
             </svg>
-            <p>Inloggen met DigiD</p>
-          </button>
-          <button
-            onClick={() => {
-              set("eherkenning");
-              signIn(undefined, { callbackUrl: "/" });
-            }}
-            className="mox-login-eherkenning"
-          >
+            <span>Inloggen met DigiD</span>
+          </Link>
+          <Link href="/home" className="mox-login-eherkenning">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="40"
@@ -78,13 +63,22 @@ const PublicPage = () => {
                 fill="#053775"
                 d="M12.525 48c-4.799-.001-8.683-3.835-8.685-8.569V24.583c.002-4.732 3.886-8.566 8.685-8.568h16.84v5.328h-16.84c-1.813.002-3.283 1.453-3.283 3.24V39.43c0 1.79 1.47 3.237 3.283 3.24h16.84V48h-16.84Z"
               />
+              <path fill="transparent" d="M0 0h64v64H0z" />
+              <path
+                fill="#e2066e"
+                d="M34.706 48h5.305V33.927h-5.305zM34.706 28.826h5.305V16h-5.305zM54.87 16v12.852H43.069l-2.266 5.033H54.87V48h5.29V16z"
+              />
+              <path
+                fill="#053775"
+                d="M12.525 48c-4.799-.001-8.683-3.835-8.685-8.569V24.583c.002-4.732 3.886-8.566 8.685-8.568h16.84v5.328h-16.84c-1.813.002-3.283 1.453-3.283 3.24V39.43c0 1.79 1.47 3.237 3.283 3.24h16.84V48h-16.84Z"
+              />
               <path
                 fill="#053775"
                 d="M13.237 28.83v5.059h12.626l2.331-5.059z"
               />
             </svg>
-            <p>Inloggen met E-Herkenning</p>
-          </button>
+            <span>Inloggen met E-Herkenning</span>
+          </Link>
           <LinkButton>
             Bekijk alle inlogmogelijkheden
             <Icon icon="chevron-right" />
