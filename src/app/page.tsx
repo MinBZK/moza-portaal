@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import PublicPage from "./(public)/landing";
+import PublicPage from "./(public)/_landing";
 import Dashboard from "./(private)/dashboard";
 import PrivateLayout from "./(private)/_layout";
 import PublicLayout from "./(public)/_layout";

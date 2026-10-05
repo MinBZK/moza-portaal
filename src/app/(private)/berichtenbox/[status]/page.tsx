@@ -81,7 +81,7 @@ const BerichtenboxPage = async ({
 }) => {
   const { status } = await params;
 
-  //staat een redirect in next.config.ts dat /berichtenbox -> /berichtenbox/inbox gaat
+  // staat een redirect in proxy.ts dat /berichtenbox -> /berichtenbox/inbox gaat
   return (
     <>
       <h1 className="text-h1">Mijn Berichtenbox</h1>
@@ -91,7 +91,7 @@ const BerichtenboxPage = async ({
             <div className="space-y-5">
               <Tabs>
                 <Tab
-                  href={`/berichtenbox/inbox`}
+                  href={`/berichtenbox`}
                   label={"Inbox"}
                   isActive={status === "inbox"}
                 />

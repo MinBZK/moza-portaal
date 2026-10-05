@@ -1,6 +1,6 @@
 "use client";
 
-import { LanguageNavigation } from "@rijkshuisstijl-community/components-react";
+import { LanguageNavigation } from "@/components/rhc";
 
 export type Language = {
   /** Taalcode, bijvoorbeeld "nl" */

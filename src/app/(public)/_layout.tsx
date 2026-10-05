@@ -16,16 +16,6 @@ export default function PublicLayout({
     <>
       <Header isPublic signedIn={signedIn} />
 
-      <div className="utrecht-page-body">
-        <div className="utrecht-page-body__content">
-          <div className="rhc-grid">
-            <div className="rhc-grid__cell mox-breadcrumb-cell">
-              <Breadcrumb />
-            </div>
-          </div>
-        </div>
-      </div>
-
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">
           <div className="rhc-grid">
@@ -41,6 +31,7 @@ export default function PublicLayout({
                   : "rhc-grid__cell mox-row-gap"
               }
             >
+              <Breadcrumb />
               {children}
             </div>
           </div>

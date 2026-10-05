@@ -10,7 +10,7 @@ import "@/styles/mox.css"; // MOx afwijkingen op RHC om tijdelijke de huidige hu
 import type { Metadata } from "next";
 import { Footer } from "@/layouts/footer";
 
-import { SkipLink } from "@rijkshuisstijl-community/components-react";
+import { SkipLink } from "@/components/rhc";
 
 export const metadata: Metadata = {
   title: "Mijn overheid zakelijk",

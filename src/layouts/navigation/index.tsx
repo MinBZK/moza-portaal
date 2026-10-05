@@ -21,7 +21,7 @@ const Navigation = ({
     <SideNav>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink current href="/home" icon="home">
+          <SideNavLink current href="/" icon="home">
             Home
           </SideNavLink>
         </SideNavItem>
@@ -34,7 +34,7 @@ const Navigation = ({
           </SideNavLink>
         </SideNavItem>
         <SideNavItem>
-          <SideNavLink href="/inbox" icon="inbox">
+          <SideNavLink href="/berichtenbox" icon="inbox">
             Berichtenbox
             {berichtenboxBadge}
           </SideNavLink>

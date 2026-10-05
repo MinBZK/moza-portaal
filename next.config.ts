@@ -7,11 +7,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/berichtenbox",
-        destination: "/berichtenbox/inbox",
-        permanent: true,
-      },
-      {
         source: "/contactgegevens",
         destination: "/contactgegevens/prive",
         permanent: true,

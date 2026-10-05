@@ -6,7 +6,7 @@ import {
   UnorderedListItem,
   AccordionProvider,
   Separator,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 
 export type Vraag = { vraag: string; antwoord: string };
 

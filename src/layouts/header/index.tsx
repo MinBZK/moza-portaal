@@ -4,11 +4,7 @@ import { signIn } from "next-auth/react";
 import { components } from "@/network/kvk/organisatieregister/generated";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  PageHeader,
-  Logo,
-  NavBar,
-} from "@rijkshuisstijl-community/components-react";
+import { PageHeader, Logo, NavBar } from "@/components/rhc";
 import LanguageSelect from "@/components/languageSelect";
 import { useCookie } from "@/utils/useCookie";
 import { useState, useRef, useEffect } from "react";
@@ -94,7 +90,10 @@ const Header = ({
                   </Link>
                 </li>
                 <li className="rhc-nav-bar__item">
-                  <Link className="rhc-nav-bar__link" href="/">
+                  <Link
+                    href="/api/persona-logout"
+                    className="rhc-nav-bar__link"
+                  >
                     <span className="rhc-nav-bar__label">Uitloggen</span>
                   </Link>
                 </li>
