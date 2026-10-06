@@ -8,6 +8,11 @@ import {
   Separator,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import {
+  BewaarKnop,
+  NietRelevantKnop,
+  RelevantItem,
+} from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoBuurtberichten } from "@/demo";
 
@@ -22,33 +27,41 @@ const OmgevingsberichtenPage = async () => {
         vergunningen en verkeersmaatregelen.
       </Paragraph>
 
-      {berichten.map((bericht) => (
-        <div className="mox-card" key={bericht.id}>
-          <Heading level={2}>{bericht.titel}</Heading>
-          <Paragraph>{bericht.samenvatting}</Paragraph>
+      {berichten.map((bericht) => {
+        const item = {
+          sleutel: `bericht:${bericht.id}`,
+          categorie: "Berichten over uw buurt",
+          titel: bericht.titel,
+          samenvatting: bericht.samenvatting,
+          href: `/omgevingsberichten#${bericht.id}`,
+        };
+        return (
+          <RelevantItem key={bericht.id} item={item}>
+            <div className="mox-card" id={bericht.id}>
+              <Heading level={2}>{bericht.titel}</Heading>
+              <Paragraph>{bericht.samenvatting}</Paragraph>
 
-          <DataSummary appearance="column">
-            <DataSummaryItem itemKey="Bron" itemValue={bericht.bron} />
-            <DataSummaryItem itemKey="Datum" itemValue={bericht.datum} />
-            <DataSummaryItem itemKey="Locatie" itemValue={bericht.locatie} />
-          </DataSummary>
+              <DataSummary appearance="column">
+                <DataSummaryItem itemKey="Bron" itemValue={bericht.bron} />
+                <DataSummaryItem itemKey="Datum" itemValue={bericht.datum} />
+                <DataSummaryItem
+                  itemKey="Locatie"
+                  itemValue={bericht.locatie}
+                />
+              </DataSummary>
 
-          <ActionGroup direction="row">
-            <Button appearance="secondary-action-button">
-              <Icon icon="favoriet" />
-              Bewaar
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="delen" />
-              Deel
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="kruis" />
-              Niet relevant voor mij
-            </Button>
-          </ActionGroup>
-        </div>
-      ))}
+              <ActionGroup direction="row">
+                <BewaarKnop item={item} />
+                <Button appearance="secondary-action-button">
+                  <Icon icon="delen" />
+                  Deel
+                </Button>
+                <NietRelevantKnop item={item} />
+              </ActionGroup>
+            </div>
+          </RelevantItem>
+        );
+      })}
 
       <PageNumberNavigation maxVisiblePages={5} page={1} totalPages={5} />
     </>
