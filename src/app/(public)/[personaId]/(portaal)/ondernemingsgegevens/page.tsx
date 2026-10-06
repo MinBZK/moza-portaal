@@ -6,7 +6,6 @@ import {
   NavigationList,
   NavigationListItem,
   AccordionProvider,
-  Separator,
   Link,
 } from "@/components/rhc";
 import {

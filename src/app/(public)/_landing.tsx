@@ -25,7 +25,7 @@ const PublicPage = () => {
             Pre-heading
           </PreHeading>
           <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
-          <Link href="/" className="mox-login-digid">
+          <Link href="/?persona=1111" className="mox-login-digid">
             <svg viewBox="0 0 150 150" width={40} height={40}>
               <path
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const PublicPage = () => {
             </svg>
             <span>Inloggen met DigiD</span>
           </Link>
-          <Link href="/" className="mox-login-eherkenning">
+          <Link href="/?persona=9999" className="mox-login-eherkenning">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="40"
