@@ -8,7 +8,6 @@ import {
   TableRow,
   TableCell,
   AccordionProvider,
-  Separator,
   Link,
 } from "@/components/rhc";
 import { getDemoZaken, getDemoZakenVragen } from "@/demo";

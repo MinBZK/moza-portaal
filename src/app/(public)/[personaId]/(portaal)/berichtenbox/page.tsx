@@ -1,18 +1,7 @@
-import { Heading } from "@/components/rhc";
+import LijstPagina, { type LijstPaginaProps } from "./_lijstPagina";
 
-const BerichtenboxPage = async ({
-  params,
-}: {
-  params: { personaId: string };
-}) => {
-  const { personaId } = await params;
+const InboxPage = (props: LijstPaginaProps) => (
+  <LijstPagina weergave="inbox" {...props} />
+);
 
-  return (
-    <>
-      <Heading level={1}>Berichtenbox...</Heading>
-      <p className="mt-4">Geselecteerde personaId: {personaId}</p>
-    </>
-  );
-};
-
-export default BerichtenboxPage;
+export default InboxPage;
