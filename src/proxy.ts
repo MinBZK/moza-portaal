@@ -6,12 +6,24 @@ console.log("proxy module loaded, NODE_ENV=", process.env.NODE_ENV);
 const privateRouteRoots = new Set([
   "actualiteiten",
   "bedrijfsgegevens",
+  "belastingen",
+  "berichtenbox",
   "berichteninuwbuurt",
+  "bewaard",
+  "buurtberichten",
   "contactgegevens",
   "contactmomenten",
+  "contactvoorkeuren",
+  "dataverwerking",
+  "digitale-assistent",
   "instellingen",
+  "lopendezaken",
   "me",
   "personeel",
+  "subsidies",
+  "verzuim-en-verlof",
+  "wetten",
+  "zakelijk-vervoer",
   "zaken",
 ]);
 
@@ -80,11 +92,6 @@ export function proxy(req: NextRequest) {
   }
 
   // No persona cookie: leave the request path as-is
-  if (pathname === "/berichtenbox") {
-    url.pathname = "/berichtenbox/inbox";
-    return NextResponse.redirect(url);
-  }
-
   return NextResponse.next();
 }
 

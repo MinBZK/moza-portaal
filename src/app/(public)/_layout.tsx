@@ -1,7 +1,7 @@
 import Breadcrumb from "@/layouts/breadcrumb";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
-import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
+import OngelezenBadge from "@/app/(private)/berichtenbox/_ongelezenBadge";
 
 export default function PublicLayout({
   children,

@@ -32,7 +32,7 @@ const OmgevingsberichtenPage = async () => {
           categorie: "Berichten over uw buurt",
           titel: bericht.titel,
           samenvatting: bericht.samenvatting,
-          href: `/omgevingsberichten#${bericht.id}`,
+          href: `/buurtberichten#${bericht.id}`,
         };
         return (
           <RelevantItem key={bericht.id} item={item}>
