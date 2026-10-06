@@ -52,8 +52,6 @@ const AanvragenPage = async () => {
         </TableBody>
       </Table>
 
-      <Separator />
-
       <Heading level={2}>Veelgestelde vragen</Heading>
       <AccordionProvider
         sections={vragen.map(({ vraag, antwoord }) => ({

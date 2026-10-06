@@ -8,15 +8,34 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 .rhc-theme.mox-theme {
 
+	/* Typography */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		color: var(--rhc-color-light-cool-grey-900);
+		font-weight: normal;
+	}
+
+	/* Forms */
+	.utrecht-textbox {
+		max-inline-size: 100%;
+	}
+
 	/* Body */
 	.utrecht-page-body {
 		padding-block-end: 0;
-		padding-block-start: 1.5rem;
+		padding-block-start: var(--rhc-space-2xl);
 	}
 
 	.utrecht-page-body,
 	.utrecht-page-body__content {
-		background-color: #f3f3f3 !important;
+		background-color: var(--rhc-color-cool-grey-100);
+	}
+
+	#hoofd-inhoud {
+		padding-block-end: var(--rhc-space-max-4xl);
 	}
 
 	/* Page header */
@@ -25,12 +44,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.utrecht-page-header {
-		border-block-end-width: 3px !important;
+		border-block-end-width: var(--rhc-border-width-md);
 	}
 
 	.rhc-nav-bar__list:first-child .rhc-nav-bar__link {
-		color: #3b3b3b;
-		font-size: 1.75rem;
+		color: var(--rhc-color-light-cool-grey-900);
+		font-size: var(--rhc-text-font-size-min-2xl);
 		font-weight: normal;
 	}
 
@@ -42,7 +61,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.rhc-language-navigation {
 		position: absolute;
 		right: 0;
-		top: 1.5rem;
+		top: var(--rhc-space-2xl);
 
 		button {
 			text-decoration: none;
@@ -55,21 +74,45 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Sidenav */
 	.rhc-side-nav__link {
-		color: #3b3b3b;
+		color: var(--rhc-color-light-cool-grey-900);
 	}
 
 	/* Main */
+	.mox-main-container {
+		align-content: start;
+		display: grid;
+		gap: var(--rhc-space-2xl)
+	}
+
 	.mox-card,
-	.utrecht-accordion {
-		background-color: #fff;
-		border-radius: 4px;
-		box-shadow: 0 0 6px 0 #b4b4b4;
-		padding: 2rem;
+	.utrecht-accordion,
+	.rhc-table {
+		background-color: var(--rhc-color-wit);
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		padding: var(--rhc-space-3xl);
+	}
+
+	.mox-card {
+		h2 {
+			margin-block-end: var(--rhc-space-xl);
+		}
+
+		p,
+		ul,
+		ol {
+			margin-block-end: var(--rhc-space-lg);
+		}
+
+		.utrecht-action-group,
+		.utrecht-button--primary-action {
+			margin-block-start: var(--rhc-space-2xl);
+		}
 	}
 
 	/* Accordeon */
 	.utrecht-accordion {
-		padding: 1rem;
+		padding: var(--rhc-space-max-xl);
 	}
 
 	.utrecht-accordion__section {
@@ -78,21 +121,34 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Footer */
 	.rhc-page-footer {
-		background-color: #535353;
+		background-color: var(--rhc-color-light-cool-grey-800);
 
 		h2 {
-			color: #fff;
+			color: var(--rhc-color-wit);
 		}
 	}
 
-	/* Typography */
-	h1,
-	h2,
-	h3,
-	h4,
-	h5 {
-		color: #3b3b3b;
-		font-weight: normal;
+	/* Pagination */
+	.ams-pagination__link {
+		align-items: center;
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		justify-content: center;
+		margin-inline: var(--rhc-space-sm);
+		min-block-size: var(--rhc-space-max-5xl);
+		min-inline-size: var(--rhc-space-max-5xl);
+		padding-inline: var(--rhc-space-max-lg);
+
+		&[aria-current="page"] {
+			background: var(--rhc-color-light-lintblauw-500);
+			color: var(--rhc-color-wit);
+		}
 	}
 
+	/* Berichtenbox */
+	[aria-label="Berichtenbox"] {
+		a {
+			text-decoration: none;
+		}
+	}
 }

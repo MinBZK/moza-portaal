@@ -1,4 +1,5 @@
 "use client";
+import type { ReactNode } from "react";
 import { FeatureFlags } from "@/app/(private)/instellingen/_featureFlags";
 import {
   SideNav,
@@ -6,11 +7,16 @@ import {
   SideNavItem,
   SideNavLink,
   Separator,
-  NumberBadge,
 } from "@rijkshuisstijl-community/components-react";
 
-// flags wordt nog meegegeven door de private layout, maar is (nog) niet in gebruik.
-const Navigation = (_props: { flags?: FeatureFlags }) => {
+const Navigation = ({
+  berichtenboxBadge,
+}: {
+  // flags wordt nog meegegeven door de private layout, maar is (nog) niet in gebruik.
+  flags?: FeatureFlags;
+  /** Aantal ongelezen berichten. Komt van de layout, want die kent de berichten. */
+  berichtenboxBadge?: ReactNode;
+}) => {
   return (
     <SideNav>
       <SideNavList>
@@ -30,7 +36,7 @@ const Navigation = (_props: { flags?: FeatureFlags }) => {
         <SideNavItem>
           <SideNavLink href="/inbox" icon="inbox">
             Berichtenbox
-            <NumberBadge>2</NumberBadge>
+            {berichtenboxBadge}
           </SideNavLink>
         </SideNavItem>
         <SideNavItem>

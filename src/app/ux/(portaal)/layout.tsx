@@ -1,6 +1,7 @@
 import Breadcrumb from "@/layouts/breadcrumb";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
+import OngelezenBadge from "@/app/(public)/inbox/_ongelezenBadge";
 
 export default function WettenLayout({
   children,
@@ -14,7 +15,7 @@ export default function WettenLayout({
         <div className="utrecht-page-body__content">
           <div className="rhc-grid">
             <nav className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
-              <Navigation />
+              <Navigation berichtenboxBadge={<OngelezenBadge />} />
             </nav>
             <div className="rhc-grid__cell rhc-grid__cell-t-9">
               <Breadcrumb />

@@ -9,6 +9,7 @@ import {
   BreadcrumbNavSeparator,
   Icon,
 } from "@rijkshuisstijl-community/components-react";
+import { useHuidigeKruimel } from "./huidigeKruimel";
 
 const breadcrumbLabels: Record<string, string> = {
   bedrijfsgegevens: "Bedrijfsgegevens",
@@ -44,6 +45,7 @@ const NldsNextLink = ({ className, ...props }: ComponentProps<typeof Link>) => (
 
 const Breadcrumb = () => {
   const paths = usePathname();
+  const huidigeKruimel = useHuidigeKruimel();
   const pathNames = paths.split("/").filter((path) => path);
 
   // Geen breadcrumbs op home page
@@ -53,7 +55,10 @@ const Breadcrumb = () => {
   const crumbs = pathNames.map((segment, index) => ({
     href: `/${pathNames.slice(0, index + 1).join("/")}`,
     label:
-      breadcrumbLabels[segment] ?? segment[0].toUpperCase() + segment.slice(1),
+      huidigeKruimel?.pad === `/${pathNames.slice(0, index + 1).join("/")}`
+        ? huidigeKruimel.label
+        : (breadcrumbLabels[segment] ??
+          segment[0].toUpperCase() + segment.slice(1)),
   }));
 
   return (

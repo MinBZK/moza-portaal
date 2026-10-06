@@ -20,6 +20,11 @@ export {
 export { getDemoZaken, getDemoZakenVragen, type DemoZaak } from "./zaken";
 export { getDemoBuurtberichten, type DemoBuurtbericht } from "./buurtberichten";
 export {
+  getDemoBerichten,
+  getDemoBerichtById,
+  type DemoBericht,
+} from "./berichten";
+export {
   getDemoVerwerkingen,
   getDemoVerwerkingVerwachtingen,
   getDemoVerwerkingVragen,
