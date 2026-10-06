@@ -23,7 +23,7 @@ const OmgevingsberichtenPage = async () => {
       </Paragraph>
 
       {berichten.map((bericht) => (
-        <div key={bericht.id}>
+        <div className="mox-card" key={bericht.id}>
           <Heading level={2}>{bericht.titel}</Heading>
           <Paragraph>{bericht.samenvatting}</Paragraph>
 
@@ -47,8 +47,6 @@ const OmgevingsberichtenPage = async () => {
               Niet relevant voor mij
             </Button>
           </ActionGroup>
-
-          <Separator />
         </div>
       ))}
 

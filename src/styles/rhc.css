@@ -205,6 +205,7 @@ body {
 
   /* Layout tuning */
   .mox-row-gap {
+    align-content: start;
     display: grid;
     gap: var(--rhc-space-2xl);
   }

@@ -1,11 +1,7 @@
-import { Heading } from "@rijkshuisstijl-community/components-react";
+import LijstPagina, { type LijstPaginaProps } from "./_lijstPagina";
 
-const BerichtenboxPage = async () => {
-  return (
-    <>
-      <Heading level={1}>Berichtenbox</Heading>
-    </>
-  );
-};
+const InboxPage = (props: LijstPaginaProps) => (
+  <LijstPagina weergave="inbox" {...props} />
+);
 
-export default BerichtenboxPage;
+export default InboxPage;

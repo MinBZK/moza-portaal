@@ -1,6 +1,7 @@
 import Breadcrumb from "@/layouts/breadcrumb";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
+import OngelezenBadge from "@/app/(public)/inbox/_ongelezenBadge";
 
 export default function PublicLayout({
   children,
@@ -30,13 +31,13 @@ export default function PublicLayout({
           <div className="rhc-grid">
             {withNavigation && (
               <nav className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
-                <Navigation />
+                <Navigation berichtenboxBadge={<OngelezenBadge />} />
               </nav>
             )}
             <div
               className={
                 withNavigation
-                  ? "rhc-grid__cell rhc-grid__cell-t-9 mox-row-gap"
+                  ? "rhc-grid__cell rhc-grid__cell-t-9 mox-main-container"
                   : "rhc-grid__cell mox-row-gap"
               }
             >
