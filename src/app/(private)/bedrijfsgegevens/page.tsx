@@ -1,84 +1,14 @@
-import {
-  Heading,
-  Paragraph,
-  DataSummary,
-  DataSummaryItem,
-  NavigationList,
-  NavigationListItem,
-  AccordionProvider,
-  Link,
-} from "@/components/rhc";
-import {
-  getDemoOndernemingsgegevens,
-  getDemoOndernemingsonderdelen,
-  getDemoOndernemingsvragen,
-} from "@/demo";
+import { getKvkFromCookie } from "@/utils/kvknummer";
+import Bedrijfsprofiel from "@/app/(private)/bedrijfsgegevens/bedrijfsgegevens";
 
-const OndernemingsgegevensPage = async () => {
-  const [gegevens, onderdelen, vragen] = await Promise.all([
-    getDemoOndernemingsgegevens(),
-    getDemoOndernemingsonderdelen(),
-    getDemoOndernemingsvragen(),
-  ]);
+const IdentiteitPage = async () => {
+  const kvk = await getKvkFromCookie();
 
-  return (
-    <>
-      <Heading level={1}>Bedrijfsgegevens</Heading>
-      <Paragraph>
-        Dit weet de overheid over uw organisatie. De gegevens komen van de KVK
-        en de Belastingdienst.
-      </Paragraph>
+  if (!kvk) {
+    return <p>Something went wrong..</p>;
+  }
 
-      <div className="mox-card">
-        <Heading level={2}>Algemeen</Heading>
-        <DataSummary appearance="column" className="mox-data-summary--columns">
-          {gegevens.map(({ label, waarde, href }) =>
-            href ? (
-              <div key={label} className="rhc-data-summary__item">
-                <dt className="rhc-data-summary__item-key">{label}</dt>
-                <dd className="rhc-data-summary__item-value">
-                  <Link href={href}>{waarde}</Link>
-                </dd>
-              </div>
-            ) : (
-              <DataSummaryItem key={label} itemKey={label} itemValue={waarde} />
-            ),
-          )}
-        </DataSummary>
-
-        <Paragraph>
-          Uw contactgegevens staan bij{" "}
-          <Link inline href="/contactvoorkeuren">
-            Contactvoorkeuren
-          </Link>
-          .
-        </Paragraph>
-      </div>
-
-      <div className="mox-card">
-        <Heading level={2}>Meer over uw onderneming</Heading>
-        <NavigationList className="mox-navigation-list--no-start-icon">
-          {onderdelen.map(({ id, titel, beschrijving, href }) => (
-            <NavigationListItem
-              key={id}
-              description={beschrijving}
-              href={href}
-              icon={null}
-              label={titel}
-            />
-          ))}
-        </NavigationList>
-      </div>
-
-      <Heading level={2}>Veelgestelde vragen</Heading>
-      <AccordionProvider
-        sections={vragen.map(({ vraag, antwoord }) => ({
-          label: vraag,
-          body: <Paragraph>{antwoord}</Paragraph>,
-        }))}
-      />
-    </>
-  );
+  return <Bedrijfsprofiel kvk={kvk} />;
 };
 
-export default OndernemingsgegevensPage;
+export default IdentiteitPage;

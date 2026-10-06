@@ -6,7 +6,7 @@ import ChevronIcon from "@/components/icons/chevronIcon";
 import { Notification } from "@/components/notifications";
 import profielClient from "@/network/profiel";
 import { getKvkFromCookie } from "@/utils/kvknummer";
-import { BerichtenboxTableRow } from "./_berichtenboxTableRow";
+import { BerichtenboxTableRow } from "@/app/(private)/berichtenbox/[status]/page";
 import Link from "next/link";
 
 const accordionItems = [
@@ -103,7 +103,7 @@ const Dashboard = async () => {
               </tbody>
             </table>
           </div>
-          <Link href={"/berichtenbox"}>
+          <Link href={"/berichtenbox/inbox"}>
             <Button>
               <IconText IconAfter={ChevronIcon}>
                 {"Naar uw berichtenbox"}

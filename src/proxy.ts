@@ -1,32 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-console.log("proxy module loaded, NODE_ENV=", process.env.NODE_ENV);
-
-const privateRouteRoots = new Set([
-  "actualiteiten",
-  "bedrijfsgegevens",
-  "belastingen",
-  "berichtenbox",
-  "berichteninuwbuurt",
-  "bewaard",
-  "buurtberichten",
-  "contactgegevens",
-  "contactmomenten",
-  "contactvoorkeuren",
-  "dataverwerking",
-  "digitale-assistent",
-  "instellingen",
-  "lopendezaken",
-  "me",
-  "personeel",
-  "subsidies",
-  "verzuim-en-verlof",
-  "wetten",
-  "zakelijk-vervoer",
-  "zaken",
-]);
-
 export function proxy(req: NextRequest) {
   const url = req.nextUrl.clone();
   const pathname = url.pathname;
@@ -82,10 +56,9 @@ export function proxy(req: NextRequest) {
     }
 
     const segments = pathname.split("/").filter(Boolean);
-    const isPrivatePath = privateRouteRoots.has(segments[0]);
 
     // rewriting public page for persona
-    if (segments.length === 1 && !isPrivatePath) {
+    if (segments.length > 0) {
       url.pathname = `${prefix}${pathname}`;
       return NextResponse.rewrite(url);
     }

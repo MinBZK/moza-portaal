@@ -25,7 +25,7 @@ const BewaardPage = async () => {
                 Wetten en regelgeving
               </Link>{" "}
               of{" "}
-              <Link inline href="/buurtberichten">
+              <Link inline href="/omgevingsberichten">
                 Berichten over uw buurt
               </Link>
               .
