@@ -10,6 +10,11 @@ import {
   Button,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import {
+  BewaarKnop,
+  NietRelevantKnop,
+  RelevantItem,
+} from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoWetten } from "@/demo";
 
@@ -29,53 +34,60 @@ const WettenPage = async () => {
         </Paragraph>
       </Alert>
 
-      {wetten.map((wet) => (
-        <div className="mox-card" key={wet.id}>
-          <Heading level={2}>{wet.titel}</Heading>
-          <Paragraph>{wet.samenvatting}</Paragraph>
+      {wetten.map((wet) => {
+        const item = {
+          sleutel: `wet:${wet.id}`,
+          categorie: "Wetten en regelgeving",
+          titel: wet.titel,
+          samenvatting: wet.samenvatting,
+          href: `/wetten#${wet.id}`,
+        };
+        return (
+          <RelevantItem key={wet.id} item={item}>
+            <div className="mox-card" id={wet.id}>
+              <Heading level={2}>{wet.titel}</Heading>
+              <Paragraph>{wet.samenvatting}</Paragraph>
 
-          <DataSummary appearance="column">
-            <DataSummaryItem itemKey="Status" itemValue={wet.status} />
-            <DataSummaryItem
-              itemKey="Gaat in op"
-              itemValue={wet.ingangsdatum}
-            />
-            <DataSummaryItem itemKey="Voor wie" itemValue={wet.voorWie} />
-          </DataSummary>
+              <DataSummary appearance="column">
+                <DataSummaryItem itemKey="Status" itemValue={wet.status} />
+                <DataSummaryItem
+                  itemKey="Gaat in op"
+                  itemValue={wet.ingangsdatum}
+                />
+                <DataSummaryItem itemKey="Voor wie" itemValue={wet.voorWie} />
+              </DataSummary>
 
-          {wet.alinea.map((tekst) => (
-            <Paragraph key={tekst}>{tekst}</Paragraph>
-          ))}
+              {wet.alinea.map((tekst) => (
+                <Paragraph key={tekst}>{tekst}</Paragraph>
+              ))}
 
-          <Heading level={3}>Wat moet u doen?</Heading>
-          <OrderedList>
-            {wet.stappen.map((stap) => (
-              <OrderedListItem key={stap}>{stap}</OrderedListItem>
-            ))}
-          </OrderedList>
+              <Heading level={3}>Wat moet u doen?</Heading>
+              <OrderedList>
+                {wet.stappen.map((stap) => (
+                  <OrderedListItem key={stap}>{stap}</OrderedListItem>
+                ))}
+              </OrderedList>
 
-          <ActionGroup direction="row" className="mox-action-group">
-            <Button appearance="secondary-action-button">
-              <Icon icon="favoriet" />
-              Bewaar
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="delen" />
-              Deel
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="communicatie" />
-              Vraag aan de digitale assistent
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="kruis" />
-              Niet relevant voor mij
-            </Button>
-          </ActionGroup>
+              <ActionGroup direction="row" className="mox-action-group">
+                <BewaarKnop item={item} />
+                <Button appearance="secondary-action-button">
+                  <Icon icon="delen" />
+                  Deel
+                </Button>
+                <Button appearance="secondary-action-button">
+                  <Icon icon="communicatie" />
+                  Vraag aan de digitale assistent
+                </Button>
+                <NietRelevantKnop item={item} />
+              </ActionGroup>
 
-          <Button appearance="primary-action-button">{wet.websiteLabel}</Button>
-        </div>
-      ))}
+              <Button appearance="primary-action-button">
+                {wet.websiteLabel}
+              </Button>
+            </div>
+          </RelevantItem>
+        );
+      })}
 
       <PageNumberNavigation maxVisiblePages={5} page={1} totalPages={10} />
     </>

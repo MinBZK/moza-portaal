@@ -10,6 +10,11 @@ import {
   Separator,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import {
+  BewaarKnop,
+  NietRelevantKnop,
+  RelevantItem,
+} from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoSubsidies } from "@/demo";
 
@@ -29,64 +34,69 @@ const SubsidiesPage = async () => {
         </Paragraph>
       </Alert>
 
-      {subsidies.map((subsidie) => (
-        <div className="mox-card" key={subsidie.id}>
-          <Heading level={2}>{subsidie.titel}</Heading>
-          <Paragraph>{subsidie.samenvatting}</Paragraph>
+      {subsidies.map((subsidie) => {
+        const item = {
+          sleutel: `subsidie:${subsidie.id}`,
+          categorie: "Subsidies en financiering",
+          titel: subsidie.titel,
+          samenvatting: subsidie.samenvatting,
+          href: `/subsidies#${subsidie.id}`,
+        };
+        return (
+          <RelevantItem key={subsidie.id} item={item}>
+            <div className="mox-card" id={subsidie.id}>
+              <Heading level={2}>{subsidie.titel}</Heading>
+              <Paragraph>{subsidie.samenvatting}</Paragraph>
 
-          <DataSummary appearance="column">
-            <DataSummaryItem
-              itemKey="Verstrekker"
-              itemValue={subsidie.verstrekker}
-            />
-            <DataSummaryItem itemKey="Type" itemValue={subsidie.type} />
-            <DataSummaryItem
-              itemKey="Aanvraagperiode"
-              itemValue={subsidie.aanvraagperiode}
-            />
-            <DataSummaryItem
-              itemKey="Maximaal bedrag"
-              itemValue={subsidie.maximaalBedrag}
-            />
-          </DataSummary>
+              <DataSummary appearance="column">
+                <DataSummaryItem
+                  itemKey="Verstrekker"
+                  itemValue={subsidie.verstrekker}
+                />
+                <DataSummaryItem itemKey="Type" itemValue={subsidie.type} />
+                <DataSummaryItem
+                  itemKey="Aanvraagperiode"
+                  itemValue={subsidie.aanvraagperiode}
+                />
+                <DataSummaryItem
+                  itemKey="Maximaal bedrag"
+                  itemValue={subsidie.maximaalBedrag}
+                />
+              </DataSummary>
 
-          {subsidie.alinea.map((tekst) => (
-            <Paragraph key={tekst}>{tekst}</Paragraph>
-          ))}
+              {subsidie.alinea.map((tekst) => (
+                <Paragraph key={tekst}>{tekst}</Paragraph>
+              ))}
 
-          <Heading level={3}>Vragen over deze regeling?</Heading>
-          <Paragraph>
-            <Link inline href="#">
-              De digitale assistent zoekt voor u uit
-            </Link>
-            . Bijvoorbeeld: komt u in aanmerking voor deze subsidie, en wat moet
-            u doen vóór de aanvraagperiode sluit?
-          </Paragraph>
+              <Heading level={3}>Vragen over deze regeling?</Heading>
+              <Paragraph>
+                <Link inline href="#">
+                  De digitale assistent zoekt voor u uit
+                </Link>
+                . Bijvoorbeeld: komt u in aanmerking voor deze subsidie, en wat
+                moet u doen vóór de aanvraagperiode sluit?
+              </Paragraph>
 
-          <ActionGroup direction="row" className="mox-action-group">
-            <Button appearance="secondary-action-button">
-              <Icon icon="favoriet" />
-              Bewaar
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="delen" />
-              Deel
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="communicatie" />
-              Vraag aan de digitale assistent
-            </Button>
-            <Button appearance="secondary-action-button">
-              <Icon icon="kruis" />
-              Niet relevant voor mij
-            </Button>
-          </ActionGroup>
+              <ActionGroup direction="row" className="mox-action-group">
+                <BewaarKnop item={item} />
+                <Button appearance="secondary-action-button">
+                  <Icon icon="delen" />
+                  Deel
+                </Button>
+                <Button appearance="secondary-action-button">
+                  <Icon icon="communicatie" />
+                  Vraag aan de digitale assistent
+                </Button>
+                <NietRelevantKnop item={item} />
+              </ActionGroup>
 
-          <Button appearance="primary-action-button">
-            {subsidie.websiteLabel}
-          </Button>
-        </div>
-      ))}
+              <Button appearance="primary-action-button">
+                {subsidie.websiteLabel}
+              </Button>
+            </div>
+          </RelevantItem>
+        );
+      })}
 
       <PageNumberNavigation maxVisiblePages={5} page={1} totalPages={10} />
     </>
