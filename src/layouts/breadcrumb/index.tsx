@@ -19,6 +19,7 @@ const breadcrumbLabels: Record<string, string> = {
   berichtenbox: "Berichtenbox",
   inbox: "Berichtenbox",
   omgevingsberichten: "Berichten over uw buurt",
+  buurtberichten: "Berichten over uw buurt",
   medewerkers: "Personeel en rollen",
   "verzuim-en-verlof": "Ziekte en verlof",
   subsidies: "Subsidies en financiering",

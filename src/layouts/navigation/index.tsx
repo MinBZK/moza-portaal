@@ -29,7 +29,7 @@ const Navigation = ({
       <Separator />
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/ondernemingsgegevens" icon="briefcase">
+          <SideNavLink href="/bedrijfsgegevens" icon="briefcase">
             Bedrijfsgegevens
           </SideNavLink>
         </SideNavItem>
@@ -40,7 +40,7 @@ const Navigation = ({
           </SideNavLink>
         </SideNavItem>
         <SideNavItem>
-          <SideNavLink href="/aanvragen" icon="activiteit">
+          <SideNavLink href="/lopendezaken" icon="activiteit">
             Lopende zaken
           </SideNavLink>
         </SideNavItem>
@@ -62,7 +62,7 @@ const Navigation = ({
       </SideNavList>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/omgevingsberichten" icon="locatiemarker">
+          <SideNavLink href="/buurtberichten" icon="locatiemarker">
             Berichten over uw buurt
           </SideNavLink>
         </SideNavItem>
@@ -98,7 +98,7 @@ const Navigation = ({
       </SideNavList>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/medewerkers" icon="user">
+          <SideNavLink href="/personeel" icon="user">
             Personeel en rollen
           </SideNavLink>
         </SideNavItem>
