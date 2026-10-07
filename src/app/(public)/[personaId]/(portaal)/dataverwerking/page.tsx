@@ -29,28 +29,36 @@ const DataverwerkingPage = async () => {
         en gebruiken.
       </Paragraph>
 
-      <Heading level={2}>Activiteitenlogboek</Heading>
-      {verwerkingen.map((verwerking) => (
-        <div key={verwerking.id}>
-          <Heading level={3}>{verwerking.organisatie}</Heading>
-          <Paragraph>{verwerking.datum}</Paragraph>
-          <DataSummary appearance="column">
-            {verwerking.gegevens.map(({ soort, waarde }) => (
-              <DataSummaryItem key={soort} itemKey={soort} itemValue={waarde} />
-            ))}
-          </DataSummary>
-          <Separator />
-        </div>
-      ))}
-
-      <Heading level={2}>Wat kunt u straks doen?</Heading>
-      <UnorderedList>
-        {verwachtingen.map((verwachting) => (
-          <UnorderedListItem key={verwachting}>{verwachting}</UnorderedListItem>
+      <div className="mox-card">
+        <Heading level={2}>Activiteitenlogboek</Heading>
+        {verwerkingen.map((verwerking) => (
+          <div key={verwerking.id}>
+            <Heading level={3}>{verwerking.organisatie}</Heading>
+            <Paragraph>{verwerking.datum}</Paragraph>
+            <DataSummary appearance="column">
+              {verwerking.gegevens.map(({ soort, waarde }) => (
+                <DataSummaryItem
+                  key={soort}
+                  itemKey={soort}
+                  itemValue={waarde}
+                />
+              ))}
+            </DataSummary>
+            <Separator />
+          </div>
         ))}
-      </UnorderedList>
+      </div>
 
-      <Separator />
+      <div className="mox-card">
+        <Heading level={2}>Wat kunt u straks doen?</Heading>
+        <UnorderedList>
+          {verwachtingen.map((verwachting) => (
+            <UnorderedListItem key={verwachting}>
+              {verwachting}
+            </UnorderedListItem>
+          ))}
+        </UnorderedList>
+      </div>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
       <AccordionProvider
