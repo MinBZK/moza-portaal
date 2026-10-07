@@ -105,12 +105,14 @@ const HomePage = async ({
       </div>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
-      <AccordionProvider
-        sections={vragen.map(({ vraag, antwoord }) => ({
-          label: vraag,
-          body: <Paragraph>{antwoord}</Paragraph>,
-        }))}
-      />
+      <div className="mox-faq-card">
+        <AccordionProvider
+          sections={vragen.map(({ vraag, antwoord }) => ({
+            label: vraag,
+            body: <Paragraph>{antwoord}</Paragraph>,
+          }))}
+        />
+      </div>
     </>
   );
 };
