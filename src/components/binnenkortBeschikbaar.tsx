@@ -5,7 +5,6 @@ import {
   UnorderedList,
   UnorderedListItem,
   AccordionProvider,
-  Separator,
 } from "@/components/rhc";
 
 export type Vraag = { vraag: string; antwoord: string };
