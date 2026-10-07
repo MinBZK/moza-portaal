@@ -212,10 +212,6 @@ body {
     gap: var(--rhc-space-2xl);
   }
 
-  .ams-pagination {
-    margin-block: var(--rhc-space-2xl);
-  }
-
   /* Fixes */
   .ams-icon {
     align-self: center;

@@ -80,129 +80,136 @@ const BerichtDetail = ({
 
   return (
     <>
-      <BerichtenboxNav
-        berichten={berichten}
-        actief={status === "weg" ? null : status}
-        opLijst={false}
-      />
+      <div className="mox-card">
+        <BerichtenboxNav
+          berichten={berichten}
+          actief={status === "weg" ? null : status}
+          opLijst={false}
+        />
 
-      {status === "weg" ? (
-        <>
-          <Heading level={1}>Bericht verwijderd</Heading>
-          <Paragraph>
-            U heeft dit bericht voorgoed verwijderd. Het staat niet meer in uw
-            Berichtenbox.
-          </Paragraph>
-          <Paragraph>
-            <Link
-              href="/berichtenbox"
-              className="utrecht-link utrecht-link--html-a"
-            >
-              Ga naar uw inbox
-            </Link>
-          </Paragraph>
-        </>
-      ) : (
-        <>
-          {children}
-
-          {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
-
-          {status && (
-            <ActionGroup direction="row">
-              <Button
-                appearance="secondary-action-button"
-                aria-pressed={gemarkeerd}
-                onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}
+        {status === "weg" ? (
+          <>
+            <Heading level={1}>Bericht verwijderd</Heading>
+            <Paragraph>
+              U heeft dit bericht voorgoed verwijderd. Het staat niet meer in uw
+              Berichtenbox.
+            </Paragraph>
+            <Paragraph>
+              <Link
+                href="/berichtenbox"
+                className="utrecht-link utrecht-link--html-a"
               >
-                <FlagIcon
-                  filled={gemarkeerd}
-                  className={
-                    gemarkeerd ? "text-[var(--rhc-color-oranje-500)]" : ""
-                  }
-                />
-                Markeren
-              </Button>
+                Ga naar uw inbox
+              </Link>
+            </Paragraph>
+          </>
+        ) : (
+          <>
+            {children}
 
-              {status === "inbox" ? (
-                <Button
-                  appearance="secondary-action-button"
-                  onClick={() => verplaats(archiveer)}
-                >
-                  <ArchiveIcon />
-                  Archiveren
-                </Button>
-              ) : (
-                <Button
-                  appearance="secondary-action-button"
-                  onClick={() => verplaats(zetTerugInInbox)}
-                >
-                  <Icon icon="inbox" />
-                  Terugzetten in inbox
-                </Button>
-              )}
+            {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
 
-              {status === "prullenbak" ? (
-                <Button
-                  ref={voorgoedKnopRef}
-                  appearance="secondary-action-button"
-                  hint="danger"
-                  aria-expanded={vraagVoorgoed}
-                  onClick={() =>
-                    vraagVoorgoed ? sluitVraag() : setVraagVoorgoed(true)
-                  }
-                >
-                  <Icon icon="verwijderen" />
-                  Voorgoed verwijderen
-                </Button>
-              ) : (
-                <Button
-                  appearance="secondary-action-button"
-                  onClick={() => verplaats(verwijder)}
-                >
-                  <Icon icon="verwijderen" />
-                  Verwijderen
-                </Button>
-              )}
-            </ActionGroup>
-          )}
-
-          {status === "prullenbak" && vraagVoorgoed && (
-            <div
-              role="group"
-              aria-labelledby="voorgoed-vraag"
-              className="space-y-3 rounded border border-[var(--rhc-color-border-subtle)] p-4"
-              onKeyDown={(event) => {
-                if (event.key === "Escape") sluitVraag();
-              }}
-            >
-              <Paragraph id="voorgoed-vraag">
-                Wilt u dit bericht voorgoed verwijderen? U kunt het daarna niet
-                meer terugzetten.
-              </Paragraph>
+            {status && (
               <ActionGroup direction="row">
                 <Button
-                  ref={bevestigKnopRef}
-                  appearance="primary-action-button"
-                  hint="danger"
-                  onClick={() => {
-                    if (verwijderVoorgoed(berichtId)) {
-                      router.push(lijstVan.prullenbak);
-                    }
-                  }}
-                >
-                  Ja, voorgoed verwijderen
-                </Button>
-                <Button
                   appearance="secondary-action-button"
-                  onClick={sluitVraag}
+                  aria-pressed={gemarkeerd}
+                  onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}
                 >
-                  Annuleren
+                  <FlagIcon
+                    filled={gemarkeerd}
+                    className={
+                      gemarkeerd ? "text-[var(--rhc-color-oranje-500)]" : ""
+                    }
+                  />
+                  Markeren
                 </Button>
+
+                {/* Schets uit moza-poc: Delen doet nog niets. */}
+                <Button appearance="secondary-action-button">
+                  <Icon icon="delen" />
+                  Delen
+                </Button>
+
+                {status !== "archief" && (
+                  <Button
+                    appearance="secondary-action-button"
+                    onClick={() => verplaats(archiveer)}
+                  >
+                    <ArchiveIcon />
+                    Archiveren
+                  </Button>
+                )}
+
+                {status !== "inbox" && (
+                  <Button
+                    appearance="secondary-action-button"
+                    onClick={() => verplaats(zetTerugInInbox)}
+                  >
+                    <Icon icon="inbox" />
+                    Terugzetten in inbox
+                  </Button>
+                )}
+
+                {status === "prullenbak" ? (
+                  <Button
+                    ref={voorgoedKnopRef}
+                    appearance="secondary-action-button"
+                    hint="danger"
+                    aria-expanded={vraagVoorgoed}
+                    onClick={() =>
+                      vraagVoorgoed ? sluitVraag() : setVraagVoorgoed(true)
+                    }
+                  >
+                    <Icon icon="verwijderen" />
+                    Voorgoed verwijderen
+                  </Button>
+                ) : (
+                  <Button
+                    appearance="secondary-action-button"
+                    onClick={() => verplaats(verwijder)}
+                  >
+                    <Icon icon="verwijderen" />
+                    Verwijderen
+                  </Button>
+                )}
               </ActionGroup>
-            </div>
-          )}
-        </>
+            )}
+          </>
+        )}
+      </div>
+
+      {status === "prullenbak" && vraagVoorgoed && (
+        <div
+          role="group"
+          aria-labelledby="voorgoed-vraag"
+          className="space-y-3 rounded border border-[var(--rhc-color-border-subtle)] p-4"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") sluitVraag();
+          }}
+        >
+          <Paragraph id="voorgoed-vraag">
+            Wilt u dit bericht voorgoed verwijderen? U kunt het daarna niet meer
+            terugzetten.
+          </Paragraph>
+          <ActionGroup direction="row">
+            <Button
+              ref={bevestigKnopRef}
+              appearance="primary-action-button"
+              hint="danger"
+              onClick={() => {
+                if (verwijderVoorgoed(berichtId)) {
+                  router.push(lijstVan.prullenbak);
+                }
+              }}
+            >
+              Ja, voorgoed verwijderen
+            </Button>
+            <Button appearance="secondary-action-button" onClick={sluitVraag}>
+              Annuleren
+            </Button>
+          </ActionGroup>
+        </div>
       )}
     </>
   );
