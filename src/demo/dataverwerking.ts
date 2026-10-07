@@ -1,47 +1,50 @@
 import type { DemoVraag } from "./binnenkort";
+import type { DemoPersona } from "./personas";
+import logboek from "./proef-activiteitenlog.json";
 
 export type DemoVerwerking = {
   id: string;
   organisatie: string;
-  datum: string;
+  /** Tijdstip als ISO-datum. */
+  tijdstip: string;
   gegevens: { soort: string; waarde: string }[];
 };
 
-const verwerkingen: DemoVerwerking[] = [
-  {
-    id: "kvk-14-juni",
-    organisatie: "KVK",
-    datum: "14 juni 2026, 14:23",
-    gegevens: [
-      { soort: "Telefoonnummer", waarde: "(+31) (0)6 12 34 56 78" },
-      { soort: "E-mailadres", waarde: "info@bloombv.nl" },
-    ],
-  },
-  {
-    id: "belastingdienst-13-juni",
-    organisatie: "Belastingdienst",
-    datum: "13 juni 2026, 09:12",
-    gegevens: [{ soort: "E-mailadres", waarde: "info@bloombv.nl" }],
-  },
-  {
-    id: "uwv-2-juni",
-    organisatie: "UWV",
-    datum: "2 juni 2026, 11:47",
-    gegevens: [
-      { soort: "Loonheffingennummer", waarde: "062345681L01" },
-      { soort: "Aantal werknemers", waarde: "7" },
-    ],
-  },
-  {
-    id: "rvo-28-mei",
-    organisatie: "RVO",
-    datum: "28 mei 2026, 16:05",
-    gegevens: [
-      { soort: "KVK-nummer", waarde: "62345681" },
-      { soort: "Zakelijke IBAN", waarde: "NL62 RABO 0006 2345 68" },
-    ],
-  },
-];
+const SOORTEN: Record<string, string> = {
+  telephone: "Telefoonnummer",
+  email: "E-mailadres",
+  postalAddress: "Postadres",
+};
+
+const slug = (tekst: string) =>
+  tekst
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "")
+    .slice(0, 30);
+
+/**
+ * De contactgegevens in het logboek, voor het bedrijf van de persona. moza-poc
+ * gebruikt voor iedereen dezelfde. Persona's hebben geen e-mailadres of
+ * telefoonnummer: het e-mailadres volgt uit de website of de handelsnaam.
+ */
+const waardeVoor = (
+  soort: string,
+  origineel: string,
+  bedrijf?: DemoPersona["bedrijf"],
+) => {
+  if (!bedrijf) return origineel;
+  if (soort === "postalAddress") return bedrijf.postadres ?? origineel;
+  if (soort === "email") {
+    const website = "website" in bedrijf ? bedrijf.website : undefined;
+    const domein = website
+      ? new URL(website).hostname.replace(/^www\./, "")
+      : `${slug(bedrijf.handelsnaam)}.nl`;
+    return `info@${domein}`;
+  }
+  return origineel;
+};
 
 const verwachtingen = [
   "Bekijk welke overheidsorganisaties gegevens van uw bedrijf verwerken",
@@ -67,8 +70,24 @@ const vragen: DemoVraag[] = [
   },
 ];
 
-export const getDemoVerwerkingen = async (): Promise<DemoVerwerking[]> =>
-  verwerkingen;
+/**
+ * Het activiteitenlogboek uit moza-poc (_data/activiteitenLogData.json),
+ * nieuwste eerst.
+ */
+export const getDemoVerwerkingen = async (
+  bedrijf?: DemoPersona["bedrijf"],
+): Promise<DemoVerwerking[]> =>
+  logboek
+    .map((regel) => ({
+      id: regel.id,
+      organisatie: regel.source,
+      tijdstip: regel.datetime,
+      gegevens: regel.data.map(({ request, response }) => ({
+        soort: SOORTEN[request] ?? request,
+        waarde: waardeVoor(request, response, bedrijf),
+      })),
+    }))
+    .sort((a, b) => b.tijdstip.localeCompare(a.tijdstip));
 
 export const getDemoVerwerkingVerwachtingen = async (): Promise<string[]> =>
   verwachtingen;

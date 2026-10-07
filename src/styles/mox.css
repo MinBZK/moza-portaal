@@ -85,12 +85,27 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-card,
-	.utrecht-accordion,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
 		padding: var(--rhc-space-3xl);
+	}
+
+	.mox-faq-card {
+		background-color: var(--rhc-color-wit);
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+
+	}
+
+	/* Accordeon */
+	.utrecht-accordion {
+		padding: var(--rhc-space-max-xl);
+	}
+
+	.utrecht-accordion__section {
+		border: 0;
 	}
 
 	.mox-card {
@@ -112,15 +127,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.utrecht-table {
 			padding: 0;
 		}
-	}
 
-	/* Accordeon */
-	.utrecht-accordion {
-		padding: var(--rhc-space-max-xl);
-	}
-
-	.utrecht-accordion__section {
-		border: 0;
+		.utrecht-accordion {
+			padding: 0;
+		}
 	}
 
 	/* Footer */

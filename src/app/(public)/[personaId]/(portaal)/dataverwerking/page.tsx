@@ -6,17 +6,34 @@ import {
   DataSummary,
   DataSummaryItem,
   AccordionProvider,
-  Separator,
 } from "@/components/rhc";
+import { formatDistanceToNowStrict } from "date-fns";
+import { nl } from "date-fns/locale";
 import {
+  getDemoPersona,
   getDemoVerwerkingen,
   getDemoVerwerkingVerwachtingen,
   getDemoVerwerkingVragen,
 } from "@/demo";
 
-const DataverwerkingPage = async () => {
+// Tijden in Nederlandse tijd, ook als de server in UTC draait.
+const datumTijd = new Intl.DateTimeFormat("nl-NL", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/Amsterdam",
+});
+
+const DataverwerkingPage = async ({
+  params,
+}: {
+  params: Promise<{ personaId: string }>;
+}) => {
+  const persona = await getDemoPersona((await params).personaId);
   const [verwerkingen, verwachtingen, vragen] = await Promise.all([
-    getDemoVerwerkingen(),
+    getDemoVerwerkingen(persona?.bedrijf),
     getDemoVerwerkingVerwachtingen(),
     getDemoVerwerkingVragen(),
   ]);
@@ -31,22 +48,37 @@ const DataverwerkingPage = async () => {
 
       <div className="mox-card">
         <Heading level={2}>Activiteitenlogboek</Heading>
-        {verwerkingen.map((verwerking) => (
-          <div key={verwerking.id}>
-            <Heading level={3}>{verwerking.organisatie}</Heading>
-            <Paragraph>{verwerking.datum}</Paragraph>
-            <DataSummary appearance="column">
-              {verwerking.gegevens.map(({ soort, waarde }) => (
-                <DataSummaryItem
-                  key={soort}
-                  itemKey={soort}
-                  itemValue={waarde}
-                />
-              ))}
-            </DataSummary>
-            <Separator />
-          </div>
-        ))}
+        <Paragraph>
+          Dit is een overzicht van hoe uw bedrijfsgegevens worden gedeeld en
+          verwerkt door overheidsorganisaties.
+        </Paragraph>
+        <AccordionProvider
+          headingLevel={3}
+          sections={verwerkingen.map(
+            ({ id, organisatie, tijdstip, gegevens }) => ({
+              id,
+              label: `${organisatie} (${formatDistanceToNowStrict(new Date(tijdstip), { addSuffix: true, locale: nl })})`,
+              body: (
+                <>
+                  <Paragraph>
+                    <time dateTime={tijdstip}>
+                      {datumTijd.format(new Date(tijdstip))}
+                    </time>
+                  </Paragraph>
+                  <DataSummary appearance="column">
+                    {gegevens.map(({ soort, waarde }) => (
+                      <DataSummaryItem
+                        key={soort}
+                        itemKey={soort}
+                        itemValue={waarde}
+                      />
+                    ))}
+                  </DataSummary>
+                </>
+              ),
+            }),
+          )}
+        />
       </div>
 
       <div className="mox-card">
@@ -61,12 +93,14 @@ const DataverwerkingPage = async () => {
       </div>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
-      <AccordionProvider
-        sections={vragen.map(({ vraag, antwoord }) => ({
-          label: vraag,
-          body: <Paragraph>{antwoord}</Paragraph>,
-        }))}
-      />
+      <div className="mox-faq-card">
+        <AccordionProvider
+          sections={vragen.map(({ vraag, antwoord }) => ({
+            label: vraag,
+            body: <Paragraph>{antwoord}</Paragraph>,
+          }))}
+        />
+      </div>
     </>
   );
 };

@@ -51,12 +51,14 @@ const OnderdeelPagina = async ({
       </section>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
-      <AccordionProvider
-        sections={onderdeel.vragen.map(({ vraag, antwoord }) => ({
-          label: vraag,
-          body: <Paragraph>{antwoord}</Paragraph>,
-        }))}
-      />
+      <div className="mox-faq-card">
+        <AccordionProvider
+          sections={onderdeel.vragen.map(({ vraag, antwoord }) => ({
+            label: vraag,
+            body: <Paragraph>{antwoord}</Paragraph>,
+          }))}
+        />
+      </div>
     </>
   );
 };
