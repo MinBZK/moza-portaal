@@ -13,6 +13,11 @@ import { useHuidigeKruimel } from "./huidigeKruimel";
 
 const breadcrumbLabels: Record<string, string> = {
   bedrijfsgegevens: "Bedrijfsgegevens",
+  bedrijfsactiviteiten: "Bedrijfsactiviteiten",
+  adresgegevens: "Adresgegevens",
+  vestigingen: "Vestigingen",
+  "ubo-register": "UBO-register",
+  jaarrekeningen: "Jaarrekeningen",
   ondernemingsgegevens: "Bedrijfsgegevens",
   "lopende-zaken": "Lopende zaken",
   aanvragen: "Lopende zaken",

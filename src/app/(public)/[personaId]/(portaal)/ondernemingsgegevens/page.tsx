@@ -3,8 +3,7 @@ import {
   Paragraph,
   DataSummary,
   DataSummaryItem,
-  NavigationList,
-  NavigationListItem,
+  ActionGroup,
   AccordionProvider,
   Link,
 } from "@/components/rhc";
@@ -14,6 +13,11 @@ import {
   getDemoOndernemingsvragen,
 } from "@/demo";
 import { getActievePersona } from "@/app/(public)/_persona";
+import NextLink from "next/link";
+
+// Zelfde knop-link als de tegels op Home.
+const knopLink =
+  "utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action";
 
 const OndernemingsgegevensPage = async () => {
   const [gegevens, onderdelen, vragen] = await Promise.all([
@@ -58,19 +62,25 @@ const OndernemingsgegevensPage = async () => {
         </Paragraph>
       </div>
 
-      <div className="mox-card">
-        <Heading level={2}>Meer over uw onderneming</Heading>
-        <NavigationList className="mox-navigation-list--no-start-icon">
-          {onderdelen.map(({ id, titel, beschrijving, href }) => (
-            <NavigationListItem
-              key={id}
-              description={beschrijving}
-              href={href}
-              icon={null}
-              label={titel}
-            />
-          ))}
-        </NavigationList>
+      <Heading level={2}>Meer over uw onderneming</Heading>
+      <div className="rhc-grid">
+        {onderdelen.map(({ id, titel, beschrijving, href }) => (
+          <section
+            key={id}
+            className="mox-card rhc-grid__cell rhc-grid__cell-t-6"
+            aria-labelledby={`onderdeel-${id}`}
+          >
+            <Heading level={3} id={`onderdeel-${id}`}>
+              {titel}
+            </Heading>
+            <Paragraph>{beschrijving}</Paragraph>
+            <ActionGroup>
+              <NextLink href={href} className={knopLink}>
+                Ga naar {titel}
+              </NextLink>
+            </ActionGroup>
+          </section>
+        ))}
       </div>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
