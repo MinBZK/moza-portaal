@@ -22,6 +22,7 @@ import {
   useBerichtenboxState,
   type Weergave,
 } from "./_useBerichtenboxState";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 
 const lijstVan: Record<Weergave, string> = {
   inbox: "/berichtenbox",
@@ -50,6 +51,7 @@ const BerichtDetail = ({
     zetTerugInInbox,
     verwijderVoorgoed,
   } = useBerichtenboxState();
+  const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
   const voorgoedKnopRef = useRef<HTMLButtonElement>(null);
   const bevestigKnopRef = useRef<HTMLButtonElement>(null);
@@ -126,10 +128,12 @@ const BerichtDetail = ({
                 </Button>
 
                 {/* Schets uit moza-poc: Delen doet nog niets. */}
-                <Button appearance="secondary-action-button">
-                  <Icon icon="delen" />
-                  Delen
-                </Button>
+                {delen && (
+                  <Button appearance="secondary-action-button">
+                    <Icon icon="delen" />
+                    Delen
+                  </Button>
+                )}
 
                 {status !== "archief" && (
                   <Button

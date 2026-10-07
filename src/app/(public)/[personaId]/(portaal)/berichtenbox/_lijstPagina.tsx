@@ -1,5 +1,6 @@
 import { Heading } from "@rijkshuisstijl-community/components-react";
 import { getDemoBerichten } from "@/demo";
+import { getActievePersona } from "@/app/(public)/_persona";
 import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
 import type { Weergave } from "./_useBerichtenboxState";
@@ -13,7 +14,8 @@ const LijstPagina = async ({
   weergave,
   searchParams,
 }: LijstPaginaProps & { weergave: Weergave }) => {
-  const berichten = await getDemoBerichten();
+  const persona = await getActievePersona();
+  const berichten = await getDemoBerichten(persona?.id);
   const { pagina } = await searchParams;
 
   return (

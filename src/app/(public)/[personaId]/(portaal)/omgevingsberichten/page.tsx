@@ -14,8 +14,10 @@ import {
 } from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoBuurtberichten } from "@/demo";
+import { getFlagsFromServerCookie } from "@/app/actions";
 
 const OmgevingsberichtenPage = async () => {
+  const flags = await getFlagsFromServerCookie();
   const berichten = await getDemoBuurtberichten();
 
   return (
@@ -51,10 +53,12 @@ const OmgevingsberichtenPage = async () => {
 
               <ActionGroup direction="row">
                 <BewaarKnop item={item} />
-                <Button appearance="secondary-action-button">
-                  <Icon icon="delen" />
-                  Deel
-                </Button>
+                {flags.mox_delen && (
+                  <Button appearance="secondary-action-button">
+                    <Icon icon="delen" />
+                    Deel
+                  </Button>
+                )}
                 <NietRelevantKnop item={item} />
               </ActionGroup>
             </div>

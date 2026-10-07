@@ -5,7 +5,12 @@ import {
   Heading,
   Paragraph,
 } from "@/components/rhc";
-import { getDemoBerichten, getDemoSubsidies, getDemoWetten } from "@/demo";
+import {
+  getDemoBerichten,
+  getDemoPersona,
+  getDemoSubsidies,
+  getDemoWetten,
+} from "@/demo";
 import RecenteBerichten from "./_recenteBerichten";
 
 const knopLink =
@@ -29,16 +34,23 @@ const vragen = [
   },
 ];
 
-const HomePage = async () => {
+const HomePage = async ({
+  params,
+}: {
+  params: Promise<{ personaId: string }>;
+}) => {
+  const persona = await getDemoPersona((await params).personaId);
   const [berichten, subsidies, wetten] = await Promise.all([
-    getDemoBerichten(),
-    getDemoSubsidies(),
-    getDemoWetten(),
+    getDemoBerichten(persona?.id),
+    getDemoSubsidies(persona?.homepageSubsidies),
+    getDemoWetten(persona?.homepageRegelgeving),
   ]);
 
   return (
     <>
-      <Heading level={1}>Welkom Robin Vogel</Heading>
+      <Heading level={1}>
+        Welkom {persona?.persoon.voornaam} {persona?.persoon.achternaam}
+      </Heading>
 
       <section className="mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">
@@ -62,8 +74,8 @@ const HomePage = async () => {
           </Heading>
           <Paragraph>
             {subsidies.length === 1
-              ? "Er is 1 subsidie of financiering die interessant kan zijn voor uw bedrijf."
-              : `Er zijn ${subsidies.length} subsidies en financieringen die interessant kunnen zijn voor uw bedrijf.`}
+              ? "Er is 1 nieuwe subsidie of financiering die interessant kan zijn voor uw bedrijf."
+              : `Er zijn ${subsidies.length} nieuwe subsidies en financieringen die interessant kunnen zijn voor uw bedrijf.`}
           </Paragraph>
           <ActionGroup>
             <Link href="/subsidies" className={knopLink}>

@@ -1,4 +1,5 @@
 import type { DemoVraag } from "./binnenkort";
+import type { DemoPersona } from "./personas";
 
 export type DemoGegeven = { label: string; waarde: string; href?: string };
 
@@ -73,8 +74,51 @@ const vragen: DemoVraag[] = [
   },
 ];
 
-export const getDemoOndernemingsgegevens = async (): Promise<DemoGegeven[]> =>
-  gegevens;
+/**
+ * Gegevens van het bedrijf van de persona. Ontbreekt een gegeven, dan staat het
+ * er niet, net als in moza-poc. Zonder persona: de vaste demo-gegevens.
+ */
+export const getDemoOndernemingsgegevens = async (
+  bedrijf?: DemoPersona["bedrijf"],
+): Promise<DemoGegeven[]> => {
+  if (!bedrijf) return gegevens;
+  const rijen: [string, string | number | undefined][] = [
+    ["Handelsnaam", bedrijf.handelsnaam],
+    ["KVK-nummer", bedrijf.kvkNummer],
+    ["Vestigingsnummer", bedrijf.vestigingsnummer],
+    ["RSIN-nummer", bedrijf.rsinNummer],
+    ["Btw-identificatienummer", bedrijf.btwNummer],
+    ["Omzetbelastingnummer", bedrijf.omzetbelastingnummer],
+    [
+      "Loonheffingennummer",
+      "loonheffingennummer" in bedrijf
+        ? bedrijf.loonheffingennummer
+        : undefined,
+    ],
+    ["Startdatum", bedrijf.startdatum],
+    ["Rechtsvorm", bedrijf.rechtsvorm],
+    ["Zakelijke IBAN", "iban" in bedrijf ? bedrijf.iban : undefined],
+    ["Werkzame personen (fulltime)", bedrijf.werkzamePersonenFulltime],
+    ["Werkzame personen (parttime)", bedrijf.werkzamePersonenParttime],
+  ];
+  const website = "website" in bedrijf ? bedrijf.website : undefined;
+  return [
+    ...rijen.flatMap(([label, waarde]) =>
+      waarde === undefined || waarde === ""
+        ? []
+        : [{ label, waarde: String(waarde) }],
+    ),
+    ...(website
+      ? [
+          {
+            label: "Website",
+            waarde: website.replace(/^https?:\/\//, ""),
+            href: website,
+          },
+        ]
+      : []),
+  ];
+};
 
 export const getDemoOndernemingsonderdelen = async (): Promise<
   DemoOnderdeelLink[]

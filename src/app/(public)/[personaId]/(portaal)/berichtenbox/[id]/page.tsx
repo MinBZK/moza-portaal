@@ -8,15 +8,17 @@ import {
   UnorderedListItem,
 } from "@rijkshuisstijl-community/components-react";
 import { getDemoBerichtById, getDemoBerichten } from "@/demo";
+import { getActievePersona } from "@/app/(public)/_persona";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "../_berichtDetail";
 import { formatDatum } from "../_formatDatum";
 
 const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
+  const persona = await getActievePersona();
   const [bericht, berichten] = await Promise.all([
-    getDemoBerichtById(id),
-    getDemoBerichten(),
+    getDemoBerichtById(id, persona?.id),
+    getDemoBerichten(persona?.id),
   ]);
 
   if (!bericht) notFound();

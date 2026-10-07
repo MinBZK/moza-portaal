@@ -2,6 +2,7 @@
 
 import {
   defaultFlags,
+  FeatureFlagKey,
   FeatureFlags,
   featureFlagsSchema,
 } from "@/app/(private)/instellingen/_featureFlags";
@@ -24,21 +25,28 @@ export async function setFeatureFlagsCookie(flags: FeatureFlags) {
   });
 }
 
-export const getFlagsFromServerCookie = async () => {
+export const getFlagsFromServerCookie = async (): Promise<FeatureFlags> => {
   const cookieStore = await cookies();
   const flagsCookie = cookieStore.get("flags")?.value;
+  if (!flagsCookie) return defaultFlags;
 
-  let flags = {} as FeatureFlags;
-  if (flagsCookie) {
-    try {
-      flags = JSON.parse(decodeURIComponent(flagsCookie));
-      const result = featureFlagsSchema.safeParse(flags);
-      if (!result.success) {
-        flags = defaultFlags;
-      }
-    } catch {
-      flags = defaultFlags;
-    }
+  try {
+    // Een cookie van voor een nieuwe flag mist die sleutel: vul aan met de standaard.
+    const result = featureFlagsSchema
+      .partial()
+      .safeParse(JSON.parse(decodeURIComponent(flagsCookie)));
+    return result.success ? { ...defaultFlags, ...result.data } : defaultFlags;
+  } catch {
+    return defaultFlags;
   }
-  return flags;
 };
+
+export async function setFeatureFlag(key: FeatureFlagKey, value: boolean) {
+  const flags = await getFlagsFromServerCookie();
+  await setFeatureFlagsCookie({ ...flags, [key]: value });
+}
+
+export async function resetFeatureFlags() {
+  const cookiesStore = await cookies();
+  cookiesStore.delete("flags");
+}

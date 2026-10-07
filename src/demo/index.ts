@@ -37,3 +37,9 @@ export {
   getDemoContactvragen,
   type DemoOrganisatie,
 } from "./contactvoorkeuren";
+export {
+  getDemoPersonas,
+  getDemoPersona,
+  STANDAARD_PERSONA_ID,
+  type DemoPersona,
+} from "./personas";

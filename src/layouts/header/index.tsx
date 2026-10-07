@@ -13,11 +13,14 @@ import { useState, useRef, useEffect } from "react";
 // (nog) niet in gebruik in deze header.
 const Header = ({
   signedIn = true,
+  naam = "Robin Vogel",
 }: {
   kvk?: string;
   kvkOpties?: components["schemas"]["MijnOverheidOrganisatiesResponse"];
   isPublic?: boolean;
   signedIn?: boolean;
+  /** Naam van de ingelogde persoon. Komt van de actieve persona. */
+  naam?: string;
 }) => {
   const { set } = useCookie("loginMethod");
   const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
@@ -86,7 +89,7 @@ const Header = ({
               <>
                 <li className="rhc-nav-bar__item">
                   <Link className="rhc-nav-bar__link" href="/">
-                    <span className="rhc-nav-bar__label">Robin Vogel</span>
+                    <span className="rhc-nav-bar__label">{naam}</span>
                   </Link>
                 </li>
                 <li className="rhc-nav-bar__item">
