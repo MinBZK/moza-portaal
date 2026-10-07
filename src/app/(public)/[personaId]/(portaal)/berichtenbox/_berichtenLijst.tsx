@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Alert,
@@ -19,9 +18,8 @@ import {
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
-import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
-import { formatDatum } from "./_formatDatum";
+import BerichtRij from "./_berichtRij";
 import OphaalVoortgang, { useNagebootstOphalen } from "./_ophaalVoortgang";
 import {
   bewaarFoutTekst,
@@ -353,64 +351,19 @@ const BerichtenLijst = ({
               </TableHeader>
               <TableBody>
                 {zichtbaar.map((bericht) => {
-                  const isNieuw = isOngelezen(
-                    staat,
-                    bericht.id,
-                    bericht.isOngelezen,
-                  );
                   const gemarkeerd = isGemarkeerd(staat, bericht.id);
                   return (
-                    <TableRow key={bericht.id}>
-                      <TableCell>
-                        <button
-                          type="button"
-                          aria-pressed={gemarkeerd}
-                          onClick={() => zetGemarkeerd(bericht.id, !gemarkeerd)}
-                          className={`flex cursor-pointer rounded p-1 focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                            gemarkeerd
-                              ? "text-[var(--rhc-color-oranje-500)]"
-                              : "text-[var(--rhc-color-foreground-subtle)]"
-                          }`}
-                        >
-                          <FlagIcon filled={gemarkeerd} />
-                          <VisuallyHidden>Markeren</VisuallyHidden>
-                        </button>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`flex items-center gap-2 ${isNieuw ? "font-bold" : ""}`}
-                        >
-                          {isNieuw && (
-                            <>
-                              <span
-                                aria-hidden="true"
-                                className="size-2 shrink-0 rounded-full bg-[var(--rhc-color-oranje-500)]"
-                              />
-                              <VisuallyHidden>Ongelezen.</VisuallyHidden>
-                            </>
-                          )}
-                          {bericht.afzender}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Link
-                          href={`/berichtenbox/${bericht.id}`}
-                          className={`utrecht-link utrecht-link--html-a ${isNieuw ? "font-bold" : ""}`}
-                        >
-                          {bericht.onderwerp}
-                        </Link>
-                      </TableCell>
-                      <TableCell className="whitespace-nowrap">
-                        {formatDatum(bericht.datum)}
-                      </TableCell>
-                      <TableCell>
-                        {bericht.heeftBijlage && (
-                          <>
-                            <Icon icon="paperclip" />
-                            <VisuallyHidden>Heeft bijlage</VisuallyHidden>
-                          </>
-                        )}
-                      </TableCell>
+                    <BerichtRij
+                      key={bericht.id}
+                      bericht={bericht}
+                      ongelezen={isOngelezen(
+                        staat,
+                        bericht.id,
+                        bericht.isOngelezen,
+                      )}
+                      gemarkeerd={gemarkeerd}
+                      onMarkeer={() => zetGemarkeerd(bericht.id, !gemarkeerd)}
+                    >
                       {weergave === "inbox" && (
                         <TableCell>
                           <RijActies
@@ -420,7 +373,7 @@ const BerichtenLijst = ({
                           />
                         </TableCell>
                       )}
-                    </TableRow>
+                    </BerichtRij>
                   );
                 })}
               </TableBody>
