@@ -212,6 +212,12 @@ body {
     gap: var(--rhc-space-2xl);
   }
 
+  /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
+    rijen kaarten elkaar. */
+  .rhc-grid:has(> .mox-card) {
+    row-gap: var(--rhc-space-2xl);
+  }
+
   /* Fixes */
   .ams-icon {
     align-self: center;

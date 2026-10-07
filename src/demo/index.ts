@@ -43,3 +43,9 @@ export {
   STANDAARD_PERSONA_ID,
   type DemoPersona,
 } from "./personas";
+export {
+  getDemoBedrijfsdetails,
+  getDemoBedrijfsonderdeel,
+  type DemoBedrijfsdetails,
+  type DemoBedrijfsonderdeel,
+} from "./bedrijfsonderdelen";

@@ -65,4 +65,5 @@ export {
   Toggletip,
   UnorderedList,
   UnorderedListItem,
+  VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react/no-side-effects";

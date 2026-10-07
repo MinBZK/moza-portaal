@@ -36,28 +36,35 @@ const onderdelen: DemoOnderdeelLink[] = [
     titel: "Bedrijfsactiviteiten",
     beschrijving:
       "De SBI-codes en omschrijvingen van de activiteiten die bij uw onderneming staan geregistreerd.",
-    href: "#",
+    href: "/bedrijfsgegevens/bedrijfsactiviteiten",
   },
   {
     id: "adresgegevens",
     titel: "Adresgegevens",
     beschrijving:
       "Uw vestigingsadres en postadres, zoals geregistreerd bij de Kamer van Koophandel.",
-    href: "#",
+    href: "/bedrijfsgegevens/adresgegevens",
   },
   {
     id: "vestigingen",
     titel: "Vestigingen",
     beschrijving:
       "Alle vestigingen die aan uw onderneming zijn gekoppeld, inclusief nevenvestigingen.",
-    href: "#",
+    href: "/bedrijfsgegevens/vestigingen",
   },
   {
     id: "ubo-register",
     titel: "UBO-register",
     beschrijving:
       "De uiteindelijk belanghebbenden die voor uw organisatie zijn geregistreerd.",
-    href: "#",
+    href: "/bedrijfsgegevens/ubo-register",
+  },
+  {
+    id: "jaarrekeningen",
+    titel: "Jaarrekeningen",
+    beschrijving:
+      "De jaarrekeningen en financiële overzichten die uw onderneming bij de KVK heeft gedeponeerd.",
+    href: "/bedrijfsgegevens/jaarrekeningen",
   },
 ];
 
