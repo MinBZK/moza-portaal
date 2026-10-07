@@ -2,9 +2,13 @@ name: Deploy preview
 
 # Elke pull request krijgt een eigen preview-omgeving op ZAD (project "MOZa demo").
 # Bij het sluiten van de PR wordt de omgeving weer opgeruimd.
+# Een push naar ux-fork zet die branch op een vaste omgeving "ux-fork". Die
+# blijft staan; er is geen PR die sluit.
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
+  push:
+    branches: [ux-fork]
 
 permissions: {}
 
@@ -12,6 +16,13 @@ env:
   REGISTRY: ghcr.io
   ZAD_PROJECT_ID: md-a8y
   ZAD_COMPONENT: proef
+  # pr-<nr> bij een pull request, de branchnaam bij een push.
+  DEPLOYMENT_NAME: ${{ github.event_name == 'push' && github.ref_name || format('pr-{0}', github.event.number) }}
+
+# Twee pushes kort na elkaar: de tweede wacht, zodat een oudere build niet als
+# laatste online komt.
+concurrency:
+  group: deploy-${{ github.event_name == 'push' && github.ref_name || format('pr-{0}', github.event.number) }}
 
 jobs:
   build:
@@ -27,18 +38,17 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       # GHCR accepteert alleen image-namen in kleine letters (MinBZK -> minbzk).
-      # Elke commit krijgt een eigen tag (pr-<nr>-<sha>), anders ziet ZAD geen
-      # wijziging en blijft de oude container draaien. De tag pr-<nr> wijst
-      # altijd naar de laatste build en wordt gebruikt bij het opruimen.
+      # Elke commit krijgt een eigen tag (<deployment>-<sha>), anders ziet ZAD
+      # geen wijziging en blijft de oude container draaien. De tag <deployment>
+      # wijst altijd naar de laatste build en wordt gebruikt bij het opruimen.
       - name: Bepaal image-naam
         id: image
         env:
-          PR_NUMBER: ${{ github.event.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           base="${REGISTRY}/${GITHUB_REPOSITORY,,}"
-          echo "name=${base}:pr-${PR_NUMBER}-${HEAD_SHA::7}" >> "$GITHUB_OUTPUT"
-          echo "latest=${base}:pr-${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "name=${base}:${DEPLOYMENT_NAME}-${HEAD_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "latest=${base}:${DEPLOYMENT_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
@@ -69,7 +79,8 @@ jobs:
       contents: read
       pull-requests: write # URL van de preview als PR-comment plaatsen
     environment:
-      name: pr-${{ github.event.pull_request.number }}
+      # De env-context is hier niet beschikbaar, vandaar dezelfde expressie.
+      name: ${{ github.event_name == 'push' && github.ref_name || format('pr-{0}', github.event.number) }}
       url: ${{ steps.deploy.outputs.url }}
     steps:
       - name: Deploy to ZAD
@@ -79,12 +90,12 @@ jobs:
           # ZAD_API_KEY: API-key uit de ZAD Operations Manager
           api-key: ${{ secrets.ZAD_API_KEY }}
           project-id: ${{ env.ZAD_PROJECT_ID }}
-          deployment-name: pr-${{ github.event.pull_request.number }}
+          deployment-name: ${{ env.DEPLOYMENT_NAME }}
           component: ${{ env.ZAD_COMPONENT }}
           image: ${{ needs.build.outputs.image }}
           # Neem instellingen (env vars, poort) over van de vaste deployment "proef"
           clone-from: proef
-          comment-on-pr: "true"
+          comment-on-pr: ${{ github.event_name == 'pull_request' }}
           wait-for-ready: "true"
 
   cleanup-preview:
