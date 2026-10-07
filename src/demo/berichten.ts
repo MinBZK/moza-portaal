@@ -9,6 +9,8 @@ export type DemoBericht = {
   datum: string;
   isOngelezen: boolean;
   heeftBijlage: boolean;
+  /** Alleen voor deze persona's. Zonder: voor iedereen. */
+  relevantVoor?: string[];
 };
 
 const AANTAL_BERICHTEN = 120;
@@ -185,12 +187,179 @@ const spreidOverAfzenders = (lijst: DemoBericht[]) => {
   return resultaat;
 };
 
-const berichten = spreidOverAfzenders([...gegenereerd, ...belastingdienst]);
+// Berichten die bij een persona horen, uit moza-poc (_data/berichtenboxData.js).
+const personaBerichten: DemoBericht[] = [
+  {
+    afzenderId: "nla",
+    onderwerp: "Controle arbeidsomstandigheden in de glastuinbouw",
+    datum: "2026-04-23",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["bloemenkweker"],
+  },
+  {
+    afzenderId: "rvo",
+    onderwerp: "Openstelling subsidie precisielandbouw",
+    datum: "2026-04-19",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["bloemenkweker"],
+  },
+  {
+    afzenderId: "belastingdienst",
+    onderwerp: "Herinnering aangifte loonheffingen",
+    datum: "2026-04-15",
+    isOngelezen: false,
+    heeftBijlage: false,
+    relevantVoor: ["bloemenkweker"],
+  },
+  {
+    afzenderId: "gem-rotterdam",
+    onderwerp: "Omgevingsvergunning verleend voor uw bouwproject",
+    datum: "2026-04-24",
+    isOngelezen: true,
+    heeftBijlage: true,
+    relevantVoor: ["bouwmanagement"],
+  },
+  {
+    afzenderId: "nla",
+    onderwerp: "Aangekondigde controle op de bouwplaats",
+    datum: "2026-04-21",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["bouwmanagement"],
+  },
+  {
+    afzenderId: "rvo",
+    onderwerp: "Subsidie verduurzaming bedrijfspand toegekend",
+    datum: "2026-04-17",
+    isOngelezen: false,
+    heeftBijlage: true,
+    relevantVoor: ["bouwmanagement"],
+  },
+  {
+    afzenderId: "rvo",
+    onderwerp: "Uw S&O-verklaring (WBSO) is beschikbaar",
+    datum: "2026-04-24",
+    isOngelezen: true,
+    heeftBijlage: true,
+    relevantVoor: ["business-development"],
+  },
+  {
+    afzenderId: "kvk",
+    onderwerp: "Controleer uw inschrijving in het Handelsregister",
+    datum: "2026-04-16",
+    isOngelezen: false,
+    heeftBijlage: false,
+    relevantVoor: ["business-development"],
+  },
+  {
+    afzenderId: "rvo",
+    onderwerp: "Subsidie praktijkleren: aanvraagperiode geopend",
+    datum: "2026-04-20",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["docent"],
+  },
+  {
+    afzenderId: "belastingdienst",
+    onderwerp: "Aangifte inkomstenbelasting voor ondernemers",
+    datum: "2026-04-12",
+    isOngelezen: false,
+    heeftBijlage: true,
+    relevantVoor: ["docent"],
+  },
+  {
+    afzenderId: "belastingdienst",
+    onderwerp: "Verscherpt cliëntenonderzoek (Wwft): wat dit voor u betekent",
+    datum: "2026-04-23",
+    isOngelezen: true,
+    heeftBijlage: true,
+    relevantVoor: ["financial-manager"],
+  },
+  {
+    afzenderId: "rvo",
+    onderwerp: "Voucher mkb-cyberweerbaarheid beschikbaar",
+    datum: "2026-04-17",
+    isOngelezen: false,
+    heeftBijlage: false,
+    relevantVoor: ["financial-manager"],
+  },
+  {
+    afzenderId: "kvk",
+    onderwerp: "Jaarlijkse controle van uw inschrijving",
+    datum: "2026-04-21",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["hondenuitlater"],
+  },
+  {
+    afzenderId: "belastingdienst",
+    onderwerp: "Btw-aangifte eerste kwartaal 2026",
+    datum: "2026-04-13",
+    isOngelezen: false,
+    heeftBijlage: false,
+    relevantVoor: ["hondenuitlater"],
+  },
+  {
+    afzenderId: "ap",
+    onderwerp: "Verwerking van cliëntgegevens onder de AVG",
+    datum: "2026-04-22",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["zorgcoordinator"],
+  },
+  {
+    afzenderId: "rvo",
+    onderwerp: "Subsidie gezond en veilig werken beschikbaar",
+    datum: "2026-04-18",
+    isOngelezen: true,
+    heeftBijlage: false,
+    relevantVoor: ["zorgcoordinator"],
+  },
+  {
+    afzenderId: "uwv",
+    onderwerp: "Wijziging in de ziekmeldingsprocedure voor werkgevers",
+    datum: "2026-04-14",
+    isOngelezen: false,
+    heeftBijlage: false,
+    relevantVoor: ["zorgcoordinator"],
+  },
+].map((bericht, index) => {
+  const afzender =
+    AFZENDERS.find(({ id }) => id === bericht.afzenderId)?.naam ??
+    bericht.afzenderId;
+  return {
+    ...bericht,
+    id: `bericht-${String(AANTAL_BERICHTEN + belastingdienst.length + index + 1).padStart(4, "0")}`,
+    afzender,
+    inhoud: standaardInhoud(afzender, bericht.onderwerp),
+  };
+});
 
-/** Fictieve berichten voor de Berichtenbox. Zie ./README.md */
-export const getDemoBerichten = async (): Promise<DemoBericht[]> => berichten;
+const berichten = spreidOverAfzenders([
+  ...gegenereerd,
+  ...belastingdienst,
+  ...personaBerichten,
+]);
+
+const voorPersona = (bericht: DemoBericht, personaId?: string) =>
+  !bericht.relevantVoor ||
+  (!!personaId && bericht.relevantVoor.includes(personaId));
+
+/**
+ * Fictieve berichten voor de Berichtenbox. Zie ./README.md
+ * @param personaId Voegt de berichten van deze persona toe aan de algemene.
+ */
+export const getDemoBerichten = async (
+  personaId?: string,
+): Promise<DemoBericht[]> =>
+  berichten.filter((bericht) => voorPersona(bericht, personaId));
 
 export const getDemoBerichtById = async (
   id: string,
+  personaId?: string,
 ): Promise<DemoBericht | undefined> =>
-  berichten.find((bericht) => bericht.id === id);
+  berichten.find(
+    (bericht) => bericht.id === id && voorPersona(bericht, personaId),
+  );

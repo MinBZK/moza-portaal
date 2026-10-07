@@ -166,4 +166,48 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-feedback-notice {
 		margin-block-start: var(--rhc-space-2xl);
 	}
+
+	/* Feature flags-panel */
+	#flags-paneel {
+		background: var(--rhc-color-cool-grey-100);
+		block-size: 100%;
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		inline-size: fit-content;
+		position: absolute;
+		right: 0;
+
+		>div {
+			display: flex;
+			gap: var(--rhc-space-5xl)
+		}
+
+		h2,
+		legend {
+			margin-block-end: var(--rhc-space-lg);
+		}
+
+		.utrecht-form-fieldset__fieldset {
+			display: flex;
+			flex-direction: column;
+			gap: var(--rhc-space-md);
+		}
+
+		summary {
+			font-size: 1.25rem;
+			font-weight: bold;
+			margin-block: var(--rhc-space-lg);
+		}
+
+		button {
+			margin-block-start: var(--rhc-space-lg);
+		}
+	}
+
+	/* Flags-panel: pauze animations */
+	.animations-paused *,
+	.animations-paused *::before,
+	.animations-paused *::after {
+		animation-play-state: paused !important;
+		transition: none !important;
+	}
 }

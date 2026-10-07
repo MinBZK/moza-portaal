@@ -19,6 +19,7 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
 import OphaalVoortgang, { useNagebootstOphalen } from "./_ophaalVoortgang";
 import {
@@ -87,6 +88,7 @@ const RijActies = ({
   onVerwijder: () => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const delen = useFlag("mox_delen");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const knopRef = useRef<HTMLButtonElement>(null);
 
@@ -121,13 +123,15 @@ const RijActies = ({
       </Button>
       {open && (
         <ul className="absolute end-0 z-10 flex flex-col rounded bg-[var(--rhc-color-wit)] p-2 shadow-md">
-          <li>
-            {/* Schets uit moza-poc: Delen doet nog niets. */}
-            <Button appearance="subtle-button" onClick={() => setOpen(false)}>
-              <Icon icon="delen" />
-              Delen
-            </Button>
-          </li>
+          {delen && (
+            <li>
+              {/* Schets uit moza-poc: Delen doet nog niets. */}
+              <Button appearance="subtle-button" onClick={() => setOpen(false)}>
+                <Icon icon="delen" />
+                Delen
+              </Button>
+            </li>
+          )}
           <li>
             <Button appearance="subtle-button" onClick={onArchiveer}>
               <ArchiveIcon />

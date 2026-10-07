@@ -1,6 +1,9 @@
 "use client";
 import type { ReactNode } from "react";
-import { FeatureFlags } from "@/app/(private)/instellingen/_featureFlags";
+import type {
+  FeatureFlagKey,
+  FeatureFlags,
+} from "@/app/(private)/instellingen/_featureFlags";
 import {
   SideNav,
   SideNavList,
@@ -10,13 +13,16 @@ import {
 } from "@rijkshuisstijl-community/components-react";
 
 const Navigation = ({
+  flags,
   berichtenboxBadge,
 }: {
-  // flags wordt nog meegegeven door de private layout, maar is (nog) niet in gebruik.
+  /** Pagina-flags uit het Flags-paneel. Zonder flags staat alles aan. */
   flags?: FeatureFlags;
   /** Aantal ongelezen berichten. Komt van de layout, want die kent de berichten. */
   berichtenboxBadge?: ReactNode;
 }) => {
+  const toon = (key: FeatureFlagKey) => flags?.[key] !== false;
+
   return (
     <SideNav>
       <SideNavList>
@@ -33,17 +39,21 @@ const Navigation = ({
             Bedrijfsgegevens
           </SideNavLink>
         </SideNavItem>
-        <SideNavItem>
-          <SideNavLink href="/berichtenbox" icon="inbox">
-            Berichtenbox
-            {berichtenboxBadge}
-          </SideNavLink>
-        </SideNavItem>
-        <SideNavItem>
-          <SideNavLink href="/lopendezaken" icon="activiteit">
-            Lopende zaken
-          </SideNavLink>
-        </SideNavItem>
+        {toon("mox_pagina_berichtenbox") && (
+          <SideNavItem>
+            <SideNavLink href="/berichtenbox" icon="inbox">
+              Berichtenbox
+              {berichtenboxBadge}
+            </SideNavLink>
+          </SideNavItem>
+        )}
+        {toon("mox_pagina_lopendeZaken") && (
+          <SideNavItem>
+            <SideNavLink href="/lopendezaken" icon="activiteit">
+              Lopende zaken
+            </SideNavLink>
+          </SideNavItem>
+        )}
       </SideNavList>
       <Separator />
       <SideNavList>
@@ -74,50 +84,62 @@ const Navigation = ({
           </SideNavLink>
         </SideNavItem>
       </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink href="/digitale-assistent" icon="comment">
-            Digitale assistent (AI)
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
+      {toon("mox_pagina_digitaleAssistent") && (
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/digitale-assistent" icon="comment">
+              Digitale assistent (AI)
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      )}
       <Separator />
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink href="/belastingen" icon="currency-euro">
-            Belastingen
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink href="/zakelijk-vervoer" icon="car">
-            Zakelijk vervoer
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink href="/personeel" icon="user">
-            Personeel en rollen
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink href="/verzuim-en-verlof" icon="user">
-            Ziekte en verlof
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
+      {toon("mox_pagina_belastingen") && (
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/belastingen" icon="currency-euro">
+              Belastingen
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      )}
+      {toon("mox_pagina_zakelijkVervoer") && (
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/zakelijk-vervoer" icon="car">
+              Zakelijk vervoer
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      )}
+      {toon("mox_pagina_personeel") && (
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/personeel" icon="user">
+              Personeel en rollen
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      )}
+      {toon("mox_pagina_ziekteVerlof") && (
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/verzuim-en-verlof" icon="user">
+              Ziekte en verlof
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      )}
       <Separator />
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink href="/dataverwerking" icon="gegevensuitwisseling">
-            Gegevensdeling en dataverwerking
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
+      {toon("mox_pagina_dataverwerking") && (
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/dataverwerking" icon="gegevensuitwisseling">
+              Gegevensdeling en dataverwerking
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      )}
       <SideNavList>
         <SideNavItem>
           <SideNavLink href="/contactvoorkeuren" icon="instellingen">

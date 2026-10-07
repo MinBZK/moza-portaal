@@ -13,10 +13,13 @@ import {
   getDemoOndernemingsonderdelen,
   getDemoOndernemingsvragen,
 } from "@/demo";
+import { getActievePersona } from "@/app/(public)/_persona";
 
 const OndernemingsgegevensPage = async () => {
   const [gegevens, onderdelen, vragen] = await Promise.all([
-    getDemoOndernemingsgegevens(),
+    getActievePersona().then((persona) =>
+      getDemoOndernemingsgegevens(persona?.bedrijf),
+    ),
     getDemoOndernemingsonderdelen(),
     getDemoOndernemingsvragen(),
   ]);

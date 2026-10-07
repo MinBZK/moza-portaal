@@ -17,9 +17,13 @@ import {
 } from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoWetten } from "@/demo";
+import { getFlagsFromServerCookie } from "@/app/actions";
+import { getActievePersona } from "@/app/(public)/_persona";
 
 const WettenPage = async () => {
-  const wetten = await getDemoWetten();
+  const flags = await getFlagsFromServerCookie();
+  const persona = await getActievePersona();
+  const wetten = await getDemoWetten(persona?.regelgeving);
 
   return (
     <>
@@ -49,7 +53,10 @@ const WettenPage = async () => {
               <Paragraph>{wet.samenvatting}</Paragraph>
 
               <DataSummary appearance="column">
-                <DataSummaryItem itemKey="Status" itemValue={wet.status} />
+                {wet.status && (
+                  <DataSummaryItem itemKey="Status" itemValue={wet.status} />
+                )}
+                <DataSummaryItem itemKey="Bron" itemValue={wet.bron} />
                 <DataSummaryItem
                   itemKey="Gaat in op"
                   itemValue={wet.ingangsdatum}
@@ -61,19 +68,25 @@ const WettenPage = async () => {
                 <Paragraph key={tekst}>{tekst}</Paragraph>
               ))}
 
-              <Heading level={3}>Wat moet u doen?</Heading>
-              <OrderedList>
-                {wet.stappen.map((stap) => (
-                  <OrderedListItem key={stap}>{stap}</OrderedListItem>
-                ))}
-              </OrderedList>
+              {wet.stappen.length > 0 && (
+                <>
+                  <Heading level={3}>Wat moet u doen?</Heading>
+                  <OrderedList>
+                    {wet.stappen.map((stap) => (
+                      <OrderedListItem key={stap}>{stap}</OrderedListItem>
+                    ))}
+                  </OrderedList>
+                </>
+              )}
 
               <ActionGroup direction="row" className="mox-action-group">
                 <BewaarKnop item={item} />
-                <Button appearance="secondary-action-button">
-                  <Icon icon="delen" />
-                  Deel
-                </Button>
+                {flags.mox_delen && (
+                  <Button appearance="secondary-action-button">
+                    <Icon icon="delen" />
+                    Deel
+                  </Button>
+                )}
                 <Button appearance="secondary-action-button">
                   <Icon icon="communicatie" />
                   Vraag aan de digitale assistent

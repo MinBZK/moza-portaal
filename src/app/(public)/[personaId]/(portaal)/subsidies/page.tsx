@@ -16,9 +16,13 @@ import {
 } from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoSubsidies } from "@/demo";
+import { getFlagsFromServerCookie } from "@/app/actions";
+import { getActievePersona } from "@/app/(public)/_persona";
 
 const SubsidiesPage = async () => {
-  const subsidies = await getDemoSubsidies();
+  const flags = await getFlagsFromServerCookie();
+  const persona = await getActievePersona();
+  const subsidies = await getDemoSubsidies(persona?.subsidies);
 
   return (
     <>
@@ -57,10 +61,12 @@ const SubsidiesPage = async () => {
                   itemKey="Aanvraagperiode"
                   itemValue={subsidie.aanvraagperiode}
                 />
-                <DataSummaryItem
-                  itemKey="Maximaal bedrag"
-                  itemValue={subsidie.maximaalBedrag}
-                />
+                {subsidie.maximaalBedrag && (
+                  <DataSummaryItem
+                    itemKey="Maximaal bedrag"
+                    itemValue={subsidie.maximaalBedrag}
+                  />
+                )}
               </DataSummary>
 
               {subsidie.alinea.map((tekst) => (
@@ -78,10 +84,12 @@ const SubsidiesPage = async () => {
 
               <ActionGroup direction="row" className="mox-action-group">
                 <BewaarKnop item={item} />
-                <Button appearance="secondary-action-button">
-                  <Icon icon="delen" />
-                  Deel
-                </Button>
+                {flags.mox_delen && (
+                  <Button appearance="secondary-action-button">
+                    <Icon icon="delen" />
+                    Deel
+                  </Button>
+                )}
                 <Button appearance="secondary-action-button">
                   <Icon icon="communicatie" />
                   Vraag aan de digitale assistent
