@@ -22,6 +22,7 @@ import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
 import { formatDatum } from "./_formatDatum";
+import OphaalVoortgang, { useNagebootstOphalen } from "./_ophaalVoortgang";
 import {
   bewaarFoutTekst,
   isGemarkeerd,
@@ -123,6 +124,13 @@ const RijActies = ({
       {open && (
         <ul className="absolute end-0 z-10 flex flex-col rounded bg-[var(--rhc-color-wit)] p-2 shadow-md">
           <li>
+            {/* Schets uit moza-poc: Delen doet nog niets. */}
+            <Button appearance="subtle-button" onClick={() => setOpen(false)}>
+              <Icon icon="delen" />
+              Delen
+            </Button>
+          </li>
+          <li>
             <Button appearance="subtle-button" onClick={onArchiveer}>
               <ArchiveIcon />
               Archiveren
@@ -161,6 +169,15 @@ const BerichtenLijst = ({
   useEffect(() => {
     if (melding) meldingRef.current?.focus();
   }, [melding]);
+
+  const inbox = staat
+    ? berichten.filter((bericht) => statusVan(staat, bericht.id) === "inbox")
+    : null;
+  const { bezig, voortgang } = useNagebootstOphalen(
+    weergave === "inbox",
+    inbox ? new Set(inbox.map((bericht) => bericht.afzenderId)).size : null,
+    inbox?.length ?? 0,
+  );
 
   if (!staat) {
     return <Paragraph role="status">Uw berichten worden geladen.</Paragraph>;
@@ -231,7 +248,7 @@ const BerichtenLijst = ({
 
   return (
     <div className="space-y-4">
-      {weergave === "inbox" ? (
+      {bezig ? null : weergave === "inbox" ? (
         <Paragraph>
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
@@ -256,7 +273,7 @@ const BerichtenLijst = ({
       {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
 
       <div ref={meldingRef} tabIndex={-1}>
-        {melding && <Alert type="ok">{melding}</Alert>}
+        {melding && !bezig && <Alert type="ok">{melding}</Alert>}
       </div>
 
       {weergave === "inbox" && (
@@ -273,12 +290,19 @@ const BerichtenLijst = ({
         />
       )}
 
+      {bezig && <OphaalVoortgang voortgang={voortgang} />}
+
       <div aria-live="polite" className="sr-only">
-        {zoekterm && meervoud(gevonden.length, "bericht", "berichten")}
-        {zoekterm && " gevonden"}
+        {bezig
+          ? "We halen uw berichten op bij de organisaties."
+          : zoekterm
+            ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
+            : voortgang
+              ? `${meervoud(voortgang.gevonden, "bericht", "berichten")} opgehaald.`
+              : ""}
       </div>
 
-      {gesorteerd.length === 0 ? (
+      {bezig ? null : gesorteerd.length === 0 ? (
         <Paragraph>
           {zoekterm
             ? `Er zijn geen berichten gevonden met "${zoek.trim()}". Probeer een ander woord.`

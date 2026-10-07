@@ -100,13 +100,17 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		p,
 		ul,
-		ol {
+		ol:not(.ams-pagination__list) {
 			margin-block-end: var(--rhc-space-lg);
 		}
 
 		.utrecht-action-group,
 		.utrecht-button--primary-action {
 			margin-block-start: var(--rhc-space-2xl);
+		}
+
+		.utrecht-table {
+			padding: 0;
 		}
 	}
 
@@ -150,5 +154,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		a {
 			text-decoration: none;
 		}
+	}
+
+	/* Icons */
+	.utrecht-icon {
+		block-size: var(--rhc-size-icon-md);
+		inline-size: var(--rhc-size-icon-md);
+	}
+
+	/* Feedback */
+	.mox-feedback-notice {
+		margin-block-start: var(--rhc-space-2xl);
 	}
 }
