@@ -35,14 +35,14 @@ const BinnenkortBeschikbaar = ({
       <Paragraph>{samenvatting}</Paragraph>
     </Alert>
 
-    <Heading level={2}>Wat kunt u straks doen?</Heading>
-    <UnorderedList>
-      {verwachtingen.map((verwachting) => (
-        <UnorderedListItem key={verwachting}>{verwachting}</UnorderedListItem>
-      ))}
-    </UnorderedList>
-
-    <Separator />
+    <div className="mox-card">
+      <Heading level={2}>Wat kunt u straks doen?</Heading>
+      <UnorderedList>
+        {verwachtingen.map((verwachting) => (
+          <UnorderedListItem key={verwachting}>{verwachting}</UnorderedListItem>
+        ))}
+      </UnorderedList>
+    </div>
 
     <Heading level={2}>Veelgestelde vragen</Heading>
     <AccordionProvider
