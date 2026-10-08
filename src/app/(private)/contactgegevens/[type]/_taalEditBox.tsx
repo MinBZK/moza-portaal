@@ -2,6 +2,20 @@
 
 import { useRef, useState } from "react";
 import { components } from "@/network/profiel/generated";
+import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
+import {
+  ActionGroup,
+  Button,
+  DataSummary,
+  Icon,
+  VisuallyHidden,
+} from "@/components/rhc";
+import {
+  FormFieldSelect,
+  SelectOption,
+} from "@rijkshuisstijl-community/components-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
 const taalValues = [
   "Nederlands",
@@ -10,10 +24,6 @@ const taalValues = [
   "Papiamento",
   "Papiamentu",
 ] as const;
-import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
-import { EditIcon } from "@/components/icons/editIcon";
-import { useQueryClient } from "@tanstack/react-query";
-import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
 export const TaalEditBox = ({
   idenType,
@@ -39,7 +49,7 @@ export const TaalEditBox = ({
 
   return (
     <form
-      className="flex flex-col gap-3"
+      className="mox-row-gap"
       noValidate
       onSubmit={(e) => {
         e.preventDefault();
@@ -66,69 +76,67 @@ export const TaalEditBox = ({
               setErrorMessage(
                 "Er is een fout opgetreden bij het opslaan. Probeer het opnieuw.",
               );
+              selectRef.current?.focus();
             },
           },
         );
       }}
     >
-      <div className="grid grid-cols-[2fr_3fr_100px] items-start gap-4">
-        <label htmlFor="field-taal" className="font-bold">
-          Taalvoorkeur
-        </label>
-        <div>
-          {fieldState === "edit" ? (
-            <div className="flex flex-col gap-2">
-              <select
-                ref={selectRef}
-                className="w-full border border-gray-300 bg-white p-1"
-                id="field-taal"
-                value={newValue}
-                onChange={(e) => setNewValue(e.target.value)}
-              >
-                <option value="">Selecteer een taal</option>
-                {taalValues.map((taal) => (
-                  <option key={taal} value={taal}>
-                    {taal}
-                  </option>
-                ))}
-              </select>
-              {errorMessage && (
-                <span className="text-sm text-red-500">{errorMessage}</span>
-              )}
-            </div>
-          ) : newValue ? (
-            <span>{newValue}</span>
-          ) : (
-            <span className="text-neutral-500 italic">Niet opgegeven</span>
-          )}
-        </div>
-        <div>
-          {fieldState !== "edit" ? (
-            <EditBoxButton
-              icon={<EditIcon />}
+      {fieldState === "edit" ? (
+        <>
+          <FormFieldSelect
+            label="Taalvoorkeur"
+            selectRef={selectRef}
+            value={newValue}
+            invalid={!!errorMessage}
+            errorMessage={errorMessage}
+            onChange={(event) => setNewValue(event.target.value)}
+          >
+            <SelectOption value="">Selecteer een taal</SelectOption>
+            {taalValues.map((taal) => (
+              <SelectOption key={taal} value={taal}>
+                {taal}
+              </SelectOption>
+            ))}
+          </FormFieldSelect>
+          <ActionGroup direction="row">
+            <Button appearance="primary-action-button" type="submit">
+              Opslaan
+            </Button>
+            <Button
+              appearance="secondary-action-button"
               onClick={() => {
-                setFieldState("edit");
-                requestAnimationFrame(() => selectRef.current?.focus());
+                setFieldState("view");
+                setErrorMessage(undefined);
+                setNewValue(voorkeur?.waarde || "");
               }}
             >
-              Aanpassen
-            </EditBoxButton>
-          ) : (
-            <div className="flex flex-col">
-              <EditBoxButton type="submit">Opslaan</EditBoxButton>
+              Annuleren
+            </Button>
+          </ActionGroup>
+        </>
+      ) : (
+        <DataSummary appearance="row">
+          <div className="rhc-data-summary__item">
+            <dt className="rhc-data-summary__item-key">Taalvoorkeur</dt>
+            <dd className="rhc-data-summary__item-value">
+              {newValue || "Niet opgegeven"}
+            </dd>
+            <dd className="rhc-data-summary__item-action">
               <EditBoxButton
+                icon={<Icon icon="bewerken" />}
                 onClick={() => {
-                  setFieldState("view");
-                  setErrorMessage(undefined);
-                  setNewValue(voorkeur?.waarde || "");
+                  setFieldState("edit");
+                  requestAnimationFrame(() => selectRef.current?.focus());
                 }}
               >
-                Annuleren
+                Aanpassen
+                <VisuallyHidden> taalvoorkeur</VisuallyHidden>
               </EditBoxButton>
-            </div>
-          )}
-        </div>
-      </div>
+            </dd>
+          </div>
+        </DataSummary>
+      )}
     </form>
   );
 };

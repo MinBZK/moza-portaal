@@ -3,7 +3,14 @@
 import { useRef, useState } from "react";
 import { components } from "@/network/profiel/generated";
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
-import { EditIcon } from "@/components/icons/editIcon";
+import {
+  ActionGroup,
+  Button,
+  DataSummary,
+  FormFieldTextInput,
+  Icon,
+  VisuallyHidden,
+} from "@/components/rhc";
 import { useQueryClient } from "@tanstack/react-query";
 import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
@@ -31,7 +38,7 @@ export const AanhefEditBox = ({
 
   return (
     <form
-      className="flex flex-col gap-3"
+      className="mox-row-gap"
       noValidate
       onSubmit={(e) => {
         e.preventDefault();
@@ -58,64 +65,64 @@ export const AanhefEditBox = ({
               setErrorMessage(
                 "Er is een fout opgetreden bij het opslaan. Probeer het opnieuw.",
               );
+              inputRef.current?.focus();
             },
           },
         );
       }}
     >
-      <div className="grid grid-cols-[2fr_3fr_100px] items-start gap-4">
-        <label htmlFor="field-aanhef" className="font-bold">
-          Aanhef
-        </label>
-        <div>
-          {fieldState === "edit" ? (
-            <div className="flex flex-col gap-2">
-              <input
-                ref={inputRef}
-                className="w-full border border-gray-300 bg-white p-1"
-                id="field-aanhef"
-                type="text"
-                placeholder="bv: Dhr. Jansen"
-                value={newValue}
-                onChange={(e) => setNewValue(e.target.value)}
-              />
-              {errorMessage && (
-                <span className="text-sm text-red-500">{errorMessage}</span>
-              )}
-            </div>
-          ) : newValue ? (
-            <span>{newValue}</span>
-          ) : (
-            <span className="text-neutral-500 italic">Niet opgegeven</span>
-          )}
-        </div>
-        <div>
-          {fieldState !== "edit" ? (
-            <EditBoxButton
-              icon={<EditIcon />}
+      {fieldState === "edit" ? (
+        <>
+          <FormFieldTextInput
+            label="Aanhef"
+            inputRef={inputRef}
+            placeholder="bv: Dhr. Jansen"
+            value={newValue}
+            invalid={!!errorMessage}
+            errorMessage={errorMessage}
+            onChange={(event) =>
+              // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
+              setNewValue((event.target as HTMLInputElement).value)
+            }
+          />
+          <ActionGroup direction="row">
+            <Button appearance="primary-action-button" type="submit">
+              Opslaan
+            </Button>
+            <Button
+              appearance="secondary-action-button"
               onClick={() => {
-                setFieldState("edit");
-                requestAnimationFrame(() => inputRef.current?.focus());
+                setFieldState("view");
+                setErrorMessage(undefined);
+                setNewValue(voorkeur?.waarde || "");
               }}
             >
-              Aanpassen
-            </EditBoxButton>
-          ) : (
-            <div className="flex flex-col">
-              <EditBoxButton type="submit">Opslaan</EditBoxButton>
+              Annuleren
+            </Button>
+          </ActionGroup>
+        </>
+      ) : (
+        <DataSummary appearance="row">
+          <div className="rhc-data-summary__item">
+            <dt className="rhc-data-summary__item-key">Aanhef</dt>
+            <dd className="rhc-data-summary__item-value">
+              {newValue || "Niet opgegeven"}
+            </dd>
+            <dd className="rhc-data-summary__item-action">
               <EditBoxButton
+                icon={<Icon icon="bewerken" />}
                 onClick={() => {
-                  setFieldState("view");
-                  setErrorMessage(undefined);
-                  setNewValue(voorkeur?.waarde || "");
+                  setFieldState("edit");
+                  requestAnimationFrame(() => inputRef.current?.focus());
                 }}
               >
-                Annuleren
+                Aanpassen
+                <VisuallyHidden> aanhef</VisuallyHidden>
               </EditBoxButton>
-            </div>
-          )}
-        </div>
-      </div>
+            </dd>
+          </div>
+        </DataSummary>
+      )}
     </form>
   );
 };

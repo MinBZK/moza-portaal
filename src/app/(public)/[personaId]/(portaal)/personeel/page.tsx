@@ -3,7 +3,7 @@ import BinnenkortBeschikbaar from "@/components/binnenkortBeschikbaar";
 import { getDemoBinnenkort } from "@/demo";
 
 const MedewerkersPage = async () => {
-  const onderdeel = await getDemoBinnenkort("medewerkers");
+  const onderdeel = await getDemoBinnenkort("personeel");
   if (!onderdeel) notFound();
 
   return (

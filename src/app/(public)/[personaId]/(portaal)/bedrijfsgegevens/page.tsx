@@ -75,7 +75,10 @@ const OndernemingsgegevensPage = async () => {
             </Heading>
             <Paragraph>{beschrijving}</Paragraph>
             <ActionGroup>
-              <NextLink href={href} className={knopLink}>
+              <NextLink
+                href={href}
+                className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+              >
                 Ga naar {titel}
               </NextLink>
             </ActionGroup>

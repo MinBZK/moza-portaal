@@ -37,7 +37,7 @@ const RecenteBerichten = ({ berichten }: { berichten: DemoBericht[] }) => {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="mox-table-container">
       <Table>
         <TableHeader>
           <TableRow>

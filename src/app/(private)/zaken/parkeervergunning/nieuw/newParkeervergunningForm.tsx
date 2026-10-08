@@ -1,6 +1,6 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
+
+import { Button, Heading } from "@/components/rhc";
 import FormField from "@/components/form/formField";
 import { useCreateParkeervergunning } from "@/network/mock/hooks/createParkeervergunning/useCreateParkeervergunning";
 import { useForm } from "@tanstack/react-form";
@@ -35,43 +35,35 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">Nieuwe parkeervergunning aanvragen</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <div className="border-b-1 border-gray-200 pb-2">
-          <div className="grid grid-cols-2 gap-4 *:py-4">
-            <div>
-              <form.Field name="kenteken">
-                {(field) => <FormField label={"Kenteken"} field={field} />}
-              </form.Field>
-            </div>
-            <div>
-              <form.Field name="motivatie">
-                {(field) => <FormField label={"Motivatie"} field={field} />}
-              </form.Field>
-            </div>
-            <div>
-              <form.Field name="aanvragerEmail">
-                {(field) => <FormField label={"E-mail"} field={field} />}
-              </form.Field>
-            </div>
-          </div>
-        </div>
-        <div className="pt-4">
+    <>
+      <Heading level={1}>Nieuwe parkeervergunning aanvragen</Heading>
+      <div className="mox-card">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+        >
+          <form.Field name="kenteken">
+            {(field) => <FormField label={"Kenteken"} field={field} />}
+          </form.Field>
+          <form.Field name="motivatie">
+            {(field) => <FormField label={"Motivatie"} field={field} />}
+          </form.Field>
+          <form.Field name="aanvragerEmail">
+            {(field) => <FormField label={"E-mail"} field={field} />}
+          </form.Field>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
-            <Button type="submit">Opslaan</Button>
+            <Button type="submit" appearance="primary-action-button">
+              Opslaan
+            </Button>
           </form.Subscribe>
-        </div>
-      </form>
-    </Card>
+        </form>
+      </div>
+    </>
   );
 };
 

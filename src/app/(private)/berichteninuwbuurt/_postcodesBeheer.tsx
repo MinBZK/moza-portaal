@@ -1,6 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  ActionGroup,
+  Button,
+  FormFieldTextInput,
+  Heading,
+  Icon,
+  Paragraph,
+  UnorderedList,
+  UnorderedListItem,
+  VisuallyHidden,
+} from "@/components/rhc";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
 import { useAddPostcodeVoorkeur } from "@/network/actualiteiten/hooks/addPostcodeVoorkeur/useAddPostcodeVoorkeur";
@@ -24,27 +35,33 @@ const PostcodesBeheer = () => {
 
   const [newPostcode, setNewPostcode] = useState("");
   const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const postcodeVoorkeuren = voorkeuren?.postcodes ?? [];
 
   if (kvkNummer == null || voorkeurenStatus === "pending") return null;
+
+  const toonFout = (melding: string) => {
+    setError(melding);
+    inputRef.current?.focus();
+  };
 
   const handleAdd = () => {
     setError("");
     const normalized = normalizePostcode(newPostcode);
 
     if (!POSTCODE_REGEX.test(newPostcode)) {
-      setError("Voer een geldige postcode in (bijv. 1234 of 1234AB).");
+      toonFout("Voer een geldige postcode in (bijv. 1234 of 1234AB).");
       return;
     }
 
     if (postcodeVoorkeuren.some((v) => v.postcode === normalized)) {
-      setError("Deze postcode is al toegevoegd.");
+      toonFout("Deze postcode is al toegevoegd.");
       return;
     }
 
     if (postcodeVoorkeuren.length >= MAX_POSTCODES) {
-      setError(`U kunt maximaal ${MAX_POSTCODES} postcodes toevoegen.`);
+      toonFout(`U kunt maximaal ${MAX_POSTCODES} postcodes toevoegen.`);
       return;
     }
 
@@ -57,51 +74,60 @@ const PostcodesBeheer = () => {
   const handleDelete = (id: number) => deleteMutation.mutate({ id });
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold">Uw postcodes</h2>
-      <p className="mt-1 text-sm text-neutral-600">
+    <>
+      <Heading level={2}>Uw postcodes</Heading>
+      <Paragraph>
         Voeg postcodes toe om berichten in die omgeving te zien.
-      </p>
+      </Paragraph>
       {postcodeVoorkeuren.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <UnorderedList>
           {postcodeVoorkeuren.map((v) => (
-            <span
-              key={v.id}
-              className="inline-flex items-center gap-1 rounded bg-neutral-100 px-3 py-1 font-mono text-sm"
-            >
-              {v.postcode}
-              <button
+            <UnorderedListItem key={v.id}>
+              {v.postcode}{" "}
+              <Button
+                appearance="subtle-button"
                 onClick={() => handleDelete(v.id)}
                 disabled={deleteMutation.isPending}
-                className="ml-1 text-neutral-400 hover:text-red-600 disabled:opacity-50"
-                title="Verwijderen"
               >
-                &times;
-              </button>
-            </span>
+                <Icon icon="kruis" />
+                <VisuallyHidden>Verwijder postcode {v.postcode}</VisuallyHidden>
+              </Button>
+            </UnorderedListItem>
           ))}
-        </div>
+        </UnorderedList>
       )}
-      <div className="mt-3 flex gap-2">
-        <input
-          type="text"
+      <form
+        noValidate
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleAdd();
+        }}
+      >
+        <FormFieldTextInput
+          label="Postcode"
+          inputRef={inputRef}
           value={newPostcode}
-          onChange={(e) => setNewPostcode(e.target.value)}
+          onChange={(event) =>
+            // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
+            setNewPostcode((event.target as HTMLInputElement).value)
+          }
           placeholder="1234AB"
           maxLength={7}
-          className="w-32 rounded border border-neutral-300 px-3 py-1.5 text-sm"
-          onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+          invalid={!!error}
+          errorMessage={error}
         />
-        <button
-          onClick={handleAdd}
-          disabled={addMutation.isPending}
-          className="rounded bg-[#007bc7] px-3 py-1.5 text-sm text-white hover:bg-[#005e9e] disabled:opacity-50"
-        >
-          Toevoegen
-        </button>
-      </div>
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-    </div>
+        <ActionGroup direction="row">
+          <Button
+            appearance="secondary-action-button"
+            type="submit"
+            disabled={addMutation.isPending}
+          >
+            <Icon icon="plus" />
+            Toevoegen
+          </Button>
+        </ActionGroup>
+      </form>
+    </>
   );
 };
 

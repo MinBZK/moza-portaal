@@ -122,7 +122,7 @@ const PublicPage = () => {
       </Heading>
       <div className="mox-landing-quicklinks">
         <div>
-          <NavigationList className="mox-navigation-list--no-start-icon">
+          <NavigationList>
             <NavigationListItem
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
               href="#"
@@ -144,7 +144,7 @@ const PublicPage = () => {
           </NavigationList>
         </div>
         <div>
-          <NavigationList className="mox-navigation-list--no-start-icon">
+          <NavigationList>
             <NavigationListItem
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
               href="#"

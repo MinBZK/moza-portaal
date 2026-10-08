@@ -1,7 +1,18 @@
 "use client";
 
 import { type ReactNode, useState } from "react";
-import Card from "@/components/card";
+import {
+  ActionGroup,
+  Button,
+  Fieldset,
+  FormFieldCheckboxOption,
+  Heading,
+  Paragraph,
+} from "@/components/rhc";
+import {
+  Accordion,
+  AccordionSection,
+} from "@rijkshuisstijl-community/components-react";
 import VoorkeurenSidebar from "./_voorkeurenBeheer";
 import { type SectionKey, SECTION_LABELS } from "./_subjectGroups";
 import VoorkeurenTopbar from "./_voorkeurenTopbar";
@@ -77,127 +88,78 @@ const ActualiteitenContent = () => {
 
   return (
     <>
-      {/* View toggle */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-neutral-500">Weergave:</span>
-        <div className="inline-flex overflow-hidden rounded border border-neutral-300">
-          <button
-            onClick={() => setViewMode("sidebar")}
-            className={`px-3 py-1.5 text-sm font-medium transition-colors ${
-              viewMode === "sidebar"
-                ? "bg-[#154273] text-white"
-                : "bg-white text-neutral-600 hover:bg-neutral-50"
-            }`}
-            title="Filters in zijbalk"
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 4h4v16H3V4zm7 0h11v4H10V4zm0 8h11v4H10v-4z"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={() => setViewMode("top")}
-            className={`px-3 py-1.5 text-sm font-medium transition-colors ${
-              viewMode === "top"
-                ? "bg-[#154273] text-white"
-                : "bg-white text-neutral-600 hover:bg-neutral-50"
-            }`}
-            title="Filters bovenaan"
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 4h18v4H3V4zm0 8h18v4H3v-4zm0 8h18v4H3v-4z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
+      <ActionGroup role="group" aria-label="Weergave" direction="row">
+        <Button
+          appearance={
+            viewMode === "sidebar"
+              ? "primary-action-button"
+              : "secondary-action-button"
+          }
+          aria-pressed={viewMode === "sidebar"}
+          onClick={() => setViewMode("sidebar")}
+        >
+          Filters in zijbalk
+        </Button>
+        <Button
+          appearance={
+            viewMode === "top"
+              ? "primary-action-button"
+              : "secondary-action-button"
+          }
+          aria-pressed={viewMode === "top"}
+          onClick={() => setViewMode("top")}
+        >
+          Filters bovenaan
+        </Button>
+      </ActionGroup>
 
       {viewMode === "sidebar" ? (
-        <div className="flex flex-col gap-6 lg:flex-row">
-          {/* Sidebar filters */}
-          <aside className="w-full shrink-0 lg:w-64">
-            <Card className="sticky top-4">
-              <VoorkeurenSidebar
-                visibleSections={visibleSections}
-                onToggleSection={toggleSection}
-                sectionCounts={data.sectionCounts}
-                subjectCounts={subjectCounts}
-              />
-            </Card>
+        <div className="rhc-grid">
+          <aside className="mox-card rhc-grid__cell rhc-grid__cell-d-4">
+            <VoorkeurenSidebar
+              visibleSections={visibleSections}
+              onToggleSection={toggleSection}
+              sectionCounts={data.sectionCounts}
+              subjectCounts={subjectCounts}
+            />
           </aside>
 
-          {/* Main content */}
-          <div className="min-w-0 flex-1 space-y-6">
+          <div className="rhc-grid__cell rhc-grid__cell-d-8 mox-row-gap">
             <ActiveFilters />
             {sections}
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
-          <Card className="space-y-4">
-            <h2 className="text-2xl font-bold">Uw onderwerpen</h2>
-            <p className="text-sm text-neutral-600">
+        <>
+          <div className="mox-card">
+            <Heading level={2}>Uw onderwerpen</Heading>
+            <Paragraph>
               Selecteer onderwerpen om relevante artikelen en informatie te
               zien.
-            </p>
+            </Paragraph>
             <VoorkeurenTopbar />
 
-            {/* Section toggles inline */}
-            <div className="flex flex-wrap gap-3 border-t border-neutral-200 pt-3">
-              <span className="text-sm font-semibold text-neutral-500">
-                Secties:
-              </span>
+            <Fieldset legend="Secties">
               {(Object.keys(SECTION_LABELS) as SectionKey[]).map((key) => {
                 const count = data.sectionCounts[key];
                 return (
-                  <label
+                  <FormFieldCheckboxOption
                     key={key}
-                    className="flex cursor-pointer items-center gap-1.5 text-sm text-neutral-700"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={visibleSections[key]}
-                      onChange={() => toggleSection(key)}
-                      className="h-4 w-4 shrink-0 rounded border-neutral-300 text-[#007bc7] accent-[#007bc7]"
-                    />
-                    <span
-                      className={
-                        visibleSections[key] ? "font-medium text-[#154273]" : ""
-                      }
-                    >
-                      {SECTION_LABELS[key]}
-                    </span>
-                    {count !== null && (
-                      <span className="text-xs text-neutral-600">
-                        ({count})
-                      </span>
-                    )}
-                  </label>
+                    label={
+                      count !== null
+                        ? `${SECTION_LABELS[key]} (${count})`
+                        : SECTION_LABELS[key]
+                    }
+                    checked={visibleSections[key]}
+                    onChange={() => toggleSection(key)}
+                  />
                 );
               })}
-            </div>
-          </Card>
+            </Fieldset>
+          </div>
 
           {sections}
-        </div>
+        </>
       )}
     </>
   );
@@ -215,28 +177,19 @@ function CollapsibleSection({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <Card>
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between"
-      >
-        <h2 className="text-2xl font-bold">{title}</h2>
-        <svg
-          className={`h-5 w-5 shrink-0 text-neutral-400 transition-transform ${open ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
+    <div className="mox-faq-card">
+      <Accordion>
+        <AccordionSection
+          headingLevel={2}
+          label={title}
+          body={null}
+          expanded={open}
+          onActivate={() => setOpen(!open)}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-      {open && <div className="mt-4">{children}</div>}
-    </Card>
+          {children}
+        </AccordionSection>
+      </Accordion>
+    </div>
   );
 }
 

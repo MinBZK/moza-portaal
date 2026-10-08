@@ -57,7 +57,7 @@ const BerichtenboxNav = ({
 
   return (
     <nav aria-label="Berichtenbox">
-      <ul className="flex flex-wrap gap-x-6 border-b border-[var(--rhc-color-border-subtle)]">
+      <ul className="mox-tabs">
         {tabs.map((tab) => {
           const isActief = tab.weergave === actief;
           return (
@@ -67,11 +67,7 @@ const BerichtenboxNav = ({
                 aria-current={
                   isActief ? (opLijst ? "page" : "true") : undefined
                 }
-                className={`utrecht-link utrecht-link--html-a -mb-px flex items-center gap-2 border-b-4 py-3 no-underline ${
-                  isActief
-                    ? "border-[var(--rhc-color-primary-500)] font-bold"
-                    : "border-transparent"
-                }`}
+                className={`mox-tab utrecht-link utrecht-link--html-a`}
               >
                 {tab.icon}
                 {tab.label}

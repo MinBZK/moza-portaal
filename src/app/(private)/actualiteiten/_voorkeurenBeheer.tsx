@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Fieldset,
+  FormFieldCheckboxOption,
+  NumberBadge,
+  VisuallyHidden,
+} from "@/components/rhc";
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
 import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
 import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
@@ -43,50 +49,38 @@ const VoorkeurenSidebar = ({
   if (voorkeurenStatus === "pending") return null;
 
   return (
-    <nav className="space-y-1" aria-label="Filters">
-      <h2 className="mb-2 text-lg font-bold text-[#154273]">Secties</h2>
-      <div className="mb-4 space-y-1 border-b border-neutral-200 pb-4">
+    <nav aria-label="Filters">
+      <Fieldset legend="Secties">
         {(Object.keys(SECTION_LABELS) as SectionKey[]).map((key) => {
           const count = sectionCounts[key];
           return (
-            <label
+            <FormFieldCheckboxOption
               key={key}
-              className="relative flex cursor-pointer items-center gap-2 rounded py-1 pr-9 pl-1 text-sm text-neutral-700 hover:bg-neutral-50"
-            >
-              <input
-                type="checkbox"
-                checked={visibleSections[key]}
-                onChange={() => onToggleSection(key)}
-                className="h-4 w-4 shrink-0 rounded border-neutral-300 text-[#007bc7] accent-[#007bc7]"
-              />
-              <span
-                className={
-                  visibleSections[key] ? "font-medium text-[#154273]" : ""
-                }
-              >
-                {SECTION_LABELS[key]}
-              </span>
-              <span className="absolute right-0 w-8 text-right text-xs text-neutral-600">
-                {count ?? ""}
-              </span>
-            </label>
+              label={
+                count !== null
+                  ? `${SECTION_LABELS[key]} (${count})`
+                  : SECTION_LABELS[key]
+              }
+              checked={visibleSections[key]}
+              onChange={() => onToggleSection(key)}
+            />
           );
         })}
-      </div>
+      </Fieldset>
 
-      <h2 className="mb-3 text-lg font-bold text-[#154273]">Onderwerpen</h2>
-
-      {SUBJECT_GROUPS.map((group) => (
-        <FilterGroup
-          key={group.label}
-          label={group.label}
-          subjects={group.subjects}
-          selectedSubjects={selectedSubjects}
-          onToggle={handleToggle}
-          disabled={isMutating}
-          subjectCounts={subjectCounts}
-        />
-      ))}
+      <Fieldset legend="Onderwerpen">
+        {SUBJECT_GROUPS.map((group) => (
+          <FilterGroup
+            key={group.label}
+            label={group.label}
+            subjects={group.subjects}
+            selectedSubjects={selectedSubjects}
+            onToggle={handleToggle}
+            disabled={isMutating}
+            subjectCounts={subjectCounts}
+          />
+        ))}
+      </Fieldset>
     </nav>
   );
 };
@@ -112,62 +106,30 @@ function FilterGroup({
   const [open, setOpen] = useState(activeCount > 0);
 
   return (
-    <div className="border-b border-neutral-200">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-2.5 text-left text-sm font-semibold text-neutral-800 hover:text-[#154273]"
-      >
-        <span>
-          {label}
-          {activeCount > 0 && (
-            <span className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#007bc7] text-xs font-bold text-white">
-              {activeCount}
-            </span>
-          )}
-        </span>
-        <svg
-          className={`h-4 w-4 shrink-0 text-neutral-400 transition-transform ${open ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
+    <details open={open} onToggle={(e) => setOpen(e.currentTarget.open)}>
+      <summary>
+        {label}
+        {activeCount > 0 && (
+          <>
+            {" "}
+            <NumberBadge>{activeCount}</NumberBadge>
+            <VisuallyHidden>gekozen</VisuallyHidden>
+          </>
+        )}
+      </summary>
+      {subjects.map((subject) => {
+        const count = subjectCounts[subject];
+        return (
+          <FormFieldCheckboxOption
+            key={subject}
+            label={count != null ? `${subject} (${count})` : subject}
+            checked={selectedSubjects.includes(subject)}
+            onChange={() => onToggle(subject)}
+            disabled={disabled}
           />
-        </svg>
-      </button>
-      {open && (
-        <div className="space-y-1 pb-3">
-          {subjects.map((subject) => {
-            const checked = selectedSubjects.includes(subject);
-            const count = subjectCounts[subject];
-            return (
-              <label
-                key={subject}
-                className="relative flex cursor-pointer items-center gap-2 rounded py-1 pr-9 pl-1 text-sm text-neutral-700 hover:bg-neutral-50"
-              >
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => onToggle(subject)}
-                  disabled={disabled}
-                  className="h-4 w-4 shrink-0 rounded border-neutral-300 text-[#007bc7] accent-[#007bc7] disabled:opacity-50"
-                />
-                <span className={checked ? "font-medium text-[#154273]" : ""}>
-                  {subject}
-                </span>
-                <span className="absolute right-0 w-8 text-right text-xs text-neutral-600">
-                  {count ?? ""}
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      )}
-    </div>
+        );
+      })}
+    </details>
   );
 }
 

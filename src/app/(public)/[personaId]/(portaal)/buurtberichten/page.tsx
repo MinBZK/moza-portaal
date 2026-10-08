@@ -34,7 +34,7 @@ const OmgevingsberichtenPage = async () => {
           categorie: "Berichten over uw buurt",
           titel: bericht.titel,
           samenvatting: bericht.samenvatting,
-          href: `/omgevingsberichten#${bericht.id}`,
+          href: `/buurtberichten#${bericht.id}`,
         };
         return (
           <RelevantItem key={bericht.id} item={item}>
@@ -51,7 +51,8 @@ const OmgevingsberichtenPage = async () => {
                 />
               </DataSummary>
 
-              <ActionGroup direction="row">
+              {/* role vast: ActionGroup telt de children anders op server en client */}
+              <ActionGroup role="group" direction="row">
                 <BewaarKnop item={item} />
                 {flags.mox_delen && (
                   <Button appearance="secondary-action-button">

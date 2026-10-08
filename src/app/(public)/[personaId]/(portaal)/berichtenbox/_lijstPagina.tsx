@@ -21,7 +21,7 @@ const LijstPagina = async ({
   return (
     <>
       <Heading level={1}>Berichtenbox</Heading>
-      <div className="mox-card space-y-4">
+      <div className="mox-card">
         <BerichtenboxNav berichten={berichten} actief={weergave} />
         <BerichtenLijst
           berichten={berichten}

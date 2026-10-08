@@ -1,14 +1,13 @@
 "use client";
 
+import { Heading } from "@/components/rhc";
 import { ErrorBoundary, ErrorBoundaryProps } from "@/components/ErrorBoundary";
 
 export default function GlobalError(props: ErrorBoundaryProps) {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-h1 mb-4 text-center">
-        Er is een systeemfout opgetreden
-      </h1>
+    <>
+      <Heading level={1}>Er is een systeemfout opgetreden</Heading>
       <ErrorBoundary {...props} />
-    </div>
+    </>
   );
 }

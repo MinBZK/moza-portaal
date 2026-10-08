@@ -8,10 +8,15 @@ import {
   useVerifyEmail,
   useRequestVerificationCode,
 } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
-import { Icon } from "@/components/icons/infoIcon";
-import { Notification } from "@/components/notifications";
-import { EditIcon } from "@/components/icons/editIcon";
-import { CheckCircleIcon } from "@/components/icons/checkCircleIcon";
+import {
+  ActionGroup,
+  Alert,
+  Button,
+  DataSummary,
+  FormFieldTextInput,
+  Icon,
+  VisuallyHidden,
+} from "@/components/rhc";
 import { useQueryClient } from "@tanstack/react-query";
 import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
 
@@ -122,7 +127,7 @@ export const ContactEditBox = ({
 
   return (
     <form
-      className="flex flex-col gap-3"
+      className="mox-row-gap"
       noValidate
       onSubmit={(e) => {
         e.preventDefault();
@@ -168,6 +173,7 @@ export const ContactEditBox = ({
                 setErrorMessage(
                   "Er is een fout opgetreden bij het opslaan. Probeer het opnieuw.",
                 );
+                inputRef.current?.focus();
               },
             },
           );
@@ -199,152 +205,121 @@ export const ContactEditBox = ({
       }}
     >
       {verificationSubmitted && isVerified && (
-        <Notification
-          variant="success"
-          onClose={() => setVerificationSubmitted(false)}
-        >
+        <Alert type="ok">
           {`Uw ${label.toLocaleLowerCase()} is succesvol geverifieerd.`}
-        </Notification>
+        </Alert>
       )}
-      <div className="grid grid-cols-[2fr_3fr_100px] items-start gap-4">
-        <label htmlFor={`field-${name}-${id}`} className="font-bold">
-          {label}
-        </label>
-        <div>
-          {fieldState === "edit" ? (
-            <div className="flex flex-col gap-2">
-              <input
-                ref={inputRef}
-                className="w-full border border-gray-300 bg-white p-1"
-                id={`field-${name}-${id}`}
-                type={name === "Email" ? "email" : "text"}
-                name={name}
-                value={newValue}
-                onChange={(e) => {
-                  setNewValue(e.target.value);
+      {fieldState === "edit" ? (
+        <>
+          <FormFieldTextInput
+            label={label}
+            inputRef={inputRef}
+            type={name === "Email" ? "email" : "text"}
+            name={name}
+            value={newValue}
+            invalid={!!errorMessage}
+            errorMessage={errorMessage}
+            onChange={(event) => {
+              // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
+              const value = (event.target as HTMLInputElement).value;
+              setNewValue(value);
 
-                  // Only validate email in real-time if form has been submitted
-                  if (hasSubmitted) {
-                    const result = contactSchemas[name].safeParse(
-                      e.target.value,
-                    );
+              // Only validate email in real-time if form has been submitted
+              if (hasSubmitted) {
+                const result = contactSchemas[name].safeParse(value);
 
-                    if (!result.success) {
-                      setErrorMessage(result.error.issues[0].message);
-                    } else {
-                      setErrorMessage(undefined);
-                    }
-                  }
-                }}
-              />
-              <div role="alert">
-                {errorMessage && (
-                  <div className="flex flex-row gap-2">
-                    <Icon variant="error" />
-                    <span className="text-sm text-red-500">{errorMessage}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : newValue ? (
-            <span>{newValue}</span>
-          ) : (
-            <span className="text-neutral-500 italic">Niet opgegeven</span>
-          )}
-        </div>
-        <div>
-          {fieldState !== "edit" ? (
-            <EditBoxButton
-              icon={<EditIcon />}
+                if (!result.success) {
+                  setErrorMessage(result.error.issues[0].message);
+                } else {
+                  setErrorMessage(undefined);
+                }
+              }
+            }}
+          />
+          <ActionGroup direction="row">
+            <Button appearance="primary-action-button" type="submit">
+              Opslaan
+            </Button>
+            <Button
+              appearance="secondary-action-button"
               onClick={() => {
-                setFieldState("edit");
-                requestAnimationFrame(() => {
-                  inputRef.current?.focus();
-                });
+                setFieldState("view");
+                setHasSubmitted(false);
+                setErrorMessage(undefined);
+                // Fall back to the database-value on cancel
+                setNewValue(contactGegeven?.waarde || "");
               }}
             >
-              Aanpassen
-            </EditBoxButton>
-          ) : (
-            <div className="flex flex-col gap-0">
-              <EditBoxButton type="submit">
-                <span className="hover:underline">Opslaan</span>
-              </EditBoxButton>
+              Annuleren
+            </Button>
+          </ActionGroup>
+        </>
+      ) : (
+        <DataSummary appearance="row">
+          <div className="rhc-data-summary__item">
+            <dt className="rhc-data-summary__item-key">{label}</dt>
+            <dd className="rhc-data-summary__item-value">
+              {newValue || "Niet opgegeven"}
+            </dd>
+            <dd className="rhc-data-summary__item-action">
               <EditBoxButton
-                type="button"
+                icon={<Icon icon="bewerken" />}
                 onClick={() => {
-                  setFieldState("view");
-                  setHasSubmitted(false);
-                  setErrorMessage(undefined);
-                  // Fall back to the database-value on cancel
-                  setNewValue(contactGegeven?.waarde || "");
+                  setFieldState("edit");
+                  requestAnimationFrame(() => {
+                    inputRef.current?.focus();
+                  });
                 }}
               >
-                <span className="hover:underline">Annuleren</span>
+                Aanpassen
+                <VisuallyHidden> {label.toLocaleLowerCase()}</VisuallyHidden>
               </EditBoxButton>
-            </div>
+            </dd>
+          </div>
+        </DataSummary>
+      )}
+      {showResendSection && (
+        <>
+          <Alert type="warning">
+            {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
+          </Alert>
+          {resendSuccess && (
+            <Alert type="ok">
+              {`Er is een nieuwe verificatiecode verzonden naar ${newValue}.`}
+            </Alert>
           )}
-        </div>
-        {showResendSection && (
-          <>
-            <div />
-            <div className="flex flex-col gap-2">
-              <Notification variant="warning">
-                {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
-              </Notification>
-              {resendSuccess && (
-                <Notification
-                  variant="success"
-                  onClose={() => setResendSuccess(false)}
-                >
-                  {`Er is een nieuwe verificatiecode verzonden naar ${newValue}.`}
-                </Notification>
-              )}
-              {resendError && (
-                <Notification variant="error">{resendError}</Notification>
-              )}
-            </div>
-            <button
-              type="button"
+          {resendError && <Alert type="error">{resendError}</Alert>}
+          <FormFieldTextInput
+            label="Verificatiecode"
+            placeholder="bv: 123456"
+            maxLength={6}
+            value={verificationCode}
+            invalid={!!errorMessage}
+            errorMessage={errorMessage}
+            onChange={(event) =>
+              setVerificationCode((event.target as HTMLInputElement).value)
+            }
+          />
+          <ActionGroup direction="row">
+            <EditBoxButton
+              icon={<Icon icon="circle-check" />}
+              type="submit"
+              onClick={() => setVerificationSubmitted(true)}
+            >
+              Verifieer
+            </EditBoxButton>
+            <EditBoxButton
               onClick={
                 resendCountdown === 0 ? handleResendVerification : undefined
               }
-              className={`text-primary ml-auto self-center text-right text-sm ${resendCountdown === 0 ? "cursor-pointer hover:underline" : "cursor-default"}`}
             >
               {resendCountdown > 0
                 ? `Opnieuw verificatiecode aanvragen in ${resendCountdown} seconden`
                 : "Opnieuw verificatiecode aanvragen"}
-            </button>
-            <div />
-            <div className="flex flex-row items-center gap-3">
-              <label
-                htmlFor={`verificationCode-field-${name}-${id}`}
-                className="font-bold"
-              >
-                {"Verificatiecode:"}
-              </label>
-              <input
-                ref={inputRef}
-                id={`verificationCode-field-${name}-${id}`}
-                className="w-1/4 border border-gray-300 bg-white px-1"
-                placeholder="bv: 123456"
-                maxLength={6}
-                type="text"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-              />
-              <EditBoxButton
-                icon={<CheckCircleIcon />}
-                type="submit"
-                onClick={() => setVerificationSubmitted(true)}
-              >
-                Verifieer
-              </EditBoxButton>
-            </div>
-            <div />
-          </>
-        )}
-      </div>
+            </EditBoxButton>
+          </ActionGroup>
+        </>
+      )}
     </form>
   );
 };

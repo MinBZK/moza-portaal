@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { ActionGroup, Alert, Button, Paragraph } from "@/components/rhc";
 
 export type QueryStatus = "pending" | "error" | "success";
 
@@ -15,8 +16,6 @@ const PaginatedList = <T,>({
   emptyMessage = "Geen resultaten gevonden.",
   getKey,
   renderItem,
-  containerClassName = "space-y-6",
-  listClassName = "divide-y divide-neutral-200",
 }: {
   items: T[];
   status: QueryStatus;
@@ -24,8 +23,6 @@ const PaginatedList = <T,>({
   emptyMessage?: string;
   getKey: (item: T, index: number) => string;
   renderItem: (item: T) => ReactNode;
-  containerClassName?: string;
-  listClassName?: string;
 }) => {
   const [visibleCount, setVisibleCount] = useState(pageSize);
   const [prevItems, setPrevItems] = useState(items);
@@ -35,31 +32,35 @@ const PaginatedList = <T,>({
   }
 
   if (status === "pending") {
-    return <p className="text-sm text-neutral-600">{LOADING_MESSAGE}</p>;
+    return <Paragraph role="status">{LOADING_MESSAGE}</Paragraph>;
   }
   if (status === "error") {
-    return <p className="text-sm text-red-600">{ERROR_MESSAGE}</p>;
+    return (
+      <Alert type="error">
+        <Paragraph>{ERROR_MESSAGE}</Paragraph>
+      </Alert>
+    );
   }
   if (items.length === 0) {
-    return <p className="text-sm text-neutral-600">{emptyMessage}</p>;
+    return <Paragraph>{emptyMessage}</Paragraph>;
   }
 
   const visible = items.slice(0, visibleCount);
 
   return (
-    <div className={containerClassName}>
-      <div className={listClassName}>
-        {visible.map((item, i) => (
-          <div key={getKey(item, i)}>{renderItem(item)}</div>
-        ))}
-      </div>
+    <div className="mox-row-gap">
+      {visible.map((item, i) => (
+        <div key={getKey(item, i)}>{renderItem(item)}</div>
+      ))}
       {visibleCount < items.length && (
-        <button
-          onClick={() => setVisibleCount((c) => c + pageSize)}
-          className="rounded bg-[#154273] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0e2f54]"
-        >
-          Meer laden
-        </button>
+        <ActionGroup>
+          <Button
+            appearance="secondary-action-button"
+            onClick={() => setVisibleCount((c) => c + pageSize)}
+          >
+            Meer laden
+          </Button>
+        </ActionGroup>
       )}
     </div>
   );

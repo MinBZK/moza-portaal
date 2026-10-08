@@ -1,6 +1,6 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
+
+import { Button, Heading } from "@/components/rhc";
 import FormField from "@/components/form/formField";
 import { useUpdateZwangerschapsverlof } from "@/network/mock/hooks/updateZwangerschapsverlof/useUpdateZwangerschapsverlof";
 import { useForm } from "@tanstack/react-form";
@@ -35,35 +35,31 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">
+    <>
+      <Heading level={1}>
         Opmerking aan zwangerschapsverlofaanvraag toevoegen
-      </h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <div className="border-b-1 border-gray-200 pb-2">
-          <div className="grid grid-cols-2 gap-4 *:py-4">
-            <div>
-              <form.Field name="opmerking">
-                {(field) => <FormField label={"Opmerking"} field={field} />}
-              </form.Field>
-            </div>
-          </div>
-        </div>
-        <div className="pt-4">
+      </Heading>
+      <div className="mox-card">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+        >
+          <form.Field name="opmerking">
+            {(field) => <FormField label={"Opmerking"} field={field} />}
+          </form.Field>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
-            <Button type="submit">Opslaan</Button>
+            <Button type="submit" appearance="primary-action-button">
+              Opslaan
+            </Button>
           </form.Subscribe>
-        </div>
-      </form>
-    </Card>
+        </form>
+      </div>
+    </>
   );
 };
 

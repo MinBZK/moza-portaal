@@ -182,7 +182,7 @@ const FlagsPaneel = ({
         appearance="secondary-action-button"
         aria-expanded={open}
         aria-controls="flags-paneel"
-        className="fixed! end-4 bottom-4 z-50 bg-[var(--rhc-color-wit)]! shadow-md"
+        className="mox-button-trigger-flags"
         onClick={() => setOpen(!open)}
       >
         Flags
@@ -193,7 +193,6 @@ const FlagsPaneel = ({
           ref={paneelRef}
           id="flags-paneel"
           aria-labelledby="flags-paneel-kop"
-          className="fixed end-4 bottom-20 z-50 max-h-[80vh] w-[24rem] max-w-[calc(100vw-2rem)] space-y-5 overflow-y-auto rounded border border-[var(--rhc-color-border-subtle)] bg-[var(--rhc-color-wit)] p-4 text-base shadow-lg"
         >
           <Heading level={2} id="flags-paneel-kop">
             Flags
@@ -203,14 +202,12 @@ const FlagsPaneel = ({
             {flagGroep("pagina", "Pagina’s")}
             {flagGroep("functionaliteit", "Functionaliteit")}
             <div>
-              <form onSubmit={wisselPersona} className="space-y-4">
+              <form onSubmit={wisselPersona}>
                 <Fieldset legend="Persona's">
                   {hoofdlijst.map(personaKeuze)}
                   {archief.length > 0 && (
                     <details open={actiefInArchief}>
-                      <summary className="cursor-pointer">
-                        Persona-archief ({archief.length})
-                      </summary>
+                      <summary>Persona-archief ({archief.length})</summary>
                       {/* Zelfde opmaak als de hoofdlijst. Een div: de rondjes staan al in de fieldset Persona's. */}
                       <div className="utrecht-form-fieldset__fieldset utrecht-form-fieldset--html-fieldset">
                         {archief.map(personaKeuze)}
@@ -228,7 +225,7 @@ const FlagsPaneel = ({
               </form>
             </div>
 
-            <div className="space-y-4">
+            <div>
               <Fieldset legend="Hulpmiddelen">
                 <FormFieldCheckboxOption
                   label="Animaties pauzeren"

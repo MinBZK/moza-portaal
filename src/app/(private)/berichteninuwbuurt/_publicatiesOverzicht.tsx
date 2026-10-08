@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import {
+  ActionGroup,
+  Alert,
+  Button,
+  Icon,
+  Paragraph,
+  Separator,
+} from "@/components/rhc";
 import { useQuery } from "@tanstack/react-query";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
@@ -32,33 +40,33 @@ const PublicatiesOverzicht = () => {
   const visible = publicaties.slice(0, visibleCount);
 
   return postcodes.length === 0 ? (
-    <p className="text-sm text-neutral-600">
-      Voeg een postcode toe om publicaties te zien.
-    </p>
+    <Paragraph>Voeg een postcode toe om publicaties te zien.</Paragraph>
   ) : pubStatus === "pending" ? (
-    <p className="text-sm text-neutral-600">Publicaties laden...</p>
+    <Paragraph>Publicaties laden...</Paragraph>
   ) : pubStatus === "error" ? (
-    <p className="text-sm text-neutral-600">
+    <Alert type="error">
       Er is een fout opgetreden bij het ophalen van publicaties.
-    </p>
+    </Alert>
   ) : publicaties.length === 0 ? (
-    <p className="text-sm text-neutral-600">
-      Geen publicaties gevonden voor uw postcodes.
-    </p>
+    <Paragraph>Geen publicaties gevonden voor uw postcodes.</Paragraph>
   ) : (
     <>
-      <div className="divide-y divide-neutral-200">
-        {visible.map((pub) => (
-          <PublicatieCard key={pub.preferredUrl} publicatie={pub} />
-        ))}
-      </div>
+      {visible.map((pub, index) => (
+        <Fragment key={pub.preferredUrl}>
+          {index > 0 && <Separator />}
+          <PublicatieCard publicatie={pub} />
+        </Fragment>
+      ))}
       {visibleCount < publicaties.length && (
-        <button
-          onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-          className="mt-4 rounded bg-[#154273] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0e2f54]"
-        >
-          Meer Berichten over uw buurt &rarr;
-        </button>
+        <ActionGroup direction="row">
+          <Button
+            appearance="secondary-action-button"
+            onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+          >
+            Meer berichten over uw buurt
+            <Icon icon="chevron-right" />
+          </Button>
+        </ActionGroup>
       )}
     </>
   );

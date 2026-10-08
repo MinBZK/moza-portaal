@@ -1,4 +1,4 @@
-import Card from "@/components/card";
+import { Heading, Paragraph } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "../../actions";
 import { ToggleFeature } from "./_toggleFeature";
 
@@ -7,39 +7,37 @@ const Page = async () => {
 
   return (
     <>
-      <h1 className="text-4xl">Instellingen</h1>
-      <Card className="space-y-5">
-        <h2 className="text-3xl">Beta instellingen</h2>
-        <p>
+      <Heading level={1}>Instellingen</Heading>
+      <div className="mox-card">
+        <Heading level={2}>Beta instellingen</Heading>
+        <Paragraph>
           Hieronder kun je experimentele functionaliteiten in- en uitschakelen.
           Deze beta-functies zijn nog in ontwikkeling en kunnen nog veranderen.
           Door ze te activeren help je ons deze nieuwe mogelijkheden te testen
           en te verbeteren. Je kunt de functies op elk moment weer uitschakelen.
-        </p>
+        </Paragraph>
 
-        <div className="space-y-5">
-          <ToggleFeature
-            flags={flags}
-            featureLabel={"Mijn Zaken"}
-            featureName="feature_MijnZaken"
-          />
-          <ToggleFeature
-            flags={flags}
-            featureLabel={"Mijn Taken"}
-            featureName="feature_MijnTaken"
-          />
-          <ToggleFeature
-            flags={flags}
-            featureLabel={"Mijn Producten"}
-            featureName="feature_MijnProducten"
-          />
-          <ToggleFeature
-            flags={flags}
-            featureLabel={"RegelRecht"}
-            featureName="feature_RegelRecht"
-          />
-        </div>
-      </Card>
+        <ToggleFeature
+          flags={flags}
+          featureLabel={"Mijn Zaken"}
+          featureName="feature_MijnZaken"
+        />
+        <ToggleFeature
+          flags={flags}
+          featureLabel={"Mijn Taken"}
+          featureName="feature_MijnTaken"
+        />
+        <ToggleFeature
+          flags={flags}
+          featureLabel={"Mijn Producten"}
+          featureName="feature_MijnProducten"
+        />
+        <ToggleFeature
+          flags={flags}
+          featureLabel={"RegelRecht"}
+          featureName="feature_RegelRecht"
+        />
+      </div>
     </>
   );
 };

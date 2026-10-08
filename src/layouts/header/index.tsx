@@ -104,10 +104,10 @@ const Header = ({
             ) : (
               <li className="rhc-nav-bar__item">
                 {/* Dropdown trigger + menu for Keycloak login with two options */}
-                <div ref={wrapperRef} className="relative inline-block">
+                <div ref={wrapperRef}>
                   <button
                     onClick={() => setOpenKeycloakLogin((v) => !v)}
-                    className="mox-login-keycloak rounded border px-3 py-1"
+                    className="utrecht-button utrecht-button--secondary-action rhc-button"
                     aria-expanded={openKeycloakLogin}
                     aria-haspopup="menu"
                   >
@@ -115,19 +115,15 @@ const Header = ({
                   </button>
 
                   {openKeycloakLogin && (
-                    <div className="ring-opacity-5 absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black">
-                      <div
-                        className="py-1"
-                        role="menu"
-                        aria-orientation="vertical"
-                      >
+                    <div className="mox-login-keycloak mox-card">
+                      <div role="menu" aria-orientation="vertical">
                         <button
                           onClick={() => {
                             set("digid");
                             signIn(undefined, { callbackUrl: "/" });
                             setOpenKeycloakLogin(false);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm hover:bg-neutral-100"
+                          className="utrecht-button utrecht-button--secondary-action rhc-button"
                           role="menuitem"
                         >
                           DigiD
@@ -139,7 +135,7 @@ const Header = ({
                             signIn(undefined, { callbackUrl: "/" });
                             setOpenKeycloakLogin(false);
                           }}
-                          className="w-full px-4 py-2 text-left text-sm hover:bg-neutral-100"
+                          className="utrecht-button utrecht-button--secondary-action rhc-button"
                           role="menuitem"
                         >
                           E-Herkenning

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Heading, Paragraph } from "@/components/rhc";
 import PaginatedList, { type QueryStatus } from "./_paginatedList";
 import type { components } from "@/network/actualiteiten/generated";
 
@@ -19,21 +20,21 @@ const BerichtenOverzicht = ({
 }) => {
   if (!hasPostcodes) {
     return (
-      <p className="text-sm text-neutral-600">
+      <Paragraph>
         Voeg postcodes toe via{" "}
         <Link
           href="/berichteninuwbuurt"
-          className="text-[#01689b] underline underline-offset-2"
+          className="utrecht-link utrecht-link--html-a"
         >
           Berichten in uw buurt
         </Link>{" "}
         om hier lokale berichten te zien.
-      </p>
+      </Paragraph>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="mox-row-gap">
       <PaginatedList
         items={berichten}
         status={status}
@@ -41,11 +42,8 @@ const BerichtenOverzicht = ({
         emptyMessage="Geen berichten gevonden."
         getKey={(p) => p.id}
         renderItem={(p) => <PublicatieRow publicatie={p} />}
-        containerClassName="space-y-4"
       />
-      <p className="text-xs text-neutral-400">
-        Op basis van uw postcodes: {postcodes.join(", ")}
-      </p>
+      <Paragraph>Op basis van uw postcodes: {postcodes.join(", ")}</Paragraph>
     </div>
   );
 };
@@ -63,23 +61,20 @@ function PublicatieRow({ publicatie }: { publicatie: SruPublicatie }) {
   const detailHref = `/berichteninuwbuurt/${encodeURIComponent(publicatie.id)}`;
 
   return (
-    <div className="py-3">
-      <h4 className="text-base font-semibold">
-        <Link
-          href={detailHref}
-          className="text-[#01689b] underline decoration-1 underline-offset-2 hover:decoration-2"
-        >
+    <>
+      <Heading level={3}>
+        <Link href={detailHref} className="utrecht-link utrecht-link--html-a">
           {publicatie.title}
         </Link>
-      </h4>
+      </Heading>
       {(date || description) && (
-        <p className="mt-0.5 line-clamp-2 text-sm text-neutral-600">
+        <Paragraph className="mox-line-clamp">
           {date}
           {date && description ? " — " : ""}
           {description}
-        </p>
+        </Paragraph>
       )}
-    </div>
+    </>
   );
 }
 

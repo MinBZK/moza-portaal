@@ -1,6 +1,7 @@
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
 import pluginQuery from "@tanstack/eslint-plugin-query";
+import moxRegels from "./eslint-rules/geen-tailwind.mjs";
 
 const eslintConfig = [
   {
@@ -15,6 +16,14 @@ const eslintConfig = [
         "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
+    },
+  },
+  {
+    // Geen Tailwind: alleen RHC/NLDS-classes en eigen mox-classes.
+    files: ["src/**/*.tsx"],
+    plugins: { mox: moxRegels },
+    rules: {
+      "mox/geen-tailwind": "error",
     },
   },
   {
