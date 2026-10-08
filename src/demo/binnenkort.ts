@@ -68,8 +68,8 @@ const binnenkort: Record<string, DemoBinnenkort> = {
       },
     ],
   },
-  medewerkers: {
-    id: "medewerkers",
+  personeel: {
+    id: "personeel",
     titel: "Personeel en rollen",
     samenvatting:
       "Straks vindt u hier uw personeelszaken overzichtelijk bij elkaar.",

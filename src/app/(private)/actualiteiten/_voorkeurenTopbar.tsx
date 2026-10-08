@@ -1,5 +1,10 @@
 "use client";
 
+import { ActionGroup, Button, Icon, VisuallyHidden } from "@/components/rhc";
+import {
+  FormFieldSelect,
+  SelectOption,
+} from "@rijkshuisstijl-community/components-react";
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
 import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
 import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";
@@ -28,60 +33,55 @@ const VoorkeurenTopbar = () => {
   );
 
   return (
-    <div className="space-y-3">
+    <>
       {onderwerpVoorkeuren.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <ActionGroup
+          role="group"
+          aria-label="Gekozen onderwerpen"
+          direction="row"
+        >
           {onderwerpVoorkeuren.map((v) => (
-            <span
+            <Button
               key={v.id}
-              className="inline-flex items-center gap-1 rounded-full bg-[#d9ebf7] px-3 py-1 text-sm text-[#154273]"
+              appearance="secondary-action-button"
+              onClick={() => handleDelete(v.id)}
+              disabled={isMutating}
             >
               {v.onderwerp}
-              <button
-                onClick={() => handleDelete(v.id)}
-                disabled={isMutating}
-                className="ml-1 text-[#154273]/50 hover:text-red-600 disabled:opacity-50"
-                title="Verwijderen"
-              >
-                &times;
-              </button>
-            </span>
+              <VisuallyHidden>verwijderen</VisuallyHidden>
+              <Icon icon="kruis" />
+            </Button>
           ))}
-        </div>
+        </ActionGroup>
       )}
 
       {availableSubjects.length > 0 && (
-        <div>
-          <label className="mb-1 block text-sm font-semibold text-neutral-500">
-            Onderwerp toevoegen
-          </label>
-          <select
-            className="rounded border border-neutral-300 px-3 py-1.5 text-sm"
-            value=""
-            onChange={(e) => {
-              if (e.target.value) handleAdd(e.target.value);
-            }}
-          >
-            <option value="">Kies een onderwerp...</option>
-            {SUBJECT_GROUPS.map((group) => {
-              const available = group.subjects.filter((s) =>
-                availableSubjects.includes(s),
-              );
-              if (available.length === 0) return null;
-              return (
-                <optgroup key={group.label} label={group.label}>
-                  {available.map((subject) => (
-                    <option key={subject} value={subject}>
-                      {subject}
-                    </option>
-                  ))}
-                </optgroup>
-              );
-            })}
-          </select>
-        </div>
+        <FormFieldSelect
+          label="Onderwerp toevoegen"
+          value=""
+          onChange={(e) => {
+            if (e.target.value) handleAdd(e.target.value);
+          }}
+        >
+          <SelectOption value="">Kies een onderwerp...</SelectOption>
+          {SUBJECT_GROUPS.map((group) => {
+            const available = group.subjects.filter((s) =>
+              availableSubjects.includes(s),
+            );
+            if (available.length === 0) return null;
+            return (
+              <optgroup key={group.label} label={group.label}>
+                {available.map((subject) => (
+                  <SelectOption key={subject} value={subject}>
+                    {subject}
+                  </SelectOption>
+                ))}
+              </optgroup>
+            );
+          })}
+        </FormFieldSelect>
       )}
-    </div>
+    </>
   );
 };
 

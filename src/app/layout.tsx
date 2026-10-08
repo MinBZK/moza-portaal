@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="">
+    <html lang="en">
       <body className="rhc-theme mox-theme">
         <SkipLink href="#main">Naar de hoofdinhoud</SkipLink>
         {children}

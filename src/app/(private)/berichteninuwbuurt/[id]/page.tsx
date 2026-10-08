@@ -1,5 +1,13 @@
-import Card from "@/components/card";
 import Link from "next/link";
+import {
+  ActionGroup,
+  DataSummary,
+  DataSummaryItem,
+  Heading,
+  Icon,
+  Paragraph,
+  VisuallyHidden,
+} from "@/components/rhc";
 import { getPublicatieById } from "@/network/sru/fetchers/getPublicatieById";
 
 const isReadableUrl = (url: string) =>
@@ -16,18 +24,18 @@ const PublicatieDetailPage = async ({
   if (!publicatie) {
     return (
       <>
-        <h1 className="text-4xl">Publicatie niet gevonden</h1>
-        <Card>
-          <p className="text-neutral-600">
-            Deze publicatie kon niet worden opgehaald.
-          </p>
-          <Link
-            href="/berichteninuwbuurt"
-            className="mt-4 inline-block text-[#01689b] underline"
-          >
-            &larr; Terug naar overzicht
-          </Link>
-        </Card>
+        <Heading level={1}>Publicatie niet gevonden</Heading>
+        <div className="mox-card">
+          <Paragraph>Deze publicatie kon niet worden opgehaald.</Paragraph>
+          <Paragraph>
+            <Link
+              href="/berichteninuwbuurt"
+              className="utrecht-link utrecht-link--html-a"
+            >
+              &larr; Terug naar overzicht
+            </Link>
+          </Paragraph>
+        </div>
       </>
     );
   }
@@ -50,89 +58,80 @@ const PublicatieDetailPage = async ({
 
   return (
     <>
-      <Link
-        href="/berichteninuwbuurt"
-        className="text-sm text-[#01689b] underline"
-      >
-        &larr; Terug naar overzicht
-      </Link>
+      <Paragraph>
+        <Link
+          href="/berichteninuwbuurt"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          &larr; Terug naar overzicht
+        </Link>
+      </Paragraph>
 
-      <h1 className="text-4xl">{publicatie.title || "Onbekende titel"}</h1>
+      <Heading level={1}>{publicatie.title || "Onbekende titel"}</Heading>
 
-      <Card className="space-y-5">
-        {/* Metadata row */}
-        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
+      <div className="mox-card">
+        {publicatie.abstract && <Paragraph>{publicatie.abstract}</Paragraph>}
+
+        <DataSummary appearance="column">
           {publicatie.type && (
-            <span className="rounded bg-[#d9ebf7] px-2 py-0.5 text-xs font-semibold text-[#154273]">
-              {publicatie.type}
-            </span>
+            <DataSummaryItem itemKey="Soort" itemValue={publicatie.type} />
           )}
-          {publicatie.creator && <span>{publicatie.creator}</span>}
-          {date && <span>{date}</span>}
-        </div>
-
-        {/* Details table */}
-        <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
+          {publicatie.creator && (
+            <DataSummaryItem
+              itemKey="Organisatie"
+              itemValue={publicatie.creator}
+            />
+          )}
+          {date && <DataSummaryItem itemKey="Datum" itemValue={date} />}
           {publicatie.audience && (
-            <>
-              <dt className="font-semibold text-neutral-500">Doelgroep</dt>
-              <dd>{publicatie.audience}</dd>
-            </>
+            <DataSummaryItem
+              itemKey="Doelgroep"
+              itemValue={publicatie.audience}
+            />
           )}
           {publicatie.subject && (
-            <>
-              <dt className="font-semibold text-neutral-500">Onderwerp</dt>
-              <dd>{publicatie.subject}</dd>
-            </>
+            <DataSummaryItem
+              itemKey="Onderwerp"
+              itemValue={publicatie.subject}
+            />
           )}
           {publicatie.publicatienaam && (
-            <>
-              <dt className="font-semibold text-neutral-500">Bron</dt>
-              <dd>{publicatie.publicatienaam}</dd>
-            </>
+            <DataSummaryItem
+              itemKey="Bron"
+              itemValue={publicatie.publicatienaam}
+            />
           )}
           {publicatie.productArea && (
-            <>
-              <dt className="font-semibold text-neutral-500">Collectie</dt>
-              <dd>{publicatie.productArea}</dd>
-            </>
+            <DataSummaryItem
+              itemKey="Collectie"
+              itemValue={publicatie.productArea}
+            />
           )}
-        </dl>
+          {publicatie.postcodes.length > 0 && (
+            <DataSummaryItem
+              itemKey="Postcodes"
+              itemValue={publicatie.postcodes.join(", ")}
+            />
+          )}
+        </DataSummary>
 
-        {/* Postcodes */}
-        {publicatie.postcodes.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {publicatie.postcodes.map((pc) => (
-              <span
-                key={pc}
-                className="rounded bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600"
-              >
-                {pc}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Abstract */}
-        {publicatie.abstract && (
-          <p className="text-base leading-relaxed">{publicatie.abstract}</p>
-        )}
-
-        {/* External link */}
         {externalUrl && (
-          <a
-            href={externalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-[#154273] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0e2f54]"
-          >
-            {hasPreferredLink
-              ? "Bekijk op officielebekendmakingen.nl"
-              : "Bekijk op de website van de gemeente"}
-            <span>↗</span>
-          </a>
+          <ActionGroup direction="row">
+            <a
+              href={externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              {hasPreferredLink
+                ? "Bekijk op officielebekendmakingen.nl"
+                : "Bekijk op de website van de gemeente"}
+              <Icon icon="externe-link" />
+              <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
+            </a>
+          </ActionGroup>
         )}
-      </Card>
+      </div>
     </>
   );
 };

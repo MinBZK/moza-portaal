@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useImperativeHandle, forwardRef } from "react";
-import Button from "./button";
+import { Button, VisuallyHidden } from "@/components/rhc";
 
 const CountdownBar = forwardRef(function CountdownBar(
   { onComplete }: { onComplete: () => void },
@@ -49,14 +49,18 @@ const CountdownBar = forwardRef(function CountdownBar(
   }, [completed, onComplete]);
 
   return (
-    <div className="flex items-center justify-between gap-4">
-      <div className="h-2 w-full overflow-hidden rounded bg-gray-200">
+    <div className="mox-countdown">
+      <div className="mox-progressbar" aria-hidden="true">
         <div
-          className="h-full bg-blue-500 transition-all duration-100 ease-linear"
-          style={{ width: `${progress}%` }}
+          className="mox-progressbar-track"
+          style={{ inlineSize: `${progress}%` }}
         />
       </div>
-      <Button onClick={() => setPaused((prev) => !prev)}>
+      <Button
+        appearance="primary-action-button"
+        onClick={() => setPaused((prev) => !prev)}
+      >
+        <VisuallyHidden>{paused ? "Doorgaan" : "Pauzeren"}</VisuallyHidden>
         {paused ? (
           <svg fill="#ffffff" height="15px" width="15px" viewBox="0 0 16 16">
             <path d="M5 16L7 16L15 8L7 -2.7818e-08L5 0L5 16Z" />

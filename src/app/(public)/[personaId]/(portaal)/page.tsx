@@ -58,7 +58,10 @@ const HomePage = async ({
         </Heading>
         <RecenteBerichten berichten={berichten} />
         <ActionGroup>
-          <Link href="/berichtenbox" className={knopLink}>
+          <Link
+            href="/berichtenbox"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+          >
             Ga naar uw zakelijke berichtenbox
           </Link>
         </ActionGroup>
@@ -78,7 +81,10 @@ const HomePage = async ({
               : `Er zijn ${subsidies.length} nieuwe subsidies en financieringen die interessant kunnen zijn voor uw bedrijf.`}
           </Paragraph>
           <ActionGroup>
-            <Link href="/subsidies" className={knopLink}>
+            <Link
+              href="/subsidies"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
               Ga naar Subsidies en financiering
             </Link>
           </ActionGroup>
@@ -97,7 +103,10 @@ const HomePage = async ({
               : `Er zijn ${wetten.length} nieuwe of gewijzigde regels die misschien voor uw bedrijf gelden.`}
           </Paragraph>
           <ActionGroup>
-            <Link href="/wetten" className={knopLink}>
+            <Link
+              href="/wetten"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
               Ga naar Wetten en regelgeving
             </Link>
           </ActionGroup>

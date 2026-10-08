@@ -1,11 +1,19 @@
 "use client";
-import Button from "@/components/button";
-import Card from "@/components/card";
-import FormField from "@/components/form/formField";
+
+import { Button, FormFieldTextInput, Heading } from "@/components/rhc";
+import FormField, { FieldInfo } from "@/components/form/formField";
 import { useCreateZwangerschapsverlof } from "@/network/mock/hooks/createZwangerschapsverlof/useCreateZwangerschapsverlof";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+
+/** Datum uit het datumveld (jjjj-mm-dd) als UTC ISO-string. Leeg blijft leeg. */
+const naarUtc = (datum: string) =>
+  datum ? new Date(`${datum}T00:00:00Z`).toISOString() : "";
+
+/** ISO-string terug naar de waarde voor het datumveld. */
+const datumWaarde = (waarde: string) =>
+  waarde ? new Date(waarde).toISOString().split("T")[0] : "";
 
 const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
   const zwangerschapsverlofSchema = z.object({
@@ -45,109 +53,75 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
   });
 
   return (
-    <Card className="flex flex-col gap-4">
-      <h2 className="text-h2">Nieuw zwangerschapsverlof melden</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <div className="border-b-1 border-gray-200 pb-2">
-          <div className="grid grid-cols-2 gap-4 *:py-4">
-            <div>
-              <form.Field name="bsn">
-                {(field) => <FormField label={"BSN"} field={field} />}
-              </form.Field>
-            </div>
-            <div>
-              <form.Field name="naam">
-                {(field) => <FormField label={"Naam"} field={field} />}
-              </form.Field>
-            </div>
-            <div>
-              <form.Field name="startDatum">
-                {(field) => {
-                  const handleChange = (
-                    e: React.ChangeEvent<HTMLInputElement>,
-                  ) => {
-                    const date = e.target.value;
-                    const utcString = new Date(
-                      `${date}T00:00:00Z`,
-                    ).toISOString();
-                    field.handleChange(utcString);
-                  };
-
-                  const value = field.state.value
-                    ? new Date(field.state.value).toISOString().split("T")[0]
-                    : "";
-
-                  return (
-                    <>
-                      <label className="mb-2 block text-sm font-bold text-gray-700">
-                        Begindatum
-                      </label>
-                      <input
-                        className="border"
-                        type="date"
-                        value={value}
-                        onChange={handleChange}
-                      />
-                    </>
-                  );
-                }}
-              </form.Field>
-            </div>
-            <div>
-              <form.Field name="eindDatum">
-                {(field) => {
-                  const handleChange = (
-                    e: React.ChangeEvent<HTMLInputElement>,
-                  ) => {
-                    const date = e.target.value;
-                    const utcString = new Date(
-                      `${date}T00:00:00Z`,
-                    ).toISOString();
-                    field.handleChange(utcString);
-                  };
-
-                  const value = field.state.value
-                    ? new Date(field.state.value).toISOString().split("T")[0]
-                    : "";
-
-                  return (
-                    <>
-                      <label className="mb-2 block text-sm font-bold text-gray-700">
-                        Einddatum
-                      </label>
-                      <input
-                        className="border"
-                        type="date"
-                        value={value}
-                        onChange={handleChange}
-                      />
-                    </>
-                  );
-                }}
-              </form.Field>
-            </div>
-            <div>
-              <form.Field name="opmerking">
-                {(field) => <FormField label={"Opmerking"} field={field} />}
-              </form.Field>
-            </div>
-          </div>
-        </div>{" "}
-        <div className="pt-4">
+    <>
+      <Heading level={1}>Nieuw zwangerschapsverlof melden</Heading>
+      <div className="mox-card">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+        >
+          <form.Field name="bsn">
+            {(field) => <FormField label={"BSN"} field={field} />}
+          </form.Field>
+          <form.Field name="naam">
+            {(field) => <FormField label={"Naam"} field={field} />}
+          </form.Field>
+          <form.Field name="startDatum">
+            {(field) => (
+              <>
+                <FormFieldTextInput
+                  name={field.name}
+                  label="Begindatum"
+                  type="date"
+                  value={datumWaarde(field.state.value)}
+                  onBlur={field.handleBlur}
+                  // Het event komt van de input, maar is getypt op de wrapper-div.
+                  onChange={(e) =>
+                    field.handleChange(
+                      naarUtc((e.target as HTMLInputElement).value),
+                    )
+                  }
+                />
+                <FieldInfo field={field} />
+              </>
+            )}
+          </form.Field>
+          <form.Field name="eindDatum">
+            {(field) => (
+              <>
+                <FormFieldTextInput
+                  name={field.name}
+                  label="Einddatum"
+                  type="date"
+                  value={datumWaarde(field.state.value)}
+                  onBlur={field.handleBlur}
+                  // Het event komt van de input, maar is getypt op de wrapper-div.
+                  onChange={(e) =>
+                    field.handleChange(
+                      naarUtc((e.target as HTMLInputElement).value),
+                    )
+                  }
+                />
+                <FieldInfo field={field} />
+              </>
+            )}
+          </form.Field>
+          <form.Field name="opmerking">
+            {(field) => <FormField label={"Opmerking"} field={field} />}
+          </form.Field>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
-            <Button type="submit">Opslaan</Button>
+            <Button type="submit" appearance="primary-action-button">
+              Opslaan
+            </Button>
           </form.Subscribe>
-        </div>
-      </form>
-    </Card>
+        </form>
+      </div>
+    </>
   );
 };
 

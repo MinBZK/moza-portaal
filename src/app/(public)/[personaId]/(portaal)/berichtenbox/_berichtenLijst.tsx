@@ -111,10 +111,11 @@ const RijActies = ({
   }, [open]);
 
   return (
-    <div ref={wrapperRef} className="relative">
+    <div ref={wrapperRef} className="mox-menu">
       <Button
         ref={knopRef}
         appearance="subtle-button"
+        className="mox-menu-trigger"
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
@@ -122,10 +123,9 @@ const RijActies = ({
         <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
       </Button>
       {open && (
-        <ul className="absolute end-0 z-10 flex flex-col rounded bg-[var(--rhc-color-wit)] p-2 shadow-md">
+        <ul className="mox-action-menu">
           {delen && (
             <li>
-              {/* Schets uit moza-poc: Delen doet nog niets. */}
               <Button appearance="subtle-button" onClick={() => setOpen(false)}>
                 <Icon icon="delen" />
                 Delen
@@ -249,7 +249,7 @@ const BerichtenLijst = ({
     .size;
 
   return (
-    <div className="space-y-4">
+    <div>
       {bezig ? null : weergave === "inbox" ? (
         <Paragraph>
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
@@ -294,7 +294,7 @@ const BerichtenLijst = ({
 
       {bezig && <OphaalVoortgang voortgang={voortgang} />}
 
-      <div aria-live="polite" className="sr-only">
+      <div aria-live="polite" className="rhc-visually-hidden">
         {bezig
           ? "We halen uw berichten op bij de organisaties."
           : zoekterm
@@ -312,9 +312,9 @@ const BerichtenLijst = ({
         </Paragraph>
       ) : (
         <>
-          <div className="overflow-x-auto">
+          <div className="mox-table-container">
             <Table>
-              <caption className="sr-only">
+              <caption className="rhc-visually-hidden">
                 Berichten, pagina {huidigePagina} van {totaalPaginas}
               </caption>
               <TableHeader>

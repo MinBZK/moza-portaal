@@ -1,5 +1,5 @@
-import Card from "@/components/card";
 import Link from "next/link";
+import { Heading, Paragraph } from "@/components/rhc";
 
 export default async function FooterPage({
   params,
@@ -15,17 +15,16 @@ export default async function FooterPage({
     .join(" ");
 
   return (
-    <div className="container mx-auto py-8">
-      <Link
-        href="/"
-        className="mb-4 inline-block text-blue-600 hover:underline"
-      >
-        ← vorige
-      </Link>
-      <Card>
-        <h1 className="text-h1 mb-4">{title}</h1>
-        <p className="text-lg">Hier wordt aan gewerkt.</p>
-      </Card>
-    </div>
+    <>
+      <Heading level={1}>{title}</Heading>
+      <div className="mox-card">
+        <Paragraph>Hier wordt aan gewerkt.</Paragraph>
+        <Paragraph>
+          <Link href="/" className="utrecht-link utrecht-link--html-a">
+            Terug naar de startpagina
+          </Link>
+        </Paragraph>
+      </div>
+    </>
   );
 }

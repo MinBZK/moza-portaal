@@ -1,67 +1,71 @@
-import { Accordion } from "@/components/Accordion";
-import Button from "@/components/button";
-import Card from "@/components/card";
-import { IconText } from "@/components/iconText";
-import ChevronIcon from "@/components/icons/chevronIcon";
-import { Notification } from "@/components/notifications";
+import {
+  AccordionProvider,
+  ActionGroup,
+  Alert,
+  Heading,
+  Icon,
+  Paragraph,
+  Table,
+  TableBody,
+} from "@/components/rhc";
 import profielClient from "@/network/profiel";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { BerichtenboxTableRow } from "@/app/(private)/berichtenbox/[status]/page";
 import Link from "next/link";
 
-const accordionItems = [
+const accordionSections = [
   {
-    title: "Wat is MijnOverheid Zakelijk?",
-    content: (
-      <p>
+    label: "Wat is MijnOverheid Zakelijk?",
+    body: (
+      <Paragraph>
         MijnOverheid Zakelijk is uw centrale platform voor het veilig en
         efficiënt beheren van zakelijke overheidszaken. Alles op één plek,
         speciaal afgestemd op de behoeften van de zakelijke gebruiker.
-      </p>
+      </Paragraph>
     ),
   },
   {
-    title: "Wat kan ik doen via MijnOverheid Zakelijk?",
-    content: (
-      <p>
+    label: "Wat kan ik doen via MijnOverheid Zakelijk?",
+    body: (
+      <Paragraph>
         Van het ontvangen van berichten van overheidsinstanties tot het
         raadplegen van digitale post en het regelen van lopende zaken:
         MijnOverheid Zakelijk biedt overzicht, gemak en betrouwbaarheid.
-      </p>
+      </Paragraph>
     ),
   },
   {
-    title: "Voor wie is MijnOverheid Zakelijk bedoeld?",
-    content: (
-      <div className="fle-col flex gap-4">
-        <p>
+    label: "Voor wie is MijnOverheid Zakelijk bedoeld?",
+    body: (
+      <>
+        <Paragraph>
           Of u nu ondernemer bent, een organisatie vertegenwoordigt of als
           intermediair optreedt — via dit portaal heeft u altijd en overal
           inzicht in belangrijke overheidscommunicatie.
-        </p>
-        <Accordion
-          items={[
+        </Paragraph>
+        <AccordionProvider
+          headingLevel={3}
+          sections={[
             {
-              title: "Child accordion",
-              content: (
-                <Accordion
-                  items={[
+              label: "Child accordion",
+              body: (
+                <AccordionProvider
+                  headingLevel={4}
+                  sections={[
                     {
-                      title: "Deeper child accordion",
-                      content: <p>Some child content </p>,
+                      label: "Deeper child accordion",
+                      body: <Paragraph>Some child content</Paragraph>,
                     },
                   ]}
-                  headingLevel={4}
                 />
               ),
             },
           ]}
-          headingLevel={3}
         />
-      </div>
+      </>
     ),
   },
-] as const satisfies Array<{ title: string; content: React.ReactNode }>;
+] satisfies Array<{ label: string; body: React.ReactNode }>;
 
 const Dashboard = async () => {
   const kvk = await getKvkFromCookie();
@@ -74,63 +78,62 @@ const Dashboard = async () => {
   );
 
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-12 w-full space-y-6 md:col-span-9">
-        {(response.status === 404 ||
-          (response.status === 200 &&
-            data?.contactgegevens?.filter((x) => x.type === "Email").length ===
-              0)) && (
-          <Notification variant={"warning"}>
-            <h2 className="font-bold">E-mailadres nog niet gekoppeld</h2>
-            <p>
-              {`Uw heeft nog geen zakelijke e-mailadres omgenomen in uw contactgegevens.
-              Ga naar het tabblad contactgegevens en vul hier uw zakelijke e-mailadres in, zo weten wij hoe we uw organisatie kunnen bereiken met belangrijke berichten en updates.`}
-            </p>
-          </Notification>
-        )}
+    <>
+      {(response.status === 404 ||
+        (response.status === 200 &&
+          data?.contactgegevens?.filter((x) => x.type === "Email").length ===
+            0)) && (
+        <Alert type="warning">
+          <Heading level={2}>E-mailadres nog niet gekoppeld</Heading>
+          <Paragraph>
+            U heeft nog geen zakelijk e-mailadres opgenomen in uw
+            contactgegevens. Ga naar het tabblad contactgegevens en vul hier uw
+            zakelijke e-mailadres in, zo weten wij hoe we uw organisatie kunnen
+            bereiken met belangrijke berichten en updates.
+          </Paragraph>
+        </Alert>
+      )}
 
-        <h1 className="text-h1">
-          <span>{"Welkom gemachtigde voor KVK nummer: "}</span>
-          <span className="font-bold">{kvk}</span>
-        </h1>
-        <Card className="flex flex-col gap-4">
-          <h2 className="text-h2">Recente berichten in uw Berichtenbox</h2>
-          <div className="w-full overflow-x-auto">
-            <table className="w-[100%] table-auto text-left">
-              <tbody className="w-full border-t border-neutral-200">
-                <BerichtenboxTableRow index={0} />
-                <BerichtenboxTableRow index={1} />
-              </tbody>
-            </table>
-          </div>
-          <Link href={"/berichtenbox/inbox"}>
-            <Button>
-              <IconText IconAfter={ChevronIcon}>
-                {"Naar uw berichtenbox"}
-              </IconText>
-            </Button>
+      <Heading level={1}>Welkom gemachtigde voor KVK-nummer {kvk}</Heading>
+      <div className="mox-card">
+        <Heading level={2}>Recente berichten in uw Berichtenbox</Heading>
+        <div className="mox-table-container">
+          <Table>
+            <TableBody>
+              <BerichtenboxTableRow index={0} />
+              <BerichtenboxTableRow index={1} />
+            </TableBody>
+          </Table>
+        </div>
+        <ActionGroup>
+          <Link
+            href="/berichtenbox/inbox"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+          >
+            Naar uw berichtenbox
+            <Icon icon="chevron-right" />
           </Link>
-        </Card>
-        <Card>
-          <h2 className="text-h2">Wat is MijnOverheid Zakelijk?</h2>
-          <p className="py-4">
-            MijnOverheid Zakelijk is uw centrale platform voor het veilig en
-            efficiënt beheren van zakelijke overheidszaken. Of u nu ondernemer
-            bent, een organisatie vertegenwoordigt of als intermediair optreedt
-            — via dit portaal heeft u altijd en overal inzicht in belangrijke
-            overheidscommunicatie. <br />
-            Van het ontvangen van berichten van overheidsinstanties tot het
-            raadplegen van digitale post en het regelen van lopende zaken:
-            MijnOverheid Zakelijk biedt overzicht, gemak en betrouwbaarheid.
-            Alles op één plek, speciaal afgestemd op de behoeften van de
-            zakelijke gebruiker. <br />
-            Maak uw administratie eenvoudiger, werk efficiënter samen met de
-            overheid en houd grip op uw verplichtingen.
-          </p>
-          <Accordion items={accordionItems} />
-        </Card>
+        </ActionGroup>
       </div>
-    </div>
+      <div className="mox-card">
+        <Heading level={2}>Wat is MijnOverheid Zakelijk?</Heading>
+        <Paragraph>
+          MijnOverheid Zakelijk is uw centrale platform voor het veilig en
+          efficiënt beheren van zakelijke overheidszaken. Of u nu ondernemer
+          bent, een organisatie vertegenwoordigt of als intermediair optreedt —
+          via dit portaal heeft u altijd en overal inzicht in belangrijke
+          overheidscommunicatie. <br />
+          Van het ontvangen van berichten van overheidsinstanties tot het
+          raadplegen van digitale post en het regelen van lopende zaken:
+          MijnOverheid Zakelijk biedt overzicht, gemak en betrouwbaarheid. Alles
+          op één plek, speciaal afgestemd op de behoeften van de zakelijke
+          gebruiker. <br />
+          Maak uw administratie eenvoudiger, werk efficiënter samen met de
+          overheid en houd grip op uw verplichtingen.
+        </Paragraph>
+        <AccordionProvider headingLevel={2} sections={accordionSections} />
+      </div>
+    </>
   );
 };
 

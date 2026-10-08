@@ -54,7 +54,8 @@ const BerichtDetail = ({
   const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
   const voorgoedKnopRef = useRef<HTMLButtonElement>(null);
-  const bevestigKnopRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const annuleerKnopRef = useRef<HTMLButtonElement>(null);
 
   const status = staat ? statusVan(staat, berichtId) : null;
   const alGelezen = staat ? !!staat.gelezen[berichtId] : true;
@@ -64,8 +65,16 @@ const BerichtDetail = ({
     if (!alGelezen) markeerGelezen(berichtId);
   }, [alGelezen, berichtId, markeerGelezen]);
 
+  // showModal() maakt de rest van de pagina onbereikbaar en sluit met Escape.
   useEffect(() => {
-    if (vraagVoorgoed) bevestigKnopRef.current?.focus();
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (vraagVoorgoed && !dialog.open) {
+      dialog.showModal();
+      // Focus op de veilige keuze, niet op de eerste knop.
+      annuleerKnopRef.current?.focus();
+    }
+    if (!vraagVoorgoed && dialog.open) dialog.close();
   }, [vraagVoorgoed]);
 
   const sluitVraag = () => {
@@ -120,9 +129,7 @@ const BerichtDetail = ({
                 >
                   <FlagIcon
                     filled={gemarkeerd}
-                    className={
-                      gemarkeerd ? "text-[var(--rhc-color-oranje-500)]" : ""
-                    }
+                    className={gemarkeerd ? "mox-button-mark-true" : ""}
                   />
                   Markeren
                 </Button>
@@ -160,10 +167,8 @@ const BerichtDetail = ({
                     ref={voorgoedKnopRef}
                     appearance="secondary-action-button"
                     hint="danger"
-                    aria-expanded={vraagVoorgoed}
-                    onClick={() =>
-                      vraagVoorgoed ? sluitVraag() : setVraagVoorgoed(true)
-                    }
+                    aria-haspopup="dialog"
+                    onClick={() => setVraagVoorgoed(true)}
                   >
                     <Icon icon="verwijderen" />
                     Voorgoed verwijderen
@@ -183,22 +188,22 @@ const BerichtDetail = ({
         )}
       </div>
 
-      {status === "prullenbak" && vraagVoorgoed && (
-        <div
-          role="group"
-          aria-labelledby="voorgoed-vraag"
-          className="space-y-3 rounded border border-[var(--rhc-color-border-subtle)] p-4"
-          onKeyDown={(event) => {
-            if (event.key === "Escape") sluitVraag();
-          }}
+      {status === "prullenbak" && (
+        <dialog
+          ref={dialogRef}
+          className="mox-dialog"
+          aria-labelledby="voorgoed-kop"
+          aria-describedby="voorgoed-vraag"
+          onClose={sluitVraag}
         >
+          <Heading level={2} id="voorgoed-kop">
+            Bericht voorgoed verwijderen?
+          </Heading>
           <Paragraph id="voorgoed-vraag">
-            Wilt u dit bericht voorgoed verwijderen? U kunt het daarna niet meer
-            terugzetten.
+            U kunt het bericht daarna niet meer terugzetten.
           </Paragraph>
           <ActionGroup direction="row">
             <Button
-              ref={bevestigKnopRef}
               appearance="primary-action-button"
               hint="danger"
               onClick={() => {
@@ -209,11 +214,15 @@ const BerichtDetail = ({
             >
               Ja, voorgoed verwijderen
             </Button>
-            <Button appearance="secondary-action-button" onClick={sluitVraag}>
+            <Button
+              ref={annuleerKnopRef}
+              appearance="secondary-action-button"
+              onClick={sluitVraag}
+            >
               Annuleren
             </Button>
           </ActionGroup>
-        </div>
+        </dialog>
       )}
     </>
   );

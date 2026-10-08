@@ -33,11 +33,7 @@ const BerichtRij = ({
         type="button"
         aria-pressed={gemarkeerd}
         onClick={onMarkeer}
-        className={`flex cursor-pointer rounded p-1 focus-visible:outline-2 focus-visible:outline-offset-2 ${
-          gemarkeerd
-            ? "text-[var(--rhc-color-oranje-500)]"
-            : "text-[var(--rhc-color-foreground-subtle)]"
-        }`}
+        className={`mox-button-mark`}
       >
         <FlagIcon filled={gemarkeerd} />
         <VisuallyHidden>Markeren</VisuallyHidden>
@@ -45,14 +41,11 @@ const BerichtRij = ({
     </TableCell>
     <TableCell>
       <span
-        className={`flex items-center gap-2 ${ongelezen ? "font-bold" : ""}`}
+        className={ongelezen ? "mox-afzender mox-ongelezen" : "mox-afzender"}
       >
         {ongelezen && (
           <>
-            <span
-              aria-hidden="true"
-              className="size-2 shrink-0 rounded-full bg-[var(--rhc-color-oranje-500)]"
-            />
+            <span aria-hidden="true" className="mox-status-unread" />
             <VisuallyHidden>Ongelezen.</VisuallyHidden>
           </>
         )}
@@ -62,14 +55,12 @@ const BerichtRij = ({
     <TableCell>
       <Link
         href={`/berichtenbox/${bericht.id}`}
-        className={`utrecht-link utrecht-link--html-a ${ongelezen ? "font-bold" : ""}`}
+        className={`utrecht-link utrecht-link--html-a ${ongelezen ? "mox-ongelezen" : ""}`}
       >
         {bericht.onderwerp}
       </Link>
     </TableCell>
-    <TableCell className="whitespace-nowrap">
-      {formatDatum(bericht.datum)}
-    </TableCell>
+    <TableCell>{formatDatum(bericht.datum)}</TableCell>
     <TableCell>
       {bericht.heeftBijlage && (
         <>

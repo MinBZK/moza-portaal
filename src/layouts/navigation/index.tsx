@@ -1,5 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import type {
   FeatureFlagKey,
   FeatureFlags,
@@ -22,12 +23,20 @@ const Navigation = ({
   berichtenboxBadge?: ReactNode;
 }) => {
   const toon = (key: FeatureFlagKey) => flags?.[key] !== false;
+  const pathname = usePathname();
+  // Actief op de pagina zelf en op onderliggende pagina's. "/" alleen exact.
+  const isActief = (...hrefs: string[]) =>
+    hrefs.some((href) =>
+      href === "/"
+        ? pathname === "/"
+        : pathname === href || pathname.startsWith(`${href}/`),
+    );
 
   return (
     <SideNav>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink current href="/" icon="home">
+          <SideNavLink current={isActief("/")} href="/" icon="home">
             Home
           </SideNavLink>
         </SideNavItem>
@@ -35,13 +44,21 @@ const Navigation = ({
       <Separator />
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/bedrijfsgegevens" icon="briefcase">
+          <SideNavLink
+            current={isActief("/bedrijfsgegevens")}
+            href="/bedrijfsgegevens"
+            icon="briefcase"
+          >
             Bedrijfsgegevens
           </SideNavLink>
         </SideNavItem>
         {toon("mox_pagina_berichtenbox") && (
           <SideNavItem>
-            <SideNavLink href="/berichtenbox" icon="inbox">
+            <SideNavLink
+              current={isActief("/berichtenbox")}
+              href="/berichtenbox"
+              icon="inbox"
+            >
               Berichtenbox
               {berichtenboxBadge}
             </SideNavLink>
@@ -49,7 +66,11 @@ const Navigation = ({
         )}
         {toon("mox_pagina_lopendeZaken") && (
           <SideNavItem>
-            <SideNavLink href="/lopendezaken" icon="activiteit">
+            <SideNavLink
+              current={isActief("/lopendezaken")}
+              href="/lopendezaken"
+              icon="activiteit"
+            >
               Lopende zaken
             </SideNavLink>
           </SideNavItem>
@@ -58,28 +79,44 @@ const Navigation = ({
       <Separator />
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/subsidies" icon="nieuws">
+          <SideNavLink
+            current={isActief("/subsidies")}
+            href="/subsidies"
+            icon="nieuws"
+          >
             Subsidies en financiering
           </SideNavLink>
         </SideNavItem>
       </SideNavList>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/wetten" icon="publicatie">
+          <SideNavLink
+            current={isActief("/wetten")}
+            href="/wetten"
+            icon="publicatie"
+          >
             Wetten en regelgeving
           </SideNavLink>
         </SideNavItem>
       </SideNavList>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/buurtberichten" icon="locatiemarker">
+          <SideNavLink
+            current={isActief("/buurtberichten")}
+            href="/buurtberichten"
+            icon="locatiemarker"
+          >
             Berichten over uw buurt
           </SideNavLink>
         </SideNavItem>
       </SideNavList>
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/bewaard" icon="favoriet">
+          <SideNavLink
+            current={isActief("/bewaard")}
+            href="/bewaard"
+            icon="favoriet"
+          >
             Bewaarde items
           </SideNavLink>
         </SideNavItem>
@@ -87,7 +124,11 @@ const Navigation = ({
       {toon("mox_pagina_digitaleAssistent") && (
         <SideNavList>
           <SideNavItem>
-            <SideNavLink href="/digitale-assistent" icon="comment">
+            <SideNavLink
+              current={isActief("/digitale-assistent")}
+              href="/digitale-assistent"
+              icon="comment"
+            >
               Digitale assistent (AI)
             </SideNavLink>
           </SideNavItem>
@@ -97,7 +138,11 @@ const Navigation = ({
       {toon("mox_pagina_belastingen") && (
         <SideNavList>
           <SideNavItem>
-            <SideNavLink href="/belastingen" icon="currency-euro">
+            <SideNavLink
+              current={isActief("/belastingen")}
+              href="/belastingen"
+              icon="currency-euro"
+            >
               Belastingen
             </SideNavLink>
           </SideNavItem>
@@ -106,7 +151,11 @@ const Navigation = ({
       {toon("mox_pagina_zakelijkVervoer") && (
         <SideNavList>
           <SideNavItem>
-            <SideNavLink href="/zakelijk-vervoer" icon="car">
+            <SideNavLink
+              current={isActief("/zakelijk-vervoer")}
+              href="/zakelijk-vervoer"
+              icon="car"
+            >
               Zakelijk vervoer
             </SideNavLink>
           </SideNavItem>
@@ -115,7 +164,11 @@ const Navigation = ({
       {toon("mox_pagina_personeel") && (
         <SideNavList>
           <SideNavItem>
-            <SideNavLink href="/personeel" icon="user">
+            <SideNavLink
+              current={isActief("/personeel")}
+              href="/personeel"
+              icon="user"
+            >
               Personeel en rollen
             </SideNavLink>
           </SideNavItem>
@@ -124,7 +177,11 @@ const Navigation = ({
       {toon("mox_pagina_ziekteVerlof") && (
         <SideNavList>
           <SideNavItem>
-            <SideNavLink href="/verzuim-en-verlof" icon="user">
+            <SideNavLink
+              current={isActief("/verzuim-en-verlof")}
+              href="/verzuim-en-verlof"
+              icon="user"
+            >
               Ziekte en verlof
             </SideNavLink>
           </SideNavItem>
@@ -134,7 +191,11 @@ const Navigation = ({
       {toon("mox_pagina_dataverwerking") && (
         <SideNavList>
           <SideNavItem>
-            <SideNavLink href="/dataverwerking" icon="gegevensuitwisseling">
+            <SideNavLink
+              current={isActief("/dataverwerking")}
+              href="/dataverwerking"
+              icon="gegevensuitwisseling"
+            >
               Gegevensdeling en dataverwerking
             </SideNavLink>
           </SideNavItem>
@@ -142,7 +203,11 @@ const Navigation = ({
       )}
       <SideNavList>
         <SideNavItem>
-          <SideNavLink href="/contactvoorkeuren" icon="instellingen">
+          <SideNavLink
+            current={isActief("/contactvoorkeuren")}
+            href="/contactvoorkeuren"
+            icon="instellingen"
+          >
             Contactvoorkeuren
           </SideNavLink>
         </SideNavItem>

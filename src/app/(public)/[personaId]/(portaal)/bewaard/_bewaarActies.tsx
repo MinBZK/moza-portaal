@@ -11,11 +11,7 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
 
 // Een span: de knoppen staan in een ActionGroup, en dat is een <p>.
-const FoutMelding = () => (
-  <span role="alert" className="text-[var(--rhc-color-rood-600)]">
-    {bewaarFoutTekst}
-  </span>
-);
+const FoutMelding = () => <span role="alert">{bewaarFoutTekst}</span>;
 
 export const BewaarKnop = ({ item }: { item: BewaarItem }) => {
   const { staat, fout, zetBewaard } = useBewaard();

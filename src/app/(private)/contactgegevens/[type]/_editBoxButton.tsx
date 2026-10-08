@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@/components/rhc";
 
 export const EditBoxButton = ({
   className,
@@ -14,13 +15,14 @@ export const EditBoxButton = ({
   icon?: React.ReactNode;
 }) => {
   return (
-    <button
+    <Button
+      appearance="subtle-button"
       type={type}
       onClick={onClick}
-      className={`text-primary ml-auto flex cursor-pointer items-center gap-2 hover:underline ${className ?? ""}`}
+      className={className}
     >
       {icon}
       {children}
-    </button>
+    </Button>
   );
 };

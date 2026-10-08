@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Paragraph } from "@rijkshuisstijl-community/components-react";
+import { Paragraph, Alert } from "@rijkshuisstijl-community/components-react";
 
 /**
  * Bootst na hoe de inbox berichten ophaalt bij de organisaties, zoals in
@@ -67,7 +67,7 @@ const OphaalVoortgang = ({ voortgang }: { voortgang: Voortgang | null }) => {
   const procent = bronnen ? Math.round((klaar / bronnen) * 100) : 0;
 
   return (
-    <div className="mox-feedback-notice space-y-2 rounded border border-[var(--utrecht-alert-ok-border-color)] bg-[var(--utrecht-alert-ok-background-color)] p-4">
+    <Alert type="ok">
       <Paragraph>We halen uw berichten op bij de organisaties.</Paragraph>
       <Paragraph>
         <b>{klaar}</b> van <b>{bronnen}</b>{" "}
@@ -81,14 +81,14 @@ const OphaalVoortgang = ({ voortgang }: { voortgang: Voortgang | null }) => {
         aria-valuemax={bronnen}
         aria-valuenow={klaar}
         aria-valuetext={`${klaar} van ${bronnen} organisaties`}
-        className="h-2 overflow-hidden rounded-full border border-[var(--utrecht-alert-ok-border-color)] bg-[var(--rhc-color-wit)]"
+        className="mox-progressbar"
       >
         <div
-          className="h-full bg-[var(--utrecht-alert-icon-ok-color)]"
+          className="mox-progressbar-track"
           style={{ inlineSize: `${procent}%` }}
         />
       </div>
-    </div>
+    </Alert>
   );
 };
 

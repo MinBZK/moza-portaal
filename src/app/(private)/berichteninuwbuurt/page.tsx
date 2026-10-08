@@ -1,23 +1,23 @@
-import Card from "@/components/card";
+import { Heading, Paragraph } from "@/components/rhc";
 import PostcodesBeheer from "./_postcodesBeheer";
 import PublicatiesOverzicht from "./_publicatiesOverzicht";
 
 const BerichtenInUwBuurtPage = async () => {
   return (
     <>
-      <h1 className="text-4xl">Berichten over uw buurt</h1>
+      <Heading level={1}>Berichten over uw buurt</Heading>
 
-      <Card>
+      <div className="mox-card">
         <PostcodesBeheer />
-      </Card>
+      </div>
 
-      <Card className="space-y-2">
-        <h2 className="text-2xl font-bold">Berichten over uw buurt</h2>
-        <p className="text-sm text-neutral-600">
+      <div className="mox-card">
+        <Heading level={2}>Berichten over uw buurt</Heading>
+        <Paragraph>
           Berichten die betrekking hebben op de omgeving van uw bedrijfsadres.
-        </p>
+        </Paragraph>
         <PublicatiesOverzicht />
-      </Card>
+      </div>
     </>
   );
 };

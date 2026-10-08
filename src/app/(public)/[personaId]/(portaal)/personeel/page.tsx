@@ -1,1 +1,20 @@
-export { default } from "../medewerkers/page";
+import { notFound } from "next/navigation";
+import BinnenkortBeschikbaar from "@/components/binnenkortBeschikbaar";
+import { getDemoBinnenkort } from "@/demo";
+
+const MedewerkersPage = async () => {
+  const onderdeel = await getDemoBinnenkort("personeel");
+  if (!onderdeel) notFound();
+
+  return (
+    <BinnenkortBeschikbaar
+      titel={onderdeel.titel}
+      samenvatting={onderdeel.samenvatting}
+      beschikbaarVanaf={onderdeel.beschikbaarVanaf}
+      verwachtingen={onderdeel.verwachtingen}
+      vragen={onderdeel.vragen}
+    />
+  );
+};
+
+export default MedewerkersPage;

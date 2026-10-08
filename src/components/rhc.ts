@@ -22,6 +22,7 @@ export {
   FormField,
   FormFieldCheckboxGroup,
   FormFieldCheckboxOption,
+  FormFieldErrorMessage,
   FormFieldRadio,
   FormFieldRadioGroup,
   FormFieldTextInput,

@@ -1,7 +1,12 @@
-import Card from "@/components/card";
-import { Tab, Tabs } from "@/components/Tabs";
+import Link from "next/link";
+import { Heading } from "@/components/rhc";
 import Prive from "@/app/(private)/contactgegevens/[type]/prive";
 import Zakelijk from "@/app/(private)/contactgegevens/[type]/zakelijk";
+
+const tabs = [
+  { type: "prive", label: "Privé", href: "/contactgegevens/prive" },
+  { type: "zakelijk", label: "Zakelijk", href: "/contactgegevens/zakelijk" },
+] as const;
 
 const ContactgegevensPage = async ({
   params,
@@ -12,28 +17,25 @@ const ContactgegevensPage = async ({
 
   return (
     <>
-      <h1 className="text-h1">Contactgegevens</h1>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 w-full space-y-5 lg:col-span-9">
-          <Card>
-            <div className="space-y-5">
-              <Tabs>
-                <Tab
-                  href={`/contactgegevens/prive`}
-                  label={"Privé"}
-                  isActive={type === "prive"}
-                />
-                <Tab
-                  href={`/contactgegevens/zakelijk`}
-                  label={"Zakelijk"}
-                  isActive={type === "zakelijk"}
-                />
-              </Tabs>
+      <Heading level={1}>Contactgegevens</Heading>
+      <div className="mox-card mox-row-gap">
+        <nav aria-label="Soort contactgegevens">
+          <ul className="mox-tabs">
+            {tabs.map((tab) => (
+              <li key={tab.type}>
+                <Link
+                  href={tab.href}
+                  aria-current={tab.type === type ? "page" : undefined}
+                  className="mox-tab utrecht-link utrecht-link--html-a"
+                >
+                  {tab.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-              {type === "prive" ? <Prive /> : <Zakelijk />}
-            </div>
-          </Card>
-        </div>
+        {type === "prive" ? <Prive /> : <Zakelijk />}
       </div>
     </>
   );

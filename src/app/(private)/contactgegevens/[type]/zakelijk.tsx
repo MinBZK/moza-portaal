@@ -36,31 +36,26 @@ const Zakelijk = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-4 overflow-x-auto">
-      <div className="flex flex-col gap-0 bg-neutral-100 p-4">
-        <AanhefEditBox voorkeur={aanhef} idenType={"KVK"} idenValue={kvk} />
-        <hr className="my-3 border-neutral-300" />
+    <div className="mox-row-gap">
+      <AanhefEditBox voorkeur={aanhef} idenType={"KVK"} idenValue={kvk} />
 
-        <TaalEditBox voorkeur={taal} idenType={"KVK"} idenValue={kvk} />
-        <hr className="my-3 border-neutral-300" />
+      <TaalEditBox voorkeur={taal} idenType={"KVK"} idenValue={kvk} />
 
-        <ContactEditBox
-          name={"Email"}
-          label={"E-mailadres"}
-          contactGegeven={email}
-          idenType={"KVK"}
-          idenValue={kvk}
-        />
-        <hr className="my-3 border-neutral-300" />
+      <ContactEditBox
+        name={"Email"}
+        label={"E-mailadres"}
+        contactGegeven={email}
+        idenType={"KVK"}
+        idenValue={kvk}
+      />
 
-        <ContactEditBox
-          name={"Telefoonnummer"}
-          label={"Telefoonnummer"}
-          contactGegeven={telefoonnummer}
-          idenType={"KVK"}
-          idenValue={kvk}
-        />
-      </div>
+      <ContactEditBox
+        name={"Telefoonnummer"}
+        label={"Telefoonnummer"}
+        contactGegeven={telefoonnummer}
+        idenType={"KVK"}
+        idenValue={kvk}
+      />
 
       {data?.status === 404 && <CopyNotificatie kvkNummer={kvk} />}
     </div>

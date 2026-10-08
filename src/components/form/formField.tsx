@@ -1,48 +1,43 @@
 import { AnyFieldApi } from "@tanstack/react-form";
+import { FormFieldErrorMessage, FormFieldTextInput } from "@/components/rhc";
 
+/** Fout bij een veld, zodra de gebruiker het veld heeft bezocht. */
+const foutVan = (field: AnyFieldApi): string | undefined =>
+  field.state.meta.isTouched && !field.state.meta.isValid
+    ? field.state.meta.errors[0]?.message
+    : undefined;
+
+/** Koppelt een TanStack Form-veld aan het RHC-tekstveld. */
 function FormField({
   field,
   label,
   readOnly = false,
 }: {
   field: AnyFieldApi;
-  label?: string;
+  label: string;
   readOnly?: boolean;
 }) {
+  const fout = foutVan(field);
   return (
-    <>
-      {label && (
-        <label
-          className="mb-2 block text-sm font-bold text-gray-700"
-          htmlFor={field.name}
-        >
-          {label}
-        </label>
-      )}
-
-      <input
-        disabled={readOnly}
-        id={field.name}
-        name={field.name}
-        value={field.state.value ?? ""}
-        onBlur={field.handleBlur}
-        className={`focus:border-primary w-full rounded border-1 border-solid border-gray-200 ${!readOnly ? "bg-white" : "bg-gray-50"} px-1.5 py-1 focus:outline-none`}
-        onChange={(e) => field.handleChange(e.target.value)}
-      />
-      <FieldInfo field={field} />
-    </>
+    <FormFieldTextInput
+      id={field.name}
+      name={field.name}
+      label={label}
+      readOnly={readOnly}
+      value={field.state.value ?? ""}
+      invalid={!!fout}
+      errorMessage={fout}
+      onBlur={field.handleBlur}
+      // Het event komt van de input, maar is getypt op de wrapper-div.
+      onChange={(e) => field.handleChange((e.target as HTMLInputElement).value)}
+    />
   );
 }
 
+/** Foutmelding voor velden die geen FormField gebruiken, zoals een select. */
 export function FieldInfo({ field }: { field: AnyFieldApi }) {
-  return (
-    <>
-      {field.state.meta.isTouched && !field.state.meta.isValid ? (
-        <em className="text-red-600">{field.state.meta.errors[0].message}</em>
-      ) : null}
-      {field.state.meta.isValidating ? "Validating..." : null}
-    </>
-  );
+  const fout = foutVan(field);
+  return fout ? <FormFieldErrorMessage>{fout}</FormFieldErrorMessage> : null;
 }
 
 export default FormField;

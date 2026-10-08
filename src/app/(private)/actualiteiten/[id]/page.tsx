@@ -1,6 +1,16 @@
 import { redirect } from "next/navigation";
-import Card from "@/components/card";
 import Link from "next/link";
+import {
+  ActionGroup,
+  DataSummary,
+  DataSummaryItem,
+  Heading,
+  Icon,
+  Link as RhcLink,
+  Paragraph,
+  UnorderedList,
+  UnorderedListItem,
+} from "@/components/rhc";
 import dopOpenDataClient from "@/network/dop/opendata";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { TYPE_LABELS } from "../_articleTypes";
@@ -25,22 +35,24 @@ const ArtikelDetailPage = async ({
   if (error || !article) {
     return (
       <>
-        <h1 className="text-4xl">
+        <Heading level={1}>
           {error ? "Fout bij ophalen artikel" : "Artikel niet gevonden"}
-        </h1>
-        <Card>
-          <p className="text-neutral-600">
+        </Heading>
+        <div className="mox-card">
+          <Paragraph>
             {error
               ? "Er is een fout opgetreden bij het ophalen van dit artikel. Probeer het later opnieuw."
               : "Dit artikel kon niet worden gevonden."}
-          </p>
-          <Link
-            href="/actualiteiten"
-            className="mt-4 inline-block text-[#01689b] underline"
-          >
-            &larr; Terug naar actualiteiten
-          </Link>
-        </Card>
+          </Paragraph>
+          <Paragraph>
+            <Link
+              href="/actualiteiten"
+              className="utrecht-link utrecht-link--html-a"
+            >
+              &larr; Terug naar actualiteiten
+            </Link>
+          </Paragraph>
+        </div>
       </>
     );
   }
@@ -55,92 +67,81 @@ const ArtikelDetailPage = async ({
 
   const typeLabel =
     TYPE_LABELS[article.additionalType ?? ""] ?? article.additionalType;
+  const authors = article.author?.map((a) => a.name).filter(Boolean) ?? [];
 
   return (
     <>
-      <Link href="/actualiteiten" className="text-sm text-[#01689b] underline">
-        &larr; Terug naar actualiteiten
-      </Link>
+      <Paragraph>
+        <Link
+          href="/actualiteiten"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          &larr; Terug naar actualiteiten
+        </Link>
+      </Paragraph>
 
-      <h1 className="text-4xl">{article.headLine ?? "Onbekend artikel"}</h1>
+      <Heading level={1}>{article.headLine ?? "Onbekend artikel"}</Heading>
 
-      <Card className="space-y-5">
-        {/* Metadata row */}
-        <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
+      <div className="mox-card">
+        <DataSummary appearance="column">
           {typeLabel && (
-            <span className="rounded bg-[#d9ebf7] px-2 py-0.5 text-xs font-semibold text-[#154273]">
-              {typeLabel}
-            </span>
+            <DataSummaryItem itemKey="Soort" itemValue={typeLabel} />
           )}
-          {article.author?.map((a) => (
-            <span key={a.name}>{a.name}</span>
-          ))}
-          {date && <span>{date}</span>}
-        </div>
+          {authors.length > 0 && (
+            <DataSummaryItem itemKey="Auteur" itemValue={authors.join(", ")} />
+          )}
+          {date && <DataSummaryItem itemKey="Datum" itemValue={date} />}
+          {article.subjects && article.subjects.length > 0 && (
+            <DataSummaryItem
+              itemKey="Onderwerpen"
+              itemValue={article.subjects.join(", ")}
+            />
+          )}
+        </DataSummary>
 
-        {/* Description */}
-        {article.about && (
-          <p className="text-base font-medium">{article.about}</p>
-        )}
+        {article.about && <Paragraph purpose="lead">{article.about}</Paragraph>}
 
-        {/* Subjects */}
-        {article.subjects && article.subjects.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {article.subjects.map((subject) => (
-              <span
-                key={subject}
-                className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600"
-              >
-                {subject}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Article body */}
+        {/* Artikeltekst is HTML uit de API */}
         {article.articleBody && (
           <div
-            className="prose max-w-none"
+            className="mox-rich-text"
             dangerouslySetInnerHTML={{ __html: article.articleBody }}
           />
         )}
 
-        {/* Related articles */}
         {article.hasPart && article.hasPart.length > 0 && (
-          <div>
-            <h3 className="mb-2 text-lg font-semibold">
-              Gerelateerde artikelen
-            </h3>
-            <ul className="list-inside list-disc space-y-1">
+          <>
+            <Heading level={2}>Gerelateerde artikelen</Heading>
+            <UnorderedList>
               {article.hasPart.map((part) => (
-                <li key={part.url}>
-                  <a
+                <UnorderedListItem key={part.url}>
+                  <RhcLink
                     href={part.url ?? "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#01689b] underline"
                   >
                     {part.headLine ?? part.url}
-                  </a>
-                </li>
+                  </RhcLink>
+                </UnorderedListItem>
               ))}
-            </ul>
-          </div>
+            </UnorderedList>
+          </>
         )}
 
-        {/* External link */}
         {article.url && (
-          <a
-            href={article.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-[#154273] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0e2f54]"
-          >
-            Bekijk op ondernemersplein.nl
-            <span>&uarr;</span>
-          </a>
+          <ActionGroup>
+            <a
+              href={article.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Bekijk op ondernemersplein.nl
+              <Icon icon="externe-link" />
+            </a>
+          </ActionGroup>
         )}
-      </Card>
+      </div>
     </>
   );
 };

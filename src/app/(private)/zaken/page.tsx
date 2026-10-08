@@ -1,5 +1,13 @@
-import Button from "@/components/button";
-import Card from "@/components/card";
+import {
+  ActionGroup,
+  Heading,
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableHeaderCell,
+  TableRow,
+} from "@/components/rhc";
 import zakenClient from "@/network/mock";
 import { components } from "@/network/mock/generated";
 import { getKvkFromCookie } from "@/utils/kvknummer";
@@ -16,60 +24,69 @@ const Zaken = async () => {
   );
 
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-12 w-full space-y-5 md:col-span-12">
-        <Card className="space-y-4">
-          <h2 className="text-2xl">Nieuwe aanvraag</h2>
-          <div className="flex flex-col gap-2">
-            <Link href="/zaken/parkeervergunning/nieuw">
-              <Button>Parkeervergunning aanvragen</Button>
-            </Link>
-
-            <Link href="/zaken/subsidie/nieuw">
-              <Button>Subsidie aanvragen</Button>
-            </Link>
-          </div>
-        </Card>
-        <Card className="space-y-4 overflow-x-auto">
-          <h1 className="mb-6 text-2xl">Lopende aanvragen</h1>
-          <table className="w-full border border-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-2 text-left">Referentie</th>
-                <th className="px-4 py-2 text-left">Type</th>
-                <th className="px-4 py-2 text-left">Context</th>
-                <th className="px-4 py-2 text-left">Status</th>
-                <th className="px-4 py-2 text-left">Datum aanvraag</th>
-              </tr>
-            </thead>
-            <tbody>
+    <>
+      <Heading level={1}>Zaken</Heading>
+      <section className="mox-card" aria-labelledby="nieuwe-aanvraag">
+        <Heading level={2} id="nieuwe-aanvraag">
+          Nieuwe aanvraag
+        </Heading>
+        <ActionGroup>
+          <Link
+            href="/zaken/parkeervergunning/nieuw"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+          >
+            Parkeervergunning aanvragen
+          </Link>
+          <Link
+            href="/zaken/subsidie/nieuw"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+          >
+            Subsidie aanvragen
+          </Link>
+        </ActionGroup>
+      </section>
+      <section className="mox-card" aria-labelledby="lopende-aanvragen">
+        <Heading level={2} id="lopende-aanvragen">
+          Lopende aanvragen
+        </Heading>
+        <div className="mox-table-container">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell scope="col">Referentie</TableHeaderCell>
+                <TableHeaderCell scope="col">Type</TableHeaderCell>
+                <TableHeaderCell scope="col">Context</TableHeaderCell>
+                <TableHeaderCell scope="col">Status</TableHeaderCell>
+                <TableHeaderCell scope="col">Datum aanvraag</TableHeaderCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {Array.isArray(data) &&
                 data.map(
                   (item: components["schemas"]["VngAanvraagResponse"]) => (
-                    <tr key={item.referentie} className="border-t">
-                      <td className="px-4 py-2 text-blue-400 underline">
+                    <TableRow key={item.referentie}>
+                      <TableCell>
                         <Link
-                          href={`zaken/${item.type?.toLocaleLowerCase()}/${item.referentie}`}
+                          href={`/zaken/${item.type?.toLocaleLowerCase()}/${item.referentie}`}
+                          className="utrecht-link utrecht-link--html-a"
                         >
                           {item.referentie}
                         </Link>
-                      </td>
-                      <td className="px-4 py-2">{item.type}</td>
-                      <td className="px-4 py-2">
-                        {item.kenteken ?? item.subtype}
-                      </td>
-                      <td className="px-4 py-2">{item.status}</td>
-                      <td className="px-4 py-2">
+                      </TableCell>
+                      <TableCell>{item.type}</TableCell>
+                      <TableCell>{item.kenteken ?? item.subtype}</TableCell>
+                      <TableCell>{item.status}</TableCell>
+                      <TableCell>
                         {format(new Date(item.timestamp!), "dd/MM/yyyy")}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ),
                 )}
-            </tbody>
-          </table>
-        </Card>
-      </div>
-    </div>
+            </TableBody>
+          </Table>
+        </div>
+      </section>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
+import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
-import Card from "@/components/card";
 
 const SubsidieDetail = async ({
   params,
@@ -14,34 +14,34 @@ const SubsidieDetail = async ({
   });
   const aanvraag = data as components["schemas"]["VngAanvraagResponse"];
 
+  const gegevens = [
+    { label: "Referentie", waarde: aanvraag.referentie },
+    { label: "BedrijfsKvk", waarde: aanvraag.bedrijfsKvk },
+    { label: "Subtype", waarde: aanvraag.subtype },
+    { label: "Motivatie", waarde: aanvraag.motivatie },
+    { label: "Status", waarde: aanvraag.status },
+    { label: "Type", waarde: aanvraag.type },
+    {
+      label: "Timestamp",
+      waarde: format(new Date(aanvraag.timestamp!), "dd/MM/yyyy"),
+    },
+  ];
+
   return (
-    <Card>
-      <h1 className="mb-6 text-2xl font-bold">Subsidie details</h1>
-      <div className="space-y-2">
-        <div>
-          <strong>Referentie:</strong> {aanvraag.referentie}
-        </div>
-        <div>
-          <strong>BedrijfsKvk:</strong> {aanvraag.bedrijfsKvk}
-        </div>
-        <div>
-          <strong>Subtype:</strong> {aanvraag.subtype}
-        </div>
-        <div>
-          <strong>Motivatie:</strong> {aanvraag.motivatie}
-        </div>
-        <div>
-          <strong>Status:</strong> {aanvraag.status}
-        </div>
-        <div>
-          <strong>Type:</strong> {aanvraag.type}
-        </div>
-        <div>
-          <strong>Timestamp:</strong>{" "}
-          {format(new Date(aanvraag.timestamp!), "dd/MM/yyyy")}
-        </div>
+    <>
+      <Heading level={1}>Subsidie details</Heading>
+      <div className="mox-card">
+        <DataSummary appearance="column">
+          {gegevens.map(({ label, waarde }) => (
+            <DataSummaryItem
+              key={label}
+              itemKey={label}
+              itemValue={String(waarde ?? "")}
+            />
+          ))}
+        </DataSummary>
       </div>
-    </Card>
+    </>
   );
 };
 

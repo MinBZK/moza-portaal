@@ -79,7 +79,12 @@ const WettenPage = async () => {
                 </>
               )}
 
-              <ActionGroup direction="row" className="mox-action-group">
+              {/* role vast: ActionGroup telt de children anders op server en client */}
+              <ActionGroup
+                role="group"
+                direction="row"
+                className="mox-action-group"
+              >
                 <BewaarKnop item={item} />
                 {flags.mox_delen && (
                   <Button appearance="secondary-action-button">

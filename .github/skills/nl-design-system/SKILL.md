@@ -9,6 +9,7 @@ Gebruik NL Design System-principes en de geïnstalleerde Rijkshuisstijl Communit
 
 ## Richtlijnen
 
+- Gebruik geen Tailwind-classes. Gebruik RHC-componenten, en schrijf alleen waar die niet volstaan een eigen `mox-`-class in `src/styles/mox.css` met RHC-tokens.
 - Gebruik design tokens in plaats van losse waarden voor kleur, spacing, typografie, radius en focus.
 - Importeer NLDS-design tokens en component-CSS één keer in `src/app/layout.tsx`.
 - Gebruik React-componenten uit `@rijkshuisstijl-community/components-react` in pagina's of gedeelde componenten.
