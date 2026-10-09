@@ -1,0 +1,448 @@
+[
+  {
+    "id": "omgevingsvergunning-verbouwing",
+    "soort": "lopend",
+    "titel": "Omgevingsvergunning verbouwing bedrijfspand",
+    "organisatie": "Gemeente Lansingerland",
+    "datum": "21 mei 2026",
+    "status": "In behandeling genomen",
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "Z-2026-014872"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "14 mei 2026"
+      },
+      {
+        "label": "Verwachte doorlooptijd",
+        "waarde": "8 weken"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "14 mei 2026",
+        "tekst": [
+          "Wij hebben uw omgevingsvergunning voor de verbouwing van uw bedrijfspand ontvangen."
+        ]
+      },
+      {
+        "titel": "In behandeling genomen",
+        "soort": "huidig",
+        "datum": "21 mei 2026",
+        "open": true,
+        "tekst": ["Uw verzoek is in behandeling genomen."]
+      },
+      {
+        "titel": "Besluit verwacht",
+        "soort": "later",
+        "datum": "9 juli 2026",
+        "tekst": ["Wij verwachten op 9 juli een besluit genomen te hebben."]
+      }
+    ]
+  },
+  {
+    "id": "subsidie",
+    "soort": "lopend",
+    "titel": "Subsidie aangevraagd",
+    "organisatie": "Rijksdienst voor Ondernemend Nederland",
+    "datum": "19 maart 2026",
+    "status": "Volledigheid gecontroleerd",
+    "gegevensBovenaan": true,
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "SUB-2026-008431"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "3 maart 2026"
+      },
+      {
+        "label": "Verwachte doorlooptijd",
+        "waarde": "13 weken"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "3 maart 2026",
+        "tekst": [
+          "U hebt uw subsidieaanvraag ingediend. Wij hebben deze in goede orde ontvangen."
+        ]
+      },
+      {
+        "titel": "Ontvangst bevestigd",
+        "soort": "voltooid",
+        "datum": "5 maart 2026",
+        "tekst": [
+          "U hebt een ontvangstbevestiging met het zaaknummer van uw aanvraag in uw Berichtenbox ontvangen."
+        ]
+      },
+      {
+        "titel": "Volledigheid gecontroleerd",
+        "soort": "voltooid",
+        "datum": "19 maart 2026",
+        "open": true,
+        "tekst": [
+          "Wij hebben gecontroleerd of uw aanvraag compleet is. Alle benodigde gegevens en bijlagen zijn aanwezig."
+        ]
+      },
+      {
+        "titel": "Inhoudelijke beoordeling",
+        "soort": "huidig",
+        "datum": "sinds 19 maart 2026",
+        "tekst": [
+          "Wij beoordelen of uw aanvraag voldoet aan de voorwaarden van de subsidieregeling. U hoeft nu niets te doen."
+        ]
+      },
+      {
+        "titel": "Besluit verwacht",
+        "soort": "volgende",
+        "datum": "verwacht voor 30 juni 2026",
+        "tekst": [
+          "Na de beoordeling ontvangt u ons besluit over de subsidie in uw Berichtenbox."
+        ]
+      },
+      {
+        "titel": "Uitbetaling",
+        "soort": "later",
+        "tekst": [
+          "Bij toekenning betalen wij de subsidie of een voorschot uit op het rekeningnummer dat bij ons bekend is."
+        ]
+      },
+      {
+        "titel": "Vaststelling",
+        "soort": "later",
+        "tekst": [
+          "Na afloop stelt u de subsidie vast met een verantwoording. Op basis daarvan bepalen wij het definitieve subsidiebedrag."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "melding-openbare-ruimte",
+    "soort": "lopend",
+    "titel": "Melding openbare ruimte",
+    "organisatie": "Gemeente Lansingerland",
+    "datum": "6 mei 2026",
+    "status": "Extra informatie opgevraagd",
+    "actieNodig": true,
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "Z-2026-013094"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "28 april 2026"
+      },
+      {
+        "label": "Verwachte doorlooptijd",
+        "waarde": "4 weken"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "28 april 2026",
+        "tekst": ["We hebben uw melding ontvangen."]
+      },
+      {
+        "titel": "In behandeling",
+        "soort": "voltooid",
+        "datum": "4 mei 2026",
+        "tekst": ["Uw melding is in behandeling genomen."]
+      },
+      {
+        "titel": "Extra informatie opgevraagd",
+        "soort": "voltooid",
+        "datum": "6 mei 2026",
+        "open": true,
+        "waarschuwing": "Voor de beoordeling van uw melding hebben wij aanvullende gegevens nodig.",
+        "aanleveren": {
+          "intro": "Lever de volgende gegevens aan:",
+          "items": [
+            "Exacte locatie: straat en dichtstbijzijnde huisnummer",
+            "Foto’s van de situatie",
+            "Datum en tijd van constatering"
+          ],
+          "knop": "Aanvullende gegevens aanleveren"
+        }
+      },
+      {
+        "titel": "Extra informatie ontvangen",
+        "soort": "huidig",
+        "waarschuwing": "Wij hebben de gevraagde aanvullende gegevens nog niet van u ontvangen."
+      },
+      {
+        "titel": "Besluit verwacht",
+        "soort": "volgende",
+        "tekst": [
+          "Nadat wij de gevraagde aanvullende gegevens hebben ontvangen kunnen wij een indicatie geven wanneer een besluit te verwachten is."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "informatieplicht-energiebesparing",
+    "soort": "lopend",
+    "titel": "Informatieplicht energiebesparing",
+    "organisatie": "Rijksdienst voor Ondernemend Nederland",
+    "datum": "18 juni 2026",
+    "status": "Ontvangst bevestigd",
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "IPE-2026-014729"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "18 juni 2026"
+      },
+      {
+        "label": "Verwachte doorlooptijd",
+        "waarde": "8 weken"
+      },
+      {
+        "label": "Bijlage(n)",
+        "waarde": "Ingevuld rapport"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "18 juni 2026",
+        "tekst": [
+          "U hebt uw rapportage voor de informatieplicht energiebesparing ingediend via het eLoket. Wij hebben deze in goede orde ontvangen."
+        ]
+      },
+      {
+        "titel": "Ontvangst bevestigd",
+        "soort": "huidig",
+        "datum": "18 juni 2026",
+        "open": true,
+        "tekst": [
+          "U hebt een ontvangstbevestiging met het zaaknummer van uw rapportage in uw Berichtenbox ontvangen."
+        ]
+      },
+      {
+        "titel": "Volledigheid gecontroleerd",
+        "soort": "volgende",
+        "tekst": [
+          "Wij controleren of uw rapportage compleet is en of u de juiste energiebesparende maatregelen hebt opgegeven."
+        ]
+      },
+      {
+        "titel": "Beschikbaar voor bevoegd gezag",
+        "soort": "later",
+        "tekst": [
+          "Na de controle stellen wij uw rapportage beschikbaar aan het bevoegd gezag, meestal uw gemeente of de omgevingsdienst. Zij houden toezicht op de energiebesparingsplicht."
+        ]
+      },
+      {
+        "titel": "Afgerond",
+        "soort": "later",
+        "tekst": [
+          "Uw rapportage is verwerkt en u hebt aan de informatieplicht voldaan. Heeft het bevoegd gezag vragen of een controle? Dan ontvangt u hierover bericht in uw Berichtenbox."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "omgevingsvergunning-gevelreclame",
+    "soort": "afgehandeld",
+    "titel": "Omgevingsvergunning gevelreclame",
+    "organisatie": "Gemeente Rotterdam",
+    "datum": "18 maart 2026",
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "Z-2026-007654"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "3 februari 2026"
+      },
+      {
+        "label": "Besluit",
+        "waarde": "Vergunning verleend op 18 maart 2026"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "3 februari 2026",
+        "open": true,
+        "tekst": [
+          "U hebt een omgevingsvergunning aangevraagd voor gevelreclame aan uw bedrijfspand."
+        ]
+      },
+      {
+        "titel": "In behandeling genomen",
+        "soort": "voltooid",
+        "datum": "10 februari 2026",
+        "open": true,
+        "tekst": ["De gemeente heeft uw aanvraag in behandeling genomen."]
+      },
+      {
+        "titel": "Besluit genomen",
+        "soort": "afgerond",
+        "datum": "18 maart 2026",
+        "open": true,
+        "tekst": [
+          "De vergunning is verleend. U vindt het besluit in uw Berichtenbox."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "subsidie-duurzame-bedrijfsvoering",
+    "soort": "afgehandeld",
+    "titel": "Subsidie duurzame bedrijfsvoering",
+    "organisatie": "Rijksdienst voor Ondernemend Nederland",
+    "datum": "22 januari 2026",
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "SUB-2025-019204"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "12 november 2025"
+      },
+      {
+        "label": "Besluit",
+        "waarde": "Toegekend op 22 januari 2026"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "12 november 2025",
+        "open": true,
+        "tekst": [
+          "U hebt een subsidie voor duurzame bedrijfsvoering aangevraagd."
+        ]
+      },
+      {
+        "titel": "Beoordeeld",
+        "soort": "voltooid",
+        "datum": "15 december 2025",
+        "open": true,
+        "tekst": ["Uw aanvraag is beoordeeld en voldoet aan de voorwaarden."]
+      },
+      {
+        "titel": "Besluit genomen",
+        "soort": "afgerond",
+        "datum": "22 januari 2026",
+        "open": true,
+        "tekst": [
+          "De subsidie is toegekend en uitbetaald op het bij ons bekende rekeningnummer."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "uitstel-btw-aangifte",
+    "soort": "afgehandeld",
+    "titel": "Uitstel van btw-aangifte",
+    "organisatie": "Belastingdienst",
+    "datum": "20 januari 2026",
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "BD-2026-004410"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "9 januari 2026"
+      },
+      {
+        "label": "Besluit",
+        "waarde": "Toegekend op 20 januari 2026"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "9 januari 2026",
+        "open": true,
+        "tekst": [
+          "U hebt uitstel aangevraagd voor het indienen van uw btw-aangifte."
+        ]
+      },
+      {
+        "titel": "In behandeling genomen",
+        "soort": "voltooid",
+        "datum": "14 januari 2026",
+        "open": true,
+        "tekst": ["De Belastingdienst heeft uw verzoek in behandeling genomen."]
+      },
+      {
+        "titel": "Besluit genomen",
+        "soort": "afgerond",
+        "datum": "20 januari 2026",
+        "open": true,
+        "tekst": [
+          "Het uitstel is toegekend. U vindt de bevestiging met de nieuwe uiterste datum in uw Berichtenbox."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "uittreksel-handelsregister",
+    "soort": "afgehandeld",
+    "titel": "Aanvraag uittreksel Handelsregister",
+    "organisatie": "Kamer van Koophandel",
+    "datum": "18 december 2025",
+    "gegevens": [
+      {
+        "label": "Zaaknummer",
+        "waarde": "KVK-2025-218043"
+      },
+      {
+        "label": "Ingediend",
+        "waarde": "18 december 2025"
+      },
+      {
+        "label": "Besluit",
+        "waarde": "Uittreksel verstrekt op 18 december 2025"
+      }
+    ],
+    "stappen": [
+      {
+        "titel": "Ingediend",
+        "soort": "voltooid",
+        "datum": "18 december 2025",
+        "open": true,
+        "tekst": [
+          "U hebt een gewaarmerkt uittreksel uit het Handelsregister aangevraagd."
+        ]
+      },
+      {
+        "titel": "Betaald",
+        "soort": "voltooid",
+        "datum": "18 december 2025",
+        "open": true,
+        "tekst": ["De betaling van € 16,60 is ontvangen."]
+      },
+      {
+        "titel": "Verstrekt",
+        "soort": "afgerond",
+        "datum": "18 december 2025",
+        "open": true,
+        "tekst": ["Het uittreksel staat klaar in uw Berichtenbox."]
+      }
+    ]
+  }
+]

@@ -423,6 +423,123 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	/* Voortgang van een zaak: genummerde stappen met een lijn ertussen,
+	  zoals de status-track in moza-poc. Voltooid = groen met vinkje,
+	  huidige stap = blauw, nog te doen = grijs en een stippellijn. */
+	.mox-status-track {
+		--mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.6);
+		--mox-stap-gap: var(--rhc-space-lg);
+
+		counter-reset: stap;
+		display: grid;
+		gap: var(--mox-stap-gap);
+
+		> li {
+			counter-increment: stap;
+			display: flex;
+			gap: var(--rhc-space-md);
+			position: relative;
+
+			&::before {
+				background-color: var(--rhc-color-groen-600);
+				block-size: var(--mox-stap-maat);
+				border-radius: var(--rhc-border-radius-round);
+				color: var(--rhc-color-wit);
+				content: counter(stap);
+				display: grid;
+				flex-shrink: 0;
+				font-weight: var(--rhc-text-font-weight-bold);
+				inline-size: var(--mox-stap-maat);
+				place-items: center;
+			}
+
+			&::after {
+				background-color: var(--rhc-color-groen-600);
+				content: "";
+				inline-size: var(--rhc-border-width-md);
+				inset-block: var(--mox-stap-maat) calc(-1 * var(--mox-stap-gap));
+				inset-inline-start: calc(var(--mox-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+				position: absolute;
+			}
+
+			&:last-child::after {
+				content: none;
+			}
+
+			/* Stappen voor de huidige stap zijn klaar */
+			&:has(~ [aria-current="step"])::before {
+				content: "\2713";
+			}
+		}
+
+		> [aria-current="step"] {
+			&::before {
+				background-color: var(--rhc-color-lintblauw-500);
+			}
+
+			~ li::before {
+				background-color: var(--rhc-color-cool-grey-500);
+			}
+
+			&::after,
+			~ li::after {
+				background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
+			}
+		}
+
+		details {
+			flex: 1;
+			min-inline-size: 0;
+		}
+
+		summary {
+			align-items: center;
+			cursor: pointer;
+			display: flex;
+			font-weight: var(--rhc-text-font-weight-bold);
+			gap: var(--rhc-space-sm);
+			list-style: none;
+			min-block-size: var(--mox-stap-maat);
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			.utrecht-icon {
+				transition: transform 150ms;
+			}
+		}
+
+		details[open] > summary .utrecht-icon {
+			transform: rotate(90deg);
+		}
+	}
+
+	.mox-status-details {
+		display: grid;
+		gap: var(--rhc-space-md);
+		margin-block-start: var(--rhc-space-sm);
+	}
+
+	.mox-status-date {
+		align-items: center;
+		color: var(--rhc-color-foreground-subtle);
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+	}
+
+	/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
+	.mox-actie-nodig {
+		align-items: center;
+		display: inline-flex;
+		gap: var(--rhc-space-sm);
+
+		.utrecht-icon {
+			color: var(--rhc-color-oranje-500);
+		}
+	}
+
 	/* Action menu */
 	.mox-action-menu {
 		background-color: var(--rhc-color-wit);
