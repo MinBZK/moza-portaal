@@ -20,6 +20,7 @@ const breadcrumbLabels: Record<string, string> = {
   jaarrekeningen: "Jaarrekeningen",
   "lopende-zaken": "Lopende zaken",
   lopendezaken: "Lopende zaken",
+  afgehandeld: "Afgehandeld",
   berichtenbox: "Berichtenbox",
   inbox: "Berichtenbox",
   buurtberichten: "Berichten over uw buurt",

@@ -17,7 +17,13 @@ export {
   type DemoGegeven,
   type DemoOnderdeelLink,
 } from "./onderneming";
-export { getDemoZaken, getDemoZakenVragen, type DemoZaak } from "./zaken";
+export {
+  getDemoZaakById,
+  getDemoZaken,
+  getDemoZakenVragen,
+  type DemoZaak,
+  type DemoZaakStap,
+} from "./zaken";
 export { getDemoBuurtberichten, type DemoBuurtbericht } from "./buurtberichten";
 export {
   getDemoBerichten,

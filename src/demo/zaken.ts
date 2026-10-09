@@ -1,46 +1,41 @@
+import proefZaken from "./proef-zaken.json";
 import type { DemoVraag } from "./binnenkort";
+
+/** Stap in de voortgang van een zaak, zoals in moza-poc. */
+export type DemoZaakStap = {
+  titel: string;
+  /** Afgerond = laatste stap van een afgehandelde zaak. */
+  soort: "voltooid" | "huidig" | "volgende" | "later" | "afgerond";
+  /** Datum als tekst, soms met "sinds" of "verwacht voor". */
+  datum?: string;
+  /** Standaard uitgeklapt. */
+  open?: boolean;
+  tekst?: string[];
+  /** Er wordt iets van de ondernemer verwacht. */
+  waarschuwing?: string;
+  /** Gegevens die de ondernemer nog moet aanleveren. */
+  aanleveren?: { intro: string; items: string[]; knop: string };
+};
 
 export type DemoZaak = {
   id: string;
+  soort: "lopend" | "afgehandeld";
+  titel: string;
   organisatie: string;
-  onderwerp: string;
-  gewijzigd: string;
-  status: string;
-  /** Toon een waarschuwing als er iets van u wordt verwacht */
+  /** Laatste wijziging, of de datum van afhandeling. */
+  datum: string;
+  /** Status in het overzicht. Alleen bij lopende zaken. */
+  status?: string;
+  /** Toon een waarschuwing als er iets van u wordt verwacht. */
   actieNodig?: boolean;
+  /** Toon "Over deze zaak" boven de voortgang (zoals bij de subsidie). */
+  gegevensBovenaan?: boolean;
+  gegevens: { label: string; waarde: string }[];
+  stappen: DemoZaakStap[];
 };
 
-const zaken: DemoZaak[] = [
-  {
-    id: "omgevingsvergunning",
-    organisatie: "Gemeente Lansingerland",
-    onderwerp: "Omgevingsvergunning verbouwing bedrijfspand",
-    gewijzigd: "21 mei 2026",
-    status: "In behandeling genomen",
-  },
-  {
-    id: "melding-openbare-ruimte",
-    organisatie: "Gemeente Lansingerland",
-    onderwerp: "Melding openbare ruimte",
-    gewijzigd: "6 mei 2026",
-    status: "Extra informatie opgevraagd",
-    actieNodig: true,
-  },
-  {
-    id: "subsidie-verduurzaming",
-    organisatie: "Rijksdienst voor Ondernemend Nederland",
-    onderwerp: "Subsidie aangevraagd",
-    gewijzigd: "19 maart 2026",
-    status: "Volledigheid gecontroleerd",
-  },
-  {
-    id: "informatieplicht-energie",
-    organisatie: "Rijksdienst voor Ondernemend Nederland",
-    onderwerp: "Informatieplicht energiebesparing",
-    gewijzigd: "2 maart 2026",
-    status: "Afgehandeld",
-  },
-];
+// Uit moza-poc (moza/lopende-zaken/*.html). Zaaknummers en data zijn fictief.
+const zaken = proefZaken as DemoZaak[];
 
 const vragen: DemoVraag[] = [
   {
@@ -60,6 +55,12 @@ const vragen: DemoVraag[] = [
   },
 ];
 
-export const getDemoZaken = async (): Promise<DemoZaak[]> => zaken;
+export const getDemoZaken = async (
+  soort: DemoZaak["soort"] = "lopend",
+): Promise<DemoZaak[]> => zaken.filter((zaak) => zaak.soort === soort);
+
+export const getDemoZaakById = async (
+  id: string,
+): Promise<DemoZaak | undefined> => zaken.find((zaak) => zaak.id === id);
 
 export const getDemoZakenVragen = async (): Promise<DemoVraag[]> => vragen;
