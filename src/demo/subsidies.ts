@@ -6,6 +6,8 @@ export type DemoSubsidie = DemoOnderdeel & {
   type: string;
   aanvraagperiode: string;
   maximaalBedrag?: string;
+  /** Deel van het budget dat al is toegekend, in procenten. */
+  budgetVergeven?: number;
   alinea: string[];
   websiteLabel: string;
   href: string;
@@ -21,8 +23,9 @@ const subsidies: DemoSubsidie[] = proefSubsidies.map((subsidie) => ({
   type: subsidie.type,
   aanvraagperiode: subsidie.aanvraagperiode,
   maximaalBedrag: subsidie.maximaalBedrag ?? undefined,
+  budgetVergeven: subsidie.budgetVergeven ?? undefined,
   alinea: subsidie.inhoud,
-  websiteLabel: `Naar de website van ${subsidie.verstrekker}`,
+  websiteLabel: `Bekijk op de website van ${subsidie.verstrekker}`,
   href: subsidie.externUrl,
 }));
 
