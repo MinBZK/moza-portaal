@@ -1,28 +1,43 @@
-import {
-  Heading,
-  Paragraph,
-  Alert,
-  DataSummary,
-  DataSummaryItem,
-  Link,
-  ActionGroup,
-  Button,
-} from "@/components/rhc";
-import { Icon } from "@rijkshuisstijl-community/icon-react";
-import {
-  BewaarKnop,
-  NietRelevantKnop,
-  RelevantItem,
-} from "../bewaard/_bewaarActies";
+import Link from "next/link";
+import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoSubsidies } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
+import { RelevantItem } from "../bewaard/_bewaarActies";
+import SubsidieActies, { bewaarItemVan } from "./_subsidieActies";
+import SubsidieGegevens from "./_subsidieGegevens";
 
-const SubsidiesPage = async () => {
-  const flags = await getFlagsFromServerCookie();
-  const persona = await getActievePersona();
-  const subsidies = await getDemoSubsidies(persona?.subsidies);
+const PER_PAGINA = 5;
+
+const SubsidiesPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ pagina?: string }>;
+}) => {
+  const [flags, persona, { pagina }] = await Promise.all([
+    getFlagsFromServerCookie(),
+    getActievePersona(),
+    searchParams,
+  ]);
+
+  // Zoals in moza-poc: eerst de subsidies voor dit bedrijf, dan die voor de branche.
+  const ids = [
+    ...new Set([
+      ...(persona?.homepageSubsidies ?? []),
+      ...(persona?.subsidies ?? []),
+    ]),
+  ];
+  const subsidies = await getDemoSubsidies(ids);
+  const totaalPaginas = Math.max(1, Math.ceil(subsidies.length / PER_PAGINA));
+  const huidigePagina = Math.min(
+    Math.max(1, Number(pagina) || 1),
+    totaalPaginas,
+  );
+  const opPagina = subsidies.slice(
+    (huidigePagina - 1) * PER_PAGINA,
+    huidigePagina * PER_PAGINA,
+  );
 
   return (
     <>
@@ -37,80 +52,38 @@ const SubsidiesPage = async () => {
         </Paragraph>
       </Alert>
 
-      {subsidies.map((subsidie) => {
-        const item = {
-          sleutel: `subsidie:${subsidie.id}`,
-          categorie: "Subsidies en financiering",
-          titel: subsidie.titel,
-          samenvatting: subsidie.samenvatting,
-          href: `/subsidies#${subsidie.id}`,
-        };
-        return (
-          <RelevantItem key={subsidie.id} item={item}>
-            <div className="mox-card" id={subsidie.id}>
-              <Heading level={2}>{subsidie.titel}</Heading>
-              <Paragraph>{subsidie.samenvatting}</Paragraph>
+      {subsidies.length === 0 && (
+        <Paragraph>
+          Er zijn nu geen subsidies of financieringen voor uw bedrijf.
+        </Paragraph>
+      )}
 
-              <DataSummary appearance="column">
-                <DataSummaryItem
-                  itemKey="Verstrekker"
-                  itemValue={subsidie.verstrekker}
-                />
-                <DataSummaryItem itemKey="Type" itemValue={subsidie.type} />
-                <DataSummaryItem
-                  itemKey="Aanvraagperiode"
-                  itemValue={subsidie.aanvraagperiode}
-                />
-                {subsidie.maximaalBedrag && (
-                  <DataSummaryItem
-                    itemKey="Maximaal bedrag"
-                    itemValue={subsidie.maximaalBedrag}
-                  />
-                )}
-              </DataSummary>
-
-              {subsidie.alinea.map((tekst) => (
-                <Paragraph key={tekst}>{tekst}</Paragraph>
-              ))}
-
-              <Heading level={3}>Vragen over deze regeling?</Heading>
-              <Paragraph>
-                <Link inline href="#">
-                  De digitale assistent zoekt voor u uit
-                </Link>
-                . Bijvoorbeeld: komt u in aanmerking voor deze subsidie, en wat
-                moet u doen vóór de aanvraagperiode sluit?
-              </Paragraph>
-
-              {/* role vast: ActionGroup telt de children anders op server en client */}
-              <ActionGroup
-                role="group"
-                direction="row"
-                className="mox-action-group"
+      {opPagina.map((subsidie) => (
+        <RelevantItem key={subsidie.id} item={bewaarItemVan(subsidie)}>
+          <article className="mox-card" aria-labelledby={`kop-${subsidie.id}`}>
+            <Heading level={2} id={`kop-${subsidie.id}`}>
+              <Link
+                href={`/subsidies/${subsidie.id}`}
+                className="utrecht-link utrecht-link--html-a"
               >
-                <BewaarKnop item={item} />
-                {flags.mox_delen && (
-                  <Button appearance="secondary-action-button">
-                    <Icon icon="delen" />
-                    Deel
-                  </Button>
-                )}
-                <Button appearance="secondary-action-button">
-                  <Icon icon="communicatie" />
-                  Vraag aan de digitale assistent
-                </Button>
-                <NietRelevantKnop item={item} />
-              </ActionGroup>
+                {subsidie.titel}
+                <Icon icon="chevron-right" />
+              </Link>
+            </Heading>
+            <Paragraph>{subsidie.samenvatting}</Paragraph>
+            <SubsidieGegevens subsidie={subsidie} />
+            <SubsidieActies subsidie={subsidie} delen={flags.mox_delen} />
+          </article>
+        </RelevantItem>
+      ))}
 
-              <Button appearance="primary-action-button">
-                {subsidie.websiteLabel}
-              </Button>
-            </div>
-          </RelevantItem>
-        );
-      })}
-
-      <PageNumberNavigation maxVisiblePages={5} page={1} totalPages={10} />
+      {totaalPaginas > 1 && (
+        <PageNumberNavigation
+          page={huidigePagina}
+          totalPages={totaalPaginas}
+          maxVisiblePages={5}
+        />
+      )}
     </>
   );
 };

@@ -1,29 +1,43 @@
-import {
-  Heading,
-  Paragraph,
-  Alert,
-  DataSummary,
-  DataSummaryItem,
-  OrderedList,
-  OrderedListItem,
-  ActionGroup,
-  Button,
-} from "@/components/rhc";
-import { Icon } from "@rijkshuisstijl-community/icon-react";
-import {
-  BewaarKnop,
-  NietRelevantKnop,
-  RelevantItem,
-} from "../bewaard/_bewaarActies";
+import Link from "next/link";
+import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoWetten } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
+import { RelevantItem } from "../bewaard/_bewaarActies";
+import WetActies, { bewaarItemVan } from "./_wetActies";
+import WetGegevens from "./_wetGegevens";
 
-const WettenPage = async () => {
-  const flags = await getFlagsFromServerCookie();
-  const persona = await getActievePersona();
-  const wetten = await getDemoWetten(persona?.regelgeving);
+const PER_PAGINA = 5;
+
+const WettenPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ pagina?: string }>;
+}) => {
+  const [flags, persona, { pagina }] = await Promise.all([
+    getFlagsFromServerCookie(),
+    getActievePersona(),
+    searchParams,
+  ]);
+
+  // Zoals in moza-poc: eerst de regels voor dit bedrijf, dan die voor de branche.
+  const ids = [
+    ...new Set([
+      ...(persona?.homepageRegelgeving ?? []),
+      ...(persona?.regelgeving ?? []),
+    ]),
+  ];
+  const wetten = await getDemoWetten(ids);
+  const totaalPaginas = Math.max(1, Math.ceil(wetten.length / PER_PAGINA));
+  const huidigePagina = Math.min(
+    Math.max(1, Number(pagina) || 1),
+    totaalPaginas,
+  );
+  const opPagina = wetten.slice(
+    (huidigePagina - 1) * PER_PAGINA,
+    huidigePagina * PER_PAGINA,
+  );
 
   return (
     <>
@@ -38,76 +52,36 @@ const WettenPage = async () => {
         </Paragraph>
       </Alert>
 
-      {wetten.map((wet) => {
-        const item = {
-          sleutel: `wet:${wet.id}`,
-          categorie: "Wetten en regelgeving",
-          titel: wet.titel,
-          samenvatting: wet.samenvatting,
-          href: `/wetten#${wet.id}`,
-        };
-        return (
-          <RelevantItem key={wet.id} item={item}>
-            <div className="mox-card" id={wet.id}>
-              <Heading level={2}>{wet.titel}</Heading>
-              <Paragraph>{wet.samenvatting}</Paragraph>
+      {wetten.length === 0 && (
+        <Paragraph>Er zijn nu geen wetten of regels voor uw bedrijf.</Paragraph>
+      )}
 
-              <DataSummary appearance="column">
-                {wet.status && (
-                  <DataSummaryItem itemKey="Status" itemValue={wet.status} />
-                )}
-                <DataSummaryItem itemKey="Bron" itemValue={wet.bron} />
-                <DataSummaryItem
-                  itemKey="Gaat in op"
-                  itemValue={wet.ingangsdatum}
-                />
-                <DataSummaryItem itemKey="Voor wie" itemValue={wet.voorWie} />
-              </DataSummary>
-
-              {wet.alinea.map((tekst) => (
-                <Paragraph key={tekst}>{tekst}</Paragraph>
-              ))}
-
-              {wet.stappen.length > 0 && (
-                <>
-                  <Heading level={3}>Wat moet u doen?</Heading>
-                  <OrderedList>
-                    {wet.stappen.map((stap) => (
-                      <OrderedListItem key={stap}>{stap}</OrderedListItem>
-                    ))}
-                  </OrderedList>
-                </>
-              )}
-
-              {/* role vast: ActionGroup telt de children anders op server en client */}
-              <ActionGroup
-                role="group"
-                direction="row"
-                className="mox-action-group"
+      {opPagina.map((wet) => (
+        <RelevantItem key={wet.id} item={bewaarItemVan(wet)}>
+          <article className="mox-card" aria-labelledby={`kop-${wet.id}`}>
+            <Heading level={2} id={`kop-${wet.id}`}>
+              <Link
+                href={`/wetten/${wet.id}`}
+                className="utrecht-link utrecht-link--html-a"
               >
-                <BewaarKnop item={item} />
-                {flags.mox_delen && (
-                  <Button appearance="secondary-action-button">
-                    <Icon icon="delen" />
-                    Deel
-                  </Button>
-                )}
-                <Button appearance="secondary-action-button">
-                  <Icon icon="communicatie" />
-                  Vraag aan de digitale assistent
-                </Button>
-                <NietRelevantKnop item={item} />
-              </ActionGroup>
+                {wet.titel}
+                <Icon icon="chevron-right" />
+              </Link>
+            </Heading>
+            <Paragraph>{wet.samenvatting}</Paragraph>
+            <WetGegevens wet={wet} />
+            <WetActies wet={wet} delen={flags.mox_delen} />
+          </article>
+        </RelevantItem>
+      ))}
 
-              <Button appearance="primary-action-button">
-                {wet.websiteLabel}
-              </Button>
-            </div>
-          </RelevantItem>
-        );
-      })}
-
-      <PageNumberNavigation maxVisiblePages={5} page={1} totalPages={10} />
+      {totaalPaginas > 1 && (
+        <PageNumberNavigation
+          page={huidigePagina}
+          totalPages={totaalPaginas}
+          maxVisiblePages={5}
+        />
+      )}
     </>
   );
 };

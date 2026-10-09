@@ -2,13 +2,12 @@ import type { DemoOnderdeel } from "./types";
 import proefRegelgeving from "./proef-regelgeving.json";
 
 export type DemoWet = DemoOnderdeel & {
-  status?: "Nieuw" | "Gewijzigd" | "Vervalt";
   bron: string;
   ingangsdatum: string;
   voorWie: string;
   alinea: string[];
-  /** Wat de ondernemer moet doen. Ontbreekt in de moza-poc-dataset. */
-  stappen: string[];
+  /** Eigen vraag voor de digitale assistent, alleen bij enkele regels. */
+  assistentVraag?: string;
   websiteLabel: string;
   href: string;
 };
@@ -23,8 +22,8 @@ const wetten: DemoWet[] = proefRegelgeving.map((regel) => ({
   ingangsdatum: regel.inwerkingtreding,
   voorWie: regel.geldtVoor,
   alinea: regel.inhoud,
-  stappen: [],
-  websiteLabel: "Lees de wet op wetten.overheid.nl",
+  assistentVraag: regel.assistentVraag ?? undefined,
+  websiteLabel: "Bekijk op de website van wetten.overheid.nl",
   href: regel.externUrl,
 }));
 

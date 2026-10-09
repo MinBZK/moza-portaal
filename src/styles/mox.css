@@ -410,6 +410,19 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	/* Budget vergeven bij een subsidie: balk met het percentage ernaast */
+	.mox-budget {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-md);
+
+		.mox-progressbar {
+			background-color: var(--rhc-color-cool-grey-200);
+			flex: 1;
+			max-inline-size: 20rem;
+		}
+	}
+
 	/* Action menu */
 	.mox-action-menu {
 		background-color: var(--rhc-color-wit);
