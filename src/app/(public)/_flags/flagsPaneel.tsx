@@ -23,6 +23,7 @@ import {
   type FeatureFlagKey,
   type FeatureFlags,
 } from "@/app/(private)/instellingen/_featureFlags";
+import AssistentPaneel from "./assistentPaneel";
 
 /**
  * Het Flags-paneel uit moza-poc: feature flags, persona's en hulpmiddelen voor
@@ -49,10 +50,13 @@ const FlagsPaneel = ({
   flags,
   personas,
   actievePersonaId,
+  assistentBackendIngesteld,
 }: {
   flags: FeatureFlags;
   personas: PersonaKeuze[];
   actievePersonaId?: string;
+  /** Is de backend van de Digitale assistent ingesteld? */
+  assistentBackendIngesteld: boolean;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -224,6 +228,8 @@ const FlagsPaneel = ({
                 </Button>
               </form>
             </div>
+
+            <AssistentPaneel backendIngesteld={assistentBackendIngesteld} />
 
             <div>
               <Fieldset legend="Hulpmiddelen">

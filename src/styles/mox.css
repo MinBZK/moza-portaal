@@ -434,7 +434,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		display: grid;
 		gap: var(--mox-stap-gap);
 
-		> li {
+		>li {
 			counter-increment: stap;
 			display: flex;
 			gap: var(--rhc-space-md);
@@ -472,17 +472,17 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			}
 		}
 
-		> [aria-current="step"] {
+		>[aria-current="step"] {
 			&::before {
 				background-color: var(--rhc-color-lintblauw-500);
 			}
 
-			~ li::before {
+			~li::before {
 				background-color: var(--rhc-color-cool-grey-500);
 			}
 
 			&::after,
-			~ li::after {
+			~li::after {
 				background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
 			}
 		}
@@ -510,7 +510,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			}
 		}
 
-		details[open] > summary .utrecht-icon {
+		details[open]>summary .utrecht-icon {
 			transform: rotate(90deg);
 		}
 	}
@@ -537,6 +537,257 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		.utrecht-icon {
 			color: var(--rhc-color-oranje-500);
+		}
+	}
+
+	/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
+	.mox-chat {
+		display: grid;
+		gap: var(--rhc-space-lg);
+	}
+
+	.mox-chat-berichten {
+		block-size: max(24rem, 50dvh);
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+		border-radius: var(--rhc-border-radius-md);
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-lg);
+		overflow-y: auto;
+		padding: var(--rhc-space-lg);
+	}
+
+	.mox-chat-regel {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.mox-chat-bericht,
+	.mox-chat-kaart,
+	.mox-chat-suggesties {
+		border-radius: var(--rhc-border-radius-md);
+		display: grid;
+		gap: var(--rhc-space-md);
+		max-inline-size: min(80%, 48rem);
+		padding: var(--rhc-space-md) var(--rhc-space-lg);
+	}
+
+	.mox-chat-bericht--assistent,
+	.mox-chat-kaart,
+	.mox-chat-suggesties {
+		align-self: flex-start;
+		background-color: var(--rhc-color-cool-grey-100);
+	}
+
+	.mox-chat-bericht--gebruiker {
+		align-self: flex-end;
+		background-color: var(--rhc-color-lintblauw-700);
+		color: var(--rhc-color-wit);
+
+		.nl-paragraph {
+			color: inherit;
+		}
+	}
+
+	.mox-chat-bericht--fout {
+		align-self: flex-start;
+		background-color: var(--rhc-color-rood-50);
+		display: flex;
+		gap: var(--rhc-space-md);
+
+		>.utrecht-icon {
+			color: var(--rhc-color-rood-600);
+		}
+	}
+
+	.mox-chat-suggesties {
+		max-inline-size: 100%;
+
+		.utrecht-button {
+			justify-self: start;
+		}
+	}
+
+	.mox-chat-kaart {
+		inline-size: min(100%, 48rem);
+		max-inline-size: 100%;
+
+		fieldset {
+			display: grid;
+			gap: var(--rhc-space-sm);
+		}
+	}
+
+	.mox-chat-formulier {
+		display: grid;
+		gap: var(--rhc-space-lg);
+	}
+
+	.mox-chat-bronnen {
+		border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+		display: grid;
+		gap: var(--rhc-space-sm);
+		padding-block-start: var(--rhc-space-md);
+
+		ul {
+			display: grid;
+			gap: var(--rhc-space-sm);
+		}
+
+		li {
+			display: grid;
+		}
+
+		small {
+			color: var(--rhc-color-foreground-subtle);
+		}
+	}
+
+	.mox-chat-badge {
+		align-items: center;
+		background-color: var(--rhc-color-groen-100);
+		border-radius: var(--rhc-border-radius-md);
+		display: inline-flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+		inline-size: fit-content;
+		padding: var(--rhc-space-2xs) var(--rhc-space-sm);
+
+		.utrecht-icon {
+			color: var(--rhc-color-groen-600);
+		}
+	}
+
+	.mox-chat-energie {
+		display: grid;
+		gap: var(--rhc-space-md);
+	}
+
+	.mox-energie-cijfers {
+		display: grid;
+		gap: var(--rhc-space-lg);
+		grid-template-columns: repeat(2, 1fr);
+
+		dt {
+			color: var(--rhc-color-foreground-subtle);
+			font-size: var(--rhc-text-font-size-sm);
+		}
+	}
+
+	.mox-energie-waarde {
+		display: block;
+		font-weight: var(--rhc-text-font-weight-bold);
+	}
+
+	.mox-energie-grens {
+		align-items: center;
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-xs);
+
+		&::before {
+			block-size: 0.5rem;
+			border-radius: var(--rhc-border-radius-round);
+			content: "";
+			flex: none;
+			inline-size: 0.5rem;
+		}
+	}
+
+	.mox-energie-grens--boven::before {
+		background-color: var(--rhc-color-oranje-500);
+	}
+
+	.mox-energie-grens--onder::before {
+		background-color: var(--rhc-color-groen-600);
+	}
+
+	/* Wachtindicatie: drie stippen die een voor een verschijnen */
+	.mox-chat-denkt {
+		align-items: center;
+		align-self: flex-start;
+		display: flex;
+		gap: var(--rhc-space-sm);
+	}
+
+	.mox-wacht {
+		animation: mox-wacht 1s steps(4) infinite;
+		aspect-ratio: 4;
+		background: radial-gradient(circle closest-side, var(--rhc-color-foreground-default) 90%, transparent) 0 / calc(100% / 3) 100% space;
+		clip-path: inset(0 100% 0 0);
+		inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
+	}
+
+	.mox-chat-invoer {
+		display: grid;
+		gap: var(--rhc-space-md);
+
+		textarea {
+			max-inline-size: none;
+			min-block-size: 6rem;
+		}
+	}
+
+	.mox-chat-disclaimer {
+		align-items: flex-start;
+		color: var(--rhc-color-foreground-subtle);
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+	}
+
+	/* Status van bronnen, met uitleg bij hover en focus (Escape verbergt die) */
+	.mox-chat-status {
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--rhc-space-sm) var(--rhc-space-lg);
+		}
+
+		li {
+			align-items: center;
+			display: flex;
+			gap: var(--rhc-space-xs);
+			position: relative;
+
+			>.utrecht-icon {
+				color: var(--rhc-color-rood-600);
+			}
+		}
+
+		.mox-chat-status--verbonden>.utrecht-icon {
+			color: var(--rhc-color-groen-600);
+		}
+	}
+
+	.mox-chat-status-bron {
+		border-block-end: var(--rhc-border-width-sm) dotted currentcolor;
+		cursor: help;
+	}
+
+	.mox-chat-status-uitleg {
+		background-color: var(--rhc-color-wit);
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		inline-size: max-content;
+		inset-block-end: calc(100% + var(--rhc-space-xs));
+		inset-inline-start: 0;
+		max-inline-size: 20rem;
+		opacity: 0;
+		padding: var(--rhc-space-md);
+		position: absolute;
+		visibility: hidden;
+		z-index: 1;
+
+		li:hover>&,
+		li:focus-within>& {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.mox-chat-status--uit & {
+			opacity: 0;
+			visibility: hidden;
 		}
 	}
 
@@ -730,4 +981,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		transition: none !important;
 	}
 
+}
+
+/* Buiten .rhc-theme: @keyframes mag niet genest staan. */
+@keyframes mox-wacht {
+	to {
+		clip-path: inset(0 -33% 0 0);
+	}
 }

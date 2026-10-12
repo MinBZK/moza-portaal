@@ -2,6 +2,7 @@ import Breadcrumb from "@/layouts/breadcrumb";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
 import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
+import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getDemoPersonas } from "@/demo";
 import { FlagsProvider } from "./_flags/flagsContext";
@@ -43,6 +44,7 @@ export default async function PublicLayout({
                 <Navigation
                   flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
+                  lopendeZakenBadge={<ZakenBadge />}
                 />
               </nav>
             )}
@@ -63,6 +65,7 @@ export default async function PublicLayout({
       <FlagsPaneel
         flags={flags}
         actievePersonaId={persona?.id}
+        assistentBackendIngesteld={!!process.env.ASSISTENT_BACKEND_URL}
         personas={personas.map((p) => ({
           id: p.id,
           label: p.label,

@@ -27,10 +27,16 @@ const tekst = {
 const BewaardeItems = ({
   soort,
   leeg,
+  alleenCategorie,
+  zonderCategorie,
 }: {
   soort: "bewaard" | "nietRelevant";
   /** Wat er staat als er nog niets is. */
   leeg: ReactNode;
+  /** Alleen deze categorie, zoals de gesprekken met de Digitale assistent. */
+  alleenCategorie?: string;
+  /** Alles behalve deze categorie. */
+  zonderCategorie?: string;
 }) => {
   const { staat, fout, zetBewaard, zetNietRelevant } = useBewaard();
   const [melding, setMelding] = useState<string | null>(null);
@@ -54,7 +60,11 @@ const BewaardeItems = ({
   if (!staat)
     return <Paragraph role="status">Uw items worden geladen.</Paragraph>;
 
-  const items = Object.values(staat[soort]);
+  const items = Object.values(staat[soort]).filter(
+    (item) =>
+      (!alleenCategorie || item.categorie === alleenCategorie) &&
+      item.categorie !== zonderCategorie,
+  );
   const perCategorie = new Map<string, BewaarItem[]>();
   for (const item of items) {
     perCategorie.set(item.categorie, [

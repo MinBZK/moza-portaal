@@ -253,7 +253,8 @@
           "Uw rapportage is verwerkt en u hebt aan de informatieplicht voldaan. Heeft het bevoegd gezag vragen of een controle? Dan ontvangt u hierover bericht in uw Berichtenbox."
         ]
       }
-    ]
+    ],
+    "viaAssistent": true
   },
   {
     "id": "omgevingsvergunning-gevelreclame",

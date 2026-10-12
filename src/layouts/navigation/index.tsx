@@ -16,11 +16,14 @@ import {
 const Navigation = ({
   flags,
   berichtenboxBadge,
+  lopendeZakenBadge,
 }: {
   /** Pagina-flags uit het Flags-paneel. Zonder flags staat alles aan. */
   flags?: FeatureFlags;
   /** Aantal ongelezen berichten. Komt van de layout, want die kent de berichten. */
   berichtenboxBadge?: ReactNode;
+  /** Zaken die de Digitale assistent aanmaakte. */
+  lopendeZakenBadge?: ReactNode;
 }) => {
   const toon = (key: FeatureFlagKey) => flags?.[key] !== false;
   const pathname = usePathname();
@@ -72,6 +75,7 @@ const Navigation = ({
               icon="activiteit"
             >
               Lopende zaken
+              {lopendeZakenBadge}
             </SideNavLink>
           </SideNavItem>
         )}
