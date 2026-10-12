@@ -5,7 +5,29 @@ export type DemoOrganisatie = {
   id: string;
   naam: string;
   aangesloten: boolean;
+  /** Gebruikt altijd uw centrale contactgegevens; niet uit te zetten (zoals in moza-poc). */
+  vast?: boolean;
 };
+
+/**
+ * Identiteiten met een profiel in de profielservice (profiel.mijnoverheidzakelijk.nl),
+ * dezelfde als in moza-poc (react-islands/.../Contactgegevens.tsx). De persona's
+ * van het prototype hebben daar (nog) geen eigen profiel.
+ */
+export type DemoProfielIdentiteit = {
+  identificatieType: "KVK" | "BSN";
+  identificatieNummer: string;
+};
+
+const profielIdentiteiten: Record<"zakelijk" | "prive", DemoProfielIdentiteit> =
+  {
+    zakelijk: { identificatieType: "KVK", identificatieNummer: "90006623" },
+    prive: { identificatieType: "BSN", identificatieNummer: "000000036" },
+  };
+
+export const getDemoProfielIdentiteit = async (
+  soort: "zakelijk" | "prive",
+): Promise<DemoProfielIdentiteit> => profielIdentiteiten[soort];
 
 const contactgegevens: DemoGegeven[] = [
   { label: "E-mailadres", waarde: "info@bloombv.nl" },
@@ -13,8 +35,18 @@ const contactgegevens: DemoGegeven[] = [
 ];
 
 const organisaties: DemoOrganisatie[] = [
-  { id: "kvk", naam: "Kamer van Koophandel (KVK)", aangesloten: true },
-  { id: "belastingdienst", naam: "Belastingdienst", aangesloten: true },
+  {
+    id: "kvk",
+    naam: "Kamer van Koophandel (KVK)",
+    aangesloten: true,
+    vast: true,
+  },
+  {
+    id: "belastingdienst",
+    naam: "Belastingdienst",
+    aangesloten: true,
+    vast: true,
+  },
   { id: "om", naam: "Openbaar Ministerie (OM)", aangesloten: false },
   {
     id: "rvo",

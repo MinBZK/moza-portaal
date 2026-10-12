@@ -39,7 +39,12 @@ export type PersonaKeuze = {
 
 const PAUZE_SLEUTEL = "setting:pause-animations";
 // Gegevens die bij een persona horen. Bij wisselen gaan ze weg, net als in moza-poc.
-const VAN_DE_PERSONA = ["moza-berichtenbox", "moza-bewaard"];
+const VAN_DE_PERSONA = [
+  "moza-berichtenbox",
+  "moza-bewaard",
+  "moza-zaken",
+  "moza-contactorganisaties",
+];
 
 const luisterNaarOpslag = (luisteraar: () => void) => {
   window.addEventListener("storage", luisteraar);
