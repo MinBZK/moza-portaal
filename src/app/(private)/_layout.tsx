@@ -25,7 +25,7 @@ export default async function PrivateLayout({
 
   return (
     <Providers session={session}>
-      <Header kvk={kvk!} kvkOpties={kvkOpties} />
+      <Header kvk={kvk!} kvkOpties={kvkOpties} metMenu />
       {/* Zelfde opbouw als de PublicLayout in (public)/_layout.tsx */}
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">

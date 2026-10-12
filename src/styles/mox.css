@@ -27,6 +27,20 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.utrecht-page-body {
 		padding-block-end: 0;
 		padding-block-start: var(--rhc-space-2xl);
+
+		/* Lange woorden afbreken op een smal scherm. break-word en niet anywhere:
+		  anywhere maakt de minimale breedte van tekst één letter, en dan knijpen
+		  tabellen al hun kolommen samen in plaats van te scrollen. */
+		@media screen and (width <=768px) {
+			hyphens: auto;
+			overflow-wrap: break-word;
+
+			/* Tabellen scrollen (mox-table-container); cellen breken niet midden in een woord. */
+			.utrecht-table {
+				hyphens: manual;
+				overflow-wrap: normal;
+			}
+		}
 	}
 
 	.utrecht-page-body,
@@ -36,6 +50,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	#hoofd-inhoud {
 		padding-block-end: var(--rhc-space-max-4xl);
+
+		@media screen and (width <=768px) {
+			padding: var(--rhc-space-lg);
+
+			.rhc-side-nav {}
+		}
 	}
 
 	/* Page header */
@@ -51,6 +71,27 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		color: var(--rhc-color-light-cool-grey-900);
 		font-size: var(--rhc-text-font-size-min-2xl);
 		font-weight: normal;
+	}
+
+	.mox-header-account {
+		--utrecht-icon-inset-block-start: var(--rhc-space-sm);
+
+		.utrecht-icon {
+			margin-inline-end: var(--rhc-space-sm);
+		}
+	}
+
+	/* Responsive menu */
+	.mox-menu-knop {
+		font-size: var(--rhc-text-font-size-sm);
+		inset-block-start: var(--rhc-space-sm);
+		inset-inline-start: 0;
+		position: absolute;
+		z-index: 1;
+	}
+
+	.rhc-logo__caption {
+		margin-block-start: calc(-1 * var(--rhc-space-sm));
 	}
 
 	/* Language nav */
@@ -70,6 +111,13 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.utrecht-icon {
 			display: none;
 		}
+
+		@media (width < 768px) {
+			.rhc-language-navigation__trigger {
+				color: var(--rhc-color-light-cool-grey-900);
+				padding-inline-start: 0;
+			}
+		}
 	}
 
 	/* Sidenav */
@@ -81,7 +129,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-main-container {
 		align-content: start;
 		display: grid;
-		gap: var(--rhc-space-2xl)
+		gap: var(--rhc-space-2xl);
+		/* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
+		  ontstaat er op een smal scherm een horizontale scrollbalk. */
+		grid-template-columns: minmax(0, 1fr);
 	}
 
 	.mox-card,
@@ -90,6 +141,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
 		padding: var(--rhc-space-3xl);
+
+		/* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
+		@media (width < 768px) {
+			padding: var(--rhc-space-lg);
+		}
 	}
 
 	.mox-faq-card {
@@ -177,8 +233,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
+	  gepositioneerd) binnen de scrollcontainer; anders scrolt de hele pagina. */
 	.mox-table-container {
 		overflow-x: auto;
+		position: relative;
 	}
 
 	.mox-button-mark {
@@ -241,6 +300,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	/* Icons */
 	.utrecht-icon {
 		block-size: var(--rhc-size-icon-md);
+		flex-shrink: 0;
 		inline-size: var(--rhc-size-icon-md);
 	}
 
@@ -253,7 +313,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-block-end-color: var(--rhc-color-cool-grey-400);
 		border-block-end-width: var(--rhc-border-width-md);
 		display: flex;
-		gap: var(--rhc-space-3xl)
+		gap: var(--rhc-space-3xl);
+
+		/* Smal scherm: minder ruimte tussen de tabs, en ze mogen doorlopen op een
+		  volgende regel in plaats van buiten het scherm. */
+		@media (width < 768px) {
+			flex-wrap: wrap;
+			gap: 0 var(--rhc-space-md);
+		}
 	}
 
 	.mox-tab {

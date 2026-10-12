@@ -12,11 +12,14 @@ import {
   SideNavLink,
   Separator,
 } from "@rijkshuisstijl-community/components-react";
+import { MENU_ID, useMenuOpen } from "./menuKnop";
+import LanguageSelect, { TALEN } from "@/components/languageSelect";
 
 const Navigation = ({
   flags,
   berichtenboxBadge,
   lopendeZakenBadge,
+  naam = "Robin Vogel",
 }: {
   /** Pagina-flags uit het Flags-paneel. Zonder flags staat alles aan. */
   flags?: FeatureFlags;
@@ -24,6 +27,8 @@ const Navigation = ({
   berichtenboxBadge?: ReactNode;
   /** Zaken die de Digitale assistent aanmaakte. */
   lopendeZakenBadge?: ReactNode;
+  /** Naam in het menu op een smal scherm, net als in de header. */
+  naam?: string;
 }) => {
   const toon = (key: FeatureFlagKey) => flags?.[key] !== false;
   const pathname = usePathname();
@@ -35,187 +40,217 @@ const Navigation = ({
         : pathname === href || pathname.startsWith(`${href}/`),
     );
 
+  const open = useMenuOpen();
+
   return (
     <SideNav>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink current={isActief("/")} href="/" icon="home">
-            Home
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <Separator />
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink
-            current={isActief("/bedrijfsgegevens")}
-            href="/bedrijfsgegevens"
-            icon="briefcase"
-          >
-            Bedrijfsgegevens
-          </SideNavLink>
-        </SideNavItem>
-        {toon("mox_pagina_berichtenbox") && (
+      <div
+        id={MENU_ID}
+        className={
+          open ? "mox-menu-lijsten mox-menu-lijsten--open" : "mox-menu-lijsten"
+        }
+      >
+        <SideNavList>
           <SideNavItem>
-            <SideNavLink
-              current={isActief("/berichtenbox")}
-              href="/berichtenbox"
-              icon="inbox"
-            >
-              Berichtenbox
-              {berichtenboxBadge}
+            <SideNavLink current={isActief("/")} href="/" icon="home">
+              Home
             </SideNavLink>
           </SideNavItem>
+        </SideNavList>
+        <Separator />
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink
+              current={isActief("/bedrijfsgegevens")}
+              href="/bedrijfsgegevens"
+              icon="briefcase"
+            >
+              Bedrijfsgegevens
+            </SideNavLink>
+          </SideNavItem>
+          {toon("mox_pagina_berichtenbox") && (
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/berichtenbox")}
+                href="/berichtenbox"
+                icon="inbox"
+              >
+                Berichtenbox
+                {berichtenboxBadge}
+              </SideNavLink>
+            </SideNavItem>
+          )}
+          {toon("mox_pagina_lopendeZaken") && (
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/lopendezaken")}
+                href="/lopendezaken"
+                icon="activiteit"
+              >
+                Lopende zaken
+                {lopendeZakenBadge}
+              </SideNavLink>
+            </SideNavItem>
+          )}
+        </SideNavList>
+        <Separator />
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink
+              current={isActief("/subsidies")}
+              href="/subsidies"
+              icon="nieuws"
+            >
+              Subsidies en financiering
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink
+              current={isActief("/wetten")}
+              href="/wetten"
+              icon="publicatie"
+            >
+              Wetten en regelgeving
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink
+              current={isActief("/buurtberichten")}
+              href="/buurtberichten"
+              icon="locatiemarker"
+            >
+              Berichten over uw buurt
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink
+              current={isActief("/bewaard")}
+              href="/bewaard"
+              icon="favoriet"
+            >
+              Bewaarde items
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+        {toon("mox_pagina_digitaleAssistent") && (
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/digitale-assistent")}
+                href="/digitale-assistent"
+                icon="comment"
+              >
+                Digitale assistent (AI)
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
         )}
-        {toon("mox_pagina_lopendeZaken") && (
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/lopendezaken")}
-              href="/lopendezaken"
-              icon="activiteit"
-            >
-              Lopende zaken
-              {lopendeZakenBadge}
-            </SideNavLink>
-          </SideNavItem>
+        <Separator />
+        {toon("mox_pagina_belastingen") && (
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/belastingen")}
+                href="/belastingen"
+                icon="currency-euro"
+              >
+                Belastingen
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
         )}
-      </SideNavList>
-      <Separator />
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink
-            current={isActief("/subsidies")}
-            href="/subsidies"
-            icon="nieuws"
-          >
-            Subsidies en financiering
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink
-            current={isActief("/wetten")}
-            href="/wetten"
-            icon="publicatie"
-          >
-            Wetten en regelgeving
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink
-            current={isActief("/buurtberichten")}
-            href="/buurtberichten"
-            icon="locatiemarker"
-          >
-            Berichten over uw buurt
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink
-            current={isActief("/bewaard")}
-            href="/bewaard"
-            icon="favoriet"
-          >
-            Bewaarde items
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
-      {toon("mox_pagina_digitaleAssistent") && (
+        {toon("mox_pagina_zakelijkVervoer") && (
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/zakelijk-vervoer")}
+                href="/zakelijk-vervoer"
+                icon="car"
+              >
+                Zakelijk vervoer
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
+        )}
+        {toon("mox_pagina_personeel") && (
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/personeel")}
+                href="/personeel"
+                icon="user"
+              >
+                Personeel en rollen
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
+        )}
+        {toon("mox_pagina_ziekteVerlof") && (
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/verzuim-en-verlof")}
+                href="/verzuim-en-verlof"
+                icon="user"
+              >
+                Ziekte en verlof
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
+        )}
+        <Separator />
+        {toon("mox_pagina_dataverwerking") && (
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink
+                current={isActief("/dataverwerking")}
+                href="/dataverwerking"
+                icon="gegevensuitwisseling"
+              >
+                Gegevensdeling en dataverwerking
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
+        )}
         <SideNavList>
           <SideNavItem>
             <SideNavLink
-              current={isActief("/digitale-assistent")}
-              href="/digitale-assistent"
-              icon="comment"
+              current={isActief("/contactvoorkeuren")}
+              href="/contactvoorkeuren"
+              icon="instellingen"
             >
-              Digitale assistent (AI)
+              Contactvoorkeuren
             </SideNavLink>
           </SideNavItem>
         </SideNavList>
-      )}
-      <Separator />
-      {toon("mox_pagina_belastingen") && (
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/belastingen")}
-              href="/belastingen"
-              icon="currency-euro"
-            >
-              Belastingen
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-      )}
-      {toon("mox_pagina_zakelijkVervoer") && (
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/zakelijk-vervoer")}
-              href="/zakelijk-vervoer"
-              icon="car"
-            >
-              Zakelijk vervoer
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-      )}
-      {toon("mox_pagina_personeel") && (
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/personeel")}
-              href="/personeel"
-              icon="user"
-            >
-              Personeel en rollen
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-      )}
-      {toon("mox_pagina_ziekteVerlof") && (
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/verzuim-en-verlof")}
-              href="/verzuim-en-verlof"
-              icon="user"
-            >
-              Ziekte en verlof
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-      )}
-      <Separator />
-      {toon("mox_pagina_dataverwerking") && (
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/dataverwerking")}
-              href="/dataverwerking"
-              icon="gegevensuitwisseling"
-            >
-              Gegevensdeling en dataverwerking
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-      )}
-      <SideNavList>
-        <SideNavItem>
-          <SideNavLink
-            current={isActief("/contactvoorkeuren")}
-            href="/contactvoorkeuren"
-            icon="instellingen"
-          >
-            Contactvoorkeuren
-          </SideNavLink>
-        </SideNavItem>
-      </SideNavList>
+        {/* Alleen op een smal scherm; op breed staan deze in de header. */}
+        <div className="mox-menu-account">
+          <Separator />
+          <SideNavList>
+            <SideNavItem>
+              <SideNavLink href="/" icon="user">
+                {naam}
+              </SideNavLink>
+            </SideNavItem>
+            <SideNavItem>
+              <SideNavLink href="/api/persona-logout" icon="uitloggen">
+                Uitloggen
+              </SideNavLink>
+            </SideNavItem>
+          </SideNavList>
+          <LanguageSelect
+            selectedLanguage="Nederlands"
+            languages={TALEN}
+            metIcoon
+          />
+        </div>
+      </div>
     </SideNav>
   );
 };

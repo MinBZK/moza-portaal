@@ -29,6 +29,7 @@ export default async function PublicLayout({
       <Header
         isPublic
         signedIn={signedIn}
+        metMenu={withNavigation}
         naam={
           persona
             ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
@@ -45,6 +46,11 @@ export default async function PublicLayout({
                   flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
                   lopendeZakenBadge={<ZakenBadge />}
+                  naam={
+                    persona
+                      ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
+                      : undefined
+                  }
                 />
               </nav>
             )}
