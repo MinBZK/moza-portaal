@@ -208,6 +208,23 @@ const FlagsPaneel = ({
           </Heading>
 
           <div>
+            <Fieldset legend="Huisstijl">
+              <FormFieldRadio
+                name="huisstijl"
+                value="huidig"
+                label="Huidige MijnOverheid huisstijl"
+                checked={!zichtbareFlags.mox_nieuweHuisstijl}
+                onChange={() => zetFlag("mox_nieuweHuisstijl", false)}
+              />
+              <FormFieldRadio
+                name="huisstijl"
+                value="nieuw"
+                label="Nieuwe MijnOverheid huisstijl (in ontwikkeling)"
+                description="Zonder mox.css: alleen RHC en de MOx-afwijkingen in rhc.css."
+                checked={zichtbareFlags.mox_nieuweHuisstijl}
+                onChange={() => zetFlag("mox_nieuweHuisstijl", true)}
+              />
+            </Fieldset>
             {flagGroep("pagina", "Pagina’s")}
             {flagGroep("functionaliteit", "Functionaliteit")}
             <div>

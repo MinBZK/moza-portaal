@@ -11,20 +11,25 @@ import type { Metadata } from "next";
 import { Footer } from "@/layouts/footer";
 
 import { SkipLink } from "@/components/rhc";
+import { getFlagsFromServerCookie } from "@/app/actions";
 
 export const metadata: Metadata = {
   title: "Mijn overheid zakelijk",
   description: "mijn overheid zakelijk",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const flags = await getFlagsFromServerCookie();
+  // mox.css geldt alleen met de huidige huisstijl (keuze in het Flags-paneel).
+  const huisstijl = flags.mox_nieuweHuisstijl ? "" : " mox-huidige-huisstijl";
+
   return (
     <html lang="en">
-      <body className="rhc-theme mox-theme">
+      <body className={`rhc-theme mox-theme${huisstijl}`}>
         <SkipLink href="#main">Naar de hoofdinhoud</SkipLink>
         {children}
         <Footer />
