@@ -15,10 +15,6 @@ import {
 import { getActievePersona } from "@/app/(public)/_persona";
 import NextLink from "next/link";
 
-// Zelfde knop-link als de tegels op Home.
-const knopLink =
-  "utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action";
-
 const OndernemingsgegevensPage = async () => {
   const [gegevens, onderdelen, vragen] = await Promise.all([
     getActievePersona().then((persona) =>

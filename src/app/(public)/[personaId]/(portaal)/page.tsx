@@ -13,9 +13,6 @@ import {
 } from "@/demo";
 import RecenteBerichten from "./_recenteBerichten";
 
-const knopLink =
-  "utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action";
-
 const vragen = [
   {
     vraag: "Hoe vraag ik een subsidie aan via MijnOverheid Zakelijk?",
