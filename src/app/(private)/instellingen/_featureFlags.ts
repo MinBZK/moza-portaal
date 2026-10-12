@@ -138,7 +138,7 @@ export const MOX_FLAGS = [
     label: "Status van bronnen in de Digitale assistent",
     groep: "functionaliteit",
     standaard: false,
-    werkt: false,
+    werkt: true,
   },
   {
     key: "mox_zakelijkPostvak",

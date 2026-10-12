@@ -28,6 +28,8 @@ export type DemoZaak = {
   status?: string;
   /** Toon een waarschuwing als er iets van u wordt verwacht. */
   actieNodig?: boolean;
+  /** Ontstaat pas via de Digitale assistent; staat niet vast in het overzicht. */
+  viaAssistent?: boolean;
   /** Toon "Over deze zaak" boven de voortgang (zoals bij de subsidie). */
   gegevensBovenaan?: boolean;
   gegevens: { label: string; waarde: string }[];
@@ -57,7 +59,8 @@ const vragen: DemoVraag[] = [
 
 export const getDemoZaken = async (
   soort: DemoZaak["soort"] = "lopend",
-): Promise<DemoZaak[]> => zaken.filter((zaak) => zaak.soort === soort);
+): Promise<DemoZaak[]> =>
+  zaken.filter((zaak) => zaak.soort === soort && !zaak.viaAssistent);
 
 export const getDemoZaakById = async (
   id: string,

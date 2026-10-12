@@ -13,6 +13,7 @@ const BewaardPage = async () => {
       <Heading level={1}>Bewaarde items</Heading>
       <BewaardeItems
         soort="bewaard"
+        zonderCategorie="Digitale assistent"
         leeg={
           <Alert type="info">
             <Paragraph>
@@ -37,15 +38,21 @@ const BewaardPage = async () => {
       <Separator />
 
       <Heading level={2}>Gesprekken met de digitale assistent</Heading>
-      <Alert type="info">
-        <Paragraph>
-          U heeft nog geen gesprekken bewaard. Start een gesprek bij{" "}
-          <Link inline href="/digitale-assistent">
-            Digitale assistent
-          </Link>
-          .
-        </Paragraph>
-      </Alert>
+      <BewaardeItems
+        soort="bewaard"
+        alleenCategorie="Digitale assistent"
+        leeg={
+          <Alert type="info">
+            <Paragraph>
+              U heeft nog geen gesprekken bewaard. Start een gesprek bij{" "}
+              <Link inline href="/digitale-assistent">
+                Digitale assistent
+              </Link>
+              .
+            </Paragraph>
+          </Alert>
+        }
+      />
 
       <Separator />
 

@@ -3,6 +3,7 @@ import { getKvkFromCookie, getKvkOptionsFromCookie } from "@/utils/kvknummer";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
 import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
+import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import Breadcrumb from "@/layouts/breadcrumb";
 import Providers from "@/app/providers";
 import { getFlagsFromServerCookie } from "@/app/actions";
@@ -33,6 +34,7 @@ export default async function PrivateLayout({
               <Navigation
                 flags={flags}
                 berichtenboxBadge={<OngelezenBadge />}
+                lopendeZakenBadge={<ZakenBadge />}
               />
             </nav>
             <div className="rhc-grid__cell rhc-grid__cell-t-9 mox-main-container">

@@ -16,6 +16,8 @@ export type BewaarItem = {
   titel: string;
   samenvatting: string;
   href: string;
+  /** Alleen bij een gesprek met de Digitale assistent: het gesprek zelf. */
+  gesprek?: unknown;
 };
 
 type Staat = {
@@ -84,6 +86,10 @@ const zonder = (lijst: Record<string, BewaarItem>, sleutel: string) => {
   delete kopie[sleutel];
   return kopie;
 };
+
+/** Eén bewaard item, buiten React (bijvoorbeeld bij het laden van een pagina). */
+export const leesBewaardItem = (sleutel: string) =>
+  getSnapshot().staat.bewaard[sleutel] ?? null;
 
 export const bewaarFoutTekst =
   "Uw keuze is niet bewaard. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit of sta opslag toe. Probeer het daarna opnieuw.";

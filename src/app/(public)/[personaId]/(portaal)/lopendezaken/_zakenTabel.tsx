@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/rhc";
 import type { DemoZaak } from "@/demo";
+import AssistentZakenRijen from "./_assistentZakenRijen";
 
 /** Tabel met zaken. Afgehandelde zaken hebben geen statuskolom. */
 const ZakenTabel = ({
@@ -33,6 +34,7 @@ const ZakenTabel = ({
         </TableRow>
       </TableHeader>
       <TableBody>
+        {soort === "lopend" && <AssistentZakenRijen />}
         {zaken.map((zaak) => (
           <TableRow key={zaak.id}>
             <TableCell>{zaak.organisatie}</TableCell>
