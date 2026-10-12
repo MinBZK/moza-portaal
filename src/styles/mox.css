@@ -976,6 +976,59 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-inline: var(--rhc-hero-message-padding-inline-start);
 	}
 
+	.mox-side-overlay-shortcuts {
+		color: var(--rhc-color-foreground-subtle);
+		font-size: var(--rhc-text-font-size-sm);
+		margin-block: var(--rhc-space-lg);
+		text-align: end;
+	}
+
+	.mox-side-overlay__header {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-lg);
+		justify-content: space-between;
+		margin-block-end: var(--rhc-space-2xl);
+
+		h2 {
+			margin: 0;
+		}
+	}
+
+	.mox-side-overlay__content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-2xl);
+
+		legend {
+			margin-block-end: var(--rhc-space-lg);
+		}
+
+		.utrecht-form-fieldset__fieldset {
+			display: flex;
+			flex-direction: column;
+			gap: var(--rhc-space-md);
+		}
+
+		summary {
+			font-size: 1.25rem;
+			font-weight: bold;
+			margin-block: var(--rhc-space-lg);
+		}
+
+		button {
+			background-color: var(--rhc-color-wit);
+			margin-block-start: var(--rhc-space-lg);
+		}
+	}
+
+	/* Button used to trigger the flags panel (fixed in bottom-right) */
+	.mox-button-trigger-flags {
+		background: var(--rhc-color-wit);
+		inset-block-end: var(--rhc-space-md);
+		inset-inline-end: var(--rhc-space-md);
+		position: fixed;
+	}
 
 	.mox-dialog {
 		background: var(--rhc-color-wit);
@@ -1015,63 +1068,31 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-
-}
-
-/* Prototype-hulpmiddelen: altijd actief, ook met de nieuwe huisstijl. */
-.rhc-theme.mox-theme {
-
-	/* Feature flags-panel */
-	#flags-paneel {
-		background: var(--rhc-color-cool-grey-100);
-		block-size: 80vh;
-		/* Tweede schaduw vult het scherm als backdrop (::backdrop werkt alleen bij een modale dialog) */
-		box-shadow:
-			0 0 6px 0 var(--rhc-color-light-cool-grey-400),
-			0 0 0 100vmax color-mix(in srgb, var(--rhc-color-zwart) 40%, transparent);
-		inline-size: fit-content;
-		inset-block-end: 0;
-		inset-block-start: 0;
+	/* Shared side overlay for flags and persona selection */
+	dialog.mox-side-overlay {
+		--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
+		--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
+		--utrecht-drawer-min-inline-size: min(20rem, calc(100vw - 44px));
+		--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
+		--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
+		--utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
+		--utrecht-drawer-padding-inline-start: var(--rhc-space-3xl);
+		background: var(--utrecht-drawer-background-color);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		inset-block: 0;
 		inset-inline-end: 0;
-		margin: var(--rhc-space-3xl);
-		overflow: auto;
-		padding: var(--rhc-space-2xl) var(--rhc-space-3xl);
 		position: fixed;
-		z-index: 20;
-
-		>div {
-			display: flex;
-			gap: var(--rhc-space-5xl)
-		}
-
-		h2,
-		legend {
-			margin-block-end: var(--rhc-space-lg);
-		}
-
-		.utrecht-form-fieldset__fieldset {
-			display: flex;
-			flex-direction: column;
-			gap: var(--rhc-space-md);
-		}
-
-		summary {
-			font-size: 1.25rem;
-			font-weight: bold;
-			margin-block: var(--rhc-space-lg);
-		}
-
-		button {
-			background-color: var(--rhc-color-wit);
-			margin-block-start: var(--rhc-space-lg);
-		}
+		transform: translateX(100%);
 	}
 
-	.mox-button-trigger-flags {
-		background: var(--rhc-color-wit);
-		inset-block-end: var(--rhc-space-md);
-		inset-inline-end: var(--rhc-space-md);
-		position: fixed;
+	dialog.mox-side-overlay[open] {
+		transform: translateX(0);
+	}
+
+	@starting-style {
+		dialog.mox-side-overlay[open] {
+			transform: translateX(100%);
+		}
 	}
 
 	/* Flags-panel: pauze animations */

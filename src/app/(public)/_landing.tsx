@@ -169,18 +169,50 @@ const PublicPage = () => {
 
       <div className="mox-landing-demo-info">
         <Heading level={2}>
-          Dit is een demo-prototype van MijnOverheid Zakelijk
+          Dit is een demo-prototypevan MijnOverheid Zakelijk
         </Heading>
         <section>
           <Paragraph>
-            Dit is een versie bedoeld om ideeën en functionaliteiten te testen.
-            De inhoud en werking zijn in ontwikkeling aan wijziging onderheven.
+            Dit is een versie bedoeld om ideeën en functionaliteiten te testen
+            of UX-onderzoek uit te voeren. De inhoud en werking zijn in
+            ontwikkeling aan wijziging onderheven.
           </Paragraph>
           <Paragraph>
             Let op: dit prototype bevat <strong>géén</strong> echte DigiD en
             E-Herkenning koppeling. Vul hier geen persoonlijke gegevens in.
           </Paragraph>
-          <Paragraph>U kunt inloggen met de volgende testgegevens:</Paragraph>
+        </section>
+        <Heading level={3}>UX-onderzoek uitvoeren</Heading>
+        <section>
+          <Paragraph>
+            Gebruik de shortcuttoetsen:
+            <UnorderedList>
+              <UnorderedListItem>
+                <code>p</code> - selecteer een persona
+              </UnorderedListItem>
+              <UnorderedListItem>
+                <code>f</code> - schakel flags in/uit
+              </UnorderedListItem>
+            </UnorderedList>
+          </Paragraph>
+          <Paragraph>
+            Kies vervolgens links boven een inlog optie (DigiD of E-Herkenning).
+          </Paragraph>
+          <Paragraph>
+            Het is ook mogelijk om een persona te selecteren via de URL.
+            Bijvoorbeeld:{" "}
+            <code>
+              https://moza.mijnoverheidzakelijk.nl/?persona=gebruiker1
+            </code>
+          </Paragraph>
+        </section>
+        <Heading level={3}>Functionaliteiten testen</Heading>
+        <section>
+          <Paragraph>
+            Voor de beveiligde omgeving kunt U inloggen door linksboven via de
+            knop <code>keycloak login</code> een keuze te maken voor DigiD of
+            E-Herkenning en deze testgegevens te gebruiken:
+          </Paragraph>
           <DataSummary>
             <DataSummaryItem
               itemKey="Gebruikersnaam"
