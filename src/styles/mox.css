@@ -1081,6 +1081,22 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		animation-play-state: paused !important;
 		transition: none !important;
 	}
+
+	.mox-temp-poc-banner {
+		background: var(--rhc-color-groen-500);
+		color: var(--rhc-color-wit);
+		font-weight: var(--rhc-text-font-weight-bold);
+		inline-size: 256px;
+		inset-block-start: 3rem;
+		inset-inline-end: -4rem;
+		padding-block: var(--rhc-space-sm);
+		position: fixed;
+		text-align: center;
+		text-decoration: none;
+		transform: rotate(45deg);
+		transform-origin: center;
+		z-index: 1;
+	}
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */

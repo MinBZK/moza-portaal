@@ -169,6 +169,12 @@ const Header = ({
             </ul>
           </NavBar>
         </div>
+        <a
+          className="mox-temp-poc-banner"
+          href="https://www.mijnoverheidzakelijk.nl/"
+        >
+          Proof of Concept
+        </a>
       </header>
     </>
   );
