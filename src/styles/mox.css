@@ -54,8 +54,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		@media screen and (width <=768px) {
 			padding: var(--rhc-space-lg);
-
-			.rhc-side-nav {}
 		}
 	}
 

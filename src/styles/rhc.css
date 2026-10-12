@@ -27,12 +27,10 @@
   --nl-paragraph-font-size: 1.125rem;
   --nl-number-badge-font-size: var(--rhc-text-font-size-sm);
   --nl-data-badge-font-size: 0.875rem;
-  --rhc-data-summary-item-key-font-weight: var(
-    --rhc-text-font-weight-semi-bold
-  );
-  --rhc-navigation-list-item-label-font-weight: var(
-    --rhc-text-font-weight-semi-bold
-  );
+  --rhc-data-summary-item-key-font-weight: var(--rhc-text-font-weight-semi-bold);
+  --rhc-navigation-list-item-label-font-weight: var(--rhc-text-font-weight-semi-bold);
+  --rhc-text-font-size-min-md: 1rem;
+  --rhc-text-font-size-max-md: 1.125rem;
 
   /* Kleurwijzigingen t.o.v. RHC */
   --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
@@ -73,6 +71,7 @@ body {
 }
 
 .rhc-theme.mox-theme {
+
   /* Landing pagina */
   .header-landing .rhc-nav-bar__container {
     border-block-end: none;
@@ -90,7 +89,7 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
 
-    > div {
+    >div {
       padding-block-end: var(--rhc-hero-message-padding-block-end);
       padding-block-start: var(--rhc-hero-message-padding-block-start);
       padding-inline-end: var(--rhc-hero-message-padding-inline-end);
@@ -175,6 +174,7 @@ body {
 
     /* Open menu: vult het scherm onder de header en verbergt de pagina. */
     &:has(.mox-menu-lijsten--open) {
+
       .mox-main-container,
       .rhc-page-footer {
         display: none;
@@ -187,7 +187,7 @@ body {
 
     /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
       toegankelijke naam ("Vorige pagina") blijft, die staat verborgen. */
-    .ams-pagination__link[rel] > span[aria-hidden="true"] {
+    .ams-pagination__link[rel]>span[aria-hidden="true"] {
       display: none;
     }
 
