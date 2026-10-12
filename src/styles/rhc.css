@@ -164,6 +164,74 @@ body {
     display: none;
   }
 
+  /* Hoofdmenu op een smal scherm: ingeklapt achter de knop "Menu", zoals in
+    moza-poc. Vanaf 768px staat het menu in de linkerkolom van rhc-grid. */
+  .mox-menu-knop {
+    display: none;
+  }
+
+  @media (width < 768px) {
+    .mox-menu-knop {
+      display: inline-flex;
+    }
+
+    .mox-menu-lijsten:not(.mox-menu-lijsten--open) {
+      display: none;
+    }
+
+    /* Open menu: vult het scherm onder de header en verbergt de pagina. */
+    &:has(.mox-menu-lijsten--open) {
+      .mox-main-container,
+      .rhc-page-footer {
+        display: none;
+      }
+
+      .utrecht-page-body {
+        min-block-size: calc(100dvh - var(--mox-header-hoogte, 0px));
+      }
+    }
+
+    /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
+    .mox-header-account {
+      display: none;
+    }
+  }
+
+  @media (width >=768px) {
+    .mox-menu-account {
+      display: none;
+    }
+  }
+
+  /* De naam van het portaal: op een smal scherm onder het logo, op een breed
+    scherm als titel in de NavBar. Nooit allebei tegelijk. */
+  @media (width < 768px) {
+    .utrecht-page-header .rhc-nav-bar__heading {
+      display: none;
+    }
+
+    /* Logo (vaantje) op halve grootte, via de RHC-tokens. */
+    .utrecht-page-header .rhc-logo {
+      --rhc-logo-image-block-size: calc(var(--rhc-size-2-lint) / 2);
+      --rhc-logo-image-inline-size: calc(var(--rhc-size-lint) / 2);
+      --rhc-logo-title-padding-block-start: calc(var(--rhc-size-lint) / 2);
+      margin-block-end: var(--rhc-space-md);
+    }
+  }
+
+  @media (width >=768px) {
+    .utrecht-page-header .rhc-logo__caption {
+      display: none;
+    }
+  }
+
+  /* De taalkeuze in het menu staat gewoon in de lijst, niet rechtsboven
+    zoals in de header. */
+  .mox-menu-account .rhc-language-navigation {
+    margin-inline: var(--rhc-space-md) 0;
+    position: static;
+  }
+
   /* TableHeader */
   .utrecht-table__header-cell {
     vertical-align: bottom;
