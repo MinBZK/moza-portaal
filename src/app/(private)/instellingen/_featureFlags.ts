@@ -62,6 +62,14 @@ export const MOX_FLAGS = [
     standaard: true,
     werkt: true,
   },
+  // Huisstijl: aan = mox.css uit, zodat alleen RHC en rhc.css overblijven.
+  {
+    key: "mox_nieuweHuisstijl",
+    label: "Nieuwe MijnOverheid huisstijl (in ontwikkeling)",
+    groep: "huisstijl",
+    standaard: false,
+    werkt: true,
+  },
   // Functionaliteit.
   {
     key: "mox_delen",
