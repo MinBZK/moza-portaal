@@ -36,6 +36,7 @@ const breadcrumbLabels: Record<string, string> = {
   "ziekte-verlof": "Ziekte en verlof",
   dataverwerking: "Gegevensdeling en dataverwerking",
   contactvoorkeuren: "Contactvoorkeuren",
+  prive: "Privé",
 };
 
 // next/link mist de classes die Utrecht's eigen Link-component zet, waardoor

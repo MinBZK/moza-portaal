@@ -41,7 +41,9 @@ export {
   getDemoContactorganisaties,
   getDemoContactkanalen,
   getDemoContactvragen,
+  getDemoProfielIdentiteit,
   type DemoOrganisatie,
+  type DemoProfielIdentiteit,
 } from "./contactvoorkeuren";
 export {
   getDemoPersonas,
