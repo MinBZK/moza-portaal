@@ -27,8 +27,12 @@
   --nl-paragraph-font-size: 1.125rem;
   --nl-number-badge-font-size: var(--rhc-text-font-size-sm);
   --nl-data-badge-font-size: 0.875rem;
-  --rhc-data-summary-item-key-font-weight: var(--rhc-text-font-weight-semi-bold);
-  --rhc-navigation-list-item-label-font-weight: var(--rhc-text-font-weight-semi-bold);
+  --rhc-data-summary-item-key-font-weight: var(
+    --rhc-text-font-weight-semi-bold
+  );
+  --rhc-navigation-list-item-label-font-weight: var(
+    --rhc-text-font-weight-semi-bold
+  );
 
   /* Kleurwijzigingen t.o.v. RHC */
   --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
@@ -69,7 +73,6 @@ body {
 }
 
 .rhc-theme.mox-theme {
-
   /* Landing pagina */
   .header-landing .rhc-nav-bar__container {
     border-block-end: none;
@@ -77,10 +80,9 @@ body {
 
   .mox-landing-hero {
     background: var(--mox-landing-info-background);
-    block-size: calc(var(--rhc-size-lint)*10);
+    block-size: calc(var(--rhc-size-lint) * 10);
     display: grid;
     grid-template-columns: 50% 50%;
-
   }
 
   .mox-landing-info {
@@ -88,7 +90,7 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
 
-    >div {
+    > div {
       padding-block-end: var(--rhc-hero-message-padding-block-end);
       padding-block-start: var(--rhc-hero-message-padding-block-start);
       padding-inline-end: var(--rhc-hero-message-padding-inline-end);
@@ -101,7 +103,6 @@ body {
     ::marker {
       color: var(--rhc-color-wit);
     }
-
   }
 
   /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
@@ -125,13 +126,6 @@ body {
 
   .rhc-side-nav__list {
     margin-inline: var(--rhc-space-md);
-  }
-
-  /* Layout tuning */
-  .mox-row-gap {
-    align-content: start;
-    display: grid;
-    gap: var(--rhc-space-2xl);
   }
 
   /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
@@ -191,6 +185,12 @@ body {
       }
     }
 
+    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
+      toegankelijke naam ("Vorige pagina") blijft, die staat verborgen. */
+    .ams-pagination__link[rel] > span[aria-hidden="true"] {
+      display: none;
+    }
+
     /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
     .mox-header-account {
       display: none;
@@ -236,5 +236,4 @@ body {
   .utrecht-table__header-cell {
     vertical-align: bottom;
   }
-
 }

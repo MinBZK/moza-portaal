@@ -82,6 +82,34 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	/* Layout tuning */
+	.mox-card {
+		.mox-row-gap {
+			align-content: start;
+			display: grid;
+			gap: var(--rhc-space-2xl);
+
+			.utrecht-action-group {
+				margin-block-start: 0;
+			}
+		}
+
+		.ams-pagination {
+			margin-block-start: var(--rhc-space-2xl);
+		}
+	}
+
+	.utrecht-action-group {
+		button {
+			text-align: start;
+		}
+	}
+
+	.utrecht-accordion .utrecht-button {
+		align-items: baseline;
+	}
+
+
 	/* Responsive menu */
 	.mox-menu-knop {
 		font-size: var(--rhc-text-font-size-sm);
