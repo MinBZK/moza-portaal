@@ -309,6 +309,7 @@ export const ContactEditBox = ({
               Verifieer
             </EditBoxButton>
             <EditBoxButton
+              className="utrecht-button--secondary-action"
               onClick={
                 resendCountdown === 0 ? handleResendVerification : undefined
               }
