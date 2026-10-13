@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Logo, NavBar, Icon } from "@/components/rhc";
 import MenuKnop from "@/layouts/navigation/menuKnop";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
+import LogoutButton from "@/components/LogoutButton";
 import { useCookie } from "@/utils/useCookie";
 import { useState, useRef, useEffect } from "react";
 
@@ -16,6 +17,9 @@ const Header = ({
   signedIn = true,
   naam = "Robin Vogel",
   metMenu = false,
+  organisaties = [],
+  actieveOrganisatieId,
+  actieveOrganisatieNaam,
 }: {
   kvk?: string;
   kvkOpties?: components["schemas"]["MijnOverheidOrganisatiesResponse"];
@@ -25,10 +29,17 @@ const Header = ({
   metMenu?: boolean;
   /** Naam van de ingelogde persoon. Komt van de actieve persona. */
   naam?: string;
+  organisaties?: { id: string; handelsnaam: string }[];
+  actieveOrganisatieId?: string;
+  actieveOrganisatieNaam?: string;
 }) => {
   const { set } = useCookie("loginMethod");
+  const { set: setOrganisatieId } = useCookie("organisatieId");
   const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
+  const [openOrganisaties, setOpenOrganisaties] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const organisatiesRef = useRef<HTMLDivElement | null>(null);
+  const organisatieKnopRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     // Outside click handler for Keycloak login dropdown
@@ -54,6 +65,49 @@ const Header = ({
       document.removeEventListener("keydown", handleKey);
     };
   }, []);
+
+  useEffect(() => {
+    if (!openOrganisaties) return;
+
+    const sluitBijKlikBuiten = (event: MouseEvent) => {
+      if (
+        organisatiesRef.current &&
+        !organisatiesRef.current.contains(event.target as Node)
+      ) {
+        setOpenOrganisaties(false);
+      }
+    };
+    const sluitBijEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpenOrganisaties(false);
+      organisatieKnopRef.current?.focus();
+    };
+
+    document.addEventListener("click", sluitBijKlikBuiten);
+    document.addEventListener("keydown", sluitBijEscape);
+    return () => {
+      document.removeEventListener("click", sluitBijKlikBuiten);
+      document.removeEventListener("keydown", sluitBijEscape);
+    };
+  }, [openOrganisaties]);
+
+  const kiesOrganisatie = (id: string) => {
+    if (id === actieveOrganisatieId) {
+      setOpenOrganisaties(false);
+      return;
+    }
+    setOrganisatieId(id, { path: "/", maxAge: 60 * 60 * 24 * 30 });
+    window.location.reload();
+  };
+
+  const accountLabel = actieveOrganisatieNaam ? (
+    <>
+      <strong>{actieveOrganisatieNaam}</strong>
+      <span>{naam}</span>
+    </>
+  ) : (
+    naam
+  );
 
   return (
     <>
@@ -100,10 +154,65 @@ const Header = ({
                         : "rhc-nav-bar__item"
                     }
                   >
-                    <Link className="rhc-nav-bar__link" href="/">
-                      <Icon icon="user" />
-                      <span className="rhc-nav-bar__label">{naam}</span>
-                    </Link>
+                    {organisaties.length > 1 ? (
+                      <div
+                        ref={organisatiesRef}
+                        className="mox-header-organisaties"
+                      >
+                        <button
+                          ref={organisatieKnopRef}
+                          type="button"
+                          id="header-organisaties-knop"
+                          className="rhc-nav-bar__link mox-header-organisaties__trigger"
+                          aria-expanded={openOrganisaties}
+                          aria-controls="header-organisaties"
+                          aria-label={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
+                          onClick={() => setOpenOrganisaties((open) => !open)}
+                        >
+                          <Icon icon="user" />
+                          <span className="rhc-nav-bar__label mox-header-organisaties__identiteit">
+                            {accountLabel}
+                          </span>
+                          <Icon icon="chevron-down" />
+                        </button>
+                        {openOrganisaties && (
+                          <ul
+                            id="header-organisaties"
+                            className="mox-header-organisaties__lijst"
+                            aria-labelledby="header-organisaties-knop"
+                          >
+                            {organisaties.map((organisatie) => (
+                              <li key={organisatie.id}>
+                                <button
+                                  type="button"
+                                  className="mox-header-organisaties__keuze"
+                                  aria-pressed={
+                                    organisatie.id === actieveOrganisatieId
+                                  }
+                                  onClick={() =>
+                                    kiesOrganisatie(organisatie.id)
+                                  }
+                                >
+                                  {organisatie.handelsnaam}
+                                  {organisatie.id === actieveOrganisatieId &&
+                                    " (actief)"}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ) : (
+                      <Link
+                        className="rhc-nav-bar__link mox-header-organisaties__single"
+                        href="/"
+                      >
+                        <Icon icon="user" />
+                        <span className="rhc-nav-bar__label mox-header-organisaties__identiteit">
+                          {accountLabel}
+                        </span>
+                      </Link>
+                    )}
                   </li>
                   <li
                     className={
@@ -112,13 +221,10 @@ const Header = ({
                         : "rhc-nav-bar__item"
                     }
                   >
-                    <Link
-                      href="/api/persona-logout"
-                      className="rhc-nav-bar__link"
-                    >
+                    <LogoutButton className="rhc-nav-bar__link mox-logout-button">
                       <Icon icon="uitloggen" />
                       <span className="rhc-nav-bar__label">Uitloggen</span>
-                    </Link>
+                    </LogoutButton>
                   </li>
                 </>
               ) : (

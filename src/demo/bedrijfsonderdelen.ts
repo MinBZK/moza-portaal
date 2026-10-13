@@ -1,5 +1,5 @@
 import type { DemoVraag } from "./binnenkort";
-import type { DemoPersona } from "./personas";
+import type { DemoBedrijfsorganisatie } from "./personas";
 
 /** Onderdelen van Bedrijfsgegevens, met teksten uit moza-poc. */
 export type DemoBedrijfsonderdeel = {
@@ -137,6 +137,7 @@ export type DemoBedrijfsdetails = {
   handelsnaam: string;
   rechtsvorm: string;
   kvkNummer: string;
+  gegevensCompleet: boolean;
   vestigingsadres?: string;
   postadres?: string;
   sbi: { code: string; omschrijving: string }[];
@@ -149,37 +150,29 @@ export type DemoBedrijfsdetails = {
   deponeerPlichtig: boolean;
 };
 
-const lijst = <T>(waarde: unknown): T[] =>
-  Array.isArray(waarde) ? (waarde as T[]) : [];
-
-const tekst = (waarde: unknown) =>
-  typeof waarde === "string" && waarde !== "" ? waarde : undefined;
-
-/** Gegevens van het bedrijf van een persona, zoals moza-poc ze toont. */
+/** Gegevens van de gekozen organisatie, zoals moza-poc ze toont. */
 export const getDemoBedrijfsdetails = async (
-  persona: DemoPersona,
+  organisatie: DemoBedrijfsorganisatie,
 ): Promise<DemoBedrijfsdetails> => {
-  const bedrijf: Record<string, unknown> = persona.bedrijf;
-  const rechtsvorm = tekst(bedrijf.rechtsvorm) ?? "";
+  const rechtsvorm = organisatie.rechtsvorm ?? "";
   return {
-    handelsnaam: persona.bedrijf.handelsnaam,
+    handelsnaam: organisatie.handelsnaam,
     rechtsvorm,
-    kvkNummer: persona.bedrijf.kvkNummer,
-    vestigingsadres: tekst(bedrijf.vestigingsadresVolledig),
-    postadres: tekst(bedrijf.postadres),
-    sbi: lijst(bedrijf.sbi),
-    vestigingen: lijst(bedrijf.vestigingen),
+    kvkNummer: organisatie.kvkNummer ?? "",
+    gegevensCompleet: !!organisatie.kvkNummer,
+    vestigingsadres: organisatie.vestigingsadresVolledig,
+    postadres: organisatie.postadres,
+    sbi: organisatie.sbi ?? [],
+    vestigingen: organisatie.vestigingen ?? [],
     // In moza-poc heet het veld groottevanBelang.
-    ubo: lijst<{
-      naam: string;
-      aardVanBelang: string;
-      groottevanBelang: string;
-    }>(bedrijf.ubo).map(({ naam, aardVanBelang, groottevanBelang }) => ({
-      naam,
-      aardVanBelang,
-      grootteVanBelang: groottevanBelang,
-    })),
-    jaarrekeningen: lijst(bedrijf.jaarrekeningen),
+    ubo: (organisatie.ubo ?? []).map(
+      ({ naam, aardVanBelang, groottevanBelang }) => ({
+        naam,
+        aardVanBelang,
+        grootteVanBelang: groottevanBelang,
+      }),
+    ),
+    jaarrekeningen: organisatie.jaarrekeningen ?? [],
     uboPlichtig: rechtsvorm !== "Eenmanszaak",
     deponeerPlichtig: [
       "Besloten vennootschap",

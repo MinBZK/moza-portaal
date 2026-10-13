@@ -13,13 +13,20 @@ const JaarrekeningenPage = (props: OnderdeelPaginaProps) => (
   <OnderdeelPagina
     {...props}
     id="jaarrekeningen"
-    inhoud={({ jaarrekeningen, deponeerPlichtig, kvkNummer }) =>
+    inhoud={({
+      jaarrekeningen,
+      deponeerPlichtig,
+      kvkNummer,
+      gegevensCompleet,
+    }) =>
       jaarrekeningen.length === 0 ? (
         <Alert type="info">
           <Paragraph>
-            {deponeerPlichtig
-              ? "Er zijn nog geen jaarrekeningen van uw onderneming gedeponeerd bij de KVK."
-              : "Voor uw rechtsvorm hoeft geen jaarrekening te worden gedeponeerd bij de Kamer van Koophandel. De deponeerplicht geldt voor besloten vennootschappen, naamloze vennootschappen en bepaalde stichtingen en verenigingen."}
+            {!gegevensCompleet
+              ? "We hebben nog geen gegevens over jaarrekeningen van deze organisatie."
+              : deponeerPlichtig
+                ? "Er zijn nog geen jaarrekeningen van uw onderneming gedeponeerd bij de KVK."
+                : "Voor uw rechtsvorm hoeft geen jaarrekening te worden gedeponeerd bij de Kamer van Koophandel. De deponeerplicht geldt voor besloten vennootschappen, naamloze vennootschappen en bepaalde stichtingen en verenigingen."}
           </Paragraph>
         </Alert>
       ) : (

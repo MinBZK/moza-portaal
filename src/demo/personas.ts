@@ -1,14 +1,50 @@
 import personas from "./personas.json";
 
 /**
- * Persona's uit moza-poc (_data/personas.json). Elke persona is een ondernemer
- * met een eigen bedrijf. De id staat in de URL als personaId.
+ * Organisatiegegevens die bij een persona horen. Relaties met andere
+ * organisaties hebben soms alleen een naam en rol.
  */
-export type DemoPersona = (typeof personas)[number];
+export type DemoBedrijfsorganisatie = {
+  handelsnaam: string;
+  functies?: string;
+  website?: string;
+  kvkNummer?: string;
+  rsinNummer?: string;
+  btwNummer?: string;
+  omzetbelastingnummer?: string;
+  startdatum?: string;
+  rechtsvorm?: string;
+  branche?: string;
+  vestigingsadres?: string;
+  gemeente?: string;
+  rol?: string;
+  vestigingsnummer?: string;
+  iban?: string;
+  loonheffingennummer?: string;
+  werkzamePersonenFulltime?: number;
+  werkzamePersonenParttime?: number;
+  sbi?: { code: string; omschrijving: string }[];
+  vestigingsadresVolledig?: string;
+  postadres?: string;
+  vestigingen?: { nummer: string; type: string; adres: string }[];
+  ubo?: { naam: string; aardVanBelang: string; groottevanBelang: string }[];
+  jaarrekeningen?: { jaar: string; gedeponeerd: string }[];
+  energie?: { elektriciteitKwh: number; gasM3: number };
+};
+
+/** Persona's uit moza-poc. De id staat in de URL als personaId. */
+export type DemoPersona = Omit<(typeof personas)[number], "organisaties"> & {
+  organisaties: DemoBedrijfsorganisatie[];
+};
+
+const demoPersonas: DemoPersona[] = personas;
+
+export const getDemoOrganisatieId = (organisatie: DemoBedrijfsorganisatie) =>
+  organisatie.kvkNummer ?? organisatie.handelsnaam;
 
 /** De persona waarmee het prototype opent. In moza-poc gemarkeerd als actief. */
 export const STANDAARD_PERSONA_ID =
-  personas.find((persona) => persona.actief)?.id ?? personas[0].id;
+  demoPersonas.find((persona) => persona.actief)?.id ?? demoPersonas[0].id;
 
 /**
  * Oude id's uit de inlogknoppen op de landingspagina. Ze blijven werken en
@@ -19,7 +55,7 @@ const ALIASSEN: Record<string, string> = {
   "9999": STANDAARD_PERSONA_ID,
 };
 
-export const getDemoPersonas = async (): Promise<DemoPersona[]> => personas;
+export const getDemoPersonas = async (): Promise<DemoPersona[]> => demoPersonas;
 
 /**
  * Zoekt een persona op id, alias of label (zoals in moza-poc: ?persona=Adviseur).
@@ -32,8 +68,8 @@ export const getDemoPersona = async (
   const sleutel = decodeURIComponent(idOfLabel);
   const id = ALIASSEN[sleutel] ?? sleutel;
   return (
-    personas.find((persona) => persona.id === id) ??
-    personas.find(
+    demoPersonas.find((persona) => persona.id === id) ??
+    demoPersonas.find(
       (persona) => persona.label.toLowerCase() === sleutel.toLowerCase(),
     )
   );

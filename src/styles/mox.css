@@ -80,11 +80,82 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: normal;
 	}
 
+	.mox-logout-button {
+		cursor: pointer;
+		text-align: start;
+	}
+
 	.mox-header-account {
 		--utrecht-icon-inset-block-start: var(--rhc-space-sm);
 
 		.utrecht-icon {
 			margin-inline-end: var(--rhc-space-sm);
+		}
+	}
+
+	.mox-header-organisaties {
+		position: relative;
+	}
+
+	.mox-header-organisaties__trigger {
+		align-items: center;
+		background: transparent;
+		border: 0;
+		color: inherit;
+		cursor: pointer;
+		display: inline-flex;
+		font: inherit;
+		gap: var(--rhc-space-sm);
+	}
+
+	.mox-header-organisaties__single {
+		align-items: center;
+		display: inline-flex;
+		gap: var(--rhc-space-sm);
+	}
+
+	.mox-header-organisaties__identiteit {
+		display: grid;
+		line-height: 1.25;
+		text-align: start;
+
+		strong {
+			font-weight: 700;
+		}
+	}
+
+	.mox-header-organisaties__lijst {
+		background: var(--rhc-color-wit);
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		inset-inline-end: 0;
+		list-style: none;
+		margin-block-start: var(--rhc-space-2xs);
+		min-inline-size: max-content;
+		padding: var(--rhc-space-2xs);
+		position: absolute;
+		z-index: 10;
+
+		li + li {
+			margin-block-start: var(--rhc-space-2xs);
+		}
+	}
+
+	.mox-header-organisaties__keuze {
+		background: transparent;
+		border: 0;
+		color: var(--rhc-color-foreground-default);
+		cursor: pointer;
+		display: block;
+		font: inherit;
+		inline-size: 100%;
+		padding: var(--rhc-space-sm) var(--rhc-space-md);
+		text-align: start;
+
+		&:hover,
+		&[aria-pressed="true"] {
+			background: var(--rhc-color-cool-grey-100);
 		}
 	}
 
@@ -1165,7 +1236,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	dialog.mox-side-overlay {
 		--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
 		--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
-		--utrecht-drawer-min-inline-size: min(20rem, calc(100vw - 44px));
+		--utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
 		--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
 		--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
 		--utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
