@@ -253,6 +253,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	.ams-pagination__list {
+		li[aria-hidden="true"] {
+			font-size: var(--rhc-text-font-size-xl);
+			line-height: 1;
+			margin-inline: var(--rhc-space-md);
+		}
+	}
+
 	/* Berichtenbox */
 	[aria-label=Berichtenbox] {
 		a {
