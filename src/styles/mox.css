@@ -348,11 +348,17 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.utrecht-icon {
 		block-size: var(--rhc-size-icon-md);
 		flex-shrink: 0;
-		inline-size: var(--rhc-size-icon-md);
+		inline-size: var(--rhc-size-icon-md)
 	}
 
 	.rhc-link-list__item .utrecht-link-list__link {
-		align-items: center;
+		align-items: baseline;
+	}
+
+	/* align-self: de link lijnt uit op baseline, dan heeft margin geen effect. */
+	.utrecht-link .utrecht-icon {
+		align-self: flex-start;
+		margin-block-start: var(--rhc-space-sm);
 	}
 
 	/* Tab interface */
