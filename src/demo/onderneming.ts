@@ -1,5 +1,5 @@
 import type { DemoVraag } from "./binnenkort";
-import type { DemoPersona } from "./personas";
+import type { DemoBedrijfsorganisatie } from "./personas";
 
 export type DemoGegeven = { label: string; waarde: string; href?: string };
 
@@ -86,29 +86,24 @@ const vragen: DemoVraag[] = [
  * er niet, net als in moza-poc. Zonder persona: de vaste demo-gegevens.
  */
 export const getDemoOndernemingsgegevens = async (
-  bedrijf?: DemoPersona["bedrijf"],
+  organisatie?: DemoBedrijfsorganisatie,
 ): Promise<DemoGegeven[]> => {
-  if (!bedrijf) return gegevens;
+  if (!organisatie) return gegevens;
   const rijen: [string, string | number | undefined][] = [
-    ["Handelsnaam", bedrijf.handelsnaam],
-    ["KVK-nummer", bedrijf.kvkNummer],
-    ["Vestigingsnummer", bedrijf.vestigingsnummer],
-    ["RSIN-nummer", bedrijf.rsinNummer],
-    ["Btw-identificatienummer", bedrijf.btwNummer],
-    ["Omzetbelastingnummer", bedrijf.omzetbelastingnummer],
-    [
-      "Loonheffingennummer",
-      "loonheffingennummer" in bedrijf
-        ? bedrijf.loonheffingennummer
-        : undefined,
-    ],
-    ["Startdatum", bedrijf.startdatum],
-    ["Rechtsvorm", bedrijf.rechtsvorm],
-    ["Zakelijke IBAN", "iban" in bedrijf ? bedrijf.iban : undefined],
-    ["Werkzame personen (fulltime)", bedrijf.werkzamePersonenFulltime],
-    ["Werkzame personen (parttime)", bedrijf.werkzamePersonenParttime],
+    ["Handelsnaam", organisatie.handelsnaam],
+    ["KVK-nummer", organisatie.kvkNummer],
+    ["Vestigingsnummer", organisatie.vestigingsnummer],
+    ["RSIN-nummer", organisatie.rsinNummer],
+    ["Btw-identificatienummer", organisatie.btwNummer],
+    ["Omzetbelastingnummer", organisatie.omzetbelastingnummer],
+    ["Loonheffingennummer", organisatie.loonheffingennummer],
+    ["Startdatum", organisatie.startdatum],
+    ["Rechtsvorm", organisatie.rechtsvorm],
+    ["Zakelijke IBAN", organisatie.iban],
+    ["Werkzame personen (fulltime)", organisatie.werkzamePersonenFulltime],
+    ["Werkzame personen (parttime)", organisatie.werkzamePersonenParttime],
   ];
-  const website = "website" in bedrijf ? bedrijf.website : undefined;
+  const website = organisatie.website;
   return [
     ...rijen.flatMap(([label, waarde]) =>
       waarde === undefined || waarde === ""

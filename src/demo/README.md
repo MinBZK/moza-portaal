@@ -17,6 +17,10 @@ Dat profiel is expres breed. Een adviesbureau, een installatiebedrijf en een
 winkel moeten er alle drie iets in herkennen. Voeg je data toe, houd dan
 hetzelfde profiel aan.
 
+Een persona kan bij meerdere organisaties horen. Die staan in `organisaties`
+als lijst. De organisatiekeuze staat in het `organisatieId`-cookie. Staat daar
+geen geldige keuze in, dan gebruikt het portaal de eerste organisatie.
+
 ## Wat hier hoort
 
 - Verzonnen inhoud voor een pagina: subsidies, wetten, berichten.

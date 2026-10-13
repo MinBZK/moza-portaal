@@ -15,6 +15,7 @@ import {
   getDemoVerwerkingVerwachtingen,
   getDemoVerwerkingVragen,
 } from "@/demo";
+import { getActieveOrganisatie } from "@/app/(public)/_persona";
 
 // Tijden in Nederlandse tijd, ook als de server in UTC draait.
 const datumTijd = new Intl.DateTimeFormat("nl-NL", {
@@ -32,8 +33,9 @@ const DataverwerkingPage = async ({
   params: Promise<{ personaId: string }>;
 }) => {
   const persona = await getDemoPersona((await params).personaId);
+  const organisatie = await getActieveOrganisatie(persona);
   const [verwerkingen, verwachtingen, vragen] = await Promise.all([
-    getDemoVerwerkingen(persona?.bedrijf),
+    getDemoVerwerkingen(organisatie),
     getDemoVerwerkingVerwachtingen(),
     getDemoVerwerkingVragen(),
   ]);

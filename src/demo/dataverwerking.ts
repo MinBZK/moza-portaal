@@ -1,5 +1,5 @@
 import type { DemoVraag } from "./binnenkort";
-import type { DemoPersona } from "./personas";
+import type { DemoBedrijfsorganisatie } from "./personas";
 import logboek from "./proef-activiteitenlog.json";
 
 export type DemoVerwerking = {
@@ -32,15 +32,15 @@ const slug = (tekst: string) =>
 const waardeVoor = (
   soort: string,
   origineel: string,
-  bedrijf?: DemoPersona["bedrijf"],
+  organisatie?: DemoBedrijfsorganisatie,
 ) => {
-  if (!bedrijf) return origineel;
-  if (soort === "postalAddress") return bedrijf.postadres ?? origineel;
+  if (!organisatie) return origineel;
+  if (soort === "postalAddress") return organisatie.postadres ?? origineel;
   if (soort === "email") {
-    const website = "website" in bedrijf ? bedrijf.website : undefined;
+    const website = organisatie.website;
     const domein = website
       ? new URL(website).hostname.replace(/^www\./, "")
-      : `${slug(bedrijf.handelsnaam)}.nl`;
+      : `${slug(organisatie.handelsnaam)}.nl`;
     return `info@${domein}`;
   }
   return origineel;
@@ -75,7 +75,7 @@ const vragen: DemoVraag[] = [
  * nieuwste eerst.
  */
 export const getDemoVerwerkingen = async (
-  bedrijf?: DemoPersona["bedrijf"],
+  organisatie?: DemoBedrijfsorganisatie,
 ): Promise<DemoVerwerking[]> =>
   logboek
     .map((regel) => ({
@@ -84,7 +84,7 @@ export const getDemoVerwerkingen = async (
       tijdstip: regel.datetime,
       gegevens: regel.data.map(({ request, response }) => ({
         soort: SOORTEN[request] ?? request,
-        waarde: waardeVoor(request, response, bedrijf),
+        waarde: waardeVoor(request, response, organisatie),
       })),
     }))
     .sort((a, b) => b.tijdstip.localeCompare(a.tijdstip));

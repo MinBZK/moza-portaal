@@ -12,13 +12,18 @@ import {
   getDemoOndernemingsonderdelen,
   getDemoOndernemingsvragen,
 } from "@/demo";
-import { getActievePersona } from "@/app/(public)/_persona";
+import {
+  getActieveOrganisatie,
+  getActievePersona,
+} from "@/app/(public)/_persona";
 import NextLink from "next/link";
 
 const OndernemingsgegevensPage = async () => {
   const [gegevens, onderdelen, vragen] = await Promise.all([
     getActievePersona().then((persona) =>
-      getDemoOndernemingsgegevens(persona?.bedrijf),
+      getActieveOrganisatie(persona).then((organisatie) =>
+        getDemoOndernemingsgegevens(organisatie),
+      ),
     ),
     getDemoOndernemingsonderdelen(),
     getDemoOndernemingsvragen(),

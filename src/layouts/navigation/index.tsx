@@ -11,6 +11,7 @@ import {
   SideNavItem,
   SideNavLink,
   Separator,
+  Icon,
 } from "@rijkshuisstijl-community/components-react";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
@@ -18,6 +19,7 @@ import { AbsenceIcon } from "@/components/icons/absenceIcon";
 import { StaffIcon } from "@/components/icons/staffIcon";
 import { RegulationIcon } from "@/components/icons/regulationIcon";
 import { SubsidyIcon } from "@/components/icons/subsidyIcon";
+import LogoutButton from "@/components/LogoutButton";
 
 const Navigation = ({
   flags,
@@ -234,9 +236,10 @@ const Navigation = ({
               </SideNavLink>
             </SideNavItem>
             <SideNavItem>
-              <SideNavLink href="/api/persona-logout" icon="uitloggen">
+              <LogoutButton className="rhc-side-nav__link mox-logout-button">
+                <Icon icon="uitloggen" />
                 Uitloggen
-              </SideNavLink>
+              </LogoutButton>
             </SideNavItem>
           </SideNavList>
           <LanguageSelect

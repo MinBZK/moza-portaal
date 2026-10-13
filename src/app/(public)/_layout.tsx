@@ -4,11 +4,11 @@ import Navigation from "@/layouts/navigation";
 import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
 import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import { getFlagsFromServerCookie } from "@/app/actions";
-import { getDemoPersonas } from "@/demo";
+import { getDemoOrganisatieId, getDemoPersonas } from "@/demo";
 import { FlagsProvider } from "./_flags/flagsContext";
 import FlagsPaneel from "./_flags/flagsPaneel";
 import PersonaPaneel from "./_flags/personaPaneel";
-import { getActievePersona } from "./_persona";
+import { getActieveOrganisatie, getActievePersona } from "./_persona";
 
 export default async function PublicLayout({
   children,
@@ -24,6 +24,7 @@ export default async function PublicLayout({
     getActievePersona(),
     getDemoPersonas(),
   ]);
+  const organisatie = await getActieveOrganisatie(persona);
 
   return (
     <FlagsProvider flags={flags}>
@@ -35,6 +36,16 @@ export default async function PublicLayout({
           persona
             ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
             : undefined
+        }
+        actieveOrganisatieId={
+          organisatie ? getDemoOrganisatieId(organisatie) : undefined
+        }
+        actieveOrganisatieNaam={organisatie?.handelsnaam}
+        organisaties={
+          persona?.organisaties.map((o) => ({
+            id: getDemoOrganisatieId(o),
+            handelsnaam: o.handelsnaam,
+          })) ?? []
         }
       />
 
@@ -75,10 +86,17 @@ export default async function PublicLayout({
       />
       <PersonaPaneel
         actievePersonaId={persona?.id}
+        actieveOrganisatieId={
+          organisatie ? getDemoOrganisatieId(organisatie) : undefined
+        }
         personas={personas.map((p) => ({
           id: p.id,
           label: p.label,
-          handelsnaam: p.bedrijf.handelsnaam,
+          beschrijving: p.beschrijving,
+          organisaties: p.organisaties.map((o) => ({
+            id: getDemoOrganisatieId(o),
+            handelsnaam: o.handelsnaam,
+          })),
           archief: !!p.archief,
         }))}
       />

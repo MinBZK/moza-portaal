@@ -1,6 +1,9 @@
 import { Heading } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
-import { getActievePersona } from "@/app/(public)/_persona";
+import {
+  getActieveOrganisatie,
+  getActievePersona,
+} from "@/app/(public)/_persona";
 import Chat from "./_chat";
 import type { AssistentPersona } from "./_types";
 
@@ -9,13 +12,14 @@ const DigitaleAssistentPage = async () => {
     getActievePersona(),
     getFlagsFromServerCookie(),
   ]);
-  const bedrijf = persona?.bedrijf;
+  const organisatie = await getActieveOrganisatie(persona);
+  const bedrijf = organisatie;
   const sbi = bedrijf?.sbi?.[0];
 
   // Alleen wat de assistent nodig heeft gaat naar de browser.
   const context: AssistentPersona = {
     id: persona?.id ?? "",
-    kvkNummer: String(bedrijf?.kvkNummer ?? ""),
+    kvkNummer: organisatie ? String(organisatie.kvkNummer ?? "onbekend") : "",
     bedrijf: {
       handelsnaam: bedrijf?.handelsnaam,
       kvkNummer: bedrijf?.kvkNummer,

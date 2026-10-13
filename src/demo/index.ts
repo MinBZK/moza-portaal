@@ -48,8 +48,10 @@ export {
 export {
   getDemoPersonas,
   getDemoPersona,
+  getDemoOrganisatieId,
   STANDAARD_PERSONA_ID,
   type DemoPersona,
+  type DemoBedrijfsorganisatie,
 } from "./personas";
 export {
   getDemoBedrijfsdetails,

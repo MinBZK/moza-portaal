@@ -13,6 +13,7 @@ import {
   getDemoPersona,
   type DemoBedrijfsdetails,
 } from "@/demo";
+import { getActieveOrganisatie } from "@/app/(public)/_persona";
 
 export type OnderdeelPaginaProps = {
   params: Promise<{ personaId: string }>;
@@ -36,7 +37,9 @@ const OnderdeelPagina = async ({
     params.then(({ personaId }) => getDemoPersona(personaId)),
   ]);
   if (!onderdeel || !persona) notFound();
-  const details = await getDemoBedrijfsdetails(persona);
+  const organisatie = await getActieveOrganisatie(persona);
+  if (!organisatie) notFound();
+  const details = await getDemoBedrijfsdetails(organisatie);
 
   return (
     <>
