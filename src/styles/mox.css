@@ -70,7 +70,8 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.utrecht-page-header {
-		border-block-end-width: var(--rhc-border-width-md);
+		border-block-end-color: var(--rhc-color-lintblauw-400);
+		border-block-end-width: var(--rhc-border-width-md)
 	}
 
 	.rhc-nav-bar__list:first-child .rhc-nav-bar__link {
