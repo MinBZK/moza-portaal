@@ -22,6 +22,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
 
+	strong {
+		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
+	}
+
 	/* Forms */
 	.utrecht-textbox {
 		max-inline-size: 100%;
@@ -233,6 +237,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		h2 {
 			color: var(--rhc-color-wit);
 		}
+
+		.utrecht-link .utrecht-icon {
+			align-self: flex-start;
+			margin-block-start: var(--rhc-space-sm);
+		}
 	}
 
 	.rhc-page-footer span {
@@ -355,12 +364,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		align-items: baseline;
 	}
 
-	/* align-self: de link lijnt uit op baseline, dan heeft margin geen effect. */
-	.utrecht-link .utrecht-icon {
-		align-self: flex-start;
-		margin-block-start: var(--rhc-space-sm);
-	}
-
 	/* Tab interface */
 	.mox-tabs {
 		border-block-end-color: var(--rhc-color-cool-grey-400);
@@ -396,7 +399,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-progressbar {
 		background-color: var(--rhc-color-wit);
 		block-size: var(--rhc-space-lg);
-		border-color: var(--rhc-color-wit);
+		border-color: var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-round);
 		border-width: var(--rhc-border-width-sm);
 		inline-size: 100%;
