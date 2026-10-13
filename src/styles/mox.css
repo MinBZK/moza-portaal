@@ -199,9 +199,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border: 0;
 	}
 
+	.utrecht-accordion__panel {
+		padding-block-start: var(--rhc-space-xl);
+		padding-inline-start: var(--rhc-space-4xl);
+	}
+
 	/* Card */
 	.mox-card {
-		h2 {
+
+		h2,
+		h4 {
 			margin-block-end: var(--rhc-space-xl);
 
 			a {

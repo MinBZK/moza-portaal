@@ -49,7 +49,8 @@ const ArtikelDetailPage = async ({
               href="/actualiteiten"
               className="utrecht-link utrecht-link--html-a"
             >
-              &larr; Terug naar actualiteiten
+              <Icon icon="chevron-left" />
+              Terug naar actualiteiten
             </Link>
           </Paragraph>
         </div>
@@ -76,7 +77,8 @@ const ArtikelDetailPage = async ({
           href="/actualiteiten"
           className="utrecht-link utrecht-link--html-a"
         >
-          &larr; Terug naar actualiteiten
+          <Icon icon="chevron-left" />
+          Terug naar actualiteiten
         </Link>
       </Paragraph>
 

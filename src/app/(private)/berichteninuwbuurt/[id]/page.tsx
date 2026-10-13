@@ -32,7 +32,8 @@ const PublicatieDetailPage = async ({
               href="/berichteninuwbuurt"
               className="utrecht-link utrecht-link--html-a"
             >
-              &larr; Terug naar overzicht
+              <Icon icon="chevron-left" />
+              Terug naar overzicht
             </Link>
           </Paragraph>
         </div>
@@ -63,7 +64,8 @@ const PublicatieDetailPage = async ({
           href="/berichteninuwbuurt"
           className="utrecht-link utrecht-link--html-a"
         >
-          &larr; Terug naar overzicht
+          <Icon icon="chevron-left" />
+          Terug naar overzicht
         </Link>
       </Paragraph>
 

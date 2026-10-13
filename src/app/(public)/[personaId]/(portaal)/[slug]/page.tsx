@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Heading, Paragraph } from "@/components/rhc";
+import { Heading, Paragraph, Icon } from "@/components/rhc";
 
 export default async function FooterPage({
   params,
@@ -21,6 +21,7 @@ export default async function FooterPage({
         <Paragraph>Hier wordt aan gewerkt.</Paragraph>
         <Paragraph>
           <Link href="/" className="utrecht-link utrecht-link--html-a">
+            <Icon icon="chevron-left" />
             Terug naar de startpagina
           </Link>
         </Paragraph>

@@ -28,6 +28,7 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
       <Heading level={1}>{wet.titel}</Heading>
       <Paragraph>
         <Link href="/wetten" className="utrecht-link utrecht-link--html-a">
+          <Icon icon="chevron-left" />
           Terug naar Wetten en regelgeving
         </Link>
       </Paragraph>

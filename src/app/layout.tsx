@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`rhc-theme mox-theme${huisstijl}`}>
-        <SkipLink href="#main">Naar de hoofdinhoud</SkipLink>
+        <SkipLink href="#hoofd-inhoud">Naar de hoofdinhoud</SkipLink>
         {children}
         <Footer />
       </body>
