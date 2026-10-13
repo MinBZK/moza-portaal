@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Alert,
@@ -87,65 +87,61 @@ const RijActies = ({
   onArchiveer: () => void;
   onVerwijder: () => void;
 }) => {
-  const [open, setOpen] = useState(false);
   const delen = useFlag("mox_delen");
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const knopRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const sluitBijKlikBuiten = (event: MouseEvent) => {
-      if (!wrapperRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    const sluitBijEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      setOpen(false);
-      knopRef.current?.focus();
-    };
-    document.addEventListener("click", sluitBijKlikBuiten);
-    document.addEventListener("keydown", sluitBijEscape);
-    return () => {
-      document.removeEventListener("click", sluitBijKlikBuiten);
-      document.removeEventListener("keydown", sluitBijEscape);
-    };
-  }, [open]);
+  const menuRef = useRef<HTMLUListElement>(null);
+  // Het menu staat als popover in de top layer, dus buiten de scrollende
+  // tabel. Elk menu krijgt een eigen anker om onder zijn knop te staan.
+  const id = useId().replace(/[^\w-]/g, "");
+  const menuId = `acties-${id}`;
+  const sluit = () => menuRef.current?.hidePopover();
 
   return (
-    <div ref={wrapperRef} className="mox-menu">
+    <div
+      className="mox-menu"
+      style={{ "--mox-menu-anker": `--${menuId}` } as CSSProperties}
+    >
       <Button
-        ref={knopRef}
         appearance="subtle-button"
         className="mox-menu-trigger"
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
+        popoverTarget={menuId}
       >
         <Icon icon="meer" />
         <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
       </Button>
-      {open && (
-        <ul className="mox-action-menu">
-          {delen && (
-            <li>
-              <Button appearance="subtle-button" onClick={() => setOpen(false)}>
-                <Icon icon="delen" />
-                Delen
-              </Button>
-            </li>
-          )}
+      <ul ref={menuRef} id={menuId} popover="auto" className="mox-action-menu">
+        {delen && (
           <li>
-            <Button appearance="subtle-button" onClick={onArchiveer}>
-              <ArchiveIcon />
-              Archiveren
+            <Button appearance="subtle-button" onClick={sluit}>
+              <Icon icon="delen" />
+              Delen
             </Button>
           </li>
-          <li>
-            <Button appearance="subtle-button" onClick={onVerwijder}>
-              <Icon icon="verwijderen" />
-              Verwijderen
-            </Button>
-          </li>
-        </ul>
-      )}
+        )}
+        <li>
+          <Button
+            appearance="subtle-button"
+            onClick={() => {
+              sluit();
+              onArchiveer();
+            }}
+          >
+            <ArchiveIcon />
+            Archiveren
+          </Button>
+        </li>
+        <li>
+          <Button
+            appearance="subtle-button"
+            onClick={() => {
+              sluit();
+              onVerwijder();
+            }}
+          >
+            <Icon icon="verwijderen" />
+            Verwijderen
+          </Button>
+        </li>
+      </ul>
     </div>
   );
 };

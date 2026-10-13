@@ -906,18 +906,25 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* Action menu */
+	/* Popover in de top layer: valt niet weg in de scrollende tabel
+	  (mox-table-container). Anchor positioning zet het onder de knop. */
 	.mox-action-menu {
 		background-color: var(--rhc-color-wit);
+		border: 0;
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		inset-inline-end: 0;
+		inset: auto;
+		inset-block-start: anchor(end);
+		inset-inline-end: anchor(end);
+		margin: 0;
+		margin-block-start: var(--rhc-space-2xs);
 		padding: var(--rhc-space-md);
-		position: absolute;
-		z-index: 1;
+		position-anchor: var(--mox-menu-anker);
+		position-try-fallbacks: flip-block;
 	}
 
-	.mox-menu {
-		position: relative;
+	.mox-menu-trigger {
+		anchor-name: var(--mox-menu-anker);
 	}
 
 	/* Badge */
