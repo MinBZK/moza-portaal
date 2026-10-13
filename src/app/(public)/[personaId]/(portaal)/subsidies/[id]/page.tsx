@@ -32,6 +32,7 @@ const SubsidiePage = async ({
       <Heading level={1}>{subsidie.titel}</Heading>
       <Paragraph>
         <Link href="/subsidies" className="utrecht-link utrecht-link--html-a">
+          <Icon icon="chevron-left" />
           Terug naar Subsidies en financiering
         </Link>
       </Paragraph>

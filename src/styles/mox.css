@@ -19,6 +19,13 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: normal;
 	}
 
+	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
+	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
+
+	strong {
+		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
+	}
+
 	/* Forms */
 	.utrecht-textbox {
 		max-inline-size: 100%;
@@ -63,7 +70,8 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.utrecht-page-header {
-		border-block-end-width: var(--rhc-border-width-md);
+		border-block-end-color: var(--rhc-color-lintblauw-400);
+		border-block-end-width: var(--rhc-border-width-md)
 	}
 
 	.rhc-nav-bar__list:first-child .rhc-nav-bar__link {
@@ -85,7 +93,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.mox-row-gap {
 			align-content: start;
 			display: grid;
-			gap: var(--rhc-space-2xl);
+			gap: var(--rhc-space-xl);
 
 			.utrecht-action-group {
 				margin-block-start: 0;
@@ -191,10 +199,27 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border: 0;
 	}
 
+	.utrecht-accordion__panel {
+		padding-block-start: var(--rhc-space-xl);
+		padding-inline-start: var(--rhc-space-4xl);
+	}
+
 	/* Card */
 	.mox-card {
-		h2 {
+
+		h2,
+		h4 {
 			margin-block-end: var(--rhc-space-xl);
+
+			a {
+				color: var(--rhc-color-lintblauw-500);
+				font-weight: var(--rhc-text-font-weight-semi-bold);
+				text-decoration: none;
+
+				.utrecht-icon {
+					display: none;
+				}
+			}
 		}
 
 		p,
@@ -230,6 +255,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		h2 {
 			color: var(--rhc-color-wit);
 		}
+
+		.utrecht-link .utrecht-icon {
+			align-self: flex-start;
+			margin-block-start: var(--rhc-space-sm);
+		}
 	}
 
 	.rhc-page-footer span {
@@ -239,6 +269,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	/* Pagination */
 	.ams-pagination__link {
 		align-items: center;
+		background-color: var(--rhc-color-wit);
 		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
 		justify-content: center;
@@ -253,11 +284,28 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	.ams-pagination__list {
+		li[aria-hidden="true"] {
+			font-size: var(--rhc-text-font-size-xl);
+			line-height: 1;
+			margin-inline: var(--rhc-space-md);
+		}
+	}
+
 	/* Berichtenbox */
 	[aria-label=Berichtenbox] {
 		a {
 			text-decoration: none;
 		}
+	}
+
+	.mox-notice-amount-berichtenbox {
+		color: var(--rhc-color-cool-grey-500);
+		font-size: var(--rhc-text-font-size-sm);
+	}
+
+	.mox-filter-berichtenbox {
+		margin-block: var(--rhc-space-3xl);
 	}
 
 	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
@@ -285,6 +333,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		color: var(--rhc-color-oranje-500);
 	}
 
+	/* Selection */
+	.utrecht-form-field--radio,
+	.utrecht-form-field--checkbox {
+		gap: var(--rhc-space-xs);
+		margin-block-start: var(--rhc-space-md);
+	}
 
 	/* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
 	.mox-status {
@@ -328,11 +382,15 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.utrecht-icon {
 		block-size: var(--rhc-size-icon-md);
 		flex-shrink: 0;
-		inline-size: var(--rhc-size-icon-md);
+		inline-size: var(--rhc-size-icon-md)
+	}
+
+	.utrecht-link .utrecht-icon {
+		vertical-align: middle;
 	}
 
 	.rhc-link-list__item .utrecht-link-list__link {
-		align-items: center;
+		align-items: baseline;
 	}
 
 	/* Tab interface */
@@ -340,7 +398,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-block-end-color: var(--rhc-color-cool-grey-400);
 		border-block-end-width: var(--rhc-border-width-md);
 		display: flex;
-		gap: var(--rhc-space-3xl);
+		gap: var(--rhc-space-xl);
 
 		/* Smal scherm: minder ruimte tussen de tabs, en ze mogen doorlopen op een
 		  volgende regel in plaats van buiten het scherm. */
@@ -367,14 +425,35 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block: var(--rhc-space-xl);
 	}
 
+	.utrecht-alert {
+		border-color: var(--rhc-color-hemelblauw-100);
+		border-width: var(--rhc-border-width-sm);
+	}
+
+	.utrecht-alert--ok {
+		border-color: var(--rhc-color-groen-100);
+	}
+
+	.utrecht-alert--warning {
+		border-color: var(--rhc-color-oranje-100);
+	}
+
+	.utrecht-alert--error {
+		border-color: var(--rhc-color-rood-100);
+	}
+
+	/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
 	.mox-progressbar {
-		background-color: var(--rhc-color-wit);
 		block-size: var(--rhc-space-lg);
-		border-color: var(--rhc-color-wit);
+		border-color: var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-round);
 		border-width: var(--rhc-border-width-sm);
 		inline-size: 100%;
 		overflow: hidden;
+	}
+
+	.utrecht-alert--info .mox-progressbar {
+		background-color: var(--rhc-color-wit);
 	}
 
 	.mox-progressbar-track {
@@ -886,18 +965,32 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* Action menu */
+	/* Popover in de top layer: valt niet weg in de scrollende tabel
+	  (mox-table-container). Anchor positioning zet het onder de knop. */
 	.mox-action-menu {
 		background-color: var(--rhc-color-wit);
+		border: 0;
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		inset-inline-end: 0;
+		inset: auto;
+		inset-block-start: anchor(end);
+		inset-inline-end: anchor(end);
+		margin: 0;
+		margin-block-start: var(--rhc-space-2xs);
 		padding: var(--rhc-space-md);
-		position: absolute;
-		z-index: 1;
+		position-anchor: var(--mox-menu-anker);
+		position-try-fallbacks: flip-block;
 	}
 
-	.mox-menu {
-		position: relative;
+	.mox-menu-trigger {
+		anchor-name: var(--mox-menu-anker);
+	}
+
+	/* Badge */
+	.rhc-number-badge {
+		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
+		font-size: .75rem;
+		padding: 0;
 	}
 
 	/* Landing */
@@ -1110,6 +1203,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		inline-size: 256px;
 		inset-block-start: 3rem;
 		inset-inline-end: -4rem;
+		opacity: .8;
 		padding-block: var(--rhc-space-sm);
 		position: fixed;
 		text-align: center;
@@ -1117,6 +1211,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		transform: rotate(45deg);
 		transform-origin: center;
 		z-index: 1;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 }
 

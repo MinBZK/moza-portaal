@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { AccordionProvider, Heading, Link, Paragraph } from "@/components/rhc";
+import {
+  AccordionProvider,
+  Heading,
+  Icon,
+  Link,
+  Paragraph,
+} from "@/components/rhc";
 import {
   getDemoBedrijfsdetails,
   getDemoBedrijfsonderdeel,
@@ -36,7 +42,10 @@ const OnderdeelPagina = async ({
     <>
       <Heading level={1}>{onderdeel.titel}</Heading>
       <Paragraph>
-        <Link href="/bedrijfsgegevens">Terug naar Bedrijfsgegevens</Link>
+        <Link href="/bedrijfsgegevens">
+          <Icon icon="chevron-left" />
+          Terug naar Bedrijfsgegevens
+        </Link>
       </Paragraph>
 
       <section className="mox-card" aria-labelledby="onderdeel-kop">
