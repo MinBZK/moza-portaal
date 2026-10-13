@@ -902,7 +902,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Badge */
 	.rhc-number-badge {
-		--nl-number-badge: var(--rhc-text-font-size-sm);
+		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
+		font-size: .75rem;
+		padding: 0;
 	}
 
 	/* Landing */
