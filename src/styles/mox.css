@@ -203,6 +203,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-card {
 		h2 {
 			margin-block-end: var(--rhc-space-xl);
+
+			a {
+				color: var(--rhc-color-lintblauw-500);
+				font-weight: var(--rhc-text-font-weight-semi-bold);
+				text-decoration: none;
+
+				.utrecht-icon {
+					display: none;
+				}
+			}
 		}
 
 		p,
@@ -414,14 +424,18 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-color: var(--rhc-color-rood-100);
 	}
 
-	.utrecht-alert--info .mox-progressbar {
-		background-color: var(--rhc-color-wit);
+	/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+	.mox-progressbar {
 		block-size: var(--rhc-space-lg);
 		border-color: var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-round);
 		border-width: var(--rhc-border-width-sm);
 		inline-size: 100%;
 		overflow: hidden;
+	}
+
+	.utrecht-alert--info .mox-progressbar {
+		background-color: var(--rhc-color-wit);
 	}
 
 	.mox-progressbar-track {
