@@ -93,7 +93,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.mox-row-gap {
 			align-content: start;
 			display: grid;
-			gap: var(--rhc-space-2xl);
+			gap: var(--rhc-space-xl);
 
 			.utrecht-action-group {
 				margin-block-start: 0;
@@ -333,6 +333,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		color: var(--rhc-color-oranje-500);
 	}
 
+	/* Selection */
+	.utrecht-form-field--radio,
+	.utrecht-form-field--checkbox {
+		gap: var(--rhc-space-xs);
+		margin-block-start: var(--rhc-space-md);
+	}
 
 	/* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
 	.mox-status {
