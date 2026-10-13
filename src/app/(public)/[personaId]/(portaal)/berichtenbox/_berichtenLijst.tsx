@@ -251,7 +251,7 @@ const BerichtenLijst = ({
   return (
     <div>
       {bezig ? null : weergave === "inbox" ? (
-        <Paragraph>
+        <Paragraph className="mox-notice-amount-berichtenbox">
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
           ongelezen.
@@ -280,10 +280,10 @@ const BerichtenLijst = ({
 
       {weergave === "inbox" && (
         <FormFieldTextInput
-          label="Filter berichten"
-          description="Filter op afzender of onderwerp."
+          label="Filter berichten op afzender of onderwerp"
           type="search"
           value={zoek}
+          className="mox-filter-berichtenbox"
           onChange={(event) => {
             // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
             setZoek((event.target as HTMLInputElement).value);

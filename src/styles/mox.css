@@ -19,6 +19,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: normal;
 	}
 
+	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
+	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
+
 	/* Forms */
 	.utrecht-textbox {
 		max-inline-size: 100%;
@@ -266,6 +269,15 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		a {
 			text-decoration: none;
 		}
+	}
+
+	.mox-notice-amount-berichtenbox {
+		color: var(--rhc-color-cool-grey-500);
+		font-size: var(--rhc-text-font-size-sm);
+	}
+
+	.mox-filter-berichtenbox {
+		margin-block: var(--rhc-space-3xl);
 	}
 
 	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
