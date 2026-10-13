@@ -269,6 +269,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	/* Pagination */
 	.ams-pagination__link {
 		align-items: center;
+		background-color: var(--rhc-color-wit);
 		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
 		justify-content: center;
@@ -376,6 +377,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		block-size: var(--rhc-size-icon-md);
 		flex-shrink: 0;
 		inline-size: var(--rhc-size-icon-md)
+	}
+
+	.utrecht-link .utrecht-icon {
+		vertical-align: middle;
 	}
 
 	.rhc-link-list__item .utrecht-link-list__link {
