@@ -1,12 +1,5 @@
 /**
  * Icoon voor de taalkeuze (LanguageNavigation).
- *
- * PLACEHOLDER: vervang de <path> hieronder door de echte icoon-code. Houd
- * viewBox="0 0 24 24" en currentColor aan, dan schaalt het icoon mee en neemt
- * het de tekstkleur over.
- *
- * Bewust zonder de class `utrecht-icon`: in mox.css staat het chevron-icoon van
- * de taalkeuze (ook een utrecht-icon) op display: none.
  */
 export const TaalIcon = () => (
   <span className="mox-taal-icoon" role="presentation" aria-hidden="true">

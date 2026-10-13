@@ -14,6 +14,10 @@ import {
 } from "@rijkshuisstijl-community/components-react";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
+import { AbsenceIcon } from "@/components/icons/absenceIcon";
+import { StaffIcon } from "@/components/icons/staffIcon";
+import { RegulationIcon } from "@/components/icons/regulationIcon";
+import { SubsidyIcon } from "@/components/icons/subsidyIcon";
 
 const Navigation = ({
   flags,
@@ -96,22 +100,16 @@ const Navigation = ({
         <Separator />
         <SideNavList>
           <SideNavItem>
-            <SideNavLink
-              current={isActief("/subsidies")}
-              href="/subsidies"
-              icon="nieuws"
-            >
+            <SideNavLink current={isActief("/subsidies")} href="/subsidies">
+              <SubsidyIcon />
               Subsidies en financiering
             </SideNavLink>
           </SideNavItem>
         </SideNavList>
         <SideNavList>
           <SideNavItem>
-            <SideNavLink
-              current={isActief("/wetten")}
-              href="/wetten"
-              icon="publicatie"
-            >
+            <SideNavLink current={isActief("/wetten")} href="/wetten">
+              <RegulationIcon />
               Wetten en regelgeving
             </SideNavLink>
           </SideNavItem>
@@ -181,11 +179,8 @@ const Navigation = ({
         {toon("mox_pagina_personeel") && (
           <SideNavList>
             <SideNavItem>
-              <SideNavLink
-                current={isActief("/personeel")}
-                href="/personeel"
-                icon="user"
-              >
+              <SideNavLink current={isActief("/personeel")} href="/personeel">
+                <StaffIcon />
                 Personeel en rollen
               </SideNavLink>
             </SideNavItem>
@@ -197,8 +192,8 @@ const Navigation = ({
               <SideNavLink
                 current={isActief("/verzuim-en-verlof")}
                 href="/verzuim-en-verlof"
-                icon="user"
               >
+                <AbsenceIcon />
                 Ziekte en verlof
               </SideNavLink>
             </SideNavItem>
