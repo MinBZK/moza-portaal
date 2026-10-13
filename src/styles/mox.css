@@ -340,7 +340,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-block-end-color: var(--rhc-color-cool-grey-400);
 		border-block-end-width: var(--rhc-border-width-md);
 		display: flex;
-		gap: var(--rhc-space-3xl);
+		gap: var(--rhc-space-xl);
 
 		/* Smal scherm: minder ruimte tussen de tabs, en ze mogen doorlopen op een
 		  volgende regel in plaats van buiten het scherm. */
@@ -1096,6 +1096,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		inline-size: 256px;
 		inset-block-start: 3rem;
 		inset-inline-end: -4rem;
+		opacity: .8;
 		padding-block: var(--rhc-space-sm);
 		position: fixed;
 		text-align: center;
@@ -1103,6 +1104,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		transform: rotate(45deg);
 		transform-origin: center;
 		z-index: 1;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 }
 
