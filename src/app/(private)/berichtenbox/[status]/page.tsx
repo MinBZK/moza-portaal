@@ -32,9 +32,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         />
       </TableCell>
       <TableCell>
-        <span
-          className={ongelezen ? "mox-afzender mox-ongelezen" : "mox-afzender"}
-        >
+        <span className={ongelezen ? "mox-sender mox-unread" : "mox-sender"}>
           {ongelezen && (
             <>
               <span aria-hidden="true" className="mox-status-unread" />
@@ -45,7 +43,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         </span>
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "mox-ongelezen" : undefined}>
+        <span className={ongelezen ? "mox-unread" : undefined}>
           Aanslag belastingen 2025
         </span>
       </TableCell>

@@ -30,7 +30,7 @@ const BerichtRij = ({
   /** Extra cellen achteraan, zoals acties. */
   children?: ReactNode;
 }) => (
-  <TableRow className={nieuw ? "mox-rij-nieuw" : undefined}>
+  <TableRow className={nieuw ? "mox-row-new" : undefined}>
     <TableCell>
       <button
         type="button"
@@ -43,9 +43,7 @@ const BerichtRij = ({
       </button>
     </TableCell>
     <TableCell>
-      <span
-        className={ongelezen ? "mox-afzender mox-ongelezen" : "mox-afzender"}
-      >
+      <span className={ongelezen ? "mox-sender mox-unread" : "mox-sender"}>
         {ongelezen && (
           <>
             <span aria-hidden="true" className="mox-status-unread" />
@@ -58,7 +56,7 @@ const BerichtRij = ({
     <TableCell>
       <Link
         href={`/berichtenbox/${bericht.id}`}
-        className={`utrecht-link utrecht-link--html-a ${ongelezen ? "mox-ongelezen" : ""}`}
+        className={`utrecht-link utrecht-link--html-a ${ongelezen ? "mox-unread" : ""}`}
       >
         {bericht.onderwerp}
       </Link>

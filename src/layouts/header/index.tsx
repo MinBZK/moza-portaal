@@ -102,8 +102,8 @@ const Header = ({
 
   const accountLabel = actieveOrganisatieNaam ? (
     <>
-      <strong>{actieveOrganisatieNaam}</strong>
       <span>{naam}</span>
+      <span>{actieveOrganisatieNaam}</span>
     </>
   ) : (
     naam
@@ -157,20 +157,20 @@ const Header = ({
                     {organisaties.length > 1 ? (
                       <div
                         ref={organisatiesRef}
-                        className="mox-header-organisaties"
+                        className="mox-header-organizations"
                       >
                         <button
                           ref={organisatieKnopRef}
                           type="button"
                           id="header-organisaties-knop"
-                          className="rhc-nav-bar__link mox-header-organisaties__trigger"
+                          className="rhc-nav-bar__link mox-header-organizations__trigger"
                           aria-expanded={openOrganisaties}
                           aria-controls="header-organisaties"
                           aria-label={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
                           onClick={() => setOpenOrganisaties((open) => !open)}
                         >
                           <Icon icon="user" />
-                          <span className="rhc-nav-bar__label mox-header-organisaties__identiteit">
+                          <span className="rhc-nav-bar__label mox-header-organizations__identity">
                             {accountLabel}
                           </span>
                           <Icon icon="chevron-down" />
@@ -178,14 +178,14 @@ const Header = ({
                         {openOrganisaties && (
                           <ul
                             id="header-organisaties"
-                            className="mox-header-organisaties__lijst"
+                            className="mox-header-organizations__list"
                             aria-labelledby="header-organisaties-knop"
                           >
                             {organisaties.map((organisatie) => (
                               <li key={organisatie.id}>
                                 <button
                                   type="button"
-                                  className="mox-header-organisaties__keuze"
+                                  className="mox-header-organizations__choice"
                                   aria-pressed={
                                     organisatie.id === actieveOrganisatieId
                                   }
@@ -204,11 +204,11 @@ const Header = ({
                       </div>
                     ) : (
                       <Link
-                        className="rhc-nav-bar__link mox-header-organisaties__single"
+                        className="rhc-nav-bar__link mox-header-organizations__single"
                         href="/"
                       >
                         <Icon icon="user" />
-                        <span className="rhc-nav-bar__label mox-header-organisaties__identiteit">
+                        <span className="rhc-nav-bar__label mox-header-organizations__identity">
                           {accountLabel}
                         </span>
                       </Link>

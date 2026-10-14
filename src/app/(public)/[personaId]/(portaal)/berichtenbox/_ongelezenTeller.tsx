@@ -38,7 +38,7 @@ const OngelezenTeller = ({
 
   if (aantal === 0) return null;
   return (
-    <span className="mox-badge-houder">
+    <span className="mox-badge-holder">
       <NumberBadge>{aantal}</NumberBadge>
       <VisuallyHidden>ongelezen</VisuallyHidden>
     </span>

@@ -53,7 +53,7 @@ const Navigation = ({
       <div
         id={MENU_ID}
         className={
-          open ? "mox-menu-lijsten mox-menu-lijsten--open" : "mox-menu-lijsten"
+          open ? "mox-menu-lists mox-menu-lists--open" : "mox-menu-lists"
         }
       >
         <SideNavList>

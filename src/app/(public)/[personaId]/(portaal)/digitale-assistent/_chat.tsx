@@ -834,12 +834,12 @@ const Chat = ({
 
       <div
         ref={berichtenRef}
-        className="mox-chat-berichten"
+        className="mox-chat-messages"
         role="log"
         aria-live="polite"
       >
         {items.map((item) => (
-          <div key={item.id} data-item={item.id} className="mox-chat-regel">
+          <div key={item.id} data-item={item.id} className="mox-chat-rule">
             {item.soort === "gebruiker" && <Gebruiker item={item} />}
             {item.soort === "assistent" && <Assistent item={item} />}
             {item.soort === "fout" && <Fout item={item} />}
@@ -890,7 +890,7 @@ const Chat = ({
         {denkt !== null && <Denkt tekst={denkt} />}
       </div>
 
-      <form ref={formRef} className="mox-chat-invoer" onSubmit={verzend}>
+      <form ref={formRef} className="mox-chat-input" onSubmit={verzend}>
         <label htmlFor="chat-invoer">
           <VisuallyHidden>Uw vraag</VisuallyHidden>
         </label>

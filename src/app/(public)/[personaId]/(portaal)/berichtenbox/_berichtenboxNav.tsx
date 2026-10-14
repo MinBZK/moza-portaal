@@ -105,7 +105,7 @@ const BerichtenboxNav = ({
                 {tab.icon}
                 {tab.label}
                 {tab.weergave === "inbox" && ongelezen > 0 && (
-                  <span className="mox-badge-houder">
+                  <span className="mox-badge-holder">
                     <NumberBadge>{ongelezen}</NumberBadge>
                     <VisuallyHidden>ongelezen</VisuallyHidden>
                   </span>
@@ -115,7 +115,7 @@ const BerichtenboxNav = ({
           );
         })}
         {mappen.length > 0 && (
-          <li className="mox-tabs-scheiding">
+          <li className="mox-tabs-separator">
             <VisuallyHidden>Mappen:</VisuallyHidden>
           </li>
         )}

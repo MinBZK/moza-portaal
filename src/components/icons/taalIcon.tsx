@@ -2,7 +2,7 @@
  * Icoon voor de taalkeuze (LanguageNavigation).
  */
 export const TaalIcon = () => (
-  <span className="mox-taal-icoon" role="presentation" aria-hidden="true">
+  <span className="mox-language-icon" role="presentation" aria-hidden="true">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
