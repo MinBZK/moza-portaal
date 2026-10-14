@@ -11,6 +11,7 @@ import {
   Button,
   Fieldset,
   FormFieldCheckboxOption,
+  FormFieldRadio,
 } from "@rijkshuisstijl-community/components-react";
 import { resetFeatureFlags, setFeatureFlag } from "@/app/actions";
 import {
@@ -114,6 +115,27 @@ const FlagsPaneel = ({
             onChange={(event) => zetPauze(event.target.checked)}
           />
         </Fieldset>
+      </div>
+      <div>
+        <Fieldset legend="Huisstijl">
+          <FormFieldRadio
+            name="huisstijl"
+            value="huidig"
+            label="Huidige MijnOverheid huisstijl"
+            checked={!zichtbareFlags.mox_nieuweHuisstijl}
+            onChange={() => zetFlag("mox_nieuweHuisstijl", false)}
+          />
+          <FormFieldRadio
+            name="huisstijl"
+            value="nieuw"
+            label="Nieuwe MijnOverheid huisstijl (in ontwikkeling)"
+            description="Zonder mox.css: alleen RHC en de MOx-afwijkingen in rhc.css."
+            checked={zichtbareFlags.mox_nieuweHuisstijl}
+            onChange={() => zetFlag("mox_nieuweHuisstijl", true)}
+          />
+        </Fieldset>
+      </div>
+      <div>
         <Button
           appearance="secondary-action-button"
           hint="danger"

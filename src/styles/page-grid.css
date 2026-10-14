@@ -1,0 +1,338 @@
+/*
+ * Paginagrid met 4, 8 en 12 kolommen: small (<768px), medium (768-1024px) en
+ * large (>=1024px). Paginamarge en gutter staan in rhc.css.
+ *
+ * RHC rekent altijd in twaalfden (rhc-grid__cell-N, -t-N, -d-N). Hier worden
+ * die spans omgerekend naar het aantal kolommen van de viewport, afgerond.
+ * Zo werkt bestaande markup zonder aanpassingen.
+ */
+
+.rhc-theme.mox-theme {
+  /* Small: 4 kolommen. Spans in twaalfden naar vierden, naar boven afgerond. */
+  .rhc-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .rhc-grid__cell {
+    grid-column-end: span 4;
+  }
+
+  .rhc-grid__cell-1 {
+    grid-column-end: span 1;
+  }
+
+  .rhc-grid__cell-2 {
+    grid-column-end: span 1;
+  }
+
+  .rhc-grid__cell-3 {
+    grid-column-end: span 1;
+  }
+
+  .rhc-grid__cell-4 {
+    grid-column-end: span 2;
+  }
+
+  .rhc-grid__cell-5 {
+    grid-column-end: span 2;
+  }
+
+  .rhc-grid__cell-6 {
+    grid-column-end: span 2;
+  }
+
+  .rhc-grid__cell-7 {
+    grid-column-end: span 3;
+  }
+
+  .rhc-grid__cell-8 {
+    grid-column-end: span 3;
+  }
+
+  .rhc-grid__cell-9 {
+    grid-column-end: span 3;
+  }
+
+  .rhc-grid__cell-10 {
+    grid-column-end: span 4;
+  }
+
+  .rhc-grid__cell-11 {
+    grid-column-end: span 4;
+  }
+
+  .rhc-grid__cell-12 {
+    grid-column-end: span 4;
+  }
+
+  /* Medium: 8 kolommen. Het menu (t-3) wordt 2 kolommen, de inhoud (t-9) 6. */
+  @media (width >= 768px) {
+    .rhc-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+    .rhc-grid__cell {
+      grid-column-end: span 8;
+    }
+
+    .rhc-grid__cell-1 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-2 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-3 {
+      grid-column-end: span 2;
+    }
+
+    .rhc-grid__cell-4 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-5 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-6 {
+      grid-column-end: span 4;
+    }
+
+    .rhc-grid__cell-7 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-8 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-9 {
+      grid-column-end: span 6;
+    }
+
+    .rhc-grid__cell-10 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-11 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-12 {
+      grid-column-end: span 8;
+    }
+
+    .rhc-grid__cell-t-1 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-t-2 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-t-3 {
+      grid-column-end: span 2;
+    }
+
+    .rhc-grid__cell-t-4 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-t-5 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-t-6 {
+      grid-column-end: span 4;
+    }
+
+    .rhc-grid__cell-t-7 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-t-8 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-t-9 {
+      grid-column-end: span 6;
+    }
+
+    .rhc-grid__cell-t-10 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-t-11 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-t-12 {
+      grid-column-end: span 8;
+    }
+
+    .mox-breadcrumb-cell {
+      grid-column: 3 / -1;
+    }
+  }
+
+  /* Large: weer 12 kolommen zoals RHC. Opnieuw opgeschreven, omdat de regels
+    hierboven specifieker zijn dan die van RHC. */
+  @media (width >= 1024px) {
+    .rhc-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .rhc-grid__cell {
+      grid-column-end: span 12;
+    }
+
+    .rhc-grid__cell-1 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-2 {
+      grid-column-end: span 2;
+    }
+
+    .rhc-grid__cell-3 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-4 {
+      grid-column-end: span 4;
+    }
+
+    .rhc-grid__cell-5 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-6 {
+      grid-column-end: span 6;
+    }
+
+    .rhc-grid__cell-7 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-8 {
+      grid-column-end: span 8;
+    }
+
+    .rhc-grid__cell-9 {
+      grid-column-end: span 9;
+    }
+
+    .rhc-grid__cell-10 {
+      grid-column-end: span 10;
+    }
+
+    .rhc-grid__cell-11 {
+      grid-column-end: span 11;
+    }
+
+    .rhc-grid__cell-12 {
+      grid-column-end: span 12;
+    }
+
+    .rhc-grid__cell-t-1 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-t-2 {
+      grid-column-end: span 2;
+    }
+
+    .rhc-grid__cell-t-3 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-t-4 {
+      grid-column-end: span 4;
+    }
+
+    .rhc-grid__cell-t-5 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-t-6 {
+      grid-column-end: span 6;
+    }
+
+    .rhc-grid__cell-t-7 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-t-8 {
+      grid-column-end: span 8;
+    }
+
+    .rhc-grid__cell-t-9 {
+      grid-column-end: span 9;
+    }
+
+    .rhc-grid__cell-t-10 {
+      grid-column-end: span 10;
+    }
+
+    .rhc-grid__cell-t-11 {
+      grid-column-end: span 11;
+    }
+
+    .rhc-grid__cell-t-12 {
+      grid-column-end: span 12;
+    }
+
+    .rhc-grid__cell-d-1 {
+      grid-column-end: span 1;
+    }
+
+    .rhc-grid__cell-d-2 {
+      grid-column-end: span 2;
+    }
+
+    .rhc-grid__cell-d-3 {
+      grid-column-end: span 3;
+    }
+
+    .rhc-grid__cell-d-4 {
+      grid-column-end: span 4;
+    }
+
+    .rhc-grid__cell-d-5 {
+      grid-column-end: span 5;
+    }
+
+    .rhc-grid__cell-d-6 {
+      grid-column-end: span 6;
+    }
+
+    .rhc-grid__cell-d-7 {
+      grid-column-end: span 7;
+    }
+
+    .rhc-grid__cell-d-8 {
+      grid-column-end: span 8;
+    }
+
+    .rhc-grid__cell-d-9 {
+      grid-column-end: span 9;
+    }
+
+    .rhc-grid__cell-d-10 {
+      grid-column-end: span 10;
+    }
+
+    .rhc-grid__cell-d-11 {
+      grid-column-end: span 11;
+    }
+
+    .rhc-grid__cell-d-12 {
+      grid-column-end: span 12;
+    }
+
+    .mox-breadcrumb-cell {
+      grid-column: 4 / -1;
+    }
+  }
+}
