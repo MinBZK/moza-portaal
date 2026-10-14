@@ -9,6 +9,7 @@ import {
   plekVanMap,
   verplaatsBericht,
   verwijderBericht,
+  volg,
   type KetenFoutReden,
   type KetenLijstBericht,
   type KetenVoortgang,
@@ -37,6 +38,10 @@ type KetenStaat = {
   berichten: KetenBericht[];
   voortgang: KetenVoortgang | null;
   fout: KetenFoutReden | null;
+  /** Laatst binnengekomen bericht, voor de melding aan schermlezers. */
+  nieuw: { id: string; afzender: string } | null;
+  /** Nieuwe berichten komen niet meer vanzelf binnen. */
+  volgenGestopt: boolean;
 };
 
 export const ketenFoutTekst: Record<KetenFoutReden, string> = {
@@ -60,6 +65,8 @@ const LEEG: KetenStaat = {
   berichten: [],
   voortgang: null,
   fout: null,
+  nieuw: null,
+  volgenGestopt: false,
 };
 
 let staat = LEEG;
@@ -124,6 +131,7 @@ const wachtOpLijst = async () => {
  */
 const laad = async (ontvanger: string, ophalen: boolean) => {
   if (staat.ontvanger !== ontvanger) {
+    stopVolgen();
     staat = { ...LEEG, ontvanger };
     bezig = null;
   }
@@ -161,6 +169,192 @@ const laad = async (ontvanger: string, ophalen: boolean) => {
   await bezig;
 };
 
+// --- Volgen ----------------------------------------------------------------
+//
+// Zolang de berichtenbox openstaat, meldt het stelsel zelf een nieuw bericht
+// (`_volgen`). Lukt dat niet, dan vragen we periodiek de lijst op. Allebei
+// zonder ophaalronde, en allebei houden ze de sessie bij het stelsel warm.
+
+// Blijft het 45 seconden stil (twee gemiste hartslagen), dan is de verbinding weg.
+const VOLG_WAAKHOND_MS = 45000;
+// Wachttijd voor opnieuw verbinden, oplopend per poging, met wat spreiding.
+const VOLG_TUSSENPOZEN_SEC = [1, 2, 5, 10, 30];
+const VOLG_FOUT_LIMIET = 3;
+const VOLG_MAX_WACHT_MS = 60000;
+const POLL_ZICHTBAAR_MS = 15000;
+const POLL_VERBORGEN_MS = 60000;
+const POLL_FOUT_LIMIET = 3;
+// Na een terugval de stroom na vijf minuten opnieuw proberen: drie mislukte
+// verbindingen zijn vaker een wifi-wissel dan een stelsel dat niet kan volgen.
+const VOLG_HERKANSING_MS = 5 * 60 * 1000;
+// Hoe vaak een verlopen sessie met een nieuwe ophaalronde terug mag komen.
+const HERSTEL_LIMIET = 2;
+
+let volgers = 0;
+let volgAfbreker: AbortController | null = null;
+let stopKlok: ReturnType<typeof setTimeout> | undefined;
+let herstelPogingen = 0;
+
+const slaap = (ms: number, signal: AbortSignal) =>
+  new Promise<void>((klaar) => {
+    const klok = setTimeout(klaar, ms);
+    signal.addEventListener(
+      "abort",
+      () => {
+        clearTimeout(klok);
+        klaar();
+      },
+      { once: true },
+    );
+  });
+
+const voegToe = (ruw: unknown) => {
+  const bericht = ruw as KetenLijstBericht | undefined;
+  if (!bericht?.berichtId || !bericht.magazijnId) return;
+  if (staat.berichten.some((b) => b.id === bericht.berichtId)) return;
+  const nieuw = naarBericht(bericht);
+  zet({
+    berichten: [nieuw, ...staat.berichten].sort((a, b) =>
+      b.tijdstip.localeCompare(a.tijdstip),
+    ),
+    nieuw: { id: nieuw.id, afzender: nieuw.afzender },
+  });
+};
+
+/** Vervangt de lijst door wat het stelsel nu heeft, en meldt wat er bij kwam. */
+const werkLijstBij = (lijst: KetenLijstBericht[]) => {
+  const bekend = new Set(staat.berichten.map((b) => b.id));
+  const bijgekomen = lijst.filter((b) => !bekend.has(b.berichtId));
+  zetLijst(lijst);
+  const laatste = bijgekomen[0];
+  if (laatste)
+    zet({
+      nieuw: {
+        id: laatste.berichtId,
+        afzender: laatste.afzenderNaam || "Onbekende afzender",
+      },
+    });
+};
+
+/** Een verlopen sessie terughalen met een stille ophaalronde. */
+const herstel = async () => {
+  if (herstelPogingen >= HERSTEL_LIMIET) return false;
+  herstelPogingen++;
+  try {
+    await haalOp(() => {});
+    werkLijstBij(await haalLijst());
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const ververs = async () => {
+  try {
+    werkLijstBij(await haalLijst());
+  } catch (fout) {
+    if (redenVan(fout) === "geenSessie" && !(await herstel()))
+      zet({ volgenGestopt: true });
+  }
+};
+
+/**
+ * Terugval: periodiek de lijst opvragen, tot `duurMs` om is. Geeft false als
+ * het opgaf; dan komen er geen berichten meer vanzelf binnen.
+ */
+const poll = async (signal: AbortSignal, duurMs = Infinity) => {
+  const einde = Date.now() + duurMs;
+  let fouten = 0;
+  while (!signal.aborted && Date.now() < einde) {
+    await slaap(
+      document.hidden ? POLL_VERBORGEN_MS : POLL_ZICHTBAAR_MS,
+      signal,
+    );
+    if (signal.aborted) return;
+    try {
+      werkLijstBij(await haalLijst());
+      fouten = 0;
+    } catch (fout) {
+      if (redenVan(fout) === "geenSessie" && (await herstel())) continue;
+      if (++fouten >= POLL_FOUT_LIMIET) {
+        zet({ volgenGestopt: true });
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+const volgLus = async (signal: AbortSignal) => {
+  let mislukt = 0;
+  let poging = 0;
+  while (!signal.aborted) {
+    const verbinding = new AbortController();
+    const stop = () => verbinding.abort();
+    signal.addEventListener("abort", stop);
+    let waakhond: ReturnType<typeof setTimeout> | undefined;
+    const leeft = () => {
+      clearTimeout(waakhond);
+      waakhond = setTimeout(stop, VOLG_WAAKHOND_MS);
+    };
+    leeft();
+
+    const { einde, gezond, wachtMs } = await volg(
+      verbinding.signal,
+      leeft,
+      (gebeurtenis) => {
+        if (gebeurtenis.event === "volgen-gestart") void ververs();
+        if (gebeurtenis.event === "bericht-bijgekomen")
+          voegToe(gebeurtenis.bericht);
+      },
+    );
+    clearTimeout(waakhond);
+    signal.removeEventListener("abort", stop);
+    if (signal.aborted) return;
+
+    if (einde === "verlopen" || einde === "conflict") {
+      if (await herstel()) continue;
+      zet({ volgenGestopt: true });
+      return;
+    }
+    // Dit stelsel kent volgen niet: alleen nog navragen.
+    if (einde === "ontbreekt") return void (await poll(signal));
+    if (gezond) {
+      mislukt = 0;
+      poging = 0;
+      herstelPogingen = 0;
+    } else if (++mislukt >= VOLG_FOUT_LIMIET) {
+      if (!(await poll(signal, VOLG_HERKANSING_MS))) return;
+      mislukt = 0;
+      poging = 0;
+      continue;
+    }
+
+    const basis =
+      VOLG_TUSSENPOZEN_SEC[
+        Math.min(poging++, VOLG_TUSSENPOZEN_SEC.length - 1)
+      ] * 1000;
+    const spreiding = 1 + (Math.random() * 2 - 1) * 0.2;
+    await slaap(
+      Math.min(Math.max(basis * spreiding, wachtMs ?? 0), VOLG_MAX_WACHT_MS),
+      signal,
+    );
+  }
+};
+
+const startVolgen = () => {
+  clearTimeout(stopKlok);
+  if (volgAfbreker || staat.fase !== "klaar") return;
+  volgAfbreker = new AbortController();
+  void volgLus(volgAfbreker.signal);
+};
+
+function stopVolgen() {
+  clearTimeout(stopKlok);
+  volgAfbreker?.abort();
+  volgAfbreker = null;
+}
+
 const SERVER: KetenStaat = LEEG;
 
 /**
@@ -179,11 +373,30 @@ export const useKeten = (ontvanger: string | null, ophalen = true) => {
   }, [ontvanger, ophalen]);
 
   const vanDeze = ontvanger && huidig.ontvanger === ontvanger;
+  const klaar = vanDeze && huidig.fase === "klaar";
+
+  // Alleen de berichtenbox volgt; de teller in het menu kijkt mee. Even
+  // wachten met stoppen, zodat wisselen van tabblad de verbinding niet breekt.
+  useEffect(() => {
+    if (!klaar || !ophalen) return;
+    volgers++;
+    startVolgen();
+    return () => {
+      volgers--;
+      clearTimeout(stopKlok);
+      stopKlok = setTimeout(() => {
+        if (volgers === 0) stopVolgen();
+      }, 2000);
+    };
+  }, [klaar, ophalen]);
+
   return {
     fase: vanDeze ? huidig.fase : ("laden" as Fase),
     berichten: vanDeze ? huidig.berichten : [],
     voortgang: vanDeze ? huidig.voortgang : null,
     fout: vanDeze ? huidig.fout : null,
+    nieuw: vanDeze ? huidig.nieuw : null,
+    volgenGestopt: vanDeze ? huidig.volgenGestopt : false,
   };
 };
 

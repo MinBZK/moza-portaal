@@ -275,3 +275,66 @@ export const verplaatsBericht = (
 /** Verwijdert een bericht voorgoed bij de organisatie. */
 export const verwijderBericht = (berichtId: string, magazijnId: string) =>
   wijzig(berichtId, magazijnId, { method: "DELETE" });
+
+export type VolgEinde =
+  /** De stroom is gewoon gestopt; opnieuw verbinden. */
+  | "einde"
+  /** Het stelsel meldt dat de sessie verlopen is. */
+  | "verlopen"
+  /** 409: geen sessie. Eerst opnieuw ophalen. */
+  | "conflict"
+  /** Dit stelsel kent volgen niet. */
+  | "ontbreekt"
+  | "fout";
+
+/**
+ * Volgt wat er binnenkomt: het stelsel meldt zelf een nieuw bericht, en stuurt
+ * elke 20 seconden een hartslag. Loopt tot de stroom stopt of `signal` afbreekt.
+ * `gezond` zegt of er iets van het stelsel binnenkwam.
+ */
+export const volg = async (
+  signal: AbortSignal,
+  opLeven: () => void,
+  opGebeurtenis: (gebeurtenis: Record<string, unknown>) => void,
+): Promise<{ einde: VolgEinde; gezond: boolean; wachtMs?: number }> => {
+  let antwoord: Response;
+  try {
+    antwoord = await fetch(`${BASIS}/_volgen`, {
+      headers: { Accept: "text/event-stream" },
+      signal,
+    });
+  } catch {
+    return { einde: "fout", gezond: false };
+  }
+  if (antwoord.status === 409) return { einde: "conflict", gezond: false };
+  if (antwoord.status === 404) return { einde: "ontbreekt", gezond: false };
+  const soort = antwoord.headers.get("content-type") ?? "";
+  if (
+    !antwoord.ok ||
+    !antwoord.body ||
+    !soort.startsWith("text/event-stream")
+  ) {
+    const wacht = Number(antwoord.headers.get("retry-after"));
+    return {
+      einde: "fout",
+      gezond: false,
+      wachtMs: Number.isFinite(wacht) && wacht > 0 ? wacht * 1000 : undefined,
+    };
+  }
+
+  let gezond = false;
+  let verlopen = false;
+  try {
+    await leesSse(antwoord.body, opLeven, (gebeurtenis) => {
+      gezond = true;
+      if (gebeurtenis.event === "sessie-verlopen") {
+        verlopen = true;
+        return true;
+      }
+      opGebeurtenis(gebeurtenis);
+    });
+  } catch {
+    // Afgebroken of onleesbaar: de aanroeper verbindt opnieuw.
+  }
+  return { einde: verlopen ? "verlopen" : "einde", gezond };
+};
