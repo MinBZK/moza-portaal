@@ -512,54 +512,40 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		align-items: baseline;
 	}
 
-	/* Tab interface */
+	/* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
+	  horizontaal, op elke schermbreedte. De grijze lijn is een achtergrond in
+	  plaats van een rand: in een scrollende lijst kan de actieve tab niet over
+	  een rand heen hangen, want dan scrolt de lijst ook verticaal. */
 	.mox-tabs {
-		--mox-tabs-fade: var(--rhc-space-max-5xl);
+		--mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
 
-		border-block-end-color: var(--rhc-color-cool-grey-400);
-		border-block-end-width: var(--rhc-border-width-md);
+		background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
+		background-position: 0 100%;
+		background-repeat: no-repeat;
+		background-size: 100% var(--rhc-border-width-md);
 		display: flex;
 		gap: var(--rhc-space-xl);
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scroll-padding-inline: var(--rhc-space-md);
+		scrollbar-width: thin;
 
-		/* Smal scherm: de tabs blijven op één regel. Wat niet past, scrolt u
-		  horizontaal. De grijze lijn is hier een achtergrond in plaats van een
-		  rand: in een scrollende lijst kan de actieve tab niet over de rand
-		  heen hangen (de -2px hieronder), want dan scrolt hij ook verticaal. */
+		/* Smal scherm: minder ruimte tussen de tabs. */
 		@media (width < 768px) {
-			background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
-			background-position: 0 100%;
-			background-repeat: no-repeat;
-			background-size: 100% var(--rhc-border-width-md);
-			border-block-end-width: 0;
 			gap: 0 var(--rhc-space-md);
-			overflow-x: auto;
-			overscroll-behavior-inline: contain;
-			scroll-padding-inline: var(--rhc-space-md);
-			scrollbar-width: thin;
+		}
 
-			/* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
-			  Het verloop volgt de scrollpositie (scroll-driven animation). Zonder
-			  ondersteuning in de browser blijft de dunne scrollbalk de hint. */
-			@supports (animation-timeline: scroll()) {
-				animation: mox-tabs-fade linear both;
-				animation-timeline: scroll(self inline);
-				mask-image: linear-gradient(to right, transparent, #000 var(--mox-tabs-fade-start), #000 calc(100% - var(--mox-tabs-fade-end)), transparent);
-				scrollbar-width: none;
+		/* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
+		  Het verloop volgt de scrollpositie (scroll-driven animation). Zonder
+		  ondersteuning in de browser blijft de dunne scrollbalk de hint. */
+		@supports (animation-timeline: scroll()) {
+			animation: mox-tabs-fade linear both;
+			animation-timeline: scroll(self inline);
+			mask-image: linear-gradient(to right, transparent, #000 var(--mox-tabs-fade-start), #000 calc(100% - var(--mox-tabs-fade-end)), transparent);
+			scrollbar-width: none;
 
-				&::-webkit-scrollbar {
-					display: none;
-				}
-			}
-
-			.mox-tab {
-				margin-block-end: 0;
-				/* Een tab die in beeld schuift, valt niet in het verloop. */
-				scroll-margin-inline: var(--mox-tabs-fade);
-
-				/* Binnen de tab, anders valt de focusrand weg aan de randen. */
-				&:focus-visible {
-					outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
-				}
+			&::-webkit-scrollbar {
+				display: none;
 			}
 		}
 	}
@@ -568,10 +554,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		align-items: center;
 		display: flex;
 		gap: var(--rhc-space-md);
-		margin-block-end: -2px;
 		padding: var(--rhc-space-md);
+		/* Een tab die in beeld schuift, valt niet in het verloop. */
+		scroll-margin-inline: var(--mox-tabs-fade);
 		text-decoration: none;
 		white-space: nowrap;
+
+		/* Binnen de tab, anders valt de focusrand weg aan de randen. */
+		&:focus-visible {
+			outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
+		}
 
 		&[aria-current] {
 			border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
@@ -1421,7 +1413,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 @property --mox-tabs-fade-end {
 	inherits: false;
-	initial-value: 0px;
+	initial-value: 0;
 	syntax: "<length>";
 }
 
@@ -1429,7 +1421,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 @keyframes mox-tabs-fade {
 	0% {
 		--mox-tabs-fade-end: var(--mox-tabs-fade);
-		--mox-tabs-fade-start: 0px;
+		--mox-tabs-fade-start: 0;
 	}
 
 	10% {
@@ -1441,7 +1433,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	100% {
-		--mox-tabs-fade-end: 0px;
+		--mox-tabs-fade-end: 0;
 		--mox-tabs-fade-start: var(--mox-tabs-fade);
 	}
 }
