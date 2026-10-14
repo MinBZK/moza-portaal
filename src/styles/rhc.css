@@ -64,10 +64,17 @@
 body {
   background: var(--mox-color-page-background, var(--rhc-color-wit));
   color: var(--rhc-color-foreground-default);
+  display: flex;
+  flex-direction: column;
   font-family: var(--rhc-text-font-family-default);
   font-size: var(--rhc-text-font-size-md);
   font-weight: var(--rhc-text-font-weight-default);
   line-height: var(--rhc-text-line-height-md);
+  min-block-size: 100dvh;
+
+  >.utrecht-page-body {
+    flex: 1 0 auto;
+  }
 }
 
 .rhc-theme.mox-theme {
