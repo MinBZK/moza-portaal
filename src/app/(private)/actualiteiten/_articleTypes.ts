@@ -7,12 +7,12 @@ export const TYPE_LABELS: Record<string, string> = {
   "subsidie-nl": "Subsidie",
 };
 
-/** Kleurvariant van het label, zie .mox-badge in mox.css. */
+/** Variant van het label per soort artikel, zie .mox-badge in mox.css. */
 export const TYPE_BADGES: Record<string, string> = {
-  "artikel-nl": "mox-badge--blauw",
-  stepbystep: "mox-badge--blauw",
-  video: "mox-badge--paars",
-  "regel-nl": "mox-badge--geel",
-  "wetswijziging-nl": "mox-badge--rood",
-  "subsidie-nl": "mox-badge--groen",
+  "artikel-nl": "mox-badge--artikel",
+  stepbystep: "mox-badge--stappenplan",
+  video: "mox-badge--video",
+  "regel-nl": "mox-badge--regel",
+  "wetswijziging-nl": "mox-badge--wetswijziging",
+  "subsidie-nl": "mox-badge--subsidie",
 };

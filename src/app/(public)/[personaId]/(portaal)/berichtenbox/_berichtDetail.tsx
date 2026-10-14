@@ -11,13 +11,18 @@ import {
   Paragraph,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import { FolderIcon } from "@/components/icons/folderIcon";
+import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
 import BerichtenboxNav from "./_berichtenboxNav";
+import MapDialog from "./_mapDialog";
 import {
   bewaarFoutTekst,
   isGemarkeerd,
+  isOngelezen,
+  mapVanBericht,
   statusVan,
   useBerichtenboxState,
   type Weergave,
@@ -30,13 +35,25 @@ const lijstVan: Record<Weergave, string> = {
   prullenbak: "/berichtenbox/prullenbak",
 };
 
+/** Een bericht uit het Federatief Berichtenstelsel: de plek staat daar. */
+export type StelselActies = {
+  plek: Weergave;
+  /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
+  verplaats: (plek: Weergave) => Promise<string | null>;
+  verwijderVoorgoed: () => Promise<string | null>;
+  /** Zet het bericht in een map; een lege naam haalt het eruit. */
+  zetMap: (map: string) => Promise<string | null>;
+};
+
 const BerichtDetail = ({
   berichten,
   berichtId,
+  stelsel,
   children,
 }: {
-  berichten: DemoBericht[];
+  berichten: (DemoBericht & { plek?: Weergave })[];
   berichtId: string;
+  stelsel?: StelselActies;
   /** De inhoud van het bericht. */
   children: ReactNode;
 }) => {
@@ -50,20 +67,78 @@ const BerichtDetail = ({
     verwijder,
     zetTerugInInbox,
     verwijderVoorgoed,
+    zetOngelezen,
+    zetMap,
   } = useBerichtenboxState();
+  // De knop die de mapkeuze opende; die krijgt na sluiten de focus terug.
+  const [kiesMap, setKiesMap] = useState<HTMLElement | null>(null);
+  const [melding, setMelding] = useState<string | null>(null);
   const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
+  const [actieFout, setActieFout] = useState<string | null>(null);
   const voorgoedKnopRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const annuleerKnopRef = useRef<HTMLButtonElement>(null);
 
-  const status = staat ? statusVan(staat, berichtId) : null;
-  const alGelezen = staat ? !!staat.gelezen[berichtId] : true;
+  const status = stelsel
+    ? stelsel.plek
+    : staat
+      ? statusVan(staat, berichtId)
+      : null;
+  const bericht = berichten.find((b) => b.id === berichtId);
+  const ongelezen =
+    staat && bericht
+      ? isOngelezen(staat, berichtId, bericht.isOngelezen)
+      : false;
+  const map = staat && bericht ? mapVanBericht(staat, bericht) : null;
+  const mappen = staat
+    ? [
+        ...new Set([
+          ...berichten
+            .map((b) => mapVanBericht(staat, b))
+            .filter((naam): naam is string => !!naam),
+          ...(stelsel ? [] : staat.eigenMappen),
+        ]),
+      ].sort((a, b) => a.localeCompare(b, "nl"))
+    : [];
 
-  // Openen telt als lezen. Lukt bewaren niet, dan is dat geen melding waard.
+  // Openen telt als lezen, één keer per bericht: daarna mag de gebruiker het
+  // weer op ongelezen zetten. Lukt bewaren niet, dan is dat geen melding waard.
+  const gelezenBijOpenen = useRef<string | null>(null);
   useEffect(() => {
-    if (!alGelezen) markeerGelezen(berichtId);
-  }, [alGelezen, berichtId, markeerGelezen]);
+    if (!staat || gelezenBijOpenen.current === berichtId) return;
+    gelezenBijOpenen.current = berichtId;
+    if (!staat.gelezen[berichtId] || staat.ongelezen[berichtId])
+      markeerGelezen(berichtId);
+  }, [staat, berichtId, markeerGelezen]);
+
+  const wisselOngelezen = () => {
+    if (!zetOngelezen(berichtId, !ongelezen)) return;
+    setActieFout(null);
+    setMelding(
+      ongelezen
+        ? "Het bericht is gemarkeerd als gelezen."
+        : "Het bericht is gemarkeerd als ongelezen.",
+    );
+  };
+
+  /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
+  const zetInMap = async (naar: string) => {
+    const van = map;
+    if (stelsel) {
+      const tekst = await stelsel.zetMap(naar);
+      if (tekst) return tekst;
+    } else if (!zetMap(berichtId, naar)) {
+      return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
+    }
+    setActieFout(null);
+    setMelding(
+      naar
+        ? `Het bericht staat nu in de map ${naar}.`
+        : `Het bericht is uit de map ${van} gehaald.`,
+    );
+    return null;
+  };
 
   // showModal() maakt de rest van de pagina onbereikbaar en sluit met Escape.
   useEffect(() => {
@@ -82,9 +157,35 @@ const BerichtDetail = ({
     voorgoedKnopRef.current?.focus();
   };
 
-  const verplaats = (actie: (id: string) => boolean) => {
+  const verplaats = async (plek: Weergave) => {
     if (!status || status === "weg") return;
+    setActieFout(null);
+    if (stelsel) {
+      const tekst = await stelsel.verplaats(plek);
+      if (tekst) setActieFout(tekst);
+      else router.push(lijstVan[status]);
+      return;
+    }
+    const actie = {
+      inbox: zetTerugInInbox,
+      archief: archiveer,
+      prullenbak: verwijder,
+    }[plek];
     if (actie(berichtId)) router.push(lijstVan[status]);
+  };
+
+  const verwijderDefinitief = async () => {
+    if (!stelsel) {
+      if (verwijderVoorgoed(berichtId)) router.push(lijstVan.prullenbak);
+      return;
+    }
+    const tekst = await stelsel.verwijderVoorgoed();
+    if (!tekst) {
+      router.push(lijstVan.prullenbak);
+      return;
+    }
+    setVraagVoorgoed(false);
+    setActieFout(tekst);
   };
 
   const gemarkeerd = staat ? isGemarkeerd(staat, berichtId) : false;
@@ -96,6 +197,7 @@ const BerichtDetail = ({
           berichten={berichten}
           actief={status === "weg" ? null : status}
           opLijst={false}
+          metNieuwe={!stelsel}
         />
 
         {status === "weg" ? (
@@ -119,6 +221,22 @@ const BerichtDetail = ({
             {children}
 
             {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
+            {actieFout && <Alert type="error">{actieFout}</Alert>}
+            <div role="status">
+              {melding && <Alert type="ok">{melding}</Alert>}
+            </div>
+            {map && status === "inbox" && (
+              <Paragraph>
+                <FolderIcon /> Dit bericht staat in de map{" "}
+                <Link
+                  href={`/berichtenbox?${new URLSearchParams({ map })}`}
+                  className="utrecht-link utrecht-link--html-a"
+                >
+                  {map}
+                </Link>
+                .
+              </Paragraph>
+            )}
 
             {status && (
               <ActionGroup direction="row">
@@ -134,6 +252,35 @@ const BerichtDetail = ({
                   Markeren
                 </Button>
 
+                <Button
+                  appearance="secondary-action-button"
+                  onClick={wisselOngelezen}
+                >
+                  {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
+                  {ongelezen ? "Markeer als gelezen" : "Markeer als ongelezen"}
+                </Button>
+
+                {status === "inbox" && (
+                  <Button
+                    appearance="secondary-action-button"
+                    aria-haspopup="dialog"
+                    onClick={(event) => setKiesMap(event.currentTarget)}
+                  >
+                    <FolderIcon />
+                    Verplaatsen naar map
+                  </Button>
+                )}
+
+                {status === "inbox" && map && (
+                  <Button
+                    appearance="secondary-action-button"
+                    onClick={() => void zetInMap("")}
+                  >
+                    <Icon icon="inbox" />
+                    Uit map halen
+                  </Button>
+                )}
+
                 {/* Schets uit moza-poc: Delen doet nog niets. */}
                 {delen && (
                   <Button appearance="secondary-action-button">
@@ -145,7 +292,7 @@ const BerichtDetail = ({
                 {status !== "archief" && (
                   <Button
                     appearance="secondary-action-button"
-                    onClick={() => verplaats(archiveer)}
+                    onClick={() => void verplaats("archief")}
                   >
                     <ArchiveIcon />
                     Archiveren
@@ -155,7 +302,7 @@ const BerichtDetail = ({
                 {status !== "inbox" && (
                   <Button
                     appearance="secondary-action-button"
-                    onClick={() => verplaats(zetTerugInInbox)}
+                    onClick={() => void verplaats("inbox")}
                   >
                     <Icon icon="inbox" />
                     Terugzetten in inbox
@@ -176,7 +323,7 @@ const BerichtDetail = ({
                 ) : (
                   <Button
                     appearance="secondary-action-button"
-                    onClick={() => verplaats(verwijder)}
+                    onClick={() => void verplaats("prullenbak")}
                   >
                     <Icon icon="verwijderen" />
                     Verwijderen
@@ -187,6 +334,17 @@ const BerichtDetail = ({
           </>
         )}
       </div>
+
+      {kiesMap && (
+        <MapDialog
+          open
+          mappen={mappen}
+          huidige={map}
+          opener={kiesMap}
+          onKies={zetInMap}
+          onSluit={() => setKiesMap(null)}
+        />
+      )}
 
       {status === "prullenbak" && (
         <dialog
@@ -206,11 +364,7 @@ const BerichtDetail = ({
             <Button
               appearance="primary-action-button"
               hint="danger"
-              onClick={() => {
-                if (verwijderVoorgoed(berichtId)) {
-                  router.push(lijstVan.prullenbak);
-                }
-              }}
+              onClick={() => void verwijderDefinitief()}
             >
               Ja, voorgoed verwijderen
             </Button>

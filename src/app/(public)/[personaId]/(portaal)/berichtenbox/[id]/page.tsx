@@ -1,27 +1,42 @@
 import { notFound } from "next/navigation";
-import {
-  DataSummary,
-  DataSummaryItem,
-  Heading,
-  Paragraph,
-  UnorderedList,
-  UnorderedListItem,
-} from "@rijkshuisstijl-community/components-react";
+import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
 import { getDemoBerichtById, getDemoBerichten } from "@/demo";
-import { getActievePersona } from "@/app/(public)/_persona";
+import { getActievePersona, getKetenAccount } from "@/app/(public)/_persona";
+import { getKetenStatus } from "@/network/keten";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "../_berichtDetail";
-import { formatDatum } from "../_formatDatum";
+import DemoBerichtInhoud from "../_demoBerichtInhoud";
+import { stelselTekst } from "../_lijstPagina";
+import NieuwBericht from "../_nieuwBericht";
+import StelselBericht from "../_stelselBericht";
+
+/** Ids van binnengedruppelde demo-berichten; die staan alleen in de browser. */
+const NIEUW_BERICHT = /^live-/;
 
 const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const persona = await getActievePersona();
+  const keten = await getKetenStatus(await getKetenAccount());
+  if (keten.soort === "keten")
+    return <StelselBericht ontvanger={keten.ontvanger} berichtId={id} />;
+  if (keten.soort !== "demo") {
+    return (
+      <Alert type="error">
+        <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+      </Alert>
+    );
+  }
+
   const [bericht, berichten] = await Promise.all([
     getDemoBerichtById(id, persona?.id),
     getDemoBerichten(persona?.id),
   ]);
 
-  if (!bericht) notFound();
+  if (!bericht) {
+    if (NIEUW_BERICHT.test(id))
+      return <NieuwBericht berichtId={id} berichten={berichten} />;
+    notFound();
+  }
 
   return (
     <>
@@ -30,45 +45,7 @@ const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         label={bericht.onderwerp}
       />
       <BerichtDetail berichten={berichten} berichtId={bericht.id}>
-        <Heading level={1}>{bericht.onderwerp}</Heading>
-
-        <DataSummary appearance="column">
-          <DataSummaryItem itemKey="Afzender" itemValue={bericht.afzender} />
-          <DataSummaryItem
-            itemKey="Ontvangen"
-            itemValue={formatDatum(bericht.datum)}
-          />
-        </DataSummary>
-
-        {bericht.inhoud.map((alinea) => (
-          <Paragraph key={alinea}>{alinea}</Paragraph>
-        ))}
-
-        {bericht.heeftBijlage && (
-          <section aria-labelledby="bijlagen">
-            <Heading level={2} id="bijlagen">
-              Bijlage
-            </Heading>
-            <UnorderedList>
-              <UnorderedListItem>
-                <a
-                  href="/voorbeeld-bijlage.pdf"
-                  className="utrecht-link utrecht-link--html-a"
-                >
-                  Bijlage bij dit bericht (pdf)
-                </a>
-              </UnorderedListItem>
-              <UnorderedListItem>
-                <a
-                  href="/voorbeeld-bijlage.txt"
-                  className="utrecht-link utrecht-link--html-a"
-                >
-                  Bijlage als tekstbestand (txt)
-                </a>
-              </UnorderedListItem>
-            </UnorderedList>
-          </section>
-        )}
+        <DemoBerichtInhoud bericht={bericht} />
       </BerichtDetail>
     </>
   );

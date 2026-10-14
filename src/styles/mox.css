@@ -379,6 +379,26 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block: var(--rhc-space-3xl);
 	}
 
+	/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+	.mox-berichtenbox-filters {
+		align-items: end;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--rhc-space-xl);
+
+		> :first-child {
+			flex: 2 1 16rem;
+		}
+
+		> :last-child {
+			flex: 1 1 12rem;
+		}
+
+		.utrecht-form-field {
+			margin-block: 0;
+		}
+	}
+
 	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
 	  gepositioneerd) binnen de scrollcontainer; anders scrolt de hele pagina. */
 	.mox-table-container {
@@ -491,6 +511,21 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	/* Mappen staan na een streep achter Inbox, Archief en Prullenbak. */
+	.mox-tabs-scheiding {
+		border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+		margin-block: var(--rhc-space-md);
+	}
+
+	/* Mapkeuze in de dialog */
+	.mox-map-keuze {
+		display: grid;
+		gap: var(--rhc-space-xs);
+		list-style: none;
+		margin-block-end: var(--rhc-space-xl);
+		padding: 0;
+	}
+
 	/* Feedback */
 	.rhc-alert {
 		margin-block: var(--rhc-space-xl);
@@ -585,23 +620,24 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-inline: var(--rhc-space-sm);
 	}
 
-	.mox-badge--blauw {
+	.mox-badge--artikel,
+	.mox-badge--stappenplan {
 		background-color: var(--rhc-color-lintblauw-100);
 	}
 
-	.mox-badge--paars {
+	.mox-badge--video {
 		background-color: var(--rhc-color-paars-100);
 	}
 
-	.mox-badge--geel {
+	.mox-badge--regel {
 		background-color: var(--rhc-color-geel-100);
 	}
 
-	.mox-badge--rood {
+	.mox-badge--wetswijziging {
 		background-color: var(--rhc-color-rood-100);
 	}
 
-	.mox-badge--groen {
+	.mox-badge--subsidie {
 		background-color: var(--rhc-color-groen-100);
 	}
 

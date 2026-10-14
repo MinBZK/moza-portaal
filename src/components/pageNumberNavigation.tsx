@@ -22,12 +22,15 @@ const PageNumberNavigation = ({
   totalPages,
   maxVisiblePages,
   queryParam = "pagina",
+  query,
 }: {
   page: number;
   totalPages: number;
   maxVisiblePages?: number;
   /** Naam van de query-parameter in de link, bijvoorbeeld "?pagina=2" */
   queryParam?: string;
+  /** Andere parameters die in de link blijven staan, zoals een filter. */
+  query?: Record<string, string>;
 }) => {
   // Op een smal scherm zo min mogelijk paginanummers (5 is het minimum van
   // de component), zodat de paginering op één regel past.
@@ -39,7 +42,9 @@ const PageNumberNavigation = ({
   return (
     <RhcPageNumberNavigation
       linkComponent={NextLink}
-      linkTemplate={(pageNumber) => `?${queryParam}=${pageNumber}`}
+      linkTemplate={(pageNumber) =>
+        `?${new URLSearchParams({ ...query, [queryParam]: String(pageNumber) })}`
+      }
       maxVisiblePages={smal ? 5 : maxVisiblePages}
       page={page}
       totalPages={totalPages}

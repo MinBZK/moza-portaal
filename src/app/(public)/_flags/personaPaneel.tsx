@@ -22,6 +22,7 @@ export type PersonaKeuze = {
 
 const VAN_DE_PERSONA = [
   "moza-berichtenbox",
+  "moza-berichtenbox-nieuw",
   "moza-bewaard",
   "moza-zaken",
   "moza-contactorganisaties",

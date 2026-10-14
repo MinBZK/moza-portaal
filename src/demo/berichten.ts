@@ -9,6 +9,8 @@ export type DemoBericht = {
   datum: string;
   isOngelezen: boolean;
   heeftBijlage: boolean;
+  /** De map waarin het bericht staat, zoals in moza-poc. */
+  map?: string;
   /** Alleen voor deze persona's. Zonder: voor iedereen. */
   relevantVoor?: string[];
 };
@@ -118,6 +120,7 @@ const belastingdienst: DemoBericht[] = [
   {
     onderwerp: "Aangifte vennootschapsbelasting 2025 beschikbaar",
     datum: "2026-04-22",
+    map: "Belastingen 2025",
     isOngelezen: true,
     heeftBijlage: true,
     inhoud: [
@@ -139,6 +142,7 @@ const belastingdienst: DemoBericht[] = [
   {
     onderwerp: "Beschikking uitstel van betaling",
     datum: "2026-04-12",
+    map: "Belastingen 2025",
     isOngelezen: false,
     heeftBijlage: false,
     inhoud: [
@@ -201,6 +205,7 @@ const personaBerichten: DemoBericht[] = [
     afzenderId: "rvo",
     onderwerp: "Openstelling subsidie precisielandbouw",
     datum: "2026-04-19",
+    map: "Subsidies",
     isOngelezen: true,
     heeftBijlage: false,
     relevantVoor: ["bloemenkweker"],
