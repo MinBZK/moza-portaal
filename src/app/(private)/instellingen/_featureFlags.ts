@@ -90,14 +90,14 @@ export const MOX_FLAGS = [
     label: "Berichtenbox unhappy flow",
     groep: "functionaliteit",
     standaard: false,
-    werkt: false,
+    werkt: true,
   },
   {
     key: "mox_dynamischeBerichten",
     label: "Dynamische berichten",
     groep: "functionaliteit",
     standaard: false,
-    werkt: false,
+    werkt: true,
   },
   {
     key: "mox_inlogflow",

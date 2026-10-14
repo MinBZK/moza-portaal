@@ -26,11 +26,14 @@ const aantalVoor = (tijden: number[], t: number) =>
  * @param actief  Alleen de inbox haalt op; archief en prullenbak niet.
  * @param bronnen Aantal organisaties, of null zolang dat nog niet bekend is.
  * @param berichten Aantal berichten dat straks gevonden is.
+ * @param bereikbaar Organisaties die antwoorden. Een onbereikbare komt nooit
+ *                   binnen, dus de teller blijft daaronder steken.
  */
 export const useNagebootstOphalen = (
   actief: boolean,
   bronnen: number | null,
   berichten: number,
+  bereikbaar = bronnen ?? 0,
 ) => {
   const [klaar, setKlaar] = useState(!actief);
   const [voortgang, setVoortgang] = useState<Voortgang | null>(null);
@@ -38,7 +41,7 @@ export const useNagebootstOphalen = (
   useEffect(() => {
     if (klaar || bronnen === null) return;
 
-    const bronTijden = aankomsttijden(bronnen);
+    const bronTijden = aankomsttijden(bereikbaar);
     const berichtTijden = aankomsttijden(berichten);
     const duur = bronnen <= 1 ? DUUR_EEN_BRON_MS : DUUR_MS;
     const begin = performance.now();
@@ -57,7 +60,7 @@ export const useNagebootstOphalen = (
     frame = requestAnimationFrame(stap);
 
     return () => cancelAnimationFrame(frame);
-  }, [klaar, bronnen, berichten]);
+  }, [klaar, bronnen, berichten, bereikbaar]);
 
   return { bezig: !klaar, voortgang };
 };

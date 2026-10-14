@@ -9,7 +9,7 @@ import { useKeten } from "./_useKeten";
  */
 const StelselTeller = ({ ontvanger }: { ontvanger: string }) => {
   const { berichten } = useKeten(ontvanger, false);
-  return <OngelezenTeller berichten={berichten} />;
+  return <OngelezenTeller berichten={berichten} metNieuwe={false} />;
 };
 
 export default StelselTeller;

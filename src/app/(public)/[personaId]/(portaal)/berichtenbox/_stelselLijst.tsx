@@ -21,7 +21,11 @@ const StelselLijst = ({
 
   return (
     <>
-      <BerichtenboxNav berichten={berichten} actief={weergave} />
+      <BerichtenboxNav
+        berichten={berichten}
+        actief={weergave}
+        metNieuwe={false}
+      />
       {/* Nieuwe berichten komen vanzelf binnen; zeg het ook tegen schermlezers. */}
       <div aria-live="polite" className="rhc-visually-hidden">
         {nieuw && `Nieuw bericht van ${nieuw.afzender}.`}

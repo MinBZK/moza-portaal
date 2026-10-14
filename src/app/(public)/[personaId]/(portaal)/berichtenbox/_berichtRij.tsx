@@ -17,17 +17,20 @@ const BerichtRij = ({
   bericht,
   ongelezen,
   gemarkeerd,
+  nieuw = false,
   onMarkeer,
   children,
 }: {
   bericht: DemoBericht;
   ongelezen: boolean;
   gemarkeerd: boolean;
+  /** Net binnengekomen: licht kort op. */
+  nieuw?: boolean;
   onMarkeer: () => void;
   /** Extra cellen achteraan, zoals acties. */
   children?: ReactNode;
 }) => (
-  <TableRow>
+  <TableRow className={nieuw ? "mox-rij-nieuw" : undefined}>
     <TableCell>
       <button
         type="button"

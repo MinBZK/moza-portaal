@@ -236,4 +236,18 @@ body {
   .utrecht-table__header-cell {
     vertical-align: bottom;
   }
+
+  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
+  @media (prefers-reduced-motion: no-preference) {
+    .mox-rij-nieuw {
+      animation: mox-rij-nieuw 2s ease-out;
+    }
+  }
+}
+
+/* Buiten .rhc-theme: @keyframes mag niet genest staan. */
+@keyframes mox-rij-nieuw {
+  from {
+    background-color: var(--rhc-color-core-50);
+  }
 }

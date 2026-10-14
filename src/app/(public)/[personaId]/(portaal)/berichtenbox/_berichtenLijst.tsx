@@ -21,6 +21,14 @@ import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
+import {
+  bronnenVan,
+  useDruppelen,
+  useLaatstBinnengekomen,
+  useNieuweBerichten,
+  usePlanUitval,
+  useUitval,
+} from "./_demoSimulatie";
 import OphaalVoortgang, {
   useNagebootstOphalen,
   type Voortgang,
@@ -161,7 +169,7 @@ export type StelselBron = {
 };
 
 const BerichtenLijst = ({
-  berichten,
+  berichten: uitBron,
   weergave,
   pagina,
   stelsel,
@@ -185,16 +193,47 @@ const BerichtenLijst = ({
     if (melding) meldingRef.current?.focus();
   }, [melding]);
 
-  const inbox = staat
-    ? berichten.filter(
-        (bericht) => statusVanBericht(staat, bericht) === "inbox",
-      )
-    : null;
+  // Nagebootst federatief gedrag, alleen voor demo-berichten op de inbox.
+  const simuleer = !stelsel && weergave === "inbox";
+  const nieuwe = useNieuweBerichten();
+  const alle = stelsel ? uitBron : [...(nieuwe ?? []), ...uitBron];
+  const uitval = useUitval();
+  const storing = simuleer && uitval.scenario ? uitval : null;
+  // Een organisatie die niet antwoordt, levert geen berichten.
+  const berichten = storing
+    ? alle.filter((bericht) => !storing.blokkeert(bericht))
+    : alle;
+
+  const inInbox = (lijst: typeof alle) =>
+    staat
+      ? lijst.filter((bericht) => statusVanBericht(staat, bericht) === "inbox")
+      : null;
+  const inboxAlle = inInbox(alle);
+  const inbox = inInbox(berichten);
   const nagebootst = useNagebootstOphalen(
-    weergave === "inbox" && !stelsel,
-    inbox ? new Set(inbox.map((bericht) => bericht.afzenderId)).size : null,
+    simuleer,
+    inboxAlle ? bronnenVan(inboxAlle).length : null,
     inbox?.length ?? 0,
+    inbox ? bronnenVan(inbox).length : 0,
   );
+  const naOphalen = simuleer && !!staat && !nagebootst.bezig;
+  const alleBinnen = useDruppelen(naOphalen, bronnenVan(uitBron));
+  usePlanUitval(naOphalen, uitval, bronnenVan(inbox ?? []));
+
+  // Een binnengekomen bericht: kort laten oplichten en aankondigen.
+  const nieuwId = useLaatstBinnengekomen();
+  const nieuwBericht = alle.find((bericht) => bericht.id === nieuwId);
+
+  const herstel = () => {
+    if (!storing) return;
+    const naam = storing.bron?.naam;
+    storing.herstel();
+    setMelding(
+      naam
+        ? `De berichten van ${naam} staan weer in uw inbox.`
+        : "Uw berichten zijn opgehaald.",
+    );
+  };
 
   const bezig = stelsel ? stelsel.bezig : nagebootst.bezig;
   const voortgang = stelsel ? stelsel.voortgang : nagebootst.voortgang;
@@ -281,7 +320,9 @@ const BerichtenLijst = ({
 
   return (
     <div>
-      {bezig || stelsel?.fout ? null : weergave === "inbox" ? (
+      {bezig ||
+      stelsel?.fout ||
+      storing?.scenario === "geen" ? null : weergave === "inbox" ? (
         <Paragraph className="mox-notice-amount-berichtenbox">
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
@@ -307,6 +348,45 @@ const BerichtenLijst = ({
       {stelsel?.fout && <Alert type="error">{stelsel.fout}</Alert>}
       {actieFout && <Alert type="error">{actieFout}</Alert>}
 
+      {!bezig && storing?.scenario === "een" && storing.bron && (
+        <Alert type="warning">
+          <Paragraph>
+            De <b>{storing.bron.naam}</b> is nu niet bereikbaar. Berichten van
+            andere organisaties staan hieronder.
+          </Paragraph>
+          <Button appearance="secondary-action-button" onClick={herstel}>
+            {storing.bron.naam} opnieuw proberen
+          </Button>
+        </Alert>
+      )}
+      {!bezig && storing?.scenario === "geen" && (
+        <Alert type="error">
+          <Paragraph>
+            Er gaat iets mis met het ophalen van berichten bij de organisaties.
+            Probeer het later opnieuw.
+          </Paragraph>
+          <Button appearance="secondary-action-button" onClick={herstel}>
+            Opnieuw proberen
+          </Button>
+        </Alert>
+      )}
+      {!bezig && storing?.scenario === "later" && storing.bron && (
+        <Alert type="warning">
+          <Paragraph>
+            <b>{storing.bron.naam}</b> is zojuist niet meer bereikbaar.
+            Berichten van deze organisatie staan daarom nu niet in de lijst.
+          </Paragraph>
+          <Button appearance="secondary-action-button" onClick={herstel}>
+            Opnieuw proberen
+          </Button>
+        </Alert>
+      )}
+      {!bezig && alleBinnen && (
+        <Alert type="info">
+          <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
+        </Alert>
+      )}
+
       <div ref={meldingRef} tabIndex={-1}>
         {melding && !bezig && <Alert type="ok">{melding}</Alert>}
       </div>
@@ -328,16 +408,20 @@ const BerichtenLijst = ({
       {bezig && <OphaalVoortgang voortgang={voortgang} />}
 
       <div aria-live="polite" className="rhc-visually-hidden">
-        {bezig
-          ? "We halen uw berichten op bij de organisaties."
-          : zoekterm
-            ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
-            : voortgang
-              ? `${meervoud(voortgang.gevonden, "bericht", "berichten")} opgehaald.`
-              : ""}
+        {nieuwBericht && !bezig
+          ? `Nieuw bericht van ${nieuwBericht?.afzender}.`
+          : bezig
+            ? "We halen uw berichten op bij de organisaties."
+            : zoekterm
+              ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
+              : voortgang
+                ? `${meervoud(voortgang.gevonden, "bericht", "berichten")} opgehaald.`
+                : ""}
       </div>
 
-      {bezig || stelsel?.fout ? null : gesorteerd.length === 0 ? (
+      {bezig ||
+      stelsel?.fout ||
+      storing?.scenario === "geen" ? null : gesorteerd.length === 0 ? (
         <Paragraph>
           {zoekterm
             ? `Er zijn geen berichten gevonden met "${zoek.trim()}". Probeer een ander woord.`
@@ -399,6 +483,7 @@ const BerichtenLijst = ({
                         bericht.isOngelezen,
                       )}
                       gemarkeerd={gemarkeerd}
+                      nieuw={bericht.id === nieuwId}
                       onMarkeer={() => zetGemarkeerd(bericht.id, !gemarkeerd)}
                     >
                       {weergave === "inbox" && (

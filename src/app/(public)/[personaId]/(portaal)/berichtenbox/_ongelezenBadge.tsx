@@ -16,7 +16,11 @@ const OngelezenBadge = async () => {
   // Alleen wat de teller nodig heeft; deze badge staat op elke pagina.
   return (
     <OngelezenTeller
-      berichten={berichten.map(({ id, isOngelezen }) => ({ id, isOngelezen }))}
+      berichten={berichten.map(({ id, isOngelezen, afzenderId }) => ({
+        id,
+        isOngelezen,
+        afzenderId,
+      }))}
     />
   );
 };

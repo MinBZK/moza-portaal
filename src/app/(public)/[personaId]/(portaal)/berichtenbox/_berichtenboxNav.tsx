@@ -9,6 +9,7 @@ import {
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
+import { useNieuweBerichten, useUitval } from "./_demoSimulatie";
 import {
   telOngelezen,
   useBerichtenboxState,
@@ -45,15 +46,27 @@ const BerichtenboxNav = ({
   berichten,
   actief,
   opLijst = true,
+  metNieuwe = true,
 }: {
   berichten: (DemoBericht & { plek?: Weergave })[];
   /** Het tabblad waar de gebruiker nu is. Null als dat nog niet bekend is. */
   actief: Weergave | null;
   /** Op een detailpagina is het tabblad de plek, niet de pagina zelf. */
   opLijst?: boolean;
+  /** Binnengedruppelde demo-berichten meetellen. Niet bij het stelsel. */
+  metNieuwe?: boolean;
 }) => {
   const { staat } = useBerichtenboxState();
-  const ongelezen = staat ? telOngelezen(staat, berichten) : 0;
+  const nieuwe = useNieuweBerichten();
+  // Bij demo-berichten: wat een onbereikbare organisatie niet levert, telt niet mee.
+  const uitval = useUitval();
+  const alle = metNieuwe
+    ? [...(nieuwe ?? []), ...berichten].filter(
+        (bericht) =>
+          !bericht.afzenderId || !uitval.scenario || !uitval.blokkeert(bericht),
+      )
+    : berichten;
+  const ongelezen = staat ? telOngelezen(staat, alle) : 0;
 
   return (
     <nav aria-label="Berichtenbox">

@@ -137,6 +137,7 @@ const BerichtDetail = ({
           berichten={berichten}
           actief={status === "weg" ? null : status}
           opLijst={false}
+          metNieuwe={!stelsel}
         />
 
         {status === "weg" ? (
