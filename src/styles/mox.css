@@ -21,6 +21,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
+	--mox-font-weight-medium: 500;
 
 	strong {
 		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
@@ -29,6 +30,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	/* Forms */
 	.utrecht-textbox {
 		max-inline-size: 100%;
+	}
+
+	.utrecht-form-label {
+		font-weight: var(--mox-font-weight-medium);
 	}
 
 	/* Body */
@@ -489,7 +494,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-unread {
-		font-weight: var(--rhc-text-font-weight-bold);
+		font-weight: var(--mox-font-weight-medium);
 	}
 
 	/* Icons */
