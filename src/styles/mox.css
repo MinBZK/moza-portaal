@@ -59,8 +59,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	#hoofd-inhoud {
 		padding-block-end: var(--rhc-space-max-4xl);
 
+		/* De marge links en rechts komt van --mox-page-margin (rhc.css). */
 		@media screen and (width <=768px) {
-			padding: var(--rhc-space-lg);
+			padding-block: var(--rhc-space-lg);
 		}
 	}
 
@@ -201,7 +202,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-menu-button {
 		font-size: var(--rhc-text-font-size-sm);
 		inset-block-start: var(--rhc-space-sm);
-		inset-inline-start: 0;
+		inset-inline-start: var(--mox-page-margin, 0);
 		position: absolute;
 		z-index: 1;
 	}
@@ -217,7 +218,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	.rhc-language-navigation {
 		inset-block-start: var(--rhc-space-2xl);
-		inset-inline-end: 0;
+		inset-inline-end: var(--mox-page-margin, 0);
 		position: absolute;
 
 		button {

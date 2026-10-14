@@ -20,6 +20,21 @@
   /* Pagina-layout */
   --utrecht-page-body-padding-block-end: var(--rhc-space-max-2xl);
 
+  /* Paginagrid: marge links en rechts per viewport. Small 16, medium 24,
+    large 48. Vaste max-tokens, want de gewone space-tokens schalen mee. */
+  --mox-page-margin: var(--rhc-space-max-xl);
+
+  @media (width >= 768px) {
+    --mox-page-margin: var(--rhc-space-max-2xl);
+  }
+
+  @media (width >= 1024px) {
+    --mox-page-margin: var(--rhc-space-max-5xl);
+  }
+
+  /* Gutter: medium 16 in plaats van 24 (RHC gebruikt daar de large-waarde). */
+  --rhc-grid-vi-medium-column-gap: var(--rhc-space-max-xl);
+
   /* Typografische wijzigingen t.o.v. RHC */
   --nl-heading-level-1-font-size: 2rem;
   --nl-heading-level-2-font-size: 1.75rem;
@@ -109,6 +124,12 @@ body {
     ::marker {
       color: var(--rhc-color-wit);
     }
+  }
+
+  /* Paginamarge voor header en inhoud */
+  .utrecht-page-header__content,
+  .utrecht-page-body__content {
+    padding-inline: var(--mox-page-margin);
   }
 
   /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
