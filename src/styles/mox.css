@@ -75,6 +75,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		align-items: flex-end;
 	}
 
+	.rhc-nav-bar__label {
+		white-space: nowrap;
+	}
+
 	.utrecht-page-header {
 		border-block-end-color: var(--rhc-color-lintblauw-400);
 		border-block-end-width: var(--rhc-border-width-md)
@@ -118,6 +122,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		display: inline-flex;
 		font: inherit;
 		gap: var(--rhc-space-sm);
+	}
+
+	.mox-header-organizations__identity {
+		max-inline-size: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.mox-header-organizations__single {
@@ -519,6 +529,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block-end: -2px;
 		padding: var(--rhc-space-md);
 		text-decoration: none;
+		white-space: nowrap;
 
 		&[aria-current] {
 			border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);

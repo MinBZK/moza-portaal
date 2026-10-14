@@ -14,7 +14,8 @@ const PageGridPage = async () => {
       <Alert type="info">
         <Paragraph>
           Testpagina voor het raster `.rhc-grid`. Maak uw venster smaller en
-          breder. De breekpunten liggen op 768 en 1024 pixels.
+          breder. Smal heeft 4 kolommen, vanaf 768 pixels 8 en vanaf 1024 pixels
+          12.
         </Paragraph>
       </Alert>
 
@@ -49,10 +50,11 @@ const PageGridPage = async () => {
         ))}
       </div>
 
-      <Heading level={2}>Alle twaalf kolommen</Heading>
+      <Heading level={2}>Alle kolommen</Heading>
       <Paragraph>
-        Twaalf cellen van één kolom breed. Zo ziet u waar de kolommen liggen en
-        hoe breed de tussenruimte is.
+        Twaalf cellen van één kolom breed. Op smal staan er 4 naast elkaar, op
+        middelbreed 8 en op breed 12. Zo ziet u waar de kolommen liggen en hoe
+        breed de tussenruimte is.
       </Paragraph>
       <div className="rhc-grid">
         {Array.from({ length: 12 }, (_, index) => index + 1).map((kolom) => (
@@ -68,8 +70,7 @@ const PageGridPage = async () => {
 
       <Heading level={2}>Genest raster</Heading>
       <Paragraph>
-        Een <code>rhc-grid</code> binnen een cel begint weer met twaalf eigen
-        kolommen.
+        Een <code>rhc-grid</code> binnen een cel begint weer met eigen kolommen.
       </Paragraph>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-d-8" style={cellStyle}>

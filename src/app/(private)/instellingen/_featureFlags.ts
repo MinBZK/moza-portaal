@@ -79,13 +79,6 @@ export const MOX_FLAGS = [
     werkt: true,
   },
   {
-    key: "mox_accountwisselaar",
-    label: "Accountwisselaar",
-    groep: "functionaliteit",
-    standaard: false,
-    werkt: false,
-  },
-  {
     key: "mox_berichtenboxUnhappyFlow",
     label: "Berichtenbox unhappy flow",
     groep: "functionaliteit",

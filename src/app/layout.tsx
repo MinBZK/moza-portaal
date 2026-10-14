@@ -6,6 +6,7 @@ import "@rijkshuisstijl-community/grid-css/dist/index.css"; // NLDS RHC grid
 
 import "@/styles/rhc.css"; // MOx-afwijkingen nieuwe MO ‘sub-huisstijl’, na RHC zodat ze de basis kunnen overschrijven
 import "@/styles/mox.css"; // MOx afwijkingen op RHC om tijdelijke de huidige huisstijl te tonen */
+import "@/styles/page-grid.css"; // Paginagrid 4/8/12 kolommen, over het RHC-grid heen
 
 import type { Metadata } from "next";
 import { Footer } from "@/layouts/footer";
