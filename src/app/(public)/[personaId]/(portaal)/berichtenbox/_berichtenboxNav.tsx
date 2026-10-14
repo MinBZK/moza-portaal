@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -88,9 +88,29 @@ const BerichtenboxNav = ({
       ].sort((a, b) => a.localeCompare(b, "nl"))
     : [];
 
+  // Op een smal scherm scrollen de tabs. Staat de actieve tab buiten beeld,
+  // bijvoorbeeld een map, dan schuift de lijst hem in beeld (niet de pagina).
+  const tabsRef = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const lijst = tabsRef.current;
+    const tab = lijst?.querySelector<HTMLElement>("[aria-current]");
+    if (!lijst || !tab || lijst.scrollWidth <= lijst.clientWidth) return;
+    const l = lijst.getBoundingClientRect();
+    const t = tab.getBoundingClientRect();
+    if (t.left < l.left || t.right > l.right)
+      lijst.scrollLeft += t.left - l.left - (l.width - t.width) / 2;
+  }, [actief, actieveMap, mappen.length]);
+
   return (
     <nav aria-label="Berichtenbox">
-      <ul className="mox-tabs">
+      <ul
+        ref={tabsRef}
+        className="mox-tabs"
+        // Met Tab door de tabs: de tab met focus helemaal in beeld.
+        onFocus={(event) =>
+          event.target.scrollIntoView({ block: "nearest", inline: "nearest" })
+        }
+      >
         {tabs.map((tab) => {
           const isActief = tab.weergave === actief && !actieveMap;
           return (
