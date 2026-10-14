@@ -620,23 +620,24 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-inline: var(--rhc-space-sm);
 	}
 
-	.mox-badge--blauw {
+	.mox-badge--artikel,
+	.mox-badge--stappenplan {
 		background-color: var(--rhc-color-lintblauw-100);
 	}
 
-	.mox-badge--paars {
+	.mox-badge--video {
 		background-color: var(--rhc-color-paars-100);
 	}
 
-	.mox-badge--geel {
+	.mox-badge--regel {
 		background-color: var(--rhc-color-geel-100);
 	}
 
-	.mox-badge--rood {
+	.mox-badge--wetswijziging {
 		background-color: var(--rhc-color-rood-100);
 	}
 
-	.mox-badge--groen {
+	.mox-badge--subsidie {
 		background-color: var(--rhc-color-groen-100);
 	}
 
