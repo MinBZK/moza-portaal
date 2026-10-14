@@ -39,7 +39,7 @@ const MenuKnop = () => {
   const knopRef = useRef<HTMLButtonElement>(null);
 
   // De hoogte van de header als CSS-variabele: het open menu vult de rest van
-  // het scherm (zie .mox-menu-lijsten--open in rhc.css).
+  // het scherm (zie .mox-menu-lists--open in rhc.css).
   useEffect(() => {
     const header = knopRef.current?.closest("header");
     if (!header) return;
@@ -58,7 +58,7 @@ const MenuKnop = () => {
     <Button
       ref={knopRef}
       appearance="subtle-button"
-      className="mox-menu-knop"
+      className="mox-menu-button"
       aria-expanded={open}
       aria-controls={MENU_ID}
       onClick={() => zetOpenOp(open ? null : pathname)}

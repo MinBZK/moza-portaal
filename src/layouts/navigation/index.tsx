@@ -14,6 +14,7 @@ import {
   Icon,
 } from "@rijkshuisstijl-community/components-react";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
+import { useKiesOrganisatie } from "@/layouts/header/useKiesOrganisatie";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
 import { AbsenceIcon } from "@/components/icons/absenceIcon";
 import { StaffIcon } from "@/components/icons/staffIcon";
@@ -26,6 +27,9 @@ const Navigation = ({
   berichtenboxBadge,
   lopendeZakenBadge,
   naam = "Robin Vogel",
+  organisaties = [],
+  actieveOrganisatieId,
+  actieveOrganisatieNaam,
 }: {
   /** Pagina-flags uit het Flags-paneel. Zonder flags staat alles aan. */
   flags?: FeatureFlags;
@@ -35,6 +39,10 @@ const Navigation = ({
   lopendeZakenBadge?: ReactNode;
   /** Naam in het menu op een smal scherm, net als in de header. */
   naam?: string;
+  /** Organisaties om tussen te wisselen, net als in de header. */
+  organisaties?: { id: string; handelsnaam: string }[];
+  actieveOrganisatieId?: string;
+  actieveOrganisatieNaam?: string;
 }) => {
   const toon = (key: FeatureFlagKey) => flags?.[key] !== false;
   const pathname = usePathname();
@@ -47,13 +55,14 @@ const Navigation = ({
     );
 
   const open = useMenuOpen();
+  const kiesOrganisatie = useKiesOrganisatie(actieveOrganisatieId);
 
   return (
     <SideNav>
       <div
         id={MENU_ID}
         className={
-          open ? "mox-menu-lijsten mox-menu-lijsten--open" : "mox-menu-lijsten"
+          open ? "mox-menu-lists mox-menu-lists--open" : "mox-menu-lists"
         }
       >
         <SideNavList>
@@ -232,9 +241,44 @@ const Navigation = ({
           <SideNavList>
             <SideNavItem>
               <SideNavLink href="/" icon="user">
-                {naam}
+                <span className="mox-menu-identity">
+                  <span>{naam}</span>
+                  {actieveOrganisatieNaam && (
+                    <span className="mox-header-organization">
+                      {actieveOrganisatieNaam}
+                    </span>
+                  )}
+                </span>
               </SideNavLink>
             </SideNavItem>
+          </SideNavList>
+          {/* De contextwisselaar uit de header: kies de organisatie. */}
+          {organisaties.length > 1 && (
+            <>
+              <p id="menu-organisaties" className="mox-menu-heading">
+                Organisatie kiezen
+              </p>
+              <SideNavList aria-labelledby="menu-organisaties">
+                {organisaties.map((organisatie) => {
+                  const actief = organisatie.id === actieveOrganisatieId;
+                  return (
+                    <SideNavItem key={organisatie.id}>
+                      <button
+                        type="button"
+                        className="rhc-side-nav__link"
+                        aria-current={actief ? "true" : undefined}
+                        onClick={() => kiesOrganisatie(organisatie.id)}
+                      >
+                        <Icon icon="briefcase" />
+                        {organisatie.handelsnaam}
+                      </button>
+                    </SideNavItem>
+                  );
+                })}
+              </SideNavList>
+            </>
+          )}
+          <SideNavList>
             <SideNavItem>
               <LogoutButton className="rhc-side-nav__link mox-logout-button">
                 <Icon icon="uitloggen" />

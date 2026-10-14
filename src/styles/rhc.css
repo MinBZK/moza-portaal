@@ -166,21 +166,21 @@ body {
 
   /* Hoofdmenu op een smal scherm: ingeklapt achter de knop "Menu", zoals in
     moza-poc. Vanaf 768px staat het menu in de linkerkolom van rhc-grid. */
-  .mox-menu-knop {
+  .mox-menu-button {
     display: none;
   }
 
   @media (width < 768px) {
-    .mox-menu-knop {
+    .mox-menu-button {
       display: inline-flex;
     }
 
-    .mox-menu-lijsten:not(.mox-menu-lijsten--open) {
+    .mox-menu-lists:not(.mox-menu-lists--open) {
       display: none;
     }
 
     /* Open menu: vult het scherm onder de header en verbergt de pagina. */
-    &:has(.mox-menu-lijsten--open) {
+    &:has(.mox-menu-lists--open) {
 
       .mox-main-container,
       .rhc-page-footer {
@@ -234,6 +234,22 @@ body {
 
   /* De taalkeuze in het menu staat gewoon in de lijst, niet rechtsboven
     zoals in de header. */
+  /* Naam en organisatie onder elkaar, net als in de header. */
+  .mox-menu-identity {}
+
+  .mox-menu-heading {
+    color: var(--rhc-color-foreground-subtle);
+    font-size: var(--rhc-text-font-size-sm);
+    margin-block: var(--rhc-space-md) 0;
+    padding-inline: var(--rhc-sidenav-link-padding-inline-start, 0);
+  }
+
+  /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
+  .mox-menu-account .rhc-side-nav__link[aria-current="true"] {
+    color: var(--rhc-sidenav-link-current-color);
+    font-weight: var(--rhc-sidenav-link-current-font-weight);
+  }
+
   .mox-menu-account .rhc-language-navigation {
     margin-inline: var(--rhc-space-md) 0;
     position: static;
@@ -246,14 +262,14 @@ body {
 
   /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
   @media (prefers-reduced-motion: no-preference) {
-    .mox-rij-nieuw {
-      animation: mox-rij-nieuw 2s ease-out;
+    .mox-row-new {
+      animation: mox-row-new 2s ease-out;
     }
   }
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
-@keyframes mox-rij-nieuw {
+@keyframes mox-row-new {
   from {
     background-color: var(--rhc-color-core-50);
   }

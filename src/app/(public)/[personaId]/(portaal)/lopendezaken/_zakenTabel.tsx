@@ -50,7 +50,7 @@ const ZakenTabel = ({
             {soort === "lopend" && (
               <TableCell>
                 {zaak.actieNodig ? (
-                  <span className="mox-actie-nodig">
+                  <span className="mox-action-required">
                     <Icon icon="let-op" />
                     {zaak.status}
                   </span>

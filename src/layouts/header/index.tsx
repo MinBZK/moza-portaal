@@ -9,6 +9,7 @@ import MenuKnop from "@/layouts/navigation/menuKnop";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
 import { useCookie } from "@/utils/useCookie";
+import { useKiesOrganisatie } from "./useKiesOrganisatie";
 import { useState, useRef, useEffect } from "react";
 
 // kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
@@ -34,7 +35,7 @@ const Header = ({
   actieveOrganisatieNaam?: string;
 }) => {
   const { set } = useCookie("loginMethod");
-  const { set: setOrganisatieId } = useCookie("organisatieId");
+  const kies = useKiesOrganisatie(actieveOrganisatieId);
   const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
   const [openOrganisaties, setOpenOrganisaties] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -92,18 +93,13 @@ const Header = ({
   }, [openOrganisaties]);
 
   const kiesOrganisatie = (id: string) => {
-    if (id === actieveOrganisatieId) {
-      setOpenOrganisaties(false);
-      return;
-    }
-    setOrganisatieId(id, { path: "/", maxAge: 60 * 60 * 24 * 30 });
-    window.location.reload();
+    if (!kies(id)) setOpenOrganisaties(false);
   };
 
   const accountLabel = actieveOrganisatieNaam ? (
     <>
-      <strong>{actieveOrganisatieNaam}</strong>
       <span>{naam}</span>
+      <span className="mox-header-organization">{actieveOrganisatieNaam}</span>
     </>
   ) : (
     naam
@@ -157,20 +153,20 @@ const Header = ({
                     {organisaties.length > 1 ? (
                       <div
                         ref={organisatiesRef}
-                        className="mox-header-organisaties"
+                        className="mox-header-organizations"
                       >
                         <button
                           ref={organisatieKnopRef}
                           type="button"
                           id="header-organisaties-knop"
-                          className="rhc-nav-bar__link mox-header-organisaties__trigger"
+                          className="rhc-nav-bar__link mox-header-organizations__trigger"
                           aria-expanded={openOrganisaties}
                           aria-controls="header-organisaties"
                           aria-label={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
                           onClick={() => setOpenOrganisaties((open) => !open)}
                         >
                           <Icon icon="user" />
-                          <span className="rhc-nav-bar__label mox-header-organisaties__identiteit">
+                          <span className="rhc-nav-bar__label mox-header-organizations__identity">
                             {accountLabel}
                           </span>
                           <Icon icon="chevron-down" />
@@ -178,14 +174,14 @@ const Header = ({
                         {openOrganisaties && (
                           <ul
                             id="header-organisaties"
-                            className="mox-header-organisaties__lijst"
+                            className="mox-header-organizations__list"
                             aria-labelledby="header-organisaties-knop"
                           >
                             {organisaties.map((organisatie) => (
                               <li key={organisatie.id}>
                                 <button
                                   type="button"
-                                  className="mox-header-organisaties__keuze"
+                                  className="mox-header-organizations__choice"
                                   aria-pressed={
                                     organisatie.id === actieveOrganisatieId
                                   }
@@ -204,11 +200,11 @@ const Header = ({
                       </div>
                     ) : (
                       <Link
-                        className="rhc-nav-bar__link mox-header-organisaties__single"
+                        className="rhc-nav-bar__link mox-header-organizations__single"
                         href="/"
                       >
                         <Icon icon="user" />
-                        <span className="rhc-nav-bar__label mox-header-organisaties__identiteit">
+                        <span className="rhc-nav-bar__label mox-header-organizations__identity">
                           {accountLabel}
                         </span>
                       </Link>

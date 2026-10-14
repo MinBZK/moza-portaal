@@ -25,7 +25,7 @@ export default async function RootLayout({
 }>) {
   const flags = await getFlagsFromServerCookie();
   // mox.css geldt alleen met de huidige huisstijl (keuze in het Flags-paneel).
-  const huisstijl = flags.mox_nieuweHuisstijl ? "" : " mox-huidige-huisstijl";
+  const huisstijl = flags.mox_nieuweHuisstijl ? "" : " mox-current-brand";
 
   return (
     <html lang="en">
