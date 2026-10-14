@@ -10,6 +10,7 @@ import {
   verplaatsBericht,
   verwijderBericht,
   volg,
+  zetMap,
   type KetenFoutReden,
   type KetenLijstBericht,
   type KetenVoortgang,
@@ -95,6 +96,9 @@ const naarBericht = (bericht: KetenLijstBericht): KetenBericht => ({
   isOngelezen: bericht.status !== "gelezen",
   heeftBijlage: (bericht.aantalBijlagen ?? 0) > 0,
   plek: plekVanMap(bericht.map),
+  // Archief en prullenbak zijn een plek, geen map in het overzicht.
+  map:
+    plekVanMap(bericht.map) === "inbox" ? bericht.map || undefined : undefined,
 });
 
 const zetLijst = (lijst: KetenLijstBericht[]) =>
@@ -416,6 +420,30 @@ export const verplaatsKetenBericht = async (
   }
   zet({
     berichten: staat.berichten.map((b) => (b.id === id ? { ...b, plek } : b)),
+  });
+  return null;
+};
+
+/** Zet een bericht in een map bij het stelsel; een lege naam haalt het eruit. */
+export const zetKetenMap = async (
+  id: string,
+  map: string,
+): Promise<string | null> => {
+  const bericht = zoek(id);
+  if (!bericht) return ketenFoutTekst.weg;
+  try {
+    await zetMap(id, bericht.magazijnId, map);
+  } catch (fout) {
+    return wijzigingMislukt(
+      fout,
+      id,
+      map ? "in de map te zetten" : "uit de map te halen",
+    );
+  }
+  zet({
+    berichten: staat.berichten.map((b) =>
+      b.id === id ? { ...b, map: map || undefined } : b,
+    ),
   });
   return null;
 };

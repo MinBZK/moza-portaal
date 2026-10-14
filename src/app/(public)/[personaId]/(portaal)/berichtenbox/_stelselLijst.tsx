@@ -3,7 +3,12 @@
 import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
 import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
-import { ketenFoutTekst, useKeten, verplaatsKetenBericht } from "./_useKeten";
+import {
+  ketenFoutTekst,
+  useKeten,
+  verplaatsKetenBericht,
+  zetKetenMap,
+} from "./_useKeten";
 import type { Weergave } from "./_useBerichtenboxState";
 
 /** De berichtenbox van een aangesloten persona: berichten uit het stelsel. */
@@ -47,6 +52,7 @@ const StelselLijst = ({
           voortgang,
           fout: fout ? ketenFoutTekst[fout] : null,
           verplaats: verplaatsKetenBericht,
+          zetMap: zetKetenMap,
         }}
       />
     </>

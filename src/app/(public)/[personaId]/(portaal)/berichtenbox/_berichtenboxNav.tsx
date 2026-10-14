@@ -2,15 +2,19 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   NumberBadge,
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import { FolderIcon } from "@/components/icons/folderIcon";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
 import { useNieuweBerichten, useUitval } from "./_demoSimulatie";
 import {
+  mapVanBericht,
+  statusVanBericht,
   telOngelezen,
   useBerichtenboxState,
   type Weergave,
@@ -57,10 +61,11 @@ const BerichtenboxNav = ({
   metNieuwe?: boolean;
 }) => {
   const { staat } = useBerichtenboxState();
+  const zoekParams = useSearchParams();
   const nieuwe = useNieuweBerichten();
   // Bij demo-berichten: wat een onbereikbare organisatie niet levert, telt niet mee.
   const uitval = useUitval();
-  const alle = metNieuwe
+  const alle: (DemoBericht & { plek?: Weergave })[] = metNieuwe
     ? [...(nieuwe ?? []), ...berichten].filter(
         (bericht) =>
           !bericht.afzenderId || !uitval.scenario || !uitval.blokkeert(bericht),
@@ -68,11 +73,26 @@ const BerichtenboxNav = ({
     : berichten;
   const ongelezen = staat ? telOngelezen(staat, alle) : 0;
 
+  // Een map is een filter op de inbox. Tabblad Inbox is dan niet actief.
+  const actieveMap =
+    actief === "inbox" && opLijst ? zoekParams.get("map") : null;
+  const mappen = staat
+    ? [
+        ...new Set([
+          ...alle
+            .filter((bericht) => statusVanBericht(staat, bericht) === "inbox")
+            .map((bericht) => mapVanBericht(staat, bericht))
+            .filter((naam): naam is string => !!naam),
+          ...(metNieuwe ? staat.eigenMappen : []),
+        ]),
+      ].sort((a, b) => a.localeCompare(b, "nl"))
+    : [];
+
   return (
     <nav aria-label="Berichtenbox">
       <ul className="mox-tabs">
         {tabs.map((tab) => {
-          const isActief = tab.weergave === actief;
+          const isActief = tab.weergave === actief && !actieveMap;
           return (
             <li key={tab.weergave}>
               <Link
@@ -94,6 +114,23 @@ const BerichtenboxNav = ({
             </li>
           );
         })}
+        {mappen.length > 0 && (
+          <li className="mox-tabs-scheiding">
+            <VisuallyHidden>Mappen:</VisuallyHidden>
+          </li>
+        )}
+        {mappen.map((map) => (
+          <li key={map}>
+            <Link
+              href={`/berichtenbox?${new URLSearchParams({ map })}`}
+              aria-current={map === actieveMap ? "page" : undefined}
+              className="mox-tab utrecht-link utrecht-link--html-a"
+            >
+              <FolderIcon />
+              {map}
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );

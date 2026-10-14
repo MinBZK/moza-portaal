@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Alert,
   Button,
+  FormFieldSelect,
   FormFieldTextInput,
   Paragraph,
   Table,
@@ -13,9 +14,12 @@ import {
   TableHeader,
   TableHeaderCell,
   TableRow,
+  SelectOption,
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import { FolderIcon } from "@/components/icons/folderIcon";
+import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
@@ -29,6 +33,7 @@ import {
   usePlanUitval,
   useUitval,
 } from "./_demoSimulatie";
+import MapDialog from "./_mapDialog";
 import OphaalVoortgang, {
   useNagebootstOphalen,
   type Voortgang,
@@ -37,6 +42,7 @@ import {
   bewaarFoutTekst,
   isGemarkeerd,
   isOngelezen,
+  mapVanBericht,
   statusVanBericht,
   useBerichtenboxState,
   type Weergave,
@@ -91,20 +97,37 @@ const SorteerKop = ({
 
 const RijActies = ({
   onderwerp,
+  ongelezen,
+  map,
   onArchiveer,
   onVerwijder,
+  onOngelezen,
+  onVerplaats,
+  onUitMap,
 }: {
   onderwerp: string;
+  ongelezen: boolean;
+  /** De map waarin het bericht staat. */
+  map: string | null;
   onArchiveer: () => void;
   onVerwijder: () => void;
+  onOngelezen: () => void;
+  /** Opent de mapkeuze; de knop krijgt daarna de focus terug. */
+  onVerplaats: (opener: HTMLElement | null) => void;
+  onUitMap: () => void;
 }) => {
   const delen = useFlag("mox_delen");
   const menuRef = useRef<HTMLUListElement>(null);
+  const knopRef = useRef<HTMLButtonElement>(null);
   // Het menu staat als popover in de top layer, dus buiten de scrollende
   // tabel. Elk menu krijgt een eigen anker om onder zijn knop te staan.
   const id = useId().replace(/[^\w-]/g, "");
   const menuId = `acties-${id}`;
   const sluit = () => menuRef.current?.hidePopover();
+  const actie = (uitvoeren: () => void) => () => {
+    sluit();
+    uitvoeren();
+  };
 
   return (
     <div
@@ -112,6 +135,7 @@ const RijActies = ({
       style={{ "--mox-menu-anker": `--${menuId}` } as CSSProperties}
     >
       <Button
+        ref={knopRef}
         appearance="subtle-button"
         className="mox-menu-trigger"
         popoverTarget={menuId}
@@ -129,15 +153,9 @@ const RijActies = ({
           </li>
         )}
         <li>
-          <Button
-            appearance="subtle-button"
-            onClick={() => {
-              sluit();
-              onArchiveer();
-            }}
-          >
-            <ArchiveIcon />
-            Archiveren
+          <Button appearance="subtle-button" onClick={actie(onOngelezen)}>
+            {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
+            {ongelezen ? "Markeer als gelezen" : "Markeer als ongelezen"}
           </Button>
         </li>
         <li>
@@ -145,9 +163,29 @@ const RijActies = ({
             appearance="subtle-button"
             onClick={() => {
               sluit();
-              onVerwijder();
+              onVerplaats(knopRef.current);
             }}
           >
+            <FolderIcon />
+            Verplaatsen naar map
+          </Button>
+        </li>
+        {map && (
+          <li>
+            <Button appearance="subtle-button" onClick={actie(onUitMap)}>
+              <Icon icon="inbox" />
+              Uit map halen
+            </Button>
+          </li>
+        )}
+        <li>
+          <Button appearance="subtle-button" onClick={actie(onArchiveer)}>
+            <ArchiveIcon />
+            Archiveren
+          </Button>
+        </li>
+        <li>
+          <Button appearance="subtle-button" onClick={actie(onVerwijder)}>
             <Icon icon="verwijderen" />
             Verwijderen
           </Button>
@@ -166,6 +204,8 @@ export type StelselBron = {
   fout: string | null;
   /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
   verplaats: (id: string, plek: Weergave) => Promise<string | null>;
+  /** Zet een bericht in een map; een lege naam haalt het eruit. */
+  zetMap: (id: string, map: string) => Promise<string | null>;
 };
 
 const BerichtenLijst = ({
@@ -181,8 +221,23 @@ const BerichtenLijst = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { staat, fout, zetGemarkeerd, archiveer, verwijder } =
-    useBerichtenboxState();
+  const {
+    staat,
+    fout,
+    zetGemarkeerd,
+    zetOngelezen,
+    zetMap,
+    archiveer,
+    verwijder,
+  } = useBerichtenboxState();
+  const zoekParams = useSearchParams();
+  // Een map is een filter op de inbox, zoals in moza-poc.
+  const map = weergave === "inbox" ? zoekParams.get("map") : null;
+  const [afzender, setAfzender] = useState("");
+  const [verplaats, setVerplaats] = useState<{
+    id: string;
+    opener: HTMLElement | null;
+  } | null>(null);
   const [zoek, setZoek] = useState("");
   const [sortering, setSortering] = useState<Sortering | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
@@ -247,16 +302,32 @@ const BerichtenLijst = ({
   };
 
   const inWeergave = berichten.filter(
-    (bericht) => statusVanBericht(staat, bericht) === weergave,
+    (bericht) =>
+      statusVanBericht(staat, bericht) === weergave &&
+      (!map || mapVanBericht(staat, bericht) === map),
   );
   const zoekterm = zoek.trim().toLowerCase();
-  const gevonden = zoekterm
-    ? inWeergave.filter((bericht) =>
+  const gevonden = inWeergave.filter(
+    (bericht) =>
+      (!afzender || bericht.afzenderId === afzender) &&
+      (!zoekterm ||
         `${bericht.afzender} ${bericht.onderwerp}`
           .toLowerCase()
-          .includes(zoekterm),
-      )
-    : inWeergave;
+          .includes(zoekterm)),
+  );
+  // Organisaties voor het filter: alleen wie in deze weergave iets stuurde.
+  const afzenders = bronnenVan(inWeergave).sort((a, b) =>
+    a.naam.localeCompare(b.naam, "nl"),
+  );
+  // Mappen uit de berichten en de mappen die de gebruiker zelf maakte.
+  const mappen = [
+    ...new Set([
+      ...berichten
+        .map((bericht) => mapVanBericht(staat, bericht))
+        .filter((naam): naam is string => !!naam),
+      ...(stelsel ? [] : staat.eigenMappen),
+    ]),
+  ].sort((a, b) => a.localeCompare(b, "nl"));
   const gesorteerd = sortering
     ? [...gevonden].sort(
         (a, b) =>
@@ -312,6 +383,38 @@ const BerichtenLijst = ({
     );
   };
 
+  const wisselOngelezen = (bericht: DemoBericht) => {
+    const wordtOngelezen = !isOngelezen(staat, bericht.id, bericht.isOngelezen);
+    if (!zetOngelezen(bericht.id, wordtOngelezen)) return;
+    setActieFout(null);
+    setMelding(
+      wordtOngelezen
+        ? `Het bericht "${bericht.onderwerp}" is gemarkeerd als ongelezen.`
+        : `Het bericht "${bericht.onderwerp}" is gemarkeerd als gelezen.`,
+    );
+  };
+
+  /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
+  const zetInMap = async (bericht: DemoBericht, naar: string) => {
+    const van = mapVanBericht(staat, bericht);
+    if (stelsel) {
+      const tekst = await stelsel.zetMap(bericht.id, naar);
+      if (tekst) return tekst;
+    } else if (!zetMap(bericht.id, naar)) {
+      return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
+    }
+    setActieFout(null);
+    setMelding(
+      naar
+        ? `Het bericht "${bericht.onderwerp}" staat nu in de map ${naar}.`
+        : `Het bericht "${bericht.onderwerp}" is uit de map ${van} gehaald.`,
+    );
+    return null;
+  };
+  const teVerplaatsen = verplaats
+    ? berichten.find((bericht) => bericht.id === verplaats.id)
+    : undefined;
+
   const ongelezen = inWeergave.filter((bericht) =>
     isOngelezen(staat, bericht.id, bericht.isOngelezen),
   ).length;
@@ -324,6 +427,7 @@ const BerichtenLijst = ({
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
         <Paragraph className="mox-notice-amount-berichtenbox">
+          {map && `Map ${map}: `}
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
           ongelezen.
@@ -387,22 +491,39 @@ const BerichtenLijst = ({
         </Alert>
       )}
 
-      <div ref={meldingRef} tabIndex={-1}>
+      {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
+      <div ref={meldingRef} tabIndex={-1} role="status">
         {melding && !bezig && <Alert type="ok">{melding}</Alert>}
       </div>
 
       {weergave === "inbox" && (
-        <FormFieldTextInput
-          label="Filter berichten op afzender of onderwerp"
-          type="search"
-          value={zoek}
-          className="mox-filter-berichtenbox"
-          onChange={(event) => {
-            // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
-            setZoek((event.target as HTMLInputElement).value);
-            naarEerstePagina();
-          }}
-        />
+        <div className="mox-filter-berichtenbox mox-berichtenbox-filters">
+          <FormFieldTextInput
+            label="Filter berichten"
+            type="search"
+            value={zoek}
+            onChange={(event) => {
+              // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
+              setZoek((event.target as HTMLInputElement).value);
+              naarEerstePagina();
+            }}
+          />
+          <FormFieldSelect
+            label="Afzender"
+            value={afzender}
+            onChange={(event) => {
+              setAfzender(event.target.value);
+              naarEerstePagina();
+            }}
+          >
+            <SelectOption value="">Alle afzenders</SelectOption>
+            {afzenders.map((bron) => (
+              <SelectOption key={bron.id} value={bron.id}>
+                {bron.naam}
+              </SelectOption>
+            ))}
+          </FormFieldSelect>
+        </div>
       )}
 
       {bezig && <OphaalVoortgang voortgang={voortgang} />}
@@ -425,7 +546,11 @@ const BerichtenLijst = ({
         <Paragraph>
           {zoekterm
             ? `Er zijn geen berichten gevonden met "${zoek.trim()}". Probeer een ander woord.`
-            : legeTekst[weergave]}
+            : afzender
+              ? "Er zijn geen berichten van deze afzender. Kies bij Afzender voor Alle afzenders."
+              : map
+                ? "In deze map staan nu geen berichten. Een bericht dat u archiveerde of verwijderde, staat in het archief of in de prullenbak."
+                : legeTekst[weergave]}
         </Paragraph>
       ) : (
         <>
@@ -490,6 +615,17 @@ const BerichtenLijst = ({
                         <TableCell>
                           <RijActies
                             onderwerp={bericht.onderwerp}
+                            ongelezen={isOngelezen(
+                              staat,
+                              bericht.id,
+                              bericht.isOngelezen,
+                            )}
+                            map={mapVanBericht(staat, bericht)}
+                            onOngelezen={() => wisselOngelezen(bericht)}
+                            onVerplaats={(opener) =>
+                              setVerplaats({ id: bericht.id, opener })
+                            }
+                            onUitMap={() => void zetInMap(bericht, "")}
                             onArchiveer={() =>
                               void voerUit("archiveren", bericht)
                             }
@@ -511,9 +647,21 @@ const BerichtenLijst = ({
               page={huidigePagina}
               totalPages={totaalPaginas}
               maxVisiblePages={7}
+              query={map ? { map } : undefined}
             />
           )}
         </>
+      )}
+
+      {teVerplaatsen && (
+        <MapDialog
+          open
+          mappen={mappen}
+          huidige={mapVanBericht(staat, teVerplaatsen)}
+          opener={verplaats?.opener ?? null}
+          onKies={(naar) => zetInMap(teVerplaatsen, naar)}
+          onSluit={() => setVerplaats(null)}
+        />
       )}
     </div>
   );

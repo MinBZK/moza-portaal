@@ -25,6 +25,7 @@ import {
   useKeten,
   verplaatsKetenBericht,
   verwijderKetenBerichtVoorgoed,
+  zetKetenMap,
 } from "./_useKeten";
 
 /**
@@ -95,6 +96,7 @@ const StelselBericht = ({
           plek: bericht.plek,
           verplaats: (plek) => verplaatsKetenBericht(bericht.id, plek),
           verwijderVoorgoed: () => verwijderKetenBerichtVoorgoed(bericht.id),
+          zetMap: (map) => zetKetenMap(bericht.id, map),
         }}
       >
         <Heading level={1}>{bericht.onderwerp}</Heading>

@@ -257,20 +257,22 @@ const wijzig = async (
 };
 
 /**
- * Zet een bericht op een andere plek. De map staat bij de organisatie die het
- * stuurde. Terug naar de inbox is een lege map, niet null: null betekent in
- * een merge-patch "niet wijzigen".
+ * Zet een bericht in een map bij de organisatie die het stuurde. Een lege naam
+ * haalt het eruit: null betekent in een merge-patch "niet wijzigen".
  */
+export const zetMap = (berichtId: string, magazijnId: string, map: string) =>
+  wijzig(berichtId, magazijnId, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/merge-patch+json" },
+    body: JSON.stringify({ map }),
+  });
+
+/** Archief en prullenbak zijn bij het stelsel ook mappen. */
 export const verplaatsBericht = (
   berichtId: string,
   magazijnId: string,
   plek: KetenPlek,
-) =>
-  wijzig(berichtId, magazijnId, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/merge-patch+json" },
-    body: JSON.stringify({ map: plek === "inbox" ? "" : PLEK_MAPPEN[plek] }),
-  });
+) => zetMap(berichtId, magazijnId, plek === "inbox" ? "" : PLEK_MAPPEN[plek]);
 
 /** Verwijdert een bericht voorgoed bij de organisatie. */
 export const verwijderBericht = (berichtId: string, magazijnId: string) =>
