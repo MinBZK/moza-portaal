@@ -79,6 +79,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-block-end-width: var(--rhc-border-width-md)
 	}
 
+	.rhc-nav-bar__link,
+	.mox-header-organizations__single {
+		align-items: baseline !important;
+		padding-block-end: var(--rhc-space-xl);
+	}
+
 	.rhc-nav-bar__list:first-child .rhc-nav-bar__link {
 		color: var(--rhc-color-light-cool-grey-900);
 		font-size: var(--rhc-text-font-size-min-2xl);
@@ -119,16 +125,18 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		gap: var(--rhc-space-sm);
 	}
 
-	.mox-header-organizations__organization {}
+	[aria-labelledby=menu-organisaties] {
+		margin-block-end: var(--rhc-space-2xl);
+	}
 
 	.mox-header-organizations__list {
 		background: var(--rhc-color-wit);
-		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
 		inset-inline-end: 0;
 		list-style: none;
-		margin-block-start: var(--rhc-space-2xs);
+		margin-block-start: var(--rhc-space-3xs);
 		min-inline-size: max-content;
 		padding: var(--rhc-space-2xs);
 		position: absolute;
@@ -147,13 +155,18 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		display: block;
 		font: inherit;
 		inline-size: 100%;
-		padding: var(--rhc-space-sm) var(--rhc-space-md);
+		padding: var(--rhc-space-lg) var(--rhc-space-xl);
 		text-align: start;
 
 		&:hover,
 		&[aria-pressed="true"] {
 			background: var(--rhc-color-cool-grey-100);
 		}
+	}
+
+	.mox-header-organization {
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+		margin-inline-start: var(--rhc-space-md);
 	}
 
 	/* Layout tuning */
@@ -501,9 +514,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-tab {
 		align-items: center;
 		display: flex;
+		font-weight: var(--rhc-text-font-weight-semi-bold);
 		gap: var(--rhc-space-md);
 		margin-block-end: -2px;
 		padding: var(--rhc-space-md);
+		text-decoration: none;
 
 		&[aria-current] {
 			border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);

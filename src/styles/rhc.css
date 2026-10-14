@@ -234,6 +234,22 @@ body {
 
   /* De taalkeuze in het menu staat gewoon in de lijst, niet rechtsboven
     zoals in de header. */
+  /* Naam en organisatie onder elkaar, net als in de header. */
+  .mox-menu-identity {}
+
+  .mox-menu-heading {
+    color: var(--rhc-color-foreground-subtle);
+    font-size: var(--rhc-text-font-size-sm);
+    margin-block: var(--rhc-space-md) 0;
+    padding-inline: var(--rhc-sidenav-link-padding-inline-start, 0);
+  }
+
+  /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
+  .mox-menu-account .rhc-side-nav__link[aria-current="true"] {
+    color: var(--rhc-sidenav-link-current-color);
+    font-weight: var(--rhc-sidenav-link-current-font-weight);
+  }
+
   .mox-menu-account .rhc-language-navigation {
     margin-inline: var(--rhc-space-md) 0;
     position: static;

@@ -9,6 +9,7 @@ import MenuKnop from "@/layouts/navigation/menuKnop";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
 import { useCookie } from "@/utils/useCookie";
+import { useKiesOrganisatie } from "./useKiesOrganisatie";
 import { useState, useRef, useEffect } from "react";
 
 // kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
@@ -34,7 +35,7 @@ const Header = ({
   actieveOrganisatieNaam?: string;
 }) => {
   const { set } = useCookie("loginMethod");
-  const { set: setOrganisatieId } = useCookie("organisatieId");
+  const kies = useKiesOrganisatie(actieveOrganisatieId);
   const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
   const [openOrganisaties, setOpenOrganisaties] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -92,18 +93,13 @@ const Header = ({
   }, [openOrganisaties]);
 
   const kiesOrganisatie = (id: string) => {
-    if (id === actieveOrganisatieId) {
-      setOpenOrganisaties(false);
-      return;
-    }
-    setOrganisatieId(id, { path: "/", maxAge: 60 * 60 * 24 * 30 });
-    window.location.reload();
+    if (!kies(id)) setOpenOrganisaties(false);
   };
 
   const accountLabel = actieveOrganisatieNaam ? (
     <>
       <span>{naam}</span>
-      <span>{actieveOrganisatieNaam}</span>
+      <span className="mox-header-organization">{actieveOrganisatieNaam}</span>
     </>
   ) : (
     naam

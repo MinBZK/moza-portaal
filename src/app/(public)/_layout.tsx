@@ -63,6 +63,16 @@ export default async function PublicLayout({
                       ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
                       : undefined
                   }
+                  actieveOrganisatieId={
+                    organisatie ? getDemoOrganisatieId(organisatie) : undefined
+                  }
+                  actieveOrganisatieNaam={organisatie?.handelsnaam}
+                  organisaties={
+                    persona?.organisaties.map((o) => ({
+                      id: getDemoOrganisatieId(o),
+                      handelsnaam: o.handelsnaam,
+                    })) ?? []
+                  }
                 />
               </nav>
             )}
