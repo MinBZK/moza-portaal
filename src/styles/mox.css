@@ -325,6 +325,8 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		h2 {
 			color: var(--rhc-color-wit);
+			font-size: var(--rhc-text-font-size-lg);
+			margin-block-end: var(--rhc-space-lg);
 		}
 
 		.utrecht-link .utrecht-icon {
