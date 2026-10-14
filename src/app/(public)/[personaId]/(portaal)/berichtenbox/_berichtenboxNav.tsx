@@ -105,10 +105,10 @@ const BerichtenboxNav = ({
                 {tab.icon}
                 {tab.label}
                 {tab.weergave === "inbox" && ongelezen > 0 && (
-                  <>
+                  <span className="mox-badge-houder">
                     <NumberBadge>{ongelezen}</NumberBadge>
                     <VisuallyHidden>ongelezen</VisuallyHidden>
-                  </>
+                  </span>
                 )}
               </Link>
             </li>

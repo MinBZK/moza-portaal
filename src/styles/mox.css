@@ -137,7 +137,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		position: absolute;
 		z-index: 10;
 
-		li + li {
+		li+li {
 			margin-block-start: var(--rhc-space-2xs);
 		}
 	}
@@ -1098,6 +1098,15 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
 		font-size: .75rem;
 		padding: 0;
+	}
+
+	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
+	  erft elk flex-item de onderstreping van de link, ook met text-decoration: none.
+	  In een gewoon blok (de houder) is de badge inline-flex, en daar loopt de
+	  onderstreping niet in door. */
+	.mox-badge-houder {
+		display: block;
+		line-height: 0;
 	}
 
 	/* Landing */

@@ -11,10 +11,10 @@ const ZakenBadge = () => {
   const aantal = useAssistentZaken()?.length ?? 0;
   if (aantal === 0) return null;
   return (
-    <>
+    <span className="mox-badge-houder">
       <NumberBadge>{aantal}</NumberBadge>
       <VisuallyHidden>nieuw</VisuallyHidden>
-    </>
+    </span>
   );
 };
 
