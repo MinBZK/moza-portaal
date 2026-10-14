@@ -88,7 +88,7 @@ const BerichtenboxNav = ({
       ].sort((a, b) => a.localeCompare(b, "nl"))
     : [];
 
-  // Op een smal scherm scrollen de tabs. Staat de actieve tab buiten beeld,
+  // Passen de tabs niet, dan scrollen ze. Staat de actieve tab buiten beeld,
   // bijvoorbeeld een map, dan schuift de lijst hem in beeld (niet de pagina).
   const tabsRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
