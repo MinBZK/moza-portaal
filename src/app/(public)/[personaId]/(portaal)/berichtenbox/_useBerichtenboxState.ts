@@ -98,6 +98,15 @@ export const statusVan = (staat: Staat, id: string): BerichtStatus => {
   return "inbox";
 };
 
+/**
+ * Waar een bericht staat. Bij een bericht uit het stelsel weet het stelsel dat
+ * (`plek`); bij demo-berichten deze browser.
+ */
+export const statusVanBericht = (
+  staat: Staat,
+  bericht: { id: string; plek?: Weergave },
+): BerichtStatus => bericht.plek ?? statusVan(staat, bericht.id);
+
 export const isOngelezen = (staat: Staat, id: string, origineel: boolean) =>
   staat.gelezen[id] ? false : origineel;
 
@@ -107,11 +116,11 @@ export const isGemarkeerd = (staat: Staat, id: string) =>
 /** Ongelezen berichten die in de inbox staan. */
 export const telOngelezen = (
   staat: Staat,
-  berichten: { id: string; isOngelezen: boolean }[],
+  berichten: { id: string; isOngelezen: boolean; plek?: Weergave }[],
 ) =>
   berichten.filter(
     (bericht) =>
-      statusVan(staat, bericht.id) === "inbox" &&
+      statusVanBericht(staat, bericht) === "inbox" &&
       isOngelezen(staat, bericht.id, bericht.isOngelezen),
   ).length;
 

@@ -30,13 +30,23 @@ const lijstVan: Record<Weergave, string> = {
   prullenbak: "/berichtenbox/prullenbak",
 };
 
+/** Een bericht uit het Federatief Berichtenstelsel: de plek staat daar. */
+export type StelselActies = {
+  plek: Weergave;
+  /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
+  verplaats: (plek: Weergave) => Promise<string | null>;
+  verwijderVoorgoed: () => Promise<string | null>;
+};
+
 const BerichtDetail = ({
   berichten,
   berichtId,
+  stelsel,
   children,
 }: {
-  berichten: DemoBericht[];
+  berichten: (DemoBericht & { plek?: Weergave })[];
   berichtId: string;
+  stelsel?: StelselActies;
   /** De inhoud van het bericht. */
   children: ReactNode;
 }) => {
@@ -53,11 +63,16 @@ const BerichtDetail = ({
   } = useBerichtenboxState();
   const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
+  const [actieFout, setActieFout] = useState<string | null>(null);
   const voorgoedKnopRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const annuleerKnopRef = useRef<HTMLButtonElement>(null);
 
-  const status = staat ? statusVan(staat, berichtId) : null;
+  const status = stelsel
+    ? stelsel.plek
+    : staat
+      ? statusVan(staat, berichtId)
+      : null;
   const alGelezen = staat ? !!staat.gelezen[berichtId] : true;
 
   // Openen telt als lezen. Lukt bewaren niet, dan is dat geen melding waard.
@@ -82,9 +97,35 @@ const BerichtDetail = ({
     voorgoedKnopRef.current?.focus();
   };
 
-  const verplaats = (actie: (id: string) => boolean) => {
+  const verplaats = async (plek: Weergave) => {
     if (!status || status === "weg") return;
+    setActieFout(null);
+    if (stelsel) {
+      const tekst = await stelsel.verplaats(plek);
+      if (tekst) setActieFout(tekst);
+      else router.push(lijstVan[status]);
+      return;
+    }
+    const actie = {
+      inbox: zetTerugInInbox,
+      archief: archiveer,
+      prullenbak: verwijder,
+    }[plek];
     if (actie(berichtId)) router.push(lijstVan[status]);
+  };
+
+  const verwijderDefinitief = async () => {
+    if (!stelsel) {
+      if (verwijderVoorgoed(berichtId)) router.push(lijstVan.prullenbak);
+      return;
+    }
+    const tekst = await stelsel.verwijderVoorgoed();
+    if (!tekst) {
+      router.push(lijstVan.prullenbak);
+      return;
+    }
+    setVraagVoorgoed(false);
+    setActieFout(tekst);
   };
 
   const gemarkeerd = staat ? isGemarkeerd(staat, berichtId) : false;
@@ -119,6 +160,7 @@ const BerichtDetail = ({
             {children}
 
             {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
+            {actieFout && <Alert type="error">{actieFout}</Alert>}
 
             {status && (
               <ActionGroup direction="row">
@@ -145,7 +187,7 @@ const BerichtDetail = ({
                 {status !== "archief" && (
                   <Button
                     appearance="secondary-action-button"
-                    onClick={() => verplaats(archiveer)}
+                    onClick={() => void verplaats("archief")}
                   >
                     <ArchiveIcon />
                     Archiveren
@@ -155,7 +197,7 @@ const BerichtDetail = ({
                 {status !== "inbox" && (
                   <Button
                     appearance="secondary-action-button"
-                    onClick={() => verplaats(zetTerugInInbox)}
+                    onClick={() => void verplaats("inbox")}
                   >
                     <Icon icon="inbox" />
                     Terugzetten in inbox
@@ -176,7 +218,7 @@ const BerichtDetail = ({
                 ) : (
                   <Button
                     appearance="secondary-action-button"
-                    onClick={() => verplaats(verwijder)}
+                    onClick={() => void verplaats("prullenbak")}
                   >
                     <Icon icon="verwijderen" />
                     Verwijderen
@@ -206,11 +248,7 @@ const BerichtDetail = ({
             <Button
               appearance="primary-action-button"
               hint="danger"
-              onClick={() => {
-                if (verwijderVoorgoed(berichtId)) {
-                  router.push(lijstVan.prullenbak);
-                }
-              }}
+              onClick={() => void verwijderDefinitief()}
             >
               Ja, voorgoed verwijderen
             </Button>

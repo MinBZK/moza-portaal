@@ -4,12 +4,16 @@ import {
   NumberBadge,
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
-import { telOngelezen, useBerichtenboxState } from "./_useBerichtenboxState";
+import {
+  telOngelezen,
+  useBerichtenboxState,
+  type Weergave,
+} from "./_useBerichtenboxState";
 
 const OngelezenTeller = ({
   berichten,
 }: {
-  berichten: { id: string; isOngelezen: boolean }[];
+  berichten: { id: string; isOngelezen: boolean; plek?: Weergave }[];
 }) => {
   const { staat } = useBerichtenboxState();
   const aantal = staat ? telOngelezen(staat, berichten) : 0;

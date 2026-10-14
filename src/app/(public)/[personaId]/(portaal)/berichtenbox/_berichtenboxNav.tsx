@@ -46,7 +46,7 @@ const BerichtenboxNav = ({
   actief,
   opLijst = true,
 }: {
-  berichten: DemoBericht[];
+  berichten: (DemoBericht & { plek?: Weergave })[];
   /** Het tabblad waar de gebruiker nu is. Null als dat nog niet bekend is. */
   actief: Weergave | null;
   /** Op een detailpagina is het tabblad de plek, niet de pagina zelf. */

@@ -22,3 +22,10 @@ export const getActieveOrganisatie = async (persona?: DemoPersona) => {
     ) ?? actievePersona.organisaties[0]
   );
 };
+
+/** Wat het Federatief Berichtenstelsel van de actieve persona moet weten. */
+export const getKetenAccount = async () => {
+  const persona = await getActievePersona();
+  const organisatie = await getActieveOrganisatie(persona);
+  return { stelsel: !!persona?.stelsel, kvkNummer: organisatie?.kvkNummer };
+};

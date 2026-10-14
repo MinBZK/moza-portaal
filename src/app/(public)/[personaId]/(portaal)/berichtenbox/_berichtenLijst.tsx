@@ -21,12 +21,15 @@ import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
-import OphaalVoortgang, { useNagebootstOphalen } from "./_ophaalVoortgang";
+import OphaalVoortgang, {
+  useNagebootstOphalen,
+  type Voortgang,
+} from "./_ophaalVoortgang";
 import {
   bewaarFoutTekst,
   isGemarkeerd,
   isOngelezen,
-  statusVan,
+  statusVanBericht,
   useBerichtenboxState,
   type Weergave,
 } from "./_useBerichtenboxState";
@@ -146,14 +149,27 @@ const RijActies = ({
   );
 };
 
+/** Berichten uit het Federatief Berichtenstelsel in plaats van demo-data. */
+export type StelselBron = {
+  /** Nog bezig met laden of ophalen. */
+  bezig: boolean;
+  voortgang: Voortgang | null;
+  /** Tekst als het ophalen niet lukte. */
+  fout: string | null;
+  /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
+  verplaats: (id: string, plek: Weergave) => Promise<string | null>;
+};
+
 const BerichtenLijst = ({
   berichten,
   weergave,
   pagina,
+  stelsel,
 }: {
-  berichten: DemoBericht[];
+  berichten: (DemoBericht & { plek?: Weergave })[];
   weergave: Weergave;
   pagina: number;
+  stelsel?: StelselBron;
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -162,6 +178,7 @@ const BerichtenLijst = ({
   const [zoek, setZoek] = useState("");
   const [sortering, setSortering] = useState<Sortering | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
+  const [actieFout, setActieFout] = useState<string | null>(null);
   const meldingRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -169,15 +186,20 @@ const BerichtenLijst = ({
   }, [melding]);
 
   const inbox = staat
-    ? berichten.filter((bericht) => statusVan(staat, bericht.id) === "inbox")
+    ? berichten.filter(
+        (bericht) => statusVanBericht(staat, bericht) === "inbox",
+      )
     : null;
-  const { bezig, voortgang } = useNagebootstOphalen(
-    weergave === "inbox",
+  const nagebootst = useNagebootstOphalen(
+    weergave === "inbox" && !stelsel,
     inbox ? new Set(inbox.map((bericht) => bericht.afzenderId)).size : null,
     inbox?.length ?? 0,
   );
 
-  if (!staat) {
+  const bezig = stelsel ? stelsel.bezig : nagebootst.bezig;
+  const voortgang = stelsel ? stelsel.voortgang : nagebootst.voortgang;
+
+  if (!staat || (stelsel?.bezig && !stelsel.voortgang)) {
     return <Paragraph role="status">Uw berichten worden geladen.</Paragraph>;
   }
 
@@ -186,7 +208,7 @@ const BerichtenLijst = ({
   };
 
   const inWeergave = berichten.filter(
-    (bericht) => statusVan(staat, bericht.id) === weergave,
+    (bericht) => statusVanBericht(staat, bericht) === weergave,
   );
   const zoekterm = zoek.trim().toLowerCase();
   const gevonden = zoekterm
@@ -224,13 +246,26 @@ const BerichtenLijst = ({
     naarEerstePagina();
   };
 
-  const voerUit = (
+  const voerUit = async (
     actie: "archiveren" | "verwijderen",
     bericht: DemoBericht,
   ) => {
-    const gelukt =
-      actie === "archiveren" ? archiveer(bericht.id) : verwijder(bericht.id);
-    if (!gelukt) return;
+    setActieFout(null);
+    if (stelsel) {
+      const tekst = await stelsel.verplaats(
+        bericht.id,
+        actie === "archiveren" ? "archief" : "prullenbak",
+      );
+      if (tekst) {
+        setMelding(null);
+        setActieFout(tekst);
+        return;
+      }
+    } else {
+      const gelukt =
+        actie === "archiveren" ? archiveer(bericht.id) : verwijder(bericht.id);
+      if (!gelukt) return;
+    }
     setMelding(
       actie === "archiveren"
         ? `Het bericht "${bericht.onderwerp}" staat nu in het archief.`
@@ -246,7 +281,7 @@ const BerichtenLijst = ({
 
   return (
     <div>
-      {bezig ? null : weergave === "inbox" ? (
+      {bezig || stelsel?.fout ? null : weergave === "inbox" ? (
         <Paragraph className="mox-notice-amount-berichtenbox">
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
@@ -269,6 +304,8 @@ const BerichtenLijst = ({
       )}
 
       {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
+      {stelsel?.fout && <Alert type="error">{stelsel.fout}</Alert>}
+      {actieFout && <Alert type="error">{actieFout}</Alert>}
 
       <div ref={meldingRef} tabIndex={-1}>
         {melding && !bezig && <Alert type="ok">{melding}</Alert>}
@@ -300,7 +337,7 @@ const BerichtenLijst = ({
               : ""}
       </div>
 
-      {bezig ? null : gesorteerd.length === 0 ? (
+      {bezig || stelsel?.fout ? null : gesorteerd.length === 0 ? (
         <Paragraph>
           {zoekterm
             ? `Er zijn geen berichten gevonden met "${zoek.trim()}". Probeer een ander woord.`
@@ -368,8 +405,12 @@ const BerichtenLijst = ({
                         <TableCell>
                           <RijActies
                             onderwerp={bericht.onderwerp}
-                            onArchiveer={() => voerUit("archiveren", bericht)}
-                            onVerwijder={() => voerUit("verwijderen", bericht)}
+                            onArchiveer={() =>
+                              void voerUit("archiveren", bericht)
+                            }
+                            onVerwijder={() =>
+                              void voerUit("verwijderen", bericht)
+                            }
                           />
                         </TableCell>
                       )}

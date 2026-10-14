@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import {
+  Alert,
   DataSummary,
   DataSummaryItem,
   Heading,
@@ -8,14 +9,28 @@ import {
   UnorderedListItem,
 } from "@rijkshuisstijl-community/components-react";
 import { getDemoBerichtById, getDemoBerichten } from "@/demo";
-import { getActievePersona } from "@/app/(public)/_persona";
+import { getActievePersona, getKetenAccount } from "@/app/(public)/_persona";
+import { getKetenStatus } from "@/network/keten";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "../_berichtDetail";
 import { formatDatum } from "../_formatDatum";
+import { stelselTekst } from "../_lijstPagina";
+import StelselBericht from "../_stelselBericht";
 
 const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const persona = await getActievePersona();
+  const keten = await getKetenStatus(await getKetenAccount());
+  if (keten.soort === "keten")
+    return <StelselBericht ontvanger={keten.ontvanger} berichtId={id} />;
+  if (keten.soort !== "demo") {
+    return (
+      <Alert type="error">
+        <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+      </Alert>
+    );
+  }
+
   const [bericht, berichten] = await Promise.all([
     getDemoBerichtById(id, persona?.id),
     getDemoBerichten(persona?.id),
