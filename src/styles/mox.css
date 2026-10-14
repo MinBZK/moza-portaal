@@ -514,7 +514,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-tab {
 		align-items: center;
 		display: flex;
-		font-weight: var(--rhc-text-font-weight-semi-bold);
 		gap: var(--rhc-space-md);
 		margin-block-end: -2px;
 		padding: var(--rhc-space-md);
@@ -522,6 +521,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		&[aria-current] {
 			border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
+			font-weight: var(--rhc-text-font-weight-semi-bold);
 		}
 	}
 
