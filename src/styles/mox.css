@@ -1155,6 +1155,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding: var(--rhc-space-md);
 		position-anchor: var(--mox-menu-anker);
 		position-try-fallbacks: flip-block;
+
+		/* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
+		--utrecht-button-inline-size: 100%;
+		--utrecht-button-max-inline-size: none;
+
+		.utrecht-button {
+			justify-content: flex-start;
+		}
 	}
 
 	.mox-menu-trigger {
