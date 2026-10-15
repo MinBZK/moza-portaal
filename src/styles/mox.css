@@ -912,17 +912,53 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding: var(--rhc-space-md) var(--rhc-space-lg);
 	}
 
+	.mox-chat-message,
+	.mox-chat-suggestions {
+		position: relative;
+
+		&:before {
+			background-color: var(--rhc-color-cool-grey-100);
+			block-size: var(--rhc-size-icon-md);
+			clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
+			content: "";
+			inline-size: var(--rhc-size-icon-md);
+			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+			inset-inline-start: var(--rhc-size-icon-md);
+			position: absolute;
+		}
+
+		p:last-of-type {
+			margin-block-end: 0;
+		}
+	}
+
+	/* Omkadering zoals in moza-poc: vier drop-shadows van 1px in plaats van een
+	  border, zodat de lijn ook om het staartje (::before) heen loopt. */
 	.mox-chat-message--assistant,
 	.mox-chat-card,
 	.mox-chat-suggestions {
+		--mox-chat-border-color: var(--rhc-color-cool-grey-300);
+
 		align-self: flex-start;
 		background-color: var(--rhc-color-cool-grey-100);
+		filter: drop-shadow(1px 0 0 var(--mox-chat-border-color)) drop-shadow(-1px 0 0 var(--mox-chat-border-color)) drop-shadow(0 1px 0 var(--mox-chat-border-color)) drop-shadow(0 -1px 0 var(--mox-chat-border-color));
 	}
 
 	.mox-chat-message--user {
 		align-self: flex-end;
 		background-color: var(--rhc-color-lintblauw-700);
 		color: var(--rhc-color-wit);
+
+		&:before {
+			background-color: var(--rhc-color-lintblauw-700);
+			block-size: var(--rhc-size-icon-md);
+			clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
+			content: "";
+			inline-size: var(--rhc-size-icon-md);
+			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+			inset-inline-end: var(--rhc-size-icon-md);
+			position: absolute;
+		}
 
 		.nl-paragraph {
 			color: inherit;
