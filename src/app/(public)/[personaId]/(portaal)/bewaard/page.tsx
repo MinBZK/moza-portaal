@@ -36,8 +36,6 @@ const BewaardPage = async () => {
         }
       />
 
-      <Separator />
-
       <Heading level={2}>Gesprekken met de digitale assistent</Heading>
       <BewaardeItems
         soort="bewaard"
@@ -54,8 +52,6 @@ const BewaardPage = async () => {
           </Alert>
         }
       />
-
-      <Separator />
 
       <Heading level={2}>Niet relevant gemarkeerd</Heading>
       <Paragraph>

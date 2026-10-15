@@ -184,17 +184,16 @@ const PublicPage = () => {
         </section>
         <Heading level={3}>UX-onderzoek uitvoeren</Heading>
         <section>
-          <Paragraph>
-            Gebruik de shortcuttoetsen:
-            <UnorderedList>
-              <UnorderedListItem>
-                <code>p</code> - selecteer een persona
-              </UnorderedListItem>
-              <UnorderedListItem>
-                <code>f</code> - schakel flags in/uit
-              </UnorderedListItem>
-            </UnorderedList>
-          </Paragraph>
+          {/* Een lijst mag niet in een alinea staan (hydration-fout). */}
+          <Paragraph>Gebruik de shortcuttoetsen:</Paragraph>
+          <UnorderedList>
+            <UnorderedListItem>
+              <code>p</code> - selecteer een persona
+            </UnorderedListItem>
+            <UnorderedListItem>
+              <code>f</code> - schakel flags in/uit
+            </UnorderedListItem>
+          </UnorderedList>
           <Paragraph>
             Kies vervolgens links boven een inlog optie (DigiD of E-Herkenning).
           </Paragraph>

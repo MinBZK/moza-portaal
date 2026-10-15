@@ -130,7 +130,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-header-organizations__identity {
-		max-inline-size: 200px;
+		max-inline-size: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
@@ -160,6 +160,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		li+li {
 			margin-block-start: var(--rhc-space-2xs);
+		}
+
+		button[aria-pressed=true] {
+			background: var(--rhc-color-cool-grey-200);
+			font-weight: var(--rhc-text-font-weight-semi-bold);
 		}
 	}
 
@@ -254,7 +259,18 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Sidenav */
 	.rhc-side-nav__link {
+		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-light-cool-grey-900);
+		padding-inline-start: var(--rhc-sidenav-link-padding-inline-start);
+		text-decoration: none;
+
+		&:hover {
+			background-color: var(--rhc-color-cool-grey-200);
+		}
+
+		&[aria-current=page] {
+			background-color: var(--rhc-color-cool-grey-200);
+		}
 	}
 
 	/* Main */
@@ -270,8 +286,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-card,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
-		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 		padding: var(--rhc-space-3xl);
 
 		/* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
@@ -303,6 +318,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Card */
 	.mox-card {
+		border-color: var(--rhc-color-light-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		border-width: var(--rhc-border-width-sm);
 
 		h2,
 		h4 {
@@ -319,9 +337,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			}
 		}
 
-		p,
-		ul,
-		ol:not(.ams-pagination__list) {
+		/* Ruimte onder tekst en lijsten, behalve onder het laatste element: daar
+		  zorgt de padding van de kaart voor. */
+		p:not(:last-child),
+		ul:not(:last-child),
+		ol:not(.ams-pagination__list, :last-child) {
 			margin-block-end: var(--rhc-space-lg);
 		}
 
@@ -912,17 +932,53 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding: var(--rhc-space-md) var(--rhc-space-lg);
 	}
 
+	.mox-chat-message,
+	.mox-chat-suggestions {
+		position: relative;
+
+		&:before {
+			background-color: var(--rhc-color-cool-grey-100);
+			block-size: var(--rhc-size-icon-md);
+			clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
+			content: "";
+			inline-size: var(--rhc-size-icon-md);
+			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+			inset-inline-start: var(--rhc-size-icon-md);
+			position: absolute;
+		}
+
+		p:last-of-type {
+			margin-block-end: 0rhc-side-nav__link;
+		}
+	}
+
+	/* Omkadering zoals in moza-poc: vier drop-shadows van 1px in plaats van een
+	  border, zodat de lijn ook om het staartje (::before) heen loopt. */
 	.mox-chat-message--assistant,
 	.mox-chat-card,
 	.mox-chat-suggestions {
+		--mox-chat-border-color: var(--rhc-color-cool-grey-300);
+
 		align-self: flex-start;
 		background-color: var(--rhc-color-cool-grey-100);
+		filter: drop-shadow(1px 0 0 var(--mox-chat-border-color)) drop-shadow(-1px 0 0 var(--mox-chat-border-color)) drop-shadow(0 1px 0 var(--mox-chat-border-color)) drop-shadow(0 -1px 0 var(--mox-chat-border-color));
 	}
 
 	.mox-chat-message--user {
 		align-self: flex-end;
 		background-color: var(--rhc-color-lintblauw-700);
 		color: var(--rhc-color-wit);
+
+		&:before {
+			background-color: var(--rhc-color-lintblauw-700);
+			block-size: var(--rhc-size-icon-md);
+			clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
+			content: "";
+			inline-size: var(--rhc-size-icon-md);
+			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+			inset-inline-end: var(--rhc-size-icon-md);
+			position: absolute;
+		}
 
 		.nl-paragraph {
 			color: inherit;
