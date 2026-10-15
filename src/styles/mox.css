@@ -254,7 +254,18 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Sidenav */
 	.rhc-side-nav__link {
+		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-light-cool-grey-900);
+		padding-inline-start: var(--rhc-sidenav-link-padding-inline-start);
+		text-decoration: none;
+
+		&:hover {
+			background-color: var(--rhc-color-cool-grey-200);
+		}
+
+		&[aria-current=page] {
+			background-color: var(--rhc-color-cool-grey-200);
+		}
 	}
 
 	/* Main */
@@ -270,8 +281,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-card,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
+		border-color: var(--rhc-color-light-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		border-width: var(--rhc-border-width-sm);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 		padding: var(--rhc-space-3xl);
 
 		/* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
@@ -928,7 +941,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 
 		p:last-of-type {
-			margin-block-end: 0;
+			margin-block-end: 0rhc-side-nav__link;
 		}
 	}
 
