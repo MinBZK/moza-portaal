@@ -62,7 +62,7 @@ const Navigation = ({
       <div
         id={MENU_ID}
         className={
-          open ? "mox-menu-lists mox-menu-lists--open" : "mox-menu-lists"
+          open ? "rhc-menu-lists rhc-menu-lists--open" : "rhc-menu-lists"
         }
       >
         <SideNavList>
@@ -236,7 +236,7 @@ const Navigation = ({
           </SideNavItem>
         </SideNavList>
         {/* Alleen op een smal scherm; op breed staan deze in de header. */}
-        <div className="mox-menu-account">
+        <div className="rhc-menu-account">
           <Separator />
           <SideNavList>
             <SideNavItem>
@@ -255,7 +255,7 @@ const Navigation = ({
           {/* De contextwisselaar uit de header: kies de organisatie. */}
           {organisaties.length > 1 && (
             <>
-              <p id="menu-organisaties" className="mox-menu-heading">
+              <p id="menu-organisaties" className="rhc-menu-heading">
                 Organisatie kiezen
               </p>
               <SideNavList aria-labelledby="menu-organisaties">

@@ -87,7 +87,7 @@ const SideOverlay = ({
       {open && (
         <Drawer
           align="inline-end"
-          className="mox-side-overlay"
+          className="rhc-side-overlay"
           modal
           open
           aria-labelledby={titleId}
@@ -101,7 +101,7 @@ const SideOverlay = ({
           }}
         >
           <div id={id}>
-            <div className="mox-side-overlay__header">
+            <div className="rhc-side-overlay__header">
               <Heading level={2} id={titleId}>
                 {title}
               </Heading>
@@ -113,7 +113,7 @@ const SideOverlay = ({
                 Sluiten
               </Button>
             </div>
-            <div className="mox-side-overlay__content">{children}</div>
+            <div className="rhc-side-overlay__content">{children}</div>
           </div>
         </Drawer>
       )}

@@ -81,7 +81,7 @@ const MapDialog = ({
   return (
     <dialog
       ref={dialogRef}
-      className="mox-dialog"
+      className="rhc-dialog"
       aria-labelledby={`${id}-kop`}
       // Escape sluit de dialog zelf; dan alleen nog opruimen.
       onClose={sluit}

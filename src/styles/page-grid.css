@@ -171,7 +171,7 @@
       grid-column-end: span 8;
     }
 
-    .mox-breadcrumb-cell {
+    .rhc-breadcrumb-cell {
       grid-column: 3 / -1;
     }
   }
@@ -331,7 +331,7 @@
       grid-column-end: span 12;
     }
 
-    .mox-breadcrumb-cell {
+    .rhc-breadcrumb-cell {
       grid-column: 4 / -1;
     }
   }

@@ -1,4 +1,11 @@
-/* Afwijkingen op de Rijkshuisstijl t.b.v. nieuwe ‘sub-huisstijl’ voor MOx */
+/* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl
+
+  Indeling: 1. Lettertype, 2. Tokens, 3. Layout (pagina, header, navigatie),
+  4. Componenten (alfabetisch), 5. Pagina's en functies, 6. Hulpmiddelen voor
+  het prototype (Flags-paneel, PoC-banner). Een @keyframes staat bij de functie
+  die hem gebruikt, buiten het theme-blok. */
+
+/* ==== 1. Lettertype ========================================================= */
 
 @font-face {
   font-display: swap;
@@ -15,6 +22,8 @@
   font-weight: 100 900;
   src: url("./fonts/RijksSansVF-Italic.ttf") format("truetype");
 }
+
+/* ==== 2. Tokens ============================================================= */
 
 .rhc-theme.mox-theme {
   /* Pagina-layout */
@@ -76,6 +85,10 @@
   --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
 }
 
+/* ==== 3. Layout ============================================================= */
+
+/* --- Pagina --- */
+
 body {
   background: var(--mox-color-page-background, var(--rhc-color-wit));
   color: var(--rhc-color-foreground-default);
@@ -92,7 +105,6 @@ body {
   }
 }
 
-/* Main */
 .rhc-main-container {
   align-content: start;
   display: grid;
@@ -103,79 +115,6 @@ body {
 }
 
 .rhc-theme.mox-theme {
-
-  /* Pagina header */
-  .mox-header-organizations {
-    position: relative;
-  }
-
-  .mox-header-organizations__trigger {
-    background: transparent;
-    border: 0;
-    color: inherit;
-    cursor: pointer;
-    font: inherit;
-    gap: var(--rhc-space-sm);
-  }
-
-  .mox-header-organizations__list {
-    position: absolute;
-    z-index: 10;
-  }
-
-  .rhc-nav-bar__link {
-    align-items: center;
-    display: inline-flex;
-    gap: var(--rhc-space-sm);
-  }
-
-  /* Landing pagina */
-  .header-landing .rhc-nav-bar__container {
-    border-block-end: none;
-  }
-
-  .mox-landing-hero {
-    background: var(--mox-landing-info-background);
-    block-size: calc(var(--rhc-size-lint) * 10);
-    display: grid;
-    grid-template-columns: 50% 50%;
-  }
-
-  .mox-landing-info {
-    background: var(--mox-landing-info-background);
-    display: grid;
-    grid-template-columns: 50% 50%;
-
-    >div {
-      padding-block-end: var(--rhc-hero-message-padding-block-end);
-      padding-block-start: var(--rhc-hero-message-padding-block-start);
-      padding-inline-end: var(--rhc-hero-message-padding-inline-end);
-      padding-inline-start: var(--rhc-hero-message-padding-inline-start);
-    }
-
-    .nl-heading--level-2,
-    .nl-paragraph,
-    ul,
-    ::marker {
-      color: var(--rhc-color-wit);
-    }
-  }
-
-  /* Hoofdnavigatie */
-  .rhc-side-nav__link {
-    align-items: baseline;
-
-    .utrecht-icon {
-      padding-block-start: var(--rhc-space-xs);
-
-      svg {
-        block-size: var(--rhc-size-icon-md);
-        flex: none;
-        inline-size: var(--rhc-size-icon-md);
-      }
-    }
-  }
-
   /* Paginamarge voor header en inhoud */
   .utrecht-page-header__content,
   .utrecht-page-body__content {
@@ -187,23 +126,9 @@ body {
     dezelfde kolom beginnen als de inhoud (`rhc-grid__cell-t-9`). RHC heeft daar
     geen class voor. */
   @media screen and (width >=768px) {
-    .mox-breadcrumb-cell {
+    .rhc-breadcrumb-cell {
       grid-column: 4 / -1;
     }
-  }
-
-  /* Pagina-kop */
-  .rhc-language-navigation {
-    margin-inline-start: auto;
-  }
-
-  /* Hoofdnavigatie */
-  .rhc-side-nav {
-    margin-block-end: var(--rhc-space-2xl);
-  }
-
-  .rhc-side-nav__list {
-    margin-inline: var(--rhc-space-md);
   }
 
   /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
@@ -211,73 +136,42 @@ body {
   .rhc-grid:has(> .mox-card) {
     row-gap: var(--rhc-space-2xl);
   }
+}
 
-  /* Fixes */
-  .ams-icon {
-    align-self: center;
-    /* verticaal centreren van pictogrammen binnen icoon component, o.a. pagination */
+/* --- Header --- */
+
+.rhc-theme.mox-theme {
+  .rhc-header-organizations {
+    position: relative;
   }
 
-  /* DataSummary */
-  @media (width > 768px) {
-    .mox-data-summary--columns {
-      column-gap: var(--rhc-space-lg);
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .rhc-header-organizations__trigger {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    gap: var(--rhc-space-sm);
   }
 
-  /* NavigationList */
-  .rhc-navigation-list__item-content {
-    align-items: flex-start;
+  .rhc-header-organizations__list {
+    position: absolute;
+    z-index: 10;
   }
 
-  .mox-navigation-list--no-start-icon .rhc-navigation-list__item__start-icon {
-    display: none;
+  .rhc-nav-bar__link {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--rhc-space-sm);
   }
 
-  /* Hoofdmenu op een smal scherm: ingeklapt achter de knop "Menu", zoals in
-    moza-poc. Vanaf 768px staat het menu in de linkerkolom van rhc-grid. */
-  .mox-menu-button {
-    display: none;
+  .rhc-language-navigation {
+    margin-inline-start: auto;
   }
 
   @media (width < 768px) {
-    .mox-menu-button {
-      display: inline-flex;
-    }
-
-    .mox-menu-lists:not(.mox-menu-lists--open) {
-      display: none;
-    }
-
-    /* Open menu: vult het scherm onder de header en verbergt de pagina. */
-    &:has(.mox-menu-lists--open) {
-
-      .rhc-main-container,
-      .rhc-page-footer {
-        display: none;
-      }
-
-      .utrecht-page-body {
-        min-block-size: calc(100dvh - var(--mox-header-hoogte, 0px));
-      }
-    }
-
-    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
-      toegankelijke naam ("Vorige pagina") blijft, die staat verborgen. */
-    .ams-pagination__link[rel]>span[aria-hidden="true"] {
-      display: none;
-    }
-
     /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
-    .mox-header-account {
-      display: none;
-    }
-  }
-
-  @media (width >=768px) {
-    .mox-menu-account {
+    .rhc-header-account {
       display: none;
     }
   }
@@ -303,8 +197,69 @@ body {
       display: none;
     }
   }
+}
 
-  .mox-menu-heading {
+/* --- Navigatie --- */
+
+.rhc-theme.mox-theme {
+  .rhc-side-nav__link {
+    align-items: baseline;
+
+    .utrecht-icon {
+      padding-block-start: var(--rhc-space-xs);
+
+      svg {
+        block-size: var(--rhc-size-icon-md);
+        flex: none;
+        inline-size: var(--rhc-size-icon-md);
+      }
+    }
+  }
+
+  .rhc-side-nav {
+    margin-block-end: var(--rhc-space-2xl);
+  }
+
+  .rhc-side-nav__list {
+    margin-inline: var(--rhc-space-md);
+  }
+
+  /* Hoofdmenu op een smal scherm: ingeklapt achter de knop "Menu", zoals in
+    moza-poc. Vanaf 768px staat het menu in de linkerkolom van rhc-grid. */
+  .rhc-menu-button {
+    display: none;
+  }
+
+  @media (width < 768px) {
+    .rhc-menu-button {
+      display: inline-flex;
+    }
+
+    .rhc-menu-lists:not(.rhc-menu-lists--open) {
+      display: none;
+    }
+
+    /* Open menu: vult het scherm onder de header en verbergt de pagina. */
+    &:has(.rhc-menu-lists--open) {
+
+      .rhc-main-container,
+      .rhc-page-footer {
+        display: none;
+      }
+
+      .utrecht-page-body {
+        min-block-size: calc(100dvh - var(--mox-header-hoogte, 0px));
+      }
+    }
+  }
+
+  @media (width >=768px) {
+    .rhc-menu-account {
+      display: none;
+    }
+  }
+
+  .rhc-menu-heading {
     color: var(--rhc-color-foreground-subtle);
     font-size: var(--rhc-text-font-size-sm);
     margin-block: var(--rhc-space-md) 0;
@@ -312,91 +267,34 @@ body {
   }
 
   /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
-  .mox-menu-account .rhc-side-nav__link[aria-current="true"] {
+  .rhc-menu-account .rhc-side-nav__link[aria-current="true"] {
     color: var(--rhc-sidenav-link-current-color);
     font-weight: var(--rhc-sidenav-link-current-font-weight);
   }
 
-  .mox-menu-account .rhc-language-navigation {
+  .rhc-menu-account .rhc-language-navigation {
     margin-inline: var(--rhc-space-md) 0;
     position: static;
   }
+}
 
-  /* TableHeader */
-  .utrecht-table__header-cell {
-    vertical-align: bottom;
-  }
+/* ==== 4. Componenten ======================================================== */
 
-  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
-  @media (prefers-reduced-motion: no-preference) {
-    .mox-row-new {
-      animation: mox-row-new 2s ease-out;
+/* --- DataSummary --- */
+
+.rhc-theme.mox-theme {
+  @media (width > 768px) {
+    .rhc-data-summary--columns {
+      column-gap: var(--rhc-space-lg);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-
-  /* Cards */
-  .mox-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-lg);
-  }
 }
 
-.mox-side-overlay-shortcuts {
-  color: var(--rhc-color-foreground-subtle);
-  font-size: var(--rhc-text-font-size-sm);
-  margin-block: var(--rhc-space-lg);
-  text-align: end;
-}
+/* --- Dialog --- */
 
-.mox-side-overlay__header {
-  align-items: center;
-  display: flex;
-  gap: var(--rhc-space-lg);
-  justify-content: space-between;
-  margin-block-end: var(--rhc-space-2xl);
-
-  h2 {
-    margin: 0;
-  }
-}
-
-.mox-side-overlay__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rhc-space-2xl);
-
-  legend {
-    margin-block-end: var(--rhc-space-lg);
-  }
-
-  .utrecht-form-fieldset__fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-md);
-  }
-
-  summary {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-block: var(--rhc-space-lg);
-  }
-
-  button {
-    background-color: var(--rhc-color-wit);
-    margin-block-start: var(--rhc-space-lg);
-  }
-}
-
-/* Button used to trigger the flags panel (fixed in bottom-right) */
-.mox-button-trigger-flags {
-  background: var(--rhc-color-wit);
-  inset-block-end: var(--rhc-space-md);
-  inset-inline-end: var(--rhc-space-md);
-  position: fixed;
-}
-
-.mox-dialog {
+.rhc-dialog {
   background: var(--rhc-color-wit);
   border: 0;
   border-radius: var(--rhc-border-radius-md);
@@ -434,15 +332,114 @@ body {
   }
 }
 
+/* --- Kaarten --- */
+
+.rhc-theme.mox-theme {
+  .mox-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+  }
+}
+
+/* --- NavigationList --- */
+
+.rhc-theme.mox-theme {
+  .rhc-navigation-list__item-content {
+    align-items: flex-start;
+  }
+
+  .rhc-navigation-list--no-start-icon .rhc-navigation-list__item__start-icon {
+    display: none;
+  }
+}
+
+/* --- Paginering --- */
+
+.rhc-theme.mox-theme {
+  .ams-icon {
+    align-self: center;
+    /* verticaal centreren van pictogrammen binnen icoon component, o.a. pagination */
+  }
+
+  @media (width < 768px) {
+    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
+      toegankelijke naam ("Vorige pagina") blijft, die staat verborgen. */
+    .ams-pagination__link[rel]>span[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}
+
+/* --- Tabel --- */
+
+.rhc-theme.mox-theme {
+  .utrecht-table__header-cell {
+    vertical-align: bottom;
+  }
+}
+
+/* ==== 5. Pagina's en functies =============================================== */
+
+/* --- Berichtenbox --- */
+
+.rhc-theme.mox-theme {
+  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rhc-row-new {
+      animation: rhc-row-new 2s ease-out;
+    }
+  }
+}
+
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
-@keyframes mox-row-new {
+@keyframes rhc-row-new {
   from {
     background-color: var(--rhc-color-core-50);
   }
 }
 
+/* --- Landingspagina --- */
+
+.rhc-theme.mox-theme {
+  .header-landing .rhc-nav-bar__container {
+    border-block-end: none;
+  }
+
+  .rhc-landing-hero {
+    background: var(--mox-landing-info-background);
+    block-size: calc(var(--rhc-size-lint) * 10);
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+
+  .rhc-landing-info {
+    background: var(--mox-landing-info-background);
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+    >div {
+      padding-block-end: var(--rhc-hero-message-padding-block-end);
+      padding-block-start: var(--rhc-hero-message-padding-block-start);
+      padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+      padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+    }
+
+    .nl-heading--level-2,
+    .nl-paragraph,
+    ul,
+    ::marker {
+      color: var(--rhc-color-wit);
+    }
+  }
+}
+
+/* ==== 6. Hulpmiddelen voor het prototype ==================================== */
+
+/* --- Flags- en persona-paneel --- */
+
 /* Shared side overlay for flags and persona selection */
-dialog.mox-side-overlay {
+dialog.rhc-side-overlay {
   --utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
   --utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
   --utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
@@ -458,14 +455,68 @@ dialog.mox-side-overlay {
   transform: translateX(100%);
 }
 
-dialog.mox-side-overlay[open] {
+dialog.rhc-side-overlay[open] {
   transform: translateX(0);
 }
 
 @starting-style {
-  dialog.mox-side-overlay[open] {
+  dialog.rhc-side-overlay[open] {
     transform: translateX(100%);
   }
+}
+
+.rhc-side-overlay-shortcuts {
+  color: var(--rhc-color-foreground-subtle);
+  font-size: var(--rhc-text-font-size-sm);
+  margin-block: var(--rhc-space-lg);
+  text-align: end;
+}
+
+.rhc-side-overlay__header {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-lg);
+  justify-content: space-between;
+  margin-block-end: var(--rhc-space-2xl);
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.rhc-side-overlay__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-2xl);
+
+  legend {
+    margin-block-end: var(--rhc-space-lg);
+  }
+
+  .utrecht-form-fieldset__fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-md);
+  }
+
+  summary {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-block: var(--rhc-space-lg);
+  }
+
+  button {
+    background-color: var(--rhc-color-wit);
+    margin-block-start: var(--rhc-space-lg);
+  }
+}
+
+/* Button used to trigger the flags panel (fixed in bottom-right) */
+.rhc-button-trigger-flags {
+  background: var(--rhc-color-wit);
+  inset-block-end: var(--rhc-space-md);
+  inset-inline-end: var(--rhc-space-md);
+  position: fixed;
 }
 
 /* Flags-panel: pauze animations */
@@ -476,7 +527,9 @@ dialog.mox-side-overlay[open] {
   transition: none !important;
 }
 
-.mox-temp-poc-banner {
+/* --- PoC-banner --- */
+
+.rhc-temp-poc-banner {
   background: var(--rhc-color-groen-500);
   color: var(--rhc-color-wit);
   font-weight: var(--rhc-text-font-weight-bold);
