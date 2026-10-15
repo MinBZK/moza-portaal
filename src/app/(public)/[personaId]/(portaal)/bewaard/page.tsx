@@ -2,7 +2,6 @@ import {
   Heading,
   Paragraph,
   Alert,
-  Separator,
   Link,
 } from "@rijkshuisstijl-community/components-react";
 import BewaardeItems from "./_bewaardeItems";
