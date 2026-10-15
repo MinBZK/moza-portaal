@@ -19,7 +19,8 @@ export default async function PrivateLayout({
   const kvk = await getKvkFromCookie();
   const kvkOpties = await getKvkOptionsFromCookie();
 
-  if (!session) {
+  // Zie src/app/page.tsx: zonder gebruiker is er geen geldige sessie.
+  if (!session?.user) {
     redirect("/");
   }
 

@@ -130,7 +130,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-header-organizations__identity {
-		max-inline-size: 200px;
+		max-inline-size: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
@@ -160,6 +160,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 		li+li {
 			margin-block-start: var(--rhc-space-2xs);
+		}
+
+		button[aria-pressed=true] {
+			background: var(--rhc-color-cool-grey-200);
+			font-weight: var(--rhc-text-font-weight-semi-bold);
 		}
 	}
 
@@ -281,9 +286,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-card,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
-		border-color: var(--rhc-color-light-cool-grey-300);
-		border-radius: var(--rhc-border-radius-md);
-		border-width: var(--rhc-border-width-sm);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 		padding: var(--rhc-space-3xl);
 
@@ -316,6 +318,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Card */
 	.mox-card {
+		border-color: var(--rhc-color-light-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		border-width: var(--rhc-border-width-sm);
 
 		h2,
 		h4 {
@@ -332,9 +337,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			}
 		}
 
-		p,
-		ul,
-		ol:not(.ams-pagination__list) {
+		/* Ruimte onder tekst en lijsten, behalve onder het laatste element: daar
+		  zorgt de padding van de kaart voor. */
+		p:not(:last-child),
+		ul:not(:last-child),
+		ol:not(.ams-pagination__list, :last-child) {
 			margin-block-end: var(--rhc-space-lg);
 		}
 
