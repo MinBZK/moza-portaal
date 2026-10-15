@@ -192,7 +192,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Layout tuning */
 	.mox-card {
-		.mox-row-gap {
+		.rhc-row-gap {
 			align-content: start;
 			display: grid;
 			gap: var(--rhc-space-xl);
@@ -271,16 +271,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		&[aria-current=page] {
 			background-color: var(--rhc-color-cool-grey-200);
 		}
-	}
 
-	/* Main */
-	.mox-main-container {
-		align-content: start;
-		display: grid;
-		gap: var(--rhc-space-2xl);
-		/* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
-		  ontstaat er op een smal scherm een horizontale scrollbalk. */
-		grid-template-columns: minmax(0, 1fr);
+		.utrecht-icon {
+			padding-block-start: var(--rhc-space-xs);
+
+			svg {
+				block-size: var(--rhc-size-icon-md);
+				flex: none;
+				inline-size: var(--rhc-size-icon-md);
+			}
+		}
 	}
 
 	.mox-card,
@@ -1401,61 +1401,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* Shared side overlay for flags and persona selection */
-	dialog.mox-side-overlay {
-		--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
-		--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
-		--utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
-		--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
-		--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
-		--utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
-		--utrecht-drawer-padding-inline-start: var(--rhc-space-3xl);
-		background: var(--utrecht-drawer-background-color);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		inset-block: 0;
-		inset-inline-end: 0;
-		position: fixed;
-		transform: translateX(100%);
-	}
-
-	dialog.mox-side-overlay[open] {
-		transform: translateX(0);
-	}
-
-	@starting-style {
-		dialog.mox-side-overlay[open] {
-			transform: translateX(100%);
-		}
-	}
-
-	/* Flags-panel: pauze animations */
-	.animations-paused *,
-	.animations-paused *::before,
-	.animations-paused *::after {
-		animation-play-state: paused !important;
-		transition: none !important;
-	}
-
-	.mox-temp-poc-banner {
-		background: var(--rhc-color-groen-500);
-		color: var(--rhc-color-wit);
-		font-weight: var(--rhc-text-font-weight-bold);
-		inline-size: 256px;
-		inset-block-start: 3rem;
-		inset-inline-end: -4rem;
-		opacity: .8;
-		padding-block: var(--rhc-space-sm);
-		position: fixed;
-		text-align: center;
-		text-decoration: none;
-		transform: rotate(45deg);
-		transform-origin: center;
-		z-index: 1;
-
-		&:hover {
-			opacity: 1;
-		}
-	}
 }
 
 /* Verloop aan de randen van scrollende tabs (.mox-tabs op een smal scherm).

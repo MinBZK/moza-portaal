@@ -24,11 +24,11 @@
     large 48. Vaste max-tokens, want de gewone space-tokens schalen mee. */
   --mox-page-margin: var(--rhc-space-max-xl);
 
-  @media (width >= 768px) {
+  @media (width >=768px) {
     --mox-page-margin: var(--rhc-space-max-2xl);
   }
 
-  @media (width >= 1024px) {
+  @media (width >=1024px) {
     --mox-page-margin: var(--rhc-space-max-5xl);
   }
 
@@ -92,6 +92,16 @@ body {
   }
 }
 
+/* Main */
+.rhc-main-container {
+  align-content: start;
+  display: grid;
+  gap: var(--rhc-space-2xl);
+  /* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
+    ontstaat er op een smal scherm een horizontale scrollbalk. */
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .rhc-theme.mox-theme {
 
   /* Landing pagina */
@@ -124,6 +134,11 @@ body {
     ::marker {
       color: var(--rhc-color-wit);
     }
+  }
+
+  /* Hoofdnavigatie */
+  .rhc-side-nav__link {
+    align-items: baseline;
   }
 
   /* Paginamarge voor header en inhoud */
@@ -203,7 +218,7 @@ body {
     /* Open menu: vult het scherm onder de header en verbergt de pagina. */
     &:has(.mox-menu-lists--open) {
 
-      .mox-main-container,
+      .rhc-main-container,
       .rhc-page-footer {
         display: none;
       }
@@ -253,11 +268,6 @@ body {
     }
   }
 
-  /* De taalkeuze in het menu staat gewoon in de lijst, niet rechtsboven
-    zoals in de header. */
-  /* Naam en organisatie onder elkaar, net als in de header. */
-  .mox-menu-identity {}
-
   .mox-menu-heading {
     color: var(--rhc-color-foreground-subtle);
     font-size: var(--rhc-text-font-size-sm);
@@ -293,5 +303,61 @@ body {
 @keyframes mox-row-new {
   from {
     background-color: var(--rhc-color-core-50);
+  }
+}
+
+/* Shared side overlay for flags and persona selection */
+dialog.mox-side-overlay {
+  --utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
+  --utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
+  --utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
+  --utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
+  --utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
+  --utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
+  --utrecht-drawer-padding-inline-start: var(--rhc-space-3xl);
+  background: var(--utrecht-drawer-background-color);
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+  inset-block: 0;
+  inset-inline-end: 0;
+  position: fixed;
+  transform: translateX(100%);
+}
+
+dialog.mox-side-overlay[open] {
+  transform: translateX(0);
+}
+
+@starting-style {
+  dialog.mox-side-overlay[open] {
+    transform: translateX(100%);
+  }
+}
+
+/* Flags-panel: pauze animations */
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+.mox-temp-poc-banner {
+  background: var(--rhc-color-groen-500);
+  color: var(--rhc-color-wit);
+  font-weight: var(--rhc-text-font-weight-bold);
+  inline-size: 256px;
+  inset-block-start: 3rem;
+  inset-inline-end: -4rem;
+  opacity: .8;
+  padding-block: var(--rhc-space-sm);
+  position: fixed;
+  text-align: center;
+  text-decoration: none;
+  transform: rotate(45deg);
+  transform-origin: center;
+  z-index: 1;
+
+  &:hover {
+    opacity: 1;
   }
 }

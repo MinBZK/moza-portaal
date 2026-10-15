@@ -79,7 +79,7 @@ export default async function PublicLayout({
             <div
               className={
                 withNavigation
-                  ? "rhc-grid__cell rhc-grid__cell-t-9 mox-main-container"
+                  ? "rhc-grid__cell rhc-grid__cell-t-9 rhc-main-container"
                   : "rhc-grid__cell mox-row-gap"
               }
             >
