@@ -89,9 +89,13 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		border-block-end-width: var(--rhc-border-width-md)
 	}
 
+	.utrecht-page-header__content {
+		margin-block-end: 0;
+	}
+
 	.rhc-nav-bar__link,
 	.mox-header-organizations__single {
-		align-items: baseline !important;
+		align-items: baseline;
 		padding-block-end: var(--rhc-space-xl);
 	}
 
@@ -112,21 +116,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.utrecht-icon {
 			margin-inline-end: var(--rhc-space-sm);
 		}
-	}
-
-	.mox-header-organizations {
-		position: relative;
-	}
-
-	.mox-header-organizations__trigger {
-		align-items: center;
-		background: transparent;
-		border: 0;
-		color: inherit;
-		cursor: pointer;
-		display: inline-flex;
-		font: inherit;
-		gap: var(--rhc-space-sm);
 	}
 
 	.mox-header-organizations__identity {
@@ -155,8 +144,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block-start: var(--rhc-space-3xs);
 		min-inline-size: max-content;
 		padding: var(--rhc-space-2xs);
-		position: absolute;
-		z-index: 10;
 
 		li+li {
 			margin-block-start: var(--rhc-space-2xs);
@@ -192,7 +179,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Layout tuning */
 	.mox-card {
-		.mox-row-gap {
+		.rhc-row-gap {
 			align-content: start;
 			display: grid;
 			gap: var(--rhc-space-xl);
@@ -271,16 +258,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		&[aria-current=page] {
 			background-color: var(--rhc-color-cool-grey-200);
 		}
-	}
 
-	/* Main */
-	.mox-main-container {
-		align-content: start;
-		display: grid;
-		gap: var(--rhc-space-2xl);
-		/* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
-		  ontstaat er op een smal scherm een horizontale scrollbalk. */
-		grid-template-columns: minmax(0, 1fr);
 	}
 
 	.mox-card,
@@ -1309,153 +1287,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-inline: var(--rhc-hero-message-padding-inline-start);
 	}
 
-	.mox-side-overlay-shortcuts {
-		color: var(--rhc-color-foreground-subtle);
-		font-size: var(--rhc-text-font-size-sm);
-		margin-block: var(--rhc-space-lg);
-		text-align: end;
-	}
-
-	.mox-side-overlay__header {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-lg);
-		justify-content: space-between;
-		margin-block-end: var(--rhc-space-2xl);
-
-		h2 {
-			margin: 0;
-		}
-	}
-
-	.mox-side-overlay__content {
-		display: flex;
-		flex-direction: column;
-		gap: var(--rhc-space-2xl);
-
-		legend {
-			margin-block-end: var(--rhc-space-lg);
-		}
-
-		.utrecht-form-fieldset__fieldset {
-			display: flex;
-			flex-direction: column;
-			gap: var(--rhc-space-md);
-		}
-
-		summary {
-			font-size: 1.25rem;
-			font-weight: bold;
-			margin-block: var(--rhc-space-lg);
-		}
-
-		button {
-			background-color: var(--rhc-color-wit);
-			margin-block-start: var(--rhc-space-lg);
-		}
-	}
-
-	/* Button used to trigger the flags panel (fixed in bottom-right) */
-	.mox-button-trigger-flags {
-		background: var(--rhc-color-wit);
-		inset-block-end: var(--rhc-space-md);
-		inset-inline-end: var(--rhc-space-md);
-		position: fixed;
-	}
-
-	.mox-dialog {
-		background: var(--rhc-color-wit);
-		border: 0;
-		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		color: inherit;
-		/* De basisopmaak (globals.css) zet margin op 0; auto centreert de modal weer. */
-		margin: auto;
-		max-inline-size: min(36rem, calc(100% - 2 * var(--rhc-space-lg)));
-
-		/* Rustig in- en uitfaden; de transition staat al in globals.css. */
-		opacity: 0;
-		padding: var(--rhc-space-2xl);
-		transform: none;
-
-		&::backdrop {
-			background: color-mix(in srgb, var(--rhc-color-zwart) 40%, transparent);
-		}
-
-		/* Afstand via marges, niet via grid-gap: bij sluiten laat globals.css de
-		  dialog nog 300ms staan zonder [open], en dan viel de gap weg. */
-		>* {
-			margin-block: 0;
-		}
-
-		>*+* {
-			margin-block-start: var(--rhc-space-lg);
-		}
-
-		&[open] {
-			opacity: 1;
-
-			@starting-style {
-				opacity: 0;
-			}
-		}
-	}
-
-	/* Shared side overlay for flags and persona selection */
-	dialog.mox-side-overlay {
-		--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
-		--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
-		--utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
-		--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
-		--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
-		--utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
-		--utrecht-drawer-padding-inline-start: var(--rhc-space-3xl);
-		background: var(--utrecht-drawer-background-color);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		inset-block: 0;
-		inset-inline-end: 0;
-		position: fixed;
-		transform: translateX(100%);
-	}
-
-	dialog.mox-side-overlay[open] {
-		transform: translateX(0);
-	}
-
-	@starting-style {
-		dialog.mox-side-overlay[open] {
-			transform: translateX(100%);
-		}
-	}
-
-	/* Flags-panel: pauze animations */
-	.animations-paused *,
-	.animations-paused *::before,
-	.animations-paused *::after {
-		animation-play-state: paused !important;
-		transition: none !important;
-	}
-
-	.mox-temp-poc-banner {
-		background: var(--rhc-color-groen-500);
-		color: var(--rhc-color-wit);
-		font-weight: var(--rhc-text-font-weight-bold);
-		inline-size: 256px;
-		inset-block-start: 3rem;
-		inset-inline-end: -4rem;
-		opacity: .8;
-		padding-block: var(--rhc-space-sm);
-		position: fixed;
-		text-align: center;
-		text-decoration: none;
-		transform: rotate(45deg);
-		transform-origin: center;
-		z-index: 1;
-
-		&:hover {
-			opacity: 1;
-		}
-	}
 }
 
 /* Verloop aan de randen van scrollende tabs (.mox-tabs op een smal scherm).
