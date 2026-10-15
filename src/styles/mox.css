@@ -2,6 +2,10 @@
 
 Tijdelijke styling bovenop RHC componenten die de huidige huisstijl tonen
 
+Indeling: 1. Tokens, 2. Typografie, 3. Formulieren, 4. Layout (pagina, header,
+navigatie, footer), 5. Componenten (alfabetisch), 6. Pagina's en functies
+(alfabetisch). @property en @keyframes staan onderaan, buiten het theme-blok.
+
 Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nieuwe MO huisstijl die in ontwikkeling (Q1/2027) is te overbruggen. Bij het verwijderen van dit CSS bestand zou de styling terugvallen op RHC (waar via rhc.css al enkele andere tweaks aan plaats hebben gevonden in de context van de richting die de nieuwe MO huisstijl op gaat.
 
 */
@@ -9,7 +13,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 /* Alleen met de huidige huisstijl (Flags-paneel). :where() houdt de specificiteit gelijk. */
 .rhc-theme.mox-theme:where(.mox-current-brand) {
 
-	/* Typography */
+	/* ==== 1. Tokens ============================================================= */
+
+	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
+	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
+	--mox-font-weight-medium: 500;
+
+	/* ==== 2. Typografie ========================================================= */
+
 	h1,
 	h2,
 	h3,
@@ -19,15 +30,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: normal;
 	}
 
-	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
-	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
-	--mox-font-weight-medium: 500;
-
 	strong {
 		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
 	}
 
-	/* Forms */
+	/* ==== 3. Formulieren ======================================================== */
+
 	.utrecht-textbox {
 		max-inline-size: 100%;
 	}
@@ -36,7 +44,15 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: var(--mox-font-weight-medium);
 	}
 
-	/* Body */
+	.utrecht-form-field--radio,
+	.utrecht-form-field--checkbox {
+		gap: var(--rhc-space-xs);
+		margin-block-start: var(--rhc-space-md);
+	}
+
+	/* ==== 4. Layout ============================================================= */
+
+	/* --- Pagina --- */
 	.utrecht-page-body {
 		padding-block-end: 0;
 		padding-block-start: var(--rhc-space-2xl);
@@ -70,7 +86,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* Page header */
+	/* --- Header --- */
 	.rhc-nav-bar__container {
 		border-block-end-width: 0;
 	}
@@ -94,7 +110,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.rhc-nav-bar__link,
-	.mox-header-organizations__single {
+	.rhc-header-organizations__single {
 		align-items: baseline;
 		padding-block-end: var(--rhc-space-xl);
 	}
@@ -110,7 +126,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		text-align: start;
 	}
 
-	.mox-header-account {
+	.rhc-header-account {
 		--utrecht-icon-inset-block-start: var(--rhc-space-sm);
 
 		.utrecht-icon {
@@ -118,23 +134,19 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	.mox-header-organizations__identity {
+	.rhc-header-organizations__identity {
 		max-inline-size: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
-	.mox-header-organizations__single {
+	.rhc-header-organizations__single {
 		align-items: center;
 		display: inline-flex;
 		gap: var(--rhc-space-sm);
 	}
 
-	[aria-labelledby=menu-organisaties] {
-		margin-block-end: var(--rhc-space-2xl);
-	}
-
-	.mox-header-organizations__list {
+	.rhc-header-organizations__list {
 		background: var(--rhc-color-wit);
 		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-md);
@@ -155,7 +167,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	.mox-header-organizations__choice {
+	.rhc-header-organizations__choice {
 		background: transparent;
 		border: 0;
 		color: var(--rhc-color-foreground-default);
@@ -177,36 +189,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-inline-start: var(--rhc-space-md);
 	}
 
-	/* Layout tuning */
-	.mox-card {
-		.rhc-row-gap {
-			align-content: start;
-			display: grid;
-			gap: var(--rhc-space-xl);
-
-			.utrecht-action-group {
-				margin-block-start: 0;
-			}
-		}
-
-		.ams-pagination {
-			margin-block-start: var(--rhc-space-2xl);
-		}
-	}
-
-	.utrecht-action-group {
-		button {
-			text-align: start;
-		}
-	}
-
-	.utrecht-accordion .utrecht-button {
-		align-items: baseline;
-	}
-
-
-	/* Responsive menu */
-	.mox-menu-button {
+	.rhc-menu-button {
 		font-size: var(--rhc-text-font-size-sm);
 		inset-block-start: var(--rhc-space-sm);
 		inset-inline-start: var(--mox-page-margin, 0);
@@ -218,7 +201,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block-start: calc(-1 * var(--rhc-space-sm));
 	}
 
-	/* Language nav */
 	.utrecht-page-header__content {
 		position: relative;
 	}
@@ -244,7 +226,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* Sidenav */
+	/* --- Navigatie --- */
 	.rhc-side-nav__link {
 		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-light-cool-grey-900);
@@ -259,6 +241,168 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			background-color: var(--rhc-color-cool-grey-200);
 		}
 
+	}
+
+	[aria-labelledby=menu-organisaties] {
+		margin-block-end: var(--rhc-space-2xl);
+	}
+
+	/* --- Footer --- */
+	.rhc-page-footer {
+		background-color: var(--rhc-color-light-cool-grey-800);
+
+		h2 {
+			color: var(--rhc-color-wit);
+			font-size: var(--rhc-text-font-size-lg);
+			margin-block-end: var(--rhc-space-lg);
+		}
+
+		.utrecht-link .utrecht-icon {
+			align-self: flex-start;
+			margin-block-start: var(--rhc-space-sm);
+		}
+	}
+
+	.rhc-page-footer span {
+		display: flex;
+	}
+
+	/* ==== 5. Componenten ======================================================== */
+
+	/* --- Accordion --- */
+	.utrecht-accordion .utrecht-button {
+		align-items: baseline;
+	}
+
+	.utrecht-accordion {
+		padding: var(--rhc-space-max-xl);
+	}
+
+	.utrecht-accordion__section {
+		border: 0;
+	}
+
+	.utrecht-accordion__panel {
+		padding-block-start: var(--rhc-space-xl);
+		padding-inline-start: var(--rhc-space-4xl);
+	}
+
+	/* --- Action group --- */
+	.utrecht-action-group {
+		button {
+			text-align: start;
+		}
+	}
+
+	/* --- Actiemenu --- */
+	/* Popover in de top layer: valt niet weg in de scrollende tabel
+	  (mox-table-container). Anchor positioning zet het onder de knop. */
+	.mox-action-menu {
+		background-color: var(--rhc-color-wit);
+		border: 0;
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		inset: auto;
+		inset-block-start: anchor(end);
+		inset-inline-end: anchor(end);
+		margin: 0;
+		margin-block-start: var(--rhc-space-2xs);
+		padding: var(--rhc-space-md);
+		position-anchor: var(--mox-menu-anker);
+		position-try-fallbacks: flip-block;
+
+		/* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
+		--utrecht-button-inline-size: 100%;
+		--utrecht-button-max-inline-size: none;
+
+		.utrecht-button {
+			justify-content: flex-start;
+		}
+	}
+
+	.mox-menu-trigger {
+		anchor-name: var(--mox-menu-anker);
+	}
+
+	/* --- Badges --- */
+	.rhc-number-badge {
+		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
+		font-size: .75rem;
+		padding: 0;
+	}
+
+	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
+	  erft elk flex-item de onderstreping van de link, ook met text-decoration: none.
+	  In een gewoon blok (de houder) is de badge inline-flex, en daar loopt de
+	  onderstreping niet in door. */
+	.mox-badge-holder {
+		display: block;
+		line-height: 0;
+	}
+
+	/* Label met een type, zoals bij actualiteiten */
+	.mox-badge {
+		background-color: var(--rhc-color-cool-grey-100);
+		border-radius: var(--rhc-border-radius-sm);
+		color: var(--rhc-color-foreground-default);
+		display: inline-block;
+		font-size: var(--rhc-text-font-size-sm);
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+		padding-block: var(--rhc-space-2xs);
+		padding-inline: var(--rhc-space-sm);
+	}
+
+	.mox-badge--article,
+	.mox-badge--step-by-step {
+		background-color: var(--rhc-color-lintblauw-100);
+	}
+
+	.mox-badge--video {
+		background-color: var(--rhc-color-paars-100);
+	}
+
+	.mox-badge--rule {
+		background-color: var(--rhc-color-geel-100);
+	}
+
+	.mox-badge--law-change {
+		background-color: var(--rhc-color-rood-100);
+	}
+
+	.mox-badge--subsidy {
+		background-color: var(--rhc-color-groen-100);
+	}
+
+	/* --- Iconen en links --- */
+	.utrecht-icon {
+		block-size: var(--rhc-size-icon-md);
+		flex-shrink: 0;
+		inline-size: var(--rhc-size-icon-md)
+	}
+
+	.utrecht-link .utrecht-icon {
+		vertical-align: middle;
+	}
+
+	.rhc-link-list__item .utrecht-link-list__link {
+		align-items: baseline;
+	}
+
+	/* --- Kaarten --- */
+	.mox-card {
+		.rhc-row-gap {
+			align-content: start;
+			display: grid;
+			gap: var(--rhc-space-xl);
+
+			.utrecht-action-group {
+				margin-block-start: 0;
+			}
+		}
+
+		.ams-pagination {
+			margin-block-start: var(--rhc-space-2xl);
+		}
 	}
 
 	.mox-card,
@@ -280,21 +424,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	}
 
-	/* Accordeon */
-	.utrecht-accordion {
-		padding: var(--rhc-space-max-xl);
-	}
-
-	.utrecht-accordion__section {
-		border: 0;
-	}
-
-	.utrecht-accordion__panel {
-		padding-block-start: var(--rhc-space-xl);
-		padding-inline-start: var(--rhc-space-4xl);
-	}
-
-	/* Card */
 	.mox-card {
 		border-color: var(--rhc-color-light-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
@@ -343,27 +472,33 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		gap: var(--rhc-space-4xl);
 	}
 
-	/* Footer */
-	.rhc-page-footer {
-		background-color: var(--rhc-color-light-cool-grey-800);
-
-		h2 {
-			color: var(--rhc-color-wit);
-			font-size: var(--rhc-text-font-size-lg);
-			margin-block-end: var(--rhc-space-lg);
-		}
-
-		.utrecht-link .utrecht-icon {
-			align-self: flex-start;
-			margin-block-start: var(--rhc-space-sm);
-		}
+	/* --- Meldingen --- */
+	.rhc-alert {
+		margin-block: var(--rhc-space-xl);
 	}
 
-	.rhc-page-footer span {
-		display: flex;
+	.utrecht-alert {
+		border-color: var(--rhc-color-hemelblauw-100);
+		border-width: var(--rhc-border-width-sm);
 	}
 
-	/* Pagination */
+	.utrecht-alert--ok {
+		border-color: var(--rhc-color-groen-100);
+	}
+
+	.utrecht-alert--warning {
+		border-color: var(--rhc-color-oranje-100);
+	}
+
+	.utrecht-alert--error {
+		border-color: var(--rhc-color-rood-100);
+	}
+
+	.utrecht-alert__content {
+		inline-size: 95%;
+	}
+
+	/* --- Paginering --- */
 	.ams-pagination__link {
 		align-items: center;
 		background-color: var(--rhc-color-wit);
@@ -389,74 +524,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* Berichtenbox */
-	[aria-label=Berichtenbox] {
-		a {
-			text-decoration: none;
-		}
-	}
-
-	.mox-notice-amount-inbox {
-		color: var(--rhc-color-cool-grey-500);
-		font-size: var(--rhc-text-font-size-sm);
-	}
-
-	.mox-inbox-filter {
-		margin-block: var(--rhc-space-3xl);
-	}
-
-	/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
-	.mox-inbox-filters {
-		align-items: end;
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--rhc-space-xl);
-
-		> :first-child {
-			flex: 2 1 16rem;
-		}
-
-		> :last-child {
-			flex: 1 1 12rem;
-		}
-
-		.utrecht-form-field {
-			margin-block: 0;
-		}
-	}
-
-	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
-	  gepositioneerd) binnen de scrollcontainer; anders scrolt de hele pagina. */
-	.mox-table-container {
-		overflow-x: auto;
-		position: relative;
-	}
-
-	.mox-button-mark {
-		align-items: center;
-		block-size: 1lh;
-		cursor: pointer;
-		display: inline-flex;
-		justify-content: center;
-		min-block-size: calc(var(--nl-button-min-block-size)/2);
-		min-inline-size: calc(var(--nl-button-min-inline-size)/2);
-
-		&[aria-pressed=true] {
-			color: var(--rhc-color-oranje-500);
-		}
-	}
-
-	.mox-button-mark-true {
-		color: var(--rhc-color-oranje-500);
-	}
-
-	/* Selection */
-	.utrecht-form-field--radio,
-	.utrecht-form-field--checkbox {
-		gap: var(--rhc-space-xs);
-		margin-block-start: var(--rhc-space-md);
-	}
-
+	/* --- Statusstip --- */
 	/* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
 	.mox-status {
 		background-color: var(--rhc-color-cool-grey-400);
@@ -475,41 +543,15 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		background-color: var(--rhc-color-rood-500);
 	}
 
-	.mox-status-unread {
-		background-color: var(--rhc-color-oranje-500);
-		block-size: calc(var(--rhc-size-icon-md)/2);
-		border-radius: var(--rhc-border-radius-round);
-		flex-shrink: 0;
-		inline-size: calc(var(--rhc-size-icon-md)/2);
-		/* centreert de stip op de eerste regel van de afzender */
-		margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+	/* --- Tabel --- */
+	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
+	  gepositioneerd) binnen de scrollcontainer; anders scrolt de hele pagina. */
+	.mox-table-container {
+		overflow-x: auto;
+		position: relative;
 	}
 
-	.mox-sender {
-		align-items: flex-start;
-		display: flex;
-		gap: var(--rhc-space-md);
-	}
-
-	.mox-unread {
-		font-weight: var(--mox-font-weight-medium);
-	}
-
-	/* Icons */
-	.utrecht-icon {
-		block-size: var(--rhc-size-icon-md);
-		flex-shrink: 0;
-		inline-size: var(--rhc-size-icon-md)
-	}
-
-	.utrecht-link .utrecht-icon {
-		vertical-align: middle;
-	}
-
-	.rhc-link-list__item .utrecht-link-list__link {
-		align-items: baseline;
-	}
-
+	/* --- Tabs --- */
 	/* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
 	  horizontaal, op elke schermbreedte. De grijze lijn is een achtergrond in
 	  plaats van een rand: in een scrollende lijst kan de actieve tab niet over
@@ -575,130 +617,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block: var(--rhc-space-md);
 	}
 
-	/* Mapkeuze in de dialog */
-	.mox-folder-picker {
-		display: grid;
-		gap: var(--rhc-space-xs);
-		list-style: none;
-		margin-block-end: var(--rhc-space-xl);
-		padding: 0;
-	}
-
-	/* Feedback */
-	.rhc-alert {
-		margin-block: var(--rhc-space-xl);
-	}
-
-	.utrecht-alert {
-		border-color: var(--rhc-color-hemelblauw-100);
-		border-width: var(--rhc-border-width-sm);
-	}
-
-	.utrecht-alert--ok {
-		border-color: var(--rhc-color-groen-100);
-	}
-
-	.utrecht-alert--warning {
-		border-color: var(--rhc-color-oranje-100);
-	}
-
-	.utrecht-alert--error {
-		border-color: var(--rhc-color-rood-100);
-	}
-
-	/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
-	.mox-progressbar {
-		block-size: var(--rhc-space-lg);
-		border-color: var(--rhc-color-cool-grey-400);
-		border-radius: var(--rhc-border-radius-round);
-		border-width: var(--rhc-border-width-sm);
-		inline-size: 100%;
-		overflow: hidden;
-	}
-
-	.utrecht-alert--info .mox-progressbar {
-		background-color: var(--rhc-color-wit);
-	}
-
-	.mox-progressbar-track {
-		background-color: var(--rhc-color-groen-500) !important;
-		block-size: 100%;
-		border-radius: var(--rhc-border-radius-round);
-	}
-
-	.utrecht-alert__content {
-		inline-size: 95%;
-	}
-
-	/* Aftelbalk met pauzeknop (contactmomenten) */
-	.mox-countdown {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-lg);
-
-		.mox-progressbar {
-			background-color: var(--rhc-color-cool-grey-200);
-			flex: 1;
-		}
-	}
-
-	/* Tijdlijn met contactmomenten: een lijn door de statusstippen */
-	.mox-timeline {
-		display: grid;
-		gap: var(--rhc-space-2xl);
-		padding-block: var(--rhc-space-lg);
-		position: relative;
-
-		&::before {
-			background-color: var(--rhc-color-cool-grey-300);
-			content: "";
-			inline-size: var(--rhc-border-width-sm);
-			inset-block: 0;
-			inset-inline-start: calc(var(--rhc-size-icon-md) / 4);
-			position: absolute;
-		}
-
-		>* {
-			align-items: baseline;
-			display: flex;
-			gap: var(--rhc-space-lg);
-			position: relative;
-		}
-	}
-
-	/* Label met een type, zoals bij actualiteiten */
-	.mox-badge {
-		background-color: var(--rhc-color-cool-grey-100);
-		border-radius: var(--rhc-border-radius-sm);
-		color: var(--rhc-color-foreground-default);
-		display: inline-block;
-		font-size: var(--rhc-text-font-size-sm);
-		font-weight: var(--rhc-text-font-weight-semi-bold);
-		padding-block: var(--rhc-space-2xs);
-		padding-inline: var(--rhc-space-sm);
-	}
-
-	.mox-badge--article,
-	.mox-badge--step-by-step {
-		background-color: var(--rhc-color-lintblauw-100);
-	}
-
-	.mox-badge--video {
-		background-color: var(--rhc-color-paars-100);
-	}
-
-	.mox-badge--rule {
-		background-color: var(--rhc-color-geel-100);
-	}
-
-	.mox-badge--law-change {
-		background-color: var(--rhc-color-rood-100);
-	}
-
-	.mox-badge--subsidy {
-		background-color: var(--rhc-color-groen-100);
-	}
-
+	/* --- Tekst --- */
 	/* Tekst afkappen na twee regels */
 	.mox-line-clamp {
 		-webkit-box-orient: vertical;
@@ -748,136 +667,150 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* Budget vergeven bij een subsidie: balk met het percentage ernaast */
-	.mox-budget {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-md);
+	/* --- Voortgangsbalk --- */
+	/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+	.mox-progressbar {
+		block-size: var(--rhc-space-lg);
+		border-color: var(--rhc-color-cool-grey-400);
+		border-radius: var(--rhc-border-radius-round);
+		border-width: var(--rhc-border-width-sm);
+		inline-size: 100%;
+		overflow: hidden;
+	}
 
-		.mox-progressbar {
-			background-color: var(--rhc-color-cool-grey-200);
-			flex: 1;
-			max-inline-size: 20rem;
+	.utrecht-alert--info .mox-progressbar {
+		background-color: var(--rhc-color-wit);
+	}
+
+	.mox-progressbar-track {
+		background-color: var(--rhc-color-groen-500) !important;
+		block-size: 100%;
+		border-radius: var(--rhc-border-radius-round);
+	}
+
+	/* ==== 6. Pagina's en functies =============================================== */
+
+	/* --- Berichtenbox --- */
+	[aria-label=Berichtenbox] {
+		a {
+			text-decoration: none;
 		}
 	}
 
-	/* Voortgang van een zaak: genummerde stappen met een lijn ertussen,
-	  zoals de status-track in moza-poc. Voltooid = groen met vinkje,
-	  huidige stap = blauw, nog te doen = grijs en een stippellijn. */
-	.mox-status-track {
-		--mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.6);
-		--mox-stap-gap: var(--rhc-space-lg);
-
-		counter-reset: stap;
-		display: grid;
-		gap: var(--mox-stap-gap);
-
-		>li {
-			counter-increment: stap;
-			display: flex;
-			gap: var(--rhc-space-md);
-			position: relative;
-
-			&::before {
-				background-color: var(--rhc-color-groen-600);
-				block-size: var(--mox-stap-maat);
-				border-radius: var(--rhc-border-radius-round);
-				color: var(--rhc-color-wit);
-				content: counter(stap);
-				display: grid;
-				flex-shrink: 0;
-				font-weight: var(--rhc-text-font-weight-bold);
-				inline-size: var(--mox-stap-maat);
-				place-items: center;
-			}
-
-			&::after {
-				background-color: var(--rhc-color-groen-600);
-				content: "";
-				inline-size: var(--rhc-border-width-md);
-				inset-block: var(--mox-stap-maat) calc(-1 * var(--mox-stap-gap));
-				inset-inline-start: calc(var(--mox-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
-				position: absolute;
-			}
-
-			&:last-child::after {
-				content: none;
-			}
-
-			/* Stappen voor de huidige stap zijn klaar */
-			&:has(~ [aria-current="step"])::before {
-				content: "\2713";
-			}
-		}
-
-		>[aria-current="step"] {
-			&::before {
-				background-color: var(--rhc-color-lintblauw-500);
-			}
-
-			~li::before {
-				background-color: var(--rhc-color-cool-grey-500);
-			}
-
-			&::after,
-			~li::after {
-				background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
-			}
-		}
-
-		details {
-			flex: 1;
-			min-inline-size: 0;
-		}
-
-		summary {
-			align-items: center;
-			cursor: pointer;
-			display: flex;
-			font-weight: var(--rhc-text-font-weight-bold);
-			gap: var(--rhc-space-sm);
-			list-style: none;
-			min-block-size: var(--mox-stap-maat);
-
-			&::-webkit-details-marker {
-				display: none;
-			}
-
-			.utrecht-icon {
-				transition: transform 150ms;
-			}
-		}
-
-		details[open]>summary .utrecht-icon {
-			transform: rotate(90deg);
-		}
-	}
-
-	.mox-status-details {
-		display: grid;
-		gap: var(--rhc-space-md);
-		margin-block-start: var(--rhc-space-sm);
-	}
-
-	.mox-status-date {
-		align-items: center;
-		color: var(--rhc-color-foreground-subtle);
-		display: flex;
+	.mox-notice-amount-inbox {
+		color: var(--rhc-color-cool-grey-500);
 		font-size: var(--rhc-text-font-size-sm);
-		gap: var(--rhc-space-sm);
 	}
 
-	/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
-	.mox-action-required {
-		align-items: center;
-		display: inline-flex;
-		gap: var(--rhc-space-sm);
+	.mox-inbox-filter {
+		margin-block: var(--rhc-space-3xl);
+	}
 
-		.utrecht-icon {
+	/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+	.mox-inbox-filters {
+		align-items: end;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--rhc-space-xl);
+
+		> :first-child {
+			flex: 2 1 16rem;
+		}
+
+		> :last-child {
+			flex: 1 1 12rem;
+		}
+
+		.utrecht-form-field {
+			margin-block: 0;
+		}
+	}
+
+	.mox-button-mark {
+		align-items: center;
+		block-size: 1lh;
+		cursor: pointer;
+		display: inline-flex;
+		justify-content: center;
+		min-block-size: calc(var(--nl-button-min-block-size)/2);
+		min-inline-size: calc(var(--nl-button-min-inline-size)/2);
+
+		&[aria-pressed=true] {
 			color: var(--rhc-color-oranje-500);
 		}
 	}
 
+	.mox-button-mark-true {
+		color: var(--rhc-color-oranje-500);
+	}
+
+	.mox-status-unread {
+		background-color: var(--rhc-color-oranje-500);
+		block-size: calc(var(--rhc-size-icon-md)/2);
+		border-radius: var(--rhc-border-radius-round);
+		flex-shrink: 0;
+		inline-size: calc(var(--rhc-size-icon-md)/2);
+		/* centreert de stip op de eerste regel van de afzender */
+		margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+	}
+
+	.mox-sender {
+		align-items: flex-start;
+		display: flex;
+		gap: var(--rhc-space-md);
+	}
+
+	.mox-unread {
+		font-weight: var(--mox-font-weight-medium);
+	}
+
+	/* Mapkeuze in de dialog */
+	.mox-folder-picker {
+		display: grid;
+		gap: var(--rhc-space-xs);
+		list-style: none;
+		margin-block-end: var(--rhc-space-xl);
+		padding: 0;
+	}
+
+	/* --- Contactmomenten --- */
+	/* Aftelbalk met pauzeknop (contactmomenten) */
+	.mox-countdown {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-lg);
+
+		.mox-progressbar {
+			background-color: var(--rhc-color-cool-grey-200);
+			flex: 1;
+		}
+	}
+
+	/* Tijdlijn met contactmomenten: een lijn door de statusstippen */
+	.mox-timeline {
+		display: grid;
+		gap: var(--rhc-space-2xl);
+		padding-block: var(--rhc-space-lg);
+		position: relative;
+
+		&::before {
+			background-color: var(--rhc-color-cool-grey-300);
+			content: "";
+			inline-size: var(--rhc-border-width-sm);
+			inset-block: 0;
+			inset-inline-start: calc(var(--rhc-size-icon-md) / 4);
+			position: absolute;
+		}
+
+		>* {
+			align-items: baseline;
+			display: flex;
+			gap: var(--rhc-space-lg);
+			position: relative;
+		}
+	}
+
+	/* --- Digitale assistent --- */
 	/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
 	.mox-chat {
 		display: grid;
@@ -912,6 +845,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	.mox-chat-message,
 	.mox-chat-suggestions {
+		margin-block-end: var(--rhc-space-2xl);
 		position: relative;
 
 		&:before {
@@ -926,7 +860,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 
 		p:last-of-type {
-			margin-block-end: 0rhc-side-nav__link;
+			margin-block-end: 0;
 		}
 	}
 
@@ -1165,53 +1099,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* Action menu */
-	/* Popover in de top layer: valt niet weg in de scrollende tabel
-	  (mox-table-container). Anchor positioning zet het onder de knop. */
-	.mox-action-menu {
-		background-color: var(--rhc-color-wit);
-		border: 0;
-		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		inset: auto;
-		inset-block-start: anchor(end);
-		inset-inline-end: anchor(end);
-		margin: 0;
-		margin-block-start: var(--rhc-space-2xs);
-		padding: var(--rhc-space-md);
-		position-anchor: var(--mox-menu-anker);
-		position-try-fallbacks: flip-block;
-
-		/* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
-		--utrecht-button-inline-size: 100%;
-		--utrecht-button-max-inline-size: none;
-
-		.utrecht-button {
-			justify-content: flex-start;
-		}
-	}
-
-	.mox-menu-trigger {
-		anchor-name: var(--mox-menu-anker);
-	}
-
-	/* Badge */
-	.rhc-number-badge {
-		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
-		font-size: .75rem;
-		padding: 0;
-	}
-
-	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
-	  erft elk flex-item de onderstreping van de link, ook met text-decoration: none.
-	  In een gewoon blok (de houder) is de badge inline-flex, en daar loopt de
-	  onderstreping niet in door. */
-	.mox-badge-holder {
-		display: block;
-		line-height: 0;
-	}
-
-	/* Landing */
+	/* --- Landingspagina --- */
 	.mox-login-keycloak {
 		--utrecht-button-inline-size: 100%;
 		--utrecht-button-max-inline-size: none;
@@ -1287,6 +1175,137 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-inline: var(--rhc-hero-message-padding-inline-start);
 	}
 
+	/* --- Lopende zaken --- */
+	/* Voortgang van een zaak: genummerde stappen met een lijn ertussen,
+	  zoals de status-track in moza-poc. Voltooid = groen met vinkje,
+	  huidige stap = blauw, nog te doen = grijs en een stippellijn. */
+	.mox-status-track {
+		--mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.6);
+		--mox-stap-gap: var(--rhc-space-lg);
+
+		counter-reset: stap;
+		display: grid;
+		gap: var(--mox-stap-gap);
+
+		>li {
+			counter-increment: stap;
+			display: flex;
+			gap: var(--rhc-space-md);
+			position: relative;
+
+			&::before {
+				background-color: var(--rhc-color-groen-600);
+				block-size: var(--mox-stap-maat);
+				border-radius: var(--rhc-border-radius-round);
+				color: var(--rhc-color-wit);
+				content: counter(stap);
+				display: grid;
+				flex-shrink: 0;
+				font-weight: var(--rhc-text-font-weight-bold);
+				inline-size: var(--mox-stap-maat);
+				place-items: center;
+			}
+
+			&::after {
+				background-color: var(--rhc-color-groen-600);
+				content: "";
+				inline-size: var(--rhc-border-width-md);
+				inset-block: var(--mox-stap-maat) calc(-1 * var(--mox-stap-gap));
+				inset-inline-start: calc(var(--mox-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+				position: absolute;
+			}
+
+			&:last-child::after {
+				content: none;
+			}
+
+			/* Stappen voor de huidige stap zijn klaar */
+			&:has(~ [aria-current="step"])::before {
+				content: "\2713";
+			}
+		}
+
+		>[aria-current="step"] {
+			&::before {
+				background-color: var(--rhc-color-lintblauw-500);
+			}
+
+			~li::before {
+				background-color: var(--rhc-color-cool-grey-500);
+			}
+
+			&::after,
+			~li::after {
+				background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
+			}
+		}
+
+		details {
+			flex: 1;
+			min-inline-size: 0;
+		}
+
+		summary {
+			align-items: center;
+			cursor: pointer;
+			display: flex;
+			font-weight: var(--rhc-text-font-weight-bold);
+			gap: var(--rhc-space-sm);
+			list-style: none;
+			min-block-size: var(--mox-stap-maat);
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			.utrecht-icon {
+				transition: transform 150ms;
+			}
+		}
+
+		details[open]>summary .utrecht-icon {
+			transform: rotate(90deg);
+		}
+	}
+
+	.mox-status-details {
+		display: grid;
+		gap: var(--rhc-space-md);
+		margin-block-start: var(--rhc-space-sm);
+	}
+
+	.mox-status-date {
+		align-items: center;
+		color: var(--rhc-color-foreground-subtle);
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+	}
+
+	/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
+	.mox-action-required {
+		align-items: center;
+		display: inline-flex;
+		gap: var(--rhc-space-sm);
+
+		.utrecht-icon {
+			color: var(--rhc-color-oranje-500);
+		}
+	}
+
+	/* --- Subsidies --- */
+	/* Budget vergeven bij een subsidie: balk met het percentage ernaast */
+	.mox-budget {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-md);
+
+		.mox-progressbar {
+			background-color: var(--rhc-color-cool-grey-200);
+			flex: 1;
+			max-inline-size: 20rem;
+		}
+	}
 }
 
 /* Verloop aan de randen van scrollende tabs (.mox-tabs op een smal scherm).

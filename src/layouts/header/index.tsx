@@ -136,7 +136,7 @@ const Header = ({
             items={[]} // Pagina rendert niet zonder lege items
           >
             {/* Op een smal scherm staan taal, naam en uitloggen in het menu. */}
-            <div className={metMenu ? "mox-header-account" : undefined}>
+            <div className={metMenu ? "rhc-header-account" : undefined}>
               <LanguageSelect selectedLanguage="Nederlands" languages={TALEN} />
             </div>
             <ul className="rhc-nav-bar__list">
@@ -146,27 +146,27 @@ const Header = ({
                   <li
                     className={
                       metMenu
-                        ? "rhc-nav-bar__item mox-header-account"
+                        ? "rhc-nav-bar__item rhc-header-account"
                         : "rhc-nav-bar__item"
                     }
                   >
                     {organisaties.length > 1 ? (
                       <div
                         ref={organisatiesRef}
-                        className="mox-header-organizations"
+                        className="rhc-header-organizations"
                       >
                         <button
                           ref={organisatieKnopRef}
                           type="button"
                           id="header-organisaties-knop"
-                          className="rhc-nav-bar__link mox-header-organizations__trigger"
+                          className="rhc-nav-bar__link rhc-header-organizations__trigger"
                           aria-expanded={openOrganisaties}
                           aria-controls="header-organisaties"
                           aria-label={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
                           onClick={() => setOpenOrganisaties((open) => !open)}
                         >
                           <Icon icon="user" />
-                          <span className="rhc-nav-bar__label mox-header-organizations__identity">
+                          <span className="rhc-nav-bar__label rhc-header-organizations__identity">
                             {accountLabel}
                           </span>
                           <Icon icon="chevron-down" />
@@ -174,14 +174,14 @@ const Header = ({
                         {openOrganisaties && (
                           <ul
                             id="header-organisaties"
-                            className="mox-header-organizations__list"
+                            className="rhc-header-organizations__list"
                             aria-labelledby="header-organisaties-knop"
                           >
                             {organisaties.map((organisatie) => (
                               <li key={organisatie.id}>
                                 <button
                                   type="button"
-                                  className="mox-header-organizations__choice"
+                                  className="rhc-header-organizations__choice"
                                   aria-pressed={
                                     organisatie.id === actieveOrganisatieId
                                   }
@@ -200,11 +200,11 @@ const Header = ({
                       </div>
                     ) : (
                       <Link
-                        className="rhc-nav-bar__link mox-header-organizations__single"
+                        className="rhc-nav-bar__link rhc-header-organizations__single"
                         href="/"
                       >
                         <Icon icon="user" />
-                        <span className="rhc-nav-bar__label mox-header-organizations__identity">
+                        <span className="rhc-nav-bar__label rhc-header-organizations__identity">
                           {accountLabel}
                         </span>
                       </Link>
@@ -213,7 +213,7 @@ const Header = ({
                   <li
                     className={
                       metMenu
-                        ? "rhc-nav-bar__item mox-header-account"
+                        ? "rhc-nav-bar__item rhc-header-account"
                         : "rhc-nav-bar__item"
                     }
                   >
@@ -272,7 +272,7 @@ const Header = ({
           </NavBar>
         </div>
         <a
-          className="mox-temp-poc-banner"
+          className="rhc-temp-poc-banner"
           href="https://www.mijnoverheidzakelijk.nl/"
         >
           Proof of Concept

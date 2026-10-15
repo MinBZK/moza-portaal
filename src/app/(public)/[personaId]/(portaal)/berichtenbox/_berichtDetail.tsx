@@ -349,7 +349,7 @@ const BerichtDetail = ({
       {status === "prullenbak" && (
         <dialog
           ref={dialogRef}
-          className="mox-dialog"
+          className="rhc-dialog"
           aria-labelledby="voorgoed-kop"
           aria-describedby="voorgoed-vraag"
           onClose={sluitVraag}

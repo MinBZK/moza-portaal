@@ -39,7 +39,7 @@ const OndernemingsgegevensPage = async () => {
 
       <div className="mox-card">
         <Heading level={2}>Algemeen</Heading>
-        <DataSummary appearance="column" className="mox-data-summary--columns">
+        <DataSummary appearance="column" className="rhc-data-summary--columns">
           {gegevens.map(({ label, waarde, href }) =>
             href ? (
               <div key={label} className="rhc-data-summary__item">

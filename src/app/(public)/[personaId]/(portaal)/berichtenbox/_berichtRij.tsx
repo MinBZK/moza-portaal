@@ -30,7 +30,7 @@ const BerichtRij = ({
   /** Extra cellen achteraan, zoals acties. */
   children?: ReactNode;
 }) => (
-  <TableRow className={nieuw ? "mox-row-new" : undefined}>
+  <TableRow className={nieuw ? "rhc-row-new" : undefined}>
     <TableCell>
       <button
         type="button"
