@@ -24,7 +24,9 @@ Moza Portaal is een Nederlands overheidsportaal gebouwd met Next.js, React en Ty
 
 ## Design en toegankelijkheid
 
-- Gebruik geen Tailwind-classes, ook niet in bestaande code die je aanpast. Gebruik RHC-componenten (`@/components/rhc`). Waar die niet volstaan, schrijf je een eigen `mox-`-class in `src/styles/mox.css` met RHC-tokens.
+- Gebruik geen Tailwind-classes, ook niet in bestaande code die je aanpast. Gebruik RHC-componenten (`@/components/rhc`). Waar die niet volstaan, schrijf je een eigen class met RHC-tokens, in een van twee lagen:
+  - `src/styles/rhc.css` is de basis die in elke huisstijl geldt. Eigen classes daar krijgen het voorvoegsel `rhc-`, zoals `rhc-main-container`. Hier horen layout en functionele opmaak.
+  - `src/styles/mox.css` is het MOx-thema daarbovenop. Classes daar krijgen het voorvoegsel `mox-` en bouwen voort op de `rhc-`-basis.
 - Geef eigen classes een Engelse naam, ook als de rest van de code Nederlands is: `mox-sender`, niet `mox-afzender`. Varianten noem je naar hun betekenis, niet naar hun kleur: `mox-badge--article`, niet `mox-badge--blauw`.
 - Volg de Rijkshuisstijl, het NL Design System en de bestaande design tokens.
 - Gebruik NLDS/Rijkshuisstijl Community-componenten wanneer die passen.
