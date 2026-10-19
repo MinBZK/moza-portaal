@@ -146,16 +146,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		gap: var(--rhc-space-sm);
 	}
 
-	.rhc-header-organizations__list {
-		background: var(--rhc-color-wit);
+	.rhc-menu {
 		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		inset-inline-end: 0;
-		list-style: none;
 		margin-block-start: var(--rhc-space-3xs);
-		min-inline-size: max-content;
-		padding: var(--rhc-space-2xs);
 
 		li+li {
 			margin-block-start: var(--rhc-space-2xs);

@@ -174,7 +174,7 @@ const Header = ({
                         {openOrganisaties && (
                           <ul
                             id="header-organisaties"
-                            className="rhc-header-organizations__list"
+                            className="rhc-menu"
                             aria-labelledby="header-organisaties-knop"
                           >
                             {organisaties.map((organisatie) => (
