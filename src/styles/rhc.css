@@ -115,6 +115,7 @@ body {
 }
 
 .rhc-theme.mox-theme {
+
   /* Paginamarge voor header en inhoud */
   .utrecht-page-header__content,
   .utrecht-page-body__content {
@@ -154,9 +155,38 @@ body {
     gap: var(--rhc-space-sm);
   }
 
-  .rhc-header-organizations__list {
+  .rhc-menu {
+    background: var(--rhc-color-wit);
+    border-color: var(--rhc-color-cool-grey-400);
+    border-radius: var(--rhc-border-radius-md);
+    border-style: solid;
+    border-width: var(--rhc-border-width-sm);
+    inset-inline-end: 0;
+    list-style: none;
+    min-inline-size: max-content;
+    padding: var(--rhc-space-2xs);
     position: absolute;
     z-index: 10;
+
+    button {
+      color: var(--rhc-color-zwart);
+      inline-size: 100%;
+      padding-block: var(--rhc-space-xl);
+      padding-inline: var(--rhc-space-3xl);
+      text-align: start;
+
+      &[aria-pressed=true] {
+        background-color: var(--rhc-color-lintblauw-500);
+        color: var(--rhc-color-wit);
+      }
+
+      &:hover {
+        background-color: var(--rhc-color-lintblauw-100);
+        color: var(--rhc-color-zwart);
+      }
+
+
+    }
   }
 
   .rhc-nav-bar__link {
@@ -170,6 +200,7 @@ body {
   }
 
   @media (width < 768px) {
+
     /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
     .rhc-header-account {
       display: none;
@@ -363,6 +394,7 @@ body {
   }
 
   @media (width < 768px) {
+
     /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
       toegankelijke naam ("Vorige pagina") blijft, die staat verborgen. */
     .ams-pagination__link[rel]>span[aria-hidden="true"] {
@@ -384,6 +416,7 @@ body {
 /* --- Berichtenbox --- */
 
 .rhc-theme.mox-theme {
+
   /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
   @media (prefers-reduced-motion: no-preference) {
     .rhc-row-new {
