@@ -1,3 +1,5 @@
+import personas from "./personas.json";
+
 export type DemoBericht = {
   id: string;
   afzenderId: string;
@@ -348,9 +350,18 @@ const berichten = spreidOverAfzenders([
   ...personaBerichten,
 ]);
 
+/**
+ * Een persona met een `basis` (zoals Karin Jansen op de gegevens van de
+ * bloemenkweker) krijgt ook de berichten van die basis-persona.
+ */
+const basisVan = (personaId: string) =>
+  personas.find((persona) => persona.id === personaId)?.basis ?? personaId;
+
 const voorPersona = (bericht: DemoBericht, personaId?: string) =>
   !bericht.relevantVoor ||
-  (!!personaId && bericht.relevantVoor.includes(personaId));
+  (!!personaId &&
+    (bericht.relevantVoor.includes(personaId) ||
+      bericht.relevantVoor.includes(basisVan(personaId))));
 
 /**
  * Fictieve berichten voor de Berichtenbox. Zie ./README.md

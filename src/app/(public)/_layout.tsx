@@ -103,6 +103,7 @@ export default async function PublicLayout({
           id: p.id,
           label: p.label,
           beschrijving: p.beschrijving,
+          profiel: p.profiel,
           organisaties: p.organisaties.map((o) => ({
             id: getDemoOrganisatieId(o),
             handelsnaam: o.handelsnaam,

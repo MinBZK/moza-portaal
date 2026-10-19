@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type CSSProperties, type FormEvent } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Button,
@@ -16,6 +17,8 @@ export type PersonaKeuze = {
   id: string;
   label: string;
   beschrijving?: string;
+  /** Uitgewerkte persona met avatar, zoals op cx-moza. Zonder: testaccount. */
+  profiel?: { rol: string; kleur: string; avatar: string };
   organisaties: { id: string; handelsnaam: string }[];
   archief: boolean;
 };
@@ -105,26 +108,82 @@ const PersonaPaneel = ({
     />
   );
 
-  const hoofdlijst = personas.filter((persona) => !persona.archief);
-  const archief = personas.filter((persona) => persona.archief);
+  const uitgewerkt = personas.filter((persona) => persona.profiel);
+  const hoofdlijst = personas.filter(
+    (persona) => !persona.profiel && !persona.archief,
+  );
+  const archief = personas.filter(
+    (persona) => !persona.profiel && persona.archief,
+  );
+  const testaccountGekozen = !!gekozenPersona && !gekozenPersona.profiel;
 
   return (
     <SideOverlay id="persona-paneel" title="Kies een persona" shortcut="p">
       <form onSubmit={wisselPersona}>
         <Fieldset legend="Persona">
+          <div className="rhc-persona-cards">
+            {uitgewerkt.map((persona) => (
+              <label
+                key={persona.id}
+                className="rhc-persona-card"
+                style={
+                  {
+                    "--rhc-persona-kleur": `var(--rhc-color-${persona.profiel?.kleur}-100)`,
+                  } as CSSProperties
+                }
+              >
+                <input
+                  type="radio"
+                  name="persona"
+                  value={persona.id}
+                  checked={gekozenPersonaId === persona.id}
+                  onChange={() => kiesPersona(persona.id)}
+                  className="rhc-persona-card__input"
+                />
+                {/* Decoratief: de naam staat ernaast. */}
+                <Image
+                  src={persona.profiel?.avatar ?? ""}
+                  alt=""
+                  width={96}
+                  height={96}
+                  className="rhc-persona-card__avatar"
+                  unoptimized
+                />
+                <span className="rhc-persona-card__name">{persona.label}</span>
+                <span className="rhc-persona-card__role">
+                  {persona.profiel?.rol}
+                </span>
+                {persona.id === actievePersonaId && (
+                  <span className="rhc-persona-card__active">Actief</span>
+                )}
+              </label>
+            ))}
+          </div>
+          {gekozenPersona?.beschrijving && (
+            <p className="rhc-persona-description">
+              {gekozenPersona.beschrijving}
+            </p>
+          )}
+        </Fieldset>
+        <Fieldset legend="Andere testaccounts">
           <FormFieldSelect
-            label="Kies een persona"
-            value={gekozenPersonaId ?? ""}
+            label="Kies een testaccount"
+            description="Persona's uit moza-poc en aangesloten ondernemingen voor het Federatief Berichtenstelsel."
+            value={testaccountGekozen ? (gekozenPersonaId ?? "") : ""}
             onChange={(event) => kiesPersona(event.target.value)}
           >
-            <optgroup label="Persona’s">{personaOpties(hoofdlijst)}</optgroup>
+            <SelectOption value="">Geen testaccount gekozen</SelectOption>
+            {hoofdlijst.length > 0 && (
+              <optgroup label="Testaccounts">
+                {personaOpties(hoofdlijst)}
+              </optgroup>
+            )}
             {archief.length > 0 && (
               <optgroup label="Persona-archief">
                 {personaOpties(archief)}
               </optgroup>
             )}
           </FormFieldSelect>
-          {gekozenPersona?.beschrijving && <p>{gekozenPersona.beschrijving}</p>}
         </Fieldset>
         {gekozenPersona && (
           <Fieldset legend="Organisatie">
