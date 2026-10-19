@@ -18,7 +18,7 @@ const ContactgegevensPage = async ({
   return (
     <>
       <Heading level={1}>Contactgegevens</Heading>
-      <div className="mox-card mox-row-gap">
+      <div className="mox-card rhc-row-gap">
         <nav aria-label="Soort contactgegevens">
           <ul className="mox-tabs">
             {tabs.map((tab) => (

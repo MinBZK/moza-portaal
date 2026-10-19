@@ -38,7 +38,7 @@ export const AanhefEditBox = ({
 
   return (
     <form
-      className="mox-row-gap"
+      className="rhc-row-gap"
       noValidate
       onSubmit={(e) => {
         e.preventDefault();

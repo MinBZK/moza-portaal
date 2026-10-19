@@ -121,14 +121,14 @@ const PersonaPaneel = ({
     <SideOverlay id="persona-paneel" title="Kies een persona" shortcut="p">
       <form onSubmit={wisselPersona}>
         <Fieldset legend="Persona">
-          <div className="rhc-persona-cards">
+          <div className="prototype-persona-cards">
             {uitgewerkt.map((persona) => (
               <label
                 key={persona.id}
-                className="rhc-persona-card"
+                className="prototype-persona-card"
                 style={
                   {
-                    "--rhc-persona-kleur": `var(--rhc-color-${persona.profiel?.kleur}-100)`,
+                    "--prototype-persona-kleur": `var(--rhc-color-${persona.profiel?.kleur}-100)`,
                   } as CSSProperties
                 }
               >
@@ -138,7 +138,7 @@ const PersonaPaneel = ({
                   value={persona.id}
                   checked={gekozenPersonaId === persona.id}
                   onChange={() => kiesPersona(persona.id)}
-                  className="rhc-persona-card__input"
+                  className="prototype-persona-card__input"
                 />
                 {/* Decoratief: de naam staat ernaast. */}
                 <Image
@@ -146,21 +146,23 @@ const PersonaPaneel = ({
                   alt=""
                   width={96}
                   height={96}
-                  className="rhc-persona-card__avatar"
+                  className="prototype-persona-card__avatar"
                   unoptimized
                 />
-                <span className="rhc-persona-card__name">{persona.label}</span>
-                <span className="rhc-persona-card__role">
+                <span className="prototype-persona-card__name">
+                  {persona.label}
+                </span>
+                <span className="prototype-persona-card__role">
                   {persona.profiel?.rol}
                 </span>
                 {persona.id === actievePersonaId && (
-                  <span className="rhc-persona-card__active">Actief</span>
+                  <span className="prototype-persona-card__active">Actief</span>
                 )}
               </label>
             ))}
           </div>
           {gekozenPersona?.beschrijving && (
-            <p className="rhc-persona-description">
+            <p className="prototype-persona-description">
               {gekozenPersona.beschrijving}
             </p>
           )}

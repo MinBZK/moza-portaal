@@ -32,7 +32,7 @@ const Prive = () => {
   }
 
   return (
-    <div className="mox-row-gap">
+    <div className="rhc-row-gap">
       <AanhefEditBox voorkeur={aanhef} idenType={"BSN"} idenValue={bsn} />
 
       <TaalEditBox voorkeur={taal} idenType={"BSN"} idenValue={bsn} />

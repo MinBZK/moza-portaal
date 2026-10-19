@@ -237,7 +237,7 @@ const Header = ({
                     </button>
 
                     {openKeycloakLogin && (
-                      <div className="mox-login-keycloak mox-card">
+                      <div className="prototype-login-keycloak mox-card">
                         <div role="menu" aria-orientation="vertical">
                           <button
                             onClick={() => {
@@ -272,7 +272,7 @@ const Header = ({
           </NavBar>
         </div>
         <a
-          className="rhc-temp-poc-banner"
+          className="prototype-temp-poc-banner"
           href="https://www.mijnoverheidzakelijk.nl/"
         >
           Proof of Concept

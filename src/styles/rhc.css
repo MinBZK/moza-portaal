@@ -123,15 +123,6 @@ body {
     padding-inline: var(--mox-page-margin);
   }
 
-  /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
-    dezelfde kolom beginnen als de inhoud (`rhc-grid__cell-t-9`). RHC heeft daar
-    geen class voor. */
-  @media screen and (width >=768px) {
-    .rhc-breadcrumb-cell {
-      grid-column: 4 / -1;
-    }
-  }
-
   /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
     rijen kaarten elkaar. */
   .rhc-grid:has(> .mox-card) {
@@ -468,24 +459,6 @@ body {
 }
 
 /* --- Landingspagina --- */
-.mox-login-keycloak {
-  --utrecht-button-inline-size: 100%;
-  --utrecht-button-max-inline-size: none;
-  background: var(--rhc-color-wit);
-  border-radius: var(--rhc-border-radius-md);
-  border-width: var(--rhc-border-width-sm);
-  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-  inset-inline-end: 0;
-  padding: var(--rhc-space-2xs);
-  position: absolute;
-
-  button {
-    border: 0;
-    display: block;
-    inline-size: 100%;
-    text-align: start;
-  }
-}
 
 .mox-login-digid,
 .mox-login-eherkenning {
@@ -531,14 +504,6 @@ body {
 }
 
 .mox-landing-quicklinks-heading {
-  padding-block: var(--rhc-hero-message-padding-block-start);
-  padding-inline: var(--rhc-hero-message-padding-inline-start);
-}
-
-.mox-landing-demo-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rhc-card-column-gap);
   padding-block: var(--rhc-hero-message-padding-block-start);
   padding-inline: var(--rhc-hero-message-padding-inline-start);
 }

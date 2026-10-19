@@ -36,7 +36,7 @@ const Zakelijk = () => {
   }
 
   return (
-    <div className="mox-row-gap">
+    <div className="rhc-row-gap">
       <AanhefEditBox voorkeur={aanhef} idenType={"KVK"} idenValue={kvk} />
 
       <TaalEditBox voorkeur={taal} idenType={"KVK"} idenValue={kvk} />

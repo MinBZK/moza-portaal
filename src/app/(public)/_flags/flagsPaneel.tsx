@@ -54,7 +54,10 @@ const FlagsPaneel = ({
   );
 
   useEffect(() => {
-    document.documentElement.classList.toggle("animations-paused", gepauzeerd);
+    document.documentElement.classList.toggle(
+      "prototype-animations-paused",
+      gepauzeerd,
+    );
   }, [gepauzeerd]);
 
   const zetFlag = (key: (typeof MOX_FLAGS)[number]["key"], aan: boolean) =>

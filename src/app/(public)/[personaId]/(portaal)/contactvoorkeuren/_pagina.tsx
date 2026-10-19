@@ -35,7 +35,7 @@ const ContactvoorkeurenPagina = async ({
         Uw contactgegevens en de organisaties die deze mogen gebruiken.
       </Paragraph>
       <section
-        className="mox-card mox-row-gap"
+        className="mox-card rhc-row-gap"
         aria-labelledby="contactgegevens"
       >
         <Heading level={2} id="contactgegevens">

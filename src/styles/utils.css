@@ -1,14 +1,14 @@
 /* Alleen voor het prototype: hulpmiddelen voor wie test en demonstreert, zoals
   het Flags- en persona-paneel en de PoC-banner. Geen onderdeel van de huisstijl
   of van het product; dit bestand gaat er in een productieversie uit. Geldt in
-  beide huisstijlen. Classes krijgen het voorvoegsel `rhc-`. */
+  beide huisstijlen. Classes krijgen het voorvoegsel `prototype-`. */
 
 /* ==== Hulpmiddelen voor het prototype ==================================== */
 
 /* --- Flags- en persona-paneel --- */
 
 /* Shared side overlay for flags and persona selection */
-dialog.rhc-side-overlay {
+dialog.prototype-side-overlay {
 	--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
 	--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
 	--utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
@@ -24,24 +24,24 @@ dialog.rhc-side-overlay {
 	transform: translateX(100%);
 }
 
-dialog.rhc-side-overlay[open] {
+dialog.prototype-side-overlay[open] {
 	transform: translateX(0);
 }
 
 @starting-style {
-	dialog.rhc-side-overlay[open] {
+	dialog.prototype-side-overlay[open] {
 		transform: translateX(100%);
 	}
 }
 
-.rhc-side-overlay-shortcuts {
+.prototype-side-overlay-shortcuts {
 	color: var(--rhc-color-foreground-subtle);
 	font-size: var(--rhc-text-font-size-sm);
 	margin-block: var(--rhc-space-lg);
 	text-align: end;
 }
 
-.rhc-side-overlay__header {
+.prototype-side-overlay__header {
 	align-items: center;
 	display: flex;
 	gap: var(--rhc-space-lg);
@@ -53,7 +53,7 @@ dialog.rhc-side-overlay[open] {
 	}
 }
 
-.rhc-side-overlay__content {
+.prototype-side-overlay__content {
 	display: flex;
 	flex-direction: column;
 	gap: var(--rhc-space-2xl);
@@ -81,7 +81,7 @@ dialog.rhc-side-overlay[open] {
 }
 
 /* Button used to trigger the flags panel (fixed in bottom-right) */
-.rhc-button-trigger-flags {
+.prototype-button-trigger-flags {
 	background: var(--rhc-color-wit);
 	inset-block-end: var(--rhc-space-md);
 	inset-inline-end: var(--rhc-space-md);
@@ -89,27 +89,27 @@ dialog.rhc-side-overlay[open] {
 }
 
 /* Flags-panel: pauze animations */
-.animations-paused *,
-.animations-paused *::before,
-.animations-paused *::after {
+.prototype-animations-paused *,
+.prototype-animations-paused *::before,
+.prototype-animations-paused *::after {
 	animation-play-state: paused !important;
 	transition: none !important;
 }
 
 /* Persona-kaarten in het persona-paneel, zoals op cx-moza. De kaart is het
   label van een verborgen radioknop: klikken en de pijltjestoetsen werken. */
-.rhc-persona-cards {
+.prototype-persona-cards {
 	display: grid;
 	gap: var(--rhc-space-lg);
 	grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
 }
 
-.rhc-persona-card {
+.prototype-persona-card {
 	align-items: center;
 	background: var(--rhc-color-wit);
-	border: var(--rhc-border-width-md) solid transparent;
+	border: var(--rhc-border-width-sm) solid var(--rhc-color-light-cool-grey-300);
 	border-radius: var(--rhc-border-radius-md);
-	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 	cursor: pointer;
 	display: flex;
 	flex-direction: column;
@@ -133,7 +133,7 @@ dialog.rhc-side-overlay[open] {
 }
 
 /* Visueel verborgen, maar wel te bedienen met het toetsenbord. */
-.rhc-persona-card__input {
+.prototype-persona-card__input {
 	block-size: 1px;
 	clip-path: inset(50%);
 	inline-size: 1px;
@@ -142,38 +142,38 @@ dialog.rhc-side-overlay[open] {
 	white-space: nowrap;
 }
 
-.rhc-persona-card__avatar {
+.prototype-persona-card__avatar {
 	aspect-ratio: 1;
-	background: var(--rhc-persona-kleur, var(--rhc-color-cool-grey-100));
+	background: var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100));
 	block-size: auto;
 	border-radius: var(--rhc-border-radius-round);
 	inline-size: 6rem;
 	object-fit: cover;
 }
 
-.rhc-persona-card__name {
+.prototype-persona-card__name {
 	font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
-.rhc-persona-card__role {
-	background: var(--rhc-persona-kleur, var(--rhc-color-cool-grey-100));
+.prototype-persona-card__role {
+	background: var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100));
 	border-radius: var(--rhc-border-radius-sm);
 	font-size: var(--rhc-text-font-size-sm);
 	padding: var(--rhc-space-2xs) var(--rhc-space-sm);
 }
 
-.rhc-persona-card__active {
+.prototype-persona-card__active {
 	color: var(--rhc-color-foreground-subtle);
 	font-size: var(--rhc-text-font-size-sm);
 }
 
-.rhc-persona-description {
+.prototype-persona-description {
 	margin-block-start: var(--rhc-space-lg);
 }
 
 /* --- PoC-banner --- */
 
-.rhc-temp-poc-banner {
+.prototype-temp-poc-banner {
 	background: var(--rhc-color-groen-500);
 	color: var(--rhc-color-wit);
 	font-weight: var(--rhc-text-font-weight-bold);
@@ -191,5 +191,87 @@ dialog.rhc-side-overlay[open] {
 
 	&:hover {
 		opacity: 1;
+	}
+}
+
+.prototype-landing-demo-info {
+	display: flex;
+	flex-direction: column;
+	gap: var(--rhc-card-column-gap);
+	padding-block: var(--rhc-hero-message-padding-block-start);
+	padding-inline: var(--rhc-hero-message-padding-inline-start);
+}
+
+.prototype-login-keycloak {
+	--utrecht-button-inline-size: 100%;
+	--utrecht-button-max-inline-size: none;
+	background: var(--rhc-color-wit);
+	border-radius: var(--rhc-border-radius-md);
+	border-width: var(--rhc-border-width-sm);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	inset-inline-end: 0;
+	padding: var(--rhc-space-2xs);
+	position: absolute;
+
+	button {
+		border: 0;
+		display: block;
+		inline-size: 100%;
+		text-align: start;
+	}
+}
+
+/* Status van bronnen in de Digitale assistent */
+.prototype-chat-status {
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--rhc-space-sm) var(--rhc-space-lg);
+	}
+
+	li {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-xs);
+		position: relative;
+
+		>.utrecht-icon {
+			color: var(--rhc-color-rood-600);
+		}
+	}
+
+	.prototype-chat-status--connected>.utrecht-icon {
+		color: var(--rhc-color-groen-600);
+	}
+}
+
+.prototype-chat-status-source {
+	border-block-end: var(--rhc-border-width-sm) dotted currentcolor;
+	cursor: help;
+}
+
+.prototype-chat-status-explanation {
+	background-color: var(--rhc-color-wit);
+	border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+	border-radius: var(--rhc-border-radius-md);
+	inline-size: max-content;
+	inset-block-end: calc(100% + var(--rhc-space-xs));
+	inset-inline-start: 0;
+	max-inline-size: 20rem;
+	opacity: 0;
+	padding: var(--rhc-space-md);
+	position: absolute;
+	visibility: hidden;
+	z-index: 1;
+
+	li:hover>&,
+	li:focus-within>& {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.prototype-chat-status--off & {
+		opacity: 0;
+		visibility: hidden;
 	}
 }
