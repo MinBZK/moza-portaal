@@ -467,6 +467,82 @@ body {
   }
 }
 
+/* --- Landingspagina --- */
+.mox-login-keycloak {
+  --utrecht-button-inline-size: 100%;
+  --utrecht-button-max-inline-size: none;
+  background: var(--rhc-color-wit);
+  border-radius: var(--rhc-border-radius-md);
+  border-width: var(--rhc-border-width-sm);
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+  inset-inline-end: 0;
+  padding: var(--rhc-space-2xs);
+  position: absolute;
+
+  button {
+    border: 0;
+    display: block;
+    inline-size: 100%;
+    text-align: start;
+  }
+}
+
+.mox-login-digid,
+.mox-login-eherkenning {
+  align-items: center;
+  background: var(--rhc-color-oranje-500);
+  border-radius: var(--rhc-border-radius-md);
+  color: var(--rhc-color-wit);
+  display: inline-flex;
+  gap: var(--nl-button-column-gap);
+  inline-size: fit-content;
+  padding-block: var(--nl-button-padding-block-start);
+  padding-inline: var(--nl-button-padding-inline-start);
+}
+
+.mox-login-eherkenning {
+  background: var(--rhc-color-wit);
+  color: var(--rhc-color-zwart);
+}
+
+.mox-landing-hero-text {
+  align-content: flex-end;
+  background: var(--mox-landing-hero-background);
+  display: grid;
+  flex-direction: column;
+  gap: var(--rhc-card-column-gap);
+  padding-block: var(--rhc-hero-message-padding-block-start);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
+
+  .utrecht-link-button {
+    inline-size: fit-content;
+    padding: 0;
+  }
+}
+
+.mox-landing-quicklinks {
+  display: flex;
+
+  div {
+    inline-size: 50%;
+    padding-block-end: var(--rhc-hero-message-padding-block-end);
+    padding-inline: var(--rhc-hero-message-padding-inline-start);
+  }
+}
+
+.mox-landing-quicklinks-heading {
+  padding-block: var(--rhc-hero-message-padding-block-start);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
+}
+
+.mox-landing-demo-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-card-column-gap);
+  padding-block: var(--rhc-hero-message-padding-block-start);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
+}
+
 /* ==== 6. Hulpmiddelen voor het prototype ==================================== */
 
 /* --- Flags- en persona-paneel --- */
