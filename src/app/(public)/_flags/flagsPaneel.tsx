@@ -93,13 +93,12 @@ const FlagsPaneel = ({
             name="huisstijl"
             value="nieuw"
             label="Nieuwe MijnOverheid huisstijl (in ontwikkeling)"
-            description="Zonder mox.css: alleen RHC en de MOx-afwijkingen in rhc.css."
             checked={zichtbareFlags.mox_nieuweHuisstijl}
             onChange={() => zetFlag("mox_nieuweHuisstijl", true)}
           />
         </Fieldset>
       </div>
-      <div>
+      <div className="prototype-side-overlay__footer">
         <Button
           appearance="secondary-action-button"
           hint="danger"

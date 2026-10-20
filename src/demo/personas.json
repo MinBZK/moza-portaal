@@ -291,7 +291,7 @@
     "persoon": {
       "voornaam": "Sherida",
       "achternaam": "Pinas",
-      "initialen": "C.M."
+      "initialen": "S."
     },
     "organisaties": [
       {
@@ -2022,9 +2022,8 @@
     "label": "Horecaondernemer",
     "beschrijving": "Deze persona heeft twee horecabedrijven.",
     "persoon": {
-      "voornaam": "Claudia",
-      "achternaam": "van Dam",
-      "initialen": "C.M."
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2102,9 +2101,8 @@
     "label": "Koffiebrander",
     "beschrijving": "Deze persona heeft twee bedrijven op haar naam.",
     "persoon": {
-      "voornaam": "Claudia",
-      "achternaam": "van Dam",
-      "initialen": "C.M."
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2762,8 +2760,8 @@
     "label": "Aangesloten onderneming 1",
     "beschrijving": "Deze persona laat de aangesloten onderneming Demo-onderneming 1 zien.",
     "persoon": {
-      "voornaam": "Sam",
-      "achternaam": "Bakker"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2828,8 +2826,8 @@
     "label": "Aangesloten onderneming 2",
     "beschrijving": "Deze persona laat de aangesloten onderneming Demo-onderneming 2 zien.",
     "persoon": {
-      "voornaam": "Kim",
-      "achternaam": "de Wit"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2894,8 +2892,8 @@
     "label": "Aangesloten onderneming 3",
     "beschrijving": "Deze persona laat de aangesloten onderneming Demo-onderneming 3 zien.",
     "persoon": {
-      "voornaam": "Noor",
-      "achternaam": "Jansen"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2960,8 +2958,8 @@
     "label": "Aangesloten onderneming, veel organisaties",
     "beschrijving": "Deze persona laat een grote onderneming met veel organisaties zien.",
     "persoon": {
-      "voornaam": "Ties",
-      "achternaam": "Molenaar"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -3026,8 +3024,8 @@
     "label": "Aangesloten onderneming, landelijk concern",
     "beschrijving": "Deze persona laat een landelijk concern zien: Landelijk Concern N.V.",
     "persoon": {
-      "voornaam": "Iris",
-      "achternaam": "de Waal"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -3092,8 +3090,8 @@
     "label": "Aangesloten onderneming 4 (met bijlagen)",
     "beschrijving": "Deze persona laat Garage Van Dijk B.V. zien, met bijlagen.",
     "persoon": {
-      "voornaam": "Rachid",
-      "achternaam": "van Dijk"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {

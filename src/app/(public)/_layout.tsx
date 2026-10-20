@@ -8,6 +8,7 @@ import { getDemoOrganisatieId, getDemoPersonas } from "@/demo";
 import { FlagsProvider } from "./_flags/flagsContext";
 import FlagsPaneel from "./_flags/flagsPaneel";
 import PersonaPaneel from "./_flags/personaPaneel";
+import PrototypeOpties from "./_flags/prototypeOpties";
 import { getActieveOrganisatie, getActievePersona } from "./_persona";
 
 export default async function PublicLayout({
@@ -90,24 +91,27 @@ export default async function PublicLayout({
         </div>
       </main>
 
+      <PrototypeOpties />
       <FlagsPaneel
         flags={flags}
         assistentBackendIngesteld={!!process.env.ASSISTENT_BACKEND_URL}
       />
       <PersonaPaneel
         actievePersonaId={persona?.id}
-        actieveOrganisatieId={
-          organisatie ? getDemoOrganisatieId(organisatie) : undefined
-        }
         personas={personas.map((p) => ({
           id: p.id,
           label: p.label,
+          naam: `${p.persoon.voornaam} ${p.persoon.achternaam}`,
           beschrijving: p.beschrijving,
           profiel: p.profiel,
           organisaties: p.organisaties.map((o) => ({
             id: getDemoOrganisatieId(o),
             handelsnaam: o.handelsnaam,
             functies: o.functies,
+            rol: o.rol,
+            werkzamePersonen:
+              (o.werkzamePersonenFulltime ?? 0) +
+              (o.werkzamePersonenParttime ?? 0),
           })),
           archief: !!p.archief,
         }))}
