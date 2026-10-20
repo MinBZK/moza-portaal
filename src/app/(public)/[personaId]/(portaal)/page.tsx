@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   AccordionProvider,
   ActionGroup,
+  Alert,
   Heading,
   Paragraph,
 } from "@/components/rhc";
@@ -11,7 +12,9 @@ import {
   getDemoSubsidies,
   getDemoWetten,
 } from "@/demo";
-import { getIngelogdeNaam } from "@/app/(public)/_persona";
+import { getIngelogdeNaam, getKetenAccount } from "@/app/(public)/_persona";
+import { getKetenStatus } from "@/network/keten";
+import { stelselTekst } from "./berichtenbox/_lijstPagina";
 import RecenteBerichten from "./_recenteBerichten";
 
 const vragen = [
@@ -38,11 +41,12 @@ const HomePage = async ({
   params: Promise<{ personaId: string }>;
 }) => {
   const persona = await getDemoPersona((await params).personaId);
-  const [berichten, subsidies, wetten, naam] = await Promise.all([
+  const [berichten, subsidies, wetten, naam, keten] = await Promise.all([
     getDemoBerichten(persona?.id),
     getDemoSubsidies(persona?.homepageSubsidies),
     getDemoWetten(persona?.homepageRegelgeving),
     getIngelogdeNaam(persona),
+    getKetenAccount().then(getKetenStatus),
   ]);
 
   return (
@@ -53,7 +57,16 @@ const HomePage = async ({
         <Heading level={2} id="recente-berichten">
           Recente berichten
         </Heading>
-        <RecenteBerichten berichten={berichten} />
+        {keten.soort === "demo" || keten.soort === "keten" ? (
+          <RecenteBerichten
+            berichten={keten.soort === "demo" ? berichten : []}
+            ontvanger={keten.soort === "keten" ? keten.ontvanger : null}
+          />
+        ) : (
+          <Alert type="error">
+            <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+          </Alert>
+        )}
         <ActionGroup>
           <Link
             href="/berichtenbox"
