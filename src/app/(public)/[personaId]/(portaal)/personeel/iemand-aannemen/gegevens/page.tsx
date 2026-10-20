@@ -5,7 +5,7 @@ import Bronnen from "./_bronnen";
 import Stappen from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
 
-/** Stap 2: per bron wat de overheid al weet, met een vinkje per bron. */
+/** Scherm 2: aanvraag laten invullen. Namens wie, de kandidaat, en per bron bevestigen. */
 const GegevensPage = async () => {
   const [aannemen, organisatie] = await Promise.all([
     getDemoIemandAannemen(),
@@ -21,18 +21,23 @@ const GegevensPage = async () => {
   }));
   return (
     <>
-      <Heading level={1}>Gegevens per bron</Heading>
+      <Heading level={1}>Aanvraag laten invullen</Heading>
       <Stappen huidige={2} />
+      <Paragraph>
+        Om de aanvragen in te vullen, halen we gegevens op bij de organisaties
+        die ze al hebben. U hoeft ze dan niet zelf op te zoeken.
+      </Paragraph>
       <Alert type="info">
         <Paragraph>
-          Dit weet de overheid al over {aannemen.kandidaat.voornaam}{" "}
-          {aannemen.kandidaat.achternaam} en over uw bedrijf. Per gegeven ziet u
-          de bron, de datum en de vraag van de wet waarvoor het nodig is. Vink
-          per bron aan dat de gegevens kloppen en gebruikt mogen worden; pas dan
-          wordt er gerekend.
+          Er wordt nog niets ingediend. De ingevulde aanvraag staat alleen in uw
+          omgeving, tot u zelf besluit om in te dienen.
         </Paragraph>
       </Alert>
-      <Bronnen bronnen={bronnen} />
+      <Bronnen
+        bronnen={bronnen}
+        kandidaat={aannemen.kandidaat}
+        werkgever={werkgever}
+      />
     </>
   );
 };

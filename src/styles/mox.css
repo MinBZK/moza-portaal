@@ -1409,4 +1409,146 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
     inline-size: 100%;
     max-inline-size: 100%;
   }
+
+  /* Eerste scherm: sliders, kostenbalans en de aanvraag met panelen. */
+  .mox-hiring-note {
+    color: var(--rhc-color-grey-80, #555);
+    font-size: var(--rhc-font-size-sm, 0.875rem);
+  }
+
+  .mox-hiring-slider {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .mox-hiring-slider-row {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .mox-hiring-slider input[type="range"] {
+    accent-color: var(--rhc-color-blue-80, #01689b);
+    inline-size: 100%;
+    max-inline-size: 28rem;
+  }
+
+  .mox-hiring-slider-value {
+    font-weight: 700;
+    min-inline-size: 6rem;
+  }
+
+  .mox-hiring-balance {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .mox-hiring-balance > div {
+    display: grid;
+    gap: 0.25rem 0.75rem;
+    grid-template-columns: 1fr auto;
+  }
+
+  .mox-hiring-balance dt {
+    font-size: var(--rhc-font-size-sm, 0.875rem);
+  }
+
+  .mox-hiring-balance dd {
+    font-weight: 700;
+    margin: 0;
+    text-align: end;
+  }
+
+  .mox-hiring-bar {
+    background: var(--rhc-color-grey-20, #e6e6e6);
+    block-size: 0.75rem;
+    border-radius: 0.125rem;
+    grid-column: 1 / -1;
+    overflow: hidden;
+  }
+
+  .mox-hiring-bar > span {
+    background: var(--rhc-color-blue-80, #01689b);
+    block-size: 100%;
+    display: block;
+  }
+
+  .mox-hiring-bar > .mox-hiring-bar--plus {
+    background: var(--rhc-color-groen-80, #1d7040);
+  }
+
+  .mox-hiring-net {
+    background: var(--rhc-color-grey-10, #f3f3f3);
+    border-radius: 0.25rem;
+    padding: 1rem;
+  }
+
+  .mox-hiring-amount {
+    font-size: var(--rhc-font-size-2xl, 1.75rem);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .mox-hiring-meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .mox-hiring-tag {
+    background: var(--rhc-color-grey-10, #f3f3f3);
+    border-radius: 0.25rem;
+    font-size: var(--rhc-font-size-sm, 0.875rem);
+    padding-block: 0.125rem;
+    padding-inline: 0.5rem;
+  }
+
+  .mox-hiring-progress {
+    align-items: center;
+    display: grid;
+    gap: 0.25rem 1rem;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .mox-hiring-progress progress {
+    accent-color: var(--rhc-color-blue-80, #01689b);
+    block-size: 0.5rem;
+    inline-size: 100%;
+  }
+
+  .mox-hiring-panel {
+    background: var(--rhc-color-white, #fff);
+    border: 1px solid var(--rhc-color-grey-40, #ccc);
+    border-radius: 0.25rem;
+  }
+
+  .mox-hiring-panel > summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .mox-hiring-panel > summary h2 {
+    font-size: var(--rhc-font-size-lg, 1.125rem);
+    margin: 0;
+  }
+
+  .mox-hiring-panel > div {
+    border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
+    padding: 1rem;
+  }
+
+  .mox-hiring-label--done {
+    color: var(--rhc-color-groen-80, #1d7040);
+  }
+
+  .mox-hiring-label--todo {
+    color: var(--rhc-color-oranje-80, #b35d00);
+  }
 }

@@ -180,10 +180,7 @@
       "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen zes maanden na de eerste werkdag.",
       "grond": "Participatiewet 10d, tweede lid, onderdeel b, en vierde lid; Wet minimumloon 8 en 15; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
       "trace": "participatiewet:heeft_recht_op_lks",
-      "actie": {
-        "label": "Bekijk de concept-aanvraag",
-        "url": "/personeel/iemand-aannemen/concept-aanvraag"
-      }
+      "actie": null
     },
     {
       "id": "lkv",

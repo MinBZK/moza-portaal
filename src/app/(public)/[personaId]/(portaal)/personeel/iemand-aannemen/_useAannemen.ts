@@ -32,21 +32,83 @@ export const BRONNEN = [
 ] as const;
 export type BronId = (typeof BRONNEN)[number];
 
+export const DOELGROEPEN = [
+  ["register", "Iemand uit het doelgroepregister (banenafspraak)"],
+  ["wajong", "Iemand met een Wajong-uitkering"],
+  ["wia", "Iemand met een WIA- of WAO-uitkering"],
+  ["bijstand", "Iemand met een bijstandsuitkering"],
+  ["geen", "Geen van deze"],
+  ["weetniet", "Weet ik nog niet"],
+] as const;
+export type Doelgroep = (typeof DOELGROEPEN)[number][0];
+
+export const ZELFSTANDIG = [
+  ["ja", "Ja"],
+  ["nee", "Nee, de kandidaat werkt langzamer of kan minder taken aan"],
+  ["weetniet", "Weet ik niet"],
+] as const;
+export type Zelfstandig = (typeof ZELFSTANDIG)[number][0];
+
+/** De drie korte vragen van het eerste scherm. */
+export type Antwoorden = {
+  doelgroep: Doelgroep;
+  /** Uren per week, 8 tot 40. */
+  uren: number;
+  zelfstandig: Zelfstandig;
+  /** Geschatte loonwaarde in procent, 30 tot 90; telt alleen als zelfstandig niet "ja" is. */
+  loonwaarde: number;
+};
+
+export const REGELINGEN = ["lks", "lkv", "nrp", "jc", "wpa", "pp"] as const;
+export type RegelingId = (typeof REGELINGEN)[number];
+
 export type AannemenStaat = {
+  antwoorden: Antwoorden;
   bronnen: Partial<Record<BronId, boolean>>;
+  /** Namens wie de aanvraag wordt ingevuld. */
+  rol: "eigenaar" | "namens";
+  /** Per regeling in de aanvraag: gecontroleerd. */
+  gecontroleerd: Partial<Record<RegelingId, boolean>>;
+  /** Keuzes bij de regelingen die niet vanzelf gelden. */
+  keuzes: {
+    jc?: "ja" | "nee";
+    wpa?: "ja" | "later" | "nee";
+    pp?: "ja" | "nee";
+  };
   ingediend: boolean;
   verstuurdOp?: string;
   fase: Fase;
   vraag?: string;
-  /** Uren per week uit het kandidaatformulier; de engine rekent ermee. */
-  uren?: number;
+};
+
+export const STANDAARD_ANTWOORDEN: Antwoorden = {
+  doelgroep: "register",
+  uren: 32,
+  zelfstandig: "nee",
+  loonwaarde: 60,
 };
 
 const LEEG: AannemenStaat = {
+  antwoorden: STANDAARD_ANTWOORDEN,
   bronnen: {},
+  rol: "eigenaar",
+  gecontroleerd: {},
+  keuzes: {},
   ingediend: false,
   fase: "ontvangst",
 };
+
+/** Het doelgroepregister volgens de antwoorden: ja, nee of onbekend. */
+export const inRegister = (a: Antwoorden) =>
+  a.doelgroep === "geen"
+    ? "nee"
+    : a.doelgroep === "register" || a.doelgroep === "wajong"
+      ? "ja"
+      : "onbekend";
+
+/** De loonwaarde waarmee de engine rekent: 100 als de kandidaat het werk zelfstandig kan. */
+export const loonwaardeVan = (a: Antwoorden) =>
+  a.zelfstandig === "ja" ? 100 : a.loonwaarde;
 
 const luisteraars = new Set<() => void>();
 let vorige: { rauw: string | null; staat: AannemenStaat } | null = null;
@@ -62,8 +124,14 @@ const lees = (): AannemenStaat => {
   let staat = LEEG;
   try {
     const gelezen: unknown = JSON.parse(rauw ?? "null");
-    if (gelezen && typeof gelezen === "object")
-      staat = { ...LEEG, ...(gelezen as Partial<AannemenStaat>) };
+    if (gelezen && typeof gelezen === "object") {
+      const g = gelezen as Partial<AannemenStaat>;
+      staat = {
+        ...LEEG,
+        ...g,
+        antwoorden: { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) },
+      };
+    }
   } catch {
     // Onleesbaar: als leeg behandelen.
   }

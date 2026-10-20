@@ -6,7 +6,7 @@ regelrecht-engine rekent live in de browser.
 
 ## Wat het is
 
-Negen pagina's onder Personeel en Lopende zaken, voor de persona die in het
+Negen pagina's onder Personeel en Lopende zaken, naar de flow van het prototype vooringevulde-aanvraag (KVK-versie): eerst drie korte vragen met sliders, dan de aanvraag, voor de persona die in het
 portaal actief is (standaard `karin`, Kwekerij De Bloesem, gemeente
 Lansingerland). Eén kloppend verhaal: de ondernemer neemt Koen de Wit aan,
 32 uur tegen het minimumloon vanaf 1 oktober 2026. Elke gebeurtenis met datum,
@@ -14,11 +14,11 @@ actor en wetsgrond staat in `verhaallijn-koen-v1.md` (in deze map).
 
 | Pad | Wat de deelnemer doet |
 |---|---|
-| `/personeel` | Start "Iemand aannemen"; na het versturen staat de zaak hier |
-| `/personeel/iemand-aannemen` | Vult alleen in wat de overheid niet weet (Koen voorgevuld; uren tellen mee) |
-| `/personeel/iemand-aannemen/gegevens` | Ziet per bron (UWV, gemeente, KVK, Belastingdienst, eigen opgave) de gegevens, de datum en de wetsvraag; vinkt per bron "klopt" |
-| `/personeel/iemand-aannemen/wat-het-oplevert` | Per regeling uitkomst, bedrag, grond en "Waarom"; loonkostensubsidie en loonkostenvoordeel live uit de engine |
-| `/personeel/iemand-aannemen/concept-aanvraag` | Het omgekeerde formulier: alles ingevuld, met bron; verstuurt |
+| `/personeel` | Start "Iemand aannemen"; na het indienen staat de zaak hier |
+| `/personeel/iemand-aannemen` | Drie korte vragen (wie, uren als slider, zelfstandig met loonwaarde-slider); rechts live "Uw kosten per jaar": loonkosten min loonkostensubsidie en loonkostenvoordeel uit de engine; de overige regelingen; "Aanvraag laten invullen" |
+| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat (Koen, met toestemming), per bron (UWV, gemeente, KVK, Belastingdienst, eigen opgave) de gegevens, de datum en de wetsvraag; vinkje per bron |
+| `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag: per regeling een paneel met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing), "Ik heb dit gecontroleerd"; Gecontroleerd n van 6; rechts "Wat dit u oplevert" live |
+| `/personeel/iemand-aannemen/indienen` | Controleren en indienen: wat naar de gemeente gaat, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
 | `/personeel/iemand-aannemen/verstuurd` | Bevestiging, link naar de zaak |
 | `/lopendezaken` | De zaak staat in het overzicht (via de opslag die ook de Digitale assistent gebruikt) |
 | `/lopendezaken/loonkostensubsidie-koen` | Voortgang (status-track), alles wat is vastgelegd (tijdlijn met correctie), komt hierna |
@@ -38,9 +38,11 @@ Web Worker; `_useRegelrecht.ts` praat ermee. De kern toetst elk aangeleverd
 bestand aan zijn ingebakken pin: een ander bestand is een fout, geen stille
 afwijking.
 
-Wat live is: op "Wat het oplevert" rekent de engine loonkostensubsidie
-(Participatiewet 10d) en loonkostenvoordeel (Wtl 2.10) op de gegevens van de
-bevestigde bronnen en het aantal uren uit het formulier. De regel eronder
+Wat live is: op het eerste scherm en in de zijkolom van de aanvraag rekent de
+engine loonkostensubsidie (Participatiewet 10d) en loonkostenvoordeel (Wtl
+2.10) bij elke wijziging van de antwoorden: uren, loonwaarde, zelfstandig.
+De loonkosten zelf zijn een vuistregel (uurloon maal uren, plus 8 procent
+vakantiebijslag en 20 procent werkgeverslasten), geen wet. De regel eronder
 noemt de engine- en corpusrevisie. Lukt de worker niet, dan blijven de vooraf
 berekende waarden staan (`src/demo/iemand-aannemen-traces.json`, uit een
 TRACE-run van de BDD-suite) met de melding waarom.

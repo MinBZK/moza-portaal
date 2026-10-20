@@ -7,23 +7,33 @@ import {
   Button,
   DataSummary,
   DataSummaryItem,
+  Fieldset,
   FormFieldCheckboxOption,
+  FormFieldRadio,
   Heading,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import type { DemoAannemenBron } from "@/demo";
+import type { DemoAannemen, DemoAannemenBron } from "@/demo";
 import {
   BRONNEN,
   alleBronnenBevestigd,
   useAannemen,
   type BronId,
 } from "../_useAannemen";
-import { datumNL } from "../_werkgever";
+import { datumNL, type Werkgever } from "../_werkgever";
 
-/** Het omgekeerde formulier, stap 1: per bron bevestigen. */
-const Bronnen = ({ bronnen }: { bronnen: DemoAannemenBron[] }) => {
+/** Namens wie, de kandidaat met toestemming, en het omgekeerde formulier: per bron bevestigen. */
+const Bronnen = ({
+  bronnen,
+  kandidaat,
+  werkgever,
+}: {
+  bronnen: DemoAannemenBron[];
+  kandidaat: DemoAannemen["kandidaat"];
+  werkgever: Werkgever;
+}) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
   const bevestigd = staat?.bronnen ?? {};
@@ -35,16 +45,75 @@ const Bronnen = ({ bronnen }: { bronnen: DemoAannemenBron[] }) => {
 
   return (
     <>
+      <section className="mox-card rhc-row-gap" aria-labelledby="namens">
+        <Heading level={2} id="namens">
+          Namens wie vult u in?
+        </Heading>
+        <Fieldset legend="Rol">
+          <FormFieldRadio
+            name="rol"
+            value="eigenaar"
+            label={`Ik ben eigenaar of vennoot van ${werkgever.onderneming}`}
+            checked={(staat?.rol ?? "eigenaar") === "eigenaar"}
+            onChange={() => werkBij({ rol: "eigenaar" })}
+          />
+          <FormFieldRadio
+            name="rol"
+            value="namens"
+            label={`Ik vul in namens ${werkgever.onderneming}, bijvoorbeeld als salarisadministrateur`}
+            checked={staat?.rol === "namens"}
+            onChange={() => werkBij({ rol: "namens" })}
+          />
+        </Fieldset>
+        {staat?.rol === "namens" && (
+          <Paragraph className="mox-hiring-note">
+            U kunt de aanvraag invullen. De eigenaar moet hem ondertekenen
+            voordat hij wordt ingediend.
+          </Paragraph>
+        )}
+      </section>
+
+      <section className="mox-card rhc-row-gap" aria-labelledby="kandidaat">
+        <Heading level={2} id="kandidaat">
+          De kandidaat
+        </Heading>
+        <Paragraph>
+          Gegevens over de kandidaat halen we alleen op met diens toestemming.
+          In dit prototype is dat {kandidaat.voornaam} {kandidaat.achternaam};
+          de toestemming is gegeven op {datumNL(kandidaat.toestemmingOp)}.
+        </Paragraph>
+        <DataSummary appearance="column">
+          <DataSummaryItem
+            itemKey="Naam"
+            itemValue={`${kandidaat.voornaam} ${kandidaat.achternaam}`}
+          />
+          <DataSummaryItem
+            itemKey="Geboortedatum"
+            itemValue={datumNL(kandidaat.geboortedatum)}
+          />
+          <DataSummaryItem
+            itemKey="BSN"
+            itemValue={`${kandidaat.bsnMasker} (gaat mee, staat niet op het scherm)`}
+          />
+        </DataSummary>
+      </section>
+
+      <Heading level={2}>Wat de overheid al weet</Heading>
+      <Paragraph>
+        Per gegeven ziet u de bron, de datum en de vraag van de wet waarvoor het
+        nodig is. Vink per bron aan dat de gegevens kloppen en gebruikt mogen
+        worden; pas dan vullen we de aanvraag in.
+      </Paragraph>
       {bronnen.map((bron) => (
         <section
           key={bron.id}
           className="mox-card rhc-row-gap"
           aria-labelledby={`bron-${bron.id}`}
         >
-          <Heading level={2} id={`bron-${bron.id}`}>
+          <Heading level={3} id={`bron-${bron.id}`}>
             {bron.organisatie}
           </Heading>
-          <Paragraph>
+          <Paragraph className="mox-hiring-note">
             {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
           </Paragraph>
           <DataSummary appearance="column">
@@ -82,7 +151,7 @@ const Bronnen = ({ bronnen }: { bronnen: DemoAannemenBron[] }) => {
       <section className="mox-card rhc-row-gap">
         <Paragraph role="status">
           {klaar
-            ? "Alle bronnen bevestigd. U kunt laten berekenen wat het oplevert."
+            ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
             : aantal === 0
               ? "Nog geen bron bevestigd."
               : `${aantal} van ${BRONNEN.length} bronnen bevestigd.`}
@@ -93,16 +162,16 @@ const Bronnen = ({ bronnen }: { bronnen: DemoAannemenBron[] }) => {
             aria-disabled={!klaar}
             onClick={() => {
               if (klaar)
-                router.push("/personeel/iemand-aannemen/wat-het-oplevert");
+                router.push("/personeel/iemand-aannemen/concept-aanvraag");
             }}
           >
-            Bereken wat het oplevert
+            Vul de aanvraag in
           </Button>
           <Link
             href="/personeel/iemand-aannemen"
             className="utrecht-link utrecht-link--html-a"
           >
-            Terug naar de kandidaat
+            Terug naar de vragen
           </Link>
         </ActionGroup>
       </section>

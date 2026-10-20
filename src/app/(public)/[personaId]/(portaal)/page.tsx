@@ -108,6 +108,28 @@ const HomePage = async ({
             </Link>
           </ActionGroup>
         </section>
+
+        <section
+          className="mox-card rhc-grid__cell rhc-grid__cell-t-12"
+          aria-labelledby="home-iemand-aannemen"
+        >
+          <Heading level={2} id="home-iemand-aannemen">
+            Iemand aannemen met een afstand tot de arbeidsmarkt
+          </Heading>
+          <Paragraph>
+            Neemt u iemand aan uit het doelgroepregister of met een uitkering?
+            Zie vooraf welke regelingen gelden en wat ze opleveren, op basis van
+            wat de overheid al weet. De aanvraag staat daarna klaar als concept.
+          </Paragraph>
+          <ActionGroup>
+            <Link
+              href="/personeel/iemand-aannemen"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Bekijk wat het u oplevert
+            </Link>
+          </ActionGroup>
+        </section>
       </div>
 
       <Heading level={2}>Veelgestelde vragen</Heading>

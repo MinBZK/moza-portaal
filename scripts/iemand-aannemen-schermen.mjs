@@ -18,21 +18,36 @@ const alle = {
 
 const PAGINAS = [
   ["01-personeel", "/personeel", null],
-  ["02-kandidaat", "/personeel/iemand-aannemen", null],
+  ["02-vragen", "/personeel/iemand-aannemen", null],
   [
     "03-gegevens",
     "/personeel/iemand-aannemen/gegevens",
     { bronnen: { uwv: true, gemeente: true, kvk: true } },
   ],
   [
-    "04-oplevert",
-    "/personeel/iemand-aannemen/wat-het-oplevert",
-    { bronnen: alle },
+    "04-aanvraag",
+    "/personeel/iemand-aannemen/concept-aanvraag",
+    {
+      bronnen: alle,
+      gecontroleerd: { lks: true, lkv: true },
+      keuzes: { jc: "ja" },
+    },
   ],
   [
-    "05-concept",
-    "/personeel/iemand-aannemen/concept-aanvraag",
-    { bronnen: alle },
+    "05-indienen",
+    "/personeel/iemand-aannemen/indienen",
+    {
+      bronnen: alle,
+      gecontroleerd: {
+        lks: true,
+        lkv: true,
+        nrp: true,
+        jc: true,
+        wpa: true,
+        pp: true,
+      },
+      keuzes: { jc: "ja", wpa: "later", pp: "nee" },
+    },
   ],
   [
     "06-verstuurd",
@@ -88,17 +103,31 @@ for (const breed of [1280, 390]) {
     }, staat);
     await page.reload({ waitUntil: "load" });
     await page.waitForTimeout(1200);
-    if (naam === "04-oplevert") {
+    if (naam === "02-vragen" || naam === "04-aanvraag") {
       const live = await page
-        .waitForSelector("text=Zojuist berekend", { timeout: 30000 })
-        .then(
-          async () =>
-            await page.evaluate(
-              () =>
-                document.body.innerText.match(
-                  /€ [\d.,]+ per maand bij \d+ uur[^.]*/,
-                )?.[0] ?? "",
-            ),
+        .waitForFunction(
+          () => {
+            const noot = [...document.querySelectorAll(".mox-hiring-note")]
+              .map((p) => p.textContent)
+              .join(" ");
+            return (
+              noot.includes("berekend in uw browser") &&
+              !noot.includes("rekent…")
+            );
+          },
+          null,
+          { timeout: 40000 },
+        )
+        .then(() =>
+          page.evaluate(() =>
+            [
+              ...document.querySelectorAll(
+                ".mox-hiring-amount, dl.mox-hiring-balance dd",
+              ),
+            ]
+              .map((e) => e.textContent.trim())
+              .join(" | "),
+          ),
         )
         .catch(() => "");
       console.log(`  engine: ${live || "!! geen live berekening"}`);
