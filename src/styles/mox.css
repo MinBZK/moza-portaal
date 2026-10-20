@@ -54,6 +54,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		background-color: var(--rhc-color-wit);
 	}
 
+	[type=number] {
+		inline-size: fit-content;
+		max-inline-size: fit-content;
+	}
+
 	/* ==== 4. Layout ============================================================= */
 
 	/* --- Pagina --- */

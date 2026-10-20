@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  Alert,
   DataSummary,
   DataSummaryItem,
   Heading,
@@ -10,6 +11,7 @@ import {
 import { getActievePersona } from "@/app/(public)/_persona";
 import { getDemoConceptAanvraagById } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
+import KostenBerekening from "./_kostenBerekening";
 
 /** Een aanvraag die nog niet is ingediend, om verder in te vullen. */
 const AanvraagPage = async ({
@@ -27,46 +29,59 @@ const AanvraagPage = async ({
         pad={`/lopendezaken/aanvragen/${aanvraag.id}`}
         label={aanvraag.titel}
       />
+      <Heading level={1}>{aanvraag.titel}</Heading>
+      <Paragraph>
+        <Link
+          href="/lopendezaken#nog-in-te-dienen"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          <Icon icon="chevron-left" />
+          Terug naar Lopende zaken
+        </Link>
+      </Paragraph>
+
       <div className="mox-card rhc-row-gap">
-        <Heading level={1}>{aanvraag.titel}</Heading>
-        <Paragraph>
+        <Alert type="info">
           U heeft deze aanvraag opgeslagen, maar nog niet ingediend. Dien de
           aanvraag in voor {aanvraag.indienenVoor}.
-        </Paragraph>
+        </Alert>
 
-        <section aria-labelledby="aanvraag-gegevens">
-          <Heading level={2} id="aanvraag-gegevens">
-            Over deze aanvraag
-          </Heading>
+        <section>
           <DataSummary appearance="column">
             <DataSummaryItem
               itemKey="Organisatie"
               itemValue={aanvraag.organisatie}
             />
             <DataSummaryItem
-              itemKey="Onderneming"
-              itemValue={aanvraag.onderneming}
-            />
-            <DataSummaryItem
               itemKey="Tijdsduur"
               itemValue={aanvraag.tijdsduur}
             />
-            <DataSummaryItem
-              itemKey="Indienen voor"
-              itemValue={aanvraag.indienenVoor}
-            />
           </DataSummary>
+          {aanvraag.bewaardVan && aanvraag.overgenomen && (
+            <Alert type="ok">
+              <Paragraph>
+                <strong>
+                  Uw antwoorden van {aanvraag.bewaardVan} zijn overgenomen.
+                </strong>
+              </Paragraph>
+              <Paragraph>{aanvraag.overgenomen}</Paragraph>
+            </Alert>
+          )}
+          {aanvraag.toelichting?.map((alinea) => (
+            <Paragraph key={alinea}>{alinea}</Paragraph>
+          ))}
         </section>
 
-        <Paragraph>
-          <Link
-            href="/lopendezaken#nog-in-te-dienen"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            <Icon icon="chevron-left" />
-            Terug naar Lopende zaken
-          </Link>
-        </Paragraph>
+        <section aria-labelledby="aanvraag-kosten">
+          <Heading level={2} id="aanvraag-kosten">
+            Wat kost het {aanvraag.onderneming}?
+          </Heading>
+          <Paragraph>
+            Deze berekening blijft op uw scherm. Er gaat niets naar een
+            overheidsorganisatie.
+          </Paragraph>
+          {aanvraag.berekening && <KostenBerekening {...aanvraag.berekening} />}
+        </section>
       </div>
     </>
   );

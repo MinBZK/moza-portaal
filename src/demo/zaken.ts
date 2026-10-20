@@ -80,6 +80,12 @@ export type DemoConceptAanvraag = {
   indienenVoor: string;
   /** Waar de antwoorden vandaan komen, zoals Ondernemersplein. */
   bewaardVan?: string;
+  /** Wat er van daar is overgenomen, voor de melding op de detailpagina. */
+  overgenomen?: string;
+  /** Alinea's onder die melding. */
+  toelichting?: string[];
+  /** Startwaarden voor "Wat kost het?": uren per week en brutoloon. */
+  berekening?: { urenPerWeek: number; brutoPerMaand: number };
 };
 
 /**
@@ -89,13 +95,20 @@ export type DemoConceptAanvraag = {
 const conceptAanvragen: Record<string, DemoConceptAanvraag[]> = {
   bloom: [
     {
-      id: "concept-1",
+      id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
       titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
       organisatie: "UWV, Belastingdienst en gemeente",
       onderneming: "Bloom B.V.",
       tijdsduur: "Ongeveer 15 minuten",
       indienenVoor: "1 januari 2027",
       bewaardVan: "Ondernemersplein",
+      overgenomen:
+        "32 uur per week en € 2.250 bruto per maand. De berekening hieronder gaat nu uit van Bloom B.V.",
+      berekening: { urenPerWeek: 32, brutoPerMaand: 2250 },
+      toelichting: [
+        "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
+        "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
+      ],
     },
   ],
 };
