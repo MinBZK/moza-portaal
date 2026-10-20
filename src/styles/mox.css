@@ -50,6 +50,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block-start: var(--rhc-space-md);
 	}
 
+	.utrecht-checkbox {
+		background-color: var(--rhc-color-wit);
+	}
+
 	/* ==== 4. Layout ============================================================= */
 
 	/* --- Pagina --- */
@@ -460,6 +464,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.utrecht-accordion {
 			padding: 0;
 		}
+
+		/* Berichtenbox variant C: het paneel regelt de ruimte zelf met gap. */
+		.rhc-message-actions > :is(h2, p) {
+			margin-block: 0;
+		}
 	}
 
 	.mox-card-topic-list {
@@ -674,7 +683,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		overflow: hidden;
 	}
 
-	.utrecht-alert--info .mox-progressbar {
+	.mox-progressbar {
 		background-color: var(--rhc-color-wit);
 	}
 

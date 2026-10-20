@@ -93,60 +93,11 @@ export const MOX_FLAGS = [
     werkt: true,
   },
   {
-    key: "mox_inlogflow",
-    label: "Inlogflow",
-    groep: "functionaliteit",
-    standaard: false,
-    werkt: false,
-  },
-  {
-    key: "mox_inloggenBewindvoerder",
-    label: "Inloggen als bewindvoerder, curator of mentor",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: false,
-  },
-  {
-    key: "mox_inloggenKind",
-    label: "Inloggen voor een kind onder de 12",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: false,
-  },
-  {
-    key: "mox_inloggenMachtiging",
-    label: "Inloggen met een machtiging",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: false,
-  },
-  {
-    key: "mox_inloggenMezelf",
-    label: "Inloggen voor mezelf",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: false,
-  },
-  {
-    key: "mox_inloggenOnderneming",
-    label: "Inloggen voor mijn onderneming",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: false,
-  },
-  {
     key: "mox_statusBronnenAssistent",
     label: "Status van bronnen in de Digitale assistent",
     groep: "functionaliteit",
     standaard: false,
     werkt: true,
-  },
-  {
-    key: "mox_zakelijkPostvak",
-    label: "Zakelijk postvak",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: false,
   },
 ] as const;
 
@@ -177,3 +128,23 @@ export const defaultFlags: FeatureFlags = {
     MOX_FLAGS.map((flag) => [flag.key, flag.standaard]),
   ) as Record<MoxFlagKey, boolean>),
 };
+
+/**
+ * Berichtenbox A/B/C-test uit moza-poc. Eén variant tegelijk, bewaard in een
+ * cookie. Met ?variant=b in de URL kies je er een voor een onderzoek.
+ */
+export const BERICHTENBOX_VARIANTEN = [
+  { waarde: "a", label: "A: Huidige berichtenbox" },
+  { waarde: "b", label: "B: Bericht met pdf-voorbeeld" },
+  { waarde: "c", label: "C: Bericht met directe acties" },
+] as const;
+
+export type BerichtenboxVariant =
+  (typeof BERICHTENBOX_VARIANTEN)[number]["waarde"];
+
+export const BERICHTENBOX_VARIANT_COOKIE = "berichtenboxVariant";
+
+export const isBerichtenboxVariant = (
+  waarde: string | undefined | null,
+): waarde is BerichtenboxVariant =>
+  BERICHTENBOX_VARIANTEN.some((variant) => variant.waarde === waarde);

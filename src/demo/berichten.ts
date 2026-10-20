@@ -15,7 +15,14 @@ export type DemoBericht = {
   map?: string;
   /** Alleen voor deze persona's. Zonder: voor iedereen. */
   relevantVoor?: string[];
+  /** Berichtenbox A/B/C-test, variant C: uitgebreide uitleg. */
+  variantCInhoud?: string[];
+  /** Variant C: wat de ondernemer nu kan doen. */
+  actiesUitleg?: string;
+  acties?: DemoBerichtActie[];
 };
+
+export type DemoBerichtActie = { label: string; primair?: boolean };
 
 const AANTAL_BERICHTEN = 120;
 const AANTAL_ONGELEZEN = 12;
@@ -87,6 +94,129 @@ const rnd = () => {
 };
 const kies = <T>(lijst: T[]): T => lijst[Math.floor(rnd() * lijst.length)];
 
+/**
+ * Acties voor variant C, afgeleid van het onderwerp. Uit moza-poc
+ * (_data/berichtenboxData.js, actiesVoor).
+ */
+const actiesVoor = (
+  onderwerp: string,
+): Pick<DemoBericht, "actiesUitleg" | "acties"> => {
+  const o = onderwerp.toLowerCase();
+  const heeft = (...woorden: string[]) => woorden.some((w) => o.includes(w));
+  const res = (actiesUitleg: string, acties: DemoBerichtActie[]) => ({
+    actiesUitleg,
+    acties,
+  });
+  if (heeft("aanslag", "naheffing"))
+    return res(
+      "Betaal het bedrag op tijd. Bent u het niet eens met de aanslag? Dien dan bezwaar in.",
+      [
+        { label: "Direct betalen", primair: true },
+        { label: "Bezwaar indienen" },
+        { label: "Uitstel van betaling aanvragen" },
+      ],
+    );
+  if (heeft("aangifte"))
+    return res(
+      "Doe de aangifte op tijd. Lukt dat niet? Vraag dan uitstel aan.",
+      [
+        { label: "Aangifte doen", primair: true },
+        { label: "Uitstel aanvragen" },
+      ],
+    );
+  if (heeft("jaarstukken", "deponeren"))
+    return res("Deponeer uw jaarstukken voor de uiterste datum.", [
+      { label: "Jaarstukken deponeren", primair: true },
+      { label: "Uitstel aanvragen" },
+    ]);
+  if (heeft("enquête", "statistiek"))
+    return res("Vul de enquête in. Deelname is wettelijk verplicht.", [
+      { label: "Enquête invullen", primair: true },
+      { label: "Uitstel aanvragen" },
+    ]);
+  if (heeft("apk"))
+    return res("Plan de APK-keuring op tijd in, zo voorkomt u een boete.", [
+      { label: "APK inplannen", primair: true },
+    ]);
+  if (heeft("uittreksel"))
+    return res("Uw uittreksel staat klaar om te downloaden.", [
+      { label: "Uittreksel downloaden", primair: true },
+    ]);
+  if (heeft("handelsregister", "inschrijving"))
+    return res(
+      "Controleer of uw gegevens in het Handelsregister nog kloppen.",
+      [
+        { label: "Gegevens controleren", primair: true },
+        { label: "Wijziging doorgeven" },
+      ],
+    );
+  if (heeft("controle", "controleer"))
+    return res(
+      "Bereid u voor op de controle en lever de gevraagde documenten aan.",
+      [
+        { label: "Bekijken wat u moet doen", primair: true },
+        { label: "Contact opnemen" },
+      ],
+    );
+  if (heeft("wwft", "cliëntenonderzoek"))
+    return res("Lees wat het verscherpte cliëntenonderzoek voor u betekent.", [
+      { label: "Meer informatie", primair: true },
+    ]);
+  if (heeft("avg", "cliëntgegevens", "persoonsgegevens", "datalek"))
+    return res(
+      "Lees hoe u persoonsgegevens veilig verwerkt en wat u moet doen.",
+      [{ label: "Meer informatie", primair: true }],
+    );
+  if (heeft("subsidie", "wbso", "mit", "slim", "voucher", "s&o"))
+    return res(
+      "Bekijk de beschikking en wat dit voor uw onderneming betekent.",
+      [
+        { label: "Beschikking bekijken", primair: true },
+        { label: "Vraag stellen" },
+      ],
+    );
+  if (heeft("vergunning", "besluit", "beschikking", "ontheffing", "handhaving"))
+    return res(
+      "Bekijk het besluit. Bent u het er niet mee eens? Dien dan bezwaar in.",
+      [
+        { label: "Besluit bekijken", primair: true },
+        { label: "Bezwaar indienen" },
+      ],
+    );
+  if (heeft("aanvraag", "verwerkt", "behandeling"))
+    return res("Bekijk de status van uw aanvraag.", [
+      { label: "Status bekijken", primair: true },
+    ]);
+  if (
+    heeft(
+      "wijziging",
+      "gewijzigd",
+      "doorgegeven",
+      "overgeschreven",
+      "geregistreerd",
+      "bevestiging",
+      "melding",
+    )
+  )
+    return res("Controleer of de gegevens kloppen.", [
+      { label: "Gegevens controleren", primair: true },
+    ]);
+  return res("Bekijk dit bericht en onderneem waar nodig actie.", [
+    { label: "Bericht bekijken", primair: true },
+    { label: "Reageren" },
+  ]);
+};
+
+/** Variant C voor berichten zonder eigen uitleg, zoals in moza-poc. */
+const metVariantC = (bericht: DemoBericht): DemoBericht => ({
+  variantCInhoud: [
+    `Dit bericht van ${bericht.afzender} gaat over "${bericht.onderwerp}". Hieronder leest u wat dit voor uw onderneming betekent en wat u nu kunt doen.`,
+    "Bekijk de details en onderneem waar nodig actie. Heeft u vragen over de inhoud? Neem dan contact op met de afzender.",
+  ],
+  ...actiesVoor(bericht.onderwerp),
+  ...bericht,
+});
+
 const standaardInhoud = (afzender: string, onderwerp: string) => [
   "Geachte ondernemer,",
   `Dit bericht van ${afzender} gaat over "${onderwerp}".`,
@@ -121,21 +251,34 @@ const gegenereerd: DemoBericht[] = Array.from(
 const belastingdienst: DemoBericht[] = [
   {
     onderwerp: "Aangifte vennootschapsbelasting 2025 beschikbaar",
+    actiesUitleg:
+      "Doe de aangifte online. U heeft hiervoor de jaarcijfers van uw onderneming nodig.",
+    acties: [
+      { label: "Aangifte doen", primair: true },
+      { label: "Uitstel aanvragen" },
+    ],
     datum: "2026-04-22",
     map: "Belastingen 2025",
     isOngelezen: true,
     heeftBijlage: true,
-    inhoud: [
+    variantCInhoud: [
       "U kunt nu aangifte vennootschapsbelasting over 2025 doen. In deze aangifte geeft u de winst van uw onderneming over het afgelopen jaar op.",
       "Doe de aangifte voor 1 juni 2026. Heeft u meer tijd nodig? Dan kunt u uitstel aanvragen.",
     ],
   },
   {
     onderwerp: "Naheffingsaanslag omzetbelasting eerste kwartaal 2026",
+    actiesUitleg:
+      "Betaal de aanslag op tijd. Kunt u niet in één keer betalen? Vraag dan uitstel van betaling aan.",
+    acties: [
+      { label: "Betalen", primair: true },
+      { label: "Bezwaar maken" },
+      { label: "Uitstel van betaling aanvragen" },
+    ],
     datum: "2026-04-18",
     isOngelezen: true,
     heeftBijlage: true,
-    inhoud: [
+    variantCInhoud: [
       "U heeft over het eerste kwartaal van 2026 te weinig btw betaald. Daarom legt de Belastingdienst een naheffingsaanslag op van € 1.284,00.",
       "Betaal dit bedrag voor 15 mei 2026. Betaalt u niet op tijd? Dan komt er rente bij en kunt u een boete krijgen.",
       "Bent u het niet eens met deze aanslag? Dan kunt u binnen 6 weken na de datum van dit bericht bezwaar maken.",
@@ -143,21 +286,30 @@ const belastingdienst: DemoBericht[] = [
   },
   {
     onderwerp: "Beschikking uitstel van betaling",
+    actiesUitleg:
+      "U hoeft nu niets te doen. Bekijk uw betalingsregeling voor de bedragen en betaaldata.",
+    acties: [{ label: "Betalingsregeling bekijken" }],
     datum: "2026-04-12",
     map: "Belastingen 2025",
     isOngelezen: false,
     heeftBijlage: false,
-    inhoud: [
+    variantCInhoud: [
       "Uw verzoek om uitstel van betaling is toegekend. U krijgt langer de tijd om uw openstaande aanslag te betalen.",
       "U betaalt volgens de betalingsregeling die voor u is vastgesteld. Bekijk de regeling om te zien welke bedragen u wanneer betaalt.",
     ],
   },
   {
     onderwerp: "Herinnering aangifte loonheffingen",
+    actiesUitleg:
+      "Doe de aangifte alsnog. Lukt dit niet op tijd? Vraag dan uitstel aan.",
+    acties: [
+      { label: "Aangifte doen", primair: true },
+      { label: "Uitstel aanvragen" },
+    ],
     datum: "2026-04-05",
     isOngelezen: false,
     heeftBijlage: true,
-    inhoud: [
+    variantCInhoud: [
       "U heeft de aangifte loonheffingen over de laatste periode nog niet gedaan. Doe deze aangifte zo snel mogelijk.",
       "Doe de aangifte voor 30 april 2026. Doet u dit niet op tijd? Dan kunt u een boete krijgen.",
     ],
@@ -167,6 +319,8 @@ const belastingdienst: DemoBericht[] = [
   id: `bericht-${String(AANTAL_BERICHTEN + index + 1).padStart(4, "0")}`,
   afzenderId: "belastingdienst",
   afzender: "Belastingdienst",
+  // De specifieke tekst is de uitleg van variant C; A en B tonen de standaardbrief.
+  inhoud: standaardInhoud("Belastingdienst", bericht.onderwerp),
 }));
 
 /**
@@ -348,7 +502,7 @@ const berichten = spreidOverAfzenders([
   ...gegenereerd,
   ...belastingdienst,
   ...personaBerichten,
-]);
+]).map(metVariantC);
 
 /**
  * Een persona met een `basis` (zoals Karin Jansen op de gegevens van de
