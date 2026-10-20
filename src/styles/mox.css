@@ -1551,4 +1551,23 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
   .mox-hiring-label--todo {
     color: var(--rhc-color-oranje-80, #b35d00);
   }
+
+  .mox-hiring-reasoning,
+  .mox-hiring-derivation {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .mox-hiring-derivation {
+    font-size: var(--rhc-font-size-sm, 0.875rem);
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  .mox-hiring-llm {
+    border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
+    padding-block-start: 1rem;
+  }
 }

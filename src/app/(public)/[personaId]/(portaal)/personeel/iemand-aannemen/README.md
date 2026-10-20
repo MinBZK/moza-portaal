@@ -47,10 +47,36 @@ noemt de engine- en corpusrevisie. Lukt de worker niet, dan blijven de vooraf
 berekende waarden staan (`src/demo/iemand-aannemen-traces.json`, uit een
 TRACE-run van de BDD-suite) met de melding waarom.
 
-Nog niet live: de overige regelingen (no-riskpolis, begeleiding,
-proefplaatsing, loondispensatie), de concept-aanvraag en het besluit tonen de
-vooraf berekende traces. Zelfde engine, zelfde corpus; alleen nog niet
-aangesloten.
+Ook live: "Waarom deze uitkomst?" in elk paneel van de concept-aanvraag
+(`_waarom.tsx`). De kern levert per output de afleiding in drie lagen: kort
+(de beslissende voorwaarden en de berekening), de motivering per artikel en
+de volledige afleiding stap voor stap met bron. Deterministisch, zonder
+taalmodel; dat volgt Bos, Schuth en Chen, "From Rules as Executed to Citizen
+Explanation" (JURIX 2026): expliciete beslissende voorwaarden houden de uitleg
+trouw aan de uitvoering.
+
+Daaronder de knop "Leg dit uit in gewone taal" (`_uitlegTaalmodel.tsx`): de
+Graph-variant uit dat paper. Het portaal stuurt de beslisgraaf van de kern
+(`afleiding.uitkomst`: uitkomst, voorwaarden voldaan of niet, gegevens,
+wetsgrond) plus de korte samenvatting naar de dienst `/uitleg` van de
+Digitale assistent (moza-poc-digitale-assistent, PDR-016) via
+`/api/assistent/uitleg`, met de API-sleutel en het test-KVK uit het
+Flags-paneel. Het prompt staat in de backend, niet hier. De dienst roept het
+taalmodel aan zonder tools en toetst het antwoord tegen de graaf (bedragen,
+percentages, wetsartikel, leesbaarheid); bij een afgekeurde toets toont het
+portaal de tekst met de waarschuwing "wijkt af van de afleiding". De
+afleiding erboven blijft de toetssteen. Zonder `ASSISTENT_BACKEND_URL`,
+zonder sleutel, of op een backend die `/uitleg` nog niet kent, geeft de knop
+een melding en verder niets. Gemeten op 20 oktober 2026 met Claude: beide
+LKS-grafen in één aanroep van ruim duizend tokens, toets geslaagd, 61 tot 73
+woorden, zinnen van gemiddeld 7 tot 8 woorden. Voor de gebruikerstest: dit is precies de vraag uit
+het paper (begrijpelijk is niet hetzelfde als juridisch juist); vergelijk wat
+deelnemers van de kale afleiding begrijpen met wat ze van de taalmodeltekst
+begrijpen, en toets de taalmodeltekst zin voor zin aan de afleiding.
+
+Nog niet live: het besluit en de bedragen van de overige regelingen
+(no-riskpolis, begeleiding, proefplaatsing, loondispensatie) tonen de vooraf
+berekende traces. Zelfde engine, zelfde corpus; alleen nog niet aangesloten.
 
 Bundel vernieuwen (in regelrecht-uitleg, branch `feat/engine-live`):
 `just bundel`, dan `uit/bundel/pkg` en de browserbestanden naar
@@ -101,8 +127,8 @@ engine heeft gerekend. CI: `npm run lint`, `npm run lint:css`,
   "binnenkort beschikbaar".
 - Demo-data: `src/demo/iemandAannemen.ts`, `iemand-aannemen-koen.json`,
   `iemand-aannemen-traces.json` (alleen via `@/demo`).
-- Engine: `public/regelrecht/**`, `_useRegelrecht.ts`,
-  `wat-het-oplevert/_liveBedrag.tsx`.
+- Engine: `public/regelrecht/**`, `_useRegelrecht.ts`, `_engine.ts`,
+  `_balans.tsx`, `_waarom.tsx`, `_uitlegTaalmodel.tsx`.
 - Stijl: classes `mox-hiring-*` in `src/styles/mox.css`.
 - Aangepast: `_assistentZaken.ts` (route naar de zaak), `personaPaneel.tsx`
   (scenario wissen bij persona-wissel), `breadcrumb/index.tsx` (labels).
@@ -110,8 +136,9 @@ engine heeft gerekend. CI: `npm run lint`, `npm run lint:css`,
 ## Open punten
 
 1. Gegevens per bron: vijf kaarten onder elkaar is lang op een telefoon.
-2. "Waarom dit geldt" toont de engine-stappen met Nederlandse labels; is die
-   laag genoeg voor een ondernemer?
+2. "Waarom deze uitkomst?" komt uit de kern; de korte laag is nog
+   ambtelijk ("het college heeft vastgesteld dat"). Is dat laag genoeg, of
+   is de taalmodeltekst nodig, en klopt die dan nog?
 3. De tijdlijn noemt Regelgeving, Besluit en Uitvoering; de termen lexogram,
    decretogram en executogram staan niet op het scherm.
 4. Berichtenbox: ontvangstbevestiging en besluit staan nog niet als bericht.

@@ -19,13 +19,14 @@ import {
 } from "@/components/rhc";
 import type { DemoAannemen, DemoAannemenBron, DemoAannemenTrace } from "@/demo";
 import Balans from "../_balans";
+import Waarom from "../_waarom";
 import {
   REGELINGEN,
   loonwaardeVan,
   useAannemen,
   type RegelingId,
 } from "../_useAannemen";
-import { datumNL, waarde, type Werkgever } from "../_werkgever";
+import { datumNL, type Werkgever } from "../_werkgever";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -44,35 +45,6 @@ const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
     ))}
   </DataSummary>
 );
-
-const Waarom = ({
-  trace,
-  labels,
-}: {
-  trace: DemoAannemenTrace | undefined;
-  labels: Record<string, string>;
-}) =>
-  trace ? (
-    <details className="mox-hiring-why">
-      <summary>Waarom deze uitkomst?</summary>
-      <div>
-        <Paragraph className="mox-hiring-note">
-          Berekend door de regelrecht-engine op peildatum{" "}
-          {datumNL(trace.peildatum)}, wetsversie 1 juli 2026, op het fictieve
-          scenario van Koen de Wit. Tussenstappen:
-        </Paragraph>
-        <DataSummary appearance="column">
-          {Object.entries(trace.tussenuitkomsten).map(([naam, w]) => (
-            <DataSummaryItem
-              key={naam}
-              itemKey={labels[naam] ?? naam}
-              itemValue={waarde(naam, w)}
-            />
-          ))}
-        </DataSummary>
-      </div>
-    </details>
-  ) : null;
 
 /**
  * De vooringevulde aanvraag: per regeling een paneel met de gegevens en hun
@@ -260,6 +232,9 @@ const Aanvraag = ({
               />
               <Waarom
                 trace={traces["participatiewet:heeft_recht_op_lks"]}
+                antwoorden={a}
+                regeling="Loonkostensubsidie"
+                kvk={werkgever.kvkNummer}
                 labels={labels}
               />
               {vinkje("lks")}
@@ -301,6 +276,9 @@ const Aanvraag = ({
                 trace={
                   traces["wet_tegemoetkomingen_loondomein:heeft_recht_op_lkv"]
                 }
+                antwoorden={a}
+                regeling="Loonkostenvoordeel"
+                kvk={werkgever.kvkNummer}
                 labels={labels}
               />
               {vinkje("lkv")}
@@ -329,6 +307,9 @@ const Aanvraag = ({
               <Gegevens rijen={werknemerRijen.slice(0, 2)} />
               <Waarom
                 trace={traces["ziektewet:heeft_recht_op_no_risk_polis"]}
+                antwoorden={a}
+                regeling="No-riskpolis"
+                kvk={werkgever.kvkNummer}
                 labels={labels}
               />
               {vinkje("nrp")}
@@ -373,6 +354,9 @@ const Aanvraag = ({
                     "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek"
                   ]
                 }
+                antwoorden={a}
+                regeling="Jobcoaching"
+                kvk={werkgever.kvkNummer}
                 labels={labels}
               />
               {vinkje("jc")}
@@ -456,6 +440,9 @@ const Aanvraag = ({
               </Fieldset>
               <Waarom
                 trace={traces["participatiewet:mag_proefplaatsing_aangaan"]}
+                antwoorden={a}
+                regeling="Proefplaatsing"
+                kvk={werkgever.kvkNummer}
                 labels={labels}
               />
               {vinkje("pp")}
@@ -480,6 +467,9 @@ const Aanvraag = ({
                   "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie"
                 ]
               }
+              antwoorden={a}
+              regeling="Loondispensatie"
+              kvk={werkgever.kvkNummer}
               labels={labels}
             />
           </section>

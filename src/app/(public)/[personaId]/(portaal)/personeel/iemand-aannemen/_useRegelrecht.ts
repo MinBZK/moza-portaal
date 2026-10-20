@@ -17,10 +17,28 @@ export type Invoer = {
   uitleggen?: string[];
 };
 
+/** Eén regel van de afleiding in tekst; `technisch` hoort niet op het scherm van een ondernemer. */
+export type AfleidingRegel = { tekst: string; technisch: boolean };
+export type AfleidingStap = AfleidingRegel & {
+  diepte: number;
+  bron: string | null;
+  exact: string | null;
+};
+
 export type Berekening = {
   outputs: Record<string, unknown>;
   model: unknown;
-  afleidingen: Record<string, { tekst: { regels?: unknown } | unknown }>;
+  afleidingen: Record<
+    string,
+    {
+      afleiding: unknown;
+      tekst: {
+        kort: AfleidingRegel[];
+        volledig: AfleidingStap[];
+        motivering: AfleidingRegel[];
+      };
+    }
+  >;
 };
 
 export type Manifest = {
@@ -96,7 +114,10 @@ export const useBerekening = (invoer: Invoer | null): Stand<Berekening> => {
       },
       (fout: Error) => {
         if (actueel)
-          setUitkomst({ sleutel, stand: { status: "fout", fout: fout.message } });
+          setUitkomst({
+            sleutel,
+            stand: { status: "fout", fout: fout.message },
+          });
       },
     );
     return () => {
