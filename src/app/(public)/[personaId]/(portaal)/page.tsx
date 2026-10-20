@@ -11,6 +11,7 @@ import {
   getDemoSubsidies,
   getDemoWetten,
 } from "@/demo";
+import { getIngelogdeNaam } from "@/app/(public)/_persona";
 import RecenteBerichten from "./_recenteBerichten";
 
 const vragen = [
@@ -37,17 +38,16 @@ const HomePage = async ({
   params: Promise<{ personaId: string }>;
 }) => {
   const persona = await getDemoPersona((await params).personaId);
-  const [berichten, subsidies, wetten] = await Promise.all([
+  const [berichten, subsidies, wetten, naam] = await Promise.all([
     getDemoBerichten(persona?.id),
     getDemoSubsidies(persona?.homepageSubsidies),
     getDemoWetten(persona?.homepageRegelgeving),
+    getIngelogdeNaam(persona),
   ]);
 
   return (
     <>
-      <Heading level={1}>
-        Welkom {persona?.persoon.voornaam} {persona?.persoon.achternaam}
-      </Heading>
+      <Heading level={1}>Welkom {naam}</Heading>
 
       <section className="mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">

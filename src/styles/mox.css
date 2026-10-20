@@ -406,6 +406,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-card,
+	.mox-faq-card,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
@@ -418,13 +419,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-faq-card {
-		background-color: var(--rhc-color-wit);
-		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-
+		padding: var(--rhc-space-xl);
 	}
 
-	.mox-card {
+	.mox-card,
+	.mox-faq-card {
 		border-color: var(--rhc-color-light-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
 		border-width: var(--rhc-border-width-sm);

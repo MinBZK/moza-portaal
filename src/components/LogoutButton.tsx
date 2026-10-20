@@ -13,7 +13,12 @@ const LogoutButton = ({
   <button
     type="button"
     className={className}
-    onClick={() => signOut({ redirectTo: "/api/persona-logout" })}
+    onClick={async () => {
+      // Zonder werkende Keycloak (zoals op ZAD) faalt signOut; de demo moet
+      // dan toch uitloggen. Daarom eerst signOut zonder redirect, daarna zelf.
+      await signOut({ redirect: false }).catch(() => undefined);
+      window.location.assign("/api/persona-logout");
+    }}
   >
     {children}
   </button>

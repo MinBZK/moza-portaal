@@ -12,7 +12,11 @@ import { FlagsProvider } from "./_flags/flagsContext";
 import FlagsPaneel from "./_flags/flagsPaneel";
 import PersonaPaneel from "./_flags/personaPaneel";
 import PrototypeOpties from "./_flags/prototypeOpties";
-import { getActieveOrganisatie, getActievePersona } from "./_persona";
+import {
+  getActieveOrganisatie,
+  getActievePersona,
+  getIngelogdeNaam,
+} from "./_persona";
 
 export default async function PublicLayout({
   children,
@@ -29,7 +33,10 @@ export default async function PublicLayout({
     getDemoPersonas(),
     getBerichtenboxVariant(),
   ]);
-  const organisatie = await getActieveOrganisatie(persona);
+  const [organisatie, naam] = await Promise.all([
+    getActieveOrganisatie(persona),
+    getIngelogdeNaam(persona),
+  ]);
 
   return (
     <FlagsProvider flags={flags}>
@@ -37,11 +44,7 @@ export default async function PublicLayout({
         isPublic
         signedIn={signedIn}
         metMenu={withNavigation}
-        naam={
-          persona
-            ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
-            : undefined
-        }
+        naam={naam}
         actieveOrganisatieId={
           organisatie ? getDemoOrganisatieId(organisatie) : undefined
         }
@@ -63,11 +66,7 @@ export default async function PublicLayout({
                   flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
                   lopendeZakenBadge={<ZakenBadge />}
-                  naam={
-                    persona
-                      ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
-                      : undefined
-                  }
+                  naam={naam}
                   actieveOrganisatieId={
                     organisatie ? getDemoOrganisatieId(organisatie) : undefined
                   }
