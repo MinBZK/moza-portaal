@@ -323,7 +323,8 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
 		font-size: .75rem;
-		padding: 0;
+		min-inline-size: var(--rhc-space-md);
+		padding: 0 var(--rhc-space-md);
 	}
 
 	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
