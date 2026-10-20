@@ -5,7 +5,9 @@ import moxRegels from "./eslint-rules/geen-tailwind.mjs";
 
 const eslintConfig = [
   {
-    ignores: ["src/network/generated/**", ".next/**"],
+    // public/inloggen: overgenomen scripts van DigiD, NL Wallet en moza-poc,
+    // deels geminificeerd. Die beheren we niet zelf.
+    ignores: ["src/network/generated/**", ".next/**", "public/inloggen/**"],
   },
   ...nextCoreWebVitals,
   ...nextTypescript,
