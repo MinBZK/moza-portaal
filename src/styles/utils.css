@@ -10,8 +10,8 @@
 /* Shared side overlay for flags and persona selection */
 dialog.prototype-side-overlay {
 	--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
-	--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
-	--utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
+	--utrecht-drawer-max-inline-size: calc(100vw - 44px);
+	--utrecht-drawer-min-inline-size: calc(100vw - 44px);
 	--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
 	--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
 	--utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
@@ -55,8 +55,15 @@ dialog.prototype-side-overlay[open] {
 
 .prototype-side-overlay__content {
 	display: flex;
-	flex-direction: column;
-	gap: var(--rhc-space-2xl);
+	gap: var(--rhc-space-5xl);
+	inline-size: 100%;
+
+	/* Eén blok (het persona-paneel) neemt de hele breedte; meerdere blokken
+	  (het Flags-paneel) blijven kolommen op hun eigen breedte. */
+	> :only-child {
+		flex: 1;
+		min-inline-size: 0;
+	}
 
 	legend {
 		margin-block-end: var(--rhc-space-lg);
@@ -88,16 +95,19 @@ dialog.prototype-side-overlay[open] {
 	position: fixed;
 }
 
-/* Flags-panel: pauze animations */
-.prototype-animations-paused *,
-.prototype-animations-paused *::before,
-.prototype-animations-paused *::after {
-	animation-play-state: paused !important;
-	transition: none !important;
+/* Groepen kaarten (Ondernemers, Dienstverleners) met een kopje erboven. */
+.prototype-persona-group+.prototype-persona-group {
+	margin-block-start: var(--rhc-space-2xl);
 }
 
-/* Persona-kaarten in het persona-paneel, zoals op cx-moza. De kaart is het
-  label van een verborgen radioknop: klikken en de pijltjestoetsen werken. */
+.prototype-persona-group__title {
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+	margin-block-end: var(--rhc-space-md);
+}
+
+/* Persona-kaarten in het persona-paneel, zoals op cx-moza. Het bovenste deel
+  van de kaart is het label van een verborgen radioknop: klikken en de
+  pijltjestoetsen werken. */
 .prototype-persona-cards {
 	display: grid;
 	gap: var(--rhc-space-lg);
@@ -110,11 +120,9 @@ dialog.prototype-side-overlay[open] {
 	border: var(--rhc-border-width-sm) solid var(--rhc-color-light-cool-grey-300);
 	border-radius: var(--rhc-border-radius-md);
 	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
-	cursor: pointer;
 	display: flex;
 	flex-direction: column;
-	gap: var(--rhc-space-sm);
-	padding: var(--rhc-space-xl) var(--rhc-space-lg);
+	padding-block-end: var(--rhc-space-xl);
 	position: relative;
 	text-align: center;
 
@@ -130,6 +138,64 @@ dialog.prototype-side-overlay[open] {
 		outline: var(--utrecht-focus-outline-width, 2px) var(--utrecht-focus-outline-style, solid) var(--utrecht-focus-outline-color, currentcolor);
 		outline-offset: 2px;
 	}
+}
+
+/* Het klikbare deel van de kaart kiest de persona; "Keuze toepassen" of
+  "Gebruik deze persona" eronder activeert hem. */
+.prototype-persona-card__select {
+	align-items: center;
+	align-self: stretch;
+	cursor: pointer;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--rhc-space-sm);
+	padding: var(--rhc-space-xl) var(--rhc-space-lg) var(--rhc-space-md);
+}
+
+.prototype-persona-card__actions {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: var(--rhc-space-sm);
+	padding-inline: var(--rhc-space-lg);
+}
+
+.prototype-persona-card__more {
+	font-size: var(--rhc-text-font-size-sm);
+}
+
+/* Schuine banner "Concept" over de hoek van een kaart, voor persona's die nog
+  in uitwerking zijn (op cx-moza "draft"). */
+.prototype-persona-card:has(.prototype-persona-card__concept, .prototype-persona-card__active) {
+	overflow: hidden;
+}
+
+/* Beide banners delen de vorm; "Concept" zit links, "Actief" rechts, zodat ze
+  elkaar niet raken bij een actieve concept-persona. */
+.prototype-persona-card__concept,
+.prototype-persona-card__active {
+	color: var(--rhc-color-wit);
+	font-size: var(--rhc-text-font-size-sm);
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+	inline-size: 10rem;
+	inset-block-start: 1.25rem;
+	padding-block: var(--rhc-space-2xs);
+	pointer-events: none;
+	position: absolute;
+	text-align: center;
+}
+
+.prototype-persona-card__concept {
+	background: var(--rhc-color-cool-grey-500);
+	inset-inline-start: -2.75rem;
+	transform: rotate(-45deg);
+}
+
+.prototype-persona-card__active {
+	background: var(--rhc-color-groen-500);
+	inset-inline-end: -2.75rem;
+	transform: rotate(45deg);
 }
 
 /* Visueel verborgen, maar wel te bedienen met het toetsenbord. */
@@ -151,24 +217,35 @@ dialog.prototype-side-overlay[open] {
 	object-fit: cover;
 }
 
+/* Testaccounts zonder eigen avatar. */
+.prototype-persona-card__avatar--placeholder {
+	align-items: center;
+	color: var(--rhc-color-cool-grey-500);
+	display: flex;
+	justify-content: center;
+
+}
+
+/* Met .prototype-persona-card ervoor, anders wint de icoonmaat uit mox.css. */
+.prototype-persona-card .prototype-persona-card__avatar--placeholder .utrecht-icon {
+	block-size: 3rem;
+	inline-size: 3rem;
+}
+
 .prototype-persona-card__name {
 	font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
 .prototype-persona-card__role {
-	background: var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100));
+	background: var(--prototype-persona-label-kleur, var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100)));
 	border-radius: var(--rhc-border-radius-sm);
 	font-size: var(--rhc-text-font-size-sm);
-	padding: var(--rhc-space-2xs) var(--rhc-space-sm);
-}
-
-.prototype-persona-card__active {
-	color: var(--rhc-color-foreground-subtle);
-	font-size: var(--rhc-text-font-size-sm);
+	padding: var(--rhc-space-2xs) var(--rhc-space-md);
 }
 
 .prototype-persona-description {
-	margin-block-start: var(--rhc-space-lg);
+	font-size: var(--rhc-text-font-size-sm);
+	margin-block-start: var(--rhc-space-sm);
 }
 
 /* --- PoC-banner --- */

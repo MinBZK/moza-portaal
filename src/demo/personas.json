@@ -8,7 +8,8 @@
       "rol": "Zelfstandige (ZZP)",
       "kleur": "hemelblauw",
       "avatar": "/personas/yassin.svg",
-      "doelgroep": "ondernemer"
+      "doelgroep": "ondernemer",
+      "labelKleur": "hemelblauw"
     },
     "basis": "haarstylist",
     "persoon": {
@@ -89,7 +90,8 @@
       "rol": "Directeur MKB",
       "kleur": "rood",
       "avatar": "/personas/karin.svg",
-      "doelgroep": "ondernemer"
+      "doelgroep": "ondernemer",
+      "labelKleur": "rood"
     },
     "basis": "bloemenkweker",
     "persoon": {
@@ -185,7 +187,8 @@
       "rol": "Werknemer MKB",
       "kleur": "paars",
       "avatar": "/personas/bilal.svg",
-      "doelgroep": "ondernemer"
+      "doelgroep": "ondernemer",
+      "labelKleur": "paars"
     },
     "basis": "bloemenkweker",
     "persoon": {
@@ -281,7 +284,8 @@
       "rol": "Intermediair",
       "kleur": "oranje",
       "avatar": "/personas/sherida.svg",
-      "doelgroep": "ondernemer"
+      "doelgroep": "ondernemer",
+      "labelKleur": "oranje"
     },
     "basis": "koffiezaak",
     "persoon": {
@@ -475,6 +479,472 @@
     "buurt": "rotterdam",
     "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
     "homepageRegelgeving": ["milieubeheer"]
+  },
+  {
+    "id": "annemieke",
+    "actief": false,
+    "label": "Annemieke Verhoef",
+    "beschrijving": "Inkoopadviseur ICT bij de Kamer van Koophandel. Regelt de inkoop en aanbesteding van software en digitale diensten.",
+    "profiel": {
+      "rol": "Inkoopadviseur KvK",
+      "kleur": "donkergeel",
+      "labelKleur": "geel",
+      "avatar": "/personas/annemieke.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Annemieke",
+      "achternaam": "Verhoef"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Inkoopadviseur ICT",
+        "rol": "Inkoopadviseur ICT"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "ruben",
+    "actief": false,
+    "label": "Ruben van Leeuwen",
+    "beschrijving": "Servicemanager digitale diensten bij de Kamer van Koophandel. Eindverantwoordelijk voor de afname en het contractbeheer van diensten zoals de notificatiedienst.",
+    "profiel": {
+      "rol": "Servicemanager KvK",
+      "kleur": "lintblauw",
+      "labelKleur": "geel",
+      "avatar": "/personas/ruben.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Ruben",
+      "achternaam": "van Leeuwen"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Servicemanager digitale diensten",
+        "rol": "Servicemanager digitale diensten"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "femke",
+    "actief": false,
+    "label": "Femke Bosch",
+    "beschrijving": "Functioneel beheerder bij de Kamer van Koophandel. Richt de notificatiedienst in en voert functionele wijzigingen door.",
+    "profiel": {
+      "rol": "Functioneel beheerder KvK",
+      "kleur": "mintgroen",
+      "labelKleur": "geel",
+      "avatar": "/personas/femke.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Femke",
+      "achternaam": "Bosch"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Functioneel beheerder",
+        "rol": "Functioneel beheerder"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "deniz",
+    "actief": false,
+    "label": "Deniz Kaya",
+    "beschrijving": "DevOps engineer bij de Kamer van Koophandel. Koppelt en bewaakt de notificatiedienst in de technische omgeving van Mijn KvK.",
+    "profiel": {
+      "rol": "DevOps engineer KvK",
+      "kleur": "robijnrood",
+      "labelKleur": "geel",
+      "avatar": "/personas/deniz.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Deniz",
+      "achternaam": "Kaya"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "DevOps engineer",
+        "rol": "DevOps engineer"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "marije",
+    "actief": false,
+    "label": "Marije de Wit",
+    "beschrijving": "Portfoliomanager bij Logius. Verantwoordelijk voor het dienstverlenerportaal en de samenhang tussen de diensten daarachter.",
+    "profiel": {
+      "rol": "Portfoliomanager Logius",
+      "kleur": "violet",
+      "labelKleur": "lichtblauw",
+      "avatar": "/personas/marije.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Marije",
+      "achternaam": "de Wit"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Logius",
+        "rechtsvorm": "Rijksoverheid (dienst van het ministerie van BZK)",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "Wilhelmina van Pruisenweg 52, Den Haag",
+        "gemeente": "Den Haag",
+        "vestigingsadresVolledig": "Wilhelmina van Pruisenweg 52, 2595 AN Den Haag",
+        "postadres": "Postbus 96810, 2509 JE Den Haag",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Portfoliomanager",
+        "rol": "Portfoliomanager"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "pieter",
+    "actief": false,
+    "label": "Pieter de Vries",
+    "beschrijving": "Productmanager notificatiedienst bij Logius. Denkt mee bij de afname van de dienst en is vraagbaak voor afnemers.",
+    "profiel": {
+      "rol": "Productmanager Logius",
+      "kleur": "bruin",
+      "labelKleur": "lichtblauw",
+      "avatar": "/personas/pieter.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Pieter",
+      "achternaam": "de Vries"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Logius",
+        "rechtsvorm": "Rijksoverheid (dienst van het ministerie van BZK)",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "Wilhelmina van Pruisenweg 52, Den Haag",
+        "gemeente": "Den Haag",
+        "vestigingsadresVolledig": "Wilhelmina van Pruisenweg 52, 2595 AN Den Haag",
+        "postadres": "Postbus 96810, 2509 JE Den Haag",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Productmanager notificatiedienst",
+        "rol": "Productmanager notificatiedienst"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
   },
   {
     "id": "bloom",

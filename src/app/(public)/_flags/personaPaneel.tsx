@@ -6,10 +6,9 @@ import { usePathname } from "next/navigation";
 import {
   Button,
   Fieldset,
-  FormFieldSelect,
   FormFieldRadio,
-  SelectOption,
 } from "@rijkshuisstijl-community/components-react";
+import { Icon, LinkButton, VisuallyHidden } from "@/components/rhc";
 import SideOverlay from "@/components/SideOverlay";
 import { useCookie } from "@/utils/useCookie";
 
@@ -18,8 +17,17 @@ export type PersonaKeuze = {
   label: string;
   beschrijving?: string;
   /** Uitgewerkte persona met avatar, zoals op cx-moza. Zonder: testaccount. */
-  profiel?: { rol: string; kleur: string; avatar: string };
-  organisaties: { id: string; handelsnaam: string }[];
+  profiel?: {
+    rol: string;
+    kleur: string;
+    /** Kleur van het rol-label; standaard dezelfde als de avatar. */
+    labelKleur?: string;
+    avatar: string;
+    doelgroep?: string;
+    /** Nog in uitwerking, zoals "(draft)" op cx-moza. */
+    concept?: boolean;
+  };
+  organisaties: { id: string; handelsnaam: string; functies?: string }[];
   archief: boolean;
 };
 
@@ -50,50 +58,50 @@ const PersonaPaneel = ({
     (persona) => persona.id === gekozenPersonaId,
   );
 
-  const wisselPersona = (event: FormEvent) => {
-    event.preventDefault();
-    const organisatie = gekozenPersona?.organisaties.find(
-      (item) => item.id === gekozenOrganisatieId,
+  /** Zet persona en organisatie en laadt de pagina opnieuw. */
+  const pasToe = (personaId?: string, organisatieId?: string) => {
+    const persona = personas.find((item) => item.id === personaId);
+    const organisatie = persona?.organisaties.find(
+      (item) => item.id === organisatieId,
     );
-    if (!gekozenPersona || !organisatie) return;
+    if (!persona || !organisatie) return;
+    if (
+      persona.id === actievePersonaId &&
+      organisatie.id === actieveOrganisatieId
+    )
+      return;
 
     const maxAge = 60 * 60 * 24 * 30;
-    setPersonaId(gekozenPersona.id, { path: "/", maxAge });
+    setPersonaId(persona.id, { path: "/", maxAge });
     setOrganisatieId(organisatie.id, { path: "/", maxAge });
-    if (gekozenPersona.id !== actievePersonaId) {
+    if (persona.id !== actievePersonaId) {
       VAN_DE_PERSONA.forEach((sleutel) => localStorage.removeItem(sleutel));
     }
     if (
-      gekozenPersona.id !== actievePersonaId &&
+      persona.id !== actievePersonaId &&
       pathname.startsWith("/berichtenbox/")
     )
       window.location.assign("/berichtenbox");
     else location.reload();
   };
 
+  const wisselPersona = (event: FormEvent) => {
+    event.preventDefault();
+    pasToe(gekozenPersonaId, gekozenOrganisatieId);
+  };
+
+  /** De organisatie die bij het kiezen van een persona hoort. */
+  const organisatieBij = (persona: PersonaKeuze) =>
+    persona.id === actievePersonaId
+      ? actieveOrganisatieId
+      : persona.organisaties[0]?.id;
+
   const kiesPersona = (personaId: string) => {
     const persona = personas.find((item) => item.id === personaId);
     if (!persona) return;
     setGekozenPersonaId(persona.id);
-    setGekozenOrganisatieId(
-      persona.id === actievePersonaId
-        ? actieveOrganisatieId
-        : persona.organisaties[0]?.id,
-    );
+    setGekozenOrganisatieId(organisatieBij(persona));
   };
-
-  const personaOpties = (lijst: PersonaKeuze[]) =>
-    lijst.map((persona) => {
-      const aantalOrganisaties = persona.organisaties.length;
-      return (
-        <SelectOption key={persona.id} value={persona.id}>
-          {persona.label}
-          {persona.id === actievePersonaId ? " (actief)" : ""} (
-          {aantalOrganisaties}{" "}
-          {aantalOrganisaties === 1 ? "organisatie" : "organisaties"})
-        </SelectOption>
-      );
-    });
 
   const organisatieKeuze = (
     organisatie: PersonaKeuze["organisaties"][number],
@@ -108,84 +116,148 @@ const PersonaPaneel = ({
     />
   );
 
-  const uitgewerkt = personas.filter((persona) => persona.profiel);
-  const hoofdlijst = personas.filter(
-    (persona) => !persona.profiel && !persona.archief,
-  );
-  const archief = personas.filter(
-    (persona) => !persona.profiel && persona.archief,
-  );
-  const testaccountGekozen = !!gekozenPersona && !gekozenPersona.profiel;
+  // Uitgewerkte persona's per doelgroep, zoals op cx-moza. Daarna de
+  // testaccounts zonder profiel, met placeholder-inhoud.
+  const groepen = [
+    {
+      titel: "Ondernemers",
+      personas: personas.filter((p) => p.profiel?.doelgroep === "ondernemer"),
+    },
+    {
+      titel: "Dienstverleners",
+      personas: personas.filter(
+        (p) => p.profiel?.doelgroep === "dienstverlener",
+      ),
+    },
+    {
+      titel: "Testaccounts",
+      personas: personas.filter((p) => !p.profiel && !p.archief),
+    },
+    {
+      titel: "Persona-archief",
+      personas: personas.filter((p) => !p.profiel && p.archief),
+    },
+  ].filter((groep) => groep.personas.length > 0);
+
+  // Testaccounts zonder profiel heten voorlopig allemaal Robin Vogel.
+  const naamVan = (persona: PersonaKeuze) =>
+    persona.profiel ? persona.label : "Robin Vogel";
+
+  /** Rol-label: van het profiel, anders functie en bedrijf. */
+  const rolVan = (persona: PersonaKeuze) => {
+    if (persona.profiel) return persona.profiel.rol;
+    const [eerste, ...andere] = persona.organisaties;
+    // "Eigenaar, Winkelier": de laatste functie is de meest specifieke.
+    const functie = eerste?.functies?.split(",").at(-1)?.trim() ?? "Eigenaar";
+    const meer =
+      andere.length === 0
+        ? ""
+        : ` en ${andere.length} ${andere.length === 1 ? "andere organisatie" : "andere organisaties"}`;
+    return `${functie} bij ${eerste?.handelsnaam}${meer}`;
+  };
 
   return (
     <SideOverlay id="persona-paneel" title="Kies een persona" shortcut="p">
       <form onSubmit={wisselPersona}>
         <Fieldset legend="Persona">
-          <div className="prototype-persona-cards">
-            {uitgewerkt.map((persona) => (
-              <label
-                key={persona.id}
-                className="prototype-persona-card"
-                style={
-                  {
-                    "--prototype-persona-kleur": `var(--rhc-color-${persona.profiel?.kleur}-100)`,
-                  } as CSSProperties
-                }
-              >
-                <input
-                  type="radio"
-                  name="persona"
-                  value={persona.id}
-                  checked={gekozenPersonaId === persona.id}
-                  onChange={() => kiesPersona(persona.id)}
-                  className="prototype-persona-card__input"
-                />
-                {/* Decoratief: de naam staat ernaast. */}
-                <Image
-                  src={persona.profiel?.avatar ?? ""}
-                  alt=""
-                  width={96}
-                  height={96}
-                  className="prototype-persona-card__avatar"
-                  unoptimized
-                />
-                <span className="prototype-persona-card__name">
-                  {persona.label}
-                </span>
-                <span className="prototype-persona-card__role">
-                  {persona.profiel?.rol}
-                </span>
-                {persona.id === actievePersonaId && (
-                  <span className="prototype-persona-card__active">Actief</span>
-                )}
-              </label>
-            ))}
-          </div>
-          {gekozenPersona?.beschrijving && (
-            <p className="prototype-persona-description">
-              {gekozenPersona.beschrijving}
-            </p>
-          )}
-        </Fieldset>
-        <Fieldset legend="Andere testaccounts">
-          <FormFieldSelect
-            label="Kies een testaccount"
-            description="Persona's uit moza-poc en aangesloten ondernemingen voor het Federatief Berichtenstelsel."
-            value={testaccountGekozen ? (gekozenPersonaId ?? "") : ""}
-            onChange={(event) => kiesPersona(event.target.value)}
-          >
-            <SelectOption value="">Geen testaccount gekozen</SelectOption>
-            {hoofdlijst.length > 0 && (
-              <optgroup label="Testaccounts">
-                {personaOpties(hoofdlijst)}
-              </optgroup>
-            )}
-            {archief.length > 0 && (
-              <optgroup label="Persona-archief">
-                {personaOpties(archief)}
-              </optgroup>
-            )}
-          </FormFieldSelect>
+          {groepen.map((groep) => (
+            <div key={groep.titel} className="prototype-persona-group">
+              <p className="prototype-persona-group__title">{groep.titel}</p>
+              <div className="prototype-persona-cards">
+                {groep.personas.map((persona) => (
+                  <div
+                    key={persona.id}
+                    className="prototype-persona-card"
+                    style={
+                      persona.profiel &&
+                      ({
+                        "--prototype-persona-kleur": `var(--rhc-color-${persona.profiel.kleur}-100)`,
+                        "--prototype-persona-label-kleur": `var(--rhc-color-${persona.profiel.labelKleur ?? persona.profiel.kleur}-100)`,
+                      } as CSSProperties)
+                    }
+                  >
+                    <label className="prototype-persona-card__select">
+                      <input
+                        type="radio"
+                        name="persona"
+                        value={persona.id}
+                        checked={gekozenPersonaId === persona.id}
+                        onChange={() => kiesPersona(persona.id)}
+                        className="prototype-persona-card__input"
+                      />
+                      {persona.profiel?.concept && (
+                        <span className="prototype-persona-card__concept">
+                          Concept
+                        </span>
+                      )}
+                      {/* Decoratief: de naam staat ernaast. */}
+                      {persona.profiel ? (
+                        <Image
+                          src={persona.profiel.avatar}
+                          alt=""
+                          width={96}
+                          height={96}
+                          className="prototype-persona-card__avatar"
+                          unoptimized
+                        />
+                      ) : (
+                        <span className="prototype-persona-card__avatar prototype-persona-card__avatar--placeholder">
+                          <Icon icon="user" />
+                        </span>
+                      )}
+                      <span className="prototype-persona-card__name">
+                        {naamVan(persona)}
+                      </span>
+                      <span className="prototype-persona-card__role">
+                        {rolVan(persona)}
+                      </span>
+                      {persona.id === actievePersonaId && (
+                        <span className="prototype-persona-card__active">
+                          Actief
+                        </span>
+                      )}
+                      {persona.beschrijving && (
+                        <span className="prototype-persona-description">
+                          {persona.beschrijving}
+                        </span>
+                      )}
+                    </label>
+                    {/* Buiten het label: een link in een label is niet toegestaan,
+                      en een klik zou de persona activeren. */}
+                    <div className="prototype-persona-card__actions">
+                      {persona.id !== actievePersonaId && (
+                        <LinkButton
+                          type="button"
+                          onClick={() =>
+                            pasToe(persona.id, organisatieBij(persona))
+                          }
+                        >
+                          Gebruik deze persona
+                          <VisuallyHidden>
+                            : {naamVan(persona)}, {rolVan(persona)}
+                          </VisuallyHidden>
+                        </LinkButton>
+                      )}
+                      {persona.profiel && (
+                        <a
+                          href={`https://cx-moza.rijksapp.dev/personas/persona-${persona.id}.html`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="utrecht-link utrecht-link--html-a prototype-persona-card__more"
+                        >
+                          Meer over {persona.label}
+                          <VisuallyHidden>
+                            {" "}
+                            (opent in een nieuw tabblad)
+                          </VisuallyHidden>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </Fieldset>
         {gekozenPersona && (
           <Fieldset legend="Organisatie">

@@ -1172,6 +1172,29 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 }
 
+/* Menu */
+.rhc-menu {
+	button {
+		color: var(--rhc-color-zwart);
+		inline-size: 100%;
+		padding-block: var(--rhc-space-xl);
+		padding-inline: var(--rhc-space-3xl);
+		text-align: start;
+
+		&[aria-pressed=true] {
+			background-color: var(--rhc-color-cool-grey-200);
+			color: var(--rhc-color-zwart) !important;
+		}
+
+		&:hover {
+			background-color: var(--rhc-color-cool-grey-200) !important;
+			color: var(--rhc-color-zwart);
+		}
+
+
+	}
+}
+
 /* Verloop aan de randen van scrollende tabs (.mox-tabs op een smal scherm).
   Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
   @property en @keyframes mogen niet genest staan. */

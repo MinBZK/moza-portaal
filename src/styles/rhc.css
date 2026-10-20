@@ -146,6 +146,11 @@ body {
     gap: var(--rhc-space-sm);
   }
 
+  /* Eén organisatie: zelfde weergave als de knop, maar niets om te kiezen. */
+  .rhc-header-organizations__trigger--static {
+    cursor: default;
+  }
+
   .rhc-menu {
     background: var(--rhc-color-wit);
     border-color: var(--rhc-color-cool-grey-400);

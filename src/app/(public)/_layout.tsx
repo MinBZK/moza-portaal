@@ -107,6 +107,7 @@ export default async function PublicLayout({
           organisaties: p.organisaties.map((o) => ({
             id: getDemoOrganisatieId(o),
             handelsnaam: o.handelsnaam,
+            functies: o.functies,
           })),
           archief: !!p.archief,
         }))}
