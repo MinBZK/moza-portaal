@@ -1,0 +1,314 @@
+<!doctype html>
+<!-- Keuze van het inlogmiddel uit moza-poc (/inloggen/zakelijk/), met Inloggen met NL Wallet.
+  Gegenereerd uit de build van moza-poc, met de CSS uit assets/moza. -->
+<html lang="nl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Inloggen bij MijnOverheid Zakelijk</title>
+		<link rel="stylesheet" href="/inloggen/assets/moza/style/style.css" />
+		<meta name="description" content="MijnOverheid Zakelijk" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	</head>
+	<body class="page-login">
+<header>
+	<a class="skip-link btn-cta" href="#hoofd-inhoud">Ga naar hoofdinhoud</a>
+	<div class="logo">
+		<figure>
+			<a href="/">
+				<img src="/beeldmerk-rijksoverheid.svg" alt="Naar de homepage van MijnOverheid Zakelijk">
+			</a>
+		</figure>
+		<a href="#" class="language-switch">English</a>
+	</div>
+	
+	<a class="temp-moza-poc-banner" href="https://www.mijnoverheidzakelijk.nl/">Proof of Concept</a>
+</header>
+<main>
+<article id="hoofd-inhoud">
+	<h1>Inloggen bij <b>MijnOverheid Zakelijk</b></h1>
+	<p>Kies een inlogmiddel. <a href="#">Hoe kies ik een inlogmiddel?</a></p>
+
+	
+<div class="nl-wallet-meldingen">
+	<div class="feedback feedback-info" hidden data-nl-wallet-status="bezig" role="status">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<path d="M22.04 3.78c-.16-.95-.88-1.67-1.83-1.83-2.73-.45-7.3-.45-8.21-.45-.91 0-5.48 0-8.22.46-.94.15-1.67.88-1.82 1.82C1.5 6.52 1.5 11.09 1.5 12s0 5.48.46 8.22c.16.95.88 1.67 1.83 1.83 2.74.46 7.3.46 8.22.46.91 0 5.48 0 8.22-.46.95-.16 1.67-.88 1.83-1.83.46-2.74.46-7.3.46-8.22-.02-2.74-.02-5.48-.48-8.22z" />
+	<path class="icon-color-inverse" d="M10.71 6.93c0-.34.11-.63.33-.88.22-.25.54-.38.95-.38.41 0 .72.12.94.36.22.24.33.54.33.9 0 .32-.11.61-.33.86s-.54.37-.94.37c-.41 0-.72-.12-.95-.35-.22-.24-.33-.53-.33-.88zm2.4 2.39v8.96H10.9V9.41l2.21-.09z" />
+</svg>
+
+		<div>
+			<p>Uw gegevens uit NL Wallet worden opgehaald.</p>
+		</div>
+	</div>
+
+	<div class="feedback feedback-success" hidden data-nl-wallet-status="ingelogd" role="status">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<path fill-rule="evenodd" d="M22.04 3.78c-.16-.95-.88-1.67-1.83-1.83-2.73-.45-7.3-.45-8.21-.45-.91 0-5.48 0-8.22.46-.95.15-1.67.87-1.82 1.82C1.5 6.52 1.5 11.09 1.5 12s0 5.48.46 8.22c.16.95.88 1.67 1.83 1.83 2.74.46 7.3.46 8.22.46.91 0 5.48 0 8.22-.46.95-.16 1.67-.88 1.83-1.83.46-2.74.46-7.3.46-8.22-.02-2.74-.02-5.48-.48-8.22z M16.5 7.35a.755.755 0 0 0-1.01.1l-4.4 4.95-2.65-2.3a.743.743 0 0 0-.97 0c-.28.24-.35.65-.16.97l3.2 5.38c.14.23.38.37.64.37s.51-.14.64-.36l4.89-8.09c.21-.35.13-.78-.18-1.02z" />
+</svg>
+
+		<div>
+			<p>U bent ingelogd als <b data-nl-wallet-naam></b> voor <b data-nl-wallet-onderneming></b>. <a href="/" data-nl-wallet-vervolg>Verder naar MijnOverheid Zakelijk</a></p>
+		</div>
+	</div>
+
+	<div class="feedback feedback-error" hidden data-nl-wallet-status="mislukt" role="alert">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<circle cx="12" cy="12" r="10.5" />
+	<path class="icon-color-inverse" d="M15.12 7.71 12 10.48 8.88 7.71a.858.858 0 0 0-1.15.02c-.3.32-.31.81-.02 1.14L10.48 12l-2.77 3.12c-.29.33-.29.83.02 1.14.32.3.81.31 1.14.02L12 13.52l3.12 2.77c.33.29.83.28 1.14-.02.3-.32.31-.81.02-1.14L13.52 12l2.77-3.12c.29-.33.29-.83-.02-1.14a.848.848 0 0 0-1.15-.03M12 12.01l-.01-.01.01-.01.01-.01.01.01.01.01-.03.01z" />
+</svg>
+
+		<div>
+			<p>Inloggen met NL Wallet is niet gelukt. Controleer of uw bevoegdheid voor uw onderneming in uw NL Wallet staat en probeer het opnieuw.</p>
+		</div>
+	</div>
+
+	<div class="feedback feedback-error" hidden data-nl-wallet-status="andere-persoon" role="alert">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<circle cx="12" cy="12" r="10.5" />
+	<path class="icon-color-inverse" d="M15.12 7.71 12 10.48 8.88 7.71a.858.858 0 0 0-1.15.02c-.3.32-.31.81-.02 1.14L10.48 12l-2.77 3.12c-.29.33-.29.83.02 1.14.32.3.81.31 1.14.02L12 13.52l3.12 2.77c.33.29.83.28 1.14-.02.3-.32.31-.81.02-1.14L13.52 12l2.77-3.12c.29-.33.29-.83-.02-1.14a.848.848 0 0 0-1.15-.03M12 12.01l-.01-.01.01-.01.01-.01.01.01.01.01-.03.01z" />
+</svg>
+
+		<div>
+			<p>Deze bevoegdheid komt uit de NL Wallet van iemand anders dan wie is ingelogd. Voeg een onderneming toe met uw eigen NL Wallet.</p>
+		</div>
+	</div>
+
+	<div class="feedback feedback-warning" hidden data-nl-wallet-bevoegdheid-status="niet-ingericht" role="status">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<path d="M23.38 19.64 13.67 2.47c-.73-1.3-2.6-1.3-3.34 0L.62 19.64c-.72 1.28.2 2.86 1.67 2.86h19.43c1.46 0 2.38-1.58 1.66-2.86z" />
+	<path class="icon-color-inverse" d="M10.54 17.45c0-.44.12-.82.36-1.12.24-.31.6-.46 1.09-.46.48 0 .85.14 1.1.4.25.27.38.66.38 1.18 0 .43-.12.8-.36 1.09-.24.29-.6.44-1.09.44-.48 0-.85-.13-1.1-.39-.25-.25-.38-.63-.38-1.14zm.31-10.27 2.48-.2-.22 5.51v2.63l-2.27.05V7.18z" />
+</svg>
+
+		<div>
+			<p>Een bevoegdheid toevoegen aan NL Wallet kan in deze omgeving nog niet.</p>
+		</div>
+	</div>
+</div>
+
+
+<p hidden><span data-nl-wallet-bevoegdheid-links></span></p>
+<p class="nl-wallet-overlay-titel" hidden data-nl-wallet-overlay="bevoegdheid">Bevoegdheid voor <span data-nl-wallet-titel-onderneming>uw onderneming</span> toevoegen aan uw NL Wallet</p>
+<p class="nl-wallet-overlay-hint" hidden data-nl-wallet-overlay="bevoegdheid">Staat uw bevoegdheid in uw NL Wallet? <a href="#" data-nl-wallet-naar-inloggen>Ga verder met inloggen</a></p>
+
+<div data-nl-wallet-knoppen></div>
+
+<script type="module" src="/inloggen/assets/moza/javascript/vendor/nl-wallet-web.iife.js"></script>
+<script src="/inloggen/assets/moza/javascript/nl-wallet-inloggen.js" defer></script>
+
+	
+<aside id="nl-wallet-toelichting" class="toelichting-paneel" aria-label="Toelichting inloggen met een wallet" tabindex="-1" hidden data-toelichting>
+	<div class="toelichting-paneel__inhoud">
+		<p class="toelichting-paneel__label">Toelichting</p>
+		<h2 class="toelichting-paneel__titel">Inloggen met een wallet</h2>
+		<p class="toelichting-paneel__lead">Een ondernemer logt in bij MijnOverheid Zakelijk door gegevens te delen uit de NL Wallet op de telefoon. Geen gebruikersnaam of wachtwoord, en de bevoegdheid voor de onderneming komt mee.</p>
+		<ul class="toelichting-paneel__punten">
+			<li>MijnOverheid Zakelijk vraagt twee attestaties: de naam uit de persoonsgegevens (PID) en de bevoegdheid voor de onderneming.</li>
+			<li>De ondernemer scant de QR-code en ziet in de app precies welke gegevens gevraagd worden. Delen gebeurt met de pincode.</li>
+			<li>Met de gedeelde bevoegdheid opent MijnOverheid Zakelijk direct de juiste onderneming.</li>
+			<li>MijnOverheid Zakelijk krijgt alleen de naam en de bevoegdheid, geen BSN.</li>
+			<li>Dit is een proof of concept met een eigen testomgeving en fictieve gegevens. De officiële NL Wallet werkt hier (nog) niet.</li>
+		</ul>
+
+		<h3 class="toelichting-paneel__kop">Zelf proberen</h3>
+		<ol class="toelichting-paneel__stappen">
+			<li>
+				<b>App installeren.</b>
+				Installeer NL Wallet MOZa op een Android-telefoon.
+				<a href="/inloggen/nl-wallet/app" target="_blank" rel="noopener">Installatie-instructies</a>
+				·
+				<a href="/downloads/nl-wallet-moza.apk" download>Download de app (APK)</a>
+			</li>
+			<li>
+				<b>Persoonsgegevens toevoegen.</b>
+				Kies in de app
+				<i>Inloggen met DigiD</i>
+				en kies op de testpagina Karin Jansen (fictief). Zij krijgt de attestatie met persoonsgegevens (PID).
+			</li>
+			<li>
+				<b>Bevoegdheid toevoegen.</b>
+				Scan de QR-code voor de attestatie van KVK Demo:
+				<span data-toelichting-bevoegdheden>de links per onderneming verschijnen hier zodra de testomgeving bereikbaar is.</span>
+			</li>
+			<li>
+				<b>Inloggen.</b>
+				Kies
+				<i>Inloggen met een wallet</i>
+				en scan de QR-code. Deel daarna naam en bevoegdheid.
+			</li>
+		</ol>
+
+		<h3 class="toelichting-paneel__kop">Attestaties in de wallet</h3>
+		<dl class="toelichting-paneel__attestaties">
+			<div>
+				<dt>Persoonsgegevens (PID)</dt>
+				<dd>Karin Jansen (fictief), met onder meer naam, geboortedatum en BSN. Bij de registratie haalt Karin deze gegevens eenmalig op met DigiD (bron: Basisregistratie Personen) en zet ze daarmee in de wallet.</dd>
+			</div>
+			<div>
+				<dt>Bevoegdheid Koffiezaak Noon</dt>
+				<dd>KVK 85234567, eenmanszaak, eigenaar. Bij het toevoegen deelt de wallet het BSN met KVK Demo (fictief). Die zoekt daarmee de bevoegdheid op.</dd>
+			</div>
+			<div>
+				<dt>Bevoegdheid Koffiebranderij Blend</dt>
+				<dd>KVK 91827364, besloten vennootschap, eigenaar. Bij het toevoegen deelt de wallet het BSN met KVK Demo (fictief). Die zoekt daarmee de bevoegdheid op.</dd>
+			</div>
+		</dl>
+	</div>
+	<div class="toelichting-paneel__voet">
+		<button class="toelichting-paneel__sluit" type="button" data-toelichting-sluit aria-label="Toelichting sluiten">&times;</button>
+		<span class="toelichting-paneel__hint">Shift+P toont of verbergt</span>
+		<span class="toelichting-paneel__hint">Esc sluit</span>
+	</div>
+</aside>
+
+<script src="/inloggen/assets/moza/javascript/nl-wallet-toelichting.js" defer></script>
+
+
+	<div class="login-selection">
+		<section>
+			<section>
+				<!-- <h2>Laatst gekozen inlogmiddel</h2> -->
+				<section>
+					<details class="card card-inloggen-options" open>
+						<summary>
+							<h3><img src="/inloggen/assets/images/digid-logo.svg" alt="" />DigiD</h3>
+						</summary>
+						<div>
+							<ul>
+								<!-- <li data-feature="Inloggen voor mezelf" data-feature-type="functionaliteit">
+									<a href="/inloggen/digid/prive/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<path fill="currentColor" d="M31.5 31.79c7.7 0 12.15-5.36 12.15-13.08 0-8.8-4.66-13.51-12.15-13.51-7.9 0-12.16 5.58-12.16 13.51 0 8.37 4.46 13.08 12.16 13.08m17.65 7.51C45.97 37.08 40.6 36 32.01 36s-13.96 1.08-17.14 3.3c-3.99 2.78-5.16 8.67-5.86 15.7h46c-.7-7.03-1.88-12.92-5.86-15.7" />
+</svg>
+ Inloggen <b>voor mezelf</b></a>
+								</li> -->
+								<li data-feature="Inloggen voor mijn onderneming" data-feature-type="functionaliteit">
+									<a href="/inloggen/digid/zakelijk"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <path fill="currentColor" d="M11.304 12.871v.621c0 .342-.298.62-.665.62h-1.33c-.366 0-.663-.278-.663-.62v-.62c0-.01.005-.018.005-.027-2.808-.105-4.78-.52-5.986-.875v4.004c0 .343.322.62.69.62h13.29a.62.62 0 0 0 .64-.62v-3.989c-1.218.353-3.192.762-5.987.863.001.008.006.015.006.023m.69-7.446h-1.355v3.723h-1.33V5.425H8.008v-.87c0-.052.077-.14.117-.147a10.653 10.653 0 0 1 3.748 0c.044.008.121.095.121.148v.869Zm5.465.543c-.042-.31-.324-.543-.658-.543h-3.479v-.87c0-.643-.524-1.243-1.197-1.366a12.078 12.078 0 0 0-4.252 0c-.67.123-1.196.723-1.196 1.367v.869H3.199c-.334 0-.616.233-.658.543l-.536 3.957a.613.613 0 0 0 .415.655c.974.347 3.456 1.05 7.58 1.05 4.124 0 6.605-.703 7.58-1.05a.613.613 0 0 0 .415-.655l-.536-3.957Z"/>
+</svg>
+ Inloggen <b>voor mijn onderneming</b></a>
+								</li>
+								<li data-feature="Inloggen met een machtiging" data-feature-type="functionaliteit">
+									<a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<path fill="currentColor" d="M42.99 29.8c4.69 0 7.4-3.35 7.4-8.16 0-5.49-2.83-8.43-7.4-8.43-4.81 0-7.4 3.48-7.4 8.43 0 5.22 2.71 8.16 7.4 8.16M21 26.83c4.69 0 7.4-3.35 7.4-8.16 0-5.49-2.84-8.43-7.4-8.43-4.81 0-7.4 3.48-7.4 8.43 0 5.22 2.71 8.16 7.4 8.16m36.17 11.66c-2.27 1.13-6.41 2.86-11.48 3.4-4.15.45-8.69.37-12.69-.11v12.21h19.76v-8.93s.46-.16.68.5c.5 1.48.9 4.57 1.04 8.43h5.73c-.2-5.98-.89-11.72-3.04-15.51" />
+	<path fill="currentColor" d="M45.46 39.71c4.15-.45 7.65-1.75 9.87-2.77 1.1-.51 2.04-1.02 2.54-1.33-.66-3.31-4.91-3.53-7.67-3.2-2.76.33-6.45.83-11.86.61-4.14-.17-6.45-1.63-10.82-2.38-2.03-.35-3.91-.49-5.95-.52-3.14-.05-6.29.25-8.92.89C4.89 32.91 3.79 43.18 3.66 54h5.75v-.1c0-5.22.51-9.3 1.15-11.33.19-.62.62-.5.62-.5V54H31V40.44c0-.55.45-1 1-1s0-.01 0-.01 6.29 1.05 13.46.28" />
+</svg>
+ Inloggen <b>met een machtiging</b></a>
+								</li>
+								<!-- <li data-feature="Inloggen als bewindvoerder, curator of mentor" data-feature-type="functionaliteit">
+									<a href="#">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<path fill="currentColor" d="M51.185 8H22.04C16.08 8 10 10.306 10 16.546v33.591C10 53.643 11.823 56 15.16 56h29.137a1.82 1.82 0 0 0 1.823-1.809V18.38a1.814 1.814 0 0 0-1.823-1.809h-28.38c-.783 0-1.153-.711-.877-1.5.868-2.468 5.383-2.785 7-2.785H48.7v36h2.58c.946 0 1.72-.772 1.72-1.715V9.81A1.812 1.812 0 0 0 51.185 8ZM40.1 46.571H28.92v-1.045c0-1.312 1.092-2.383 2.417-2.383h6.38a2.387 2.387 0 0 1 2.392 2.383v1.045H40.1Zm-24.166-8.597c.301-.171 8.961-4.765 14.328-7.611-.31-.54-.663-1.174-1.136-2.006l-.696.017a1.32 1.32 0 0 1-1.196-.668l-.258-.455a.659.659 0 0 1 .25-.9l6.906-3.891a.664.664 0 0 1 .903.249l.258.454c.24.428.223.951-.043 1.363-.972 1.491-3.062 2.271-3.922 2.734.026.051.069.129.224.146.163.017 1.754-.137 4.016-1.089 1.505 2.649.929 1.646 2.477 4.372-1.978 1.44-2.933 2.708-3.002 2.862-.069.146-.017.215 0 .266.86-.497 2.58-1.877 4.378-1.937.49-.017.954.24 1.195.669l.258.454a.66.66 0 0 1-.25.9l-6.905 3.891a.664.664 0 0 1-.903-.248l-.258-.455a1.316 1.316 0 0 1 .043-1.362l.387-.566c-.482-.857-.852-1.5-1.161-2.049-5.22 3.112-13.64 8.126-13.94 8.297a1.979 1.979 0 0 1-2.701-.745 1.972 1.972 0 0 1 .748-2.692Z" />
+</svg>
+ Inloggen <b>als bewindvoerder, curator of mentor</b>
+									</a>
+								</li>
+								<li data-feature="Inloggen voor een kind onder de 12" data-feature-type="functionaliteit">
+									<a href="#">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <path fill="currentColor" d="M35.708 13.76c2.794 0 4.412-1.966 4.412-4.8 0-3.235-1.684-4.96-4.412-4.96-2.874 0-4.411 2.045-4.411 4.96 0 3.075 1.617 4.8 4.411 4.8Zm-5.107 7.058-.066.254c-.602 2.46-.214 3.623.08 4.867.307 1.323.388 2.7.04 4.024-.655 2.486-2.273 5.762-2.273 13.69 0 0 .963.267 2.674.32v15.763s3.743-.575 4.01-4.198V43.706c.241-.04.455-.053.696-.107.214-.04.428-.067.642-.107v11.939c.2 3.716 4.01 4.291 4.01 4.291V43.318c1.578.067 2.674.268 2.674.268 0-7.928-1.618-11.163-2.273-13.65-.347-1.324-.267-2.7.04-4.024.295-1.243.669-2.406.08-4.866 0 0 .308.561.442.922.695 2.005.494 5.896 3.302 14.84 1.23-.16 2.727-1.658 2.22-4.399-.616-3.369-1.297-5.214-1.578-7.553-.615-5.188-2.447-7.674-5.361-8.583a13.727 13.727 0 0 0-4.212-.628c-1.51 0-3.074.36-4.411.735-3.984 1.123-10.562 5.214-13.316 7.834-2.166 2.072-1.832 3.503-1.176 4.505 8.061-5.387 13.743-7.914 13.743-7.914"/>
+  <path fill="currentColor" d="M17.018 33.01c0 2.488 1.471 3.878 4.011 3.878s4.01-1.591 4.01-3.877c0-2.607-1.537-4.01-4.01-4.01-2.607 0-4.01 1.657-4.01 4.01Zm-.428 17.875.054 8.824c.923-.08 3.302-.401 3.463-1.765.2-1.658.534-6.337.534-6.337 0-.067.174-.254.375-.254.2 0 .374.187.374.254 0 0 .374 4.586.535 6.284.147 1.484 2.66 1.778 3.543 1.818v-8.824c.788 0 1.55-1.296 1.564-2.687 0-3.088.067-8.61-2.246-9.345-1.671-.535-5.802-.535-7.326.027-2.5.909-2.607 6.31-2.38 9.385.107 1.39.709 2.62 1.497 2.62"/>
+</svg>
+ Inloggen <b>voor een kind onder de 12</b>
+									</a>
+								</li>
+							</ul>
+							<div class="feedback feedback-info" data-feature="Inloggen voor een kind onder de 12" data-feature-type="functionaliteit">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<path d="M22.04 3.78c-.16-.95-.88-1.67-1.83-1.83-2.73-.45-7.3-.45-8.21-.45-.91 0-5.48 0-8.22.46-.94.15-1.67.88-1.82 1.82C1.5 6.52 1.5 11.09 1.5 12s0 5.48.46 8.22c.16.95.88 1.67 1.83 1.83 2.74.46 7.3.46 8.22.46.91 0 5.48 0 8.22-.46.95-.16 1.67-.88 1.83-1.83.46-2.74.46-7.3.46-8.22-.02-2.74-.02-5.48-.48-8.22z" />
+	<path class="icon-color-inverse" d="M10.71 6.93c0-.34.11-.63.33-.88.22-.25.54-.38.95-.38.41 0 .72.12.94.36.22.24.33.54.33.9 0 .32-.11.61-.33.86s-.54.37-.94.37c-.41 0-.72-.12-.95-.35-.22-.24-.33-.53-.33-.88zm2.4 2.39v8.96H10.9V9.41l2.21-.09z" />
+</svg>
+
+								<div>
+									<a href="#">Inloggen voor een kind van 12 jaar of ouder</a>
+								</div>
+							</div> -->
+						</div>
+					</details>
+					<div class="card">
+						<details class="card card-inloggen-options">
+							<summary>
+								<h3>
+									<img src="/inloggen/assets/images/logo-cleverbase.png" alt="" />
+									Cleverbase
+								</h3>
+							</summary>
+						</details>
+					</div>
+					<div class="card">
+						<details class="card card-inloggen-options">
+							<summary>
+								<h3>
+									<img src="/inloggen/assets/images/logo-digidentity.png" alt="" />
+									Digidentity
+								</h3>
+							</summary>
+						</details>
+					</div>
+					<div class="card">
+						<details class="card card-inloggen-options">
+							<summary>
+								<h3>
+									<img src="/inloggen/assets/images/logo-itsme.svg" alt="" />
+									Itsme
+								</h3>
+							</summary>
+						</details>
+					</div>
+					<div class="card">
+						<a href="/?persona=9999">
+							<h3>
+								<img src="/inloggen/assets/images/logo-eh.svg" alt="" />
+								eHerkenning voor bedrijven
+							</h3>
+						</a>
+					</div>
+					<div class="card">
+						<a href="#">
+							<h3>
+								<img src="/inloggen/assets/images/logo-eidas.svg" alt="" />
+								European login
+							</h3>
+						</a>
+					</div>
+					<div class="card">
+						<a href="#" data-nl-wallet-inloggen>
+							<h3>
+								<img src="/inloggen/assets/images/logo-wallets.svg" alt="" />
+								Inloggen met een wallet
+							</h3>
+						</a>
+					</div>
+				</section>
+				<div class="login-faq">
+					<details>
+						<summary>Ik wil inloggen voor iemand anders. Hoe werkt dat?</summary>
+						<p>U kunt voor iemand anders inloggen als die persoon u daarvoor heeft gemachtigd via DigiD Machtigen. Bent u bewindvoerder, curator of mentor? Dan logt u in met uw eigen DigiD en kiest u daarna voor wie u iets wilt regelen.</p>
+					</details>
+					<details>
+						<summary>Kan ik een ander inlogmiddel dan DigiD gebruiken?</summary>
+						<p>Ja. Naast DigiD kunt u inloggen met eHerkenning, een European login (eIDAS) of een privaat inlogmiddel zoals Digidentity, Itsme of Cleverbase. Welk middel u kiest, hangt af van uw situatie en het betrouwbaarheidsniveau dat de dienst vraagt.</p>
+					</details>
+				</div>
+				<a href="#">Meer hulp en informatie over inloggen</a>
+			</section>
+		</section>
+
+		<div class="feedback feedback-info login-own-credentials">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+	<path d="M22.04 3.78c-.16-.95-.88-1.67-1.83-1.83-2.73-.45-7.3-.45-8.21-.45-.91 0-5.48 0-8.22.46-.94.15-1.67.88-1.82 1.82C1.5 6.52 1.5 11.09 1.5 12s0 5.48.46 8.22c.16.95.88 1.67 1.83 1.83 2.74.46 7.3.46 8.22.46.91 0 5.48 0 8.22-.46.95-.16 1.67-.88 1.83-1.83.46-2.74.46-7.3.46-8.22-.02-2.74-.02-5.48-.48-8.22z" />
+	<path class="icon-color-inverse" d="M10.71 6.93c0-.34.11-.63.33-.88.22-.25.54-.38.95-.38.41 0 .72.12.94.36.22.24.33.54.33.9 0 .32-.11.61-.33.86s-.54.37-.94.37c-.41 0-.72-.12-.95-.35-.22-.24-.33-.53-.33-.88zm2.4 2.39v8.96H10.9V9.41l2.21-.09z" />
+</svg>
+
+			<div>
+				<p>Log altijd in met uw eigen inloggegevens. Ook als u voor iemand anders wilt inloggen.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="action-group">
+		<button class="secondary" type="button" onclick="location.href='/'">Inloggen annuleren</button>
+	</div>
+</article>
+</main>
+	</body>
+</html>

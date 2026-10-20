@@ -7,7 +7,6 @@ import {
   FormFieldCheckboxOption,
   FormFieldRadio,
   FormFieldTextInput,
-  Paragraph,
 } from "@rijkshuisstijl-community/components-react";
 import {
   ASSISTENT_DEMO_EVENT,
@@ -69,17 +68,10 @@ const AssistentPaneel = ({
         </Fieldset>
         <FormFieldCheckboxOption
           label="Demo-modus: speel het draaiboek af zonder backend"
-          description="Stel een van de voorbeeldvragen (energiebesparing, bedrijfsgegevens, belastingaangifte) en beantwoord wat de assistent terugvraagt. Typ “fout” voor de foutmelding."
+          description="Stel een voorbeeldvraag (energiebesparing, bedrijfsgegevens, belastingaangifte) en beantwoord de vragen. Typ “fout” voor de foutmelding."
           checked={demo}
           onChange={(event) =>
             zetAssistentInstelling("demoModus", event.target.checked)
-          }
-        />
-        <FormFieldCheckboxOption
-          label="Wachtindicatie laten staan (voor aanpassingen)"
-          checked={instellingen.bevriesDenken}
-          onChange={(event) =>
-            zetAssistentInstelling("bevriesDenken", event.target.checked)
           }
         />
         <FormFieldTextInput
@@ -120,7 +112,7 @@ const AssistentPaneel = ({
           }
         />
       </Fieldset>
-      {opAssistent ? (
+      {opAssistent &&
         DEMO_KNOPPEN.map(([soort, label]) => (
           <Button
             key={soort}
@@ -129,13 +121,7 @@ const AssistentPaneel = ({
           >
             {label}
           </Button>
-        ))
-      ) : (
-        <Paragraph>
-          Op de pagina Digitale assistent staan hier knoppen om losse onderdelen
-          van de chat te tonen.
-        </Paragraph>
-      )}
+        ))}
     </div>
   );
 };

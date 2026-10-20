@@ -1,10 +1,13 @@
 "use server";
 
 import {
+  BERICHTENBOX_VARIANT_COOKIE,
+  type BerichtenboxVariant,
   defaultFlags,
   FeatureFlagKey,
   FeatureFlags,
   featureFlagsSchema,
+  isBerichtenboxVariant,
 } from "@/app/(private)/instellingen/_featureFlags";
 import { cookies } from "next/headers";
 
@@ -49,4 +52,21 @@ export async function setFeatureFlag(key: FeatureFlagKey, value: boolean) {
 export async function resetFeatureFlags() {
   const cookiesStore = await cookies();
   cookiesStore.delete("flags");
+  cookiesStore.delete(BERICHTENBOX_VARIANT_COOKIE);
+}
+
+/** De gekozen variant van de Berichtenbox A/B/C-test; standaard A. */
+export const getBerichtenboxVariant =
+  async (): Promise<BerichtenboxVariant> => {
+    const waarde = (await cookies()).get(BERICHTENBOX_VARIANT_COOKIE)?.value;
+    return isBerichtenboxVariant(waarde) ? waarde : "a";
+  };
+
+export async function setBerichtenboxVariant(variant: BerichtenboxVariant) {
+  if (!isBerichtenboxVariant(variant)) throw new Error("Onbekende variant");
+  (await cookies()).set(BERICHTENBOX_VARIANT_COOKIE, variant, {
+    path: "/",
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 30,
+  });
 }

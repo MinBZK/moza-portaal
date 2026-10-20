@@ -413,6 +413,40 @@ body {
 
 .rhc-theme.mox-theme {
 
+  /* Berichtenbox A/B/C-test, variant C: uitleg en directe acties. */
+  .rhc-message-actions {
+    background-color: var(--rhc-color-cool-grey-50);
+    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+    margin-block: var(--rhc-space-lg);
+    padding: var(--rhc-space-lg);
+
+    /* De ruimte komt van gap; anders tellen de marges van kop, alinea en
+      ActionGroup erbij op. */
+    > * {
+      margin-block: 0;
+    }
+  }
+
+  /* Variant B: het bericht als pdf in de pagina. */
+  .rhc-pdf-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-md);
+    margin-block: var(--rhc-space-lg);
+  }
+
+  .rhc-pdf-preview__viewer {
+    block-size: 72rem;
+    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-sm);
+    inline-size: 100%;
+    max-block-size: 80vh;
+  }
+
   /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
   @media (prefers-reduced-motion: no-preference) {
     .rhc-row-new {

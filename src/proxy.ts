@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  BERICHTENBOX_VARIANT_COOKIE,
+  isBerichtenboxVariant,
+} from "@/app/(private)/instellingen/_featureFlags";
 
 export function proxy(req: NextRequest) {
   const url = req.nextUrl.clone();
@@ -11,6 +15,8 @@ export function proxy(req: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/static") ||
+    // Inloggen staat buiten het portaal van de persona.
+    pathname.startsWith("/inloggen") ||
     /\.[^/]+$/.test(lastSegment) ||
     pathname === "/favicon.ico" ||
     pathname === "/robots.txt"
@@ -35,6 +41,21 @@ export function proxy(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 30, // 30 days
     });
 
+    return res;
+  }
+
+  // ?variant=b kiest een variant van de Berichtenbox A/B/C-test, voor
+  // links in een UX-onderzoek. Daarna geldt de keuze in het Flags-paneel.
+  const qpVariant = url.searchParams.get("variant")?.toLowerCase();
+  if (qpVariant && isBerichtenboxVariant(qpVariant)) {
+    url.searchParams.delete("variant");
+    const res = NextResponse.redirect(url);
+    res.cookies.set(BERICHTENBOX_VARIANT_COOKIE, qpVariant, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30,
+    });
     return res;
   }
 

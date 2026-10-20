@@ -1,0 +1,3317 @@
+/*
+ * Stylesheet MijnOverheid Zakelijk (MOZa)
+ * Gebruikt design tokens uit twee lagen:
+ * _rijkshuisstijl.css: visuele opties vanuit de Rijkshuisstijl
+ * _toepassing.css: toepassing van die opties op componenten
+ *
+ */
+
+/* Importeer rijkshuisstijl design tokens */
+@import "tokens/_rijkshuisstijl.css";
+
+/* Importeer toegepaste design tokens */
+@import "tokens/_toepassing.css";
+
+/* CSS reset */
+@import "reset.css";
+
+/* Prototype-only */
+@import "prototype.css";
+
+/* Rijks Sans webfont */
+@font-face {
+	font-family: "RijksSansVF";
+	font-style: normal;
+	font-weight: 100 900;
+	src: url("../assets/fonts/RijksSansVF-Regular.ttf") format("truetype");
+}
+@font-face {
+	font-family: "RijksSansVF";
+	font-style: italic;
+	font-weight: 100 900;
+	src: url("../assets/fonts/RijksSansVF-Italic.ttf") format("truetype");
+}
+
+/* -- PAGINA-LAYOUT -- */
+
+body {
+	background: var(--toepassing-color-background-subtle-2);
+	color: var(--toepassing-color-text-default);
+	display: flex;
+	flex-direction: column;
+	font-family:
+		var(--toepassing-text-font-family-body),
+		system-ui,
+		-apple-system,
+		"Segoe UI",
+		Roboto,
+		"Helvetica Neue",
+		Arial,
+		"Noto Sans",
+		"Liberation Sans",
+		sans-serif;
+	min-block-size: 100vh;
+	min-block-size: 100dvh; /* Fallback: vh voor browsers zonder dvh-ondersteuning */
+}
+
+header {
+	background: var(--toepassing-color-background-default);
+	border-block-end: var(--toepassing-border-pageheader-border);
+	box-shadow: var(--toepassing-box-shadow-default);
+	margin-block-end: var(--toepassing-space-layout-md);
+	@media (max-width: 799px) {
+		margin-block-end: var(--toepassing-space-layout-xs);
+	}
+	.logo {
+		align-items: center;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		margin-block: 0 var(--toepassing-space-layout-sm);
+		margin-inline: auto;
+		max-inline-size: var(--toepassing-page-max-inline-size);
+		padding-inline: var(--toepassing-space-padding-md);
+		figure {
+			grid-column: 2;
+		}
+		img {
+			inline-size: var(--toepassing-size-logo-width);
+		}
+	}
+	.language-switch {
+		grid-column: 3;
+		justify-self: end;
+		text-decoration: none;
+	}
+	.user-menu {
+		display: flex;
+		gap: var(--toepassing-space-layout-md);
+	}
+	/* Toon fallback-naam als accountwisselaar verborgen is, anders verbergen. Een fallback die zelf
+	   hidden is (na inloggen met NL Wallet, zie nl-wallet-portaal.js) blijft verborgen. */
+	.account-switcher-fallback {
+		display: none;
+	}
+	.account-switcher[hidden] ~ .account-switcher-fallback:not([hidden]) {
+		display: inline-flex;
+	}
+}
+.page-head {
+	align-items: last baseline;
+	display: flex;
+	justify-content: space-between;
+	margin-inline: auto;
+	max-inline-size: var(--toepassing-page-max-inline-size);
+	padding-block-end: var(--toepassing-space-padding-sm);
+	padding-inline: var(--toepassing-space-padding-md);
+	.page-title {
+		font: var(--toepassing-text-heading-h2);
+	}
+}
+
+main {
+	flex: 1;
+	inline-size: 100%;
+	margin-inline: auto;
+	max-inline-size: var(--toepassing-page-max-inline-size);
+	@media (min-width: 800px) {
+		display: grid;
+		grid-template-columns: auto 1fr;
+	}
+	> article:first-of-type {
+		container-type: inline-size;
+		inline-size: 100%;
+		margin-block-end: var(--toepassing-space-margin-lg);
+		padding-inline: var(--toepassing-space-padding-md);
+	}
+	/* Decoratief (logo) blok onder de content */
+	&::after {
+		background: var(--toepassing-color-logo-background);
+		block-size: var(--toepassing-size-sm);
+		content: "";
+		display: block;
+		grid-column: 1 / -1;
+		inline-size: var(--toepassing-size-logo-width);
+		margin-inline: auto;
+	}
+}
+
+aside {
+	max-inline-size: min-content;
+	@media (min-width: 800px) {
+		min-inline-size: var(--toepassing-size-subnav-width);
+	}
+	@media (max-width: 799px) {
+		max-inline-size: 100%;
+	}
+}
+
+article,
+hgroup,
+form,
+ul,
+ol {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-xs);
+}
+
+/* -- TYPOGRAFIE -- */
+
+/* Titels en kopteksten, uitgebreid met heading-stijlklassen: visueel als een ander niveau, semantisch het juiste element */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+	font: var(--toepassing-text-heading-h1);
+	-webkit-line-clamp: 2;
+	line-clamp: 2; /* Beperkt titels en kopteksten tot maximaal twee regels tekst */
+}
+h2,
+.h2 {
+	font: var(--toepassing-text-heading-h2);
+}
+h3,
+.h3 {
+	font: var(--toepassing-text-heading-h3);
+}
+h4,
+.h4 {
+	font: var(--toepassing-text-heading-h4);
+}
+h5,
+.h5 {
+	font: var(--toepassing-text-heading-h5);
+}
+h6,
+.h6 {
+	font: var(--toepassing-text-heading-h6);
+}
+
+p {
+	font: var(--toepassing-text-paragraph-default);
+	max-inline-size: 77ch;
+	&.intro {
+		font: var(--toepassing-text-paragraph-intro);
+	}
+}
+
+small {
+	display: flex;
+	font: var(--toepassing-text-smalltext);
+	svg {
+		block-size: var(--toepassing-size-icon-sm);
+		flex-shrink: 0;
+		margin-block-start: var(--toepassing-space-margin-3xs);
+		margin-inline-end: var(--toepassing-space-margin-2xs);
+		path:not(.icon-color-inverse) {
+			fill: var(--toepassing-color-feedback-info-icon);
+		}
+	}
+}
+
+strong,
+b {
+	font-weight: var(--toepassing-text-font-weight-semi-bold);
+}
+em,
+i {
+	font-style: italic;
+}
+
+a,
+[aria-sort] {
+	color: var(--toepassing-color-interactive-default-text);
+	text-decoration: var(--toepassing-text-decoration-hyperlink);
+	text-decoration-color: currentcolor;
+	text-decoration-skip-ink: auto;
+	text-underline-offset: 3px;
+	transition: var(--toepassing-transition-default);
+	&:hover,
+	&:focus-visible {
+		color: var(--toepassing-color-interactive-hover-text);
+		text-decoration-color: transparent;
+	}
+	&:active {
+		color: var(--toepassing-color-interactive-active-text);
+	}
+}
+
+code,
+kbd,
+pre,
+samp,
+var {
+	background: var(--toepassing-color-background-subtle-2);
+	font: var(--toepassing-text-code);
+}
+pre {
+	padding: var(--toepassing-space-padding-sm);
+}
+
+.text-muted {
+	color: var(--toepassing-color-text-subtle-1);
+}
+.metadata {
+	color: var(--toepassing-color-text-subtle-2);
+	font-size: var(--toepassing-text-size-body-sm);
+}
+
+/* -- TOEGANKELIJKHEID -- */
+
+.skip-link {
+	margin-block-start: var(--toepassing-space-margin-sm);
+	margin-inline-start: var(--toepassing-space-margin-sm);
+	position: absolute;
+	translate: -200% 0%;
+	&:focus-visible {
+		translate: 0 0;
+	}
+}
+
+/* Visueel verborgen maar toegankelijk voor screenreaders */
+.visually-hidden {
+	block-size: 1px;
+	clip: rect(0, 0, 0, 0);
+	inline-size: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+}
+
+/* -- ICONOGRAFIE -- */
+
+.icon-xs {
+	inline-size: var(--toepassing-size-icon-xs);
+}
+.icon-sm {
+	inline-size: var(--toepassing-size-icon-sm);
+}
+.icon-md {
+	inline-size: var(--toepassing-size-icon-md);
+}
+.icon-lg {
+	inline-size: var(--toepassing-size-icon-lg);
+}
+.icon-xl {
+	inline-size: var(--toepassing-size-icon-xl);
+}
+
+.icon-color-inverse {
+	fill: var(--toepassing-color-text-inverse);
+}
+
+/* Links en labels voorzien van SVG iconen */
+.icon-link,
+.icon-label {
+	align-items: center;
+	display: inline-flex;
+	gap: var(--toepassing-space-layout-3xs);
+	text-decoration-color: transparent;
+	svg {
+		block-size: var(--toepassing-size-icon-sm);
+	}
+}
+.icon-link {
+	&:hover {
+		color: var(--toepassing-color-interactive-hover-text);
+		text-decoration: var(--toepassing-text-decoration-hyperlink) !important;
+	}
+}
+
+/* -- INTERACTIE -- */
+
+/* Generieke hover-interactie op alle interactieve elementen */
+:is(a, button, summary, [type="checkbox"], [type="radio"], label:has(input)) {
+	transition: var(--toepassing-transition-default);
+	&::before,
+	&::after {
+		transition: var(--toepassing-transition-default);
+	}
+	&:hover,
+	&:active,
+	&:focus-visible {
+		color: var(--toepassing-color-interactive-hover-text);
+		text-decoration-color: transparent;
+	}
+}
+
+/* Opacity i.p.v. specifieke kleuren: past automatisch aan bij donker/licht/hoog-contrast modus */
+[aria-disabled],
+[disabled] {
+	opacity: var(--toepassing-opacity-interactive-disabled);
+}
+
+/* Focus: zichtbaar voor toetsenbord/spraak/switch, verborgen voor muis */
+:focus:not(:focus-visible) {
+	outline: none;
+}
+:focus-visible {
+	box-shadow: var(--toepassing-focus-outline-backing);
+	outline: var(--toepassing-focus-outline);
+	outline-offset: var(--toepassing-focus-outline-offset-md);
+	&[aria-disabled] {
+		outline-color: var(--toepassing-color-interactive-disabled-border);
+	}
+	&.negative {
+		outline-color: var(--toepassing-color-feedback-error-border);
+	}
+}
+
+/* Focus die de pagina zelf verzet na een muisklik: de gebruiker staat wel op de
+   juiste plek, maar krijgt geen ring te zien. De browser rekent zo'n sprong als
+   toetsenbordfocus zodra het vorige element een tekstveld was, en dat klopt hier
+   niet. JavaScript haalt het attribuut weg bij de eerste toetsaanslag, dus voor
+   wie daarna verder tabt is de ring er meteen weer. */
+[data-focus-stil]:focus-visible {
+	box-shadow: none;
+	outline: none;
+}
+
+/* Bevestigde opties (niet meer wijzigbaar, gemarkeerd met vinkje, wordt gebruikt voor Aangesloten organisaties onder Contactgegevens) */
+li.option--confirmed {
+	&::before {
+		background-color: var(--toepassing-color-feedback-success-icon);
+		block-size: var(--toepassing-size-icon-md);
+		content: "";
+		display: inline-block;
+		inline-size: var(--toepassing-size-icon-md);
+		margin-inline-end: var(--toepassing-space-margin-2xs);
+		mask-image: url("../assets/icons/icon-succes.svg");
+		vertical-align: middle;
+	}
+}
+
+/* Ongelezen staat */
+.is-unread {
+	h3,
+	.berichtenbox-row-sender {
+		font-weight: var(--toepassing-text-font-weight-bold);
+		position: relative;
+	}
+	.berichtenbox-row-sender {
+		&::before {
+			margin-inline-start: calc(-1 * var(--toepassing-space-margin-sm));
+		}
+	}
+}
+
+.dynamic-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-md);
+	&:empty {
+		/* Dynamisch gevulde container: verberg uit de layout zolang er nog geen content in zit */
+		display: none;
+	}
+}
+
+/* Persona-CTA-wrapper in een kaart is puur gedrag (personas.js): laat die uit
+   de layout wegvallen zodat de kinderen meedoen in de flex-gap van de kaart.
+   Alleen binnen een kaart; losse gated elementen (zoals de dashboard-melding)
+   houden hun eigen box en worden simpelweg met [hidden] verborgen. */
+.card > [data-persona-energiedrempel] {
+	display: contents;
+	&[hidden] {
+		display: none;
+	}
+}
+
+/* -- FORMULIEREN -- */
+
+fieldset {
+	border: 0;
+	padding: 0;
+}
+
+/* Formulieren: gedeelde stijlen voor alle invoerelementen */
+button,
+[type="date"],
+[type="datetime-local"],
+[type="email"],
+[type="month"],
+[type="number"],
+[type="password"],
+[type="search"],
+[type="tel"],
+[type="text"],
+[type="time"],
+[type="url"],
+[type="week"],
+select,
+textarea,
+.btn,
+.btn-cta {
+	align-self: flex-start; /* Voorkomt full-width in flex containers */
+	background: var(--toepassing-color-interactive-default-surface);
+	border: var(--toepassing-border-width-md) solid var(--toepassing-color-interactive-default-border);
+	border-radius: var(--toepassing-border-radius-sm);
+	font: inherit;
+	line-height: unset;
+	min-block-size: var(--toepassing-pointer-target-min-size);
+	min-inline-size: var(--toepassing-pointer-target-min-size);
+	padding-block: var(--toepassing-space-padding-sm);
+	padding-inline: var(--toepassing-space-padding-md);
+	transition: var(--toepassing-transition-default);
+	&:hover {
+		border-color: var(--toepassing-color-interactive-hover-border);
+	}
+	&:active {
+		border-color: var(--toepassing-color-interactive-active-border);
+	}
+	&[aria-invalid] {
+		border-color: var(--toepassing-color-feedback-error-border);
+		outline-color: var(--toepassing-color-feedback-error-border);
+	}
+	&.negative {
+		border-color: var(--toepassing-color-feedback-error-border);
+	}
+}
+.btn-cta::after {
+	background-color: currentcolor;
+	block-size: var(--toepassing-size-icon-xs);
+	content: "";
+	display: inline-block;
+	inline-size: var(--toepassing-size-icon-xs);
+	margin-inline-start: var(--toepassing-space-margin-2xs);
+	mask: url("../assets/icons/icon-link-intern.svg") no-repeat center / contain;
+	vertical-align: middle;
+}
+.btn-cta[rel~="external"]::after {
+	mask: url("../assets/icons/icon-link-extern.svg") no-repeat center / contain;
+	vertical-align: baseline;
+}
+
+/* Extern-link icoon achter overige externe links */
+a[rel~="external"]:not(.btn-cta, .content-link)::after {
+	background-color: currentcolor;
+	block-size: var(--toepassing-size-icon-xs);
+	content: "";
+	display: inline-block;
+	inline-size: var(--toepassing-size-icon-xs);
+	margin-inline-start: var(--toepassing-space-margin-3xs);
+	mask: url("../assets/icons/icon-link-extern.svg") no-repeat center / contain;
+	vertical-align: baseline;
+}
+
+/* Icoon voor link-tekst */
+.content-link svg {
+	margin-inline-end: var(--toepassing-space-margin-2xs);
+}
+
+/* Formulieren: labels */
+legend,
+label,
+dt {
+	color: var(--toepassing-color-text-subtle-1);
+	display: block;
+	font: var(--toepassing-text-label);
+	margin-block-end: var(--toepassing-space-margin-3xs);
+}
+label {
+	display: inline-block;
+}
+
+.form-field-helper-text {
+	color: var(--toepassing-color-text-subtle-1);
+	font: var(--toepassing-text-smalltext-default);
+	margin-block-end: var(--toepassing-space-margin-2xs);
+}
+
+/* Formulieren: tekst-invoer elementen */
+[type="date"],
+[type="datetime-local"],
+[type="email"],
+[type="month"],
+[type="number"],
+[type="password"],
+[type="search"],
+[type="tel"],
+[type="text"],
+[type="time"],
+[type="url"],
+[type="week"],
+textarea {
+	border: var(--toepassing-border-width-xs) solid var(--toepassing-color-interactive-default-border);
+	inline-size: 100%;
+	~ .feedback,
+	~ * .feedback {
+		margin-block-start: var(--toepassing-space-margin-2xs);
+	}
+	&[readonly] {
+		background: var(--toepassing-color-interactive-disabled-background);
+		cursor: not-allowed;
+	}
+}
+textarea {
+	resize: block; /* Alleen verticaal resizen zodat de breedte-layout intact blijft */
+}
+
+/* Formulieren: inline feedback bij invoervelden */
+.form-field-error {
+	color: var(--toepassing-color-feedback-error-icon);
+	font: var(--toepassing-text-smalltext-default);
+	margin-block-start: var(--toepassing-space-margin-3xs);
+	&[hidden] {
+		display: none;
+	}
+}
+
+/* Formulieren: zoekveld met knop */
+[type="search"]:has(+ button) {
+	border-end-end-radius: 0;
+	border-end-start-radius: 0;
+	+ button {
+		display: inline-block;
+		margin-inline-start: -2px; /* Pixelwaarde om zoek-knop aan te laten sluiten op zoekveld */
+	}
+}
+
+/* Formulieren: (custom) checkboxes en radio button's */
+ul.selection {
+	list-style: none;
+	padding: 0;
+}
+[type="checkbox"],
+[type="radio"] {
+	appearance: none;
+	background: var(--toepassing-color-interactive-default-surface);
+	block-size: var(--toepassing-size-icon-md);
+	border: var(--toepassing-border-width-md) solid var(--toepassing-color-interactive-default-border);
+	border-radius: var(--toepassing-border-radius-md);
+	display: inline-grid;
+	inline-size: var(--toepassing-size-icon-md);
+	place-content: center;
+	transition: var(--toepassing-transition-default);
+	vertical-align: top;
+	&::before,
+	&[data-indeterminate]::before {
+		block-size: var(--toepassing-size-icon-sm);
+		content: "";
+		inline-size: var(--toepassing-size-icon-sm);
+		transform: scale(0); /* Vinkje/bolletje: standaard verborgen met scale(0) */
+		transition: var(--toepassing-transition-transform);
+	}
+	&:checked {
+		background: var(--toepassing-color-interactive-default-background);
+		border-color: var(--toepassing-color-interactive-default-border);
+		&::before {
+			transform: scale(1);
+		}
+	}
+	&:hover {
+		border-color: var(--toepassing-color-interactive-hover-border);
+		&:checked {
+			background: var(--toepassing-color-interactive-hover-background);
+			border-color: var(--toepassing-color-interactive-hover-border);
+		}
+	}
+	+ label {
+		display: inline-block;
+		padding-inline: var(--toepassing-space-padding-xs);
+	}
+	&[aria-disabled] + label {
+		color: var(--toepassing-color-interactive-disabled-text);
+		cursor: unset;
+	}
+}
+[type="checkbox"] {
+	&::before {
+		background-color: var(--toepassing-color-text-inverse);
+		mask: url("../assets/icons/icon-vink.svg") no-repeat center / contain;
+	}
+	&[data-indeterminate] {
+		background: var(--toepassing-color-interactive-default-background);
+		border-color: var(--toepassing-color-interactive-default-border);
+		&::before {
+			mask: url("../assets/icons/icon-minus.svg") no-repeat center / contain;
+			transform: scale(1);
+		}
+	}
+}
+[type="radio"] {
+	border-radius: var(--toepassing-border-radius-round);
+	&::before {
+		border-radius: var(--toepassing-border-radius-round);
+	}
+	&:checked {
+		background: var(--toepassing-color-interactive-default-background);
+		outline: 2px solid var(--toepassing-color-interactive-default-surface);
+		outline-offset: -4px; /* Inset ring voor radio-bolletje effect */
+		&:hover {
+			background: var(--toepassing-color-interactive-hover-background);
+		}
+	}
+	&:focus-visible {
+		outline: var(--toepassing-focus-outline);
+		outline-offset: calc(2 * var(--toepassing-focus-outline-offset-md));
+		&::before {
+			outline: 2px solid var(--toepassing-color-interactive-default-surface);
+		}
+	}
+}
+
+/* Formulieren: verificatiecode (6-cijferige code-invoer) */
+.verificationcode-input {
+	display: flex;
+	gap: var(--toepassing-space-layout-2xs);
+	margin-block-end: var(--toepassing-space-margin-xs);
+	.verificationcode-verify-digit {
+		font-family: monospace;
+		font-size: var(--toepassing-text-size-body-sm);
+		font-weight: var(--toepassing-text-font-weight-bold);
+		inline-size: var(--toepassing-size-md);
+		text-align: center;
+	}
+}
+
+#verify-code-feedback {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-xs);
+}
+
+/* Klik-affordance voor relevante interactieve elementen */
+button,
+label,
+select,
+summary,
+[type="checkbox"],
+[type="checkbox"] {
+	cursor: pointer;
+}
+
+/* -- KNOPPEN -- */
+
+button,
+a.btn,
+a.btn-cta,
+button.btn-cta {
+	align-items: center; /* Verticaal centreren: <a> top-aligned anders tekst hoger dan in <button> */
+	background: var(--toepassing-color-interactive-default-background);
+	color: var(--toepassing-color-text-inverse);
+	display: inline-flex;
+	justify-content: center;
+	text-decoration: none;
+	transition: var(--toepassing-transition-default);
+	@container (max-inline-size: 280px) {
+		inline-size: 100%;
+		text-align: center;
+	}
+	span {
+		display: inline-block;
+	}
+	&.secondary,
+	&[type="reset"] {
+		background: var(--toepassing-color-interactive-default-surface);
+		border-color: var(--toepassing-color-interactive-default-border);
+		color: var(--toepassing-color-interactive-default-text);
+		text-decoration: none;
+	}
+	&:hover,
+	&:focus-visible {
+		background: var(--toepassing-color-interactive-hover-background);
+		border-color: var(--toepassing-color-interactive-hover-border);
+		color: var(--toepassing-color-text-inverse);
+	}
+	&:active {
+		background: var(--toepassing-color-interactive-active-background);
+		border-color: var(--toepassing-color-interactive-active-border);
+	}
+	&[aria-disabled] {
+		cursor: not-allowed;
+	}
+	&.negative {
+		background: var(--toepassing-color-feedback-error-default);
+		&:hover,
+		&:focus-visible {
+			background: var(--toepassing-color-feedback-error-emphasis);
+			border-color: var(--toepassing-color-feedback-error-border);
+		}
+		&:active {
+			background: var(--toepassing-color-interactive-active-background);
+			border-color: var(--toepassing-color-interactive-active-border);
+		}
+	}
+	svg {
+		align-self: center;
+		block-size: var(--toepassing-size-icon-sm);
+		margin-inline-end: var(--toepassing-space-margin-2xs);
+		path {
+			fill: currentcolor !important;
+		}
+	}
+}
+.btn-small {
+	min-block-size: unset;
+	padding: var(--toepassing-space-padding-2xs) var(--toepassing-space-padding-xs);
+}
+
+/* Actiegroep (kolom op mobiel, rij op desktop) */
+.action-group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-layout-xs);
+	position: relative;
+	button,
+	a.btn-cta {
+		inline-size: 100%;
+	}
+	@media (min-width: 30em) {
+		flex-direction: row;
+		button,
+		a.btn-cta {
+			inline-size: initial;
+		}
+	}
+}
+
+/* Knoppen zonder visuele knop-stijl (links en iconen die als button functioneren) */
+.link-button,
+.icon-button {
+	background: none;
+	border: none;
+	color: var(--toepassing-color-interactive-default-text);
+	cursor: pointer;
+	min-block-size: unset;
+	padding: 0;
+	&:hover,
+	&:focus-visible,
+	&:active {
+		background: inherit !important;
+		color: inherit !important;
+	}
+}
+.icon-button {
+	display: flex;
+	&[hidden] {
+		display: none;
+	}
+	svg {
+		inline-size: var(--toepassing-size-icon-sm);
+		margin-inline-end: var(--toepassing-space-margin-2xs);
+	}
+}
+.btn-close {
+	display: flex;
+	margin-inline-start: auto;
+	min-block-size: var(--toepassing-pointer-target-min-size);
+	&[hidden] {
+		display: none;
+	}
+	i {
+		display: none;
+	}
+	&::after {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-sm);
+		content: "";
+		inline-size: var(--toepassing-size-icon-sm);
+		margin-inline-start: auto;
+		mask: url("../assets/icons/icon-sluiten.svg") no-repeat top right / contain;
+	}
+}
+
+/* -- MEDIA -- */
+
+p svg {
+	block-size: var(--toepassing-size-icon-sm);
+	margin-block-start: 1px;
+	margin-inline-end: calc(-1 * var(--toepassing-space-margin-3xs));
+	vertical-align: text-top;
+}
+
+video {
+	aspect-ratio: 16 / 9;
+	inline-size: 100%;
+}
+
+/* -- NAVIGATIE -- */
+
+nav {
+	ol,
+	ul {
+		list-style: none;
+		padding: 0;
+	}
+}
+
+/* Navigatie: hoofdnavigatie (horizontale balk) */
+.main-nav {
+	background-color: var(--toepassing-color-interactive-active-background);
+	ul {
+		margin-inline: auto;
+		max-inline-size: var(--toepassing-page-max-inline-size);
+	}
+	li {
+		display: inline-block;
+	}
+	a {
+		color: var(--toepassing-color-text-inverse);
+		display: inline-block;
+		font: var(--toepassing-text-nav-main-nav);
+		padding: var(--toepassing-space-padding-md);
+		text-decoration-color: transparent;
+	}
+	[aria-current],
+	a:hover {
+		text-decoration: var(--toepassing-text-decoration-hyperlink);
+	}
+	[aria-current] {
+		font-weight: var(--toepassing-text-font-weight-bold);
+	}
+}
+
+/* Navigatie: sub-navigatie (sidebar, responsive hamburger op mobiel) */
+button.side-nav-toggle {
+	align-items: center;
+	background: var(--toepassing-color-background-default);
+	color: var(--toepassing-color-interactive-default-text);
+	display: none;
+	gap: var(--toepassing-space-layout-xs);
+	inset-block-start: var(--toepassing-space-padding-sm);
+	position: absolute;
+	&::before {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-xs);
+		content: "";
+		inline-size: var(--toepassing-size-icon-sm);
+		mask: url("../assets/icons/icon-menu.svg") no-repeat center / contain;
+		transition: var(--toepassing-transition-transform);
+	}
+	&:hover,
+	&:active,
+	&:focus-visible {
+		background: inherit;
+		color: inherit;
+	}
+	&[aria-expanded="true"]::before {
+		inline-size: var(--toepassing-size-icon-xs);
+		mask-image: url("../assets/icons/icon-chevron.svg");
+		transform: rotate(180deg);
+	}
+	@media (max-width: 799px) {
+		align-items: baseline;
+		display: flex;
+	}
+}
+.side-nav-toggle[aria-expanded="true"] + ul {
+	display: block;
+}
+.side-nav {
+	padding-inline: var(--toepassing-space-padding-md);
+	ul {
+		@media (max-width: 799px) {
+			background: var(--toepassing-color-background-default);
+			display: none;
+			margin-block-end: var(--toepassing-space-margin-md);
+			padding: var(--toepassing-space-padding-md);
+		}
+	}
+	li {
+		a {
+			align-items: center;
+			border-radius: var(--toepassing-border-radius-md);
+			color: var(--toepassing-color-interactive-alternate-default-text);
+			display: flex;
+			font: var(--toepassing-text-nav-side-nav);
+			gap: var(--toepassing-space-layout-2xs);
+			padding-block: var(--toepassing-space-padding-2xs);
+			padding-inline: var(--toepassing-space-padding-md);
+			text-decoration: none;
+			&:hover,
+			&:focus-visible,
+			&:active {
+				background: var(--toepassing-color-interactive-alternate-hover-background);
+				color: inherit;
+			}
+			&:active {
+				background: var(--toepassing-color-interactive-alternate-active-background);
+			}
+		}
+		[aria-current] {
+			background: var(--toepassing-color-interactive-alternate-selected-background);
+			font-weight: var(--toepassing-text-font-weight-semi-bold);
+		}
+		svg {
+			align-self: first baseline;
+			block-size: var(--toepassing-size-icon-md);
+			flex-shrink: 0;
+		}
+		.badge {
+			margin-block-start: var(--toepassing-space-margin-3xs);
+			margin-inline-start: auto;
+		}
+	}
+}
+.side-nav-group--start {
+	margin-block-start: var(--toepassing-space-margin-sm);
+}
+
+/* Navigatie: kruimelpad */
+.breadcrumb {
+	ol {
+		flex-direction: row;
+	}
+	li {
+		display: inline-block;
+		&:not(:last-child)::after {
+			content: " /";
+			margin-inline: var(--toepassing-space-padding-2xs);
+		}
+		&[aria-current="page"] {
+			font-weight: var(--toepassing-text-font-weight-semi-bold);
+		}
+	}
+}
+
+/* Navigatie: paginering */
+.pagination {
+	ol {
+		flex-flow: row wrap;
+	}
+	a,
+	[aria-current="page"] {
+		align-items: center;
+		background: var(--toepassing-color-background-default);
+		border: var(--toepassing-border-width-xs) solid var(--toepassing-color-border-subtle);
+		border-radius: var(--toepassing-border-radius-md);
+		display: inline-flex;
+		justify-content: center;
+		min-block-size: var(--toepassing-pointer-target-min-size);
+		min-inline-size: var(--toepassing-pointer-target-min-size);
+		padding-inline: var(--toepassing-space-padding-sm);
+		text-decoration: none;
+	}
+	a {
+		&:hover {
+			background: var(--toepassing-color-interactive-alternate-hover-background);
+		}
+	}
+	[aria-current="page"] {
+		background: var(--toepassing-color-interactive-selected-background);
+		border-color: var(--toepassing-color-interactive-selected-border);
+		color: var(--toepassing-color-text-inverse);
+	}
+	.pagination-ellipsis span {
+		align-items: center;
+		color: var(--toepassing-color-text-subtle);
+		display: inline-flex;
+		justify-content: center;
+		min-block-size: var(--toepassing-pointer-target-min-size);
+		min-inline-size: var(--toepassing-pointer-target-min-size);
+	}
+}
+
+/* Navigatie: Links */
+a[href$=".pdf"],
+a[href$=".txt"] {
+	&::before {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-md);
+		content: "";
+		display: inline-block;
+		inline-size: var(--toepassing-size-icon-md);
+		margin-inline-end: var(--toepassing-space-layout-3xs);
+		mask: url("../assets/icons/icon-document-pdf.svg") no-repeat center / contain;
+		vertical-align: middle;
+	}
+}
+a[href$=".txt"]::before {
+	mask: url("../assets/icons/icon-document-tekst.svg") no-repeat center / contain;
+}
+
+/* Navigatie: Link terug */
+.back-link {
+	display: inline-block;
+	text-decoration-color: transparent;
+	&::before {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-xs);
+		content: "";
+		display: inline-block;
+		inline-size: var(--toepassing-size-icon-xs);
+		margin-inline-end: var(--toepassing-space-layout-3xs);
+		mask: url("../assets/icons/icon-link-intern.svg") no-repeat center / contain;
+		transform: rotate(180deg);
+		vertical-align: middle;
+	}
+	&:hover {
+		text-decoration: var(--toepassing-text-decoration-hyperlink);
+	}
+}
+
+/* Navigatie: footer */
+
+footer {
+	background: var(--toepassing-color-footer-background);
+	color: var(--toepassing-color-text-inverse);
+	padding: var(--toepassing-space-padding-xl) var(--toepassing-space-padding-md);
+	a {
+		color: inherit !important;
+		display: inline-block;
+		font: var(--toepassing-text-nav-footer);
+		padding-block: var(--toepassing-space-padding-xs);
+		text-decoration-color: transparent;
+		&:hover {
+			color: inherit;
+			text-decoration: var(--toepassing-text-decoration-hyperlink) !important;
+		}
+	}
+}
+/* Kolom op mobiel, rij op desktop */
+.footer-links {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-lg);
+	justify-content: flex-end;
+	margin-inline: auto;
+	max-inline-size: var(--toepassing-page-max-inline-size);
+	@media (min-width: 799px) {
+		flex-direction: row;
+	}
+	nav {
+		max-inline-size: 12rem;
+		h4 {
+			margin-block-end: var(--toepassing-space-layout-xs);
+		}
+	}
+}
+
+/* -- LIJSTEN -- */
+
+ul,
+ol {
+	gap: var(--toepassing-space-margin-2xs);
+}
+li li {
+	margin-block-start: var(--toepassing-space-layout-xs);
+}
+
+dd {
+	margin-inline-start: 0;
+}
+dd + dt {
+	margin-block-start: var(--toepassing-space-margin-xs);
+}
+
+dl.data-overview div {
+	margin-block-end: var(--toepassing-space-margin-xs);
+}
+
+.list-plain {
+	list-style: none;
+	margin-block-end: var(--toepassing-space-margin-xs);
+	padding: 0;
+	li {
+		border: 0 !important;
+	}
+}
+
+.list-indent {
+	padding-inline-start: var(--toepassing-space-padding-sm);
+	::marker {
+		color: var(--toepassing-color-text-subtle-2);
+		font-size: var(--toepassing-text-size-body-md);
+	}
+}
+
+.list-separation {
+	inline-size: var(--toepassing-size-3xs);
+}
+
+/* -- TABELLEN -- */
+table {
+	border-collapse: collapse;
+	inline-size: 100%;
+}
+th {
+	color: var(--toepassing-color-text-subtle-1);
+	font-weight: var(--toepassing-text-font-weight-semi-bold);
+	svg {
+		color: var(--toepassing-color-text-subtle-2);
+	}
+}
+tr {
+	background: var(--toepassing-color-background-default);
+	border-block-end: var(--toepassing-border-subtle);
+	position: relative;
+	transition: var(--toepassing-transition-default);
+	vertical-align: top;
+	a::after {
+		content: "";
+		inset: 0;
+		position: absolute;
+	}
+	&:hover a {
+		text-decoration: var(--toepassing-text-decoration-hyperlink);
+	}
+}
+tbody {
+	tr {
+		&:hover {
+			background: var(--toepassing-color-interactive-alternate-hover-background);
+			transition: var(--toepassing-transition-default);
+		}
+	}
+}
+th,
+td {
+	padding-block: var(--toepassing-space-padding-xs);
+	padding-inline: var(--toepassing-space-padding-sm);
+	text-align: start;
+	svg {
+		block-size: var(--toepassing-size-icon-sm);
+	}
+	&:has(time) {
+		text-align: end;
+	}
+}
+/* .action-group {
+	font-size: var(--toepassing-text-size-body-sm);
+} */
+caption {
+	caption-side: bottom; /* Logical property wordt nog niet ondersteund */
+	padding-block-start: var(--toepassing-space-padding-sm);
+	text-align: end;
+}
+
+/* -- CARDS -- */
+
+.card {
+	background: var(--toepassing-color-background-default);
+	border-radius: var(--toepassing-border-radius-md);
+	box-shadow: var(--toepassing-border-card-default);
+	container-type: inline-size;
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-layout-xs);
+	padding: var(--toepassing-space-card-padding);
+	section {
+		display: flex;
+		flex-direction: column;
+		gap: var(--toepassing-space-margin-sm);
+	}
+	h2,
+	h3,
+	h4 {
+		font-size: var(--toepassing-text-size-title-2xl);
+		a {
+			color: var(--toepassing-color-interactive-default-text);
+		}
+	}
+	h3,
+	h4 {
+		font-size: var(--toepassing-text-size-title-xl);
+	}
+	a:not(.btn-cta) {
+		&:hover {
+			h3,
+			h4 {
+				color: var(--toepassing-color-interactive-hover-text);
+				text-decoration: var(--toepassing-text-decoration-hyperlink);
+				transition: var(--toepassing-transition-default);
+			}
+		}
+		/* Onzichtbare link die de hele card klikbaar maakt */
+		&:focus-visible .card-link {
+			outline: var(--toepassing-focus-outline);
+			outline-offset: var(--toepassing-focus-outline-offset-lg);
+		}
+	}
+	.metadata a {
+		text-decoration: underline;
+	}
+	.list-content-links {
+		gap: var(--toepassing-space-margin-md);
+		list-style: none;
+		padding: 0;
+		li {
+			padding-block-end: var(--toepassing-space-padding-md);
+			position: relative;
+			&[hidden] {
+				display: none;
+				margin: 0;
+				padding: 0;
+			}
+			&.remove-item {
+				animation: var(--toepassing-animation-fade-fade-out);
+			}
+			&.restore-item {
+				animation: var(--toepassing-animation-fade-fade-in);
+			}
+		}
+		.data-overview {
+			margin-block: var(--toepassing-space-margin-xs);
+		}
+	}
+	/* Extern-link icoon achter headings */
+	.content-link {
+		&[rel="external"] h3::after {
+			background-color: currentcolor;
+			block-size: var(--toepassing-size-icon-sm);
+			content: "";
+			display: inline-block;
+			inline-size: var(--toepassing-size-icon-sm);
+			margin-inline-start: var(--toepassing-space-margin-2xs);
+			mask: url("../assets/icons/icon-link-extern.svg") no-repeat center / contain;
+		}
+	}
+}
+.card-topic {
+	padding-block-end: 0 !important;
+	.content-link {
+		text-decoration: none;
+		h3,
+		h4 {
+			text-decoration: var(--toepassing-text-decoration-hyperlink);
+			text-decoration-color: transparent;
+			transition: var(--toepassing-transition-default);
+		}
+		&:hover h3,
+		&:hover h4 {
+			text-decoration-color: currentcolor;
+		}
+	}
+}
+.action-options {
+	background: var(--toepassing-color-background-subtle-2);
+	border: var(--toepassing-border-subtle);
+	border-radius: var(--toepassing-border-radius-md);
+	flex-wrap: wrap;
+	padding: var(--toepassing-space-padding-xs) var(--toepassing-space-padding-sm);
+	.icon-button {
+		border-radius: var(--toepassing-border-radius-md);
+		padding: var(--toepassing-space-padding-xs) var(--toepassing-space-padding-sm);
+		white-space: nowrap;
+		&:hover,
+		&:focus-visible {
+			background: var(--toepassing-color-interactive-alternate-hover-background) !important;
+		}
+		svg {
+			flex: none;
+		}
+	}
+}
+/* Onzichtbare overlay-link voor klikbare cards */
+.card-link {
+	block-size: 100%;
+	border-radius: var(--toepassing-border-radius-sm);
+	inline-size: 100%;
+	inset-block-start: 0;
+	position: absolute;
+}
+
+/* Data-overview: lange lijsten met <div>-wrappers vloeien over 2 kolommen op
+   brede viewports. Drempel is 5 paren: bij gebalanceerde verdeling belanden er
+   dan minimaal 2 in kolom 2. Smal scherm valt automatisch terug naar 1 kolom. */
+.data-overview:has(> div:nth-of-type(5)) {
+	column-gap: var(--toepassing-space-layout-md);
+	columns: 2 22rem;
+	> div {
+		break-inside: avoid;
+	}
+}
+
+/* Tiles: 2-koloms grid, 1 kolom op smal scherm */
+.tiles {
+	display: grid;
+	gap: var(--toepassing-space-layout-xs);
+	grid-template-columns: repeat(2, 1fr);
+	@container (max-inline-size: 624px) {
+		grid-template-columns: 1fr;
+	}
+	.card {
+		.btn-cta {
+			margin-block-start: auto; /* Duw CTA naar onderkant van card */
+		}
+	}
+}
+
+/* -- FEEDBACK -- */
+
+.feedback {
+	background: var(--toepassing-color-feedback-neutral-subtle);
+	border: var(--toepassing-border-default);
+	border-color: var(--toepassing-color-feedback-neutral-border);
+	border-radius: var(--toepassing-border-radius-md);
+	display: flex;
+	gap: var(--toepassing-space-layout-2xs);
+	padding: var(--toepassing-space-padding-md);
+	&[hidden] {
+		display: none;
+	}
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font: var(--toepassing-text-heading-h6);
+		margin-block-end: var(--toepassing-space-margin-3xs);
+	}
+	p + p {
+		margin-block-start: var(--toepassing-space-margin-2xs);
+	}
+	.btn-close {
+		min-block-size: auto;
+	}
+	svg {
+		align-self: first baseline;
+		flex-shrink: 0;
+		inline-size: var(--toepassing-size-icon-md);
+	}
+	div {
+		display: flex;
+		flex-direction: column;
+		gap: var(--toepassing-space-margin-xs);
+	}
+}
+.feedback-info {
+	background: var(--toepassing-color-feedback-info-subtle);
+	border-color: var(--toepassing-color-feedback-info-border);
+	svg path:not(.icon-color-inverse),
+	svg circle:not(.icon-color-inverse) {
+		fill: var(--toepassing-color-feedback-info-icon);
+	}
+}
+.feedback-success {
+	background: var(--toepassing-color-feedback-success-subtle);
+	border-color: var(--toepassing-color-feedback-success-border);
+	svg path:not(.icon-color-inverse),
+	svg circle:not(.icon-color-inverse) {
+		fill: var(--toepassing-color-feedback-success-icon);
+	}
+}
+.feedback-warning {
+	background: var(--toepassing-color-feedback-warning-subtle);
+	border-color: var(--toepassing-color-feedback-warning-border);
+	svg path:not(.icon-color-inverse),
+	svg circle:not(.icon-color-inverse) {
+		fill: var(--toepassing-color-feedback-warning-icon);
+	}
+}
+.feedback-error {
+	background: var(--toepassing-color-feedback-error-subtle);
+	border-color: var(--toepassing-color-feedback-error-border);
+	svg path:not(.icon-color-inverse),
+	svg circle:not(.icon-color-inverse) {
+		fill: var(--toepassing-color-feedback-error-icon);
+	}
+}
+.feedback-page-banner {
+	inline-size: 100%;
+	margin-block-end: var(--toepassing-space-margin-md);
+	margin-inline: auto;
+	max-inline-size: var(--toepassing-page-max-inline-size);
+	padding: var(--toepassing-space-padding-md);
+}
+
+dd .feedback {
+	margin-block-end: var(--toepassing-space-margin-xs);
+}
+
+li,
+th,
+td {
+	.feedback {
+		font-size: var(--toepassing-text-smalltext);
+		gap: var(--toepassing-space-margin-3xs);
+		inline-size: fit-content;
+		margin-block-end: var(--toepassing-space-margin-xs);
+		margin-block-end: 0;
+		padding: var(--toepassing-space-padding-xs);
+		svg {
+			block-size: var(--toepassing-size-icon-sm);
+		}
+	}
+}
+
+small.disclaimer {
+	border-block-start: var(--toepassing-border-subtle);
+	color: var(--toepassing-color-text-subtle-2);
+	margin-block-start: var(--toepassing-space-margin-2xs);
+	padding-block-start: var(--toepassing-space-padding-xs);
+}
+
+/* -- BERICHTENBOX -- */
+[data-berichtenbox-toolbar] {
+	.metadata {
+		margin-block-end: var(--toepassing-space-margin-xs);
+	}
+	[data-bron-onbereikbaar],
+	[data-geen-bronnen],
+	[data-bron-uitval] {
+		margin-block-end: var(--toepassing-space-margin-md);
+	}
+}
+[data-bericht-onbeschikbaar] {
+	margin-block: var(--toepassing-space-margin-md);
+}
+.berichtenbox-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--toepassing-space-layout-sm);
+}
+.berichtenbox-search {
+	flex: 2 1 20rem;
+	input {
+		inline-size: 100%;
+	}
+}
+.berichtenbox-afzender {
+	flex: 1 1 12rem;
+	select {
+		inline-size: 100%;
+	}
+}
+.berichtenbox-row-sender {
+	inline-size: 25%;
+	position: relative;
+}
+.berichtenbox-row .berichtenbox-row-subject {
+	inline-size: 50%;
+	a {
+		color: var(--toepassing-color-text-default);
+		text-decoration: none;
+	}
+}
+.berichtenbox-row-date {
+	color: var(--toepassing-color-text-subtle-2);
+	font-size: var(--toepassing-text-size-body-sm);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+.berichtenbox-row-attachment svg {
+	color: var(--toepassing-color-interactive-default-background);
+	inline-size: var(--toepassing-size-icon-sm);
+}
+.berichtenbox-row-folder-label {
+	display: none; /* Tijdelijke de Map kolom verbergen */
+}
+
+/* Acties-kolom */
+.berichtenbox-row-actions {
+	inline-size: var(--toepassing-pointer-target-min-size);
+	text-align: end;
+}
+.row-actions {
+	position: relative;
+}
+.row-actions-toggle svg {
+	inline-size: var(--toepassing-size-icon-sm);
+}
+.row-actions-menu {
+	border-radius: var(--toepassing-border-radius-md);
+	box-shadow: var(--toepassing-box-shadow-default);
+	display: flex;
+	inset-block-start: var(--toepassing-size-sm);
+	inset-inline-end: 0;
+	position: absolute;
+	z-index: 2;
+	&[hidden] {
+		display: none;
+	}
+}
+
+/* Gemarkeerd-kolom */
+.berichtenbox-row-mark {
+	padding-inline: var(--toepassing-space-padding-xs) 0;
+	position: relative;
+	z-index: 1;
+}
+button.mark-toggle {
+	align-items: flex-start;
+	background: none;
+	block-size: 100%;
+	border: 0;
+	color: var(--toepassing-color-feedback-attention);
+	cursor: pointer;
+	display: flex;
+	inline-size: 100%;
+	justify-content: center;
+	min-block-size: unset;
+	min-inline-size: unset;
+	padding: var(--toepassing-space-padding-xs) 0 0;
+	transform: scale(1);
+}
+button.mark-toggle,
+[data-actie="markeren"] {
+	svg {
+		block-size: var(--toepassing-size-icon-sm);
+		inline-size: var(--toepassing-size-icon-sm);
+		transition: opacity var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default);
+	}
+	svg path {
+		fill: transparent;
+		stroke: var(--toepassing-color-feedback-attention);
+		stroke-width: 4;
+	}
+	&:hover,
+	&:focus-visible,
+	&:active {
+		background: none;
+		transform: scale(1.0125);
+		svg path {
+			fill: var(--toepassing-color-feedback-attention);
+			transition: var(--toepassing-transition-default);
+			transition-property: fill;
+		}
+	}
+	&:active {
+		animation: var(--toepassing-animation-icon-pop);
+	}
+	&:focus-visible {
+		box-shadow: var(--toepassing-focus-outline-backing);
+		outline: var(--toepassing-focus-outline);
+		outline-offset: var(--toepassing-focus-outline-offset-md);
+		svg {
+			opacity: 1;
+		}
+	}
+}
+button.is-marked {
+	svg {
+		color: var(--toepassing-color-feedback-attention);
+		path {
+			fill: currentcolor;
+			opacity: 1;
+			stroke: none;
+		}
+	}
+}
+.mark-toggle:not(.is-marked) svg {
+	opacity: 0;
+}
+.berichtenbox-row:hover .mark-toggle:not(.is-marked) svg {
+	opacity: 1;
+}
+
+/* Berichtenbox ongelezen status */
+.berichtenbox-row.is-unread {
+	.berichtenbox-row-sender {
+		font-weight: var(--toepassing-text-font-weight-bold);
+		padding-inline-start: var(--toepassing-space-padding-2xl);
+		position: relative;
+		&::before {
+			background: var(--toepassing-color-feedback-attention);
+			block-size: var(--toepassing-size-3xs);
+			border-radius: var(--toepassing-border-radius-round);
+			content: "";
+			display: block;
+			inline-size: var(--toepassing-size-3xs);
+			inset-block-start: 0.8rem;
+			position: absolute;
+		}
+	}
+	.berichtenbox-row-subject a {
+		color: var(--toepassing-color-interactive-default-text);
+	}
+}
+
+/* Berichtenbox animatie bij nieuw bericht */
+/* Plaatsvervanger voor een bericht dat niet te renderen is. Geen alarmkleur: het gaat om één
+   ontbrekend bericht, niet om een storing van de hele berichtenbox. */
+.berichtenbox-row.is-unreadable td {
+	color: var(--toepassing-color-text-subtle-2);
+	font-style: italic;
+}
+/* Er loopt een verzoek voor dit bericht (archiveren, weggooien). Het rijmenu is dan dicht, dus
+   zonder dit is tot het antwoord aan de rij niets te zien. */
+.berichtenbox-row[aria-busy="true"] {
+	opacity: var(--toepassing-opacity-interactive-disabled);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.berichtenbox-row.is-new {
+		animation: var(--toepassing-animation-fade-fade-in);
+	}
+}
+
+.berichtenbox-folder-user {
+	display: none; /* Tijdelijk verbergen: de mappen van de gegenereerde dataset */
+	/* Mappen uit het Federatief Berichtenstelsel wel: die volgen uit de berichten zelf, en wat er
+	   ontbreekt of verdwijnt is daar precies wat er te zien moet zijn. */
+	&[data-map-uit-berichten] {
+		display: revert;
+	}
+	a {
+		color: var(--toepassing-color-text-subtle-2);
+	}
+	[aria-current="page"] {
+		color: var(--toepassing-color-interactive-default-text);
+	}
+}
+
+.berichtenbox-content .feedback {
+	margin-block-end: var(--toepassing-space-margin-sm);
+}
+
+/* Sorteerbare kolomkoppen */
+.berichtenbox-sort {
+	align-items: center;
+	background: none;
+	border: none;
+	color: inherit;
+	gap: var(--toepassing-space-margin-3xs);
+	min-block-size: unset;
+	min-inline-size: unset;
+	padding: 0;
+	&:hover,
+	&:focus-visible,
+	&:active {
+		background: none !important;
+		color: inherit !important;
+		text-decoration: underline;
+	}
+	&::after {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-xs);
+		content: "";
+		display: inline-block;
+		inline-size: var(--toepassing-size-icon-xs);
+		mask: url("../assets/icons/icon-chevron.svg") no-repeat center / contain;
+		opacity: var(--toepassing-opacity-interactive-disabled);
+		transform: rotate(90deg);
+	}
+}
+th[aria-sort="ascending"] .berichtenbox-sort::after {
+	opacity: 1;
+	transform: rotate(-90deg);
+}
+th[aria-sort="descending"] .berichtenbox-sort::after {
+	opacity: 1;
+	transform: rotate(90deg);
+}
+
+/* Berichtenbox: bericht-pagina */
+.berichtenbox-detail-body {
+	p {
+		margin-block-end: var(--toepassing-space-margin-2xs);
+	}
+}
+.berichtenbox-detail-actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--toepassing-space-md);
+	margin-block: var(--toepassing-space-md);
+}
+/* Bijlagen dragen hun eigen icoon; een opsommingsteken ernaast is dubbelop. Attribuutselector
+   omdat deze lijst geen eigen klasse heeft — zie [data-berichtenbox-toolbar] hierboven. */
+[data-berichtenbox-attachments-list] {
+	list-style: none;
+	padding-inline-start: 0;
+}
+.berichtenbox-attachments-loading {
+	color: var(--toepassing-color-text-subtle-1);
+	font-style: italic;
+}
+.berichtenbox-attachment-preview {
+	background: var(--toepassing-color-background-raised);
+	block-size: 72rem;
+	border: var(--toepassing-border-subtle);
+	border-radius: var(--toepassing-border-radius-sm);
+	display: block;
+	inline-size: 100%;
+	margin-block-start: var(--toepassing-space-margin-sm);
+}
+/* Rood hoort bij weggooien. Staat het bericht al in de prullenbak, dan zet deze knop het juist
+   terug (`data-terugzetten` komt van berichtenbox.js) en is een waarschuwingskleur misleidend. */
+[data-actie="verwijderen"]:not([data-terugzetten]) svg {
+	color: var(--toepassing-color-feedback-error-emphasis);
+}
+
+/* Berichtenbox: verplaats bericht naar map paneel */
+.berichtenbox-move-panel {
+	background: var(--toepassing-color-background-raised);
+	border: 1px solid var(--toepassing-color-border-subtle);
+	border-radius: var(--toepassing-border-radius-md);
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-xs);
+	padding: var(--toepassing-space-md);
+	ul {
+		list-style: none;
+		padding-inline-start: var(--toepassing-space-padding-xs);
+	}
+	[type="text"] {
+		inline-size: 50%;
+	}
+	.action-group {
+		margin-block-start: var(--toepassing-space-margin-xs);
+	}
+}
+
+/* Ongelezen en gemarkeerde staat */
+.is-unread {
+	h3,
+	.berichtenbox-row-sender {
+		font-weight: var(--toepassing-text-font-weight-bold);
+	}
+	.berichtenbox-row-sender {
+		&::before {
+			margin-inline-start: calc(-1 * var(--toepassing-space-margin-sm));
+		}
+	}
+}
+
+.dynamic-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-md);
+	&:empty {
+		/* Dynamisch gevulde container: verberg uit de layout zolang er nog geen content in zit */
+		display: none;
+	}
+}
+
+/* -- DIGITALE ASSISTENT */
+
+.chat-container {
+	gap: var(--toepassing-space-padding-sm);
+	min-block-size: 56em;
+}
+.chat-header {
+	align-items: flex-start;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--toepassing-space-padding-md);
+	justify-content: space-between;
+}
+
+#chat-offline {
+	margin-block-start: var(--toepassing-space-margin-sm);
+}
+#chat-offline:not([hidden]) + .chat-status {
+	border-block-start: 0;
+	margin-block-start: var(--toepassing-space-margin-xs);
+	padding-block-start: 0;
+}
+
+.chat-status {
+	ul {
+		flex-flow: row wrap;
+		gap: var(--toepassing-space-padding-2xs) var(--toepassing-space-padding-md);
+	}
+	li {
+		align-items: start;
+		display: flex;
+		gap: var(--toepassing-space-padding-2xs);
+		position: relative;
+	}
+	/* Het icoon staat in de markup, zodat het via currentColor de statuskleur
+	   overneemt; een achtergrondafbeelding kan dat niet. De kleur zit op het
+	   icoon en niet op de hele regel, zodat de naam van de bron gewone tekst
+	   blijft. */
+	li > svg {
+		block-size: var(--toepassing-size-icon-sm);
+		flex: none;
+		inline-size: var(--toepassing-size-icon-sm);
+		margin-block-start: 0.15em;
+	}
+	.chat-status-connected > svg {
+		color: var(--toepassing-color-feedback-success-icon);
+	}
+	.chat-status-disconnected > svg {
+		color: var(--toepassing-color-feedback-error-icon);
+	}
+	/* Onderstreping als hint dat er uitleg achter zit; `cursor: help` bevestigt
+	   dat met de muis. */
+	.chat-status-bron {
+		border-block-end: var(--toepassing-border-width-xs) dotted currentcolor;
+		cursor: help;
+	}
+	/* De uitleg staat in de DOM (aria-describedby) en wordt alleen visueel
+	   verborgen, zodat een schermlezer hem altijd voorleest. */
+	.chat-status-uitleg {
+		background: var(--toepassing-color-background-raised);
+		border: var(--toepassing-border-default);
+		border-radius: var(--toepassing-border-radius-md);
+		inline-size: max-content;
+		inset-block-end: calc(100% + var(--toepassing-space-padding-2xs));
+		inset-inline-start: 0;
+		max-inline-size: 20rem;
+		opacity: 0;
+		padding: var(--toepassing-space-padding-sm);
+		position: absolute;
+		transition: var(--toepassing-transition-default);
+		visibility: hidden;
+		z-index: 1;
+	}
+	li:hover .chat-status-uitleg,
+	li:focus-within .chat-status-uitleg {
+		opacity: 1;
+		visibility: visible;
+	}
+	/* Escape verbergt de uitleg zonder de muis te verplaatsen (WCAG 1.4.13). */
+	&.tooltips-uit .chat-status-uitleg {
+		opacity: 0;
+		visibility: hidden;
+	}
+	p {
+		font: inherit;
+		margin-block-end: var(--toepassing-space-padding-2xs);
+		max-inline-size: none;
+	}
+}
+.chat-status-warning {
+	color: var(--toepassing-color-feedback-warning-border);
+	font-style: italic;
+}
+.chat-messages {
+	block-size: 22dvh;
+	border: var(--toepassing-border-subtle);
+	border-radius: var(--toepassing-border-radius-sm);
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 1;
+	gap: var(--toepassing-space-padding-md);
+	inline-size: 100%;
+	min-block-size: 0;
+	overflow-y: auto;
+	padding: var(--toepassing-space-padding-xs);
+}
+.chat-message,
+.chat-suggestions,
+.chat-suggestions button,
+.wallet-card {
+	border-radius: var(--toepassing-border-radius-lg);
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-2xs);
+	margin-block-end: var(--toepassing-space-margin-xs);
+	max-inline-size: 80%;
+	padding: var(--toepassing-space-padding-sm) var(--toepassing-space-padding-md);
+	position: relative;
+	p {
+		margin-block-end: 0;
+	}
+	.chat-suggestions-label {
+		margin-block-end: var(--toepassing-space-margin-xs);
+	}
+	&::before {
+		block-size: var(--toepassing-size-icon-sm);
+		content: "";
+		inline-size: var(--toepassing-size-icon-sm);
+		inset-block-end: calc(-1 * var(--toepassing-size-icon-sm));
+		position: absolute;
+	}
+}
+.chat-message-assistant,
+.chat-suggestions,
+.chat-message-loading,
+.wallet-card {
+	align-self: flex-start;
+	background: var(--toepassing-color-background-subtle-1);
+	filter: drop-shadow(1px 0 0 var(--toepassing-color-border-subtle)) drop-shadow(-1px 0 0 var(--toepassing-color-border-subtle)) drop-shadow(0 1px 0 var(--toepassing-color-border-subtle)) drop-shadow(0 -1px 0 var(--toepassing-color-border-subtle));
+	&::before {
+		background: var(--toepassing-color-background-subtle-1);
+		clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
+		inset-inline-start: var(--toepassing-size-2xs);
+	}
+}
+.chat-message-user,
+.chat-suggestions button.secondary {
+	align-self: flex-end;
+	background: var(--toepassing-color-interactive-default-background);
+	color: var(--toepassing-color-text-inverse);
+	&::before {
+		background: var(--toepassing-color-interactive-default-background);
+		clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
+		inset-inline-end: var(--toepassing-size-2xs);
+	}
+}
+.chat-suggestions {
+	border-radius: var(--toepassing-border-radius-lg);
+	display: grid;
+	gap: 0;
+	inline-size: 100%;
+	max-inline-size: 100%;
+	button {
+		justify-self: end;
+		margin-block-end: var(--toepassing-space-margin-sm);
+		margin-inline: var(--toepassing-space-margin-lg);
+		&:nth-child(even) {
+			justify-self: start;
+		}
+		&:hover,
+		&:focus-visible {
+			background: var(--toepassing-color-interactive-hover-background);
+		}
+		&:active {
+			background: var(--toepassing-color-interactive-active-background);
+		}
+	}
+}
+
+#chat-input {
+	min-block-size: 6rem;
+}
+
+.chat-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--toepassing-space-padding-sm);
+	margin-block-start: var(--toepassing-space-margin-sm);
+}
+
+.chat-bronnen {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-padding-sm);
+	li {
+		display: flex;
+		flex-direction: column;
+	}
+}
+.chat-bronnen-label {
+	border-block-start: var(--toepassing-border-subtle);
+	margin-block-start: var(--toepassing-space-margin-sm);
+	padding-block-start: var(--toepassing-space-padding-xs);
+}
+.chat-bron-datum {
+	color: var(--toepassing-color-text-subtle-2);
+	margin-block-start: var(--toepassing-space-margin-3xs);
+}
+
+#gesprekken-groups li {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-margin-2xs);
+	p {
+		color: var(--toepassing-color-text-subtle-2);
+	}
+}
+
+h1.icon-label {
+	gap: var(--toepassing-space-layout-2xs);
+	svg {
+		block-size: var(--toepassing-size-icon-md);
+	}
+}
+.vraag-form {
+	legend {
+		font: var(--toepassing-text-heading-h5);
+		margin-block-end: var(--toepassing-space-margin-2xs);
+	}
+	fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: var(--toepassing-space-margin-2xs);
+	}
+	ul {
+		margin-block: var(--toepassing-space-margin-2xs);
+	}
+}
+
+/* Wallet-kaarten in de chat: deelverzoek (consent) + gestructureerde energieweergave */
+.wallet-consent {
+	display: contents;
+}
+.wallet-consent[hidden] {
+	display: none;
+}
+.wallet-uitgever {
+	color: var(--toepassing-color-text-subtle-1);
+	display: flex;
+	flex-flow: column wrap;
+	gap: var(--toepassing-space-padding-2xs);
+	margin-block: var(--toepassing-space-margin-2xs);
+}
+.wallet-badge {
+	align-items: center;
+	background: var(--toepassing-color-feedback-success-subtle);
+	border-radius: var(--toepassing-border-radius-md);
+	/* color: var(--toepassing-color-feedback-success-border); */
+	display: inline-flex;
+	font: var(--toepassing-text-smalltext);
+	gap: var(--toepassing-space-padding-2xs);
+	inline-size: fit-content;
+	margin-block-end: var(--toepassing-space-margin-xs);
+	padding: var(--toepassing-space-padding-2xs) var(--toepassing-space-padding-sm);
+}
+.wallet-badge svg {
+	block-size: var(--toepassing-size-icon-sm);
+	color: var(--toepassing-color-feedback-success-icon);
+	inline-size: var(--toepassing-size-icon-sm);
+	margin-inline-end: var(--toepassing-space-margin-3xs);
+}
+.wallet-cijfers {
+	display: grid;
+	gap: var(--toepassing-space-padding-md);
+	grid-template-columns: repeat(2, 1fr);
+}
+.wallet-cijfer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-padding-2xs);
+}
+.wallet-cijfer dt {
+	color: var(--toepassing-color-text-subtle-1);
+	font: var(--toepassing-text-smalltext);
+}
+.wallet-waarde {
+	display: block;
+	font: var(--toepassing-text-heading-h5);
+}
+.wallet-grens {
+	align-items: center;
+	display: flex;
+	font: var(--toepassing-text-smalltext);
+	gap: var(--toepassing-space-padding-2xs);
+}
+.wallet-grens::before {
+	block-size: 0.5rem;
+	border-radius: 50%;
+	content: "";
+	display: inline-block;
+	flex: none;
+	inline-size: 0.5rem;
+}
+.wallet-grens-boven {
+	color: var(--toepassing-color-feedback-warning-border);
+}
+.wallet-grens-boven::before {
+	background: var(--toepassing-color-feedback-warning-icon);
+}
+.wallet-grens-onder {
+	color: var(--toepassing-color-text-subtle-1);
+}
+.wallet-grens-onder::before {
+	background: var(--toepassing-color-feedback-success-icon);
+}
+
+/* Decoratief stap-icoon naast de kop van een Wallet-kaart */
+.stap-icoon {
+	block-size: var(--toepassing-size-icon-md);
+	inline-size: var(--toepassing-size-icon-md);
+	margin-block-start: var(--toepassing-space-padding-3xs);
+	margin-inline-end: var(--toepassing-space-padding-xs);
+	vertical-align: text-top;
+}
+
+/* -- OVERIGE COMPONENTEN -- */
+
+/* Accordion (uitklapblok (details/summary) o.a. voor FAQ-lijst met uitklapbare vragen) */
+.accordion {
+	list-style: none;
+	padding: 0;
+	details {
+		border: var(--toepassing-border-subtle);
+		border-radius: var(--toepassing-border-radius-md);
+		&[open] {
+			border-color: var(--toepassing-color-interactive-alternate-selected-border);
+			summary {
+				background: var(--toepassing-color-interactive-alternate-selected-background);
+				&:hover,
+				&:focus-visible {
+					background: var(--toepassing-color-interactive-alternate-hover-background);
+				}
+				&::before {
+					transform: rotate(90deg);
+					transition: var(--toepassing-transition-transform);
+				}
+			}
+		}
+		&:has(summary:hover) {
+			border-color: var(--toepassing-color-interactive-alternate-hover-border);
+		}
+		&:has(summary:focus-visible) {
+			border-color: var(--toepassing-color-interactive-alternate-focus-border);
+		}
+		&:has(summary:active) {
+			border-color: var(--toepassing-color-interactive-alternate-active-border);
+		}
+	}
+	summary {
+		background: var(--toepassing-color-background-subtle-2);
+		display: flex;
+		gap: var(--toepassing-space-layout-2xs);
+		padding: var(--toepassing-space-padding-sm);
+		transition: var(--toepassing-transition-default);
+		&:hover,
+		&:focus-visible,
+		&:active {
+			background: var(--toepassing-color-interactive-alternate-hover-background);
+			color: var(--toepassing-color-text-default);
+		}
+		&:active {
+			background: var(--toepassing-color-interactive-alternate-active-background);
+		}
+		&::before {
+			content: url("../assets/icons/icon-chevron.svg");
+			flex-shrink: 0;
+			inline-size: var(--toepassing-size-icon-xs);
+			transform: rotate(0deg);
+			transition: var(--toepassing-transition-transform);
+		}
+	}
+	div {
+		background: var(--toepassing-color-background-default);
+		display: flex;
+		flex-direction: column;
+		gap: var(--toepassing-space-margin-2xs);
+		padding: var(--toepassing-space-padding-sm);
+	}
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-size: var(--toepassing-text-size-body-md);
+	}
+}
+
+/* Status-/takenoverzicht */
+[aria-label="Lopende zaken"] {
+	td img {
+		inline-size: var(--toepassing-size-icon-sm);
+		vertical-align: text-top;
+	}
+}
+.status-track,
+.logging-track {
+	counter-reset: step;
+	gap: var(--toepassing-space-margin-sm);
+	list-style: none;
+	margin-block-end: var(--toepassing-space-margin-2xs);
+	padding-inline-start: var(--toepassing-space-padding-2xs);
+	> li {
+		counter-increment: step;
+		display: flex;
+		gap: var(--toepassing-space-margin-xs);
+		position: relative;
+		&::before {
+			background: var(--toepassing-color-feedback-success-emphasis);
+			block-size: var(--toepassing-size-icon-lg);
+			border-radius: var(--toepassing-border-radius-round);
+			color: var(--toepassing-color-text-inverse);
+			content: counter(step);
+			display: grid;
+			inline-size: var(--toepassing-size-icon-lg);
+			place-items: center;
+		}
+		&:has(~ [aria-current="step"])::before {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M20.63 3.081a1.357 1.357 0 0 0-1.818.186l-7.94 8.883-4.774-4.134a1.355 1.355 0 0 0-2.05 1.721l5.781 9.65c.244.407.684.657 1.158.658h.005c.473 0 .912-.246 1.158-.651l8.83-14.52a1.355 1.355 0 0 0-.35-1.793z'/%3E%3C/svg%3E");
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: 60%;
+			content: "";
+		}
+		&::after {
+			background: var(--toepassing-color-feedback-success-border);
+			content: "";
+			inline-size: var(--toepassing-size-5xs);
+			inset-block: var(--toepassing-size-icon-lg) calc(-1 * var(--toepassing-space-margin-sm));
+			inset-inline-start: calc(var(--toepassing-size-icon-lg) / 2);
+			position: absolute;
+			transform: translateX(-50%);
+		}
+		&:has(+ [aria-current="step"]),
+		&[aria-current="step"] {
+			.status-details::before {
+				background: var(--toepassing-color-background-default);
+				border-color: var(--toepassing-color-feedback-info-border);
+			}
+			&::after {
+				background: repeating-linear-gradient(var(--toepassing-color-feedback-info-border) 0 var(--toepassing-size-4xs), transparent var(--toepassing-size-4xs) calc(var(--toepassing-size-4xs) * 2));
+			}
+		}
+		&:last-child::after {
+			content: none;
+		}
+		&:last-child:has(details[open])::after {
+			block-size: calc(var(--toepassing-space-margin-xs) + var(--toepassing-size-icon-sm) / 2);
+			content: "";
+			inset-block-end: auto;
+		}
+		ul {
+			list-style-type: disc;
+		}
+	}
+	[aria-current="step"] {
+		&::before {
+			background: var(--toepassing-color-feedback-info-emphasis);
+		}
+		~ li::before {
+			background: var(--toepassing-color-feedback-neutral-emphasis);
+		}
+		&::after,
+		~ li::after {
+			background: repeating-linear-gradient(var(--toepassing-color-feedback-neutral-border) 0 var(--toepassing-size-4xs), transparent var(--toepassing-size-4xs) calc(var(--toepassing-size-4xs) * 2));
+		}
+		~ li .status-details::before {
+			background: var(--toepassing-color-background-default);
+			border-color: var(--toepassing-color-feedback-neutral-border);
+		}
+	}
+	summary {
+		align-items: center;
+		display: flex;
+		font: var(--toepassing-text-heading-h5);
+		list-style: none;
+		min-block-size: var(--toepassing-size-icon-lg);
+		&:hover {
+			color: var(--toepassing-color-interactive-hover-text);
+		}
+		&::after {
+			content: url("../assets/icons/icon-chevron.svg");
+			flex-shrink: 0;
+			inline-size: var(--toepassing-size-icon-xs);
+			margin-inline-start: var(--toepassing-space-margin-2xs);
+			transform: rotate(0deg);
+			transition: var(--toepassing-transition-transform);
+		}
+	}
+	details {
+		&[open] {
+			summary::after {
+				transform: rotate(90deg);
+				transition: var(--toepassing-transition-transform);
+			}
+		}
+	}
+	.status-details {
+		margin-block-start: var(--toepassing-space-margin-xs);
+		position: relative;
+		/* Extra sub-stap-node op de connector-lijn, uitgelijnd met de datum */
+		&::before {
+			background: var(--toepassing-color-feedback-success-emphasis);
+			block-size: var(--toepassing-size-icon-sm);
+			border: var(--toepassing-border-width-md) solid var(--toepassing-color-feedback-success-border);
+			border-radius: var(--toepassing-border-radius-round);
+			content: "";
+			inline-size: var(--toepassing-size-icon-sm);
+			inset-block-start: var(--toepassing-size-5xs);
+			inset-inline-start: calc(-1 * (var(--toepassing-size-icon-lg) / 2 + var(--toepassing-space-margin-xs)));
+			position: absolute;
+			transform: translateX(-50%);
+			z-index: 1;
+		}
+	}
+	.status-date {
+		color: var(--toepassing-color-text-subtle-2);
+		font: var(--toepassing-text-smalltext);
+		&::before {
+			content: url("../assets/icons/icon-kalender.svg");
+			display: inline-block;
+			inline-size: var(--toepassing-size-icon-sm);
+			margin-inline-end: var(--toepassing-space-margin-2xs);
+			vertical-align: text-top;
+		}
+	}
+	.feedback {
+		margin-block-start: var(--toepassing-space-margin-2xs);
+	}
+}
+
+/* Sub-stappen binnen een status-track */
+.status-track--sub {
+	margin-block-start: var(--toepassing-space-margin-sm);
+	.status-track {
+		gap: var(--toepassing-space-margin-3xs);
+		margin-block-end: var(--toepassing-space-margin-sm);
+	}
+	li {
+		&::before {
+			block-size: var(--toepassing-size-icon-md);
+			font: var(--toepassing-text-smalltext);
+			inline-size: var(--toepassing-size-icon-md);
+		}
+		&::after {
+			inset-block: var(--toepassing-size-icon-md) calc(-1 * var(--toepassing-space-margin-sm));
+			inset-inline-start: calc(var(--toepassing-size-icon-md) / 2);
+		}
+	}
+}
+
+/* Tab interface */
+.tablist {
+	border-block-end: var(--toepassing-border-tabs-tab-inactive);
+	flex-direction: row;
+	a {
+		border-block-end: var(--toepassing-border-tabs-tab-inactive);
+		border-radius: var(--toepassing-border-radius-md) var(--toepassing-border-radius-md) 0 0;
+		display: inline-flex;
+		margin-block-end: calc(-1 * var(--toepassing-border-width-md));
+		padding: var(--toepassing-space-padding-xs) var(--toepassing-space-padding-md);
+		text-decoration: none;
+		&:hover,
+		&:focus-visible {
+			background: var(--toepassing-color-interactive-alternate-hover-background);
+			border-block-end: var(--toepassing-border-tabs-tab-hover);
+		}
+		svg {
+			margin-inline-end: var(--toepassing-space-margin-3xs);
+			vertical-align: text-top;
+		}
+	}
+	[aria-current="page"] {
+		background: var(--toepassing-color-interactive-alternate-selected-background);
+		border-block-end: var(--toepassing-border-tabs-tab-selected);
+	}
+}
+
+/* Topic opties */
+.save-topic,
+.share-topic,
+.hide-topic,
+.delete-topic,
+.restore-topic,
+.ask-assistent {
+	align-items: center;
+	border-radius: var(--toepassing-border-radius-sm);
+	color: var(--toepassing-color-interactive-default-icon);
+	cursor: pointer;
+	display: inline-flex;
+	font: var(--toepassing-text-smalltext);
+	font-weight: var(--toepassing-text-font-weight-semi-bold);
+	margin-inline-end: var(--toepassing-space-margin-3xs);
+	text-decoration: none;
+	&:has(input:focus-visible) {
+		outline: var(--toepassing-focus-outline);
+	}
+	input,
+	svg {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-sm);
+		border: none;
+		cursor: pointer;
+		display: inline-block;
+		inline-size: var(--toepassing-size-icon-sm);
+		margin-inline-end: var(--toepassing-space-margin-3xs);
+		mask: url("../assets/icons/icon-bewaar-outline.svg") no-repeat center / contain;
+		transition: var(--toepassing-transition-default);
+		&:hover {
+			background-color: var(--toepassing-color-feedback-favorite-hover);
+			color: var(--toepassing-color-feedback-favorite-hover);
+			mask-image: url("../assets/icons/icon-bewaar.svg");
+		}
+		&:checked {
+			animation: var(--toepassing-animation-icon-pop);
+			background-color: var(--toepassing-color-feedback-favorite-icon);
+			color: var(--toepassing-color-feedback-favorite-icon);
+			mask-image: url("../assets/icons/icon-bewaar.svg");
+			&:hover {
+				background-color: var(--toepassing-color-feedback-favorite-hover);
+			}
+			& ~ .favorite-label {
+				font-size: 0;
+				&::after {
+					content: "Bewaard";
+					font: var(--toepassing-text-smalltext);
+				}
+			}
+		}
+	}
+	&::before {
+		background-color: var(--toepassing-color-interactive-default-icon);
+		block-size: var(--toepassing-size-icon-sm);
+		content: "";
+		display: inline-block;
+		inline-size: var(--toepassing-size-icon-sm);
+		margin-inline-end: var(--toepassing-space-margin-2xs);
+		mask: url("../assets/icons/icon-verbergen.svg") no-repeat center / contain;
+		vertical-align: middle;
+	}
+	&:hover::before,
+	&:focus-visible::before {
+		background-color: var(--toepassing-color-interactive-hover-icon);
+	}
+	&:active::before {
+		animation: var(--toepassing-animation-icon-pop);
+	}
+}
+.save-topic::before {
+	content: none;
+}
+.share-topic {
+	&::before {
+		mask: url("../assets/icons/icon-delen.svg") no-repeat center / contain;
+	}
+}
+.delete-topic {
+	&::before {
+		background-color: var(--toepassing-color-feedback-error-icon);
+		mask: url("../assets/icons/icon-verwijderen.svg") no-repeat center / contain;
+	}
+	&:hover::before {
+		background-color: var(--toepassing-color-feedback-error-emphasis);
+	}
+}
+.restore-topic {
+	&::before {
+		mask: url("../assets/icons/icon-feedback-outline.svg") no-repeat center / contain;
+	}
+	&:hover {
+		color: var(--toepassing-color-feedback-success-icon);
+		&::before {
+			background-color: var(--toepassing-color-feedback-success-icon);
+			mask: url("../assets/icons/icon-feedback.svg") no-repeat center / contain;
+		}
+	}
+}
+.ask-assistent {
+	&::before {
+		mask: url("../assets/icons/icon-assistent.svg") no-repeat center / contain;
+	}
+}
+
+#saved-groups section:not(:last-of-type) {
+	margin-block-end: var(--toepassing-space-margin-sm);
+	padding-block-end: var(--toepassing-space-padding-xl);
+}
+
+/* Badge */
+.badge {
+	align-items: center;
+	align-self: flex-start;
+	background: var(--toepassing-color-badge-background);
+	border-radius: var(--toepassing-border-radius-round);
+	color: var(--toepassing-color-badge-text);
+	display: inline-flex;
+	font: var(--toepassing-text-badge);
+	justify-content: center;
+	min-block-size: var(--toepassing-size-icon-sm);
+	min-inline-size: var(--toepassing-size-icon-sm);
+	padding-inline: var(--toepassing-space-padding-2xs);
+}
+/* Verberg de badge bij 0 (of leeg): .badge display overschrijft anders het hidden-attribuut */
+.badge[hidden],
+.badge:empty {
+	display: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+button {
+	.badge {
+		margin-inline: var(--toepassing-space-margin-3xs) calc(-1 * var(--toepassing-space-margin-3xs));
+		vertical-align: text-top;
+	}
+}
+
+/* Accountwisselaar */
+.account-switcher {
+	position: relative;
+	.group-label-private svg {
+		color: var(--toepassing-color-role-private);
+	}
+	.group-label-business svg {
+		color: var(--toepassing-color-role-business);
+	}
+	.group-label-authorized svg {
+		color: var(--toepassing-color-role-authorized);
+	}
+}
+.account-switcher-toggle {
+	appearance: none;
+	background: none;
+	border: none;
+	color: var(--toepassing-color-interactive-default-text);
+	cursor: pointer;
+	font: inherit;
+	padding: 0;
+	&.icon-label svg {
+		block-size: var(--toepassing-size-icon-md);
+	}
+	&::after {
+		background-color: currentcolor;
+		block-size: var(--toepassing-size-icon-xs);
+		content: "";
+		inline-size: var(--toepassing-size-icon-sm);
+		mask: url("../assets/icons/icon-chevron.svg") no-repeat center / contain;
+		transform: rotate(90deg);
+		transition: var(--toepassing-transition-transform);
+	}
+	&:hover,
+	&:focus-visible {
+		background: none !important;
+		color: inherit !important;
+	}
+}
+.account-switcher-menu {
+	background: var(--toepassing-color-background-default);
+	border: var(--toepassing-border-subtle);
+	border-radius: var(--toepassing-border-radius-md);
+	box-shadow: var(--toepassing-box-shadow-default);
+	display: block;
+	inset-block-start: 100%;
+	inset-inline-end: 0;
+	list-style: none;
+	min-inline-size: 24rem;
+	opacity: 1;
+	padding: var(--toepassing-space-padding-md);
+	position: absolute;
+	transition:
+		var(--toepassing-transition-opacity) allow-discrete,
+		display var(--toepassing-motion-speed-fast) allow-discrete;
+	z-index: 1;
+	@starting-style {
+		opacity: 0;
+	}
+	&[hidden] {
+		display: none;
+		opacity: 0;
+	}
+	a {
+		align-items: baseline;
+		border-radius: var(--toepassing-border-radius-md);
+		color: inherit;
+		display: flex;
+		gap: var(--toepassing-space-padding-sm);
+		justify-content: space-between;
+		margin-block-end: var(--toepassing-space-margin-2xs);
+		padding: var(--toepassing-space-padding-xs) var(--toepassing-space-padding-sm);
+		text-decoration: none;
+		&:hover {
+			background: var(--toepassing-color-interactive-alternate-hover-background);
+		}
+		&[aria-current="true"] {
+			background: var(--toepassing-color-interactive-alternate-selected-background);
+			font-weight: var(--toepassing-text-font-weight-semi-bold);
+		}
+	}
+	span {
+		color: var(--toepassing-color-text-subtle-2);
+		font: var(--toepassing-text-smalltext-default);
+	}
+	.account-switcher-name {
+		color: var(--toepassing-color-text-default);
+		font: inherit;
+	}
+	.account-switcher-group-label {
+		color: var(--toepassing-color-text-subtle-2);
+		font: var(--toepassing-text-heading-h5);
+		padding: var(--toepassing-space-padding-2xs) var(--toepassing-space-padding-sm) var(--toepassing-space-padding-md);
+		&:not(:first-child) {
+			border-block-start: var(--toepassing-border-subtle);
+			margin-block-start: var(--toepassing-space-padding-sm);
+			padding-block-start: var(--toepassing-space-padding-md);
+		}
+		&.account-switcher-section-label {
+			margin-block-start: var(--toepassing-space-margin-md);
+			padding-block-start: var(--toepassing-space-padding-xl);
+		}
+		svg {
+			inline-size: var(--toepassing-size-icon-md);
+			vertical-align: text-bottom;
+		}
+	}
+}
+
+/* Voortgangsbalk */
+.feedback-progress {
+	background: var(--toepassing-color-feedback-success-subtle);
+	border: var(--toepassing-border-subtle);
+	border-color: var(--toepassing-color-feedback-success-border);
+	border-radius: var(--toepassing-border-radius-sm);
+	margin-block-end: var(--toepassing-space-margin-sm);
+	padding: var(--toepassing-space-md);
+	.progress-bar {
+		margin-block-start: var(--toepassing-space-margin-xs);
+	}
+}
+.progress-bar {
+	background: var(--toepassing-color-background-raised);
+	block-size: var(--toepassing-size-2xs);
+	border: var(--toepassing-border-default);
+	border-radius: var(--toepassing-border-radius-round);
+	overflow: hidden;
+}
+.progress-bar-fill {
+	align-items: center;
+	background: var(--toepassing-color-feedback-success-emphasis);
+	block-size: 100%;
+	border: var(--toepassing-border-default);
+	border-radius: var(--toepassing-border-radius-round);
+	color: var(--toepassing-color-text-inverse);
+	display: flex;
+	font: var(--toepassing-text-badge);
+	justify-content: center;
+	min-inline-size: fit-content;
+	white-space: nowrap;
+}
+/* Indeterminate variant: laadduur onbekend (bijv. PDF-viewer). Een deelvulling
+   schuift heen en weer i.p.v. een breedte-gedreven percentage. */
+.progress-bar-fill--indeterminate {
+	animation: progress-bar-indeterminate 1.4s var(--toepassing-motion-easing-default) infinite;
+	inline-size: 40%;
+	min-inline-size: 0;
+}
+@keyframes progress-bar-indeterminate {
+	from {
+		margin-inline-start: -40%;
+	}
+	to {
+		margin-inline-start: 100%;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.progress-bar-fill--indeterminate {
+		animation: none;
+		inline-size: 100%;
+		margin-inline-start: 0;
+	}
+}
+
+/* Wachtindicatie */
+.wait-indicator {
+	animation: wait-indication var(--toepassing-motion-speed-slow) steps(4) infinite;
+	aspect-ratio: 4;
+	background: radial-gradient(circle closest-side, var(--toepassing-color-text-default) 90%, var(--toepassing-color-background-subtle-2)) 0 / calc(100% / 3) 100% space;
+	clip-path: inset(0 100% 0 0);
+	inline-size: var(--toepassing-size-icon-lg);
+}
+
+/* Wrapper voor thinking-element met indicator */
+.thinking-wrapper {
+	align-items: center;
+	display: flex;
+	gap: var(--toepassing-space-margin-2xs);
+}
+
+/* Pauzeermodus voor animaties */
+.animations-paused .wait-indicator {
+	animation-play-state: paused;
+	clip-path: inset(0 75% 0 0);
+}
+@keyframes wait-indication {
+	to {
+		clip-path: inset(0 -33% 0 0);
+	}
+}
+
+/* Schakelaar */
+.switch {
+	margin-block-start: var(--toepassing-space-margin-xs);
+	[role="switch"] {
+		appearance: none;
+		background-image: radial-gradient(circle closest-side, var(--toepassing-color-text-subtle-2) 100%, transparent);
+		background-position: var(--toepassing-size-5xs) center;
+		background-repeat: no-repeat;
+		background-size: var(--toepassing-size-icon-sm);
+		block-size: var(--toepassing-size-icon-md);
+		border-radius: var(--toepassing-border-radius-round);
+		inline-size: var(--toepassing-size-icon-xl);
+		transition:
+			background-color var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default),
+			background-position var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default),
+			border-color var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default);
+		&::before {
+			content: none;
+		}
+		&:checked {
+			background-color: var(--toepassing-color-interactive-active-background);
+			background-image: radial-gradient(circle closest-side, var(--toepassing-color-text-inverse) 100%, transparent);
+			background-position: calc(100% - var(--toepassing-size-5xs)) center;
+			/* border-color: var(--toepassing-color-feedback-success-border); */
+			&:hover {
+				background-repeat: no-repeat;
+				background-size: var(--toepassing-size-icon-sm);
+			}
+		}
+	}
+}
+
+.switch-multiple {
+	display: flex;
+	gap: 0;
+	div {
+		border: var(--toepassing-border-width-xs) solid var(--toepassing-color-interactive-default-border);
+		border-radius: var(--toepassing-border-radius-md);
+	}
+	input[type="radio"] {
+		block-size: 1px;
+		inline-size: 1px;
+		opacity: 0;
+		position: absolute;
+		&:checked + label {
+			background: var(--toepassing-color-interactive-default-background);
+			color: var(--toepassing-color-text-inverse);
+			transition: var(--toepassing-transition-default);
+		}
+		&:focus-visible + label {
+			outline: var(--toepassing-focus-outline);
+			outline-offset: var(--toepassing-focus-outline-offset-md);
+		}
+	}
+	label {
+		cursor: pointer;
+		display: inline-block;
+		font-weight: var(--toepassing-text-font-weight-semi-bold);
+		margin-block-end: 0;
+		padding: var(--toepassing-space-padding-xs) var(--toepassing-space-padding-md);
+	}
+}
+
+/* -- ANIMATIES -- */
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes icon-pop {
+	50% {
+		scale: 1.25;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+		translate: 0 -1rem;
+	}
+}
+@keyframes fade-out {
+	to {
+		block-size: 0;
+		margin-block: 0;
+		opacity: 0;
+		overflow: hidden;
+		padding-block: 0;
+		translate: 0 -1rem;
+	}
+}
+
+/* Inlog-pagina’s */
+
+/* -- NL WALLET -- */
+
+/* De knoppen van wallet_web staan onzichtbaar op de pagina: nl-wallet-inloggen.js klikt ze aan vanuit
+   de gewone inlogkaart. Alleen het venster met de QR-code is te zien; dat blijft van NL Wallet zelf,
+   zodat het bij elke relying party hetzelfde is. */
+.nl-wallet-onzichtbaar::part(button) {
+	display: none;
+}
+
+/* Titel boven en link onder het venster, in de grijze overlay. Beide vensters van NL Wallet (inloggen en
+   bevoegdheid toevoegen) zien er hetzelfde uit; de titel zegt waar deze QR-code voor is. Kleine donkere
+   labels, zodat de witte tekst leesbaar blijft boven wat er achter de overlay ligt. Het venster heeft
+   z-index 1045 (wallet_web, position: fixed in de shadow DOM); de labels liggen er net boven. */
+.nl-wallet-overlay-titel,
+.nl-wallet-overlay-hint {
+	background: var(--toepassing-color-background-inverse);
+	border-radius: var(--toepassing-border-radius-md);
+	color: var(--toepassing-color-text-inverse);
+	inline-size: fit-content;
+	inset-inline: 0;
+	margin-block: 0;
+	margin-inline: auto;
+	max-inline-size: calc(100% - 2 * var(--toepassing-space-padding-md));
+	padding-block: var(--toepassing-space-padding-xs);
+	padding-inline: var(--toepassing-space-padding-sm);
+	position: fixed;
+	text-align: center;
+	z-index: 1046;
+}
+
+.nl-wallet-overlay-titel {
+	font: var(--toepassing-text-heading-h5);
+	inset-block-start: var(--toepassing-space-padding-xs);
+}
+
+.nl-wallet-overlay-hint {
+	font-size: var(--toepassing-text-size-body-sm);
+	inset-block-end: var(--toepassing-space-padding-xs);
+	p {
+		margin: 0;
+		max-inline-size: none;
+	}
+	a {
+		color: inherit;
+		text-decoration: underline;
+		&:hover,
+		&:focus-visible {
+			color: inherit;
+			text-decoration-thickness: 2px;
+		}
+	}
+}
+
+.nl-wallet-meldingen:not(:has(> :not([hidden]))) {
+	display: none;
+}
+
+/* Toelichting bij inloggen met een wallet, voor presentaties (Shift+P, zie nl-wallet-toelichting.js).
+   Blauw paneel links, naar het voorbeeld van de presentatiemodus van bg.rijks.app; de pagina schuift op.
+   [data-nl-wallet-knoppen] wordt het referentievlak voor het (fixed) venster van NL Wallet, zodat dat
+   rechts van het paneel blijft; pointer-events alleen op het venster zelf. */
+.toelichting-paneel {
+	--toelichting-breedte: max(40vw, 22rem);
+
+	background: var(--toepassing-color-background-inverse);
+	box-shadow: var(--toepassing-box-shadow-default);
+	box-sizing: border-box;
+	color: var(--toepassing-color-text-inverse);
+	display: flex;
+	flex-direction: column;
+	font-family: var(--toepassing-text-font-family-body);
+	inline-size: var(--toelichting-breedte);
+	inset-block: 0;
+	inset-inline-start: 0;
+	max-inline-size: none;
+	padding: var(--toepassing-space-2xl) var(--toepassing-space-2xl) var(--toepassing-space-md);
+	position: fixed;
+	z-index: 1050;
+
+	&[hidden] {
+		display: none;
+	}
+	&:focus {
+		outline: none;
+	}
+	a {
+		color: inherit;
+		text-decoration: underline;
+		&:hover,
+		&:focus-visible,
+		&:active {
+			color: inherit;
+			text-decoration-color: currentColor;
+			text-decoration-thickness: var(--toepassing-border-width-md);
+		}
+		&:focus-visible {
+			box-shadow: none;
+			outline: var(--toepassing-border-width-md) solid currentColor;
+			outline-offset: var(--toepassing-space-3xs);
+		}
+	}
+	dt,
+	dd {
+		color: inherit;
+	}
+	p,
+	li,
+	dd {
+		max-inline-size: none;
+	}
+}
+
+.toelichting-paneel__inhoud {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: var(--toepassing-space-md);
+	min-block-size: 0;
+	overflow: auto;
+}
+
+.toelichting-paneel__label {
+	font-size: var(--toepassing-text-size-body-sm);
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.toelichting-paneel__titel {
+	color: inherit;
+	font-size: var(--toepassing-text-size-title-3xl);
+	font-weight: var(--toepassing-text-font-weight-bold);
+		margin: 0;
+}
+
+.toelichting-paneel__lead {
+	font-size: var(--toepassing-text-size-title-md);
+	margin: 0;
+}
+
+.toelichting-paneel__kop {
+	color: inherit;
+	font-size: var(--toepassing-text-size-title-md);
+	font-weight: var(--toepassing-text-font-weight-bold);
+	margin: var(--toepassing-space-xs) 0 0;
+}
+
+.toelichting-paneel__punten,
+.toelichting-paneel__stappen {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-xs);
+	margin: 0;
+	padding-inline-start: var(--toepassing-space-lg);
+	li::marker {
+		color: var(--toepassing-color-icon-inverse);
+	}
+}
+
+.toelichting-paneel__punten {
+	font-size: var(--toepassing-text-size-body-lg);
+}
+
+.toelichting-paneel__attestaties {
+	display: flex;
+	flex-direction: column;
+	gap: var(--toepassing-space-xs);
+	margin: 0;
+	div {
+		border-inline-start: var(--toepassing-border-width-lg) solid var(--toepassing-color-border-inverse);
+		padding-inline-start: var(--toepassing-space-sm);
+	}
+	dt {
+		font-weight: var(--toepassing-text-font-weight-bold);
+	}
+	dd {
+		font-size: var(--toepassing-text-size-body-sm);
+		margin: 0;
+	}
+}
+
+.toelichting-paneel__voet {
+	align-items: center;
+	border-block-start: var(--toepassing-border-width-xs) solid var(--toepassing-color-border-inverse);
+	display: flex;
+	flex: 0 0 auto;
+	gap: var(--toepassing-space-md);
+	margin-block-start: var(--toepassing-space-md);
+	padding-block-start: var(--toepassing-space-sm);
+}
+
+.toelichting-paneel__sluit {
+	align-items: center;
+	background: none;
+	block-size: var(--toepassing-space-2xl);
+	border: var(--toepassing-border-width-md) solid var(--toepassing-color-border-inverse);
+	border-radius: var(--toepassing-border-radius-round);
+	color: inherit;
+	cursor: pointer;
+	display: inline-flex;
+	font-size: var(--toepassing-text-size-title-md);
+	inline-size: var(--toepassing-space-2xl);
+	justify-content: center;
+	line-height: 1;
+	padding: 0;
+	&:hover {
+		background: var(--toepassing-color-text-inverse);
+		color: var(--toepassing-color-background-inverse);
+	}
+	&:focus-visible {
+		outline: var(--toepassing-border-width-md) solid currentColor;
+		outline-offset: var(--toepassing-space-3xs);
+	}
+}
+
+.toelichting-paneel__hint {
+	font-size: var(--toepassing-text-size-body-xs);
+}
+
+html.toelichting-open {
+	body {
+		padding-inline-start: max(40vw, 22rem);
+	}
+	[data-nl-wallet-knoppen] {
+		inset-block: 0;
+		inset-inline: max(40vw, 22rem) 0;
+		pointer-events: none;
+		position: fixed;
+		transform: translate(0);
+		z-index: 1045;
+	}
+	nl-wallet-button {
+		pointer-events: auto;
+	}
+	.nl-wallet-overlay-titel,
+	.nl-wallet-overlay-hint {
+		inset-inline-start: max(40vw, 22rem);
+		max-inline-size: calc(100% - max(40vw, 22rem) - 2 * var(--toepassing-space-padding-md));
+	}
+}
+
+/* Smal scherm: het paneel ligt over de pagina heen. */
+@media (width <= 64rem) {
+	.toelichting-paneel {
+		--toelichting-breedte: 100vw;
+		padding: var(--toepassing-space-lg) var(--toepassing-space-md) var(--toepassing-space-sm);
+	}
+	html.toelichting-open body {
+		padding-inline-start: 0;
+	}
+}
+
+.page-login {
+	article:first-of-type {
+		container-type: initial;
+	}
+	.user-menu {
+		display: none;
+	}
+	main {
+		@media (min-width: 800px) {
+			grid-template-columns: initial;
+		}
+		&::after {
+			background: none;
+		}
+		.feedback {
+			border: 0;
+			margin-block-start: var(--toepassing-space-margin-xs);
+		}
+		a,
+		.feedback a {
+			color: var(--rijkshuisstijl-color-hemelblauw-600);
+			text-decoration: underline;
+			text-underline-offset: 2px;
+		}
+		/* Een knop in de vorm van een link houdt de knopstijl, anders staat er blauwe tekst op een blauwe knop. */
+		a.btn-cta {
+			color: var(--toepassing-color-text-inverse);
+			text-decoration: none;
+		}
+	}
+	.login-selection {
+		display: flex;
+		flex-direction: column;
+		gap: var(--toepassing-space-margin-md);
+		h2 {
+			font: var(--toepassing-text-heading-h5);
+			font-style: italic;
+			margin-block-end: var(--toepassing-space-margin-xs);
+		}
+		section {
+			display: flex;
+			flex-direction: column;
+			gap: var(--toepassing-space-margin-xs);
+			inline-size: 32rem;
+			max-inline-size: 100%;
+		}
+		@media (min-width: 800px) {
+			align-items: start;
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			> section {
+				grid-column: 2;
+				margin-block: var(--toepassing-space-margin-md) var(--toepassing-space-margin-3xs);
+			}
+			> .feedback {
+				grid-column: 3;
+			}
+		}
+		summary {
+			cursor: pointer;
+		}
+		a {
+			svg {
+				block-size: var(--toepassing-size-icon-md);
+				margin-inline-end: var(--toepassing-space-margin-3xs);
+				vertical-align: text-bottom;
+			}
+		}
+		[role="tabpanel"] {
+			border: var(--toepassing-border-default);
+			border-radius: 0 var(--toepassing-border-radius-lg) var(--toepassing-border-radius-lg);
+			margin-block-start: -2px;
+			padding: var(--toepassing-space-padding-lg) var(--toepassing-space-padding-lg) var(--toepassing-space-padding-xl);
+			section {
+				gap: var(--toepassing-space-margin-xs);
+			}
+		}
+		[role="tablist"] {
+			z-index: 1;
+			button {
+				background: var(--toepassing-color-background-subtle-2);
+				border: var(--toepassing-border-default);
+				border-block-end: 0;
+				border-radius: var(--toepassing-border-radius-lg) var(--toepassing-border-radius-lg) 0 0;
+				color: var(--toepassing-color-interactive-default-text);
+				font: var(--toepassing-text-heading-h5);
+				padding: var(--toepassing-space-padding-lg) var(--toepassing-space-padding-2xl);
+				&[aria-selected="false"] {
+					background-color: var(--toepassing-color-interactive-disabled-background);
+					border-block-end: var(--toepassing-border-default);
+					&:hover {
+						background: var(--toepassing-color-interactive-alternate-active-background);
+					}
+				}
+			}
+		}
+	}
+	.login-own-credentials {
+		margin-block: var(--toepassing-space-margin-md);
+	}
+	.card {
+		border: var(--toepassing-border-default);
+		border-color: transparent;
+		box-shadow: none;
+		padding: 0;
+		transition: var(--toepassing-transition-default);
+		h3 {
+			align-items: center;
+			display: flex;
+			font-size: var(--toepassing-text-size-body-lg);
+			font-weight: var(--toepassing-text-font-weight-bold);
+			margin: var(--toepassing-space-margin-xs);
+		}
+		a,
+		a:hover h3 {
+			text-decoration: none;
+		}
+		img {
+			inline-size: var(--toepassing-size-icon-xl);
+			margin-inline-end: var(--toepassing-space-margin-2xs);
+		}
+		&:hover {
+			border-color: var(--toepassing-color-interactive-hover-border);
+		}
+	}
+	.card-inloggen-options {
+		h3::after {
+			content: url("../assets/icons/icon-chevron.svg");
+			display: inline-block;
+			inline-size: var(--toepassing-size-icon-xs);
+			margin-inline-start: auto;
+			transform: rotate(90deg);
+			transition: var(--toepassing-transition-transform);
+		}
+		&[open] h3::after {
+			transform: rotate(-90deg);
+		}
+	}
+	.inloggen-eh-logo {
+		margin-inline-start: auto;
+	}
+	details {
+		border: 0;
+		gap: 0;
+		summary {
+			all: unset;
+			&:hover {
+				background: none;
+			}
+			&:focus-visible {
+				background: none;
+				outline: var(--toepassing-focus-outline);
+				outline-offset: var(--toepassing-focus-outline-offset-md);
+			}
+			h2 {
+				&::after {
+					rotate: -270deg;
+					transition: var(--toepassing-transition-default);
+					transition-property: rotate;
+				}
+			}
+		}
+		&.card > div {
+			padding: var(--toepassing-space-padding-md);
+		}
+		ul {
+			list-style: none;
+			padding: 0;
+			a {
+				border: var(--toepassing-border-default);
+				border-color: var(--rijkshuisstijl-color-hemelblauw-500); /* Niet direct onderdeel van MOZa, dus even direct de rijkshuisstijl tokens toegepast, #007bc7 op #fff haalt overigens net 4.5:1 contrast-ratio… */
+				border-radius: var(--toepassing-border-radius-md);
+				color: var(--rijkshuisstijl-color-hemelblauw-500);
+				display: block;
+				padding: var(--toepassing-space-padding-sm);
+				&:hover,
+				&:focus-visible {
+					border-color: var(--rijkshuisstijl-color-hemelblauw-600);
+					color: var(--rijkshuisstijl-color-hemelblauw-600);
+				}
+				li:nth-child(1 of :not([hidden])) & {
+					background: var(--rijkshuisstijl-color-hemelblauw-500);
+					color: var(--toepassing-color-text-inverse);
+					&:hover,
+					&:focus-visible {
+						background: var(--rijkshuisstijl-color-hemelblauw-600);
+						border-color: var(--rijkshuisstijl-color-hemelblauw-600);
+					}
+				}
+			}
+		}
+		&[open] {
+			h2::after {
+				rotate: -90deg;
+			}
+		}
+	}
+	.login-faq {
+		border-block-start: var(--toepassing-border-default);
+		display: flex;
+		flex-direction: column;
+		gap: var(--toepassing-space-margin-xs);
+		margin-block: var(--toepassing-space-margin-xs);
+		padding-block-start: var(--toepassing-space-padding-lg);
+		summary {
+			font-weight: var(--toepassing-text-font-weight-bold);
+			&::before {
+				content: url("../assets/icons/icon-chevron.svg");
+				display: inline-block;
+				inline-size: var(--toepassing-size-icon-xs);
+				margin-inline: var(--toepassing-space-margin-2xs);
+				transform: rotate(90deg);
+				transition: var(--toepassing-transition-transform);
+			}
+		}
+		details[open] summary::before {
+			transform: rotate(-90deg);
+		}
+		p {
+			margin-inline: var(--toepassing-space-margin-2xs);
+			padding-block: var(--toepassing-space-padding-md);
+		}
+	}
+}
+
+/* MijnOverheid Zakelijk/Zakelijk gemachtigd/Privé/Privé gemachtigd afwijkende styling */
+/* Hier wordt momenteel direct gemapped naar de brand tokens, moet herzien worden later! */
+body.moza {
+	--toepassing-border-pageheader-border: var(--toepassing-border-width-lg) solid var(--rijkshuisstijl-color-lintblauw-500);
+	&.authorized {
+		--toepassing-border-pageheader-border: var(--toepassing-border-width-lg) solid var(--rijkshuisstijl-color-oranje-500);
+	}
+}
+body.mobu {
+	--toepassing-border-pageheader-border: var(--toepassing-border-width-md) solid var(--rijkshuisstijl-color-hemelblauw-500);
+	--toepassing-color-interactive-default-background: var(--rijkshuisstijl-color-hemelblauw-500);
+	--toepassing-color-interactive-default-border: var(--rijkshuisstijl-color-hemelblauw-500);
+	--toepassing-color-interactive-default-icon: var(--rijkshuisstijl-color-hemelblauw-500);
+	--toepassing-color-interactive-hover-background: var(--rijkshuisstijl-color-hemelblauw-600);
+	--toepassing-color-interactive-hover-border: var(--rijkshuisstijl-color-hemelblauw-600);
+	--toepassing-color-interactive-hover-icon: var(--rijkshuisstijl-color-hemelblauw-600);
+	--toepassing-border-radius-sm: var(--toepassing-border-radius-md);
+	--toepassing-border-radius-md: var(--toepassing-border-radius-lg);
+	&.authorized {
+		--toepassing-border-pageheader-border: var(--toepassing-border-width-md) solid var(--rijkshuisstijl-color-oranje-500);
+	}
+	dl.data-overview {
+		column-gap: var(--toepassing-space-layout-md);
+		columns: 2 16rem;
+		padding: var(--toepassing-space-padding-sm);
+		> div {
+			break-inside: avoid;
+		}
+		.metadata {
+			display: none;
+		}
+	}
+}
+body.authorized {
+	--toepassing-color-interactive-alternate-selected-background: var(--rijkshuisstijl-color-oranje-50);
+	.btn-cta {
+		&:hover,
+		&:focus-visible {
+			background-color: var(--rijkshuisstijl-color-oranje-600);
+			border-color: var(--rijkshuisstijl-color-oranje-600);
+		}
+	}
+}
+
+.notificatie {
+	display: grid;
+	gap: 0.5rem;
+	grid-template-columns: minmax(0, auto) 1fr minmax(0, auto);
+}

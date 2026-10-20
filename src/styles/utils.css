@@ -48,6 +48,16 @@ dialog.prototype-side-overlay {
 	inset-inline-end: 0;
 	position: fixed;
 	transform: translateX(100%);
+
+	.utrecht-button--danger {
+		background: var(--rhc-color-rood-500);
+		border-color: var(--rhc-color-rood-500);
+		color: var(--rhc-color-wit);
+	}
+
+	.utrecht-form-fieldset {
+		margin-block-end: var(--rhc-space-3xl)
+	}
 }
 
 dialog.prototype-side-overlay[open] {
