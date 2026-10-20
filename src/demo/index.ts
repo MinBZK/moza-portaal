@@ -59,3 +59,14 @@ export {
   type DemoBedrijfsdetails,
   type DemoBedrijfsonderdeel,
 } from "./bedrijfsonderdelen";
+export {
+  getDemoIemandAannemen,
+  getDemoIemandAannemenTraces,
+  type DemoAannemen,
+  type DemoAannemenBron,
+  type DemoAannemenGegeven,
+  type DemoAannemenRegeling,
+  type DemoAannemenGebeurtenis,
+  type DemoAannemenFase,
+  type DemoAannemenTrace,
+} from "./iemandAannemen";

@@ -97,6 +97,8 @@ export const zaakRoute = (zaak: AssistentZaak) => {
     veld(zaak, ["regeling"]),
     veld(zaak, ["referentienummer"]),
   ].join(" ");
+  if (/loonkostensubsidie/i.test(tekst))
+    return "/lopendezaken/loonkostensubsidie-koen";
   return /energiebespar|informatieplicht/i.test(tekst)
     ? "/lopendezaken/informatieplicht-energiebesparing"
     : "";

@@ -40,6 +40,7 @@ const VAN_DE_PERSONA = [
   "moza-bewaard",
   "moza-zaken",
   "moza-contactorganisaties",
+  "moza-iemand-aannemen",
 ];
 
 const PersonaPaneel = ({

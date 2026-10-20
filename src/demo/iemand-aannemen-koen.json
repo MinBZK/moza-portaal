@@ -1,0 +1,573 @@
+{
+  "toelichting": "Verhaallijn Koen v1 als demo-data (zie docs/iemand-aannemen/verhaallijn-koen-v1.md). Bedragen en uitkomsten komen uit de regelrecht-engine (iemand-aannemen-traces.json, corpus traject/financieel-cv-0bc401e0, peildatum 2026-07-01); het prototype rekent zelf niets. Plaatshouders {onderneming} {kvkNummer} {vestiging} {iban} {fulltime} {parttime} vult de pagina uit de actieve persona.",
+  "kandidaat": {
+    "voornaam": "Koen",
+    "achternaam": "de Wit",
+    "geboortedatum": "1984-03-15",
+    "leeftijd": 42,
+    "woonplaats": "Bergschenhoek",
+    "gemeente": "Lansingerland",
+    "bsnMasker": "•••••0101",
+    "toestemmingOp": "2026-09-07"
+  },
+  "dienstverband": {
+    "functie": "Medewerker kwekerij",
+    "urenPerWeek": 32,
+    "aanvang": "2026-10-01",
+    "uurloonEurocent": 1499,
+    "uurloonLabel": "wettelijk minimumloon, € 14,99 per uur",
+    "verloondeUrenPerJaar": 1664,
+    "soort": "Onbepaalde tijd"
+  },
+  "zaak": {
+    "nummer": "LLD-LKS-2026-0417",
+    "organisatie": "Gemeente Lansingerland",
+    "onderwerp": "Loonkostensubsidie voor Koen de Wit",
+    "regel": "Artikel 10d van de Participatiewet, wetsversie 1 juli 2026",
+    "url": "/lopendezaken/loonkostensubsidie-koen"
+  },
+  "bronnen": [
+    {
+      "id": "uwv",
+      "organisatie": "UWV",
+      "register": "Doelgroepregister banenafspraak",
+      "opgehaald": "2026-09-07",
+      "gegevens": [
+        {
+          "vraag": "Staat Koen in het doelgroepregister banenafspraak?",
+          "wetsvraag": "Is de werknemer een arbeidsbeperkte als bedoeld in artikel 38b van de Wet financiering sociale verzekeringen?",
+          "parameter": "is_arbeidsbeperkte",
+          "waarde": "Ja, sinds 3 november 2025",
+          "grond": "Wfsv 38b lid 1 a"
+        },
+        {
+          "vraag": "Loopt de registratie nog?",
+          "wetsvraag": "Is de registratie in het doelgroepregister nog niet geëindigd?",
+          "parameter": "registratie_nog_niet_geeindigd",
+          "waarde": "Ja",
+          "grond": "Wfsv 38b lid 6"
+        },
+        {
+          "vraag": "Heeft Koen een Wajong-uitkering of arbeidsondersteuning van UWV?",
+          "wetsvraag": "Heeft de werknemer recht op arbeidsondersteuning of een arbeidsongeschiktheidsuitkering op grond van de Wajong?",
+          "parameter": "heeft_wajong_arbeidsondersteuning_of_uitkering",
+          "waarde": "Nee",
+          "grond": "Wajong 2:15"
+        },
+        {
+          "vraag": "Heeft Koen een WIA-uitkering?",
+          "wetsvraag": "Heeft de werknemer een uitkering op grond van hoofdstuk 6 van de Wet WIA?",
+          "parameter": "heeft_wia_uitkering_hoofdstuk_6",
+          "waarde": "Nee",
+          "grond": "Wet WIA 4 en 5"
+        }
+      ]
+    },
+    {
+      "id": "gemeente",
+      "organisatie": "Gemeente Lansingerland",
+      "register": "Participatiewet",
+      "opgehaald": "2026-09-07",
+      "gegevens": [
+        {
+          "vraag": "Krijgt Koen ondersteuning van de gemeente bij het vinden van werk?",
+          "wetsvraag": "Behoort de persoon tot de doelgroep van artikel 7, eerste lid, onderdeel a, of artikel 7a van de Participatiewet?",
+          "parameter": "was_persoon_7_lid_1_a_of_7a_in_zes_maanden_voorafgaand",
+          "waarde": "Ja, algemene bijstand",
+          "grond": "Pwet 7 lid 1 a"
+        },
+        {
+          "vraag": "Heeft de gemeente vastgesteld dat Koen met voltijds werk niet het minimumloon kan verdienen?",
+          "wetsvraag": "Heeft het college vastgesteld dat de persoon met voltijdse arbeid niet in staat is tot het verdienen van het wettelijk minimumloon?",
+          "parameter": "kan_minimumloon_niet_verdienen",
+          "waarde": "Ja",
+          "grond": "Pwet 10c"
+        },
+        {
+          "vraag": "Heeft de gemeente de loonwaarde van Koen al vastgesteld?",
+          "wetsvraag": "Heeft het college de loonwaarde vastgesteld (artikel 10d, eerste lid, onderdeel a)?",
+          "parameter": "college_heeft_loonwaarde_vastgesteld",
+          "waarde": "Nog niet; de gemeente meet die op de werkplek na uw aanvraag",
+          "grond": "Pwet 10d lid 1 en 2"
+        },
+        {
+          "vraag": "Werkt Koen in een beschutte werkplek of bij een sociaal werkbedrijf?",
+          "wetsvraag": "Is de dienstbetrekking er een als bedoeld in de artikelen 2 of 7 van de Wet sociale werkvoorziening?",
+          "parameter": "is_wsw_dienstbetrekking",
+          "waarde": "Nee",
+          "grond": "Pwet 10d lid 3"
+        }
+      ]
+    },
+    {
+      "id": "kvk",
+      "organisatie": "KVK",
+      "register": "Handelsregister",
+      "opgehaald": "2026-09-07",
+      "gegevens": [
+        {
+          "vraag": "Welke onderneming neemt Koen aan?",
+          "wetsvraag": "Wie is de werkgever?",
+          "parameter": "kvk_nummer",
+          "waarde": "{onderneming}, KVK {kvkNummer}, {vestiging}",
+          "grond": "Handelsregisterwet"
+        }
+      ]
+    },
+    {
+      "id": "belastingdienst",
+      "organisatie": "Belastingdienst",
+      "register": "Loonaangifte",
+      "opgehaald": "2026-09-07",
+      "gegevens": [
+        {
+          "vraag": "Hoeveel werknemers heeft u nu in de loonaangifte?",
+          "wetsvraag": "Aantal werknemers in de laatste loonaangifte",
+          "parameter": "aantal_werknemers_loonaangifte",
+          "waarde": "{fulltime} fulltime en {parttime} parttime (loonaangifte augustus 2026)",
+          "grond": "Wet op de loonbelasting"
+        },
+        {
+          "vraag": "Staat er al een verzoek om loonkostenvoordeel voor Koen in de loonaangifte?",
+          "wetsvraag": "Heeft de werkgever in de loonaangifte verzocht om het loonkostenvoordeel?",
+          "parameter": "heeft_loonaangifte_verzoek_ingediend",
+          "waarde": "Nog niet; dat doet u in de eerste loonaangifte na de start",
+          "grond": "Wtl 2.10 lid 1"
+        }
+      ]
+    },
+    {
+      "id": "eigen",
+      "organisatie": "Uw eigen opgave",
+      "register": "Wat de overheid nog niet weet",
+      "opgehaald": "2026-09-07",
+      "gegevens": [
+        {
+          "vraag": "Hoeveel uur per week gaat Koen werken?",
+          "wetsvraag": "Wat is de overeengekomen arbeidsduur in uren per week?",
+          "parameter": "overeengekomen_arbeidsduur_uren_per_week",
+          "waarde": "32 uur",
+          "grond": "Pwet 10d lid 4"
+        },
+        {
+          "vraag": "Wanneer begint de dienstbetrekking?",
+          "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
+          "parameter": "datum_aanvang_dienstbetrekking",
+          "waarde": "1 oktober 2026",
+          "grond": "Pwet 10d lid 2; ZW 29b lid 2 e"
+        },
+        {
+          "vraag": "Wat gaat Koen verdienen?",
+          "wetsvraag": "Wat is het overeengekomen loon?",
+          "parameter": "uurloon",
+          "waarde": "Wettelijk minimumloon, € 14,99 per uur",
+          "grond": "WMM 8 en 15"
+        }
+      ]
+    }
+  ],
+  "regelingen": [
+    {
+      "id": "lks",
+      "naam": "Loonkostensubsidie",
+      "organisatie": "Gemeente Lansingerland",
+      "soort": "concept-aanvraag",
+      "soortLabel": "Concept-aanvraag staat klaar",
+      "uitkomst": "Kan gelden",
+      "bedragLabel": "€ 897,41 per maand",
+      "bedragToelichting": "Bij een loonwaarde van 60 procent en 32 uur per week. De gemeente stelt de loonwaarde vast na een meting op de werkplek; het bedrag volgt daaruit.",
+      "bedragEurocent": 89740.8,
+      "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen zes maanden na de eerste werkdag.",
+      "grond": "Participatiewet 10d, tweede lid, onderdeel b, en vierde lid; Wet minimumloon 8 en 15; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
+      "trace": "participatiewet:heeft_recht_op_lks",
+      "actie": {
+        "label": "Bekijk de concept-aanvraag",
+        "url": "/personeel/iemand-aannemen/concept-aanvraag"
+      }
+    },
+    {
+      "id": "lkv",
+      "naam": "Loonkostenvoordeel banenafspraak",
+      "organisatie": "Belastingdienst",
+      "soort": "loonaangifte",
+      "soortLabel": "Via uw loonaangifte",
+      "uitkomst": "Kan gelden",
+      "bedragLabel": "€ 1.680,64 per jaar",
+      "bedragToelichting": "€ 1,01 per verloond uur, bij 1.664 uur per jaar; ten hoogste € 2.000 per jaar. De Belastingdienst berekent het na afloop van het kalenderjaar.",
+      "bedragEurocent": 168064,
+      "tekst": "Een tegemoetkoming in de loonkosten voor een werknemer uit het doelgroepregister banenafspraak. U vraagt het aan door in de loonaangifte het vakje loonkostenvoordeel aan te zetten; een aparte verklaring is niet nodig.",
+      "grond": "Wet tegemoetkomingen loondomein 2.10 en 2.13; Wfsv 38b",
+      "trace": "wet_tegemoetkomingen_loondomein:heeft_recht_op_lkv",
+      "actie": null
+    },
+    {
+      "id": "no-risk",
+      "naam": "No-riskpolis",
+      "organisatie": "UWV",
+      "soort": "overheid-zelf",
+      "soortLabel": "Regelt de overheid zelf",
+      "uitkomst": "Geldt",
+      "bedragLabel": "Bij ziekte: ziekengeld van UWV",
+      "bedragToelichting": "70 procent van het dagloon, zolang Koen in het doelgroepregister staat. U hoeft niets aan te vragen; bij ziekte meldt u Koen ziek bij UWV.",
+      "bedragEurocent": null,
+      "tekst": "Wordt Koen ziek, dan betaalt UWV ziekengeld in plaats van dat u het loon doorbetaalt. Dit geldt omdat Koen in het doelgroepregister staat en de dienstbetrekking op of na 1 januari 2015 begint.",
+      "grond": "Ziektewet 29b, tweede lid, onderdeel e, en vijfde lid; Dagloonbesluit werknemersverzekeringen 12e",
+      "trace": "ziektewet:heeft_recht_op_no_risk_polis",
+      "actie": null
+    },
+    {
+      "id": "begeleiding",
+      "naam": "Begeleiding op de werkplek (jobcoach)",
+      "organisatie": "Gemeente Lansingerland",
+      "soort": "optioneel",
+      "soortLabel": "Aanvragen als u wilt",
+      "uitkomst": "Aanspraak",
+      "bedragLabel": "Geen bedrag; de gemeente levert of vergoedt de begeleiding",
+      "bedragToelichting": "Iedereen voor wie loonkostensubsidie geldt, heeft hier recht op.",
+      "bedragEurocent": null,
+      "tekst": "Een jobcoach helpt Koen en u op de werkvloer. U vraagt dit aan bij de gemeente, los van de loonkostensubsidie.",
+      "grond": "Participatiewet 10da",
+      "trace": "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek",
+      "actie": null
+    },
+    {
+      "id": "proefplaatsing",
+      "naam": "Proefplaatsing",
+      "organisatie": "Gemeente Lansingerland",
+      "soort": "optioneel",
+      "soortLabel": "Mogelijk, vóór de eerste werkdag",
+      "uitkomst": "Mogelijk",
+      "bedragLabel": "Twee maanden werken met behoud van bijstand",
+      "bedragToelichting": "Met vier maanden verlenging. Alleen vóór de dienstbetrekking begint; in dit verhaal is daar geen gebruik van gemaakt.",
+      "bedragEurocent": null,
+      "tekst": "Koen kan eerst twee maanden bij u werken terwijl de bijstand doorloopt, als de gemeente daarmee instemt.",
+      "grond": "Participatiewet 8a, tweede lid, onderdeel d",
+      "trace": "participatiewet:mag_proefplaatsing_aangaan",
+      "actie": null
+    },
+    {
+      "id": "loondispensatie",
+      "naam": "Loondispensatie",
+      "organisatie": "UWV",
+      "soort": "niet",
+      "soortLabel": "Niet van toepassing",
+      "uitkomst": "Geldt niet",
+      "bedragLabel": "",
+      "bedragToelichting": "Loondispensatie bestaat alleen voor wie recht heeft op arbeidsondersteuning op grond van de Wajong. Koen heeft dat niet.",
+      "bedragEurocent": null,
+      "tekst": "Bij loondispensatie betaalt u minder dan het minimumloon en vult UWV aan. Voor Koen geldt in plaats daarvan loonkostensubsidie van de gemeente.",
+      "grond": "Wajong 2:20",
+      "trace": "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie",
+      "actie": null
+    }
+  ],
+  "berekeningLks": {
+    "toelichting": "Zoals de engine het uitrekent (trace participatiewet:heeft_recht_op_lks), in de volgorde van artikel 10d.",
+    "stappen": [
+      {
+        "label": "Minimumloon per maand met 8 procent vakantiebijslag",
+        "waarde": "€ 2.523,96",
+        "grond": "Wet minimumloon 8 lid 1 b en 15",
+        "parameter": "minimumloon_plus_vakantiebijslag_eurocent_per_maand"
+      },
+      {
+        "label": "Loonwaarde: 60 procent daarvan",
+        "waarde": "€ 1.514,38",
+        "grond": "Pwet 10d lid 4; vaststelling door het college",
+        "parameter": "loonwaarde_eurocent_per_maand"
+      },
+      {
+        "label": "Verschil (subsidie bij voltijd, vóór het maximum)",
+        "waarde": "€ 1.009,58",
+        "grond": "Pwet 10d lid 4",
+        "parameter": "bruto_subsidie_eurocent_per_maand"
+      },
+      {
+        "label": "Grondslag van het maximum: minimumloon met vakantiebijslag plus 25 procent vergoeding werkgeverslasten",
+        "waarde": "€ 3.154,95",
+        "grond": "Pwet 10d lid 4; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
+        "parameter": "grondslag_maximum_eurocent_per_maand"
+      },
+      {
+        "label": "Maximum: 70 procent van de grondslag",
+        "waarde": "€ 2.208,47",
+        "grond": "Pwet 10d lid 4",
+        "parameter": "maximum_subsidie_eurocent_per_maand"
+      },
+      {
+        "label": "Subsidie bij voltijd (36 uur): het verschil, want dat blijft onder het maximum",
+        "waarde": "€ 1.009,58",
+        "grond": "Pwet 10d lid 4",
+        "parameter": "hoogte_lks_voltijd_eurocent_per_maand"
+      },
+      {
+        "label": "Naar rato van 32 uur op 36",
+        "waarde": "€ 897,41",
+        "grond": "Pwet 10d lid 4, tweede zin",
+        "parameter": "hoogte_lks_eurocent_per_maand"
+      }
+    ]
+  },
+  "fasen": [
+    {
+      "id": "indicatie",
+      "label": "Vóór de aanvraag (7 september)",
+      "datum": "2026-09-07"
+    },
+    {
+      "id": "ontvangst",
+      "label": "Aanvraag ontvangen (6 oktober)",
+      "datum": "2026-10-06"
+    },
+    {
+      "id": "meting",
+      "label": "Loonwaarde gemeten (20 oktober)",
+      "datum": "2026-10-20"
+    },
+    {
+      "id": "loonwaarde",
+      "label": "Loonwaarde vastgesteld (27 oktober)",
+      "datum": "2026-10-27"
+    },
+    {
+      "id": "besluit",
+      "label": "Besluit genomen (3 november)",
+      "datum": "2026-11-03"
+    },
+    {
+      "id": "antwoord",
+      "label": "Antwoord op uw vraag (6 november)",
+      "datum": "2026-11-06"
+    },
+    {
+      "id": "betaling",
+      "label": "Eerste betaling (27 november)",
+      "datum": "2026-11-27"
+    }
+  ],
+  "gebeurtenissen": [
+    {
+      "id": "g1",
+      "datum": "2026-07-01",
+      "tijd": "00:00",
+      "actor": "Wetgever",
+      "soort": "regelgeving",
+      "titel": "Wetsversie van 1 juli 2026 geldt",
+      "tekst": "Participatiewet, Wet financiering sociale verzekeringen, Ziektewet, Wet tegemoetkomingen loondomein en Wet minimumloon in de versie van 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "grond": "Regeling indexatie wettelijk minimumloon",
+      "stap": "vooraf"
+    },
+    {
+      "id": "g2",
+      "datum": "2025-11-03",
+      "tijd": "10:12",
+      "actor": "UWV",
+      "soort": "besluit",
+      "titel": "Koen opgenomen in het doelgroepregister banenafspraak",
+      "tekst": "Op grond van de vaststelling van het college dat Koen niet in staat is het wettelijk minimumloon te verdienen.",
+      "grond": "Wfsv 38b lid 1 a",
+      "stap": "vooraf"
+    },
+    {
+      "id": "g3",
+      "datum": "2026-09-07",
+      "tijd": "14:05",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Koen toegevoegd als kandidaat; Koen gaf toestemming",
+      "tekst": "Koen de Wit gaf toestemming dat {onderneming} zijn gegevens bij UWV en de gemeente gebruikt voor deze aanvraag.",
+      "grond": "AVG 6 lid 1 a",
+      "stap": "indicatie"
+    },
+    {
+      "id": "g4",
+      "datum": "2026-09-07",
+      "tijd": "14:09",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Gegevens per bron bevestigd",
+      "tekst": "UWV, gemeente Lansingerland, KVK, Belastingdienst en uw eigen opgave: per bron aangevinkt dat de gegevens kloppen en gebruikt mogen worden.",
+      "grond": "",
+      "stap": "indicatie"
+    },
+    {
+      "id": "g5",
+      "datum": "2026-10-01",
+      "tijd": "09:00",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Dienstbetrekking begonnen",
+      "tekst": "Koen is gestart voor 32 uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
+      "grond": "Wtl 2.10 lid 1",
+      "stap": "ontvangst"
+    },
+    {
+      "id": "g6",
+      "datum": "2026-10-05",
+      "tijd": "16:31",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Aanvraag loonkostensubsidie verstuurd",
+      "tekst": "De concept-aanvraag is verstuurd naar de gemeente Lansingerland, binnen zes maanden na de eerste werkdag.",
+      "grond": "Pwet 10d lid 2",
+      "stap": "ontvangst"
+    },
+    {
+      "id": "g7",
+      "datum": "2026-10-06",
+      "tijd": "09:14",
+      "actor": "Gemeente Lansingerland",
+      "soort": "uitvoering",
+      "titel": "Ontvangstbevestiging, zaaknummer LLD-LKS-2026-0417",
+      "tekst": "De gemeente heeft uw aanvraag ontvangen en in behandeling genomen.",
+      "grond": "Awb 4:3a",
+      "stap": "ontvangst"
+    },
+    {
+      "id": "g8",
+      "datum": "2026-10-09",
+      "tijd": "11:40",
+      "actor": "Gemeente Lansingerland",
+      "soort": "uitvoering",
+      "titel": "Afspraak loonwaardemeting op de werkplek: 13 oktober",
+      "tekst": "Een arbeidsdeskundige meet de loonwaarde van Koen op de werkvloer.",
+      "grond": "Regeling loonkostensubsidie Participatiewet 2021",
+      "stap": "meting",
+      "gecorrigeerdDoor": "g9"
+    },
+    {
+      "id": "g9",
+      "datum": "2026-10-12",
+      "tijd": "08:55",
+      "actor": "Gemeente Lansingerland",
+      "soort": "uitvoering",
+      "titel": "Correctie: afspraak verzet naar 20 oktober",
+      "tekst": "De arbeidsdeskundige is 13 oktober niet beschikbaar. De afspraak van 13 oktober vervalt.",
+      "grond": "",
+      "stap": "meting",
+      "herstelt": "g8"
+    },
+    {
+      "id": "g10",
+      "datum": "2026-10-20",
+      "tijd": "10:00",
+      "actor": "Gemeente Lansingerland",
+      "soort": "uitvoering",
+      "titel": "Loonwaardemeting uitgevoerd",
+      "tekst": "De arbeidsdeskundige heeft de meting op de werkplek gedaan.",
+      "grond": "Regeling loonkostensubsidie Participatiewet 2021",
+      "stap": "meting"
+    },
+    {
+      "id": "g11",
+      "datum": "2026-10-27",
+      "tijd": "15:20",
+      "actor": "College van Lansingerland",
+      "soort": "besluit",
+      "titel": "Loonwaarde vastgesteld: 60 procent van het minimumloon",
+      "tekst": "Het college heeft de loonwaarde van Koen vastgesteld op 60 procent van het wettelijk minimumloon.",
+      "grond": "Pwet 10d lid 1 en 2",
+      "stap": "loonwaarde"
+    },
+    {
+      "id": "g12",
+      "datum": "2026-11-03",
+      "tijd": "11:41",
+      "actor": "College van Lansingerland",
+      "soort": "besluit",
+      "titel": "Besluit: loonkostensubsidie toegekend, € 897,41 per maand vanaf 1 oktober 2026",
+      "tekst": "Het college kent loonkostensubsidie toe. De berekening staat bij het besluit; u kunt binnen zes weken bezwaar maken.",
+      "grond": "Pwet 10d lid 4; Awb 6:7",
+      "stap": "besluit",
+      "url": "/lopendezaken/loonkostensubsidie-koen/besluit"
+    },
+    {
+      "id": "g13",
+      "datum": "2026-11-03",
+      "tijd": "17:02",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Uw vraag bij het besluit",
+      "tekst": "“Telt de vergoeding voor werkgeverslasten niet mee in het bedrag?”",
+      "grond": "",
+      "stap": "antwoord"
+    },
+    {
+      "id": "g14",
+      "datum": "2026-11-06",
+      "tijd": "13:48",
+      "actor": "Gemeente Lansingerland",
+      "soort": "uitvoering",
+      "titel": "Antwoord op uw vraag",
+      "tekst": "De vergoeding voor werkgeverslasten telt mee in de grondslag van het maximum (70 procent), niet in de subsidie zelf. Zo staat het in artikel 10d, vierde lid. Of de uitvoering hiervan afwijkt, is uitgezet bij UWV; u hoort het als dat iets verandert.",
+      "grond": "Pwet 10d lid 4",
+      "stap": "antwoord",
+      "verwijstNaar": "g13"
+    },
+    {
+      "id": "g15",
+      "datum": "2026-11-27",
+      "tijd": "06:00",
+      "actor": "Gemeente Lansingerland",
+      "soort": "uitvoering",
+      "titel": "Betaling loonkostensubsidie oktober en november: € 1.794,82",
+      "tekst": "Twee maanden van € 897,41, overgemaakt naar {iban}.",
+      "grond": "Pwet 10d",
+      "stap": "betaling"
+    }
+  ],
+  "komtHierna": [
+    {
+      "datum": "2027-03-15",
+      "actor": "Belastingdienst",
+      "titel": "Voorlopige berekening loonkostenvoordeel 2026",
+      "tekst": "416 verloonde uren (oktober tot en met december) × € 1,01 = € 420,16.",
+      "grond": "Wtl 4.1"
+    },
+    {
+      "datum": "2027-08-01",
+      "actor": "Belastingdienst",
+      "titel": "Beschikking loonkostenvoordeel 2026; uitbetaling in september 2027",
+      "tekst": "",
+      "grond": "Wtl 4.2 en 4.3"
+    }
+  ],
+  "labels": {
+    "is_uitgesloten_lid_3": "Uitgesloten: Wsw-dienstbetrekking (lid 3)",
+    "heeft_recht_op_lks_lid_1": "Recht via lid 1 (loonwaarde vooraf vastgesteld)",
+    "voorafgaand_relevante_onderwijsroute_of_doelgroep": "Kwam uit de doelgroep of een onderwijsroute (lid 2 a tot en met c)",
+    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen zes maanden na de eerste werkdag (lid 2)",
+    "heeft_recht_op_lks_lid_2": "Recht via lid 2",
+    "heeft_recht_op_lks": "Recht op loonkostensubsidie",
+    "volgt_de_vijftig_procent_route": "Vijftigprocentroute (lid 5)",
+    "werkgeverslastenvergoeding_eurocent_per_maand": "Vergoeding werkgeverslasten (25 procent)",
+    "grondslag_maximum_eurocent_per_maand": "Grondslag van het maximum",
+    "maximum_subsidie_eurocent_per_maand": "Maximum: 70 procent van de grondslag",
+    "loonwaarde_eurocent_per_maand": "Loonwaarde in euro per maand",
+    "bruto_subsidie_eurocent_per_maand": "Verschil minimumloon en loonwaarde",
+    "hoogte_lks_lid_4_voltijd_eurocent_per_maand": "Hoogte volgens lid 4, voltijd",
+    "hoogte_lks_lid_5_voltijd_eurocent_per_maand": "Hoogte volgens lid 5, voltijd",
+    "hoogte_lks_voltijd_eurocent_per_maand": "Hoogte bij voltijd",
+    "arbeidsduur_voor_evenredigheid_uren_per_week": "Arbeidsduur voor de evenredigheid (uren per week)",
+    "hoogte_lks_eurocent_per_maand": "Loonkostensubsidie per maand",
+    "heeft_aanspraak_op_begeleiding_op_de_werkplek": "Aanspraak op begeleiding op de werkplek (10da)",
+    "mag_proefplaatsing_aangaan": "Proefplaatsing mogelijk (8a lid 2 d)",
+    "max_duur_proefplaatsing_maanden": "Duur proefplaatsing (maanden)",
+    "max_duur_verlenging_proefplaatsing_maanden": "Verlenging (maanden)",
+    "max_totale_duur_proefplaatsing_maanden": "Totale duur (maanden)",
+    "heeft_recht_op_lkv": "Recht op loonkostenvoordeel (2.1)",
+    "categorie_lkv": "Categorie loonkostenvoordeel",
+    "voldoet_aan_voorwaarden_2_10": "Voorwaarden banenafspraak (2.10)",
+    "is_uitgesloten_2_10_lid_2_of_3": "Uitgesloten (2.10 lid 2 of 3)",
+    "tegemoetkoming_banenafspraak_eurocent": "Tegemoetkoming banenafspraak (2.13)",
+    "hoogte_lkv_per_jaar_eurocent": "Loonkostenvoordeel per jaar",
+    "heeft_recht_op_no_risk_polis": "Recht op de no-riskpolis",
+    "duur_no_risk_polis_jaren": "Duur van de no-riskpolis (jaren)",
+    "is_uitgesloten_lid_8": "Uitgesloten: Wsw-dienstbetrekking (lid 8)",
+    "is_arbeidsbeperkte": "Arbeidsbeperkte (doelgroepregister)",
+    "grond_opname_doelgroepregister": "Grond van opname",
+    "datum_opname_doelgroepregister": "Datum van opname",
+    "heeft_recht_op_loondispensatie": "Recht op loondispensatie (2:20)",
+    "heeft_recht_op_arbeidsondersteuning": "Recht op arbeidsondersteuning (2:15)"
+  }
+}
