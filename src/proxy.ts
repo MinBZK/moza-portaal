@@ -11,6 +11,8 @@ export function proxy(req: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/static") ||
+    // Inloggen staat buiten het portaal van de persona.
+    pathname.startsWith("/inloggen") ||
     /\.[^/]+$/.test(lastSegment) ||
     pathname === "/favicon.ico" ||
     pathname === "/robots.txt"

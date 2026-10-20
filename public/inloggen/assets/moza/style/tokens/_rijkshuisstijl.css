@@ -1,0 +1,208 @@
+/**
+ * Automatisch gegenereerd op basis van design tokens.
+ * De bron is tokens.json.
+ * _rijkshuisstijl.css bevat opties uit de Rijkshuisstijl, _toepassing.css bevat de toepassing van deze opties. Refereer in het CSS bestand alleen aan de variabelen in _toepassing.css, niet aan die in _rijkshuisstijl.css.
+ * CSS variabelen worden automatisch gegenereerd, bewerk deze niet handmatig.
+ */
+:root {
+  --rijkshuisstijl-border-radius-1: 1px;
+  --rijkshuisstijl-border-radius-2: 2px;
+  --rijkshuisstijl-border-radius-4: 4px;
+  --rijkshuisstijl-border-radius-8: 8px;
+  --rijkshuisstijl-border-width-1: 1px;
+  --rijkshuisstijl-border-width-2: 2px;
+  --rijkshuisstijl-border-width-3: 3px;
+  --rijkshuisstijl-box-shadow-md: 0 8px 16px 0 #3b3b3b;
+  --rijkshuisstijl-box-shadow-sm: 0 2px 6px 0 #3b3b3b;
+  --rijkshuisstijl-color-bruin-100: #dfd4b6; /** Bruin 30% */
+  --rijkshuisstijl-color-bruin-200: #cfbf90; /** Bruin 45% */
+  --rijkshuisstijl-color-bruin-300: #bfa96c; /** Bruin 60% */
+  --rijkshuisstijl-color-bruin-400: #af9447; /** Bruin 75% */
+  --rijkshuisstijl-color-bruin-50: #efeada; /** Bruin 15% */
+  --rijkshuisstijl-color-bruin-500: #94710a; /** Bruin 100% */
+  --rijkshuisstijl-color-cool-gray-100: #f1f5f9; /** Cool gray 100 */
+  --rijkshuisstijl-color-cool-gray-200: #e2e8f0; /** Cool gray 200 */
+  --rijkshuisstijl-color-cool-gray-300: #cbd5e1; /** Cool gray 300 */
+  --rijkshuisstijl-color-cool-gray-400: #94a3b8; /** Cool gray 400 */
+  --rijkshuisstijl-color-cool-gray-50: #f8fafc; /** Cool gray 50 */
+  --rijkshuisstijl-color-cool-gray-500: #64748b; /** Cool gray 500 */
+  --rijkshuisstijl-color-cool-gray-600: #475569; /** Cool gray 600 */
+  --rijkshuisstijl-color-cool-gray-700: #334155; /** Cool gray 700 */
+  --rijkshuisstijl-color-cool-gray-800: #1e293b; /** Cool gray 800 */
+  --rijkshuisstijl-color-cool-gray-900: #0f172a; /** Cool gray 900 */
+  --rijkshuisstijl-color-donkerblauw-100: #b3d2e1; /** Donkerblauw 30% */
+  --rijkshuisstijl-color-donkerblauw-200: #8cbbd2; /** Donkerblauw 45% */
+  --rijkshuisstijl-color-donkerblauw-300: #66a4c3; /** Donkerblauw 60% */
+  --rijkshuisstijl-color-donkerblauw-400: #408eb4; /** Donkerblauw 75% */
+  --rijkshuisstijl-color-donkerblauw-50: #d9e8f0; /** Donkerblauw 15% */
+  --rijkshuisstijl-color-donkerblauw-500: #01689b; /** Donkerblauw 100% */
+  --rijkshuisstijl-color-donkerbruin-100: #d1c2be; /** Donkerbruin 30% */
+  --rijkshuisstijl-color-donkerbruin-200: #baa39d; /** Donkerbruin 45% */
+  --rijkshuisstijl-color-donkerbruin-300: #a3847d; /** Donkerbruin 60% */
+  --rijkshuisstijl-color-donkerbruin-400: #8d665d; /** Donkerbruin 75% */
+  --rijkshuisstijl-color-donkerbruin-50: #e8e0df; /** Donkerbruin 15% */
+  --rijkshuisstijl-color-donkerbruin-500: #673327; /** Donkerbruin 100% */
+  --rijkshuisstijl-color-donkergeel-100: #ffe9b8; /** Donkergeel 30% */
+  --rijkshuisstijl-color-donkergeel-200: #fdde94; /** Donkergeel 45% */
+  --rijkshuisstijl-color-donkergeel-300: #fdd370; /** Donkergeel 60% */
+  --rijkshuisstijl-color-donkergeel-400: #fdc84d; /** Donkergeel 75% */
+  --rijkshuisstijl-color-donkergeel-50: #fff4db; /** Donkergeel 15% */
+  --rijkshuisstijl-color-donkergeel-500: #ffb612; /** Donkergeel 100% */
+  --rijkshuisstijl-color-donkergroen-100: #becdc3; /** Donkergroen 30% */
+  --rijkshuisstijl-color-donkergroen-200: #9db4a4; /** Donkergroen 45% */
+  --rijkshuisstijl-color-donkergroen-300: #7d9b87; /** Donkergroen 60% */
+  --rijkshuisstijl-color-donkergroen-400: #5d8269; /** Donkergroen 75% */
+  --rijkshuisstijl-color-donkergroen-50: #dfe6e1; /** Donkergroen 15% */
+  --rijkshuisstijl-color-donkergroen-500: #275937; /** Donkergroen 100% */
+  --rijkshuisstijl-color-geel-100: #fdf6bb; /** Geel 30% */
+  --rijkshuisstijl-color-geel-200: #fcf199; /** Geel 45% */
+  --rijkshuisstijl-color-geel-300: #fbed78; /** Geel 60% */
+  --rijkshuisstijl-color-geel-400: #fae856; /** Geel 75% */
+  --rijkshuisstijl-color-geel-50: #fefbdd; /** Geel 15% */
+  --rijkshuisstijl-color-geel-500: #f9e11e; /** Geel 100% */
+  --rijkshuisstijl-color-grijs-100: #f3f3f3; /** Grijs 100 */
+  --rijkshuisstijl-color-grijs-200: #e6e6e6; /** Grijs 200 */
+  --rijkshuisstijl-color-grijs-300: #ccc; /** Grijs 300 */
+  --rijkshuisstijl-color-grijs-400: #b4b4b4; /** Grijs 400 */
+  --rijkshuisstijl-color-grijs-50: #f9f9f9; /** Grijs 50 */
+  --rijkshuisstijl-color-grijs-500: #999; /** Grijs 500 */
+  --rijkshuisstijl-color-grijs-600: #696969; /** Grijs 600 */
+  --rijkshuisstijl-color-grijs-700: #535353; /** Grijs 700 */
+  --rijkshuisstijl-color-groen-100: #c4dbb6; /** Groen 30% */
+  --rijkshuisstijl-color-groen-200: #a5c991; /** Groen 45% */
+  --rijkshuisstijl-color-groen-300: #88b76d; /** Groen 60% */
+  --rijkshuisstijl-color-groen-400: #6aa549; /** Groen 75% */
+  --rijkshuisstijl-color-groen-50: #e1eddb; /** Groen 15% */
+  --rijkshuisstijl-color-groen-500: #39870c; /** Groen 100% */
+  --rijkshuisstijl-color-groen-600: #2e6c0a; /** Deze kleur is geen onderdeel van rijkshuisstijl. Een donkere kleur is nodig om foutieve interactie en feedback staten weer te geven, de huidige opties bieden onvoldoende contrast hiervoor. */
+  --rijkshuisstijl-color-hemelblauw-100: #b3d7ee; /** Hemelblauw 30% */
+  --rijkshuisstijl-color-hemelblauw-200: #8cc3e6; /** Hemelblauw 45% */
+  --rijkshuisstijl-color-hemelblauw-300: #66afdd; /** Hemelblauw 60% */
+  --rijkshuisstijl-color-hemelblauw-400: #409cd5; /** Hemelblauw 75% */
+  --rijkshuisstijl-color-hemelblauw-50: #d9ebf7; /** Hemelblauw 15% */
+  --rijkshuisstijl-color-hemelblauw-500: #007bc7; /** Hemelblauw 100% */
+  --rijkshuisstijl-color-hemelblauw-600: #00629f; /** Deze kleur is geen onderdeel van rijkshuisstijl. Een donkere kleur is nodig om foutieve interactie en feedback staten weer te geven, de huidige opties bieden onvoldoende contrast hiervoor. */
+  --rijkshuisstijl-color-lichtblauw-100: #ddeff8; /** Lichtblauw 30% */
+  --rijkshuisstijl-color-lichtblauw-200: #cce7f4; /** Lichtblauw 45% */
+  --rijkshuisstijl-color-lichtblauw-300: #bcdff0; /** Lichtblauw 60% */
+  --rijkshuisstijl-color-lichtblauw-400: #abd7ed; /** Lichtblauw 75% */
+  --rijkshuisstijl-color-lichtblauw-50: #eef7fb; /** Lichtblauw 15% */
+  --rijkshuisstijl-color-lichtblauw-500: #8fcae7; /** Lichtblauw 100% */
+  --rijkshuisstijl-color-lintblauw-100: #b8c6d5; /** Lintblauw 30% */
+  --rijkshuisstijl-color-lintblauw-200: #95a9c0; /** Lintblauw 45% */
+  --rijkshuisstijl-color-lintblauw-300: #738eab; /** Lintblauw 60% */
+  --rijkshuisstijl-color-lintblauw-400: #4f7196; /** Lintblauw 75% */
+  --rijkshuisstijl-color-lintblauw-50: #dce3ea; /** Lintblauw 15% */
+  --rijkshuisstijl-color-lintblauw-500: #154273; /** Lintblauw 100% */
+  --rijkshuisstijl-color-lintblauw-600: #11355c; /** Deze kleur is geen onderdeel van rijkshuisstijl. Een donkere kleur is nodig om foutieve interactie en feedback staten weer te geven, de huidige opties bieden onvoldoende contrast hiervoor. */
+  --rijkshuisstijl-color-mintgroen-100: #d6f2e9; /** Mintgroen 30% */
+  --rijkshuisstijl-color-mintgroen-200: #c1ebde; /** Mintgroen 45% */
+  --rijkshuisstijl-color-mintgroen-300: #ace4d3; /** Mintgroen 60% */
+  --rijkshuisstijl-color-mintgroen-400: #98ddc8; /** Mintgroen 75% */
+  --rijkshuisstijl-color-mintgroen-50: #eaf8f4; /** Mintgroen 15% */
+  --rijkshuisstijl-color-mintgroen-500: #76d2b6; /** Mintgroen 100% */
+  --rijkshuisstijl-color-mosgroen-100: #d6d7b3; /** Mosgroen 30% */
+  --rijkshuisstijl-color-mosgroen-200: #c1c38c; /** Mosgroen 45% */
+  --rijkshuisstijl-color-mosgroen-300: #adaf66; /** Mosgroen 60% */
+  --rijkshuisstijl-color-mosgroen-400: #999c40; /** Mosgroen 75% */
+  --rijkshuisstijl-color-mosgroen-50: #ebebd9; /** Mosgroen 15% */
+  --rijkshuisstijl-color-mosgroen-500: #777b00; /** Mosgroen 100% */
+  --rijkshuisstijl-color-neutraal-gebroken-zwart: #3b3b3b; /** Gebroken zwart */
+  --rijkshuisstijl-color-neutraal-transparent: rgb(0 0 0 / 0%); /** Transparant */
+  --rijkshuisstijl-color-neutraal-wit: #fff; /** Wit */
+  --rijkshuisstijl-color-neutraal-zwart: #000; /** Zwart */
+  --rijkshuisstijl-color-oranje-100: #f6d4b3; /** Oranje 30% */
+  --rijkshuisstijl-color-oranje-200: #f1be8c; /** Oranje 45% */
+  --rijkshuisstijl-color-oranje-300: #eda966; /** Oranje 60% */
+  --rijkshuisstijl-color-oranje-400: #e89440; /** Oranje 75% */
+  --rijkshuisstijl-color-oranje-50: #fbead9; /** Oranje 15% */
+  --rijkshuisstijl-color-oranje-500: #e17000; /** Oranje 100% */
+  --rijkshuisstijl-color-oranje-600: #b45a00; /** Deze kleur is geen onderdeel van rijkshuisstijl. Een donkere kleur is nodig om foutieve interactie en feedback staten weer te geven, de huidige opties bieden onvoldoende contrast hiervoor. */
+  --rijkshuisstijl-color-paars-100: #c6b9cf; /** Paars 30% */
+  --rijkshuisstijl-color-paars-200: #a995b7; /** Paars 45% */
+  --rijkshuisstijl-color-paars-300: #8d729f; /** Paars 60% */
+  --rijkshuisstijl-color-paars-400: #714f87; /** Paars 75% */
+  --rijkshuisstijl-color-paars-50: #e3dce7; /** Paars 15% */
+  --rijkshuisstijl-color-paars-500: #42145f; /** Paars 100% */
+  --rijkshuisstijl-color-robijnrood-100: #efb3ce; /** Robijnrood 30% */
+  --rijkshuisstijl-color-robijnrood-200: #e78cb6; /** Robijnrood 45% */
+  --rijkshuisstijl-color-robijnrood-300: #df669d; /** Robijnrood 60% */
+  --rijkshuisstijl-color-robijnrood-400: #d74085; /** Robijnrood 75% */
+  --rijkshuisstijl-color-robijnrood-50: #f7d9e7; /** Robijnrood 15% */
+  --rijkshuisstijl-color-robijnrood-500: #ca005d; /** Robijnrood 100% */
+  --rijkshuisstijl-color-rood-100: #f2bfbc; /** Rood 30% */
+  --rijkshuisstijl-color-rood-200: #ec9f99; /** Rood 45% */
+  --rijkshuisstijl-color-rood-300: #e67f78; /** Rood 60% */
+  --rijkshuisstijl-color-rood-400: #df6056; /** Rood 75% */
+  --rijkshuisstijl-color-rood-50: #f9dfdd; /** Rood 15% */
+  --rijkshuisstijl-color-rood-500: #d52b1e; /** Rood 100% */
+  --rijkshuisstijl-color-rood-600: #aa2218; /** Deze kleur is geen onderdeel van rijkshuisstijl. Een donkere kleur is nodig om foutieve interactie en feedback staten weer te geven, de huidige opties bieden onvoldoende contrast hiervoor. */
+  --rijkshuisstijl-color-roze-100: #fbdef0; /** Roze 30% */
+  --rijkshuisstijl-color-roze-200: #f8cee8; /** Roze 45% */
+  --rijkshuisstijl-color-roze-300: #f6bde1; /** Roze 60% */
+  --rijkshuisstijl-color-roze-400: #f4add9; /** Roze 75% */
+  --rijkshuisstijl-color-roze-50: #fdeff8; /** Roze 15% */
+  --rijkshuisstijl-color-roze-500: #f092cd; /** Roze 100% */
+  --rijkshuisstijl-color-violet-100: #e5b3d0; /** Violet 30% */
+  --rijkshuisstijl-color-violet-200: #d88cb7; /** Violet 45% */
+  --rijkshuisstijl-color-violet-300: #cb66a0; /** Violet 60% */
+  --rijkshuisstijl-color-violet-400: #be4088; /** Violet 75% */
+  --rijkshuisstijl-color-violet-50: #f2d9e7; /** Violet 15% */
+  --rijkshuisstijl-color-violet-500: #a90061; /** Violet 100% */
+  --rijkshuisstijl-size-0: 0;
+  --rijkshuisstijl-size-1: 0.0625rem;
+  --rijkshuisstijl-size-12: 0.75rem;
+  --rijkshuisstijl-size-16: 1rem;
+  --rijkshuisstijl-size-160: 10rem;
+  --rijkshuisstijl-size-2: 0.125rem;
+  --rijkshuisstijl-size-24: 1.5rem;
+  --rijkshuisstijl-size-32: 2rem;
+  --rijkshuisstijl-size-4: 0.25rem;
+  --rijkshuisstijl-size-40: 2.5rem;
+  --rijkshuisstijl-size-48: 3rem;
+  --rijkshuisstijl-size-56: 3.5rem;
+  --rijkshuisstijl-size-64: 4rem;
+  --rijkshuisstijl-size-72: 4.5rem;
+  --rijkshuisstijl-size-8: 0.5rem;
+  --rijkshuisstijl-size-80: 5rem;
+  --rijkshuisstijl-size-88: 5.5rem;
+  --rijkshuisstijl-size-96: 6rem;
+  --rijkshuisstijl-size-base: 0.5rem; /** Basisgrootte voor berekeningen. Volgt het standaard 8pt grid. */
+  --rijkshuisstijl-space-1: 0.0625rem;
+  --rijkshuisstijl-space-12: 0.75rem;
+  --rijkshuisstijl-space-16: 1rem;
+  --rijkshuisstijl-space-2: 0.125rem;
+  --rijkshuisstijl-space-24: 1.5rem;
+  --rijkshuisstijl-space-32: 2rem;
+  --rijkshuisstijl-space-4: 0.25rem;
+  --rijkshuisstijl-space-40: 2.5rem;
+  --rijkshuisstijl-space-48: 3rem;
+  --rijkshuisstijl-space-56: 3.5rem;
+  --rijkshuisstijl-space-64: 4rem;
+  --rijkshuisstijl-space-72: 4.5rem;
+  --rijkshuisstijl-space-8: 0.5rem;
+  --rijkshuisstijl-space-80: 5rem;
+  --rijkshuisstijl-space-base: 0.5rem; /** Base spacing-size for calculation. Defaults to 8 to follow 8px grid. */
+  --rijkshuisstijl-text-font-family-default: rijkssansvf; /** Rijksoverheid Sans variable font */
+  --rijkshuisstijl-text-font-family-monospace: monaco, consolas, "Lucida Console", monospace;
+  --rijkshuisstijl-text-font-size-2xl: 1.5rem;
+  --rijkshuisstijl-text-font-size-2xs: 0.6667rem;
+  --rijkshuisstijl-text-font-size-3xl: 1.75rem;
+  --rijkshuisstijl-text-font-size-4xl: 2rem;
+  --rijkshuisstijl-text-font-size-base: 1rem; /** Basisgrootte voor berekening van de schaal voor overige groottes. */
+  --rijkshuisstijl-text-font-size-lg: 1.125rem;
+  --rijkshuisstijl-text-font-size-md: 1rem;
+  --rijkshuisstijl-text-font-size-sm: 0.8889rem;
+  --rijkshuisstijl-text-font-size-xl: 1.25rem;
+  --rijkshuisstijl-text-font-size-xs: 0.8rem;
+  --rijkshuisstijl-text-line-height-2xl: 1.25;
+  --rijkshuisstijl-text-line-height-4xl: 1.25;
+  --rijkshuisstijl-text-line-height-lg: 1.25;
+  --rijkshuisstijl-text-line-height-md: 1.5;
+  --rijkshuisstijl-text-line-height-sm: 1.5;
+  --rijkshuisstijl-text-line-height-xl: 1.25;
+  --rijkshuisstijl-text-weight-bold: 600;
+  --rijkshuisstijl-text-weight-default: 400;
+  --rijkshuisstijl-text-weight-semibold: 500;
+  --rijkshuisstijl-typography-spacing-paragraph-default: 0.5rem;
+}
