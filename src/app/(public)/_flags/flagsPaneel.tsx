@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useSyncExternalStore,
-  useOptimistic,
-  useTransition,
-} from "react";
+import { useOptimistic, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   Button,
@@ -21,13 +16,6 @@ import {
 } from "@/app/(private)/instellingen/_featureFlags";
 import SideOverlay from "@/components/SideOverlay";
 import AssistentPaneel from "./assistentPaneel";
-
-const PAUZE_SLEUTEL = "setting:pause-animations";
-
-const luisterNaarOpslag = (luisteraar: () => void) => {
-  window.addEventListener("storage", luisteraar);
-  return () => window.removeEventListener("storage", luisteraar);
-};
 
 const FlagsPaneel = ({
   flags,
@@ -47,27 +35,12 @@ const FlagsPaneel = ({
     }),
   );
 
-  const gepauzeerd = useSyncExternalStore(
-    luisterNaarOpslag,
-    () => localStorage.getItem(PAUZE_SLEUTEL) === "true",
-    () => false,
-  );
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("animations-paused", gepauzeerd);
-  }, [gepauzeerd]);
-
   const zetFlag = (key: (typeof MOX_FLAGS)[number]["key"], aan: boolean) =>
     startTransition(async () => {
       zetZichtbareFlag([key, aan]);
       await setFeatureFlag(key, aan);
       router.refresh();
     });
-
-  const zetPauze = (aan: boolean) => {
-    localStorage.setItem(PAUZE_SLEUTEL, String(aan));
-    window.dispatchEvent(new StorageEvent("storage", { key: PAUZE_SLEUTEL }));
-  };
 
   const hardReset = () =>
     startTransition(async () => {
@@ -108,15 +81,6 @@ const FlagsPaneel = ({
       </div>
 
       <div>
-        <Fieldset legend="Hulpmiddelen">
-          <FormFieldCheckboxOption
-            label="Animaties pauzeren"
-            checked={gepauzeerd}
-            onChange={(event) => zetPauze(event.target.checked)}
-          />
-        </Fieldset>
-      </div>
-      <div>
         <Fieldset legend="Huisstijl">
           <FormFieldRadio
             name="huisstijl"
@@ -129,13 +93,12 @@ const FlagsPaneel = ({
             name="huisstijl"
             value="nieuw"
             label="Nieuwe MijnOverheid huisstijl (in ontwikkeling)"
-            description="Zonder mox.css: alleen RHC en de MOx-afwijkingen in rhc.css."
             checked={zichtbareFlags.mox_nieuweHuisstijl}
             onChange={() => zetFlag("mox_nieuweHuisstijl", true)}
           />
         </Fieldset>
       </div>
-      <div>
+      <div className="prototype-side-overlay__footer">
         <Button
           appearance="secondary-action-button"
           hint="danger"

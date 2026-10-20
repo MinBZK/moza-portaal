@@ -78,7 +78,7 @@ const BerichtenboxPage = async ({
     <>
       <Heading level={1}>Mijn Berichtenbox</Heading>
       <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-d-8 mox-row-gap">
+        <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
           <div className="mox-card">
             <nav aria-label="Berichtenbox">
               <ul className="mox-tabs">

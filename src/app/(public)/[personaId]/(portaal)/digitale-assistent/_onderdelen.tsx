@@ -541,7 +541,7 @@ export const BronStatus = ({
   const items = BRONNEN.filter((b) => !bronnen || bronnen[b.key] !== undefined);
   return (
     <div
-      className={`mox-chat-status${uit ? " mox-chat-status--off" : ""}`}
+      className={`prototype-chat-status${uit ? " prototype-chat-status--off" : ""}`}
       onKeyDown={(event) => event.key === "Escape" && setUit(true)}
       onPointerMove={() => setUit(false)}
       onFocus={() => setUit(false)}
@@ -553,18 +553,20 @@ export const BronStatus = ({
           return (
             <li
               key={bron.key}
-              className={verbonden ? "mox-chat-status--connected" : undefined}
+              className={
+                verbonden ? "prototype-chat-status--connected" : undefined
+              }
             >
               <Icon icon={verbonden ? "circle-check" : "alert-circle"} />
               <span
-                className="mox-chat-status-source"
+                className="prototype-chat-status-source"
                 tabIndex={0}
                 aria-describedby={`bron-uitleg-${bron.key}`}
               >
                 {bron.label}
               </span>
               <span
-                className="mox-chat-status-explanation"
+                className="prototype-chat-status-explanation"
                 role="tooltip"
                 id={`bron-uitleg-${bron.key}`}
               >

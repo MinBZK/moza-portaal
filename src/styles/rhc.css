@@ -1,9 +1,9 @@
 /* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl
 
   Indeling: 1. Lettertype, 2. Tokens, 3. Layout (pagina, header, navigatie),
-  4. Componenten (alfabetisch), 5. Pagina's en functies, 6. Hulpmiddelen voor
-  het prototype (Flags-paneel, PoC-banner). Een @keyframes staat bij de functie
-  die hem gebruikt, buiten het theme-blok. */
+  4. Componenten (alfabetisch), 5. Pagina's en functies. Een @keyframes staat
+  bij de functie die hem gebruikt, buiten het theme-blok. Opmaak die alleen voor
+  het prototype is (Flags- en persona-paneel, PoC-banner), staat in utils.css. */
 
 /* ==== 1. Lettertype ========================================================= */
 
@@ -123,15 +123,6 @@ body {
     padding-inline: var(--mox-page-margin);
   }
 
-  /* Kruimelpad staat boven `<main>` in een eigen raster. Deze regel laat het op
-    dezelfde kolom beginnen als de inhoud (`rhc-grid__cell-t-9`). RHC heeft daar
-    geen class voor. */
-  @media screen and (width >=768px) {
-    .rhc-breadcrumb-cell {
-      grid-column: 4 / -1;
-    }
-  }
-
   /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
     rijen kaarten elkaar. */
   .rhc-grid:has(> .mox-card) {
@@ -153,6 +144,11 @@ body {
     cursor: pointer;
     font: inherit;
     gap: var(--rhc-space-sm);
+  }
+
+  /* Eén organisatie: zelfde weergave als de knop, maar niets om te kiezen. */
+  .rhc-header-organizations__trigger--static {
+    cursor: default;
   }
 
   .rhc-menu {
@@ -468,24 +464,6 @@ body {
 }
 
 /* --- Landingspagina --- */
-.mox-login-keycloak {
-  --utrecht-button-inline-size: 100%;
-  --utrecht-button-max-inline-size: none;
-  background: var(--rhc-color-wit);
-  border-radius: var(--rhc-border-radius-md);
-  border-width: var(--rhc-border-width-sm);
-  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-  inset-inline-end: 0;
-  padding: var(--rhc-space-2xs);
-  position: absolute;
-
-  button {
-    border: 0;
-    display: block;
-    inline-size: 100%;
-    text-align: start;
-  }
-}
 
 .mox-login-digid,
 .mox-login-eherkenning {
@@ -533,128 +511,4 @@ body {
 .mox-landing-quicklinks-heading {
   padding-block: var(--rhc-hero-message-padding-block-start);
   padding-inline: var(--rhc-hero-message-padding-inline-start);
-}
-
-.mox-landing-demo-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rhc-card-column-gap);
-  padding-block: var(--rhc-hero-message-padding-block-start);
-  padding-inline: var(--rhc-hero-message-padding-inline-start);
-}
-
-/* ==== 6. Hulpmiddelen voor het prototype ==================================== */
-
-/* --- Flags- en persona-paneel --- */
-
-/* Shared side overlay for flags and persona selection */
-dialog.rhc-side-overlay {
-  --utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
-  --utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
-  --utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
-  --utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
-  --utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
-  --utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
-  --utrecht-drawer-padding-inline-start: var(--rhc-space-3xl);
-  background: var(--utrecht-drawer-background-color);
-  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-  inset-block: 0;
-  inset-inline-end: 0;
-  position: fixed;
-  transform: translateX(100%);
-}
-
-dialog.rhc-side-overlay[open] {
-  transform: translateX(0);
-}
-
-@starting-style {
-  dialog.rhc-side-overlay[open] {
-    transform: translateX(100%);
-  }
-}
-
-.rhc-side-overlay-shortcuts {
-  color: var(--rhc-color-foreground-subtle);
-  font-size: var(--rhc-text-font-size-sm);
-  margin-block: var(--rhc-space-lg);
-  text-align: end;
-}
-
-.rhc-side-overlay__header {
-  align-items: center;
-  display: flex;
-  gap: var(--rhc-space-lg);
-  justify-content: space-between;
-  margin-block-end: var(--rhc-space-2xl);
-
-  h2 {
-    margin: 0;
-  }
-}
-
-.rhc-side-overlay__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rhc-space-2xl);
-
-  legend {
-    margin-block-end: var(--rhc-space-lg);
-  }
-
-  .utrecht-form-fieldset__fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-md);
-  }
-
-  summary {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-block: var(--rhc-space-lg);
-  }
-
-  button {
-    background-color: var(--rhc-color-wit);
-    margin-block-start: var(--rhc-space-lg);
-  }
-}
-
-/* Button used to trigger the flags panel (fixed in bottom-right) */
-.rhc-button-trigger-flags {
-  background: var(--rhc-color-wit);
-  inset-block-end: var(--rhc-space-md);
-  inset-inline-end: var(--rhc-space-md);
-  position: fixed;
-}
-
-/* Flags-panel: pauze animations */
-.animations-paused *,
-.animations-paused *::before,
-.animations-paused *::after {
-  animation-play-state: paused !important;
-  transition: none !important;
-}
-
-/* --- PoC-banner --- */
-
-.rhc-temp-poc-banner {
-  background: var(--rhc-color-groen-500);
-  color: var(--rhc-color-wit);
-  font-weight: var(--rhc-text-font-weight-bold);
-  inline-size: 256px;
-  inset-block-start: 3rem;
-  inset-inline-end: -4rem;
-  opacity: .8;
-  padding-block: var(--rhc-space-sm);
-  position: fixed;
-  text-align: center;
-  text-decoration: none;
-  transform: rotate(45deg);
-  transform-origin: center;
-  z-index: 1;
-
-  &:hover {
-    opacity: 1;
-  }
 }

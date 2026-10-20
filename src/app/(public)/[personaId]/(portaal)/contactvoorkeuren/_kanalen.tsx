@@ -132,7 +132,7 @@ const Formulier = ({
   };
 
   return (
-    <form className="mox-row-gap" onSubmit={opslaan}>
+    <form className="rhc-row-gap" onSubmit={opslaan}>
       {melding && (
         <div ref={meldingRef} tabIndex={-1}>
           <Alert type={melding === "opgeslagen" ? "ok" : "error"}>

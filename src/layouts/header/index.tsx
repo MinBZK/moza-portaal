@@ -150,7 +150,18 @@ const Header = ({
                         : "rhc-nav-bar__item"
                     }
                   >
-                    {organisaties.length > 1 ? (
+                    {/* Meerdere organisaties: knop met keuzelijst. Eén
+                        organisatie: dezelfde weergave, zonder keuzelijst en
+                        niet klikbaar (een knop die niets doet, verwart). De
+                        link is alleen voor iemand zonder organisatie. */}
+                    {organisaties.length === 1 ? (
+                      <span className="rhc-nav-bar__link rhc-header-organizations__trigger rhc-header-organizations__trigger--static">
+                        <Icon icon="user" />
+                        <span className="rhc-nav-bar__label rhc-header-organizations__identity">
+                          {accountLabel}
+                        </span>
+                      </span>
+                    ) : organisaties.length > 1 ? (
                       <div
                         ref={organisatiesRef}
                         className="rhc-header-organizations"
@@ -237,7 +248,7 @@ const Header = ({
                     </button>
 
                     {openKeycloakLogin && (
-                      <div className="mox-login-keycloak mox-card">
+                      <div className="prototype-login-keycloak mox-card">
                         <div role="menu" aria-orientation="vertical">
                           <button
                             onClick={() => {
@@ -272,7 +283,7 @@ const Header = ({
           </NavBar>
         </div>
         <a
-          className="rhc-temp-poc-banner"
+          className="prototype-temp-poc-banner"
           href="https://www.mijnoverheidzakelijk.nl/"
         >
           Proof of Concept

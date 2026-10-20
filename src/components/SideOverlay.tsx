@@ -7,6 +7,12 @@ import {
   Heading,
 } from "@rijkshuisstijl-community/components-react";
 
+const OPEN_EVENT = "prototype:open-side-overlay";
+
+/** Opent het paneel met dit id, net als de sneltoets. */
+export const openSideOverlay = (id: string) =>
+  window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: id }));
+
 const SideOverlay = ({
   id,
   title,
@@ -69,8 +75,21 @@ const SideOverlay = ({
       setOpen(true);
     };
 
+    const handleOpen = (event: Event) => {
+      if (!(event instanceof CustomEvent) || event.detail !== id) return;
+      returnFocusRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      setOpen(true);
+    };
+
     document.addEventListener("keydown", handleShortcut);
-    return () => document.removeEventListener("keydown", handleShortcut);
+    window.addEventListener(OPEN_EVENT, handleOpen);
+    return () => {
+      document.removeEventListener("keydown", handleShortcut);
+      window.removeEventListener(OPEN_EVENT, handleOpen);
+    };
   }, [id, shortcut]);
 
   useEffect(() => {
@@ -87,7 +106,7 @@ const SideOverlay = ({
       {open && (
         <Drawer
           align="inline-end"
-          className="rhc-side-overlay"
+          className="prototype-side-overlay"
           modal
           open
           aria-labelledby={titleId}
@@ -101,7 +120,7 @@ const SideOverlay = ({
           }}
         >
           <div id={id}>
-            <div className="rhc-side-overlay__header">
+            <div className="prototype-side-overlay__header">
               <Heading level={2} id={titleId}>
                 {title}
               </Heading>
@@ -113,7 +132,7 @@ const SideOverlay = ({
                 Sluiten
               </Button>
             </div>
-            <div className="rhc-side-overlay__content">{children}</div>
+            <div className="prototype-side-overlay__content">{children}</div>
           </div>
         </Drawer>
       )}

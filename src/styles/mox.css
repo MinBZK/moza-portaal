@@ -1039,61 +1039,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		gap: var(--rhc-space-sm);
 	}
 
-	/* Status van bronnen, met uitleg bij hover en focus (Escape verbergt die) */
-	.mox-chat-status {
-		ul {
-			display: flex;
-			flex-wrap: wrap;
-			gap: var(--rhc-space-sm) var(--rhc-space-lg);
-		}
-
-		li {
-			align-items: center;
-			display: flex;
-			gap: var(--rhc-space-xs);
-			position: relative;
-
-			>.utrecht-icon {
-				color: var(--rhc-color-rood-600);
-			}
-		}
-
-		.mox-chat-status--connected>.utrecht-icon {
-			color: var(--rhc-color-groen-600);
-		}
-	}
-
-	.mox-chat-status-source {
-		border-block-end: var(--rhc-border-width-sm) dotted currentcolor;
-		cursor: help;
-	}
-
-	.mox-chat-status-explanation {
-		background-color: var(--rhc-color-wit);
-		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
-		border-radius: var(--rhc-border-radius-md);
-		inline-size: max-content;
-		inset-block-end: calc(100% + var(--rhc-space-xs));
-		inset-inline-start: 0;
-		max-inline-size: 20rem;
-		opacity: 0;
-		padding: var(--rhc-space-md);
-		position: absolute;
-		visibility: hidden;
-		z-index: 1;
-
-		li:hover>&,
-		li:focus-within>& {
-			opacity: 1;
-			visibility: visible;
-		}
-
-		.mox-chat-status--off & {
-			opacity: 0;
-			visibility: hidden;
-		}
-	}
-
 	/* --- Lopende zaken --- */
 	/* Voortgang van een zaak: genummerde stappen met een lijn ertussen,
 	  zoals de status-track in moza-poc. Voltooid = groen met vinkje,
@@ -1224,6 +1169,29 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			flex: 1;
 			max-inline-size: 20rem;
 		}
+	}
+}
+
+/* Menu */
+.rhc-menu {
+	button {
+		color: var(--rhc-color-zwart);
+		inline-size: 100%;
+		padding-block: var(--rhc-space-xl);
+		padding-inline: var(--rhc-space-3xl);
+		text-align: start;
+
+		&[aria-pressed=true] {
+			background-color: var(--rhc-color-cool-grey-200);
+			color: var(--rhc-color-zwart) !important;
+		}
+
+		&:hover {
+			background-color: var(--rhc-color-cool-grey-200) !important;
+			color: var(--rhc-color-zwart);
+		}
+
+
 	}
 }
 

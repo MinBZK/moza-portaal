@@ -167,7 +167,7 @@ const PublicPage = () => {
         </div>
       </div>
 
-      <div className="mox-landing-demo-info">
+      <div className="prototype-landing-demo-info">
         <Heading level={2}>
           Dit is een demo-prototypevan MijnOverheid Zakelijk
         </Heading>

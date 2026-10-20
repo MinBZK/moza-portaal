@@ -1,5 +1,952 @@
 [
   {
+    "id": "yassin",
+    "actief": false,
+    "label": "Yassin Amrani",
+    "beschrijving": "Zelfstandige zonder personeel. Regelt zijn zaken het liefst snel zelf, en laat de boekhouding aan zijn intermediair over.",
+    "profiel": {
+      "rol": "Zelfstandige (ZZP)",
+      "kleur": "hemelblauw",
+      "avatar": "/personas/yassin.svg",
+      "doelgroep": "ondernemer",
+      "labelKleur": "hemelblauw"
+    },
+    "basis": "haarstylist",
+    "persoon": {
+      "voornaam": "Yassin",
+      "achternaam": "Amrani"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Roots & Locks",
+        "functies": "Eigenaar, Haarstylist",
+        "website": "https://www.rootsandlocks.nl",
+        "kvkNummer": "56789012",
+        "rsinNummer": "56789012",
+        "btwNummer": "NL00056789012",
+        "omzetbelastingnummer": "056789012B01",
+        "startdatum": "20 september 2021",
+        "rechtsvorm": "Eenmanszaak",
+        "branche": "Persoonlijke verzorging",
+        "vestigingsadres": "Witte de Withstraat 18, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Eigenaar",
+        "vestigingsnummer": "000056789012",
+        "iban": "NL90 KNAB 0005 6789 01",
+        "loonheffingennummer": "",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 0,
+        "sbi": [
+          {
+            "code": "96021",
+            "omschrijving": "Haarverzorging"
+          },
+          {
+            "code": "47750",
+            "omschrijving": "Winkels in parfums en cosmetica"
+          }
+        ],
+        "vestigingsadresVolledig": "Witte de Withstraat 18, 3012 BP Rotterdam",
+        "postadres": "Witte de Withstraat 18, 3012 BP Rotterdam",
+        "vestigingen": [
+          {
+            "nummer": "000056789012",
+            "type": "Hoofdvestiging",
+            "adres": "Witte de Withstraat 18, 3012 BP Rotterdam"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": []
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "cyberweerbaarheid",
+      "kia",
+      "bbsc",
+      "praktijkleren",
+      "mkb-groen",
+      "rotterdam-ondernemen-in-de-wijk",
+      "rotterdam-leerwerkplek"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "avg",
+      "warenwet",
+      "transparante-arbeidsvoorwaarden",
+      "gelijke-kansen",
+      "gelijke-behandeling-leeftijd"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": ["mkb-cyberweerbaarheid-voucher"],
+    "homepageRegelgeving": ["arbowet-gevaarlijke-stoffen"]
+  },
+  {
+    "id": "karin",
+    "actief": true,
+    "label": "Karin Jansen",
+    "beschrijving": "Eigenaar-directeur van een mkb-bedrijf met personeel. Delegeert veel aan haar medewerkers en wil toch grip houden.",
+    "profiel": {
+      "rol": "Directeur MKB",
+      "kleur": "rood",
+      "avatar": "/personas/karin.svg",
+      "doelgroep": "ondernemer",
+      "labelKleur": "rood"
+    },
+    "basis": "bloemenkweker",
+    "persoon": {
+      "voornaam": "Karin",
+      "achternaam": "Jansen"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kwekerij De Bloesem",
+        "functies": "Eigenaar-directeur",
+        "website": "https://www.kwekerijdebloesem.nl",
+        "kvkNummer": "62345681",
+        "rsinNummer": "62345681",
+        "btwNummer": "NL00062345681",
+        "omzetbelastingnummer": "062345681B01",
+        "startdatum": "12 februari 2011",
+        "rechtsvorm": "Vennootschap onder firma",
+        "branche": "Landbouw, bosbouw en visserij",
+        "vestigingsadres": "Hoefweg 210, Bleiswijk",
+        "gemeente": "Lansingerland",
+        "rol": "Eigenaar-directeur",
+        "vestigingsnummer": "000062345681",
+        "iban": "NL62 RABO 0006 2345 68",
+        "loonheffingennummer": "062345681L01",
+        "werkzamePersonenFulltime": 5,
+        "werkzamePersonenParttime": 2,
+        "sbi": [
+          {
+            "code": "01192",
+            "omschrijving": "Teelt van bloemen, bloembollen en perkplanten (onder glas)"
+          },
+          {
+            "code": "01300",
+            "omschrijving": "Teelt van sierplanten voor vermeerdering"
+          }
+        ],
+        "vestigingsadresVolledig": "Hoefweg 210, 2665 KG Bleiswijk",
+        "postadres": "Hoefweg 210, 2665 KG Bleiswijk",
+        "vestigingen": [
+          {
+            "nummer": "000062345681",
+            "type": "Hoofdvestiging",
+            "adres": "Hoefweg 210, 2665 KG Bleiswijk"
+          }
+        ],
+        "ubo": [
+          {
+            "naam": "Robin Vogel",
+            "aardVanBelang": "Vennoot",
+            "groottevanBelang": "50% – 75%"
+          },
+          {
+            "naam": "T.J. van Leeuwen",
+            "aardVanBelang": "Vennoot",
+            "groottevanBelang": "25% – 50%"
+          }
+        ],
+        "jaarrekeningen": []
+      }
+    ],
+    "belangen": [
+      {
+        "naam": "Glastuinbouw Nederland",
+        "rol": "Lid"
+      }
+    ],
+    "subsidies": [
+      "sde",
+      "isde",
+      "mia-vamil",
+      "eia",
+      "kia",
+      "precisielandbouw",
+      "groenprojecten"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "minimumloon",
+      "loonbelasting",
+      "bestrijdingsmiddelen",
+      "milieubeheer"
+    ],
+    "buurt": null,
+    "homepageSubsidies": ["precisielandbouw"],
+    "homepageRegelgeving": ["milieubeheer"]
+  },
+  {
+    "id": "bilal",
+    "actief": false,
+    "label": "Bilal Yılmaz",
+    "beschrijving": "Administratief medewerker. Regelt overheidszaken voor zijn werkgever, binnen het mandaat dat de directeur hem gaf.",
+    "profiel": {
+      "rol": "Werknemer MKB",
+      "kleur": "paars",
+      "avatar": "/personas/bilal.svg",
+      "doelgroep": "ondernemer",
+      "labelKleur": "paars"
+    },
+    "basis": "bloemenkweker",
+    "persoon": {
+      "voornaam": "Bilal",
+      "achternaam": "Yılmaz"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kwekerij De Bloesem",
+        "functies": "Administratief medewerker (gemachtigd)",
+        "website": "https://www.kwekerijdebloesem.nl",
+        "kvkNummer": "62345681",
+        "rsinNummer": "62345681",
+        "btwNummer": "NL00062345681",
+        "omzetbelastingnummer": "062345681B01",
+        "startdatum": "12 februari 2011",
+        "rechtsvorm": "Vennootschap onder firma",
+        "branche": "Landbouw, bosbouw en visserij",
+        "vestigingsadres": "Hoefweg 210, Bleiswijk",
+        "gemeente": "Lansingerland",
+        "rol": "Gemachtigde",
+        "vestigingsnummer": "000062345681",
+        "iban": "NL62 RABO 0006 2345 68",
+        "loonheffingennummer": "062345681L01",
+        "werkzamePersonenFulltime": 5,
+        "werkzamePersonenParttime": 2,
+        "sbi": [
+          {
+            "code": "01192",
+            "omschrijving": "Teelt van bloemen, bloembollen en perkplanten (onder glas)"
+          },
+          {
+            "code": "01300",
+            "omschrijving": "Teelt van sierplanten voor vermeerdering"
+          }
+        ],
+        "vestigingsadresVolledig": "Hoefweg 210, 2665 KG Bleiswijk",
+        "postadres": "Hoefweg 210, 2665 KG Bleiswijk",
+        "vestigingen": [
+          {
+            "nummer": "000062345681",
+            "type": "Hoofdvestiging",
+            "adres": "Hoefweg 210, 2665 KG Bleiswijk"
+          }
+        ],
+        "ubo": [
+          {
+            "naam": "Robin Vogel",
+            "aardVanBelang": "Vennoot",
+            "groottevanBelang": "50% – 75%"
+          },
+          {
+            "naam": "T.J. van Leeuwen",
+            "aardVanBelang": "Vennoot",
+            "groottevanBelang": "25% – 50%"
+          }
+        ],
+        "jaarrekeningen": []
+      }
+    ],
+    "belangen": [
+      {
+        "naam": "Glastuinbouw Nederland",
+        "rol": "Lid"
+      }
+    ],
+    "subsidies": [
+      "sde",
+      "isde",
+      "mia-vamil",
+      "eia",
+      "kia",
+      "precisielandbouw",
+      "groenprojecten"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "minimumloon",
+      "loonbelasting",
+      "bestrijdingsmiddelen",
+      "milieubeheer"
+    ],
+    "buurt": null,
+    "homepageSubsidies": ["precisielandbouw"],
+    "homepageRegelgeving": ["milieubeheer"]
+  },
+  {
+    "id": "sherida",
+    "actief": false,
+    "label": "Sherida Pinas",
+    "beschrijving": "Boekhouder en intermediair. Regelt aangiftes en aanvragen voor meerdere klanten en schakelt veel tussen klantdossiers.",
+    "profiel": {
+      "rol": "Intermediair",
+      "kleur": "oranje",
+      "avatar": "/personas/sherida.svg",
+      "doelgroep": "ondernemer",
+      "labelKleur": "oranje"
+    },
+    "basis": "koffiezaak",
+    "persoon": {
+      "voornaam": "Sherida",
+      "achternaam": "Pinas",
+      "initialen": "S."
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Pinas Administratie & Advies",
+        "functies": "Eigenaar, Boekhouder",
+        "kvkNummer": "70123456",
+        "rechtsvorm": "Eenmanszaak",
+        "branche": "Administratiekantoor",
+        "vestigingsadres": "Kruisweg 12, Hoofddorp",
+        "gemeente": "Haarlemmermeer",
+        "rol": "Eigenaar",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 0,
+        "sbi": [
+          {
+            "code": "69202",
+            "omschrijving": "Belastingadviesbureaus en administratiekantoren"
+          }
+        ],
+        "vestigingsadresVolledig": "Kruisweg 12, 2131 CS Hoofddorp",
+        "postadres": "Kruisweg 12, 2131 CS Hoofddorp",
+        "vestigingen": [
+          {
+            "nummer": "000070123456",
+            "type": "Hoofdvestiging",
+            "adres": "Kruisweg 12, 2131 CS Hoofddorp"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": []
+      },
+      {
+        "handelsnaam": "Roots & Locks",
+        "functies": "Intermediair (gemachtigd)",
+        "website": "https://www.rootsandlocks.nl",
+        "kvkNummer": "56789012",
+        "rsinNummer": "56789012",
+        "btwNummer": "NL00056789012",
+        "omzetbelastingnummer": "056789012B01",
+        "startdatum": "20 september 2021",
+        "rechtsvorm": "Eenmanszaak",
+        "branche": "Persoonlijke verzorging",
+        "vestigingsadres": "Witte de Withstraat 18, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Gemachtigde",
+        "vestigingsnummer": "000056789012",
+        "iban": "NL90 KNAB 0005 6789 01",
+        "loonheffingennummer": "",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 0,
+        "sbi": [
+          {
+            "code": "96021",
+            "omschrijving": "Haarverzorging"
+          },
+          {
+            "code": "47750",
+            "omschrijving": "Winkels in parfums en cosmetica"
+          }
+        ],
+        "vestigingsadresVolledig": "Witte de Withstraat 18, 3012 BP Rotterdam",
+        "postadres": "Witte de Withstraat 18, 3012 BP Rotterdam",
+        "vestigingen": [
+          {
+            "nummer": "000056789012",
+            "type": "Hoofdvestiging",
+            "adres": "Witte de Withstraat 18, 3012 BP Rotterdam"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": []
+      },
+      {
+        "handelsnaam": "Koffiezaak Noon",
+        "functies": "Intermediair (gemachtigd)",
+        "website": "https://www.koffiezaaknoon.nl",
+        "kvkNummer": "85234567",
+        "rsinNummer": "85234567",
+        "btwNummer": "NL00085234567",
+        "omzetbelastingnummer": "085234567B01",
+        "startdatum": "14 maart 2021",
+        "rechtsvorm": "Eenmanszaak",
+        "branche": "Horeca",
+        "vestigingsadres": "Meent 88, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Gemachtigde",
+        "vestigingsnummer": "000085234567",
+        "iban": "NL58 INGB 0008 5234 56",
+        "loonheffingennummer": "085234567L01",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 3,
+        "energie": {
+          "elektriciteitKwh": 61250,
+          "gasM3": 9800
+        },
+        "sbi": [
+          {
+            "code": "56102",
+            "omschrijving": "Cafés"
+          }
+        ],
+        "vestigingsadresVolledig": "Meent 88, 3011 JM Rotterdam",
+        "postadres": "Meent 88, 3011 JM Rotterdam",
+        "vestigingen": [
+          {
+            "nummer": "000085234567",
+            "type": "Hoofdvestiging",
+            "adres": "Meent 88, 3011 JM Rotterdam"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": []
+      },
+      {
+        "handelsnaam": "Kwekerij De Bloesem",
+        "functies": "Intermediair (gemachtigd)",
+        "website": "https://www.kwekerijdebloesem.nl",
+        "kvkNummer": "62345681",
+        "rsinNummer": "62345681",
+        "btwNummer": "NL00062345681",
+        "omzetbelastingnummer": "062345681B01",
+        "startdatum": "12 februari 2011",
+        "rechtsvorm": "Vennootschap onder firma",
+        "branche": "Landbouw, bosbouw en visserij",
+        "vestigingsadres": "Hoefweg 210, Bleiswijk",
+        "gemeente": "Lansingerland",
+        "rol": "Gemachtigde",
+        "vestigingsnummer": "000062345681",
+        "iban": "NL62 RABO 0006 2345 68",
+        "loonheffingennummer": "062345681L01",
+        "werkzamePersonenFulltime": 5,
+        "werkzamePersonenParttime": 2,
+        "sbi": [
+          {
+            "code": "01192",
+            "omschrijving": "Teelt van bloemen, bloembollen en perkplanten (onder glas)"
+          },
+          {
+            "code": "01300",
+            "omschrijving": "Teelt van sierplanten voor vermeerdering"
+          }
+        ],
+        "vestigingsadresVolledig": "Hoefweg 210, 2665 KG Bleiswijk",
+        "postadres": "Hoefweg 210, 2665 KG Bleiswijk",
+        "vestigingen": [
+          {
+            "nummer": "000062345681",
+            "type": "Hoofdvestiging",
+            "adres": "Hoefweg 210, 2665 KG Bleiswijk"
+          }
+        ],
+        "ubo": [
+          {
+            "naam": "Robin Vogel",
+            "aardVanBelang": "Vennoot",
+            "groottevanBelang": "50% – 75%"
+          },
+          {
+            "naam": "T.J. van Leeuwen",
+            "aardVanBelang": "Vennoot",
+            "groottevanBelang": "25% – 50%"
+          }
+        ],
+        "jaarrekeningen": []
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "eia",
+      "isde",
+      "kia",
+      "mkb-groen",
+      "tek",
+      "rotterdam-verduurzaming-bedrijfspand",
+      "rotterdam-ondernemen-in-de-wijk"
+    ],
+    "regelgeving": [
+      "warenwet",
+      "arbowet",
+      "minimumloon",
+      "avg",
+      "tabakswet",
+      "dienstenwet"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
+    "homepageRegelgeving": ["milieubeheer"]
+  },
+  {
+    "id": "annemieke",
+    "actief": false,
+    "label": "Annemieke Verhoef",
+    "beschrijving": "Inkoopadviseur ICT bij de Kamer van Koophandel. Regelt de inkoop en aanbesteding van software en digitale diensten.",
+    "profiel": {
+      "rol": "Inkoopadviseur KvK",
+      "kleur": "donkergeel",
+      "labelKleur": "geel",
+      "avatar": "/personas/annemieke.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Annemieke",
+      "achternaam": "Verhoef"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Inkoopadviseur ICT",
+        "rol": "Inkoopadviseur ICT"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "ruben",
+    "actief": false,
+    "label": "Ruben van Leeuwen",
+    "beschrijving": "Servicemanager digitale diensten bij de Kamer van Koophandel. Eindverantwoordelijk voor de afname en het contractbeheer van diensten zoals de notificatiedienst.",
+    "profiel": {
+      "rol": "Servicemanager KvK",
+      "kleur": "lintblauw",
+      "labelKleur": "geel",
+      "avatar": "/personas/ruben.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Ruben",
+      "achternaam": "van Leeuwen"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Servicemanager digitale diensten",
+        "rol": "Servicemanager digitale diensten"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "femke",
+    "actief": false,
+    "label": "Femke Bosch",
+    "beschrijving": "Functioneel beheerder bij de Kamer van Koophandel. Richt de notificatiedienst in en voert functionele wijzigingen door.",
+    "profiel": {
+      "rol": "Functioneel beheerder KvK",
+      "kleur": "mintgroen",
+      "labelKleur": "geel",
+      "avatar": "/personas/femke.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Femke",
+      "achternaam": "Bosch"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Functioneel beheerder",
+        "rol": "Functioneel beheerder"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "deniz",
+    "actief": false,
+    "label": "Deniz Kaya",
+    "beschrijving": "DevOps engineer bij de Kamer van Koophandel. Koppelt en bewaakt de notificatiedienst in de technische omgeving van Mijn KvK.",
+    "profiel": {
+      "rol": "DevOps engineer KvK",
+      "kleur": "robijnrood",
+      "labelKleur": "geel",
+      "avatar": "/personas/deniz.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Deniz",
+      "achternaam": "Kaya"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Kamer van Koophandel",
+        "kvkNummer": "59581883",
+        "rechtsvorm": "Publiekrechtelijke rechtspersoon",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "St.-Jacobsstraat 300, Utrecht",
+        "gemeente": "Utrecht",
+        "vestigingsadresVolledig": "St.-Jacobsstraat 300, 3511 BT Utrecht",
+        "postadres": "Postbus 48, 3500 AA Utrecht",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [
+          {
+            "nummer": "000027906516",
+            "type": "Hoofdvestiging",
+            "adres": "St.-Jacobsstraat 300, 3511 BT Utrecht"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "DevOps engineer",
+        "rol": "DevOps engineer"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "marije",
+    "actief": false,
+    "label": "Marije de Wit",
+    "beschrijving": "Portfoliomanager bij Logius. Verantwoordelijk voor het dienstverlenerportaal en de samenhang tussen de diensten daarachter.",
+    "profiel": {
+      "rol": "Portfoliomanager Logius",
+      "kleur": "violet",
+      "labelKleur": "lichtblauw",
+      "avatar": "/personas/marije.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Marije",
+      "achternaam": "de Wit"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Logius",
+        "rechtsvorm": "Rijksoverheid (dienst van het ministerie van BZK)",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "Wilhelmina van Pruisenweg 52, Den Haag",
+        "gemeente": "Den Haag",
+        "vestigingsadresVolledig": "Wilhelmina van Pruisenweg 52, 2595 AN Den Haag",
+        "postadres": "Postbus 96810, 2509 JE Den Haag",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Portfoliomanager",
+        "rol": "Portfoliomanager"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
+    "id": "pieter",
+    "actief": false,
+    "label": "Pieter de Vries",
+    "beschrijving": "Productmanager notificatiedienst bij Logius. Denkt mee bij de afname van de dienst en is vraagbaak voor afnemers.",
+    "profiel": {
+      "rol": "Productmanager Logius",
+      "kleur": "bruin",
+      "labelKleur": "lichtblauw",
+      "avatar": "/personas/pieter.svg",
+      "doelgroep": "dienstverlener",
+      "concept": true
+    },
+    "persoon": {
+      "voornaam": "Pieter",
+      "achternaam": "de Vries"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Logius",
+        "rechtsvorm": "Rijksoverheid (dienst van het ministerie van BZK)",
+        "branche": "Overheidsdienstverlening",
+        "vestigingsadres": "Wilhelmina van Pruisenweg 52, Den Haag",
+        "gemeente": "Den Haag",
+        "vestigingsadresVolledig": "Wilhelmina van Pruisenweg 52, 2595 AN Den Haag",
+        "postadres": "Postbus 96810, 2509 JE Den Haag",
+        "sbi": [
+          {
+            "code": "8411",
+            "omschrijving": "Algemeen overheidsbestuur"
+          }
+        ],
+        "vestigingen": [],
+        "ubo": [],
+        "jaarrekeningen": [],
+        "functies": "Productmanager notificatiedienst",
+        "rol": "Productmanager notificatiedienst"
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mit",
+      "wbso",
+      "kia",
+      "bmkb",
+      "innovatiekrediet",
+      "mia-vamil",
+      "eia",
+      "groeifaciliteit",
+      "dggf",
+      "dei",
+      "rotterdam-evenementen-cultuur",
+      "rotterdam-verduurzaming-bedrijfspand"
+    ],
+    "regelgeving": [
+      "arbowet",
+      "dienstenwet",
+      "minimumloon",
+      "avg",
+      "arbeid-vreemdelingen",
+      "wor",
+      "csrd",
+      "klokkenluiders",
+      "transparante-arbeidsvoorwaarden",
+      "wet-werk-zekerheid"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": [
+      "toeristische-innovatie",
+      "mkb-digitaliseringssubsidie"
+    ],
+    "homepageRegelgeving": ["dienstenwet-informatieplicht"]
+  },
+  {
     "id": "bloom",
     "actief": false,
     "label": "Adviseur",
@@ -1075,9 +2022,8 @@
     "label": "Horecaondernemer",
     "beschrijving": "Deze persona heeft twee horecabedrijven.",
     "persoon": {
-      "voornaam": "Claudia",
-      "achternaam": "van Dam",
-      "initialen": "C.M."
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -1155,9 +2101,8 @@
     "label": "Koffiebrander",
     "beschrijving": "Deze persona heeft twee bedrijven op haar naam.",
     "persoon": {
-      "voornaam": "Claudia",
-      "achternaam": "van Dam",
-      "initialen": "C.M."
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -1339,7 +2284,7 @@
   },
   {
     "id": "bloemenkweker",
-    "actief": true,
+    "actief": false,
     "label": "Bloemenkweker",
     "beschrijving": "Deze persona kweekt bloemen bij Kwekerij De Bloesem.",
     "persoon": {
@@ -1424,7 +2369,8 @@
     ],
     "buurt": null,
     "homepageSubsidies": ["precisielandbouw"],
-    "homepageRegelgeving": ["milieubeheer"]
+    "homepageRegelgeving": ["milieubeheer"],
+    "archief": true
   },
   {
     "id": "zorgcoordinator",
@@ -1814,8 +2760,8 @@
     "label": "Aangesloten onderneming 1",
     "beschrijving": "Deze persona laat de aangesloten onderneming Demo-onderneming 1 zien.",
     "persoon": {
-      "voornaam": "Sam",
-      "achternaam": "Bakker"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -1880,8 +2826,8 @@
     "label": "Aangesloten onderneming 2",
     "beschrijving": "Deze persona laat de aangesloten onderneming Demo-onderneming 2 zien.",
     "persoon": {
-      "voornaam": "Kim",
-      "achternaam": "de Wit"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -1946,8 +2892,8 @@
     "label": "Aangesloten onderneming 3",
     "beschrijving": "Deze persona laat de aangesloten onderneming Demo-onderneming 3 zien.",
     "persoon": {
-      "voornaam": "Noor",
-      "achternaam": "Jansen"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2012,8 +2958,8 @@
     "label": "Aangesloten onderneming, veel organisaties",
     "beschrijving": "Deze persona laat een grote onderneming met veel organisaties zien.",
     "persoon": {
-      "voornaam": "Ties",
-      "achternaam": "Molenaar"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2078,8 +3024,8 @@
     "label": "Aangesloten onderneming, landelijk concern",
     "beschrijving": "Deze persona laat een landelijk concern zien: Landelijk Concern N.V.",
     "persoon": {
-      "voornaam": "Iris",
-      "achternaam": "de Waal"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {
@@ -2144,8 +3090,8 @@
     "label": "Aangesloten onderneming 4 (met bijlagen)",
     "beschrijving": "Deze persona laat Garage Van Dijk B.V. zien, met bijlagen.",
     "persoon": {
-      "voornaam": "Rachid",
-      "achternaam": "van Dijk"
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
     },
     "organisaties": [
       {

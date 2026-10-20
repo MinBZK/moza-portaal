@@ -1,10 +1,10 @@
 /**
- * Staat in className alleen classes toe van RHC/NL Design System en eigen
- * mox-classes. Tailwind (en andere losse utility-classes) gebruiken we niet
+ * Staat in className alleen classes toe van RHC/NL Design System, eigen
+ * rhc-/mox-classes en prototype-classes (src/styles/utils.css). Tailwind (en andere losse utility-classes) gebruiken we niet
  * meer. Zie het kopje "Styling" in readme.md.
  */
 
-const TOEGESTAAN = /^(mox|rhc|utrecht|nl|ams)-/;
+const TOEGESTAAN = /^(mox|rhc|prototype|utrecht|nl|ams)-/;
 
 /** Classes zonder voorvoegsel die al bestonden en wel mogen. */
 const UITZONDERINGEN = new Set(["main-navigation", "header-landing"]);
@@ -51,11 +51,11 @@ const geenTailwind = {
     type: "problem",
     docs: {
       description:
-        "Alleen RHC/NLDS-classes en eigen mox-classes in className, geen Tailwind",
+        "Alleen RHC/NLDS-classes en eigen rhc-, mox- en prototype-classes in className, geen Tailwind",
     },
     messages: {
       verboden:
-        'Class "{{naam}}" is niet toegestaan. Gebruik een RHC-component, of schrijf een mox-class in src/styles/mox.css.',
+        'Class "{{naam}}" is niet toegestaan. Gebruik een RHC-component, of schrijf een eigen class: rhc- in rhc.css, mox- in mox.css of prototype- in utils.css.',
     },
     schema: [],
   },

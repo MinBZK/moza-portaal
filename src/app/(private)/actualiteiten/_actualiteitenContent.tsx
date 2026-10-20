@@ -124,7 +124,7 @@ const ActualiteitenContent = () => {
             />
           </aside>
 
-          <div className="rhc-grid__cell rhc-grid__cell-d-8 mox-row-gap">
+          <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
             <ActiveFilters />
             {sections}
           </div>

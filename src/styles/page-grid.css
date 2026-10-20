@@ -8,6 +8,7 @@
  */
 
 .rhc-theme.mox-theme {
+
   /* Small: 4 kolommen. Spans in twaalfden naar vierden, naar boven afgerond. */
   .rhc-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -66,7 +67,7 @@
   }
 
   /* Medium: 8 kolommen. Het menu (t-3) wordt 2 kolommen, de inhoud (t-9) 6. */
-  @media (width >= 768px) {
+  @media (width >=768px) {
     .rhc-grid {
       grid-template-columns: repeat(8, minmax(0, 1fr));
     }
@@ -170,15 +171,11 @@
     .rhc-grid__cell-t-12 {
       grid-column-end: span 8;
     }
-
-    .rhc-breadcrumb-cell {
-      grid-column: 3 / -1;
-    }
   }
 
   /* Large: weer 12 kolommen zoals RHC. Opnieuw opgeschreven, omdat de regels
     hierboven specifieker zijn dan die van RHC. */
-  @media (width >= 1024px) {
+  @media (width >=1024px) {
     .rhc-grid {
       grid-template-columns: repeat(12, minmax(0, 1fr));
     }
@@ -329,10 +326,6 @@
 
     .rhc-grid__cell-d-12 {
       grid-column-end: span 12;
-    }
-
-    .rhc-breadcrumb-cell {
-      grid-column: 4 / -1;
     }
   }
 }
