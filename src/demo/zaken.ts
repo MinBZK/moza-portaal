@@ -67,3 +67,48 @@ export const getDemoZaakById = async (
 ): Promise<DemoZaak | undefined> => zaken.find((zaak) => zaak.id === id);
 
 export const getDemoZakenVragen = async (): Promise<DemoVraag[]> => vragen;
+
+/** Een aanvraag die is opgeslagen maar nog niet ingediend. */
+export type DemoConceptAanvraag = {
+  id: string;
+  titel: string;
+  organisatie: string;
+  /** Voor welke onderneming van de persona. */
+  onderneming: string;
+  /** Hoe lang het invullen nog duurt, als tekst. */
+  tijdsduur: string;
+  indienenVoor: string;
+  /** Waar de antwoorden vandaan komen, zoals Ondernemersplein. */
+  bewaardVan?: string;
+};
+
+/**
+ * Fictieve, nog niet ingediende aanvragen per persona. Alleen Robin Vogel,
+ * organisatieadviseur bij Bloom B.V. (persona "bloom"), heeft ze.
+ */
+const conceptAanvragen: Record<string, DemoConceptAanvraag[]> = {
+  bloom: [
+    {
+      id: "concept-1",
+      titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+      organisatie: "UWV, Belastingdienst en gemeente",
+      onderneming: "Bloom B.V.",
+      tijdsduur: "Ongeveer 15 minuten",
+      indienenVoor: "1 januari 2027",
+      bewaardVan: "Ondernemersplein",
+    },
+  ],
+};
+
+export const getDemoConceptAanvragen = async (
+  personaId?: string,
+): Promise<DemoConceptAanvraag[]> =>
+  (personaId && conceptAanvragen[personaId]) || [];
+
+export const getDemoConceptAanvraagById = async (
+  personaId: string | undefined,
+  id: string,
+): Promise<DemoConceptAanvraag | undefined> =>
+  (await getDemoConceptAanvragen(personaId)).find(
+    (aanvraag) => aanvraag.id === id,
+  );

@@ -465,7 +465,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 
 		/* Berichtenbox variant C: het paneel regelt de ruimte zelf met gap. */
-		.rhc-message-actions > :is(h2, p) {
+		.rhc-message-actions> :is(h2, p) {
 			margin-block: 0;
 		}
 	}
@@ -553,6 +553,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-table-container {
 		overflow-x: auto;
 		position: relative;
+
+		.utrecht-link {
+			white-space: nowrap;
+		}
 	}
 
 	/* --- Tabs --- */
@@ -1157,12 +1161,13 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
 	.mox-action-required {
-		align-items: center;
+		align-items: baseline;
 		display: inline-flex;
 		gap: var(--rhc-space-sm);
 
 		.utrecht-icon {
 			color: var(--rhc-color-oranje-500);
+			margin-block-start: var(--rhc-space-2xs);
 		}
 	}
 

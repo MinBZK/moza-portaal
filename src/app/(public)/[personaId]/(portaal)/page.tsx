@@ -8,6 +8,7 @@ import {
 } from "@/components/rhc";
 import {
   getDemoBerichten,
+  getDemoConceptAanvragen,
   getDemoPersona,
   getDemoSubsidies,
   getDemoWetten,
@@ -15,6 +16,7 @@ import {
 import { getIngelogdeNaam, getKetenAccount } from "@/app/(public)/_persona";
 import { getKetenStatus } from "@/network/keten";
 import { stelselTekst } from "./berichtenbox/_lijstPagina";
+import BewaardeAanvragen from "./lopendezaken/_bewaardeAanvragen";
 import RecenteBerichten from "./_recenteBerichten";
 
 const vragen = [
@@ -41,16 +43,19 @@ const HomePage = async ({
   params: Promise<{ personaId: string }>;
 }) => {
   const persona = await getDemoPersona((await params).personaId);
-  const [berichten, subsidies, wetten, naam, keten] = await Promise.all([
-    getDemoBerichten(persona?.id),
-    getDemoSubsidies(persona?.homepageSubsidies),
-    getDemoWetten(persona?.homepageRegelgeving),
-    getIngelogdeNaam(persona),
-    getKetenAccount().then(getKetenStatus),
-  ]);
+  const [berichten, subsidies, wetten, naam, keten, concepten] =
+    await Promise.all([
+      getDemoBerichten(persona?.id),
+      getDemoSubsidies(persona?.homepageSubsidies),
+      getDemoWetten(persona?.homepageRegelgeving),
+      getIngelogdeNaam(persona),
+      getKetenAccount().then(getKetenStatus),
+      getDemoConceptAanvragen(persona?.id),
+    ]);
 
   return (
     <>
+      <BewaardeAanvragen aanvragen={concepten} />
       <Heading level={1}>Welkom {naam}</Heading>
 
       <section className="mox-card" aria-labelledby="recente-berichten">
