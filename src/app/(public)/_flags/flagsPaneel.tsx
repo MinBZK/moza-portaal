@@ -8,9 +8,15 @@ import {
   FormFieldCheckboxOption,
   FormFieldRadio,
 } from "@rijkshuisstijl-community/components-react";
-import { resetFeatureFlags, setFeatureFlag } from "@/app/actions";
 import {
+  resetFeatureFlags,
+  setBerichtenboxVariant,
+  setFeatureFlag,
+} from "@/app/actions";
+import {
+  BERICHTENBOX_VARIANTEN,
   MOX_FLAGS,
+  type BerichtenboxVariant,
   type FeatureFlagKey,
   type FeatureFlags,
 } from "@/app/(private)/instellingen/_featureFlags";
@@ -19,9 +25,11 @@ import AssistentPaneel from "./assistentPaneel";
 
 const FlagsPaneel = ({
   flags,
+  berichtenboxVariant,
   assistentBackendIngesteld,
 }: {
   flags: FeatureFlags;
+  berichtenboxVariant: BerichtenboxVariant;
   /** Is de backend van de Digitale assistent ingesteld? */
   assistentBackendIngesteld: boolean;
 }) => {
@@ -39,6 +47,16 @@ const FlagsPaneel = ({
     startTransition(async () => {
       zetZichtbareFlag([key, aan]);
       await setFeatureFlag(key, aan);
+      router.refresh();
+    });
+
+  const [zichtbareVariant, zetZichtbareVariant] =
+    useOptimistic(berichtenboxVariant);
+
+  const kiesVariant = (variant: BerichtenboxVariant) =>
+    startTransition(async () => {
+      zetZichtbareVariant(variant);
+      await setBerichtenboxVariant(variant);
       router.refresh();
     });
 
@@ -74,7 +92,21 @@ const FlagsPaneel = ({
   return (
     <SideOverlay id="flags-paneel" title="Flags" shortcut="f">
       {flagGroep("pagina", "Pagina’s")}
-      {flagGroep("functionaliteit", "Functionaliteit")}
+      <div>
+        {flagGroep("functionaliteit", "Functionaliteit")}
+        <Fieldset legend="Berichtenbox A/B/C-test">
+          {BERICHTENBOX_VARIANTEN.map((variant) => (
+            <FormFieldRadio
+              key={variant.waarde}
+              name="berichtenbox-variant"
+              value={variant.waarde}
+              label={variant.label}
+              checked={zichtbareVariant === variant.waarde}
+              onChange={() => kiesVariant(variant.waarde)}
+            />
+          ))}
+        </Fieldset>
+      </div>
 
       <div>
         <AssistentPaneel backendIngesteld={assistentBackendIngesteld} />

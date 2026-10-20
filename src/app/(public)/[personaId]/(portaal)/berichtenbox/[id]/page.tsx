@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
+import { getBerichtenboxVariant } from "@/app/actions";
 import { getDemoBerichtById, getDemoBerichten } from "@/demo";
 import { getActievePersona, getKetenAccount } from "@/app/(public)/_persona";
 import { getKetenStatus } from "@/network/keten";
@@ -27,9 +28,10 @@ const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     );
   }
 
-  const [bericht, berichten] = await Promise.all([
+  const [bericht, berichten, variant] = await Promise.all([
     getDemoBerichtById(id, persona?.id),
     getDemoBerichten(persona?.id),
+    getBerichtenboxVariant(),
   ]);
 
   if (!bericht) {
@@ -45,7 +47,7 @@ const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         label={bericht.onderwerp}
       />
       <BerichtDetail berichten={berichten} berichtId={bericht.id}>
-        <DemoBerichtInhoud bericht={bericht} />
+        <DemoBerichtInhoud bericht={bericht} variant={variant} />
       </BerichtDetail>
     </>
   );
