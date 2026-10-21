@@ -14,14 +14,6 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableHeaderCell,
-  TableRow,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen, DemoAannemenBron } from "@/demo";
 import {
@@ -236,38 +228,20 @@ const Bronnen = ({
                     <Paragraph className="mox-hiring-note">
                       {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
                     </Paragraph>
-                    <div className="mox-table-container">
-                      <Table className="mox-hiring-sources">
-                        <TableHeader>
-                          <TableRow>
-                            <TableHeaderCell scope="col">
-                              Gegeven
-                            </TableHeaderCell>
-                            <TableHeaderCell scope="col">
-                              Waarde
-                            </TableHeaderCell>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {bron.gegevens.map((g) => (
-                            <TableRow key={g.parameter}>
-                              <TableCell>{g.vraag}</TableCell>
-                              <TableCell>{g.waarde}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                    <details className="mox-hiring-legal-question">
-                      <summary>Zo vraagt de wet het</summary>
-                      <UnorderedList>
-                        {bron.gegevens.map((g) => (
-                          <UnorderedListItem key={g.parameter}>
-                            “{g.wetsvraag}” ({g.grond})
-                          </UnorderedListItem>
-                        ))}
-                      </UnorderedList>
-                    </details>
+                    <dl className="mox-hiring-facts">
+                      {bron.gegevens.map((g) => (
+                        <div key={g.parameter}>
+                          <dt>{g.vraag}</dt>
+                          <dd>{g.waarde}</dd>
+                          <details className="mox-hiring-legal-question">
+                            <summary>Zo vraagt de wet het</summary>
+                            <Paragraph>
+                              “{g.wetsvraag}” ({g.grond})
+                            </Paragraph>
+                          </details>
+                        </div>
+                      ))}
+                    </dl>
                     <FormFieldCheckboxOption
                       label={
                         bron.id === "eigen"

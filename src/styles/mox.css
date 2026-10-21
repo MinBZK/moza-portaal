@@ -1272,6 +1272,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 /* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
    regelingkaarten en de tijdlijn van vastleggingen. */
 .mox-theme {
+  /* Home: de ene actie die klaarstaat, bovenaan en met een accent. */
+  .mox-nudge {
+    border-inline-start: 4px solid var(--rhc-color-lintblauw-500);
+  }
+
   .mox-hiring-steps {
     display: flex;
     flex-wrap: wrap;
@@ -1324,31 +1329,21 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
     gap: 0.5rem;
   }
 
-  /* Scherm 2: alles wat de overheid al weet in een tabel; per bron een kopregel met het vinkje. */
-  .mox-hiring-sources {
+  /* Scherm 2: per organisatie de gegevens als vraag en antwoord, zoals in het eerste prototype. */
+  .mox-hiring-facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-md, 1rem);
+    margin: 0;
+  }
+
+  .mox-hiring-facts dt {
+    color: var(--rhc-color-grey-80, #555);
     font-size: var(--rhc-font-size-sm, 0.875rem);
   }
 
-  .mox-hiring-sources td,
-  .mox-hiring-sources th {
-    padding-block: var(--rhc-space-2xs, 0.25rem);
-    vertical-align: top;
-  }
-
-  .mox-hiring-sources__source th {
-    padding-block-start: var(--rhc-space-sm, 0.75rem);
-  }
-
-  .mox-hiring-sources__source .mox-hiring-note {
-    font-weight: normal;
-  }
-
-  .mox-hiring-sources__source .utrecht-form-field {
-    margin-block: 0;
-  }
-
-  .mox-hiring-sources__source .utrecht-form-field__label {
-    font-size: inherit;
+  .mox-hiring-facts dd {
+    margin: 0;
   }
 
   .mox-hiring-legal-question {
