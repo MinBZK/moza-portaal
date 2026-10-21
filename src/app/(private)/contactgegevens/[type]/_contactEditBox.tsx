@@ -301,15 +301,16 @@ export const ContactEditBox = ({
             }
           />
           <ActionGroup direction="row">
-            <EditBoxButton
-              icon={<Icon icon="circle-check" />}
+            <Button
+              appearance="primary-action-button"
               type="submit"
               onClick={() => setVerificationSubmitted(true)}
             >
-              Verifieer
-            </EditBoxButton>
-            <EditBoxButton
-              className="utrecht-button--secondary-action"
+              <Icon icon="circle-check" />
+              Verifiëren
+            </Button>
+            <Button
+              appearance="secondary-action-button"
               onClick={
                 resendCountdown === 0 ? handleResendVerification : undefined
               }
@@ -317,7 +318,7 @@ export const ContactEditBox = ({
               {resendCountdown > 0
                 ? `Opnieuw verificatiecode aanvragen in ${resendCountdown} seconden`
                 : "Opnieuw verificatiecode aanvragen"}
-            </EditBoxButton>
+            </Button>
           </ActionGroup>
         </>
       )}

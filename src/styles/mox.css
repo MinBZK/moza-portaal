@@ -288,7 +288,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Action group --- */
-	.utrecht-action-group {
+	/* Compacte rij acties op een grijze balk, zoals onder een bericht
+	  (BerichtDetail: Markeren, Markeren als ongelezen, …). */
+	.mox-action-group-dense {
 		background-color: var(--rhc-color-cool-grey-100);
 		padding: var(--rhc-space-md);
 
