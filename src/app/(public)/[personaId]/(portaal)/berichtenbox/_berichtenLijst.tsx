@@ -21,6 +21,7 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
+import TijdelijkeMelding from "@/components/TijdelijkeMelding";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import type { DemoBericht } from "@/demo";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
@@ -432,7 +433,8 @@ const BerichtenLijst = ({
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
           ongelezen.
         </Paragraph>
-      ) : (
+      ) : inWeergave.length === 0 ? null : (
+        // Leeg archief of lege prullenbak: de lege-tekst eronder zegt het al.
         <Paragraph>
           {weergave === "archief"
             ? meervoud(
@@ -485,11 +487,13 @@ const BerichtenLijst = ({
           </Button>
         </Alert>
       )}
-      {!bezig && alleBinnen && (
-        <Alert type="ok">
-          <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
-        </Alert>
-      )}
+      <div role="status">
+        {!bezig && alleBinnen && weergave === "inbox" && (
+          <TijdelijkeMelding>
+            <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
+          </TijdelijkeMelding>
+        )}
+      </div>
 
       {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
       <div ref={meldingRef} tabIndex={-1} role="status">

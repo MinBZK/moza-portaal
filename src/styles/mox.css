@@ -256,9 +256,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			margin-block-end: var(--rhc-space-lg);
 		}
 
+		/* Iconen in de LinkList staan via 1lh al op de eerste regel (Iconen en
+		  links); een extra marge zou ze te laag zetten. */
 		.utrecht-link .utrecht-icon {
 			align-self: flex-start;
-			margin-block-start: var(--rhc-space-sm);
 		}
 	}
 
@@ -390,8 +391,17 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		vertical-align: middle;
 	}
 
+	/* Icoon midden op de eerste regel tekst, zoals RHC dat bedoelt: het vak
+	  van het icoon is één regel hoog (1lh) en centreert de svg. De vaste maat
+	  hierboven zou dat anders tenietdoen. */
 	.rhc-link-list__item .utrecht-link-list__link {
-		align-items: baseline;
+		align-items: flex-start;
+
+		.utrecht-icon {
+			block-size: 1lh;
+			/* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
+			inset-block-start: 0;
+		}
 	}
 
 	/* --- Kaarten --- */
@@ -589,6 +599,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		background-size: 100% var(--rhc-border-width-md);
 		display: flex;
 		gap: var(--rhc-space-xl);
+		margin-block-end: var(--rhc-space-lg);
 		overflow-x: auto;
 		overscroll-behavior-inline: contain;
 		scroll-padding-inline: var(--rhc-space-md);

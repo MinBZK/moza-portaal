@@ -10,7 +10,6 @@
     "lint:css": "stylelint \"src/**/*.css\"",
     "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
     "prettier": "prettier --write .",
-    "normalize:icons": "node scripts/normalize-icons.cjs",
     "type-check": "tsc --noEmit",
     "generate:actualiteiten": "openapi-typescript ./dependencies/actualiteiten-service/openapi.yaml -o ./src/network/actualiteiten/generated.ts",
     "generate:profiel": "openapi-typescript ./dependencies/profiel-service/openapi.yaml -o ./src/network/profiel/generated.ts --enum-values",
@@ -59,7 +58,6 @@
     "stylelint": "^17.16.0",
     "stylelint-order": "^8.1.1",
     "stylelint-use-logical": "^2.1.3",
-    "svgo": "^4.1.0",
     "typescript": "^5.8.3"
   }
 }

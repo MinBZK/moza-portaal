@@ -14,6 +14,7 @@ import {
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
+import TijdelijkeMelding from "@/components/TijdelijkeMelding";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
@@ -29,10 +30,6 @@ import {
   type Weergave,
 } from "./_useBerichtenboxState";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
-
-/** Hoe lang de melding over (on)gelezen te zien is, en hoe lang hij uitfadet. */
-const MELDING_ZICHTBAAR_MS = 3000;
-const MELDING_VERVAAG_MS = 500;
 
 const lijstVan: Record<Weergave, string> = {
   inbox: "/berichtenbox",
@@ -80,20 +77,8 @@ const BerichtDetail = ({
   const [melding, setMelding] = useState<string | null>(null);
   // (On)gelezen is een kleine wissel: die melding verdwijnt na 3 seconden.
   const [tijdelijk, setTijdelijk] = useState(false);
-  const [vervaagt, setVervaagt] = useState(false);
-  useEffect(() => {
-    if (!melding || !tijdelijk) return;
-    const vervaag = setTimeout(() => setVervaagt(true), MELDING_ZICHTBAAR_MS);
-    const weg = setTimeout(() => {
-      setMelding(null);
-      setTijdelijk(false);
-      setVervaagt(false);
-    }, MELDING_ZICHTBAAR_MS + MELDING_VERVAAG_MS);
-    return () => {
-      clearTimeout(vervaag);
-      clearTimeout(weg);
-    };
-  }, [melding, tijdelijk]);
+  // Telt mee in de key, zodat dezelfde tekst opnieuw verschijnt.
+  const [meldingNummer, setMeldingNummer] = useState(0);
   const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
   const [actieFout, setActieFout] = useState<string | null>(null);
@@ -137,7 +122,7 @@ const BerichtDetail = ({
     if (!zetOngelezen(berichtId, !ongelezen)) return;
     setActieFout(null);
     setTijdelijk(true);
-    setVervaagt(false);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       ongelezen
         ? "Het bericht is gemarkeerd als gelezen."
@@ -247,13 +232,14 @@ const BerichtDetail = ({
             {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
             {actieFout && <Alert type="error">{actieFout}</Alert>}
             <div role="status">
-              {melding && (
-                <div
-                  className={`rhc-fade-out${vervaagt ? " rhc-fade-out--hidden" : ""}`}
-                >
+              {melding &&
+                (tijdelijk ? (
+                  <TijdelijkeMelding key={meldingNummer}>
+                    {melding}
+                  </TijdelijkeMelding>
+                ) : (
                   <Alert type="ok">{melding}</Alert>
-                </div>
-              )}
+                ))}
             </div>
             {map && status === "inbox" && (
               <Paragraph>

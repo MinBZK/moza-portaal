@@ -339,6 +339,7 @@ body {
   }
 }
 
+
 /* --- DataSummary --- */
 
 .rhc-theme.mox-theme {
@@ -420,6 +421,14 @@ body {
 }
 
 /* --- Melding --- */
+
+/* Een lege live region (role="status", role="alert", aria-live) neemt geen
+  ruimte in, ook niet als gap in een flex- of grid-container. Hij blijft wel
+  in de DOM en in de toegankelijkheidsboom: verdwijnt hij met display: none,
+  dan melden schermlezers de tekst die er later in komt soms niet. */
+:where(.rhc-theme.mox-theme) :where([role="status"], [role="alert"], [aria-live]):empty {
+  position: absolute;
+}
 
 /* Een melding die na een tijd uitfadet (BerichtDetail). Het component haalt
   hem daarna weg; bij "minder beweging" verdwijnt hij zonder fade. */
@@ -629,16 +638,38 @@ body {
   .rhc-pdf-preview {
     display: flex;
     flex-direction: column;
-    gap: var(--rhc-space-md);
-    margin-block: var(--rhc-space-lg);
+    gap: var(--rhc-space-3xl);
   }
 
   .rhc-pdf-preview__viewer {
     block-size: 72rem;
-    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
-    border-radius: var(--rhc-border-radius-sm);
+    border-block-end: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
     inline-size: 100%;
     max-block-size: 80vh;
+  }
+
+  /* Een tabelrij waarvan de hele rij naar het bericht linkt. De link van het
+    onderwerp krijgt een ::after over de hele rij; knoppen in de rij (markeren,
+    acties) liggen erboven en blijven werken. Eén link per rij, dus geen
+    dubbele links voor toetsenbord en schermlezer. */
+  .rhc-row-linked {
+    position: relative;
+
+    &:hover {
+      background-color: var(--rhc-color-cool-grey-50);
+    }
+
+    :is(button, .mox-menu) {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .rhc-row-linked__link::after {
+    content: "";
+    inset: 0;
+    position: absolute;
   }
 
   /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */

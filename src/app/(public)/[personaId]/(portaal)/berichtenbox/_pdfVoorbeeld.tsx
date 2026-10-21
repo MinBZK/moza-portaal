@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import {
   Alert,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
+  LinkList,
+  LinkListLink,
   VisuallyHidden,
 } from "@/components/rhc";
+import { PdfIcon } from "@/components/icons/pdfIcon";
+import { TextDocumentIcon } from "@/components/icons/textDocumentIcon";
 import ProgressBar from "@/components/ProgressBar";
 
 /** Hoe lang het laden duurt; anders flitst de melding alleen even. */
@@ -55,26 +57,22 @@ const PdfVoorbeeld = ({
           </Paragraph>
         </object>
       )}
-      <UnorderedList>
-        <UnorderedListItem>
-          <a href={pdf} download className="utrecht-link utrecht-link--html-a">
-            Pdf downloaden
-          </a>
-        </UnorderedListItem>
+      <LinkList>
+        <LinkListLink href={pdf} download icon={<PdfIcon />}>
+          Pdf downloaden
+        </LinkListLink>
         {tekst && (
-          <UnorderedListItem>
-            <a
-              href={tekst}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="utrecht-link utrecht-link--html-a"
-            >
-              Tekst-versie lezen
-              <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
-            </a>
-          </UnorderedListItem>
+          <LinkListLink
+            href={tekst}
+            target="_blank"
+            rel="noopener noreferrer"
+            icon={<TextDocumentIcon />}
+          >
+            Tekst-versie lezen
+            <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
+          </LinkListLink>
         )}
-      </UnorderedList>
+      </LinkList>
     </div>
   );
 };
