@@ -465,7 +465,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 
 		/* Berichtenbox variant C: het paneel regelt de ruimte zelf met gap. */
-		.rhc-message-actions > :is(h2, p) {
+		.rhc-message-actions> :is(h2, p) {
 			margin-block: 0;
 		}
 	}
@@ -477,9 +477,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Meldingen --- */
-	.rhc-alert {
+	/* .rhc-alert {
 		margin-block: var(--rhc-space-xl);
-	}
+	} */
 
 	.utrecht-alert {
 		border-color: var(--rhc-color-hemelblauw-100);
@@ -553,6 +553,20 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-table-container {
 		overflow-x: auto;
 		position: relative;
+
+		th {
+			white-space: nowrap;
+		}
+
+		.utrecht-alert {
+			padding-block: var(--rhc-space-sm);
+			padding-inline: var(--rhc-space-md);
+
+		}
+
+		.utrecht-alert__message {
+			font-size: var(--rhc-text-font-size-sm);
+		}
 	}
 
 	/* --- Tabs --- */
@@ -690,6 +704,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		background-color: var(--rhc-color-groen-500) !important;
 		block-size: 100%;
 		border-radius: var(--rhc-border-radius-round);
+	}
+
+	/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
+	  Bij "minder beweging" een stilstaande, halfvolle balk. */
+	.mox-progressbar--indeterminate .mox-progressbar-track {
+		inline-size: 40%;
+
+		@media (prefers-reduced-motion: no-preference) {
+			animation: mox-progressbar-indeterminate 1.4s ease-in-out infinite;
+		}
 	}
 
 	/* ==== 6. Pagina's en functies =============================================== */
@@ -1053,30 +1077,40 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	  zoals de status-track in moza-poc. Voltooid = groen met vinkje,
 	  huidige stap = blauw, nog te doen = grijs en een stippellijn. */
 	.mox-status-track {
-		--mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.6);
+		--mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
 		--mox-stap-gap: var(--rhc-space-lg);
 
-		counter-reset: stap;
 		display: grid;
 		gap: var(--mox-stap-gap);
+		margin-block: var(--rhc-space-3xl);
 
 		>li {
-			counter-increment: stap;
 			display: flex;
 			gap: var(--rhc-space-md);
 			position: relative;
 
-			&::before {
+			/* Cirkel met het stapnummer, of een vinkje als de stap klaar is
+			  (StatusTrack). */
+			>.mox-status-marker {
 				background-color: var(--rhc-color-groen-600);
 				block-size: var(--mox-stap-maat);
 				border-radius: var(--rhc-border-radius-round);
 				color: var(--rhc-color-wit);
-				content: counter(stap);
 				display: grid;
 				flex-shrink: 0;
 				font-weight: var(--rhc-text-font-weight-bold);
 				inline-size: var(--mox-stap-maat);
 				place-items: center;
+
+				.utrecht-icon {
+					block-size: 40%;
+					inline-size: 40%;
+				}
+
+				svg {
+					block-size: 100%;
+					inline-size: 100%;
+				}
 			}
 
 			&::after {
@@ -1091,19 +1125,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			&:last-child::after {
 				content: none;
 			}
-
-			/* Stappen voor de huidige stap zijn klaar */
-			&:has(~ [aria-current="step"])::before {
-				content: "\2713";
-			}
 		}
 
 		>[aria-current="step"] {
-			&::before {
+			>.mox-status-marker {
 				background-color: var(--rhc-color-lintblauw-500);
 			}
 
-			~li::before {
+			~li>.mox-status-marker {
 				background-color: var(--rhc-color-cool-grey-500);
 			}
 
@@ -1145,6 +1174,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		display: grid;
 		gap: var(--rhc-space-md);
 		margin-block-start: var(--rhc-space-sm);
+
+		.utrecht-action-group {
+			margin-block-end: var(--rhc-space-xl);
+			margin-block-start: 0;
+		}
 	}
 
 	.mox-status-date {
@@ -1241,6 +1275,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
+@keyframes mox-progressbar-indeterminate {
+	from {
+		transform: translateX(-100%);
+	}
+
+	to {
+		transform: translateX(250%);
+	}
+}
+
 @keyframes mox-wait {
 	to {
 		clip-path: inset(0 -33% 0 0);

@@ -540,6 +540,30 @@ body {
   }
 }
 
+/* Een melding die in zijn geheel een link is, zoals de status van een zaak
+  die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
+.rhc-theme.mox-theme {
+  .rhc-alert-link {
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--utrecht-link-color);
+    display: block;
+    text-decoration-line: none;
+
+    .utrecht-alert {
+      margin: 0;
+    }
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+
+    &:focus-visible {
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: var(--utrecht-focus-outline-offset);
+    }
+  }
+}
+
 /* ==== 5. Pagina's en functies =============================================== */
 
 /* --- Berichtenbox --- */

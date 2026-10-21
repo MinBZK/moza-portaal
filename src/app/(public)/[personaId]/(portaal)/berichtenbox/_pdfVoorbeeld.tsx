@@ -30,6 +30,15 @@ const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
         {!geladen && (
           <Alert type="info">
             <Paragraph>De pdf wordt geladen.</Paragraph>
+            {/* Hoe lang het duurt is niet bekend: geen waarde, een
+                bewegende balk. */}
+            <div
+              role="progressbar"
+              aria-label="De pdf laden"
+              className="mox-progressbar mox-progressbar--indeterminate"
+            >
+              <div className="mox-progressbar-track" />
+            </div>
           </Alert>
         )}
       </div>

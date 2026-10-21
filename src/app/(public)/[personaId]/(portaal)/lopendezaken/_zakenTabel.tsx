@@ -1,15 +1,42 @@
 import Link from "next/link";
 import {
-  Icon,
   Table,
   TableBody,
   TableCell,
   TableHeader,
   TableHeaderCell,
   TableRow,
+  Alert,
+  VisuallyHidden,
 } from "@/components/rhc";
 import type { DemoZaak } from "@/demo";
 import AssistentZakenRijen from "./_assistentZakenRijen";
+
+/**
+ * De status als link naar de zaak. Vraagt de zaak iets van u, dan is de hele
+ * waarschuwing de link. Voor schermlezers staat de zaak erbij, anders klinken
+ * alle statuslinks hetzelfde ("In behandeling").
+ */
+const StatusLink = ({ zaak }: { zaak: DemoZaak }) => {
+  const tekst = (
+    <>
+      {zaak.status}
+      <VisuallyHidden>: {zaak.titel}</VisuallyHidden>
+    </>
+  );
+  return zaak.actieNodig ? (
+    <Link href={`/lopendezaken/${zaak.id}`} className="rhc-alert-link">
+      <Alert type="warning">{tekst}</Alert>
+    </Link>
+  ) : (
+    <Link
+      href={`/lopendezaken/${zaak.id}`}
+      className="utrecht-link utrecht-link--html-a"
+    >
+      {tekst}
+    </Link>
+  );
+};
 
 /** Tabel met zaken. Afgehandelde zaken hebben geen statuskolom. */
 const ZakenTabel = ({
@@ -26,7 +53,7 @@ const ZakenTabel = ({
           <TableHeaderCell scope="col">Organisatie</TableHeaderCell>
           <TableHeaderCell scope="col">Onderwerp</TableHeaderCell>
           <TableHeaderCell scope="col">
-            {soort === "lopend" ? "Datum laatste wijziging" : "Afgehandeld op"}
+            {soort === "lopend" ? "Laatste wijziging" : "Afgehandeld op"}
           </TableHeaderCell>
           {soort === "lopend" && (
             <TableHeaderCell scope="col">Status</TableHeaderCell>
@@ -49,14 +76,7 @@ const ZakenTabel = ({
             <TableCell>{zaak.datum}</TableCell>
             {soort === "lopend" && (
               <TableCell>
-                {zaak.actieNodig ? (
-                  <span className="mox-action-required">
-                    <Icon icon="let-op" />
-                    {zaak.status}
-                  </span>
-                ) : (
-                  zaak.status
-                )}
+                <StatusLink zaak={zaak} />
               </TableCell>
             )}
           </TableRow>
