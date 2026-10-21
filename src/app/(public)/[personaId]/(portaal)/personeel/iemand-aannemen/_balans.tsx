@@ -4,7 +4,12 @@ import { Alert, Heading, Paragraph } from "@/components/rhc";
 import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan, loonkostenPerJaar } from "./_engine";
 import { inRegister, type Antwoorden } from "./_useAannemen";
-import { useBerekening, useManifest } from "./_useRegelrecht";
+import {
+  type Berekening,
+  type Stand,
+  useBerekening,
+  useManifest,
+} from "./_useRegelrecht";
 import { euro } from "./_werkgever";
 
 /**
@@ -38,19 +43,24 @@ const Balans = ({
   const manifest = useManifest();
 
   const kosten = loonkostenPerJaar(antwoorden.uren);
-  const perMaand =
-    lks.status === "klaar"
-      ? Number(lks.waarde.outputs.hoogte_lks_eurocent_per_maand ?? 0)
-      : 0;
+  // Tijdens het rekenen blijven de vorige bedragen staan; een nul zou als uitkomst lezen.
+  const uitkomsten = (stand: Stand<Berekening>) =>
+    stand.status === "klaar"
+      ? stand.waarde.outputs
+      : stand.status === "laden"
+        ? stand.vorige?.outputs
+        : undefined;
+  const lksUit = uitkomsten(lks);
+  const lkvUit = uitkomsten(lkv);
+  const bekend = !rekent || (lksUit !== undefined && lkvUit !== undefined);
+  const perMaand = Number(lksUit?.hoogte_lks_eurocent_per_maand ?? 0);
   const lksJaar = Math.round(perMaand * 12);
-  const lkvJaar =
-    lkv.status === "klaar"
-      ? Math.min(
-          Number(lkv.waarde.outputs.hoogte_lkv_per_jaar_eurocent ?? 0),
-          Math.max(0, kosten - lksJaar),
-        )
-      : 0;
+  const lkvJaar = Math.min(
+    Number(lkvUit?.hoogte_lkv_per_jaar_eurocent ?? 0),
+    Math.max(0, kosten - lksJaar),
+  );
   const netto = Math.max(0, kosten - lksJaar - lkvJaar);
+  const bedrag = (cent: number) => (bekend ? euro(cent) : "\u2026");
   const bezig = rekent && (lks.status === "laden" || lkv.status === "laden");
   const fout = [lks, lkv].find((s) => s.status === "fout");
   const pct = (v: number) =>
@@ -74,10 +84,10 @@ const Balans = ({
     return (
       <>
         <Heading level={2}>Wat dit u oplevert</Heading>
-        <p className="mox-hiring-amount">{euro(lksJaar + lkvJaar)}</p>
+        <p className="mox-hiring-amount">{bedrag(lksJaar + lkvJaar)}</p>
         <Paragraph className="mox-hiring-note">
-          per jaar: loonkostensubsidie {euro(lksJaar)} en loonkostenvoordeel{" "}
-          {euro(lkvJaar)}, bij {antwoorden.uren} uur per week.
+          per jaar: loonkostensubsidie {bedrag(lksJaar)} en loonkostenvoordeel{" "}
+          {bedrag(lkvJaar)}, bij {antwoorden.uren} uur per week.
         </Paragraph>
         {bron}
       </>
@@ -125,7 +135,7 @@ const Balans = ({
         {antwoorden.zelfstandig !== "ja" && (
           <div>
             <dt>Loonkostensubsidie</dt>
-            <dd>− {euro(lksJaar)}</dd>
+            <dd>− {bedrag(lksJaar)}</dd>
             <span className="mox-hiring-bar">
               <span
                 className="mox-hiring-bar--plus"
@@ -136,7 +146,7 @@ const Balans = ({
         )}
         <div>
           <dt>Loonkostenvoordeel</dt>
-          <dd>− {euro(lkvJaar)}</dd>
+          <dd>− {bedrag(lkvJaar)}</dd>
           <span className="mox-hiring-bar">
             <span
               className="mox-hiring-bar--plus"
@@ -149,7 +159,7 @@ const Balans = ({
         <Paragraph>
           <strong>Wat u zelf betaalt per jaar</strong>
         </Paragraph>
-        <p className="mox-hiring-amount">{euro(netto)}</p>
+        <p className="mox-hiring-amount">{bedrag(netto)}</p>
       </div>
       {bron}
     </>

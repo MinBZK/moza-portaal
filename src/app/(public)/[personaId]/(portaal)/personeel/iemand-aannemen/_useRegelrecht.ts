@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * De regelrecht-engine in de browser: een Web Worker met de WASM-kern van
@@ -93,40 +93,59 @@ export const bereken = (invoer: Invoer) =>
 export const manifest = () => vraag<Manifest>({ soort: "manifest" });
 
 export type Stand<T> =
-  | { status: "laden" }
+  | { status: "laden"; vorige?: T }
   | { status: "klaar"; waarde: T }
   | { status: "fout"; fout: string };
 
-/** Voert een berekening uit zodra de invoer er is; opnieuw als de invoer wijzigt. */
+/** Zo lang staat de invoer stil voordat de engine rekent; een slider geeft tientallen tussenstanden. */
+const WACHT_MS = 400;
+
+/**
+ * Voert een berekening uit zodra de invoer er is; opnieuw als de invoer
+ * wijzigt. De worker kan een lopende berekening niet afbreken en werkt alle
+ * verzoeken na elkaar af, dus pas na een korte stilte gaat de invoer erheen.
+ * Tijdens het rekenen blijft de vorige uitkomst beschikbaar (`vorige`).
+ */
 export const useBerekening = (invoer: Invoer | null): Stand<Berekening> => {
   const sleutel = invoer ? JSON.stringify(invoer) : "";
   const [uitkomst, setUitkomst] = useState<{
     sleutel: string;
     stand: Stand<Berekening>;
   } | null>(null);
+  const eerste = useRef(true);
   useEffect(() => {
     if (!sleutel) return;
     let actueel = true;
-    bereken(JSON.parse(sleutel) as Invoer).then(
-      (waarde) => {
-        if (actueel)
-          setUitkomst({ sleutel, stand: { status: "klaar", waarde } });
+    const timer = setTimeout(
+      () => {
+        bereken(JSON.parse(sleutel) as Invoer).then(
+          (waarde) => {
+            if (actueel)
+              setUitkomst({ sleutel, stand: { status: "klaar", waarde } });
+          },
+          (fout: Error) => {
+            if (actueel)
+              setUitkomst({
+                sleutel,
+                stand: { status: "fout", fout: fout.message },
+              });
+          },
+        );
       },
-      (fout: Error) => {
-        if (actueel)
-          setUitkomst({
-            sleutel,
-            stand: { status: "fout", fout: fout.message },
-          });
-      },
+      eerste.current ? 0 : WACHT_MS,
     );
+    eerste.current = false;
     return () => {
       actueel = false;
+      clearTimeout(timer);
     };
   }, [sleutel]);
-  return uitkomst && uitkomst.sleutel === sleutel
-    ? uitkomst.stand
-    : { status: "laden" };
+  if (uitkomst && uitkomst.sleutel === sleutel) return uitkomst.stand;
+  return {
+    status: "laden",
+    vorige:
+      uitkomst?.stand.status === "klaar" ? uitkomst.stand.waarde : undefined,
+  };
 };
 
 export const useManifest = () => {
