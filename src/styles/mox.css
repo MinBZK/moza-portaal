@@ -288,8 +288,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* --- Action group --- */
 	.utrecht-action-group {
+		background-color: var(--rhc-color-cool-grey-100);
+		padding: var(--rhc-space-md);
+
 		button {
+			padding-block: var(--rhc-space-sm);
+			padding-inline: var(--rhc-space-md);
 			text-align: start;
+			text-decoration: none;
 		}
 	}
 

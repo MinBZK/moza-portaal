@@ -82,6 +82,7 @@
   --rhc-hero-message-padding-block-start: var(--rhc-space-4xl);
   --rhc-hero-message-padding-inline-end: var(--rhc-space-4xl);
   --rhc-hero-message-padding-inline-start: var(--rhc-space-4xl);
+  --utrecht-button-icon-gap: var(--rhc-space-sm);
 
   /* Kaders */
   --rhc-data-summary-item-border-width: 0;
@@ -397,6 +398,24 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
+  }
+}
+
+/* --- LinkButton --- */
+
+/* Destructieve actie als LinkButton, zoals Verwijderen in de Berichtenbox.
+  LinkButton kent geen hint="danger" (Button wel), daarom deze class. */
+.rhc-theme.mox-theme {
+  .rhc-link-button--danger {
+    --utrecht-link-button-color: var(--rhc-color-rood-500);
+    --utrecht-link-button-hover-color: var(--rhc-color-rood-600);
+    --utrecht-link-button-active-color: var(--rhc-color-rood-600);
+
+    color: var(--rhc-color-rood-500);
+
+    &:hover {
+      color: var(--rhc-color-rood-600);
+    }
   }
 }
 

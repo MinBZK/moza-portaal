@@ -155,7 +155,7 @@ const RijActies = ({
         <li>
           <Button appearance="subtle-button" onClick={actie(onOngelezen)}>
             {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
-            {ongelezen ? "Markeer als gelezen" : "Markeer als ongelezen"}
+            {ongelezen ? "Markeren als gelezen" : "Markeren als ongelezen"}
           </Button>
         </li>
         <li>

@@ -7,6 +7,7 @@ import {
   ActionGroup,
   Alert,
   Button,
+  LinkButton,
   Heading,
   Paragraph,
 } from "@rijkshuisstijl-community/components-react";
@@ -240,9 +241,8 @@ const BerichtDetail = ({
 
             {status && (
               <ActionGroup direction="row">
-                <Button
-                  appearance="secondary-action-button"
-                  aria-pressed={gemarkeerd}
+                <LinkButton
+                  pressed={gemarkeerd}
                   onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}
                 >
                   <FlagIcon
@@ -250,84 +250,72 @@ const BerichtDetail = ({
                     className={gemarkeerd ? "mox-button-mark-true" : ""}
                   />
                   Markeren
-                </Button>
+                </LinkButton>
 
-                <Button
-                  appearance="secondary-action-button"
-                  onClick={wisselOngelezen}
-                >
+                <LinkButton onClick={wisselOngelezen}>
                   {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
-                  {ongelezen ? "Markeer als gelezen" : "Markeer als ongelezen"}
-                </Button>
+                  {ongelezen
+                    ? "Markeren als gelezen"
+                    : "Markeren als ongelezen"}
+                </LinkButton>
 
                 {status === "inbox" && (
-                  <Button
-                    appearance="secondary-action-button"
+                  <LinkButton
                     aria-haspopup="dialog"
                     onClick={(event) => setKiesMap(event.currentTarget)}
                   >
                     <FolderIcon />
                     Verplaatsen naar map
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status === "inbox" && map && (
-                  <Button
-                    appearance="secondary-action-button"
-                    onClick={() => void zetInMap("")}
-                  >
+                  <LinkButton onClick={() => void zetInMap("")}>
                     <Icon icon="inbox" />
                     Uit map halen
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {/* Schets uit moza-poc: Delen doet nog niets. */}
                 {delen && (
-                  <Button appearance="secondary-action-button">
+                  <LinkButton>
                     <Icon icon="delen" />
                     Delen
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status !== "archief" && (
-                  <Button
-                    appearance="secondary-action-button"
-                    onClick={() => void verplaats("archief")}
-                  >
+                  <LinkButton onClick={() => void verplaats("archief")}>
                     <ArchiveIcon />
                     Archiveren
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status !== "inbox" && (
-                  <Button
-                    appearance="secondary-action-button"
-                    onClick={() => void verplaats("inbox")}
-                  >
+                  <LinkButton onClick={() => void verplaats("inbox")}>
                     <Icon icon="inbox" />
                     Terugzetten in inbox
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status === "prullenbak" ? (
-                  <Button
+                  <LinkButton
                     ref={voorgoedKnopRef}
-                    appearance="secondary-action-button"
-                    hint="danger"
+                    className="rhc-link-button--danger"
                     aria-haspopup="dialog"
                     onClick={() => setVraagVoorgoed(true)}
                   >
                     <Icon icon="verwijderen" />
                     Voorgoed verwijderen
-                  </Button>
+                  </LinkButton>
                 ) : (
-                  <Button
-                    appearance="secondary-action-button"
+                  <LinkButton
+                    className="rhc-link-button--danger"
                     onClick={() => void verplaats("prullenbak")}
                   >
                     <Icon icon="verwijderen" />
                     Verwijderen
-                  </Button>
+                  </LinkButton>
                 )}
               </ActionGroup>
             )}

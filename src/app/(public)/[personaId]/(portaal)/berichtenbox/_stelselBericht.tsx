@@ -17,9 +17,11 @@ import {
   KetenFout,
   type KetenInhoud,
 } from "@/network/keten/client";
+import type { BerichtenboxVariant } from "@/app/(private)/instellingen/_featureFlags";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "./_berichtDetail";
 import { formatDatum } from "./_formatDatum";
+import PdfVoorbeeld from "./_pdfVoorbeeld";
 import {
   ketenFoutTekst,
   useKeten,
@@ -35,9 +37,12 @@ import {
 const StelselBericht = ({
   ontvanger,
   berichtId,
+  variant = "a",
 }: {
   ontvanger: string;
   berichtId: string;
+  /** Berichtenbox A/B/C-test; B toont de eerste pdf-bijlage in de pagina. */
+  variant?: BerichtenboxVariant;
 }) => {
   const { fase, berichten, fout } = useKeten(ontvanger);
   const bericht = berichten.find((b) => b.id === berichtId);
@@ -45,10 +50,11 @@ const StelselBericht = ({
   const [inhoudFout, setInhoudFout] = useState<string | null>(null);
 
   const klaar = fase === "klaar";
+  const magazijnId = bericht?.magazijnId;
   useEffect(() => {
-    if (!klaar) return;
+    if (!klaar || !magazijnId) return;
     let actueel = true;
-    haalInhoud(berichtId)
+    haalInhoud(berichtId, magazijnId)
       .then((resultaat) => actueel && setInhoud(resultaat))
       .catch((fout: unknown) => {
         if (!actueel) return;
@@ -61,7 +67,7 @@ const StelselBericht = ({
     return () => {
       actueel = false;
     };
-  }, [klaar, berichtId]);
+  }, [klaar, berichtId, magazijnId]);
 
   if (fout) return <Alert type="error">{ketenFoutTekst[fout]}</Alert>;
   if (!klaar)
@@ -82,6 +88,14 @@ const StelselBericht = ({
       </>
     );
   }
+
+  // Variant B: de eerste pdf-bijlage in de pagina, zoals bij demo-berichten.
+  const pdfBijlage =
+    variant === "b"
+      ? inhoud?.bijlagen.find((bijlage) =>
+          bijlage.naam.toLowerCase().endsWith(".pdf"),
+        )
+      : undefined;
 
   return (
     <>
@@ -122,6 +136,16 @@ const StelselBericht = ({
                 <Paragraph key={index}>{alinea.trim()}</Paragraph>
               ))}
 
+            {pdfBijlage && bericht && (
+              <PdfVoorbeeld
+                pdf={bijlageAdres(
+                  bericht.id,
+                  pdfBijlage.bijlageId,
+                  bericht.magazijnId,
+                )}
+              />
+            )}
+
             {inhoud.bijlagen.length > 0 && (
               <section aria-labelledby="bijlagen">
                 <Heading level={2} id="bijlagen">
@@ -131,7 +155,11 @@ const StelselBericht = ({
                   {inhoud.bijlagen.map((bijlage) => (
                     <UnorderedListItem key={bijlage.bijlageId}>
                       <a
-                        href={bijlageAdres(bericht.id, bijlage.bijlageId)}
+                        href={bijlageAdres(
+                          bericht.id,
+                          bijlage.bijlageId,
+                          bericht.magazijnId,
+                        )}
                         target="_blank"
                         rel="noopener"
                         className="utrecht-link utrecht-link--html-a"

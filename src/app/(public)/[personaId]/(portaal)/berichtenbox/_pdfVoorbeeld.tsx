@@ -17,7 +17,14 @@ const LAADTIJD = 1500;
  * Berichtenbox A/B/C-test, variant B: het bericht als pdf in de pagina, met
  * links om het te downloaden of als tekst te lezen. Uit moza-poc.
  */
-const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
+const PdfVoorbeeld = ({
+  pdf,
+  tekst,
+}: {
+  pdf: string;
+  /** Tekstversie; een bijlage uit het stelsel heeft die niet. */
+  tekst?: string;
+}) => {
   const [geladen, setGeladen] = useState(false);
 
   useEffect(() => {
@@ -51,20 +58,22 @@ const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
       <UnorderedList>
         <UnorderedListItem>
           <a href={pdf} download className="utrecht-link utrecht-link--html-a">
-            Download pdf
+            Pdf downloaden
           </a>
         </UnorderedListItem>
-        <UnorderedListItem>
-          <a
-            href={tekst}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Lees tekst-versie
-            <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
-          </a>
-        </UnorderedListItem>
+        {tekst && (
+          <UnorderedListItem>
+            <a
+              href={tekst}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="utrecht-link utrecht-link--html-a"
+            >
+              Tekst-versie lezen
+              <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
+            </a>
+          </UnorderedListItem>
+        )}
       </UnorderedList>
     </div>
   );

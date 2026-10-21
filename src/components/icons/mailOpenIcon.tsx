@@ -1,4 +1,4 @@
-/** Geopende envelop, voor "Markeer als gelezen". De iconenset van RHC heeft die niet. */
+/** Geopende envelop, voor "Markeren als gelezen". De iconenset van RHC heeft die niet. */
 export const MailOpenIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

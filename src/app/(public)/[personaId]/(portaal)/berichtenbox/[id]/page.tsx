@@ -16,10 +16,19 @@ const NIEUW_BERICHT = /^live-/;
 
 const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const persona = await getActievePersona();
+  const [persona, variant] = await Promise.all([
+    getActievePersona(),
+    getBerichtenboxVariant(),
+  ]);
   const keten = await getKetenStatus(await getKetenAccount());
   if (keten.soort === "keten")
-    return <StelselBericht ontvanger={keten.ontvanger} berichtId={id} />;
+    return (
+      <StelselBericht
+        ontvanger={keten.ontvanger}
+        berichtId={id}
+        variant={variant}
+      />
+    );
   if (keten.soort !== "demo") {
     return (
       <Alert type="error">
@@ -28,15 +37,16 @@ const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     );
   }
 
-  const [bericht, berichten, variant] = await Promise.all([
+  const [bericht, berichten] = await Promise.all([
     getDemoBerichtById(id, persona?.id),
     getDemoBerichten(persona?.id),
-    getBerichtenboxVariant(),
   ]);
 
   if (!bericht) {
     if (NIEUW_BERICHT.test(id))
-      return <NieuwBericht berichtId={id} berichten={berichten} />;
+      return (
+        <NieuwBericht berichtId={id} berichten={berichten} variant={variant} />
+      );
     notFound();
   }
 
