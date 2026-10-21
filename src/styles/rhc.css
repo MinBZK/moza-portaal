@@ -419,6 +419,22 @@ body {
   }
 }
 
+/* --- Melding --- */
+
+/* Een melding die na een tijd uitfadet (BerichtDetail). Het component haalt
+  hem daarna weg; bij "minder beweging" verdwijnt hij zonder fade. */
+.rhc-theme.mox-theme {
+  .rhc-fade-out {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 500ms ease-out;
+    }
+  }
+
+  .rhc-fade-out--hidden {
+    opacity: 0;
+  }
+}
+
 /* --- NavigationList --- */
 
 .rhc-theme.mox-theme {

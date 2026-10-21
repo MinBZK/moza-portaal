@@ -30,6 +30,10 @@ import {
 } from "./_useBerichtenboxState";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 
+/** Hoe lang de melding over (on)gelezen te zien is, en hoe lang hij uitfadet. */
+const MELDING_ZICHTBAAR_MS = 3000;
+const MELDING_VERVAAG_MS = 500;
+
 const lijstVan: Record<Weergave, string> = {
   inbox: "/berichtenbox",
   archief: "/berichtenbox/archief",
@@ -74,6 +78,22 @@ const BerichtDetail = ({
   // De knop die de mapkeuze opende; die krijgt na sluiten de focus terug.
   const [kiesMap, setKiesMap] = useState<HTMLElement | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
+  // (On)gelezen is een kleine wissel: die melding verdwijnt na 3 seconden.
+  const [tijdelijk, setTijdelijk] = useState(false);
+  const [vervaagt, setVervaagt] = useState(false);
+  useEffect(() => {
+    if (!melding || !tijdelijk) return;
+    const vervaag = setTimeout(() => setVervaagt(true), MELDING_ZICHTBAAR_MS);
+    const weg = setTimeout(() => {
+      setMelding(null);
+      setTijdelijk(false);
+      setVervaagt(false);
+    }, MELDING_ZICHTBAAR_MS + MELDING_VERVAAG_MS);
+    return () => {
+      clearTimeout(vervaag);
+      clearTimeout(weg);
+    };
+  }, [melding, tijdelijk]);
   const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
   const [actieFout, setActieFout] = useState<string | null>(null);
@@ -116,6 +136,8 @@ const BerichtDetail = ({
   const wisselOngelezen = () => {
     if (!zetOngelezen(berichtId, !ongelezen)) return;
     setActieFout(null);
+    setTijdelijk(true);
+    setVervaagt(false);
     setMelding(
       ongelezen
         ? "Het bericht is gemarkeerd als gelezen."
@@ -133,6 +155,7 @@ const BerichtDetail = ({
       return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
     }
     setActieFout(null);
+    setTijdelijk(false);
     setMelding(
       naar
         ? `Het bericht staat nu in de map ${naar}.`
@@ -224,7 +247,13 @@ const BerichtDetail = ({
             {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
             {actieFout && <Alert type="error">{actieFout}</Alert>}
             <div role="status">
-              {melding && <Alert type="ok">{melding}</Alert>}
+              {melding && (
+                <div
+                  className={`rhc-fade-out${vervaagt ? " rhc-fade-out--hidden" : ""}`}
+                >
+                  <Alert type="ok">{melding}</Alert>
+                </div>
+              )}
             </div>
             {map && status === "inbox" && (
               <Paragraph>
