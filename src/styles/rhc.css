@@ -26,6 +26,11 @@
 /* ==== 2. Tokens ============================================================= */
 
 .rhc-theme.mox-theme {
+  /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
+    tokens voor beweging. */
+  --mox-transition-duration: 150ms;
+  --mox-transition-easing: ease-out;
+
   /* Pagina-layout */
   --utrecht-page-body-padding-block-end: var(--rhc-space-max-2xl);
 
@@ -307,6 +312,30 @@ body {
 
 /* ==== 4. Componenten ======================================================== */
 
+/* --- Interactie --- */
+
+/* Eén rustige overgang voor alle interactieve elementen. :where() houdt de
+  specificiteit op 0, zodat een eigen transition van een component wint.
+  Alleen kleuren, randen en schaduw: geen lay-out, en de focusrand verschijnt
+  meteen. Niet bij "minder beweging" in het systeem. */
+@media (prefers-reduced-motion: no-preference) {
+  .rhc-theme.mox-theme :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])) {
+    transition-duration: var(--mox-transition-duration);
+    transition-property: color, background-color, border-color, outline-color, outline-offset, text-decoration-color, box-shadow;
+    transition-timing-function: var(--mox-transition-easing);
+  }
+
+  /* De knop van een schuifregelaar is een pseudo-element; :where() hierboven
+    raakt die niet. Per browser een eigen regel, anders vervalt de hele regel. */
+  .rhc-theme.mox-theme .rhc-range-slider__input::-webkit-slider-thumb {
+    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+
+  .rhc-theme.mox-theme .rhc-range-slider__input::-moz-range-thumb {
+    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+}
+
 /* --- DataSummary --- */
 
 .rhc-theme.mox-theme {
@@ -398,13 +427,82 @@ body {
 
   .rhc-range-slider__input {
     accent-color: var(--rhc-color-lintblauw-500);
+    appearance: none;
+    background: transparent;
     block-size: var(--rhc-space-2xl);
     inline-size: 100%;
     margin: 0;
 
+    &::-webkit-slider-thumb {
+      appearance: none;
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      margin-block-start: -.5rem;
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+
+      &:hover {
+        background: var(--rhc-color-lintblauw-600);
+        border-color: var(--rhc-color-lintblauw-600);
+        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+      }
+    }
+
+    &::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+
+      &:hover {
+        background: var(--rhc-color-lintblauw-600);
+        border-color: var(--rhc-color-lintblauw-600);
+        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+      }
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &::-moz-range-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
     &:focus-visible {
-      outline: var(--utrecht-focus-outline-width, 2px) var(--utrecht-focus-outline-style, solid) var(--utrecht-focus-outline-color, currentcolor);
-      outline-offset: var(--utrecht-focus-outline-offset, 2px);
+      border-radius: var(--rhc-border-radius-round);
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: calc(var(--utrecht-focus-outline-offset)*3);
+    }
+  }
+
+  /* RangeSlider met gevulde baan tot aan de knop (thumb). */
+  .rhc-range-slider__input--filled {
+    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
+    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
+    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
+
+    &::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
+    }
+
+    /* Firefox kent een eigen element voor het gevulde deel. */
+    &::-moz-range-progress {
+      background: var(--rhc-range-slider-fill-color);
+      block-size: 0.75rem;
+      border-radius: var(--rhc-border-radius-round);
     }
   }
 
@@ -461,7 +559,7 @@ body {
 
     /* De ruimte komt van gap; anders tellen de marges van kop, alinea en
       ActionGroup erbij op. */
-    > * {
+    >* {
       margin-block: 0;
     }
   }
