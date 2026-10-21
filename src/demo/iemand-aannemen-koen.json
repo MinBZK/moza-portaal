@@ -65,8 +65,8 @@
     },
     {
       "id": "gemeente",
-      "organisatie": "Gemeente Lansingerland",
-      "register": "Participatiewet",
+      "organisatie": "Gemeente",
+      "register": "Participatiewet, gemeente waar de kandidaat woont",
       "opgehaald": "2026-09-07",
       "gegevens": [
         {

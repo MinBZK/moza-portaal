@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
+  Accordion,
+  AccordionSection,
   ActionGroup,
   Button,
   Fieldset,
@@ -51,6 +53,7 @@ const Bronnen = ({
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
   const [nieuw, setNieuw] = useState({ naam: "", geboortedatum: "" });
+  const [open, setOpen] = useState<BronId[]>([]);
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
@@ -206,64 +209,80 @@ const Bronnen = ({
       ) : (
         <>
           <Paragraph>
-            Per bron staat aangevinkt dat de gegevens kloppen en gebruikt mogen
-            worden. Klopt iets niet, haal het vinkje weg; die gegevens vult u
-            dan zelf aan in de aanvraag.
+            Per organisatie staat aangevinkt dat de gegevens kloppen en gebruikt
+            mogen worden. Open een organisatie om te zien wat we ophalen. Klopt
+            iets niet, haal het vinkje weg; die gegevens vult u dan zelf aan in
+            de aanvraag.
           </Paragraph>
-          <div className="mox-table-container">
-            <Table className="mox-hiring-sources">
-              <TableHeader>
-                <TableRow>
-                  <TableHeaderCell scope="col">Gegeven</TableHeaderCell>
-                  <TableHeaderCell scope="col">Waarde</TableHeaderCell>
-                </TableRow>
-              </TableHeader>
-              {bronnen.map((bron) => (
-                <TableBody key={bron.id}>
-                  <TableRow className="mox-hiring-sources__source">
-                    <TableHeaderCell scope="rowgroup" id={`bron-${bron.id}`}>
-                      {bron.organisatie}{" "}
-                      <span className="mox-hiring-note">
-                        · {bron.register} · {datumNL(bron.opgehaald)}
-                      </span>
-                    </TableHeaderCell>
-                    <TableCell>
-                      <FormFieldCheckboxOption
-                        label={
-                          bron.id === "eigen"
-                            ? "Klopt, gebruik mijn opgave"
-                            : "Klopt, gebruik dit"
-                        }
-                        name={`vinkje-${bron.id}`}
-                        checked={!!staat && bronBevestigd(staat, bron.id)}
-                        onChange={(event) =>
-                          vink(bron.id, event.target.checked)
-                        }
-                      />
-                    </TableCell>
-                  </TableRow>
-                  {bron.gegevens.map((g) => (
-                    <TableRow key={g.parameter}>
-                      <TableCell>{g.vraag}</TableCell>
-                      <TableCell>{g.waarde}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              ))}
-            </Table>
-          </div>
-          <details className="mox-hiring-legal-question">
-            <summary>Zo vraagt de wet het</summary>
-            <UnorderedList>
-              {bronnen.flatMap((bron) =>
-                bron.gegevens.map((g) => (
-                  <UnorderedListItem key={`${bron.id}-${g.parameter}`}>
-                    {bron.organisatie}: “{g.wetsvraag}” ({g.grond})
-                  </UnorderedListItem>
-                )),
-              )}
-            </UnorderedList>
-          </details>
+          <Accordion headingLevel={3}>
+            {bronnen.map((bron) => {
+              const aan = !!staat && bronBevestigd(staat, bron.id);
+              return (
+                <AccordionSection
+                  key={bron.id}
+                  label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
+                  // Het type eist `body`, de component rendert alleen `children`.
+                  body={null}
+                  expanded={open.includes(bron.id)}
+                  onActivate={() =>
+                    setOpen(
+                      open.includes(bron.id)
+                        ? open.filter((id) => id !== bron.id)
+                        : [...open, bron.id],
+                    )
+                  }
+                >
+                  <div className="rhc-row-gap">
+                    <Paragraph className="mox-hiring-note">
+                      {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
+                    </Paragraph>
+                    <div className="mox-table-container">
+                      <Table className="mox-hiring-sources">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHeaderCell scope="col">
+                              Gegeven
+                            </TableHeaderCell>
+                            <TableHeaderCell scope="col">
+                              Waarde
+                            </TableHeaderCell>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {bron.gegevens.map((g) => (
+                            <TableRow key={g.parameter}>
+                              <TableCell>{g.vraag}</TableCell>
+                              <TableCell>{g.waarde}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <details className="mox-hiring-legal-question">
+                      <summary>Zo vraagt de wet het</summary>
+                      <UnorderedList>
+                        {bron.gegevens.map((g) => (
+                          <UnorderedListItem key={g.parameter}>
+                            “{g.wetsvraag}” ({g.grond})
+                          </UnorderedListItem>
+                        ))}
+                      </UnorderedList>
+                    </details>
+                    <FormFieldCheckboxOption
+                      label={
+                        bron.id === "eigen"
+                          ? "Klopt, gebruik mijn opgave"
+                          : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
+                      }
+                      name={`vinkje-${bron.id}`}
+                      checked={aan}
+                      onChange={(event) => vink(bron.id, event.target.checked)}
+                    />
+                  </div>
+                </AccordionSection>
+              );
+            })}
+          </Accordion>
         </>
       )}
 
