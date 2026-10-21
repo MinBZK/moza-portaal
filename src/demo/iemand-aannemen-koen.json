@@ -208,6 +208,7 @@
       "bedragToelichting": "70 procent van het dagloon, zolang Koen in het doelgroepregister staat. U hoeft niets aan te vragen; bij ziekte meldt u Koen ziek bij UWV.",
       "bedragEurocent": null,
       "tekst": "Wordt Koen ziek, dan betaalt UWV ziekengeld in plaats van dat u het loon doorbetaalt. Dit geldt omdat Koen in het doelgroepregister staat en de dienstbetrekking op of na 1 januari 2015 begint.",
+      "tekstAlgemeen": "Wordt uw werknemer ziek, dan betaalt UWV ziekengeld in plaats van dat u het loon doorbetaalt. Dit geldt als de kandidaat in het doelgroepregister staat en de dienstbetrekking op of na 1 januari 2015 begint.",
       "grond": "Ziektewet 29b, tweede lid, onderdeel e, en vijfde lid; Dagloonbesluit werknemersverzekeringen 12e",
       "trace": "ziektewet:heeft_recht_op_no_risk_polis",
       "actie": null
@@ -223,6 +224,7 @@
       "bedragToelichting": "Iedereen voor wie loonkostensubsidie geldt, heeft hier recht op.",
       "bedragEurocent": null,
       "tekst": "Een jobcoach helpt Koen en u op de werkvloer. U vraagt dit aan bij de gemeente, los van de loonkostensubsidie.",
+      "tekstAlgemeen": "Een jobcoach helpt uw werknemer en u op de werkvloer. U vraagt dit aan bij de gemeente, los van de loonkostensubsidie.",
       "grond": "Participatiewet 10da",
       "trace": "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek",
       "actie": null
@@ -238,6 +240,7 @@
       "bedragToelichting": "Met vier maanden verlenging. Alleen vóór de dienstbetrekking begint; in dit verhaal is daar geen gebruik van gemaakt.",
       "bedragEurocent": null,
       "tekst": "Koen kan eerst twee maanden bij u werken terwijl de bijstand doorloopt, als de gemeente daarmee instemt.",
+      "tekstAlgemeen": "De kandidaat kan eerst twee maanden bij u werken terwijl de bijstand doorloopt, als de gemeente daarmee instemt.",
       "grond": "Participatiewet 8a, tweede lid, onderdeel d",
       "trace": "participatiewet:mag_proefplaatsing_aangaan",
       "actie": null
@@ -253,6 +256,7 @@
       "bedragToelichting": "Loondispensatie bestaat alleen voor wie recht heeft op arbeidsondersteuning op grond van de Wajong. Koen heeft dat niet.",
       "bedragEurocent": null,
       "tekst": "Bij loondispensatie betaalt u minder dan het minimumloon en vult UWV aan. Voor Koen geldt in plaats daarvan loonkostensubsidie van de gemeente.",
+      "tekstAlgemeen": "Bij loondispensatie betaalt u minder dan het minimumloon en vult UWV aan. Dit geldt alleen bij een Wajong-uitkering; voor iemand uit het doelgroepregister geldt in plaats daarvan loonkostensubsidie van de gemeente.",
       "grond": "Wajong 2:20",
       "trace": "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie",
       "actie": null

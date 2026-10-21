@@ -177,13 +177,13 @@ const Vragen = ({
                   {r.soortLabel}
                 </span>
                 <br />
-                {r.tekst}
+                {r.tekstAlgemeen ?? r.tekst}
               </UnorderedListItem>
             ))}
           </UnorderedList>
           <Paragraph className="mox-hiring-note">
-            Of een regeling geldt, berekende de regelrecht-engine op het
-            fictieve scenario van Koen de Wit, kandidaat uit het
+            Of een regeling geldt, hangt af van de kandidaat. Dit zijn de
+            uitkomsten van de regelrecht-engine voor iemand uit het
             doelgroepregister.
           </Paragraph>
         </section>

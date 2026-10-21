@@ -46,6 +46,8 @@ export type DemoAannemenRegeling = {
   bedragToelichting: string;
   bedragEurocent: number | null;
   tekst: string;
+  /** Zonder naam van de kandidaat, voor het scherm vóór de aanvraag. */
+  tekstAlgemeen?: string;
   grond: string;
   /** Sleutel in de traces: "<wet>:<output>". */
   trace: string;
