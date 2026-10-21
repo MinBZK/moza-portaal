@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   ActionGroup,
   Button,
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
+  FormFieldTextInput,
   Heading,
   Paragraph,
   Table,
@@ -29,9 +31,13 @@ import {
 } from "../_useAannemen";
 import { datumNL, type Werkgever } from "../_werkgever";
 
+const NIEUW = "nieuw";
+
 /**
- * Namens wie, de kandidaat kiezen, en het omgekeerde formulier: alles wat de
- * overheid al weet in een tabel, per bron een vinkje dat standaard aan staat.
+ * Namens wie, de kandidaat kiezen of toevoegen, en het omgekeerde formulier:
+ * alles wat de overheid al weet in een tabel, per bron een vinkje dat
+ * standaard aan staat. Een zelf toegevoegde kandidaat wacht op toestemming;
+ * zonder toestemming haalt het portaal niets op.
  */
 const Bronnen = ({
   bronnen,
@@ -44,7 +50,11 @@ const Bronnen = ({
 }) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
-  const gekozen = !!staat && staat.kandidaat === kandidaat.bsnMasker;
+  const [nieuw, setNieuw] = useState({ naam: "", geboortedatum: "" });
+  const keuze = staat?.kandidaat;
+  const nieuwe = staat?.kandidatenNieuw ?? [];
+  const gekozen = keuze === kandidaat.bsnMasker;
+  const wachtend = nieuwe.find((k) => k.naam === keuze);
   const aantal = staat
     ? BRONNEN.filter((id) => bronBevestigd(staat, id)).length
     : 0;
@@ -53,6 +63,23 @@ const Bronnen = ({
 
   const vink = (id: BronId, aan: boolean) =>
     werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
+
+  const voegToe = () => {
+    const n = nieuw.naam.trim();
+    if (!n) return;
+    werkBij({
+      kandidatenNieuw: [
+        ...nieuwe.filter((k) => k.naam !== n),
+        {
+          naam: n,
+          geboortedatum: nieuw.geboortedatum.trim(),
+          gevraagdOp: new Date().toISOString().slice(0, 10),
+        },
+      ],
+      kandidaat: n,
+    });
+    setNieuw({ naam: "", geboortedatum: "" });
+  };
 
   return (
     <>
@@ -90,10 +117,9 @@ const Bronnen = ({
         </Heading>
         <Paragraph>
           Gegevens over de kandidaat halen we alleen op met diens toestemming.
-          De kandidaat geeft die via de eigen MijnOverheid; daarna staat de
-          kandidaat hier.
+          De kandidaat geeft die via de eigen MijnOverheid.
         </Paragraph>
-        <Fieldset legend="Kandidaten die u toestemming gaven">
+        <Fieldset legend="Kandidaten">
           <FormFieldRadio
             name="kandidaat"
             value={kandidaat.bsnMasker}
@@ -101,7 +127,62 @@ const Bronnen = ({
             checked={gekozen}
             onChange={() => werkBij({ kandidaat: kandidaat.bsnMasker })}
           />
+          {nieuwe.map((k) => (
+            <FormFieldRadio
+              key={k.naam}
+              name="kandidaat"
+              value={k.naam}
+              label={`${k.naam}${k.geboortedatum ? `, geboren ${k.geboortedatum}` : ""}, toestemming gevraagd op ${datumNL(k.gevraagdOp)}`}
+              checked={keuze === k.naam}
+              onChange={() => werkBij({ kandidaat: k.naam })}
+            />
+          ))}
+          <FormFieldRadio
+            name="kandidaat"
+            value={NIEUW}
+            label="Iemand anders: nieuwe kandidaat toevoegen"
+            checked={keuze === NIEUW}
+            onChange={() => werkBij({ kandidaat: NIEUW })}
+          />
         </Fieldset>
+        {keuze === NIEUW && (
+          <div className="rhc-row-gap">
+            <FormFieldTextInput
+              label="Naam van de kandidaat"
+              value={nieuw.naam}
+              onChange={(event) =>
+                setNieuw({
+                  ...nieuw,
+                  naam: (event.target as HTMLInputElement).value,
+                })
+              }
+            />
+            <FormFieldTextInput
+              label="Geboortedatum (dag-maand-jaar)"
+              value={nieuw.geboortedatum}
+              onChange={(event) =>
+                setNieuw({
+                  ...nieuw,
+                  geboortedatum: (event.target as HTMLInputElement).value,
+                })
+              }
+            />
+            <Paragraph className="mox-hiring-note">
+              De kandidaat krijgt een verzoek om toestemming in MijnOverheid.
+              Zodra die er is, halen we de gegevens op. Het BSN vragen we niet
+              aan u; dat komt mee met de toestemming.
+            </Paragraph>
+            <ActionGroup>
+              <Button
+                appearance="secondary-action-button"
+                aria-disabled={!nieuw.naam.trim()}
+                onClick={voegToe}
+              >
+                Toestemming vragen
+              </Button>
+            </ActionGroup>
+          </div>
+        )}
         {gekozen && (
           <Paragraph className="mox-hiring-note">
             BSN {kandidaat.bsnMasker} gaat mee met de aanvraag en staat niet op
@@ -111,7 +192,13 @@ const Bronnen = ({
       </section>
 
       <Heading level={2}>Wat de overheid al weet</Heading>
-      {!gekozen ? (
+      {wachtend ? (
+        <Paragraph>
+          We hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
+          toestemming gevraagd. Zodra die er is, halen we op wat de overheid al
+          weet en ziet u het hier. In dit prototype komt die toestemming niet.
+        </Paragraph>
+      ) : !gekozen ? (
         <Paragraph>
           Kies eerst de kandidaat. Daarna halen we op wat de overheid al weet en
           ziet u het hier.
@@ -135,17 +222,17 @@ const Bronnen = ({
                 <TableBody key={bron.id}>
                   <TableRow className="mox-hiring-sources__source">
                     <TableHeaderCell scope="rowgroup" id={`bron-${bron.id}`}>
-                      {bron.organisatie}
+                      {bron.organisatie}{" "}
                       <span className="mox-hiring-note">
-                        {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
+                        · {bron.register} · {datumNL(bron.opgehaald)}
                       </span>
                     </TableHeaderCell>
                     <TableCell>
                       <FormFieldCheckboxOption
                         label={
                           bron.id === "eigen"
-                            ? "Klopt, gebruik mijn eigen opgave"
-                            : `Klopt, gebruik deze gegevens`
+                            ? "Klopt, gebruik mijn opgave"
+                            : "Klopt, gebruik dit"
                         }
                         name={`vinkje-${bron.id}`}
                         checked={!!staat && bronBevestigd(staat, bron.id)}
@@ -182,11 +269,13 @@ const Bronnen = ({
 
       <section className="mox-card rhc-row-gap">
         <Paragraph role="status">
-          {!gekozen
-            ? "Nog geen kandidaat gekozen."
-            : klaar
-              ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
-              : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
+          {wachtend
+            ? "Wachten op toestemming van de kandidaat."
+            : !gekozen
+              ? "Nog geen kandidaat gekozen."
+              : klaar
+                ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
+                : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
         <ActionGroup>
           <Button

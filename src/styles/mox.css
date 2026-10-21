@@ -1325,17 +1325,30 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
   }
 
   /* Scherm 2: alles wat de overheid al weet in een tabel; per bron een kopregel met het vinkje. */
-  .mox-hiring-sources__source th {
+  .mox-hiring-sources {
+    font-size: var(--rhc-font-size-sm, 0.875rem);
+  }
+
+  .mox-hiring-sources td,
+  .mox-hiring-sources th {
+    padding-block: var(--rhc-space-2xs, 0.25rem);
     vertical-align: top;
   }
 
+  .mox-hiring-sources__source th {
+    padding-block-start: var(--rhc-space-sm, 0.75rem);
+  }
+
   .mox-hiring-sources__source .mox-hiring-note {
-    display: block;
     font-weight: normal;
   }
 
   .mox-hiring-sources__source .utrecht-form-field {
     margin-block: 0;
+  }
+
+  .mox-hiring-sources__source .utrecht-form-field__label {
+    font-size: inherit;
   }
 
   .mox-hiring-legal-question {

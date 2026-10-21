@@ -66,8 +66,14 @@ export type AannemenStaat = {
   antwoorden: Antwoorden;
   /** Per bron: mag de aanvraag deze gegevens gebruiken. Niet gezet is ja. */
   bronnen: Partial<Record<BronId, boolean>>;
-  /** De gekozen kandidaat (BSN-masker); zonder keuze haalt het portaal niets op. */
+  /** De gekozen kandidaat (BSN-masker, of de naam van een zelf toegevoegde); zonder keuze haalt het portaal niets op. */
   kandidaat?: string;
+  /** Zelf toegevoegde kandidaten, in afwachting van hun toestemming. */
+  kandidatenNieuw?: {
+    naam: string;
+    geboortedatum: string;
+    gevraagdOp: string;
+  }[];
   /** Namens wie de aanvraag wordt ingevuld. */
   rol: "eigenaar" | "namens";
   /** Per regeling in de aanvraag: gecontroleerd. */
