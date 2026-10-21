@@ -8,6 +8,7 @@ import {
   UnorderedListItem,
   VisuallyHidden,
 } from "@/components/rhc";
+import ProgressBar from "@/components/ProgressBar";
 
 /** Hoe lang het laden duurt; anders flitst de melding alleen even. */
 const LAADTIJD = 1500;
@@ -30,15 +31,8 @@ const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
         {!geladen && (
           <Alert type="info">
             <Paragraph>De pdf wordt geladen.</Paragraph>
-            {/* Hoe lang het duurt is niet bekend: geen waarde, een
-                bewegende balk. */}
-            <div
-              role="progressbar"
-              aria-label="De pdf laden"
-              className="mox-progressbar mox-progressbar--indeterminate"
-            >
-              <div className="mox-progressbar-track" />
-            </div>
+            {/* Hoe lang het duurt is niet bekend: zonder value. */}
+            <ProgressBar label="De pdf laden" />
           </Alert>
         )}
       </div>

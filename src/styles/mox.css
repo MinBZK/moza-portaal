@@ -708,6 +708,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
 	  Bij "minder beweging" een stilstaande, halfvolle balk. */
+	/* In een info-melding de kleur van die melding (het info-icoon), zoals
+	  bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
+	.utrecht-alert--info .mox-progressbar-track {
+		background-color: var(--utrecht-alert-icon-info-color) !important;
+	}
+
 	.mox-progressbar--indeterminate .mox-progressbar-track {
 		inline-size: 40%;
 

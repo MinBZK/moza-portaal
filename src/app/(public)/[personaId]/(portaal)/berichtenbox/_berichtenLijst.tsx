@@ -486,7 +486,7 @@ const BerichtenLijst = ({
         </Alert>
       )}
       {!bezig && alleBinnen && (
-        <Alert type="info">
+        <Alert type="ok">
           <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
         </Alert>
       )}

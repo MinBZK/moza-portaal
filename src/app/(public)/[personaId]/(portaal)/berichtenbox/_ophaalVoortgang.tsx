@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Paragraph, Alert } from "@rijkshuisstijl-community/components-react";
+import ProgressBar from "@/components/ProgressBar";
 
 /**
  * Bootst na hoe de inbox berichten ophaalt bij de organisaties, zoals in
@@ -67,30 +68,21 @@ export const useNagebootstOphalen = (
 
 const OphaalVoortgang = ({ voortgang }: { voortgang: Voortgang | null }) => {
   const { bronnen = 0, klaar = 0, gevonden = 0 } = voortgang ?? {};
-  const procent = bronnen ? Math.round((klaar / bronnen) * 100) : 0;
 
   return (
-    <Alert type="ok">
+    <Alert type="info">
       <Paragraph>We halen uw berichten op bij de organisaties.</Paragraph>
       <Paragraph>
         <b>{klaar}</b> van <b>{bronnen}</b>{" "}
         {bronnen === 1 ? "organisatie" : "organisaties"}, <b>{gevonden}</b>{" "}
         {gevonden === 1 ? "bericht" : "berichten"} gevonden
       </Paragraph>
-      <div
-        role="progressbar"
-        aria-label="Berichten ophalen"
-        aria-valuemin={0}
-        aria-valuemax={bronnen}
-        aria-valuenow={klaar}
-        aria-valuetext={`${klaar} van ${bronnen} organisaties`}
-        className="mox-progressbar"
-      >
-        <div
-          className="mox-progressbar-track"
-          style={{ inlineSize: `${procent}%` }}
-        />
-      </div>
+      <ProgressBar
+        label="Berichten ophalen"
+        value={klaar}
+        max={bronnen}
+        valueText={`${klaar} van ${bronnen} organisaties`}
+      />
     </Alert>
   );
 };
