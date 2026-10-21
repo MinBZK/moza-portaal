@@ -1,5 +1,5 @@
 const STAPPEN = [
-  "U ziet wat het u kost en oplevert",
+  "U ziet wat dit voor u betekent",
   "Wij vullen de aanvraag voor u in",
   "U controleert en dient zelf in",
 ] as const;

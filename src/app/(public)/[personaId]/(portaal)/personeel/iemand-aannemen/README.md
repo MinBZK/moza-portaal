@@ -15,7 +15,7 @@ actor en wetsgrond staat in `verhaallijn-koen-v1.md` (in deze map).
 | Pad | Wat de deelnemer doet |
 |---|---|
 | `/personeel` | Start "Iemand aannemen"; na het indienen staat de zaak hier |
-| `/personeel/iemand-aannemen` | Drie korte vragen (wie, uren als slider, zelfstandig met loonwaarde-slider); rechts live "Uw kosten per jaar": loonkosten min loonkostensubsidie en loonkostenvoordeel uit de engine; de overige regelingen; "Aanvraag laten invullen" |
+| `/personeel/iemand-aannemen` | Drie korte vragen (wie, uren als slider, zelfstandig met loonwaarde-slider); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie en loonkostenvoordeel uit de engine; de overige regelingen; "Aanvraag laten invullen" |
 | `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat (Koen, met toestemming), per bron (UWV, gemeente, KVK, Belastingdienst, eigen opgave) de gegevens, de datum en de wetsvraag; vinkje per bron |
 | `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag: per regeling een paneel met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing), "Ik heb dit gecontroleerd"; Gecontroleerd n van 6; rechts "Wat dit u oplevert" live |
 | `/personeel/iemand-aannemen/indienen` | Controleren en indienen: wat naar de gemeente gaat, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |

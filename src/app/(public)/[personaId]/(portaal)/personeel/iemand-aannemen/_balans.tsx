@@ -13,7 +13,7 @@ import {
 import { euro } from "./_werkgever";
 
 /**
- * "Uw kosten per jaar": loonkosten (benadering) min loonkostensubsidie en
+ * "Wat de regelingen opleveren": loonkosten (benadering) min loonkostensubsidie en
  * loonkostenvoordeel uit de regelrecht-engine, live bij elke wijziging van de
  * antwoorden. Compact (`kort`) voor de zijkolom van de aanvraag.
  */
@@ -96,7 +96,7 @@ const Balans = ({
   if (register === "nee")
     return (
       <>
-        <Heading level={3}>Uw kosten per jaar</Heading>
+        <Heading level={3}>Loonkosten per jaar</Heading>
         <dl className="mox-hiring-balance">
           <div>
             <dt>Loonkosten</dt>
@@ -122,7 +122,7 @@ const Balans = ({
       <Heading level={3}>
         {register === "onbekend"
           ? "Als de kandidaat in het doelgroepregister staat"
-          : "Uw kosten per jaar"}
+          : "Wat de regelingen opleveren"}
       </Heading>
       <dl className="mox-hiring-balance">
         <div>
@@ -157,7 +157,7 @@ const Balans = ({
       </dl>
       <div className="mox-hiring-net">
         <Paragraph>
-          <strong>Wat u zelf betaalt per jaar</strong>
+          <strong>Blijft voor uw rekening per jaar</strong>
         </Paragraph>
         <p className="mox-hiring-amount">{bedrag(netto)}</p>
       </div>

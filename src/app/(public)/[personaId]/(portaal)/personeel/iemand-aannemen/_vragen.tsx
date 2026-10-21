@@ -90,7 +90,7 @@ const Vragen = ({
 
   return (
     <>
-      <Heading level={2}>Wat kost het {onderneming}?</Heading>
+      <Heading level={2}>Wat betekent dit voor {onderneming}?</Heading>
       <Paragraph className="mox-hiring-note">
         Deze berekening blijft op uw scherm. Er gaat niets naar een
         overheidsorganisatie.
