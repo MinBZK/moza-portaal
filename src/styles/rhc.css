@@ -314,12 +314,14 @@ body {
 
 /* --- Interactie --- */
 
-/* Eén rustige overgang voor alle interactieve elementen. :where() houdt de
-  specificiteit op 0, zodat een eigen transition van een component wint.
+/* Eén rustige overgang voor alle interactieve elementen. Alles in :where(),
+  ook de theme-classes, zodat de specificiteit 0 is en een eigen transition
+  van een component altijd wint. Niet op dialog: een RHC Drawer heeft
+  tabindex="0", en zijn in- en uitschuiven staat in globals.css.
   Alleen kleuren, randen en schaduw: geen lay-out, en de focusrand verschijnt
   meteen. Niet bij "minder beweging" in het systeem. */
 @media (prefers-reduced-motion: no-preference) {
-  .rhc-theme.mox-theme :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])) {
+  :where(.rhc-theme.mox-theme) :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"], dialog)) {
     transition-duration: var(--mox-transition-duration);
     transition-property: color, background-color, border-color, outline-color, outline-offset, text-decoration-color, box-shadow;
     transition-timing-function: var(--mox-transition-easing);
