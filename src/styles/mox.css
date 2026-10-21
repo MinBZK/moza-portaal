@@ -1324,6 +1324,20 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
     gap: 0.5rem;
   }
 
+  /* Scherm 2: alles wat de overheid al weet in een tabel; per bron een kopregel met het vinkje. */
+  .mox-hiring-sources__source th {
+    vertical-align: top;
+  }
+
+  .mox-hiring-sources__source .mox-hiring-note {
+    display: block;
+    font-weight: normal;
+  }
+
+  .mox-hiring-sources__source .utrecht-form-field {
+    margin-block: 0;
+  }
+
   .mox-hiring-legal-question {
     font-size: var(--rhc-font-size-sm, 0.875rem);
     margin-block-start: 0.25rem;

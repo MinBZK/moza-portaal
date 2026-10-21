@@ -5,13 +5,17 @@ import { useRouter } from "next/navigation";
 import {
   ActionGroup,
   Button,
-  DataSummary,
-  DataSummaryItem,
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
   Heading,
   Paragraph,
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableHeaderCell,
+  TableRow,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
@@ -19,12 +23,16 @@ import type { DemoAannemen, DemoAannemenBron } from "@/demo";
 import {
   BRONNEN,
   alleBronnenBevestigd,
+  bronBevestigd,
   useAannemen,
   type BronId,
 } from "../_useAannemen";
 import { datumNL, type Werkgever } from "../_werkgever";
 
-/** Namens wie, de kandidaat met toestemming, en het omgekeerde formulier: per bron bevestigen. */
+/**
+ * Namens wie, de kandidaat kiezen, en het omgekeerde formulier: alles wat de
+ * overheid al weet in een tabel, per bron een vinkje dat standaard aan staat.
+ */
 const Bronnen = ({
   bronnen,
   kandidaat,
@@ -36,12 +44,15 @@ const Bronnen = ({
 }) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
-  const bevestigd = staat?.bronnen ?? {};
-  const aantal = BRONNEN.filter((id) => bevestigd[id]).length;
-  const klaar = !!staat && alleBronnenBevestigd(staat);
+  const gekozen = !!staat && staat.kandidaat === kandidaat.bsnMasker;
+  const aantal = staat
+    ? BRONNEN.filter((id) => bronBevestigd(staat, id)).length
+    : 0;
+  const klaar = gekozen && !!staat && alleBronnenBevestigd(staat);
+  const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
 
   const vink = (id: BronId, aan: boolean) =>
-    werkBij({ bronnen: { ...bevestigd, [id]: aan } });
+    werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
 
   return (
     <>
@@ -75,93 +86,114 @@ const Bronnen = ({
 
       <section className="mox-card rhc-row-gap" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
-          De kandidaat
+          Wie wilt u aannemen?
         </Heading>
         <Paragraph>
           Gegevens over de kandidaat halen we alleen op met diens toestemming.
-          In dit prototype is dat {kandidaat.voornaam} {kandidaat.achternaam};
-          de toestemming is gegeven op {datumNL(kandidaat.toestemmingOp)}.
+          De kandidaat geeft die via de eigen MijnOverheid; daarna staat de
+          kandidaat hier.
         </Paragraph>
-        <DataSummary appearance="column">
-          <DataSummaryItem
-            itemKey="Naam"
-            itemValue={`${kandidaat.voornaam} ${kandidaat.achternaam}`}
+        <Fieldset legend="Kandidaten die u toestemming gaven">
+          <FormFieldRadio
+            name="kandidaat"
+            value={kandidaat.bsnMasker}
+            label={`${naam}, geboren ${datumNL(kandidaat.geboortedatum)}, toestemming gegeven op ${datumNL(kandidaat.toestemmingOp)}`}
+            checked={gekozen}
+            onChange={() => werkBij({ kandidaat: kandidaat.bsnMasker })}
           />
-          <DataSummaryItem
-            itemKey="Geboortedatum"
-            itemValue={datumNL(kandidaat.geboortedatum)}
-          />
-          <DataSummaryItem
-            itemKey="BSN"
-            itemValue={`${kandidaat.bsnMasker} (gaat mee, staat niet op het scherm)`}
-          />
-        </DataSummary>
+        </Fieldset>
+        {gekozen && (
+          <Paragraph className="mox-hiring-note">
+            BSN {kandidaat.bsnMasker} gaat mee met de aanvraag en staat niet op
+            het scherm.
+          </Paragraph>
+        )}
       </section>
 
       <Heading level={2}>Wat de overheid al weet</Heading>
-      <Paragraph>
-        Per gegeven ziet u de bron, de datum en de vraag van de wet waarvoor het
-        nodig is. Vink per bron aan dat de gegevens kloppen en gebruikt mogen
-        worden; pas dan vullen we de aanvraag in.
-      </Paragraph>
-      {bronnen.map((bron) => (
-        <section
-          key={bron.id}
-          className="mox-card rhc-row-gap"
-          aria-labelledby={`bron-${bron.id}`}
-        >
-          <Heading level={3} id={`bron-${bron.id}`}>
-            {bron.organisatie}
-          </Heading>
-          <Paragraph className="mox-hiring-note">
-            {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
+      {!gekozen ? (
+        <Paragraph>
+          Kies eerst de kandidaat. Daarna halen we op wat de overheid al weet en
+          ziet u het hier.
+        </Paragraph>
+      ) : (
+        <>
+          <Paragraph>
+            Per bron staat aangevinkt dat de gegevens kloppen en gebruikt mogen
+            worden. Klopt iets niet, haal het vinkje weg; die gegevens vult u
+            dan zelf aan in de aanvraag.
           </Paragraph>
-          <DataSummary appearance="column">
-            {bron.gegevens.map((g) => (
-              <DataSummaryItem
-                key={g.parameter}
-                itemKey={g.vraag}
-                itemValue={g.waarde}
-              />
-            ))}
-          </DataSummary>
+          <div className="mox-table-container">
+            <Table className="mox-hiring-sources">
+              <TableHeader>
+                <TableRow>
+                  <TableHeaderCell scope="col">Gegeven</TableHeaderCell>
+                  <TableHeaderCell scope="col">Waarde</TableHeaderCell>
+                </TableRow>
+              </TableHeader>
+              {bronnen.map((bron) => (
+                <TableBody key={bron.id}>
+                  <TableRow className="mox-hiring-sources__source">
+                    <TableHeaderCell scope="rowgroup" id={`bron-${bron.id}`}>
+                      {bron.organisatie}
+                      <span className="mox-hiring-note">
+                        {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
+                      </span>
+                    </TableHeaderCell>
+                    <TableCell>
+                      <FormFieldCheckboxOption
+                        label={
+                          bron.id === "eigen"
+                            ? "Klopt, gebruik mijn eigen opgave"
+                            : `Klopt, gebruik deze gegevens`
+                        }
+                        name={`vinkje-${bron.id}`}
+                        checked={!!staat && bronBevestigd(staat, bron.id)}
+                        onChange={(event) =>
+                          vink(bron.id, event.target.checked)
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                  {bron.gegevens.map((g) => (
+                    <TableRow key={g.parameter}>
+                      <TableCell>{g.vraag}</TableCell>
+                      <TableCell>{g.waarde}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              ))}
+            </Table>
+          </div>
           <details className="mox-hiring-legal-question">
             <summary>Zo vraagt de wet het</summary>
             <UnorderedList>
-              {bron.gegevens.map((g) => (
-                <UnorderedListItem key={g.parameter}>
-                  “{g.wetsvraag}” ({g.grond})
-                </UnorderedListItem>
-              ))}
+              {bronnen.flatMap((bron) =>
+                bron.gegevens.map((g) => (
+                  <UnorderedListItem key={`${bron.id}-${g.parameter}`}>
+                    {bron.organisatie}: “{g.wetsvraag}” ({g.grond})
+                  </UnorderedListItem>
+                )),
+              )}
             </UnorderedList>
           </details>
-          <FormFieldCheckboxOption
-            label={
-              bron.id === "eigen"
-                ? "Klopt, gebruik mijn eigen opgave"
-                : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
-            }
-            name={`vinkje-${bron.id}`}
-            checked={!!bevestigd[bron.id]}
-            onChange={(event) => vink(bron.id, event.target.checked)}
-          />
-        </section>
-      ))}
+        </>
+      )}
 
       <section className="mox-card rhc-row-gap">
         <Paragraph role="status">
-          {klaar
-            ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
-            : aantal === 0
-              ? "Nog geen bron bevestigd."
-              : `${aantal} van ${BRONNEN.length} bronnen bevestigd.`}
+          {!gekozen
+            ? "Nog geen kandidaat gekozen."
+            : klaar
+              ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
+              : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
         <ActionGroup>
           <Button
             appearance="primary-action-button"
-            aria-disabled={!klaar}
+            aria-disabled={!gekozen}
             onClick={() => {
-              if (klaar)
+              if (gekozen)
                 router.push("/personeel/iemand-aannemen/concept-aanvraag");
             }}
           >

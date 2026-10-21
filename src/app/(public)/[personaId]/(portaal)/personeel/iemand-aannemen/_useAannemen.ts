@@ -64,7 +64,10 @@ export type RegelingId = (typeof REGELINGEN)[number];
 
 export type AannemenStaat = {
   antwoorden: Antwoorden;
+  /** Per bron: mag de aanvraag deze gegevens gebruiken. Niet gezet is ja. */
   bronnen: Partial<Record<BronId, boolean>>;
+  /** De gekozen kandidaat (BSN-masker); zonder keuze haalt het portaal niets op. */
+  kandidaat?: string;
   /** Namens wie de aanvraag wordt ingevuld. */
   rol: "eigenaar" | "namens";
   /** Per regeling in de aanvraag: gecontroleerd. */
@@ -168,8 +171,11 @@ export const wisAannemen = () => {
 
 export const faseIndex = (fase: Fase) => Math.max(0, FASEN.indexOf(fase));
 
+export const bronBevestigd = (staat: AannemenStaat, id: BronId) =>
+  staat.bronnen[id] !== false;
+
 export const alleBronnenBevestigd = (staat: AannemenStaat) =>
-  BRONNEN.every((id) => staat.bronnen[id]);
+  BRONNEN.every((id) => bronBevestigd(staat, id));
 
 export const statusTekst = (staat: AannemenStaat) => {
   if (!staat.ingediend) return "Nog niet verstuurd";
