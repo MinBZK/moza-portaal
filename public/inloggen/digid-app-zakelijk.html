@@ -1,0 +1,115 @@
+<!doctype html>
+<html class="no-javascript" lang="nl">
+	<head>
+		<meta charset="utf-8" />
+		<meta content="Met uw persoonlijke DigiD kunt u zich identificeren op websites van de overheid. Zo weten overheidsinstellingen dat ze echt met u te maken hebben." name="description" />
+		<meta content="DigiD, inloggen, aanvragen, activeren, Mijn DigiD" name="keywords" />
+		<meta content="noindex, nofollow" name="robots" />
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<title>DigiD: Inloggen | DigiD app – koppelcode</title>
+		<link href="/inloggen/assets/images/ro-favicon-wit.png" rel="shortcut icon" />
+		<link rel="stylesheet" href="/inloggen/assets/css/digid.css" media="all" />
+		<script defer src="/inloggen/assets/js/constants_nl.js"></script>
+		<script defer src="/inloggen/assets/js/application.js"></script>
+		<script defer src="/inloggen/assets/js/vervolg.js"></script>
+		<link href="/inloggen/assets/images/digid_eo_rgb_180x180.png" rel="apple-touch-icon" />
+		<link href="/inloggen/assets/images/digid_eo_rgb_180x180.png" rel="apple-touch-icon" sizes="180x180" />
+		<link href="/inloggen/assets/images/digid_eo_rgb_167x167.png" rel="apple-touch-icon" sizes="167x167" />
+		<link href="/inloggen/assets/images/digid_eo_rgb_152x152.png" rel="apple-touch-icon" sizes="152x152" />
+		<style>
+			.temp-moza-poc-banner {
+				background: #6aa549;
+				color: #fff;
+				font-weight: 600;
+				inline-size: 256px;
+				inset-block-start: 3rem;
+				inset-inline-end: -4rem;
+				padding-block: 0.75rem;
+				padding-inline: 1.5rem;
+				position: fixed;
+				text-align: center;
+				text-decoration: none;
+				transform: rotate(45deg);
+				transform-origin: center;
+				z-index: 1;
+			}
+			.temp-moza-poc-banner:hover {
+				background: #39870c;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<a class="temp-moza-poc-banner" href="https://www.mijnoverheidzakelijk.nl/">Proof of Concept</a>
+		<div class="message-dialog" tabindex="-1"></div>
+		<nav id="skiplink">
+			<ul>
+				<li>
+					<a href="#main_content" tabindex="1" title="Direct naar de inhoud"> Ga direct naar: inhoud </a>
+				</li>
+			</ul>
+		</nav>
+		<div class="window small">
+			<div class="content">
+				<header class="header">
+					<div>
+						<a href="https://digid.nl"><img alt="Logo Rijksoverheid - Ga naar www.digid.nl" class="rijksoverheid-logo" title="Logo Rijksoverheid - Ga naar www.digid.nl" src="/inloggen/assets/images/ro-logo.svg" /></a>
+						<nav class="header-navigation"></nav>
+					</div>
+					<div class="margin-top-15px"></div>
+				</header>
+				<div class="main background background-koppelcode">
+					<img alt="DigiD" class="mydigid-logo" title="DigiD" src="/inloggen/assets/images/digid_eo_rgb.svg" />
+					<section class="main-content no-outline" id="main_content" tabindex="-1">
+						<div class="heading_with_icon">
+							<h1 class="h2"><img alt="DigiD" class="digid-logo" src="/inloggen/assets/images/digid_eo_rgb.svg" /><strong>Inloggen bij</strong><br />Mijn DigiD</h1>
+						</div>
+						<p aria-live="assertive" data-finished='&lt;strong&gt;Helaas kunt u niet verder:&lt;/strong&gt;&lt;br /&gt; Er was langer dan 15 minuten geen activiteit in het scherm.&lt;br /&gt; &lt;br /&gt; Begin opnieuw met &lt;a href="https://www.digid.nl"&gt;Inloggen bij &lt;strong&gt;Mijn DigiD&lt;/strong&gt;&lt;/a&gt; of ga naar de homepage van DigiD (&lt;a href="https://digid.nl/"&gt;www.digid.nl&lt;/a&gt;).&lt;br /&gt; &lt;br /&gt; Lukt het niet? &lt;ul class="parent"&gt; &lt;li&gt;Sluit en open de browser&lt;/li&gt; &lt;li&gt;Of verwijder de oude cookies en wis de browsergeschiedenis&lt;/li&gt; &lt;li&gt;Of log in via een andere browser&lt;/li&gt; &lt;/ul&gt;' data-minutes="15" data-progress="U heeft nog #countdown minuten om in te loggen. Daarna verloopt uw sessie." id="session_countdown">U heeft nog tot 18:16 uur (Nederlandse tijd) om in te loggen. Daarna verloopt uw sessie.</p>
+
+						<p class="simple-step-counter">Stap <strong>1 van 3</strong></p>
+						<h2 class="orange_heading">Open de DigiD app en voer uw pincode in</h2>
+						<form class="app_verification" id="new_app_verification_code" action="/" accept-charset="UTF-8" method="get" autocomplete="off">
+							<input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" />
+							<input type="text" autocomplete="username" value="" tabindex="-1" aria-hidden="true" style="position: absolute; inline-size: 0; block-size: 0; opacity: 0; pointer-events: none" />
+							<fieldset class="form__item code_field">
+								<label class="form__item__label" for="app_verification_code_verification_code">Vul daarna de koppelcode in die u in de DigiD app ziet.</label>
+								<div class="form__item__text">De DigiD app laat de koppelcode zien. Deze bestaat uit 4 letters. Vul de code in de 4 invoervelden hieronder in.</div>
+								<legend class="form__item__legend__visually__hidden">Wanneer u een letter invult, dan verplaatst de cursor automatisch naar het volgende invoerveld.</legend>
+								<input hide_required_indicator="true" data-minimum-length="4" data-maximum-length="4" data-capitals="true" data-code-field-type="consonants" class="form__item__field--medium validate" maxlength="4" fieldOf="Veld van" autocomplete="one-time-code" readonly onfocus="this.removeAttribute('readonly')" spellcheck="false" data-pattern="^[BbCcDdFfGgHhJjKkLlMmNnPpQqRrSsTtVvWwXxZz]{4}" placeholder=" " size="4" type="text" value="BCDF" name="app_verification_code[verification_code]" id="app_verification_code_verification_code" />
+							</fieldset>
+							<div class="actions">
+								<button name="button" type="submit" arrow="true" class="actions__right--button primary--button arrow">Volgende</button>
+								<a action="previous" arrow="true" css_type="button" role="button" class="actions__left--button arrow" href="/inloggen/digid/zakelijk">Vorige</a>
+							</div>
+						</form>
+
+						<ul>
+							<li>
+								<a target="_blank" href="https://www.digid.nl/over-digid/app">Nog geen DigiD app? Lees hoe u de DigiD app kunt installeren en activeren.</a>
+								[opent in een nieuw venster]
+							</li>
+						</ul>
+					</section>
+				</div>
+			</div>
+			<footer class="footer">
+				<div class="footer-questions">
+					<h4>Heeft u vragen of opmerkingen?</h4>
+					<p>
+						<a target="_blank" href="https://www.digid.nl">Bekijk de DigiD website</a>
+						[opent in een nieuw venster] of
+						<a target="_blank" href="https://www.digid.nl/contact">neem contact op</a>
+						[opent in een nieuw venster] met de DigiD helpdesk.
+					</p>
+				</div>
+			</footer>
+		</div>
+		<script>
+			// Prototype: zet focus op het laatste koppelcode-veld na opbouw door code_box
+			window.addEventListener("load", function () {
+				var laatste = document.getElementById("app_verification_code_verification_code_field_3");
+				if (laatste) laatste.focus();
+			});
+		</script>
+	</body>
+</html>

@@ -2,7 +2,6 @@ import {
   PreHeading,
   Heading,
   Paragraph,
-  LinkButton,
   Icon,
   UnorderedList,
   UnorderedListItem,
@@ -77,10 +76,10 @@ const PublicPage = () => {
             </svg>
             <span>Inloggen met E-Herkenning</span>
           </Link>
-          <LinkButton>
+          <Link href="/inloggen/zakelijk" className="utrecht-link-button">
             Bekijk alle inlogmogelijkheden
             <Icon icon="chevron-right" />
-          </LinkButton>
+          </Link>
         </div>
         <Image
           width={1114}

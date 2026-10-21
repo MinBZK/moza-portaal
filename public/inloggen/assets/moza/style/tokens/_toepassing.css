@@ -1,0 +1,222 @@
+/**
+ * Automatisch gegenereerd op basis van design tokens.
+ * De bron is tokens.json.
+ * _rijkshuisstijl.css bevat opties uit de Rijkshuisstijl, _toepassing.css bevat de toepassing van deze opties. Refereer in het CSS bestand alleen aan de variabelen in _toepassing.css, niet aan die in _rijkshuisstijl.css.
+ * CSS variabelen worden automatisch gegenereerd, bewerk deze niet handmatig.
+ */
+:root {
+  --toepassing-animation-fade-fade-in: fade-in var(--toepassing-motion-speed-slow) var(--toepassing-motion-easing-default);
+  --toepassing-animation-fade-fade-out: fade-out var(--toepassing-motion-speed-slow) var(--toepassing-motion-easing-default);
+  --toepassing-animation-icon-pop: icon-pop var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default);
+  --toepassing-border-card-default: var(--toepassing-box-shadow-default);
+  --toepassing-border-default: var(--toepassing-border-width-xs) solid var(--toepassing-color-border-default);
+  --toepassing-border-pageheader-border: var(--toepassing-border-width-md) solid var(--rijkshuisstijl-color-hemelblauw-500);
+  --toepassing-border-radius-lg: var(--rijkshuisstijl-border-radius-8);
+  --toepassing-border-radius-md: var(--rijkshuisstijl-border-radius-4);
+  --toepassing-border-radius-round: 999px;
+  --toepassing-border-radius-sm: var(--rijkshuisstijl-border-radius-2);
+  --toepassing-border-strong: var(--toepassing-border-width-xs) solid var(--toepassing-color-border-strong);
+  --toepassing-border-subtle: var(--toepassing-border-width-xs) solid var(--toepassing-color-border-subtle);
+  --toepassing-border-tabs-tab-hover: var(--toepassing-border-width-md) solid var(--toepassing-color-interactive-hover-border);
+  --toepassing-border-tabs-tab-inactive: var(--toepassing-border-width-md) solid var(--toepassing-color-border-subtle);
+  --toepassing-border-tabs-tab-selected: var(--toepassing-border-width-md) solid var(--toepassing-color-interactive-selected-border);
+  --toepassing-border-width-lg: var(--rijkshuisstijl-border-width-3);
+  --toepassing-border-width-md: var(--rijkshuisstijl-border-width-2);
+  --toepassing-border-width-xs: var(--rijkshuisstijl-border-width-1);
+  --toepassing-box-shadow-default: 0 0 6px 0 var(--rijkshuisstijl-color-grijs-400);
+  --toepassing-breakpoint-md: 49.9375rem;
+  --toepassing-color-accent-default: var(--rijkshuisstijl-color-lintblauw-500);
+  --toepassing-color-background-canvas: var(--rijkshuisstijl-color-neutraal-wit); /** Onderste laag, pagina- of app-achtergrond */
+  --toepassing-color-background-default: var(--toepassing-color-background-canvas); /** Primaire oppervlak (kaarten, panelen, contentgebieden) */
+  --toepassing-color-background-inverse: var(--rijkshuisstijl-color-lintblauw-500); /** Donker oppervlak in een licht thema (en andersom), voor contrastrijke secties zoals footers */
+  --toepassing-color-background-raised: var(--rijkshuisstijl-color-grijs-100); /** Verhoogde oppervlakken zoals kaarten, popovers en dropdowns. Zit visueel boven color.background.default */
+  --toepassing-color-background-subtle-1: var(--rijkshuisstijl-color-grijs-50); /** Gedempt oppervlak, voor secundaire panelen of verdiepte gebieden zoals codeblokken en tabelkoppen */
+  --toepassing-color-background-subtle-2: var(--rijkshuisstijl-color-grijs-100); /** Gedempt oppervlak, voor secundaire panelen of verdiepte gebieden zoals codeblokken en tabelkoppen */
+  --toepassing-color-badge-background: var(--toepassing-color-feedback-attention);
+  --toepassing-color-badge-text: var(--toepassing-color-text-inverse);
+  --toepassing-color-border-default: var(--rijkshuisstijl-color-grijs-500); /** Standaardranden voor invoervelden, kaarten en scheidingslijnen */
+  --toepassing-color-border-inverse: var(--rijkshuisstijl-color-grijs-200); /** Randen op color.*.inverse en donkere oppervlakken */
+  --toepassing-color-border-strong: var(--rijkshuisstijl-color-grijs-600); /** Randen met hoge nadruk; bijv. invoervelden of visuele groepering */
+  --toepassing-color-border-subtle: var(--rijkshuisstijl-color-grijs-200); /** Zachtere scheiding, bijv. tussen lijstitems of tabelrijen */
+  --toepassing-color-feedback-attention: var(--rijkshuisstijl-color-robijnrood-400);
+  --toepassing-color-feedback-error-border: var(--toepassing-color-feedback-error-default);
+  --toepassing-color-feedback-error-default: var(--rijkshuisstijl-color-rood-500);
+  --toepassing-color-feedback-error-emphasis: var(--rijkshuisstijl-color-rood-600);
+  --toepassing-color-feedback-error-icon: var(--toepassing-color-feedback-error-text);
+  --toepassing-color-feedback-error-subtle: var(--rijkshuisstijl-color-rood-50);
+  --toepassing-color-feedback-error-text: var(--rijkshuisstijl-color-rood-500);
+  --toepassing-color-feedback-favorite-hover: var(--rijkshuisstijl-color-robijnrood-500);
+  --toepassing-color-feedback-favorite-icon: var(--rijkshuisstijl-color-robijnrood-400);
+  --toepassing-color-feedback-info-border: var(--toepassing-color-feedback-info-default);
+  --toepassing-color-feedback-info-default: var(--rijkshuisstijl-color-hemelblauw-400);
+  --toepassing-color-feedback-info-emphasis: var(--rijkshuisstijl-color-hemelblauw-500);
+  --toepassing-color-feedback-info-icon: var(--toepassing-color-feedback-info-text);
+  --toepassing-color-feedback-info-subtle: var(--rijkshuisstijl-color-hemelblauw-50);
+  --toepassing-color-feedback-info-text: var(--rijkshuisstijl-color-hemelblauw-500);
+  --toepassing-color-feedback-neutral-border: var(--rijkshuisstijl-color-grijs-700);
+  --toepassing-color-feedback-neutral-default: var(--rijkshuisstijl-color-grijs-700);
+  --toepassing-color-feedback-neutral-emphasis: var(--rijkshuisstijl-color-neutraal-gebroken-zwart);
+  --toepassing-color-feedback-neutral-icon: var(--toepassing-color-feedback-neutral-text);
+  --toepassing-color-feedback-neutral-subtle: var(--rijkshuisstijl-color-grijs-100);
+  --toepassing-color-feedback-neutral-text: var(--toepassing-color-text-default);
+  --toepassing-color-feedback-success-border: var(--toepassing-color-feedback-success-default);
+  --toepassing-color-feedback-success-default: var(--rijkshuisstijl-color-groen-400);
+  --toepassing-color-feedback-success-emphasis: var(--rijkshuisstijl-color-groen-500);
+  --toepassing-color-feedback-success-icon: var(--toepassing-color-feedback-success-text);
+  --toepassing-color-feedback-success-subtle: var(--rijkshuisstijl-color-groen-50);
+  --toepassing-color-feedback-success-text: var(--rijkshuisstijl-color-groen-500);
+  --toepassing-color-feedback-warning-border: var(--toepassing-color-feedback-warning-default);
+  --toepassing-color-feedback-warning-default: var(--rijkshuisstijl-color-oranje-400);
+  --toepassing-color-feedback-warning-emphasis: var(--rijkshuisstijl-color-oranje-500);
+  --toepassing-color-feedback-warning-icon: var(--toepassing-color-feedback-warning-text);
+  --toepassing-color-feedback-warning-subtle: var(--rijkshuisstijl-color-oranje-50);
+  --toepassing-color-feedback-warning-text: var(--rijkshuisstijl-color-oranje-500);
+  --toepassing-color-footer-background: var(--rijkshuisstijl-color-grijs-700);
+  --toepassing-color-icon-default: var(--toepassing-color-text-default); /** Primaire iconen (gebruik color.interactive.* voor interactieve iconen) */
+  --toepassing-color-icon-inverse: var(--rijkshuisstijl-color-grijs-200); /** Iconen op color.*.inverse oppervlakken */
+  --toepassing-color-interactive-active-background: var(--toepassing-color-interactive-hover-background); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-active-border: var(--toepassing-color-interactive-hover-border); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-active-icon: var(--toepassing-color-interactive-hover-icon); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-active-text: var(--toepassing-color-interactive-hover-text); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-alternate-active-background: var(--rijkshuisstijl-color-grijs-300); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-alternate-active-border: var(--toepassing-color-interactive-alternate-active-background); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-alternate-active-icon: var(--toepassing-color-interactive-alternate-active-text); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-alternate-active-text: var(--toepassing-color-interactive-alternate-default-text); /** Staat terwijl element ingedrukt is */
+  --toepassing-color-interactive-alternate-default-background: var(--rijkshuisstijl-color-neutraal-transparent); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-alternate-default-icon: var(--toepassing-color-interactive-alternate-default-text); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-alternate-default-text: var(--toepassing-color-text-default); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-alternate-hover-background: var(--rijkshuisstijl-color-grijs-200); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-alternate-hover-border: var(--toepassing-color-interactive-alternate-hover-background); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-alternate-hover-icon: var(--toepassing-color-interactive-alternate-hover-text); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-alternate-hover-text: var(--toepassing-color-interactive-alternate-default-text); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-alternate-selected-background: var(--rijkshuisstijl-color-hemelblauw-50); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-alternate-selected-border: var(--toepassing-color-interactive-alternate-selected-background); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-alternate-selected-icon: var(--toepassing-color-interactive-alternate-selected-text); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-alternate-selected-text: var(--toepassing-color-interactive-selected-text); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-default-background: var(--toepassing-color-accent-default); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-default-border: var(--toepassing-color-interactive-default-background); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-default-icon: var(--toepassing-color-interactive-default-text); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-default-surface: var(--toepassing-color-background-default);
+  --toepassing-color-interactive-default-text: var(--rijkshuisstijl-color-lintblauw-500); /** Ruststaat van klikbaar/tikbaar element */
+  --toepassing-color-interactive-disabled-background: var(--rijkshuisstijl-color-grijs-200); /** Inactief element */
+  --toepassing-color-interactive-disabled-border: var(--toepassing-color-interactive-disabled-background); /** Inactief element */
+  --toepassing-color-interactive-disabled-text: var(--toepassing-color-text-disabled); /** Inactief element */
+  --toepassing-color-interactive-focus-background: var(--rijkshuisstijl-color-lintblauw-50); /** Bij toetsenbord-, spraak-, en switchfocus */
+  --toepassing-color-interactive-focus-outline-backing: var(--rijkshuisstijl-color-neutraal-wit); /** Bij toetsenbord-, spraak-, en switchfocus */
+  --toepassing-color-interactive-focus-outline: var(--rijkshuisstijl-color-lintblauw-600); /** Bij toetsenbord-, spraak-, en switchfocus */
+  --toepassing-color-interactive-hover-background: var(--rijkshuisstijl-color-lintblauw-600); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-hover-border: var(--toepassing-color-interactive-hover-background); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-hover-icon: var(--toepassing-color-interactive-hover-text); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-hover-text: var(--rijkshuisstijl-color-lintblauw-600); /** Staat bij aanwijzen met de muis */
+  --toepassing-color-interactive-selected-background: var(--rijkshuisstijl-color-hemelblauw-500); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-selected-border: var(--toepassing-color-interactive-selected-background); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-selected-icon: var(--toepassing-color-interactive-selected-text); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-selected-text: var(--rijkshuisstijl-color-lintblauw-600); /** Ingeschakeld, aangevinkt, actief element */
+  --toepassing-color-interactive-visited-text: var(--rijkshuisstijl-color-paars-500); /** Voor reeds bezochte (tekst-) links */
+  --toepassing-color-logo-background: var(--rijkshuisstijl-color-lintblauw-500);
+  --toepassing-color-role-authorized: var(--rijkshuisstijl-color-oranje-500);
+  --toepassing-color-role-business: var(--rijkshuisstijl-color-lintblauw-500);
+  --toepassing-color-role-private: var(--rijkshuisstijl-color-hemelblauw-500);
+  --toepassing-color-side-nav-background-hover: var(--rijkshuisstijl-color-grijs-200);
+  --toepassing-color-text-default: var(--rijkshuisstijl-color-neutraal-gebroken-zwart); /** Primaire brood- en koptekst */
+  --toepassing-color-text-disabled: var(--rijkshuisstijl-color-grijs-500); /** Niet-beschikbare tekst */
+  --toepassing-color-text-input-border-default: var(--toepassing-color-border-default);
+  --toepassing-color-text-inverse: var(--rijkshuisstijl-color-neutraal-wit); /** Tekst op color.background.inverse of op color.feedback.*.emphasis-oppervlakken */
+  --toepassing-color-text-subtle-1: var(--rijkshuisstijl-color-grijs-700); /** Secundaire tekst: beschrijvingen, hulptekst, bijschriften, tijdstempels */
+  --toepassing-color-text-subtle-2: var(--rijkshuisstijl-color-grijs-600); /** Tertiaire tekst: placeholders, metadata */
+  --toepassing-focus-outline-backing: 0 0 0 calc(var(--toepassing-focus-outline-offset-md) + var(--toepassing-border-width-lg)) var(--toepassing-color-interactive-focus-outline-backing); /** Witte ring achter de focus-dashes, leesbaar op elke achtergrond */
+  --toepassing-focus-outline-offset-lg: var(--rijkshuisstijl-space-4);
+  --toepassing-focus-outline-offset-md: var(--rijkshuisstijl-space-2);
+  --toepassing-focus-outline: var(--toepassing-border-width-lg) dashed var(--toepassing-color-interactive-focus-outline); /** Geblokte toetsenbordfocus: dashes met witte backing-ring (focus.outline-backing) */
+  --toepassing-motion-easing-default: ease;
+  --toepassing-motion-speed-fast: 0.2s;
+  --toepassing-motion-speed-slow: 0.8s;
+  --toepassing-opacity-interactive-disabled: .6;
+  --toepassing-page-max-inline-size: 71.25rem;
+  --toepassing-pointer-target-min-size: var(--toepassing-size-md);
+  --toepassing-size-2xl: var(--rijkshuisstijl-size-160);
+  --toepassing-size-2xs: var(--rijkshuisstijl-size-16);
+  --toepassing-size-3xs: var(--rijkshuisstijl-size-8);
+  --toepassing-size-4xs: var(--rijkshuisstijl-size-4);
+  --toepassing-size-5xs: var(--rijkshuisstijl-size-2);
+  --toepassing-size-icon-lg: var(--rijkshuisstijl-size-32);
+  --toepassing-size-icon-md: var(--rijkshuisstijl-size-24);
+  --toepassing-size-icon-sm: var(--rijkshuisstijl-size-16);
+  --toepassing-size-icon-xl: var(--rijkshuisstijl-size-48);
+  --toepassing-size-icon-xs: var(--rijkshuisstijl-size-12);
+  --toepassing-size-lg: var(--rijkshuisstijl-size-64);
+  --toepassing-size-logo-width: var(--rijkshuisstijl-size-48);
+  --toepassing-size-main-nav-nav-item-height: var(--rijkshuisstijl-size-40);
+  --toepassing-size-md: var(--rijkshuisstijl-size-48);
+  --toepassing-size-sm: var(--rijkshuisstijl-size-32);
+  --toepassing-size-subnav-width: 18rem;
+  --toepassing-size-xl: var(--rijkshuisstijl-size-96);
+  --toepassing-size-xs: var(--rijkshuisstijl-size-24);
+  --toepassing-space-2xl: var(--rijkshuisstijl-space-40);
+  --toepassing-space-2xs: var(--rijkshuisstijl-space-4);
+  --toepassing-space-3xl: var(--rijkshuisstijl-space-48);
+  --toepassing-space-3xs: var(--rijkshuisstijl-space-2);
+  --toepassing-space-4xl: var(--rijkshuisstijl-space-56);
+  --toepassing-space-4xs: var(--rijkshuisstijl-space-1);
+  --toepassing-space-5xl: var(--rijkshuisstijl-space-64);
+  --toepassing-space-card-padding: var(--toepassing-space-padding-xl);
+  --toepassing-space-layout-2xs: var(--toepassing-space-margin-2xs);
+  --toepassing-space-layout-3xs: var(--toepassing-space-margin-3xs);
+  --toepassing-space-layout-lg: var(--toepassing-space-margin-lg);
+  --toepassing-space-layout-md: var(--toepassing-space-margin-md);
+  --toepassing-space-layout-sm: var(--toepassing-space-margin-sm);
+  --toepassing-space-layout-xs: var(--toepassing-space-margin-xs);
+  --toepassing-space-lg: var(--rijkshuisstijl-space-24);
+  --toepassing-space-margin-2xs: var(--toepassing-space-xs);
+  --toepassing-space-margin-3xs: var(--toepassing-space-2xs);
+  --toepassing-space-margin-lg: var(--toepassing-space-2xl);
+  --toepassing-space-margin-md: var(--toepassing-space-xl);
+  --toepassing-space-margin-sm: var(--toepassing-space-lg);
+  --toepassing-space-margin-xs: var(--toepassing-space-md);
+  --toepassing-space-md: var(--rijkshuisstijl-space-16);
+  --toepassing-space-padding-2xl: var(--toepassing-space-2xl);
+  --toepassing-space-padding-2xs: var(--toepassing-space-2xs);
+  --toepassing-space-padding-lg: var(--toepassing-space-lg);
+  --toepassing-space-padding-md: var(--toepassing-space-md);
+  --toepassing-space-padding-sm: var(--toepassing-space-sm);
+  --toepassing-space-padding-xl: var(--toepassing-space-xl);
+  --toepassing-space-padding-xs: var(--toepassing-space-xs);
+  --toepassing-space-sm: var(--rijkshuisstijl-space-12);
+  --toepassing-space-xl: var(--rijkshuisstijl-space-32);
+  --toepassing-space-xs: var(--rijkshuisstijl-space-8);
+  --toepassing-text-badge: var(--toepassing-text-font-weight-semi-bold) var(--toepassing-text-size-body-2xs)/var(--rijkshuisstijl-text-line-height-md) var(--toepassing-text-font-family-body);
+  --toepassing-text-code: var(--toepassing-text-font-weight-semi-bold) var(--toepassing-text-size-body-sm) var(--rijkshuisstijl-text-font-family-monospace);
+  --toepassing-text-decoration-hyperlink: underline solid currentcolor var(--toepassing-border-width-xs);
+  --toepassing-text-font-family-body: var(--rijkshuisstijl-text-font-family-default);
+  --toepassing-text-font-weight-bold: var(--rijkshuisstijl-text-weight-bold);
+  --toepassing-text-font-weight-regular: var(--rijkshuisstijl-text-weight-default);
+  --toepassing-text-font-weight-semi-bold: var(--rijkshuisstijl-text-weight-semibold);
+  --toepassing-text-heading-h1: var(--toepassing-text-font-weight-regular) var(--toepassing-text-size-title-3xl)/var(--rijkshuisstijl-text-line-height-lg) var(--toepassing-text-font-family-body);
+  --toepassing-text-heading-h2: var(--toepassing-text-font-weight-regular) var(--toepassing-text-size-title-2xl)/var(--rijkshuisstijl-text-line-height-lg) var(--toepassing-text-font-family-body);
+  --toepassing-text-heading-h3: var(--toepassing-text-font-weight-regular) var(--toepassing-text-size-title-xl)/var(--rijkshuisstijl-text-line-height-lg) var(--toepassing-text-font-family-body);
+  --toepassing-text-heading-h4: var(--toepassing-text-font-weight-regular) var(--toepassing-text-size-title-lg)/var(--rijkshuisstijl-text-line-height-lg) var(--toepassing-text-font-family-body);
+  --toepassing-text-heading-h5: var(--toepassing-text-font-weight-semi-bold) var(--toepassing-text-size-title-md)/var(--rijkshuisstijl-text-line-height-lg) var(--toepassing-text-font-family-body);
+  --toepassing-text-heading-h6: var(--toepassing-text-font-weight-semi-bold) var(--toepassing-text-size-title-sm)/var(--rijkshuisstijl-text-line-height-lg) var(--toepassing-text-font-family-body);
+  --toepassing-text-input-digits: var(--toepassing-text-font-weight-semi-bold) var(--rijkshuisstijl-text-font-size-sm) var(--rijkshuisstijl-text-font-family-monospace);
+  --toepassing-text-label: var(--rijkshuisstijl-text-weight-semibold) var(--toepassing-text-size-body-md)/var(--rijkshuisstijl-text-line-height-sm) var(--toepassing-text-font-family-body);
+  --toepassing-text-nav-footer: var(--toepassing-text-font-weight-regular) var(--toepassing-text-size-body-sm)/var(--rijkshuisstijl-text-line-height-sm) var(--rijkshuisstijl-text-font-family-default);
+  --toepassing-text-nav-main-nav: var(--toepassing-text-font-weight-semi-bold) var(--toepassing-text-size-title-xl) var(--rijkshuisstijl-text-font-family-default);
+  --toepassing-text-nav-side-nav: var(--toepassing-text-font-weight-regular) var(--toepassing-text-size-body-md)/var(--rijkshuisstijl-text-line-height-md) var(--rijkshuisstijl-text-font-family-default);
+  --toepassing-text-paragraph-default: var(--rijkshuisstijl-text-weight-default) var(--toepassing-text-size-body-md)/var(--rijkshuisstijl-text-line-height-sm) var(--toepassing-text-font-family-body);
+  --toepassing-text-paragraph-intro: var(--rijkshuisstijl-text-weight-default) var(--toepassing-text-size-body-lg)/var(--rijkshuisstijl-text-line-height-sm) var(--toepassing-text-font-family-body);
+  --toepassing-text-size-body-2xs: var(--rijkshuisstijl-text-font-size-2xs);
+  --toepassing-text-size-body-lg: var(--rijkshuisstijl-text-font-size-lg);
+  --toepassing-text-size-body-md: var(--rijkshuisstijl-text-font-size-md);
+  --toepassing-text-size-body-sm: var(--rijkshuisstijl-text-font-size-sm);
+  --toepassing-text-size-body-xs: var(--rijkshuisstijl-text-font-size-xs);
+  --toepassing-text-size-title-2xl: var(--rijkshuisstijl-text-font-size-3xl);
+  --toepassing-text-size-title-3xl: var(--rijkshuisstijl-text-font-size-4xl);
+  --toepassing-text-size-title-lg: var(--rijkshuisstijl-text-font-size-xl);
+  --toepassing-text-size-title-md: var(--rijkshuisstijl-text-font-size-lg);
+  --toepassing-text-size-title-sm: var(--rijkshuisstijl-text-font-size-md);
+  --toepassing-text-size-title-xl: var(--rijkshuisstijl-text-font-size-2xl);
+  --toepassing-text-smalltext: var(--rijkshuisstijl-text-weight-default) var(--toepassing-text-size-body-sm)/var(--rijkshuisstijl-text-line-height-sm) var(--toepassing-text-font-family-body);
+  --toepassing-transition-default: background var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default), border var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default), color var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default), text-decoration var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default); /** Standaard transitie die toegepast wordt op meerdere CSS properties */
+  --toepassing-transition-opacity: opacity var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default); /** Transitie die toegepast wordt op opacity */
+  --toepassing-transition-transform: transform var(--toepassing-motion-speed-fast) var(--toepassing-motion-easing-default); /** Transitie die toegepast wordt op transform */
+}

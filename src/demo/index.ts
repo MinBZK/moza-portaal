@@ -29,6 +29,7 @@ export {
   getDemoBerichten,
   getDemoBerichtById,
   type DemoBericht,
+  type DemoBerichtActie,
 } from "./berichten";
 export {
   getDemoVerwerkingen,

@@ -217,9 +217,7 @@ const Chat = ({
     );
 
   const toonDenken = (tekst: string) => setDenkt(tekst);
-  const verbergDenken = () => {
-    if (!leesAssistentInstellingen().bevriesDenken) setDenkt(null);
-  };
+  const verbergDenken = () => setDenkt(null);
 
   /** Eerst kort "denken", daarna pas iets zeggen. */
   const naWachten = useCallback((klaar: () => void, duur = WACHT_KORT) => {

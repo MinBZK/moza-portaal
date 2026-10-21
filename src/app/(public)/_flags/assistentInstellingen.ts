@@ -13,8 +13,6 @@ export type AssistentInstellingen = {
   transport: "mcp" | "cli";
   /** null = niet gekozen; dan bepaalt de pagina de standaard. */
   demoModus: boolean | null;
-  /** Houdt de wachtindicator in beeld, om de animatie te kunnen aanpassen. */
-  bevriesDenken: boolean;
   /** KVK-nummer dat het nummer van de persona overschrijft. */
   testKvk: string;
   vlamSleutel: string;
@@ -25,7 +23,6 @@ const SLEUTELS: Record<keyof AssistentInstellingen, string> = {
   llm: "setting:llm",
   transport: "setting:transport",
   demoModus: "setting:demo-mode",
-  bevriesDenken: "setting:freeze-thinking",
   testKvk: "setting:test-user-kvk",
   vlamSleutel: "setting:vlam-api-key",
   claudeSleutel: "setting:claude-api-key",
@@ -46,7 +43,6 @@ const SERVER: AssistentInstellingen = {
   llm: "claude",
   transport: "mcp",
   demoModus: null,
-  bevriesDenken: false,
   testKvk: "",
   vlamSleutel: "",
   claudeSleutel: "",
@@ -60,7 +56,6 @@ const getSnapshot = (): AssistentInstellingen => {
     llm: lees(SLEUTELS.llm) === "vlam" ? "vlam" : "claude",
     transport: lees(SLEUTELS.transport) === "cli" ? "cli" : "mcp",
     demoModus: demo === null ? null : demo === "true",
-    bevriesDenken: lees(SLEUTELS.bevriesDenken) === "true",
     testKvk: lees(SLEUTELS.testKvk) ?? "",
     vlamSleutel: lees(SLEUTELS.vlamSleutel) ?? "",
     claudeSleutel: lees(SLEUTELS.claudeSleutel) ?? "",
