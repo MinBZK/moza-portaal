@@ -12,6 +12,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemenRegeling, DemoAannemenTrace } from "@/demo";
+import NumberInput from "@/components/NumberInput";
 import Balans from "./_balans";
 import {
   DOELGROEPEN,
@@ -21,53 +22,9 @@ import {
   type Antwoorden,
 } from "./_useAannemen";
 
-const Slider = ({
-  id,
-  label,
-  min,
-  max,
-  step,
-  value,
-  eenheid,
-  hulp,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  min: number;
-  max: number;
-  step: number;
-  value: number;
-  eenheid: string;
-  hulp?: string;
-  onChange: (v: number) => void;
-}) => (
-  <div className="mox-hiring-slider">
-    <label className="utrecht-form-label" htmlFor={id}>
-      {label}
-    </label>
-    <div className="mox-hiring-slider-row">
-      <input
-        id={id}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        aria-valuetext={`${value} ${eenheid}`}
-        onChange={(event) => onChange(Number(event.target.value))}
-      />
-      <output htmlFor={id} className="mox-hiring-slider-value">
-        {value} {eenheid}
-      </output>
-    </div>
-    {hulp && <Paragraph className="mox-hiring-note">{hulp}</Paragraph>}
-  </div>
-);
-
 /**
- * Scherm 1: drie korte vragen met sliders, en rechts live wat het kost en
- * oplevert. De berekening blijft op het scherm; er gaat niets naar een
+ * Scherm 1: drie korte vragen met getalvelden, en rechts live wat de
+ * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
 const Vragen = ({
@@ -109,15 +66,16 @@ const Vragen = ({
               />
             ))}
           </Fieldset>
-          <Slider
-            id="uren"
+          <NumberInput
             label="2. Hoeveel uur per week gaat de kandidaat werken?"
             min={8}
             max={40}
             step={1}
             value={a.uren}
-            eenheid="uur"
-            onChange={(uren) => zet({ uren })}
+            onChange={(event) => {
+              const uren = Number(event.target.value);
+              if (uren >= 8 && uren <= 40) zet({ uren });
+            }}
           />
           <Fieldset legend="3. Kan de kandidaat het werk zelfstandig doen tegen het minimumloon?">
             {ZELFSTANDIG.map(([waarde, label]) => (
@@ -132,17 +90,23 @@ const Vragen = ({
             ))}
           </Fieldset>
           {a.zelfstandig !== "ja" && (
-            <Slider
-              id="loonwaarde"
-              label="Geschatte loonwaarde"
-              min={30}
-              max={90}
-              step={5}
-              value={a.loonwaarde}
-              eenheid="procent"
-              hulp="Hoeveel iemand kan in vergelijking met een collega zonder beperking. De gemeente meet dit later op de werkplek."
-              onChange={(loonwaarde) => zet({ loonwaarde })}
-            />
+            <div>
+              <NumberInput
+                label="Geschatte loonwaarde, in procent"
+                min={30}
+                max={90}
+                step={5}
+                value={a.loonwaarde}
+                onChange={(event) => {
+                  const loonwaarde = Number(event.target.value);
+                  if (loonwaarde >= 30 && loonwaarde <= 90) zet({ loonwaarde });
+                }}
+              />
+              <Paragraph className="mox-hiring-note">
+                Hoeveel iemand kan in vergelijking met een collega zonder
+                beperking. De gemeente meet dit later op de werkplek.
+              </Paragraph>
+            </div>
           )}
           {anders && (
             <Alert type="info">

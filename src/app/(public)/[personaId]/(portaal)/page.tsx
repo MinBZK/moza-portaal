@@ -2,18 +2,21 @@ import Link from "next/link";
 import {
   AccordionProvider,
   ActionGroup,
+  Alert,
   Heading,
   Paragraph,
 } from "@/components/rhc";
 import {
   getDemoBerichten,
-  getDemoIemandAannemen,
+  getDemoConceptAanvragen,
   getDemoPersona,
   getDemoSubsidies,
   getDemoWetten,
 } from "@/demo";
-import { getIngelogdeNaam } from "@/app/(public)/_persona";
-import { datumNL } from "./personeel/iemand-aannemen/_werkgever";
+import { getIngelogdeNaam, getKetenAccount } from "@/app/(public)/_persona";
+import { getKetenStatus } from "@/network/keten";
+import { stelselTekst } from "./berichtenbox/_lijstPagina";
+import BewaardeAanvragen from "./lopendezaken/_bewaardeAanvragen";
 import RecenteBerichten from "./_recenteBerichten";
 
 const vragen = [
@@ -40,54 +43,35 @@ const HomePage = async ({
   params: Promise<{ personaId: string }>;
 }) => {
   const persona = await getDemoPersona((await params).personaId);
-  const [berichten, subsidies, wetten, naam, aannemen] = await Promise.all([
-    getDemoBerichten(persona?.id),
-    getDemoSubsidies(persona?.homepageSubsidies),
-    getDemoWetten(persona?.homepageRegelgeving),
-    getIngelogdeNaam(persona),
-    getDemoIemandAannemen(),
-  ]);
-  const { kandidaat } = aannemen;
+  const [berichten, subsidies, wetten, naam, keten, concepten] =
+    await Promise.all([
+      getDemoBerichten(persona?.id),
+      getDemoSubsidies(persona?.homepageSubsidies),
+      getDemoWetten(persona?.homepageRegelgeving),
+      getIngelogdeNaam(persona),
+      getKetenAccount().then(getKetenStatus),
+      getDemoConceptAanvragen(persona?.id),
+    ]);
 
   return (
     <>
+      <BewaardeAanvragen aanvragen={concepten} />
       <Heading level={1}>Welkom {naam}</Heading>
-
-      <section
-        className="mox-card mox-nudge"
-        aria-labelledby="home-iemand-aannemen"
-      >
-        <Heading level={2} id="home-iemand-aannemen">
-          Iemand aannemen met een afstand tot de arbeidsmarkt
-        </Heading>
-        <Paragraph>
-          {kandidaat.voornaam} {kandidaat.achternaam} gaf op{" "}
-          {datumNL(kandidaat.toestemmingOp)} toestemming om zijn gegevens op te
-          halen. Wij vullen de aanvraag voor loonkostensubsidie en de andere
-          regelingen voor u in met wat de overheid al weet. U controleert en
-          dient zelf in.
-        </Paragraph>
-        <ActionGroup>
-          <Link
-            href="/personeel/iemand-aannemen"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-          >
-            Aanvraag laten invullen
-          </Link>
-          <Link
-            href="/personeel/iemand-aannemen"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Eerst zien wat dit voor u betekent
-          </Link>
-        </ActionGroup>
-      </section>
 
       <section className="mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">
           Recente berichten
         </Heading>
-        <RecenteBerichten berichten={berichten} />
+        {keten.soort === "demo" || keten.soort === "keten" ? (
+          <RecenteBerichten
+            berichten={keten.soort === "demo" ? berichten : []}
+            ontvanger={keten.soort === "keten" ? keten.ontvanger : null}
+          />
+        ) : (
+          <Alert type="error">
+            <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+          </Alert>
+        )}
         <ActionGroup>
           <Link
             href="/berichtenbox"

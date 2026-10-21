@@ -49,6 +49,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
     margin-block-start: var(--rhc-space-md);
   }
 
+  [type="number"] {
+    inline-size: fit-content;
+    max-inline-size: fit-content;
+  }
+
   /* ==== 4. Layout ============================================================= */
 
   /* --- Pagina --- */
@@ -542,6 +547,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
   .mox-table-container {
     overflow-x: auto;
     position: relative;
+
+    .utrecht-link {
+      white-space: nowrap;
+    }
   }
 
   /* --- Tabs --- */
@@ -1181,12 +1190,13 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
   /* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
   .mox-action-required {
-    align-items: center;
+    align-items: baseline;
     display: inline-flex;
     gap: var(--rhc-space-sm);
 
     .utrecht-icon {
       color: var(--rhc-color-oranje-500);
+      margin-block-start: var(--rhc-space-2xs);
     }
   }
 
@@ -1272,11 +1282,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 /* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
    regelingkaarten en de tijdlijn van vastleggingen. */
 .mox-theme {
-  /* Home: de ene actie die klaarstaat, bovenaan en met een accent. */
-  .mox-nudge {
-    border-inline-start: 4px solid var(--rhc-color-lintblauw-500);
-  }
-
   .mox-hiring-steps {
     display: flex;
     flex-wrap: wrap;
@@ -1432,32 +1437,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
     max-inline-size: 100%;
   }
 
-  /* Eerste scherm: sliders, kostenbalans en de aanvraag met panelen. */
+  /* Eerste scherm: getalvelden, balans en de aanvraag met panelen. */
   .mox-hiring-note {
     color: var(--rhc-color-grey-80, #555);
     font-size: var(--rhc-font-size-sm, 0.875rem);
-  }
-
-  .mox-hiring-slider {
-    display: grid;
-    gap: 0.25rem;
-  }
-
-  .mox-hiring-slider-row {
-    align-items: center;
-    display: flex;
-    gap: 1rem;
-  }
-
-  .mox-hiring-slider input[type="range"] {
-    accent-color: var(--rhc-color-blue-80, #01689b);
-    inline-size: 100%;
-    max-inline-size: 28rem;
-  }
-
-  .mox-hiring-slider-value {
-    font-weight: 700;
-    min-inline-size: 6rem;
   }
 
   .mox-hiring-balance {

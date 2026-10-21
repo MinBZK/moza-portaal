@@ -18,9 +18,12 @@ export {
   type DemoOnderdeelLink,
 } from "./onderneming";
 export {
+  getDemoConceptAanvraagById,
+  getDemoConceptAanvragen,
   getDemoZaakById,
   getDemoZaken,
   getDemoZakenVragen,
+  type DemoConceptAanvraag,
   type DemoZaak,
   type DemoZaakStap,
 } from "./zaken";

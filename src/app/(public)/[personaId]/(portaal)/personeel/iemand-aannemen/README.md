@@ -15,8 +15,8 @@ actor en wetsgrond staat in `verhaallijn-koen-v1.md` (in deze map).
 | Pad | Wat de deelnemer doet |
 |---|---|
 | `/personeel` | Start "Iemand aannemen"; na het indienen staat de zaak hier |
-| `/personeel/iemand-aannemen` | Drie korte vragen (wie, uren als slider, zelfstandig met loonwaarde-slider); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie en loonkostenvoordeel uit de engine; de overige regelingen; "Aanvraag laten invullen" |
-| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat (Koen, met toestemming), per bron (UWV, gemeente, KVK, Belastingdienst, eigen opgave) de gegevens, de datum en de wetsvraag; vinkje per bron |
+| `/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt` | De bewaarde aanvraag (melding op home en Lopende zaken, blok "Nog in te dienen aanvragen"): organisatie, tijdsduur, "antwoorden van Ondernemersplein overgenomen"; daaronder drie korte vragen (wie, uren en loonwaarde als getalveld, zelfstandig); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie en loonkostenvoordeel uit de engine; de overige regelingen; "Aanvraag laten invullen". `/personeel/iemand-aannemen` verwijst hierheen |
+| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat kiezen (Koen, met toestemming) of toevoegen (wacht op toestemming), per organisatie (UWV, gemeente, KVK, Belastingdienst, eigen opgave) een accordeon met de gegevens als vraag en antwoord, de datum en de wetsvraag; vinkje per organisatie, standaard aan |
 | `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag: per regeling een paneel met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing), "Ik heb dit gecontroleerd"; Gecontroleerd n van 6; rechts "Wat dit u oplevert" live |
 | `/personeel/iemand-aannemen/indienen` | Controleren en indienen: wat naar de gemeente gaat, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
 | `/personeel/iemand-aannemen/verstuurd` | Bevestiging, link naar de zaak |
