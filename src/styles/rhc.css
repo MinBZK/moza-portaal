@@ -381,6 +381,41 @@ body {
   }
 }
 
+/* --- Schuifregelaar --- */
+
+/* RangeSlider: label en gekozen waarde op één regel, grenzen eronder. */
+.rhc-theme.mox-theme {
+  .rhc-range-slider__header {
+    align-items: baseline;
+    display: flex;
+    gap: var(--rhc-space-md);
+    justify-content: space-between;
+  }
+
+  .rhc-range-slider__value {
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+
+  .rhc-range-slider__input {
+    accent-color: var(--rhc-color-lintblauw-500);
+    block-size: var(--rhc-space-2xl);
+    inline-size: 100%;
+    margin: 0;
+
+    &:focus-visible {
+      outline: var(--utrecht-focus-outline-width, 2px) var(--utrecht-focus-outline-style, solid) var(--utrecht-focus-outline-color, currentcolor);
+      outline-offset: var(--utrecht-focus-outline-offset, 2px);
+    }
+  }
+
+  .rhc-range-slider__limits {
+    color: var(--rhc-color-foreground-subtle);
+    display: flex;
+    font-size: var(--rhc-text-font-size-sm);
+    justify-content: space-between;
+  }
+}
+
 /* --- Paginering --- */
 
 .rhc-theme.mox-theme {
