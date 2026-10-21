@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Heading, Paragraph } from "@rijkshuisstijl-community/components-react";
+import type { BerichtenboxVariant } from "@/app/(private)/instellingen/_featureFlags";
 import type { DemoBericht } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "./_berichtDetail";
@@ -12,9 +13,11 @@ import { useNieuweBerichten } from "./_demoSimulatie";
 const NieuwBericht = ({
   berichtId,
   berichten,
+  variant,
 }: {
   berichtId: string;
   berichten: DemoBericht[];
+  variant: BerichtenboxVariant;
 }) => {
   const nieuwe = useNieuweBerichten();
   if (nieuwe === null)
@@ -44,8 +47,13 @@ const NieuwBericht = ({
         pad={`/berichtenbox/${bericht.id}`}
         label={bericht.onderwerp}
       />
-      <BerichtDetail berichten={berichten} berichtId={bericht.id}>
-        <DemoBerichtInhoud bericht={bericht} />
+      {/* De lijst van de server kent dit bericht niet; zonder het nieuwe bericht
+          erbij weet BerichtDetail niet of het (on)gelezen is. */}
+      <BerichtDetail
+        berichten={[...nieuwe, ...berichten]}
+        berichtId={bericht.id}
+      >
+        <DemoBerichtInhoud bericht={bericht} variant={variant} />
       </BerichtDetail>
     </>
   );

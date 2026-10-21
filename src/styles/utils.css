@@ -22,7 +22,7 @@
 	button {
 		background-color: var(--rhc-color-wit);
 		opacity: 0;
-		transition: opacity 0.2s;
+		transition: opacity 0.2s ease-in-out;
 	}
 
 	/* De knoppen zijn onzichtbaar tot je over dit vlak beweegt, of er met Tab

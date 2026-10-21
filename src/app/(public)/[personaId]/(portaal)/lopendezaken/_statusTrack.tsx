@@ -7,6 +7,8 @@ import {
   Paragraph,
   VisuallyHidden,
 } from "@/components/rhc";
+import { CalendarIcon } from "@/components/icons/calendarIcon";
+import { CheckIcon } from "@/components/icons/checkIcon";
 import type { DemoZaakStap } from "@/demo";
 
 const voorvoegsel: Record<DemoZaakStap["soort"], string> = {
@@ -20,11 +22,19 @@ const voorvoegsel: Record<DemoZaakStap["soort"], string> = {
 /** Voortgang van een zaak als genummerde stappen, zoals in moza-poc. */
 const StatusTrack = ({ stappen }: { stappen: DemoZaakStap[] }) => (
   <ol className="mox-status-track">
-    {stappen.map((stap) => (
+    {stappen.map((stap, index) => (
       <li
         key={stap.titel}
         aria-current={stap.soort === "huidig" ? "step" : undefined}
       >
+        {/* Alleen beeld: de soort stap staat al in de verborgen tekst. */}
+        <span className="mox-status-marker" aria-hidden="true">
+          {stap.soort === "voltooid" || stap.soort === "afgerond" ? (
+            <CheckIcon />
+          ) : (
+            index + 1
+          )}
+        </span>
         <details open={stap.open}>
           <summary>
             <VisuallyHidden>{voorvoegsel[stap.soort]}</VisuallyHidden>
@@ -34,7 +44,7 @@ const StatusTrack = ({ stappen }: { stappen: DemoZaakStap[] }) => (
           <div className="mox-status-details">
             {stap.datum && (
               <Paragraph className="mox-status-date">
-                <Icon icon="kalender" />
+                <CalendarIcon />
                 {stap.datum}
               </Paragraph>
             )}

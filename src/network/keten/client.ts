@@ -207,12 +207,18 @@ export const haalOp = async (
   }
 };
 
-/** De inhoud en bijlagen van één bericht. */
-export const haalInhoud = async (berichtId: string): Promise<KetenInhoud> => {
+/**
+ * De inhoud en bijlagen van één bericht. Het stelsel wil weten bij welk
+ * magazijn het bericht staat (magazijnId), net als bij wijzigen.
+ */
+export const haalInhoud = async (
+  berichtId: string,
+  magazijnId: string,
+): Promise<KetenInhoud> => {
   let antwoord: Response;
   try {
     antwoord = await metLimiet(
-      `${BASIS}/${encodeURIComponent(berichtId)}`,
+      `${BASIS}/${encodeURIComponent(berichtId)}?magazijnId=${encodeURIComponent(magazijnId)}`,
       {},
       INHOUD_LIMIET_MS,
     );
@@ -232,8 +238,12 @@ export const haalInhoud = async (berichtId: string): Promise<KetenInhoud> => {
   };
 };
 
-export const bijlageAdres = (berichtId: string, bijlageId: string) =>
-  `${BASIS}/${encodeURIComponent(berichtId)}/bijlagen/${encodeURIComponent(bijlageId)}`;
+export const bijlageAdres = (
+  berichtId: string,
+  bijlageId: string,
+  magazijnId: string,
+) =>
+  `${BASIS}/${encodeURIComponent(berichtId)}/bijlagen/${encodeURIComponent(bijlageId)}?magazijnId=${encodeURIComponent(magazijnId)}`;
 
 const wijzig = async (
   berichtId: string,

@@ -11,7 +11,8 @@ Moza Portaal is een Nederlands overheidsportaal gebouwd met Next.js, React en Ty
 - Gebruik `src/layouts/` voor gedeelde onderdelen zoals header, footer, navigatie en breadcrumb.
 - Gebruik `src/network/` voor API-clients, fetchers, gegenereerde types en React Query-hooks.
 - Gebruik `src/utils/` voor algemene hulpfuncties.
-- Gebruik `src/styles/` voor globale styling, design tokens, fonts en iconen.
+- Gebruik `src/styles/` voor globale styling, design tokens en fonts.
+- Gebruik de iconen van RHC (`<Icon icon="…" />`). Ontbreekt er een, maak dan een component in `src/components/icons/`.
 
 ## React en Next.js
 

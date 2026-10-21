@@ -30,7 +30,9 @@ const BerichtRij = ({
   /** Extra cellen achteraan, zoals acties. */
   children?: ReactNode;
 }) => (
-  <TableRow className={nieuw ? "rhc-row-new" : undefined}>
+  // De link van het onderwerp beslaat de hele rij (rhc-row-linked): klikken op
+  // afzender of datum opent ook het bericht, met maar één link per bericht.
+  <TableRow className={`rhc-row-linked${nieuw ? " rhc-row-new" : ""}`}>
     <TableCell>
       <button
         type="button"
@@ -56,7 +58,7 @@ const BerichtRij = ({
     <TableCell>
       <Link
         href={`/berichtenbox/${bericht.id}`}
-        className={`utrecht-link utrecht-link--html-a ${ongelezen ? "mox-unread" : ""}`}
+        className={`utrecht-link utrecht-link--html-a rhc-row-linked__link ${ongelezen ? "mox-unread" : ""}`}
       >
         {bericht.onderwerp}
       </Link>

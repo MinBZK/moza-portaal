@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   Button,
   Drawer,
@@ -8,6 +14,9 @@ import {
 } from "@rijkshuisstijl-community/components-react";
 
 const OPEN_EVENT = "prototype:open-side-overlay";
+
+/** Even lang als de transition van dialog in globals.css. */
+const SCHUIF_MS = 300;
 
 /** Opent het paneel met dit id, net als de sneltoets. */
 export const openSideOverlay = (id: string) =>
@@ -27,6 +36,29 @@ const SideOverlay = ({
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const sluitendRef = useRef(false);
+
+  /**
+   * Eerst de dialog zelf sluiten, zodat hij naar rechts wegschuift; daarna
+   * pas uit de DOM. Bij "minder beweging" meteen.
+   */
+  const close = useCallback(() => {
+    if (sluitendRef.current) return;
+    sluitendRef.current = true;
+    dialogRef.current?.close();
+    const rustig = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    setTimeout(
+      () => {
+        sluitendRef.current = false;
+        setOpen(false);
+        requestAnimationFrame(() => returnFocusRef.current?.focus());
+      },
+      rustig ? 0 : SCHUIF_MS,
+    );
+  }, []);
   const titleId = `${id}-title`;
 
   useEffect(() => {
@@ -49,8 +81,7 @@ const SideOverlay = ({
           document.getElementById(id)?.closest("dialog[open]") === activeDialog
         ) {
           event.preventDefault();
-          setOpen(false);
-          requestAnimationFrame(() => returnFocusRef.current?.focus());
+          close();
         }
         return;
       }
@@ -90,21 +121,17 @@ const SideOverlay = ({
       document.removeEventListener("keydown", handleShortcut);
       window.removeEventListener(OPEN_EVENT, handleOpen);
     };
-  }, [id, shortcut]);
+  }, [id, shortcut, close]);
 
   useEffect(() => {
     if (open) requestAnimationFrame(() => closeButtonRef.current?.focus());
   }, [open]);
 
-  const close = () => {
-    setOpen(false);
-    requestAnimationFrame(() => returnFocusRef.current?.focus());
-  };
-
   return (
     <>
       {open && (
         <Drawer
+          ref={dialogRef}
           align="inline-end"
           className="prototype-side-overlay"
           modal
