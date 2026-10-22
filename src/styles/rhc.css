@@ -163,7 +163,7 @@ body {
 .rhc-form-field {
   display: flex;
   flex-direction: column;
-  gap: var(--rhc-space-3xs);
+  gap: var(--rhc-space-2xs);
 }
 
 /* Show the parts in DOM order. Utrecht gives them an order (label 1, error
@@ -1416,6 +1416,271 @@ body {
     text-align: start;
     text-decoration: none;
   }
+}
+
+/* --- Bar graph --- */
+/* BarGraph: label, bar and value per row. The bar is only visual; the
+  value is always there as text. */
+.rhc-mox-bar-graph {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__title {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+.rhc-mox-bar-graph__list {
+  display: grid;
+  gap: var(--rhc-space-sm);
+  grid-template-columns: minmax(auto, 12rem) 1fr;
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__item {
+  /* Here and not on the bar: the patterns of the variants use it. */
+  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
+
+  align-items: baseline;
+  display: grid;
+  gap: var(--rhc-space-md);
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+.rhc-mox-bar-graph__value {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__bar {
+  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
+  background-image: var(--rhc-bar-graph-pattern, none);
+  block-size: var(--rhc-space-lg);
+  border-radius: var(--rhc-border-radius-round);
+  /* At least a sliver, so a value of 0 still shows where the bar starts. */
+  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+}
+
+/* Variants: neutral (blue, plain), positive (green, diagonal stripes) and
+  negative (red, cross-hatched). The pattern tells them apart without colour,
+  for example for colour blindness or in grayscale. */
+.rhc-mox-bar-graph__item--positive {
+  --rhc-bar-graph-color: var(--rhc-color-groen-400);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+}
+
+.rhc-mox-bar-graph__item--negative {
+  --rhc-bar-graph-color: var(--rhc-color-rood-500);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+}
+
+/* --- Step indicator --- */
+/* StepIndicator: numbered steps in a row; done, current and still to do. */
+.rhc-mox-step-indicator {
+  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
+
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-step-indicator__count {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  margin: 0;
+}
+
+.rhc-mox-step-indicator__list {
+  display: flex;
+  gap: var(--rhc-space-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rhc-mox-step-indicator__step {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-step-indicator__marker {
+  block-size: var(--rhc-step-indicator-size);
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
+  border-radius: var(--rhc-border-radius-round);
+  display: grid;
+  flex-shrink: 0;
+  font-weight: var(--rhc-text-font-weight-bold);
+  inline-size: var(--rhc-step-indicator-size);
+  line-height: 1;
+  place-items: center;
+
+  .utrecht-icon {
+    block-size: 60%;
+    inline-size: 60%;
+  }
+}
+
+.rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
+  background-color: var(--rhc-color-groen-600);
+  border-color: var(--rhc-color-groen-600);
+  color: var(--rhc-color-wit);
+}
+
+.rhc-mox-step-indicator__step--current {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+
+  .rhc-mox-step-indicator__marker {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-color: var(--rhc-color-lintblauw-500);
+    color: var(--rhc-color-wit);
+  }
+}
+
+/* Narrow screen: only "Stap 2 van 4" and the current step. */
+@media (width < 768px) {
+  .rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
+    display: none;
+  }
+}
+
+/* --- Sticky info box --- */
+/* StickyInfoBox: stays in view while the page scrolls; on a narrow screen
+  it scrolls along. */
+.rhc-mox-sticky-info-box {
+  align-self: start;
+  background-color: var(--rhc-color-hemelblauw-50);
+  display: grid;
+  gap: var(--rhc-space-md);
+  inset-block-start: var(--rhc-space-xl);
+  padding: var(--rhc-space-xl);
+  position: sticky;
+
+  @media (width < 768px) {
+    position: static;
+  }
+}
+
+/* --- Switch --- */
+/* Switch: role="switch". The knob moves and the text "Aan"/"Uit" changes,
+  so the state is not shown by colour alone. */
+.rhc-mox-switch {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-switch__button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: var(--rhc-space-sm);
+  min-block-size: 44px;
+  padding: 0;
+
+  &:focus-visible {
+    border-radius: var(--rhc-border-radius-sm);
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: var(--utrecht-focus-outline-offset);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  block-size: 1.5rem;
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-500);
+  border-radius: var(--rhc-border-radius-round);
+  box-sizing: border-box;
+  display: inline-flex;
+  inline-size: 2.75rem;
+  padding: var(--rhc-space-2xs);
+}
+
+.rhc-mox-switch__thumb {
+  aspect-ratio: 1;
+  background-color: var(--rhc-color-cool-grey-500);
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+}
+
+.rhc-mox-switch__button[aria-checked="true"] {
+  .rhc-mox-switch__track {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-color: var(--rhc-color-lintblauw-500);
+  }
+
+  .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-wit);
+    transform: translateX(1.25rem);
+  }
+}
+
+.rhc-mox-switch__state {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  min-inline-size: 2rem;
+}
+
+/* --- Text badge --- */
+/* TextBadge: short label with text and, per type, the icon of the RHC Alert
+  in the colour of that alert. */
+.rhc-mox-text-badge {
+  --utrecht-icon-size: 1em;
+
+  align-items: center;
+  background-color: var(--rhc-color-cool-grey-100);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-foreground-default);
+  border-radius: var(--rhc-border-radius-round);
+  color: var(--rhc-color-foreground-default);
+  display: inline-flex;
+  font-size: var(--rhc-text-font-size-sm);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  gap: var(--rhc-space-2xs);
+  line-height: var(--rhc-text-line-height-md);
+  padding-block: var(--rhc-space-sm);
+  padding-inline: var(--rhc-space-lg);
+  vertical-align: middle;
+}
+
+.rhc-mox-text-badge--info {
+  --utrecht-icon-color: var(--utrecht-alert-icon-info-color);
+  background-color: var(--rhc-color-hemelblauw-50);
+  border-color: var(--rhc-color-hemelblauw-500);
+}
+
+.rhc-mox-text-badge--ok {
+  --utrecht-icon-color: var(--utrecht-alert-icon-ok-color);
+  background-color: var(--rhc-color-groen-50);
+  border-color: var(--rhc-color-groen-500);
+}
+
+.rhc-mox-text-badge--warning {
+  --utrecht-icon-color: var(--utrecht-alert-icon-warning-color);
+  background-color: var(--rhc-color-oranje-50);
+  border-color: var(--rhc-color-oranje-500);
+}
+
+.rhc-mox-text-badge--error {
+  --utrecht-icon-color: var(--utrecht-alert-icon-error-color);
+  background-color: var(--rhc-color-rood-50);
+  border-color: var(--rhc-color-rood-500);
 }
 
 /* ==== 5. Pagina's en functies =============================================== */
