@@ -8,7 +8,7 @@ import {
   Link,
   Paragraph,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
 
 const tekst = {

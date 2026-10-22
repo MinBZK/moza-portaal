@@ -9,7 +9,7 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { FolderIcon } from "@/components/icons/folderIcon";
 
 /**

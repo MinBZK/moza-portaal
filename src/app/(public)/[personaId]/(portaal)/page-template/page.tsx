@@ -85,7 +85,7 @@ const TemplatePage = async () => {
         subHeading="Subtekst"
       />
 
-      <Alert type="warning">
+      <Alert type="warning" closable>
         <Heading level={3}>Let op!</Heading>
         <Paragraph>
           Lorem ipsum dolor sit amet, consectetur ad isicing elit, sed do

@@ -1,11 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import {
-  Alert,
-  Button,
-  Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+import { Alert, Button, Paragraph } from "@/components/rhc";
 import { useUitval } from "./_demoSimulatie";
 
 /**

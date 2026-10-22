@@ -91,6 +91,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
+	.rhc-main-container {
+		.mox-card {
+			margin-block-end: 0;
+		}
+	}
+
 	/* --- Header --- */
 	.rhc-nav-bar__container {
 		border-block-end-width: 0;

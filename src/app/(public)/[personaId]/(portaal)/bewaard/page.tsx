@@ -1,9 +1,4 @@
-import {
-  Heading,
-  Paragraph,
-  Alert,
-  Link,
-} from "@rijkshuisstijl-community/components-react";
+import { Heading, Paragraph, Alert, Link } from "@/components/rhc";
 import BewaardeItems from "./_bewaardeItems";
 
 const BewaardPage = async () => {

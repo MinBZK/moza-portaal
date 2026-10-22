@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Paragraph, Alert } from "@rijkshuisstijl-community/components-react";
+import { Paragraph, Alert } from "@/components/rhc";
 import ProgressBar from "@/components/ProgressBar";
 
 /**

@@ -9,7 +9,7 @@ import {
   TableHeaderCell,
   TableRow,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import type { DemoBericht } from "@/demo";
 import BerichtRij from "./berichtenbox/_berichtRij";
 import {

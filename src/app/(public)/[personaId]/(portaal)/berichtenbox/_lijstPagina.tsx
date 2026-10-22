@@ -1,8 +1,4 @@
-import {
-  Alert,
-  Heading,
-  Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+import { Alert, Heading, Paragraph } from "@/components/rhc";
 import { getDemoBerichten } from "@/demo";
 import { getActievePersona, getKetenAccount } from "@/app/(public)/_persona";
 import { getKetenStatus } from "@/network/keten";

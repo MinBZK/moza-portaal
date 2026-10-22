@@ -10,7 +10,7 @@ import {
   LinkButton,
   Heading,
   Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";

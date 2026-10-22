@@ -19,7 +19,7 @@ import {
   Fieldset,
   FormFieldRadio,
   Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
 import { updateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/action";
 import type { DemoProfielIdentiteit } from "@/demo";

@@ -2,8 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Alert } from "@/components/rhc";
 import {
-  Alert,
   Button,
   FormFieldSelect,
   FormFieldTextInput,

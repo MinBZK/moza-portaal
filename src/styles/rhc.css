@@ -798,6 +798,17 @@ body {
   }
 }
 
+/* Alert with a close button (closable) in the top right corner. */
+.rhc-alert-closable {
+  position: relative;
+}
+
+.rhc-alert-close-button {
+  inset-block-start: var(--utrecht-alert-padding-block-start);
+  inset-inline-end: var(--utrecht-alert-padding-inline-end);
+  position: absolute;
+}
+
 /* --- NavigationList --- */
 
 .rhc-theme.mox-theme {
