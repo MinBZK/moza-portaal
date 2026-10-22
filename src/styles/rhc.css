@@ -24,8 +24,8 @@
 }
 
 /* ==== 2. Tokens ============================================================= */
-
 .rhc-theme.mox-theme {
+
   /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
     tokens voor beweging. */
   --mox-transition-duration: 150ms;
@@ -114,7 +114,7 @@ body {
 .rhc-main-container {
   align-content: start;
   display: grid;
-  gap: var(--rhc-space-2xl);
+  gap: var(--rhc-space-xl);
   /* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
     ontstaat er op een smal scherm een horizontale scrollbalk. */
   grid-template-columns: minmax(0, 1fr);
@@ -191,6 +191,15 @@ body {
     }
   }
 
+  #heading {
+    margin-inline-end: var(--rhc-space-2xl);
+  }
+
+  .rhc-nav-bar {
+    gap: 0;
+  }
+
+
   .rhc-nav-bar__link {
     align-items: center;
     display: inline-flex;
@@ -198,6 +207,14 @@ body {
   }
 
   .rhc-language-navigation {
+    margin-inline-start: auto;
+  }
+
+  /* De taalkeuze staat rechts, direct links naast de lijst met naam en
+    uitloggen. De NavBar verdeelt zijn onderdelen met space-between; de
+    automatische marge neemt alle vrije ruimte en duwt de taalkeuze naar
+    rechts. */
+  .utrecht-page-header .rhc-nav-bar> :has(> .rhc-language-navigation) {
     margin-inline-start: auto;
   }
 
@@ -419,6 +436,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
+    margin-block-end: var(--rhc-space-5xl);
   }
 }
 
