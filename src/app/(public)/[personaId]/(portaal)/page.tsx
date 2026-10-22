@@ -49,6 +49,18 @@ const HomePage = async ({
     getKetenAccount().then(getKetenStatus),
   ]);
 
+  // Only shown once the messages have loaded (RecenteBerichten).
+  const naarBerichtenbox = (
+    <ActionGroup>
+      <Link
+        href="/berichtenbox"
+        className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+      >
+        Naar uw zakelijke berichtenbox
+      </Link>
+    </ActionGroup>
+  );
+
   return (
     <>
       <Heading level={1}>Welkom {naam}</Heading>
@@ -61,20 +73,17 @@ const HomePage = async ({
           <RecenteBerichten
             berichten={keten.soort === "demo" ? berichten : []}
             ontvanger={keten.soort === "keten" ? keten.ontvanger : null}
-          />
-        ) : (
-          <Alert type="error">
-            <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
-          </Alert>
-        )}
-        <ActionGroup>
-          <Link
-            href="/berichtenbox"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Naar uw zakelijke berichtenbox
-          </Link>
-        </ActionGroup>
+            {naarBerichtenbox}
+          </RecenteBerichten>
+        ) : (
+          <>
+            <Alert type="error">
+              <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+            </Alert>
+            {naarBerichtenbox}
+          </>
+        )}
       </section>
 
       <div className="rhc-grid">
