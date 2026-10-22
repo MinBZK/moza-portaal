@@ -7,7 +7,6 @@ import { mkdir } from "node:fs/promises";
 
 const [basis, uit, personaId = "karin"] = process.argv.slice(2);
 await mkdir(uit, { recursive: true });
-const SLEUTEL = "moza-iemand-aannemen";
 const alle = {
   uwv: true,
   gemeente: true,
