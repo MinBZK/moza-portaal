@@ -1524,10 +1524,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin: 0;
 	}
 
+	/* Naam en bedrag naast elkaar; past dat niet in een smalle zijkolom, dan
+	  komt het bedrag rechts op de volgende regel. Het bedrag breekt nooit. */
 	.mox-hiring-balance > div {
-		display: grid;
+		align-items: baseline;
+		display: flex;
+		flex-wrap: wrap;
 		gap: 0.25rem 0.75rem;
-		grid-template-columns: 1fr auto;
+		justify-content: space-between;
 	}
 
 	.mox-hiring-balance dt {
@@ -1537,14 +1541,15 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	.mox-hiring-balance dd {
 		font-weight: 700;
 		margin: 0;
-		text-align: end;
+		margin-inline-start: auto;
+		white-space: nowrap;
 	}
 
 	.mox-hiring-bar {
 		background: var(--rhc-color-grey-20, #e6e6e6);
 		block-size: 0.75rem;
 		border-radius: 0.125rem;
-		grid-column: 1 / -1;
+		flex-basis: 100%;
 		overflow: hidden;
 	}
 

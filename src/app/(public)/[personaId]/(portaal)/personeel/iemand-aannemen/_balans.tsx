@@ -120,11 +120,12 @@ const Balans = ({
 
   return (
     <>
-      <Heading level={3}>
-        {register === "onbekend"
-          ? "Als de kandidaat in het doelgroepregister staat"
-          : "Wat de regelingen opleveren"}
-      </Heading>
+      <Heading level={3}>Wat de regelingen opleveren</Heading>
+      {register === "onbekend" && (
+        <Paragraph className="mox-hiring-note">
+          Als de kandidaat in het doelgroepregister staat.
+        </Paragraph>
+      )}
       <dl className="mox-hiring-balance">
         <div>
           <dt>Loonkosten</dt>

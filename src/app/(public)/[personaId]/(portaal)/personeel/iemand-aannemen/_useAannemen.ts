@@ -43,12 +43,36 @@ export const DOELGROEPEN = [
 ] as const;
 export type Doelgroep = (typeof DOELGROEPEN)[number][0];
 
+/** Deze twee sluiten de andere keuzes uit. */
+const ALLEEN: Doelgroep[] = ["geen", "weetniet"];
+
+/**
+ * Vraag 1 is meerkeuze. Wie Wajong heeft, staat in het doelgroepregister
+ * (Wfsv 38b lid 1 onder c), dus Wajong vinkt het register aan en houdt het vast.
+ */
+export const kiesDoelgroep = (
+  huidig: Doelgroep[],
+  waarde: Doelgroep,
+  aan: boolean,
+): Doelgroep[] => {
+  if (aan && ALLEEN.includes(waarde)) return [waarde];
+  const rest = huidig.filter((d) => d !== waarde && !ALLEEN.includes(d));
+  const nieuw = aan ? [...rest, waarde] : rest;
+  if (nieuw.includes("wajong") && !nieuw.includes("register"))
+    nieuw.push("register");
+  return DOELGROEPEN.map(([d]) => d).filter((d) => nieuw.includes(d));
+};
+
+/** Het register staat vast aangevinkt zolang Wajong is gekozen. */
+export const registerVast = (a: Antwoorden) => a.doelgroepen.includes("wajong");
+
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;
 
 /** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
-  doelgroep: Doelgroep;
+  /** Meerkeuze; leeg telt als "weet ik nog niet". */
+  doelgroepen: Doelgroep[];
   /** Uren per week, 8 tot 40. */
   uren: number;
   /** Geschatte loonwaarde in procent, 30 tot 100; 100 is zelfstandig tegen het minimumloon. */
@@ -89,7 +113,7 @@ export type AannemenStaat = {
 };
 
 export const STANDAARD_ANTWOORDEN: Antwoorden = {
-  doelgroep: "register",
+  doelgroepen: ["register"],
   uren: 32,
   loonwaarde: 60,
   uurloon: WML_UUR_EUROCENT,
@@ -107,10 +131,10 @@ const LEEG: AannemenStaat = {
 
 /** Het doelgroepregister volgens de antwoorden: ja, nee of onbekend. */
 export const inRegister = (a: Antwoorden) =>
-  a.doelgroep === "geen"
-    ? "nee"
-    : a.doelgroep === "register" || a.doelgroep === "wajong"
-      ? "ja"
+  a.doelgroepen.includes("register") || a.doelgroepen.includes("wajong")
+    ? "ja"
+    : a.doelgroepen.includes("geen")
+      ? "nee"
       : "onbekend";
 
 /** Onder 100 procent kan de kandidaat het minimumloon niet zelfstandig verdienen. */
@@ -137,11 +161,12 @@ const lees = (): AannemenStaat => {
     const gelezen: unknown = JSON.parse(rauw ?? "null");
     if (gelezen && typeof gelezen === "object") {
       const g = gelezen as Partial<AannemenStaat>;
-      staat = {
-        ...LEEG,
-        ...g,
-        antwoorden: { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) },
-      };
+      // Eerdere versies bewaarden één doelgroep.
+      const oud = g.antwoorden as { doelgroep?: Doelgroep } | undefined;
+      const antwoorden = { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) };
+      if (oud?.doelgroep && !g.antwoorden?.doelgroepen)
+        antwoorden.doelgroepen = kiesDoelgroep([], oud.doelgroep, true);
+      staat = { ...LEEG, ...g, antwoorden };
     }
   } catch {
     // Onleesbaar: als leeg behandelen.

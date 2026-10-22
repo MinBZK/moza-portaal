@@ -5,7 +5,7 @@ import {
   ActionGroup,
   Alert,
   Fieldset,
-  FormFieldRadio,
+  FormFieldCheckboxOption,
   Heading,
   Paragraph,
   UnorderedList,
@@ -19,6 +19,8 @@ import {
   DOELGROEPEN,
   WML_UUR_EUROCENT,
   inRegister,
+  kiesDoelgroep,
+  registerVast,
   useAannemen,
   type Antwoorden,
 } from "./_useAannemen";
@@ -46,7 +48,9 @@ const Vragen = ({
   const zet = (deel: Partial<Antwoorden>) =>
     werkBij({ antwoorden: { ...a, ...deel } });
   const register = inRegister(a);
-  const anders = a.doelgroep === "wajong" || a.doelgroep === "wia";
+  const anders =
+    a.doelgroepen.includes("wajong") || a.doelgroepen.includes("wia");
+  const vast = registerVast(a);
   const overige = regelingen.filter((r) => r.id !== "lks" && r.id !== "lkv");
 
   return (
@@ -58,15 +62,29 @@ const Vragen = ({
       </Paragraph>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-row-gap">
-          <Fieldset legend="1. Wie wilt u aannemen?">
+          <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
             {DOELGROEPEN.map(([waarde, label]) => (
-              <FormFieldRadio
+              <FormFieldCheckboxOption
                 key={waarde}
-                name="doelgroep"
+                name="doelgroepen"
                 value={waarde}
                 label={label}
-                checked={a.doelgroep === waarde}
-                onChange={() => zet({ doelgroep: waarde })}
+                checked={a.doelgroepen.includes(waarde)}
+                disabled={waarde === "register" && vast}
+                description={
+                  waarde === "register" && vast
+                    ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
+                    : undefined
+                }
+                onChange={(event) =>
+                  zet({
+                    doelgroepen: kiesDoelgroep(
+                      a.doelgroepen,
+                      waarde,
+                      event.target.checked,
+                    ),
+                  })
+                }
               />
             ))}
           </Fieldset>
