@@ -204,7 +204,7 @@ const BerichtDetail = ({
 
   return (
     <>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <BerichtenboxNav
           berichten={berichten}
           actief={status === "weg" ? null : status}

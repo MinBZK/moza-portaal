@@ -79,7 +79,7 @@ const BerichtenboxPage = async ({
       <Heading level={1}>Mijn Berichtenbox</Heading>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
-          <div className="mox-card">
+          <div className="rhc-mox-card">
             <nav aria-label="Berichtenbox">
               <ul className="rhc-tabs">
                 {tabs.map((tab) => (
@@ -87,7 +87,7 @@ const BerichtenboxPage = async ({
                     <Link
                       href={tab.href}
                       aria-current={status === tab.status ? "page" : undefined}
-                      className="mox-tab utrecht-link utrecht-link--html-a"
+                      className="rhc-tab utrecht-link utrecht-link--html-a"
                     >
                       {tab.label}
                     </Link>
@@ -138,7 +138,7 @@ const BerichtenboxPage = async ({
             </Alert>
           </div>
 
-          <div className="mox-card">
+          <div className="rhc-mox-card">
             <Heading level={2}>Uw e-mailadres(sen) aanpassen</Heading>
             <Paragraph>
               Wilt u de e-mailadres(sen) waarop u meldingen ontvangt aanpassen
@@ -155,7 +155,7 @@ const BerichtenboxPage = async ({
             </LinkList>
           </div>
         </div>
-        <div className="mox-card rhc-grid__cell rhc-grid__cell-d-4">
+        <div className="rhc-mox-card rhc-grid__cell rhc-grid__cell-d-4">
           <Heading level={2}>Bent u gemachtigd voor iemand anders?</Heading>
           <Paragraph>U kunt hier uw machtiging ophalen en gebruiken.</Paragraph>
           <LinkList>

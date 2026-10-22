@@ -30,7 +30,7 @@ const ParkeervergunningDetail = async ({
   return (
     <>
       <Heading level={1}>Parkeervergunning details</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {gegevens.map(({ label, waarde }) => (
             <DataSummaryItem

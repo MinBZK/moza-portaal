@@ -38,7 +38,7 @@ const SubsidiePage = async ({
       </Paragraph>
 
       <RelevantItem item={bewaarItemVan(subsidie)}>
-        <section className="mox-card" aria-label={subsidie.titel}>
+        <section className="rhc-mox-card" aria-label={subsidie.titel}>
           <Paragraph purpose="lead">{subsidie.samenvatting}</Paragraph>
           <SubsidieGegevens subsidie={subsidie} />
 

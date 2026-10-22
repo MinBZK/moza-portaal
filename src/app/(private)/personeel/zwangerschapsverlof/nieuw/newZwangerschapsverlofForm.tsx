@@ -55,7 +55,7 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Nieuw zwangerschapsverlof melden</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <form
           onSubmit={(e) => {
             e.preventDefault();

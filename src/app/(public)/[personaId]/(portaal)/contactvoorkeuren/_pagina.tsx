@@ -35,7 +35,7 @@ const ContactvoorkeurenPagina = async ({
         Uw contactgegevens en de organisaties die deze mogen gebruiken.
       </Paragraph>
       <section
-        className="mox-card rhc-row-gap"
+        className="rhc-mox-card rhc-row-gap"
         aria-labelledby="contactgegevens"
       >
         <Heading level={2} id="contactgegevens">
@@ -52,7 +52,7 @@ const ContactvoorkeurenPagina = async ({
                 <Link
                   href={tab.href}
                   aria-current={tab.soort === soort ? "page" : undefined}
-                  className="mox-tab utrecht-link utrecht-link--html-a"
+                  className="rhc-tab utrecht-link utrecht-link--html-a"
                 >
                   {tab.label}
                 </Link>
@@ -63,12 +63,12 @@ const ContactvoorkeurenPagina = async ({
         <Contactgegevens {...identiteit} />
       </section>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Aangesloten organisaties</Heading>
         <Organisaties organisaties={organisaties} />
       </div>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Hoe nemen organisaties contact op?</Heading>
         <Paragraph>
           Hoe wilt u dat overheidsorganisaties standaard contact met u opnemen

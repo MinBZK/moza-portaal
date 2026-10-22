@@ -825,7 +825,7 @@ const Chat = ({
   };
 
   return (
-    <section className="mox-card rhc-chat" aria-label="Gesprek">
+    <section className="rhc-mox-card rhc-chat" aria-label="Gesprek">
       {toonBronstatus && status !== undefined && (
         <BronStatus status={status} transport={instellingen.transport} />
       )}

@@ -12,7 +12,7 @@ const LopendeZakenPage = async () => {
   return (
     <>
       <Heading level={1}>Lopende zaken</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <ZakenTabs actief="lopend" />
         <ZakenTabel zaken={zaken} soort="lopend" />
       </div>

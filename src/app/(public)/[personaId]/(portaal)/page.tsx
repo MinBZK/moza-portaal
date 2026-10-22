@@ -53,7 +53,7 @@ const HomePage = async ({
     <>
       <Heading level={1}>Welkom {naam}</Heading>
 
-      <section className="mox-card" aria-labelledby="recente-berichten">
+      <section className="rhc-mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">
           Recente berichten
         </Heading>
@@ -79,7 +79,7 @@ const HomePage = async ({
 
       <div className="rhc-grid">
         <section
-          className="mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           aria-labelledby="home-subsidies"
         >
           <Heading level={2} id="home-subsidies">
@@ -101,7 +101,7 @@ const HomePage = async ({
         </section>
 
         <section
-          className="mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           aria-labelledby="home-wetten"
         >
           <Heading level={2} id="home-wetten">

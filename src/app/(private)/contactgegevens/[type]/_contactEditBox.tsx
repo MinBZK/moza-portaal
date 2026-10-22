@@ -279,15 +279,15 @@ export const ContactEditBox = ({
       )}
       {showResendSection && (
         <>
-          <Alert type="warning">
-            {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
-          </Alert>
           {resendSuccess && (
             <Alert type="ok">
               {`Er is een nieuwe verificatiecode verzonden naar ${newValue}.`}
             </Alert>
           )}
           {resendError && <Alert type="error">{resendError}</Alert>}
+          <Alert type="warning">
+            {`Uw ${label.toLocaleLowerCase()} is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${newValue}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
+          </Alert>
           <FormFieldTextInput
             label="Verificatiecode"
             placeholder="bv: 123456"
@@ -298,27 +298,27 @@ export const ContactEditBox = ({
             onChange={(event) =>
               setVerificationCode((event.target as HTMLInputElement).value)
             }
-          />
-          <ActionGroup direction="row">
-            <Button
-              appearance="primary-action-button"
-              type="submit"
-              onClick={() => setVerificationSubmitted(true)}
-            >
-              <Icon icon="circle-check" />
-              Verifiëren
-            </Button>
-            <Button
-              appearance="secondary-action-button"
-              onClick={
-                resendCountdown === 0 ? handleResendVerification : undefined
-              }
-            >
-              {resendCountdown > 0
-                ? `Opnieuw verificatiecode aanvragen in ${resendCountdown} seconden`
-                : "Opnieuw verificatiecode aanvragen"}
-            </Button>
-          </ActionGroup>
+          >
+            <ActionGroup direction="row">
+              <Button
+                appearance="primary-action-button"
+                type="submit"
+                onClick={() => setVerificationSubmitted(true)}
+              >
+                Verifiëren
+              </Button>
+              <Button
+                appearance="secondary-action-button"
+                onClick={
+                  resendCountdown === 0 ? handleResendVerification : undefined
+                }
+              >
+                {resendCountdown > 0
+                  ? `Opnieuw verificatiecode aanvragen in ${resendCountdown} seconden`
+                  : "Opnieuw verificatiecode aanvragen"}
+              </Button>
+            </ActionGroup>
+          </FormFieldTextInput>
         </>
       )}
     </form>

@@ -60,7 +60,7 @@ const SubsidiesPage = async ({
 
       {opPagina.map((subsidie) => (
         <RelevantItem key={subsidie.id} item={bewaarItemVan(subsidie)}>
-          <article className="mox-card" aria-labelledby={`kop-${subsidie.id}`}>
+          <article className="rhc-mox-card" aria-labelledby={`kop-${subsidie.id}`}>
             <Heading level={2} id={`kop-${subsidie.id}`}>
               <Link
                 href={`/subsidies/${subsidie.id}`}

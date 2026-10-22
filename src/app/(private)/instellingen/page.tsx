@@ -8,7 +8,7 @@ const Page = async () => {
   return (
     <>
       <Heading level={1}>Instellingen</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Beta instellingen</Heading>
         <Paragraph>
           Hieronder kun je experimentele functionaliteiten in- en uitschakelen.

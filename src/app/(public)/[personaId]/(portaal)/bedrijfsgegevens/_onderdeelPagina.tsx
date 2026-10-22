@@ -51,7 +51,7 @@ const OnderdeelPagina = async ({
         </Link>
       </Paragraph>
 
-      <section className="mox-card" aria-labelledby="onderdeel-kop">
+      <section className="rhc-mox-card" aria-labelledby="onderdeel-kop">
         <Heading level={2} id="onderdeel-kop">
           {onderdeel.kop}
         </Heading>

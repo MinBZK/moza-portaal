@@ -32,7 +32,7 @@ const ComingSoon = ({
       <Paragraph>{summary}</Paragraph>
     </Alert>
 
-    <div className="mox-card">
+    <div className="rhc-mox-card">
       <Heading level={2}>Wat kunt u straks doen?</Heading>
       <UnorderedList>
         {expectations.map((expectation) => (

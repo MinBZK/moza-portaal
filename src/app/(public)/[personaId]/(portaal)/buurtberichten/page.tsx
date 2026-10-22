@@ -37,7 +37,7 @@ const OmgevingsberichtenPage = async () => {
         };
         return (
           <RelevantItem key={bericht.id} item={item}>
-            <div className="mox-card" id={bericht.id}>
+            <div className="rhc-mox-card" id={bericht.id}>
               <Heading level={2}>{bericht.titel}</Heading>
               <Paragraph>{bericht.samenvatting}</Paragraph>
 

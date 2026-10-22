@@ -26,7 +26,7 @@ const Zaken = async () => {
   return (
     <>
       <Heading level={1}>Zaken</Heading>
-      <section className="mox-card" aria-labelledby="nieuwe-aanvraag">
+      <section className="rhc-mox-card" aria-labelledby="nieuwe-aanvraag">
         <Heading level={2} id="nieuwe-aanvraag">
           Nieuwe aanvraag
         </Heading>
@@ -45,7 +45,7 @@ const Zaken = async () => {
           </Link>
         </ActionGroup>
       </section>
-      <section className="mox-card" aria-labelledby="lopende-aanvragen">
+      <section className="rhc-mox-card" aria-labelledby="lopende-aanvragen">
         <Heading level={2} id="lopende-aanvragen">
           Lopende aanvragen
         </Heading>

@@ -251,7 +251,7 @@ const Header = ({
                     </button>
 
                     {openKeycloakLogin && (
-                      <div className="prototype-login-keycloak mox-card">
+                      <div className="prototype-login-keycloak rhc-mox-card">
                         <div role="menu" aria-orientation="vertical">
                           <button
                             onClick={() => {

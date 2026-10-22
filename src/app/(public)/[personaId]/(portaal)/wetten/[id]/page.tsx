@@ -34,7 +34,7 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
       </Paragraph>
 
       <RelevantItem item={bewaarItemVan(wet)}>
-        <section className="mox-card" aria-label={wet.titel}>
+        <section className="rhc-mox-card" aria-label={wet.titel}>
           <Paragraph purpose="lead">{wet.samenvatting}</Paragraph>
           <WetGegevens wet={wet} detail />
 

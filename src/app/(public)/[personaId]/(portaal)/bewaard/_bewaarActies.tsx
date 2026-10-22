@@ -125,7 +125,7 @@ export const RelevantItem = ({
   if (!toonMelding) return null;
 
   return (
-    <div ref={meldingRef} tabIndex={-1} className="mox-card">
+    <div ref={meldingRef} tabIndex={-1} className="rhc-mox-card">
       <Paragraph>
         U ziet &quot;{item.titel}&quot; niet meer. U vindt het terug bij{" "}
         <Link inline href="/bewaard">

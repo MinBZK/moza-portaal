@@ -58,7 +58,7 @@ const WettenPage = async ({
 
       {opPagina.map((wet) => (
         <RelevantItem key={wet.id} item={bewaarItemVan(wet)}>
-          <article className="mox-card" aria-labelledby={`kop-${wet.id}`}>
+          <article className="rhc-mox-card" aria-labelledby={`kop-${wet.id}`}>
             <Heading level={2} id={`kop-${wet.id}`}>
               <Link
                 href={`/wetten/${wet.id}`}

@@ -98,7 +98,7 @@ const BewaardeItems = ({
       {items.length === 0
         ? leeg
         : [...perCategorie].map(([categorie, inCategorie]) => (
-            <section key={categorie} className="mox-card">
+            <section key={categorie} className="rhc-mox-card">
               <Heading
                 level={2}
                 tabIndex={-1}

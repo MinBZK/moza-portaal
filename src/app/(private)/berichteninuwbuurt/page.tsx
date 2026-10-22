@@ -7,11 +7,11 @@ const BerichtenInUwBuurtPage = async () => {
     <>
       <Heading level={1}>Berichten over uw buurt</Heading>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <PostcodesBeheer />
       </div>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Berichten over uw buurt</Heading>
         <Paragraph>
           Berichten die betrekking hebben op de omgeving van uw bedrijfsadres.

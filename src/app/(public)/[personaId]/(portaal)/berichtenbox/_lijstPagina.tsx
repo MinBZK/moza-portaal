@@ -35,7 +35,7 @@ const LijstPagina = async ({
     return (
       <>
         <Heading level={1}>Berichtenbox</Heading>
-        <div className="mox-card">
+        <div className="rhc-mox-card">
           <StelselLijst
             ontvanger={keten.ontvanger}
             weergave={weergave}
@@ -61,7 +61,7 @@ const LijstPagina = async ({
   return (
     <>
       <Heading level={1}>Berichtenbox</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <BerichtenboxNav berichten={berichten} actief={weergave} />
         <BerichtenLijst
           berichten={berichten}

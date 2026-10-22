@@ -9,7 +9,7 @@ const ZakenTabs = ({ actief }: { actief: "lopend" | "afgehandeld" }) => (
       <li>
         <Link
           href="/lopendezaken"
-          className="mox-tab utrecht-link utrecht-link--html-a"
+          className="rhc-tab utrecht-link utrecht-link--html-a"
           aria-current={actief === "lopend" ? "page" : undefined}
         >
           <Icon icon="activiteit" />
@@ -19,7 +19,7 @@ const ZakenTabs = ({ actief }: { actief: "lopend" | "afgehandeld" }) => (
       <li>
         <Link
           href="/lopendezaken/afgehandeld"
-          className="mox-tab utrecht-link utrecht-link--html-a"
+          className="rhc-tab utrecht-link utrecht-link--html-a"
           aria-current={actief === "afgehandeld" ? "page" : undefined}
         >
           <ArchiveIcon />

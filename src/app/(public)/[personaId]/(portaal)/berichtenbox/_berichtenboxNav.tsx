@@ -120,7 +120,7 @@ const BerichtenboxNav = ({
                 aria-current={
                   isActief ? (opLijst ? "page" : "true") : undefined
                 }
-                className={`mox-tab utrecht-link utrecht-link--html-a`}
+                className={`rhc-tab utrecht-link utrecht-link--html-a`}
               >
                 {tab.icon}
                 {tab.label}
@@ -144,7 +144,7 @@ const BerichtenboxNav = ({
             <Link
               href={`/berichtenbox?${new URLSearchParams({ map })}`}
               aria-current={map === actieveMap ? "page" : undefined}
-              className="mox-tab utrecht-link utrecht-link--html-a"
+              className="rhc-tab utrecht-link utrecht-link--html-a"
             >
               <FolderIcon />
               {map}

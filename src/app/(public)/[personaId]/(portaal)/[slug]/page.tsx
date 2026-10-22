@@ -17,7 +17,7 @@ export default async function FooterPage({
   return (
     <>
       <Heading level={1}>{title}</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Paragraph>Hier wordt aan gewerkt.</Paragraph>
         <Paragraph>
           <Link href="/" className="utrecht-link utrecht-link--html-a">

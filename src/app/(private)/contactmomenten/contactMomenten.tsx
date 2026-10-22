@@ -33,7 +33,7 @@ const ContactmomentenPage = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Contactmomenten</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <CountdownBar onComplete={handleCountdownEnd} ref={countdownRef} />
         <div className="mox-timeline">
           {data?.Notificaties?.map((notificatie) => {

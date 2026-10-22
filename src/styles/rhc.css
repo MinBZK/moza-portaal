@@ -135,9 +135,22 @@ body {
 
   /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
     rijen kaarten elkaar. */
-  .rhc-grid:has(> .mox-card) {
+  .rhc-grid:has(> .rhc-mox-card) {
     row-gap: var(--rhc-space-2xl);
   }
+}
+
+.rhc-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xs);
+}
+
+/* Buttons inside a form field come after the input. The parts of the form
+  field have an order (label 1, input 5); without one the buttons would
+  show above the label, while they come after the input in the DOM. */
+.rhc-form-field > .utrecht-action-group {
+  order: 6;
 }
 
 /* --- Header --- */
@@ -393,6 +406,29 @@ body {
   }
 }
 
+/* --- Kaarten --- */
+.rhc-mox-card {
+  .rhc-row-gap {
+    align-content: start;
+    display: grid;
+    gap: var(--rhc-space-xl);
+
+    .utrecht-action-group {
+      margin-block-start: 0;
+    }
+  }
+
+  .utrecht-form-fieldset__legend,
+  .utrecht-form-field--checkbox,
+  .utrecht-form-field--radio {
+    margin-block-end: var(--rhc-space-md)
+  }
+
+  .ams-pagination {
+    margin-block-start: var(--rhc-space-2xl);
+  }
+}
+
 /* --- Dialog --- */
 
 .rhc-dialog {
@@ -460,7 +496,7 @@ body {
 /* --- Kaarten --- */
 
 .rhc-theme.mox-theme {
-  .mox-card {
+  .rhc-mox-card {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
@@ -512,7 +548,7 @@ body {
   }
 }
 
-.mox-tab {
+.rhc-tab {
   align-items: center;
   display: flex;
   gap: var(--rhc-space-md);
@@ -521,6 +557,11 @@ body {
   scroll-margin-inline: var(--rhc-tabs-fade);
   text-decoration: none;
   white-space: nowrap;
+
+  &.utrecht-link,
+  &.utrecht-link--html-a {
+    text-decoration: none !important;
+  }
 
   /* Binnen de tab, anders valt de focusrand weg aan de randen. */
   &:focus-visible {
@@ -1325,6 +1366,14 @@ body {
 }
 
 /* --- Action group --- */
+.utrecht-action-group {
+  margin-block-start: var(--rhc-space-2xl);
+}
+
+.utrecht-button--primary-action {
+  margin-block-start: var(--rhc-space-lg);
+}
+
 .rhc-action-group-dense {
   margin-block-start: 0 !important;
 

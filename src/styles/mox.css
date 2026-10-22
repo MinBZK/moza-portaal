@@ -92,7 +92,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.rhc-main-container {
-		.mox-card {
+		.rhc-mox-card {
 			margin-block-end: 0;
 		}
 
@@ -350,23 +350,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Kaarten --- */
-	.mox-card {
-		.rhc-row-gap {
-			align-content: start;
-			display: grid;
-			gap: var(--rhc-space-xl);
-
-			.utrecht-action-group {
-				margin-block-start: 0;
-			}
-		}
-
-		.ams-pagination {
-			margin-block-start: var(--rhc-space-2xl);
-		}
-	}
-
-	.mox-card,
+	.rhc-mox-card,
 	.mox-faq-card,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
@@ -383,7 +367,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding: var(--rhc-space-xl);
 	}
 
-	.mox-card,
+	.rhc-mox-card,
 	.mox-faq-card {
 		border-color: var(--rhc-color-light-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
@@ -410,11 +394,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		ul:not(:last-child),
 		ol:not(.ams-pagination__list, :last-child) {
 			margin-block-end: var(--rhc-space-lg);
-		}
-
-		.utrecht-action-group,
-		.utrecht-button--primary-action {
-			margin-block-start: var(--rhc-space-2xl);
 		}
 
 		.utrecht-table {
