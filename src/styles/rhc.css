@@ -201,6 +201,26 @@ body {
     margin-inline-start: auto;
   }
 
+  /* Taalkeuze in de header: de lijst klapt uit over de pagina in plaats van
+    mee te tellen in de breedte. Anders wordt de navigatie breder; omdat die
+    rechts staat, schuift de knop "Nederlands" dan naar links. In het menu op
+    een smal scherm blijft de lijst gewoon onder de knop in de flow. */
+  :where(.utrecht-page-header) .rhc-language-navigation {
+    /* Houvast voor de lijst. :where(), zodat mox.css hem nog absoluut kan
+      zetten. */
+    position: relative;
+  }
+
+  .utrecht-page-header .rhc-language-navigation__list {
+    inset-block-start: 100%;
+    inset-inline-end: 0;
+    /* RHC begrenst de lijst op 100% van de navigatie, en die is zo smal als
+      de knop: dan gaat hij scrollen. Zonder grens krijgt hij zijn eigen
+      breedte van RHC terug (--utrecht-listbox-inline-size). */
+    max-inline-size: none;
+    position: absolute;
+  }
+
   @media (width < 768px) {
 
     /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
