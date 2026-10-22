@@ -90,6 +90,17 @@ const ComponentsExamplePage = async () => (
                 { label: "Negatief", value: 14, variant: "negative" },
               ]}
             />
+            <BarGraph
+              track
+              title="Met baan (track)"
+              items={[
+                { label: "Negatief", value: 10, variant: "negative" },
+                { label: "Neutraal 1", value: 20 },
+                { label: "Neutraal 2", value: 50 },
+                { label: "Positief", value: 99, variant: "positive" },
+              ]}
+              formatValue={(value) => value.toLocaleString("nl-NL")}
+            />
           </section>
         </div>
       </div>

@@ -1459,11 +1459,34 @@ body {
 .rhc-mox-bar-graph__bar {
   background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
   background-image: var(--rhc-bar-graph-pattern, none);
-  block-size: var(--rhc-space-lg);
-  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-500);
+  block-size: var(--rhc-space-xl);
+  border: var(--rhc-border-width-sm) solid var(--rhc-bar-graph-border-color, var(--rhc-color-cool-grey-500));
   border-radius: var(--rhc-border-radius-round);
   /* At least a sliver, so a value of 0 still shows where the bar starts. */
   inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+}
+
+/* Option track: a grey track as wide as the longest bar; the bar fills it
+  in proportion to its value. */
+.rhc-mox-bar-graph__track {
+  --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
+
+  background-color: var(--rhc-color-cool-grey-100);
+  border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-round);
+  display: flex;
+  inline-size: calc(100% - 5rem);
+
+  /* The bar lies over the border of the track: negative margins the width
+    of that border, and a full bar spans the track including both borders.
+    So the track's border only shows where the bar does not reach. */
+  >.rhc-mox-bar-graph__bar {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% + 2 * var(--rhc-bar-graph-track-border-width))));
+    margin-block: calc(-1 * var(--rhc-bar-graph-track-border-width));
+    margin-inline-start: calc(-1 * var(--rhc-bar-graph-track-border-width));
+  }
 }
 
 /* Variants: neutral (blue, plain), positive (green, diagonal stripes) and
@@ -1472,13 +1495,13 @@ body {
 .rhc-mox-bar-graph__item--positive {
   --rhc-bar-graph-color: var(--rhc-color-groen-400);
   --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  border-color: var(--rhc-color-groen-500);
+  --rhc-bar-graph-border-color: var(--rhc-color-groen-400);
 }
 
 .rhc-mox-bar-graph__item--negative {
   --rhc-bar-graph-color: var(--rhc-color-rood-500);
   --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  border-color: var(--rhc-color-rood-500);
+  --rhc-bar-graph-border-color: var(--rhc-color-rood-400);
 }
 
 /* --- Step indicator --- */

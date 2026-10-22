@@ -18,12 +18,21 @@ export type BarGraphItem = {
  * only supports the meaning: say in the title or the label what is good or
  * bad, for example "Besparing" or "Boven de norm".
  */
+const Bar = ({ fill }: { fill: number }) => (
+  <span
+    className="rhc-mox-bar-graph__bar"
+    aria-hidden="true"
+    style={{ "--rhc-bar-graph-fill": fill } as CSSProperties}
+  />
+);
+
 const BarGraph = ({
   title,
   items,
   max,
   formatValue = String,
   variant = "neutral",
+  track = false,
 }: {
   /** Caption of the graph. */
   title: string;
@@ -33,6 +42,11 @@ const BarGraph = ({
   /** How a value is shown, for example "€ 1.200" or "32%". */
   formatValue?: (value: number) => string;
   variant?: BarGraphVariant;
+  /**
+   * Show every bar on a grey track as wide as the longest bar, so the bars
+   * are easy to compare with the maximum.
+   */
+  track?: boolean;
 }) => {
   const top = max ?? Math.max(0, ...items.map((item) => item.value));
   return (
@@ -46,15 +60,13 @@ const BarGraph = ({
           >
             <dt className="rhc-mox-bar-graph__label">{label}</dt>
             <dd className="rhc-mox-bar-graph__value">
-              <span
-                className="rhc-mox-bar-graph__bar"
-                aria-hidden="true"
-                style={
-                  {
-                    "--rhc-bar-graph-fill": top > 0 ? value / top : 0,
-                  } as CSSProperties
-                }
-              />
+              {track ? (
+                <span className="rhc-mox-bar-graph__track" aria-hidden="true">
+                  <Bar fill={top > 0 ? value / top : 0} />
+                </span>
+              ) : (
+                <Bar fill={top > 0 ? value / top : 0} />
+              )}
               {formatValue(value)}
             </dd>
           </div>
