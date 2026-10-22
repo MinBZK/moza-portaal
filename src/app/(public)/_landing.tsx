@@ -18,11 +18,7 @@ const PublicPage = () => {
     <div className="utrecht-page-body">
       <div className="rhc-landing-hero rhc-rounded-corner rhc-rounded-corner--position-start-end">
         <div className="mox-landing-hero-text rhc-rounded-corner rhc-rounded-corner--position-end-end">
-          <PreHeading
-            heading={<Heading level={1}>MijnOverheid Zakelijk</Heading>}
-          >
-            Pre-heading
-          </PreHeading>
+          <Heading level={1}>MijnOverheid Zakelijk</Heading>
           <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
           <Link href="/?persona=1111" className="mox-login-digid">
             <svg viewBox="0 0 150 150" width={40} height={40}>
