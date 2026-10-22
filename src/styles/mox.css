@@ -589,73 +589,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* --- Tabs --- */
-	/* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
-	  horizontaal, op elke schermbreedte. De grijze lijn is een achtergrond in
-	  plaats van een rand: in een scrollende lijst kan de actieve tab niet over
-	  een rand heen hangen, want dan scrolt de lijst ook verticaal. */
-	.mox-tabs {
-		--mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
-
-		background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
-		background-position: 0 100%;
-		background-repeat: no-repeat;
-		background-size: 100% var(--rhc-border-width-md);
-		display: flex;
-		gap: var(--rhc-space-xl);
-		margin-block-end: var(--rhc-space-lg);
-		overflow-x: auto;
-		overscroll-behavior-inline: contain;
-		scroll-padding-inline: var(--rhc-space-md);
-		scrollbar-width: thin;
-
-		/* Smal scherm: minder ruimte tussen de tabs. */
-		@media (width < 768px) {
-			gap: 0 var(--rhc-space-md);
-		}
-
-		/* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
-		  Het verloop volgt de scrollpositie (scroll-driven animation). Zonder
-		  ondersteuning in de browser blijft de dunne scrollbalk de hint. */
-		@supports (animation-timeline: scroll()) {
-			animation: mox-tabs-fade linear both;
-			animation-timeline: scroll(self inline);
-			mask-image: linear-gradient(to right, transparent, #000 var(--mox-tabs-fade-start), #000 calc(100% - var(--mox-tabs-fade-end)), transparent);
-			scrollbar-width: none;
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
-		}
-	}
-
-	.mox-tab {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-md);
-		padding: var(--rhc-space-md);
-		/* Een tab die in beeld schuift, valt niet in het verloop. */
-		scroll-margin-inline: var(--mox-tabs-fade);
-		text-decoration: none;
-		white-space: nowrap;
-
-		/* Binnen de tab, anders valt de focusrand weg aan de randen. */
-		&:focus-visible {
-			outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
-		}
-
-		&[aria-current] {
-			border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
-			font-weight: var(--rhc-text-font-weight-semi-bold);
-		}
-	}
-
-	/* Mappen staan na een streep achter Inbox, Archief en Prullenbak. */
-	.mox-tabs-separator {
-		border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
-		margin-block: var(--rhc-space-md);
-	}
-
 	/* --- Tekst --- */
 	/* Tekst afkappen na twee regels */
 	.mox-line-clamp {
@@ -744,89 +677,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* ==== 6. Pagina's en functies =============================================== */
-
-	/* --- Berichtenbox --- */
-	[aria-label=Berichtenbox] {
-		a {
-			text-decoration: none;
-		}
-	}
-
-	.mox-notice-amount-inbox {
-		color: var(--rhc-color-cool-grey-500);
-		font-size: var(--rhc-text-font-size-sm);
-	}
-
-	.mox-inbox-filter {
-		margin-block: var(--rhc-space-3xl);
-	}
-
-	/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
-	.mox-inbox-filters {
-		align-items: end;
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--rhc-space-xl);
-
-		> :first-child {
-			flex: 2 1 16rem;
-		}
-
-		> :last-child {
-			flex: 1 1 12rem;
-		}
-
-		.utrecht-form-field {
-			margin-block: 0;
-		}
-	}
-
-	.mox-button-mark {
-		align-items: center;
-		block-size: 1lh;
-		cursor: pointer;
-		display: inline-flex;
-		justify-content: center;
-		min-block-size: calc(var(--nl-button-min-block-size)/2);
-		min-inline-size: calc(var(--nl-button-min-inline-size)/2);
-
-		&[aria-pressed=true] {
-			color: var(--rhc-color-oranje-500);
-		}
-	}
-
-	.mox-button-mark-true {
-		color: var(--rhc-color-oranje-500);
-	}
-
-	.mox-status-unread {
-		background-color: var(--rhc-color-oranje-500);
-		block-size: calc(var(--rhc-size-icon-md)/2);
-		border-radius: var(--rhc-border-radius-round);
-		flex-shrink: 0;
-		inline-size: calc(var(--rhc-size-icon-md)/2);
-		/* centreert de stip op de eerste regel van de afzender */
-		margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
-	}
-
-	.mox-sender {
-		align-items: flex-start;
-		display: flex;
-		gap: var(--rhc-space-md);
-	}
-
-	.mox-unread {
-		font-weight: var(--mox-font-weight-medium);
-	}
-
-	/* Mapkeuze in de dialog */
-	.mox-folder-picker {
-		display: grid;
-		gap: var(--rhc-space-xs);
-		list-style: none;
-		margin-block-end: var(--rhc-space-xl);
-		padding: 0;
-	}
 
 	/* --- Contactmomenten --- */
 	/* Aftelbalk met pauzeknop (contactmomenten) */
@@ -1265,39 +1115,39 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 }
 
-/* Verloop aan de randen van scrollende tabs (.mox-tabs op een smal scherm).
+/* Verloop aan de randen van scrollende tabs (.rhc-tabs op een smal scherm).
   Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
   @property en @keyframes mogen niet genest staan. */
-@property --mox-tabs-fade-start {
+@property --rhc-tabs-fade-start {
 	inherits: false;
 	initial-value: 0px;
 	syntax: "<length>";
 }
 
-@property --mox-tabs-fade-end {
+@property --rhc-tabs-fade-end {
 	inherits: false;
 	initial-value: 0;
 	syntax: "<length>";
 }
 
 /* Aan het begin alleen rechts een verloop, aan het eind alleen links. */
-@keyframes mox-tabs-fade {
+@keyframes rhc-tabs-fade {
 	0% {
-		--mox-tabs-fade-end: var(--mox-tabs-fade);
-		--mox-tabs-fade-start: 0;
+		--rhc-tabs-fade-end: var(--rhc-tabs-fade);
+		--rhc-tabs-fade-start: 0;
 	}
 
 	10% {
-		--mox-tabs-fade-start: var(--mox-tabs-fade);
+		--rhc-tabs-fade-start: var(--rhc-tabs-fade);
 	}
 
 	90% {
-		--mox-tabs-fade-end: var(--mox-tabs-fade);
+		--rhc-tabs-fade-end: var(--rhc-tabs-fade);
 	}
 
 	100% {
-		--mox-tabs-fade-end: 0;
-		--mox-tabs-fade-start: var(--mox-tabs-fade);
+		--rhc-tabs-fade-end: 0;
+		--rhc-tabs-fade-start: var(--rhc-tabs-fade);
 	}
 }
 

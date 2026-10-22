@@ -262,7 +262,7 @@ const BerichtDetail = ({
                 >
                   <FlagIcon
                     filled={gemarkeerd}
-                    className={gemarkeerd ? "mox-button-mark-true" : ""}
+                    className={gemarkeerd ? "rhc-button-mark-true" : ""}
                   />
                   Markeren
                 </LinkButton>

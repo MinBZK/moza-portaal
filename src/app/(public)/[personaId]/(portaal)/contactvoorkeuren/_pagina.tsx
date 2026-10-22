@@ -46,7 +46,7 @@ const ContactvoorkeurenPagina = async ({
           deelt. U kunt ze hier direct aanpassen.
         </Paragraph>
         <nav aria-label="Soort contactgegevens">
-          <ul className="mox-tabs">
+          <ul className="rhc-tabs">
             {tabs.map((tab) => (
               <li key={tab.soort}>
                 <Link

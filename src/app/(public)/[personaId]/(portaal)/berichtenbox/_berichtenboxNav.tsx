@@ -105,7 +105,7 @@ const BerichtenboxNav = ({
     <nav aria-label="Berichtenbox">
       <ul
         ref={tabsRef}
-        className="mox-tabs"
+        className="rhc-tabs"
         // Met Tab door de tabs: de tab met focus helemaal in beeld.
         onFocus={(event) =>
           event.target.scrollIntoView({ block: "nearest", inline: "nearest" })
@@ -135,7 +135,7 @@ const BerichtenboxNav = ({
           );
         })}
         {mappen.length > 0 && (
-          <li className="mox-tabs-separator">
+          <li className="rhc-tabs-separator">
             <VisuallyHidden>Mappen:</VisuallyHidden>
           </li>
         )}

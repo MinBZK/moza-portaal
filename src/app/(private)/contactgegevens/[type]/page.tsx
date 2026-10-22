@@ -20,7 +20,7 @@ const ContactgegevensPage = async ({
       <Heading level={1}>Contactgegevens</Heading>
       <div className="mox-card rhc-row-gap">
         <nav aria-label="Soort contactgegevens">
-          <ul className="mox-tabs">
+          <ul className="rhc-tabs">
             {tabs.map((tab) => (
               <li key={tab.type}>
                 <Link

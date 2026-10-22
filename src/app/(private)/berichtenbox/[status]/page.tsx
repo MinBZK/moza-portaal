@@ -32,10 +32,10 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         />
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "mox-sender mox-unread" : "mox-sender"}>
+        <span className={ongelezen ? "rhc-sender rhc-unread" : "rhc-sender"}>
           {ongelezen && (
             <>
-              <span aria-hidden="true" className="mox-status-unread" />
+              <span aria-hidden="true" className="rhc-status-unread" />
               <VisuallyHidden>Ongelezen.</VisuallyHidden>
             </>
           )}
@@ -43,7 +43,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         </span>
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "mox-unread" : undefined}>
+        <span className={ongelezen ? "rhc-unread" : undefined}>
           Aanslag belastingen 2025
         </span>
       </TableCell>
@@ -81,7 +81,7 @@ const BerichtenboxPage = async ({
         <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
           <div className="mox-card">
             <nav aria-label="Berichtenbox">
-              <ul className="mox-tabs">
+              <ul className="rhc-tabs">
                 {tabs.map((tab) => (
                   <li key={tab.status}>
                     <Link

@@ -93,7 +93,7 @@ const MapDialog = ({
       {andere.length > 0 && (
         <>
           <Paragraph>Kies een map:</Paragraph>
-          <ul className="mox-folder-picker">
+          <ul className="rhc-folder-picker">
             {andere.map((map, index) => (
               <li key={map}>
                 <Button

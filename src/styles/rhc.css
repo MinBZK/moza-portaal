@@ -440,6 +440,162 @@ body {
   }
 }
 
+/* --- Tabs --- */
+/* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
+	  horizontaal, op elke schermbreedte. De grijze lijn is een achtergrond in
+	  plaats van een rand: in een scrollende lijst kan de actieve tab niet over
+	  een rand heen hangen, want dan scrolt de lijst ook verticaal. */
+.rhc-tabs {
+  --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
+
+  background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% var(--rhc-border-width-md);
+  display: flex;
+  gap: var(--rhc-space-xl);
+  margin-block-end: var(--rhc-space-lg);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: var(--rhc-space-md);
+  scrollbar-width: thin;
+
+  /* Smal scherm: minder ruimte tussen de tabs. */
+  @media (width < 768px) {
+    gap: 0 var(--rhc-space-md);
+  }
+
+  /* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
+		  Het verloop volgt de scrollpositie (scroll-driven animation). Zonder
+		  ondersteuning in de browser blijft de dunne scrollbalk de hint. */
+  @supports (animation-timeline: scroll()) {
+    animation: rhc-tabs-fade linear both;
+    animation-timeline: scroll(self inline);
+    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-tabs-fade-start), #000 calc(100% - var(--rhc-tabs-fade-end)), transparent);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.mox-tab {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+  padding: var(--rhc-space-md);
+  /* Een tab die in beeld schuift, valt niet in het verloop. */
+  scroll-margin-inline: var(--rhc-tabs-fade);
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Binnen de tab, anders valt de focusrand weg aan de randen. */
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
+  }
+
+  &[aria-current] {
+    border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* Mappen staan na een streep achter Inbox, Archief en Prullenbak. */
+.rhc-tabs-separator {
+  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+  margin-block: var(--rhc-space-md);
+}
+
+/* --- Berichtenbox --- */
+[aria-label=Berichtenbox] {
+  a {
+    text-decoration: none;
+  }
+}
+
+.rhc-notice-amount-inbox {
+  color: var(--rhc-color-cool-grey-500);
+  font-size: var(--rhc-text-font-size-sm);
+}
+
+.rhc-inbox-filter {
+  margin-block: var(--rhc-space-3xl);
+}
+
+/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+.rhc-inbox-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-xl);
+
+  > :first-child {
+    flex: 2 1 16rem;
+  }
+
+  > :last-child {
+    flex: 1 1 12rem;
+  }
+
+  .utrecht-form-field {
+    margin-block: 0;
+  }
+
+  .utrecht-textbox {
+    max-inline-size: 100%;
+  }
+}
+
+.rhc-button-mark {
+  align-items: center;
+  block-size: 1lh;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: calc(var(--nl-button-min-block-size)/2);
+  min-inline-size: calc(var(--nl-button-min-inline-size)/2);
+
+  &[aria-pressed=true] {
+    color: var(--rhc-color-oranje-500);
+  }
+}
+
+.rhc-button-mark-true {
+  color: var(--rhc-color-oranje-500);
+}
+
+.rhc-status-unread {
+  background-color: var(--rhc-color-oranje-500);
+  block-size: calc(var(--rhc-size-icon-md)/2);
+  border-radius: var(--rhc-border-radius-round);
+  flex-shrink: 0;
+  inline-size: calc(var(--rhc-size-icon-md)/2);
+  /* centreert de stip op de eerste regel van de afzender */
+  margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+}
+
+.rhc-sender {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-unread {
+  /* 500 komt uit mox.css (huidige huisstijl); de nieuwe huisstijl valt
+    terug op semi-bold. */
+  font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
+}
+
+/* Mapkeuze in de dialog */
+.rhc-folder-picker {
+  display: grid;
+  gap: var(--rhc-space-xs);
+  list-style: none;
+  margin-block-end: var(--rhc-space-xl);
+  padding: 0;
+}
+
 /* --- LinkButton --- */
 
 /* Destructieve actie als LinkButton, zoals Verwijderen in de Berichtenbox.

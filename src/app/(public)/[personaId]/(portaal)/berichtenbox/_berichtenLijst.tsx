@@ -427,7 +427,7 @@ const BerichtenLijst = ({
       {bezig ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
-        <Paragraph className="mox-notice-amount-inbox">
+        <Paragraph className="rhc-notice-amount-inbox">
           {map && `Map ${map}: `}
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
@@ -501,7 +501,7 @@ const BerichtenLijst = ({
       </div>
 
       {weergave === "inbox" && (
-        <div className="mox-inbox-filter mox-inbox-filters">
+        <div className="rhc-inbox-filter rhc-inbox-filters">
           <FormFieldTextInput
             label="Filter berichten"
             type="search"
