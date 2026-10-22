@@ -223,7 +223,7 @@ export const useBerichtenboxState = () => {
     [wijzig],
   );
 
-  /** "Markeren als ongelezen" en terug. */
+  /** "Als ongelezen markeren" en terug. */
   const zetOngelezen = useCallback(
     (id: string, aan: boolean) =>
       wijzig((s) =>

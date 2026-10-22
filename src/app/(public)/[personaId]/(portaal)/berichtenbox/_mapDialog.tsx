@@ -88,7 +88,7 @@ const MapDialog = ({
       onClose={sluit}
     >
       <Heading level={2} id={`${id}-kop`}>
-        Verplaatsen naar map
+        Naar map verplaatsen
       </Heading>
       {fout && <Alert type="error">{fout}</Alert>}
       {andere.length > 0 && (

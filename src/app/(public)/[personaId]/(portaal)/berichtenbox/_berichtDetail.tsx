@@ -75,7 +75,8 @@ const BerichtDetail = ({
   // De knop die de mapkeuze opende; die krijgt na sluiten de focus terug.
   const [kiesMap, setKiesMap] = useState<HTMLElement | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
-  // (On)gelezen is een kleine wissel: die melding verdwijnt na 3 seconden.
+  // (On)gelezen en een map kiezen zijn kleine wissels: die melding verdwijnt
+  // na 3 seconden.
   const [tijdelijk, setTijdelijk] = useState(false);
   // Telt mee in de key, zodat dezelfde tekst opnieuw verschijnt.
   const [meldingNummer, setMeldingNummer] = useState(0);
@@ -140,7 +141,8 @@ const BerichtDetail = ({
       return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
     }
     setActieFout(null);
-    setTijdelijk(false);
+    setTijdelijk(true);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       naar
         ? `Het bericht staat nu in de map ${naar}.`
@@ -270,8 +272,8 @@ const BerichtDetail = ({
                 <LinkButton onClick={wisselOngelezen}>
                   {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
                   {ongelezen
-                    ? "Markeren als gelezen"
-                    : "Markeren als ongelezen"}
+                    ? "Als gelezen markeren"
+                    : "Als ongelezen markeren"}
                 </LinkButton>
 
                 {status === "inbox" && (
@@ -280,7 +282,7 @@ const BerichtDetail = ({
                     onClick={(event) => setKiesMap(event.currentTarget)}
                   >
                     <FolderIcon />
-                    Verplaatsen naar map
+                    Naar map verplaatsen
                   </LinkButton>
                 )}
 

@@ -156,7 +156,7 @@ const RijActies = ({
         <li>
           <Button appearance="subtle-button" onClick={actie(onOngelezen)}>
             {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
-            {ongelezen ? "Markeren als gelezen" : "Markeren als ongelezen"}
+            {ongelezen ? "Als gelezen markeren" : "Als ongelezen markeren"}
           </Button>
         </li>
         <li>
@@ -168,7 +168,7 @@ const RijActies = ({
             }}
           >
             <FolderIcon />
-            Verplaatsen naar map
+            Naar map verplaatsen
           </Button>
         </li>
         {map && (
@@ -242,6 +242,10 @@ const BerichtenLijst = ({
   const [zoek, setZoek] = useState("");
   const [sortering, setSortering] = useState<Sortering | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
+  // Een map kiezen is een kleine wissel: die melding fadet na 3 seconden uit.
+  // De nummer-key toont dezelfde tekst opnieuw.
+  const [meldingTijdelijk, setMeldingTijdelijk] = useState(false);
+  const [meldingNummer, setMeldingNummer] = useState(0);
   const [actieFout, setActieFout] = useState<string | null>(null);
   const meldingRef = useRef<HTMLDivElement>(null);
 
@@ -284,6 +288,7 @@ const BerichtenLijst = ({
     if (!storing) return;
     const naam = storing.bron?.naam;
     storing.herstel();
+    setMeldingTijdelijk(false);
     setMelding(
       naam
         ? `De berichten van ${naam} staan weer in uw inbox.`
@@ -377,6 +382,7 @@ const BerichtenLijst = ({
         actie === "archiveren" ? archiveer(bericht.id) : verwijder(bericht.id);
       if (!gelukt) return;
     }
+    setMeldingTijdelijk(false);
     setMelding(
       actie === "archiveren"
         ? `Het bericht "${bericht.onderwerp}" staat nu in het archief.`
@@ -388,6 +394,7 @@ const BerichtenLijst = ({
     const wordtOngelezen = !isOngelezen(staat, bericht.id, bericht.isOngelezen);
     if (!zetOngelezen(bericht.id, wordtOngelezen)) return;
     setActieFout(null);
+    setMeldingTijdelijk(false);
     setMelding(
       wordtOngelezen
         ? `Het bericht "${bericht.onderwerp}" is gemarkeerd als ongelezen.`
@@ -405,6 +412,8 @@ const BerichtenLijst = ({
       return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
     }
     setActieFout(null);
+    setMeldingTijdelijk(true);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       naar
         ? `Het bericht "${bericht.onderwerp}" staat nu in de map ${naar}.`
@@ -497,7 +506,13 @@ const BerichtenLijst = ({
 
       {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
       <div ref={meldingRef} tabIndex={-1} role="status">
-        {melding && !bezig && <Alert type="ok">{melding}</Alert>}
+        {melding &&
+          !bezig &&
+          (meldingTijdelijk ? (
+            <TijdelijkeMelding key={meldingNummer}>{melding}</TijdelijkeMelding>
+          ) : (
+            <Alert type="ok">{melding}</Alert>
+          ))}
       </div>
 
       {weergave === "inbox" && (
