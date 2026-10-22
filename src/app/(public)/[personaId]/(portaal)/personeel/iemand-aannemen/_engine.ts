@@ -2,7 +2,7 @@
 
 import type { DemoAannemenTrace } from "@/demo";
 import type { Antwoorden } from "./_useAannemen";
-import { loonwaardeVan } from "./_useAannemen";
+import { onderMinimumloon } from "./_useAannemen";
 import type { Invoer } from "./_useRegelrecht";
 
 /**
@@ -31,9 +31,9 @@ export const invoerVan = (
       parameters[naam] = naam.startsWith("verloonde") ? a.uren * 52 : a.uren;
   }
   if ("loonwaarde_percentage" in parameters)
-    parameters.loonwaarde_percentage = loonwaardeVan(a);
+    parameters.loonwaarde_percentage = a.loonwaarde;
   if ("kan_minimumloon_niet_verdienen" in parameters)
-    parameters.kan_minimumloon_niet_verdienen = a.zelfstandig !== "ja";
+    parameters.kan_minimumloon_niet_verdienen = onderMinimumloon(a);
   return {
     wet: trace.wet,
     output: trace.uitkomst,
@@ -43,13 +43,11 @@ export const invoerVan = (
   };
 };
 
-/** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
-export const WML_UUR_EUROCENT = 1499;
-
 /**
  * Loonkosten per jaar als benadering: uurloon maal uren maal 52 weken,
  * plus 8 procent vakantiebijslag en 20 procent werkgeverslasten. Geen
- * wet, een vuistregel; de engine rekent de subsidie en het voordeel.
+ * wet, een vuistregel; de engine rekent de subsidie en het voordeel, en die
+ * gaan uit van het minimumloon, niet van het uurloon.
  */
-export const loonkostenPerJaar = (uren: number) =>
-  Math.round(WML_UUR_EUROCENT * uren * 52 * 1.08 * 1.2);
+export const loonkostenPerJaar = (a: Antwoorden) =>
+  Math.round(a.uurloon * a.uren * 52 * 1.08 * 1.2);

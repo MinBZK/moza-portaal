@@ -14,16 +14,17 @@ import {
 import type { DemoAannemenRegeling, DemoAannemenTrace } from "@/demo";
 import NumberInput from "@/components/NumberInput";
 import Balans from "./_balans";
+import { euro } from "./_werkgever";
 import {
   DOELGROEPEN,
-  ZELFSTANDIG,
+  WML_UUR_EUROCENT,
   inRegister,
   useAannemen,
   type Antwoorden,
 } from "./_useAannemen";
 
 /**
- * Scherm 1: drie korte vragen met getalvelden, en rechts live wat de
+ * Scherm 1: vier korte vragen met getalvelden, en rechts live wat de
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
@@ -77,37 +78,44 @@ const Vragen = ({
               if (uren >= 8 && uren <= 40) zet({ uren });
             }}
           />
-          <Fieldset legend="3. Kan de kandidaat het werk zelfstandig doen tegen het minimumloon?">
-            {ZELFSTANDIG.map(([waarde, label]) => (
-              <FormFieldRadio
-                key={waarde}
-                name="zelfstandig"
-                value={waarde}
-                label={label}
-                checked={a.zelfstandig === waarde}
-                onChange={() => zet({ zelfstandig: waarde })}
-              />
-            ))}
-          </Fieldset>
-          {a.zelfstandig !== "ja" && (
-            <div>
-              <NumberInput
-                label="Geschatte loonwaarde, in procent"
-                min={30}
-                max={90}
-                step={5}
-                value={a.loonwaarde}
-                onChange={(event) => {
-                  const loonwaarde = Number(event.target.value);
-                  if (loonwaarde >= 30 && loonwaarde <= 90) zet({ loonwaarde });
-                }}
-              />
-              <Paragraph className="mox-hiring-note">
-                Hoeveel iemand kan in vergelijking met een collega zonder
-                beperking. De gemeente meet dit later op de werkplek.
-              </Paragraph>
-            </div>
-          )}
+          <div>
+            <NumberInput
+              label="3. Hoeveel kan de kandidaat, in vergelijking met een collega zonder beperking?"
+              min={30}
+              max={100}
+              step={5}
+              value={a.loonwaarde}
+              onChange={(event) => {
+                const loonwaarde = Number(event.target.value);
+                if (loonwaarde >= 30 && loonwaarde <= 100) zet({ loonwaarde });
+              }}
+            />
+            <Paragraph className="mox-hiring-note">
+              In procent. Bij 100 procent kan de kandidaat het werk zelfstandig
+              doen en is er geen loonkostensubsidie. De gemeente meet dit later
+              op de werkplek.
+            </Paragraph>
+          </div>
+          <div>
+            <NumberInput
+              label="4. Wat wordt het bruto uurloon, in euro?"
+              min={WML_UUR_EUROCENT / 100}
+              max={100}
+              step={0.01}
+              // Ongestuurd: tijdens het typen is het getal vaak nog te laag.
+              defaultValue={a.uurloon / 100}
+              onChange={(event) => {
+                const uurloon = Math.round(Number(event.target.value) * 100);
+                if (uurloon >= WML_UUR_EUROCENT && uurloon <= 10000)
+                  zet({ uurloon });
+              }}
+            />
+            <Paragraph className="mox-hiring-note">
+              Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per uur. De
+              subsidie en het voordeel gaan uit van het minimumloon; een hoger
+              uurloon maakt alleen de loonkosten hoger.
+            </Paragraph>
+          </div>
           {anders && (
             <Alert type="info">
               <Paragraph>

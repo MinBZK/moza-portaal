@@ -22,8 +22,9 @@ import Balans from "../_balans";
 import Waarom from "../_waarom";
 import {
   REGELINGEN,
-  loonwaardeVan,
+  onderMinimumloon,
   useAannemen,
+  uurloonTekst,
   type RegelingId,
 } from "../_useAannemen";
 import { datumNL, type Werkgever } from "../_werkgever";
@@ -141,7 +142,7 @@ const Aanvraag = ({
       bron: "Uw opgave",
     },
     { label: "Uren per week", waarde: String(a.uren), bron: "Uw antwoord" },
-    { label: "Loon", waarde: dienstverband.uurloonLabel, bron: "Uw opgave" },
+    { label: "Loon", waarde: uurloonTekst(a), bron: "Uw antwoord" },
   ];
 
   const indienen = () => {
@@ -222,10 +223,9 @@ const Aanvraag = ({
                   },
                   {
                     label: "Loonwaarde",
-                    waarde:
-                      a.zelfstandig === "ja"
-                        ? "Kandidaat kan het werk zelfstandig doen; geen subsidie"
-                        : `${loonwaardeVan(a)} procent, uw schatting; de gemeente meet op de werkplek`,
+                    waarde: onderMinimumloon(a)
+                      ? `${a.loonwaarde} procent, uw schatting; de gemeente meet op de werkplek`
+                      : "Kandidaat kan het werk zelfstandig doen; geen subsidie",
                     bron: "Uw antwoord",
                   },
                 ]}

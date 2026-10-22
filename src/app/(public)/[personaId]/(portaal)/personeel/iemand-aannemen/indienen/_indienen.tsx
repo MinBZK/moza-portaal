@@ -15,7 +15,7 @@ import {
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import { voegZaakToe } from "../../../lopendezaken/_assistentZaken";
-import { useAannemen } from "../_useAannemen";
+import { useAannemen, uurloonTekst } from "../_useAannemen";
 import { datumNL, type Werkgever } from "../_werkgever";
 
 const Loket = ({
@@ -59,7 +59,7 @@ const Indienen = ({
   const k = staat.keuzes;
 
   const gemeente = [
-    `Loonkostensubsidie: vanaf ${datumNL(dienstverband.aanvang)}, ${a.uren} uur per week, ${dienstverband.uurloonLabel}, functie ${dienstverband.functie}`,
+    `Loonkostensubsidie: vanaf ${datumNL(dienstverband.aanvang)}, ${a.uren} uur per week, ${uurloonTekst(a)}, functie ${dienstverband.functie}`,
   ];
   const niet: string[] = ["Loondispensatie (geldt niet)"];
   const later: string[] = [

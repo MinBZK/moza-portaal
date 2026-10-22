@@ -3,7 +3,7 @@
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan, loonkostenPerJaar } from "./_engine";
-import { inRegister, type Antwoorden } from "./_useAannemen";
+import { inRegister, onderMinimumloon, type Antwoorden } from "./_useAannemen";
 import {
   type Berekening,
   type Stand,
@@ -42,7 +42,7 @@ const Balans = ({
   );
   const manifest = useManifest();
 
-  const kosten = loonkostenPerJaar(antwoorden.uren);
+  const kosten = loonkostenPerJaar(antwoorden);
   // Tijdens het rekenen blijven de vorige bedragen staan; een nul zou als uitkomst lezen.
   const uitkomsten = (stand: Stand<Berekening>) =>
     stand.status === "klaar"
@@ -87,7 +87,8 @@ const Balans = ({
         <p className="mox-hiring-amount">{bedrag(lksJaar + lkvJaar)}</p>
         <Paragraph className="mox-hiring-note">
           per jaar: loonkostensubsidie {bedrag(lksJaar)} en loonkostenvoordeel{" "}
-          {bedrag(lkvJaar)}, bij {antwoorden.uren} uur per week.
+          {bedrag(lkvJaar)}, bij {antwoorden.uren} uur per week en{" "}
+          {euro(antwoorden.uurloon)} per uur.
         </Paragraph>
         {bron}
       </>
@@ -132,7 +133,7 @@ const Balans = ({
             <span style={{ inlineSize: "100%" }} />
           </span>
         </div>
-        {antwoorden.zelfstandig !== "ja" && (
+        {onderMinimumloon(antwoorden) && (
           <div>
             <dt>Loonkostensubsidie</dt>
             <dd>− {bedrag(lksJaar)}</dd>

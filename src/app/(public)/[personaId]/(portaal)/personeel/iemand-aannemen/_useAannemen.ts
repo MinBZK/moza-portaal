@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { euro } from "./_werkgever";
 
 /**
  * Stand van het scenario "Iemand aannemen" in deze browser: welke bronnen zijn
@@ -42,21 +43,18 @@ export const DOELGROEPEN = [
 ] as const;
 export type Doelgroep = (typeof DOELGROEPEN)[number][0];
 
-export const ZELFSTANDIG = [
-  ["ja", "Ja"],
-  ["nee", "Nee, de kandidaat werkt langzamer of kan minder taken aan"],
-  ["weetniet", "Weet ik niet"],
-] as const;
-export type Zelfstandig = (typeof ZELFSTANDIG)[number][0];
+/** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
+export const WML_UUR_EUROCENT = 1499;
 
-/** De drie korte vragen van het eerste scherm. */
+/** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
   doelgroep: Doelgroep;
   /** Uren per week, 8 tot 40. */
   uren: number;
-  zelfstandig: Zelfstandig;
-  /** Geschatte loonwaarde in procent, 30 tot 90; telt alleen als zelfstandig niet "ja" is. */
+  /** Geschatte loonwaarde in procent, 30 tot 100; 100 is zelfstandig tegen het minimumloon. */
   loonwaarde: number;
+  /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
+  uurloon: number;
 };
 
 export const REGELINGEN = ["lks", "lkv", "nrp", "jc", "wpa", "pp"] as const;
@@ -93,8 +91,8 @@ export type AannemenStaat = {
 export const STANDAARD_ANTWOORDEN: Antwoorden = {
   doelgroep: "register",
   uren: 32,
-  zelfstandig: "nee",
   loonwaarde: 60,
+  uurloon: WML_UUR_EUROCENT,
 };
 
 const LEEG: AannemenStaat = {
@@ -115,9 +113,13 @@ export const inRegister = (a: Antwoorden) =>
       ? "ja"
       : "onbekend";
 
-/** De loonwaarde waarmee de engine rekent: 100 als de kandidaat het werk zelfstandig kan. */
-export const loonwaardeVan = (a: Antwoorden) =>
-  a.zelfstandig === "ja" ? 100 : a.loonwaarde;
+/** Onder 100 procent kan de kandidaat het minimumloon niet zelfstandig verdienen. */
+export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
+
+export const uurloonTekst = (a: Antwoorden) =>
+  a.uurloon === WML_UUR_EUROCENT
+    ? `wettelijk minimumloon, ${euro(a.uurloon)} per uur`
+    : `${euro(a.uurloon)} per uur`;
 
 const luisteraars = new Set<() => void>();
 let vorige: { rauw: string | null; staat: AannemenStaat } | null = null;
