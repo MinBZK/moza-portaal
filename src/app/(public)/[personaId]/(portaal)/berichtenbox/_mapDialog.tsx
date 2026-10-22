@@ -5,6 +5,7 @@ import {
   ActionGroup,
   Alert,
   Button,
+  LinkButton,
   FormFieldTextInput,
   Heading,
   Paragraph,
@@ -93,17 +94,17 @@ const MapDialog = ({
       {andere.length > 0 && (
         <>
           <Paragraph>Kies een map:</Paragraph>
-          <ul className="rhc-folder-picker">
+          <ul>
             {andere.map((map, index) => (
               <li key={map}>
-                <Button
+                <LinkButton
                   ref={index === 0 ? eersteRef : undefined}
                   appearance="subtle-button"
                   onClick={() => void kies(map)}
                 >
                   <FolderIcon />
                   {map}
-                </Button>
+                </LinkButton>
               </li>
             ))}
           </ul>
