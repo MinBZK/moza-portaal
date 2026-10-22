@@ -171,6 +171,7 @@ const TemplatePage = async () => {
       </Drawer>
 
       <AccordionProvider
+        headingLevel={2}
         sections={[
           {
             body: "Accordioninhoud 1",

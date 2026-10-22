@@ -44,6 +44,7 @@ const ComingSoon = ({
     <Heading level={2}>Veelgestelde vragen</Heading>
     <div className="mox-faq-card">
       <AccordionProvider
+        headingLevel={3}
         sections={questions.map(({ question, answer }) => ({
           label: question,
           body: <Paragraph>{answer}</Paragraph>,
