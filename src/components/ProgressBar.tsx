@@ -28,10 +28,10 @@ const ProgressBar = ({
       aria-valuemax={bepaald ? max : undefined}
       aria-valuenow={bepaald ? value : undefined}
       aria-valuetext={bepaald ? valueText : undefined}
-      className={`mox-progressbar${bepaald ? "" : " mox-progressbar--indeterminate"}`}
+      className={`rhc-progressbar${bepaald ? "" : " rhc-progressbar--indeterminate"}`}
     >
       <div
-        className="mox-progressbar-track"
+        className="rhc-progressbar-track"
         style={bepaald ? { inlineSize: `${procent}%` } : undefined}
       />
     </div>

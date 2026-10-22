@@ -257,7 +257,7 @@ const BerichtDetail = ({
             )}
 
             {status && (
-              <ActionGroup direction="row" className="mox-action-group-dense">
+              <ActionGroup direction="row" className="rhc-action-group-dense">
                 <LinkButton
                   pressed={gemarkeerd}
                   onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}

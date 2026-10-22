@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ActionGroup, Button, Icon } from "@/components/rhc";
+import { ActionGroup, Icon, LinkButton } from "@/components/rhc";
 import type { DemoSubsidie } from "@/demo";
 import { BewaarKnop, NietRelevantKnop } from "../bewaard/_bewaarActies";
 import type { BewaarItem } from "../bewaard/_useBewaard";
@@ -30,22 +30,24 @@ const SubsidieActies = ({
   const item = bewaarItemVan(subsidie);
   return (
     // role vast: ActionGroup telt de children anders op server en client.
-    <ActionGroup role="group" direction="row" className="mox-action-group">
-      <BewaarKnop item={item} />
+    <ActionGroup
+      role="group"
+      direction="row"
+      className="mox-action-group rhc-action-group-dense"
+    >
+      <BewaarKnop item={item} alsLink />
       {delen && (
-        <Button appearance="secondary-action-button">
+        <LinkButton>
           <Icon icon="delen" />
-          Deel
-        </Button>
+          Delen
+        </LinkButton>
       )}
-      <Link
-        href={assistentLink(subsidie)}
-        className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-      >
+      {/* Een echte link (naar de assistent), met dezelfde opmaak. */}
+      <Link href={assistentLink(subsidie)} className="utrecht-link-button">
         <Icon icon="communicatie" />
-        Vraag aan de digitale assistent
+        Aan digitale assistent vragen
       </Link>
-      <NietRelevantKnop item={item} />
+      <NietRelevantKnop item={item} alsLink />
     </ActionGroup>
   );
 };

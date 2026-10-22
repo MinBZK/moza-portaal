@@ -49,10 +49,10 @@ const CountdownBar = forwardRef(function CountdownBar(
   }, [completed, onComplete]);
 
   return (
-    <div className="mox-countdown">
-      <div className="mox-progressbar" aria-hidden="true">
+    <div className="rhc-countdown">
+      <div className="rhc-progressbar" aria-hidden="true">
         <div
-          className="mox-progressbar-track"
+          className="rhc-progressbar-track"
           style={{ inlineSize: `${progress}%` }}
         />
       </div>

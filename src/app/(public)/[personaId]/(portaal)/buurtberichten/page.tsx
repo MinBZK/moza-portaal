@@ -4,7 +4,7 @@ import {
   DataSummary,
   DataSummaryItem,
   ActionGroup,
-  Button,
+  LinkButton,
 } from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import {
@@ -52,15 +52,19 @@ const OmgevingsberichtenPage = async () => {
               </DataSummary>
 
               {/* role vast: ActionGroup telt de children anders op server en client */}
-              <ActionGroup role="group" direction="row">
-                <BewaarKnop item={item} />
+              <ActionGroup
+                role="group"
+                direction="row"
+                className="rhc-action-group-dense"
+              >
+                <BewaarKnop item={item} alsLink />
                 {flags.mox_delen && (
-                  <Button appearance="secondary-action-button">
+                  <LinkButton>
                     <Icon icon="delen" />
-                    Deel
-                  </Button>
+                    Delen
+                  </LinkButton>
                 )}
-                <NietRelevantKnop item={item} />
+                <NietRelevantKnop item={item} alsLink />
               </ActionGroup>
             </div>
           </RelevantItem>

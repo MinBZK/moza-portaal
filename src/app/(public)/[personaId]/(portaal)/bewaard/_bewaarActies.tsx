@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Button,
   Link,
+  LinkButton,
   Paragraph,
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
@@ -13,39 +14,78 @@ import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
 // Een span: de knoppen staan in een ActionGroup, en dat is een <p>.
 const FoutMelding = () => <span role="alert">{bewaarFoutTekst}</span>;
 
-export const BewaarKnop = ({ item }: { item: BewaarItem }) => {
+/**
+ * Een knop van een actie bij een item. Met `alsLink` een knop met de opmaak
+ * van een link (LinkButton), zoals in een compacte actiebalk
+ * (rhc-action-group-dense); anders een secundaire knop.
+ */
+const ActieKnop = ({
+  alsLink,
+  pressed,
+  onClick,
+  children,
+}: {
+  alsLink: boolean;
+  pressed?: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) =>
+  alsLink ? (
+    <LinkButton pressed={pressed} onClick={onClick}>
+      {children}
+    </LinkButton>
+  ) : (
+    <Button
+      appearance="secondary-action-button"
+      pressed={pressed}
+      onClick={onClick}
+    >
+      {children}
+    </Button>
+  );
+
+export const BewaarKnop = ({
+  item,
+  alsLink = false,
+}: {
+  item: BewaarItem;
+  alsLink?: boolean;
+}) => {
   const { staat, fout, zetBewaard } = useBewaard();
   const bewaard = !!staat?.bewaard[item.sleutel];
 
   return (
     <>
-      <Button
-        appearance="secondary-action-button"
+      <ActieKnop
+        alsLink={alsLink}
         pressed={bewaard}
         onClick={() => zetBewaard(item, !bewaard)}
       >
         <Icon icon={bewaard ? "vinkje" : "favoriet"} />
-        Bewaar
+        Bewaren
         <VisuallyHidden>: {item.titel}</VisuallyHidden>
-      </Button>
+      </ActieKnop>
       {fout && <FoutMelding />}
     </>
   );
 };
 
-export const NietRelevantKnop = ({ item }: { item: BewaarItem }) => {
+export const NietRelevantKnop = ({
+  item,
+  alsLink = false,
+}: {
+  item: BewaarItem;
+  alsLink?: boolean;
+}) => {
   const { fout, zetNietRelevant } = useBewaard();
 
   return (
     <>
-      <Button
-        appearance="secondary-action-button"
-        onClick={() => zetNietRelevant(item, true)}
-      >
+      <ActieKnop alsLink={alsLink} onClick={() => zetNietRelevant(item, true)}>
         <Icon icon="kruis" />
         Niet relevant voor mij
         <VisuallyHidden>: {item.titel}</VisuallyHidden>
-      </Button>
+      </ActieKnop>
       {fout && <FoutMelding />}
     </>
   );

@@ -289,21 +289,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-inline-start: var(--rhc-space-4xl);
 	}
 
-	/* --- Action group --- */
-	/* Compacte rij acties op een grijze balk, zoals onder een bericht
-	  (BerichtDetail: Markeren, Als ongelezen markeren, …). */
-	.mox-action-group-dense {
-		background-color: var(--rhc-color-cool-grey-100);
-		padding: var(--rhc-space-md);
-
-		button {
-			padding-block: var(--rhc-space-sm);
-			padding-inline: var(--rhc-space-md);
-			text-align: start;
-			text-decoration: none;
-		}
-	}
-
 	/* --- Badges --- */
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
@@ -609,58 +594,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* --- Voortgangsbalk --- */
-	/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
-	.mox-progressbar {
-		block-size: var(--rhc-space-lg);
-		border-color: var(--rhc-color-cool-grey-400);
-		border-radius: var(--rhc-border-radius-round);
-		border-width: var(--rhc-border-width-sm);
-		inline-size: 100%;
-		overflow: hidden;
-	}
-
-	.mox-progressbar {
-		background-color: var(--rhc-color-wit);
-	}
-
-	.mox-progressbar-track {
-		background-color: var(--rhc-color-groen-500) !important;
-		block-size: 100%;
-		border-radius: var(--rhc-border-radius-round);
-	}
-
-	/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
-	  Bij "minder beweging" een stilstaande, halfvolle balk. */
-	/* In een info-melding de kleur van die melding (het info-icoon), zoals
-	  bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
-	.utrecht-alert--info .mox-progressbar-track {
-		background-color: var(--utrecht-alert-icon-info-color) !important;
-	}
-
-	.mox-progressbar--indeterminate .mox-progressbar-track {
-		inline-size: 40%;
-
-		@media (prefers-reduced-motion: no-preference) {
-			animation: mox-progressbar-indeterminate 1.4s ease-in-out infinite;
-		}
-	}
-
 	/* ==== 6. Pagina's en functies =============================================== */
 
 	/* --- Contactmomenten --- */
-	/* Aftelbalk met pauzeknop (contactmomenten) */
-	.mox-countdown {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-lg);
-
-		.mox-progressbar {
-			background-color: var(--rhc-color-cool-grey-200);
-			flex: 1;
-		}
-	}
-
 	/* Tijdlijn met contactmomenten: een lijn door de statusstippen */
 	.mox-timeline {
 		display: grid;
@@ -918,20 +854,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-size: var(--rhc-text-font-size-sm);
 		gap: var(--rhc-space-sm);
 	}
-
-	/* --- Subsidies --- */
-	/* Budget vergeven bij een subsidie: balk met het percentage ernaast */
-	.mox-budget {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-md);
-
-		.mox-progressbar {
-			background-color: var(--rhc-color-cool-grey-200);
-			flex: 1;
-			max-inline-size: 20rem;
-		}
-	}
 }
 
 /* Menu */
@@ -994,16 +916,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
-@keyframes mox-progressbar-indeterminate {
-	from {
-		transform: translateX(-100%);
-	}
-
-	to {
-		transform: translateX(250%);
-	}
-}
-
 @keyframes mox-wait {
 	to {
 		clip-path: inset(0 -33% 0 0);

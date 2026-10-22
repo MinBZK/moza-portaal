@@ -630,7 +630,6 @@ body {
   gap: var(--rhc-space-sm);
 }
 
-/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
 .rhc-action-required {
   align-items: center;
   display: inline-flex;
@@ -884,6 +883,80 @@ body {
   }
 }
 
+/* --- Voortgangsbalk --- */
+/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+
+.rhc-progressbar {
+  background-color: var(--rhc-color-wit);
+  block-size: var(--rhc-space-lg);
+  border-color: var(--rhc-color-cool-grey-400);
+  border-radius: var(--rhc-border-radius-round);
+  border-width: var(--rhc-border-width-sm);
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.rhc-progressbar-track {
+  background-color: var(--rhc-color-groen-500) !important;
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+}
+
+/* In een info-melding de kleur van die melding (het info-icoon), zoals
+  bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
+.utrecht-alert--info .rhc-progressbar-track {
+  background-color: var(--utrecht-alert-icon-info-color) !important;
+}
+
+/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
+  Bij "minder beweging" een stilstaande, halfvolle balk. */
+.rhc-progressbar--indeterminate .rhc-progressbar-track {
+  inline-size: 40%;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rhc-progressbar-indeterminate 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes rhc-progressbar-indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* --- Aftelbalk --- */
+/* Aftelbalk met pauzeknop (contactmomenten) */
+
+.rhc-countdown {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-lg);
+
+  .rhc-progressbar {
+    background-color: var(--rhc-color-cool-grey-200);
+    flex: 1;
+  }
+}
+
+/* --- Meter --- */
+/* Gemeten stand binnen een bereik, zoals budget vergeven: balk met de waarde ernaast */
+
+.rhc-graph-meter {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+
+  .rhc-progressbar {
+    background-color: var(--rhc-color-cool-grey-200);
+    flex: 1;
+    max-inline-size: 20rem;
+  }
+}
+
 /* --- Paginering --- */
 
 .rhc-theme.mox-theme {
@@ -910,6 +983,7 @@ body {
   }
 }
 
+
 /* Een melding die in zijn geheel een link is, zoals de status van een zaak
   die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
 .rhc-theme.mox-theme {
@@ -931,6 +1005,20 @@ body {
       outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
       outline-offset: var(--utrecht-focus-outline-offset);
     }
+  }
+
+}
+
+/* --- Action group --- */
+.rhc-action-group-dense {
+  margin-block-start: 0 !important;
+
+  /* Knoppen en links in de balk zien er hetzelfde uit: geen onderstreping. */
+  :is(button, a) {
+    padding-block: var(--rhc-space-sm);
+    padding-inline: var(--rhc-space-md);
+    text-align: start;
+    text-decoration: none;
   }
 }
 
