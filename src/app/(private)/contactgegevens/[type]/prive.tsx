@@ -1,8 +1,6 @@
 "use client";
 
-import { AanhefEditBox } from "@/app/(private)/contactgegevens/[type]/_aanhefEditBox";
-import { ContactEditBox } from "@/app/(private)/contactgegevens/[type]/_contactEditBox";
-import { TaalEditBox } from "@/app/(private)/contactgegevens/[type]/_taalEditBox";
+import { ContactDetails } from "@/app/(private)/contactgegevens/[type]/_contactDetails";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
 import { useSession } from "next-auth/react";
 
@@ -33,24 +31,13 @@ const Prive = () => {
 
   return (
     <div className="rhc-mox-row-gap">
-      <AanhefEditBox voorkeur={aanhef} idenType={"BSN"} idenValue={bsn} />
-
-      <TaalEditBox voorkeur={taal} idenType={"BSN"} idenValue={bsn} />
-
-      <ContactEditBox
-        name={"Email"}
-        label={"E-mailadres"}
-        contactGegeven={email}
+      <ContactDetails
         idenType={"BSN"}
         idenValue={bsn}
-      />
-
-      <ContactEditBox
-        name={"Telefoonnummer"}
-        label={"Telefoonnummer"}
-        contactGegeven={telefoonnummer}
-        idenType={"BSN"}
-        idenValue={bsn}
+        salutation={aanhef}
+        language={taal}
+        email={email}
+        phone={telefoonnummer}
       />
     </div>
   );

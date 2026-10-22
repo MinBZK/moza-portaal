@@ -22,7 +22,29 @@ export const LANGUAGES: Language[] = [
     localLanguageName: "Engels",
     href: "#",
   },
+  {
+    lang: "fy",
+    languageName: "Frysk",
+    localLanguageName: "Fries",
+    href: "#",
+  },
+  {
+    // Papiamento as written on Aruba.
+    lang: "pap-AW",
+    languageName: "Papiamento",
+    href: "#",
+  },
+  {
+    // Papiamentu as written on Bonaire and Curaçao.
+    lang: "pap-CW",
+    languageName: "Papiamentu",
+    href: "#",
+  },
 ];
+
+/** Name as shown in the language menu, for example "English (Engels)". */
+export const languageLabel = ({ languageName, localLanguageName }: Language) =>
+  localLanguageName ? `${languageName} (${localLanguageName})` : languageName;
 
 const LanguageSelect = ({
   languages,

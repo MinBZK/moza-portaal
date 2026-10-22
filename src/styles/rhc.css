@@ -272,6 +272,8 @@ body {
       de knop: dan gaat hij scrollen. Zonder grens krijgt hij zijn eigen
       breedte van RHC terug (--utrecht-listbox-inline-size). */
     max-inline-size: none;
+    /* As wide as the longest language name, so names do not wrap. */
+    min-inline-size: max-content;
     position: absolute;
   }
 
@@ -422,6 +424,10 @@ body {
       column-gap: var(--rhc-space-lg);
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rhc-data-summary__item-key {
+      flex-basis: 25%;
     }
   }
 }
