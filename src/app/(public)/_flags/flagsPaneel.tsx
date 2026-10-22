@@ -21,6 +21,7 @@ import {
   type FeatureFlags,
 } from "@/app/(private)/instellingen/_featureFlags";
 import SideOverlay from "@/components/SideOverlay";
+import Switch from "@/components/Switch";
 import AssistentPaneel from "./assistentPaneel";
 
 const FlagsPaneel = ({
@@ -113,22 +114,14 @@ const FlagsPaneel = ({
       </div>
 
       <div>
-        <Fieldset legend="Huisstijl">
-          <FormFieldRadio
-            name="huisstijl"
-            value="huidig"
-            label="Huidige MijnOverheid huisstijl"
-            checked={!zichtbareFlags.mox_nieuweHuisstijl}
-            onChange={() => zetFlag("mox_nieuweHuisstijl", false)}
-          />
-          <FormFieldRadio
-            name="huisstijl"
-            value="nieuw"
-            label="Nieuwe MijnOverheid huisstijl (in ontwikkeling)"
-            checked={zichtbareFlags.mox_nieuweHuisstijl}
-            onChange={() => zetFlag("mox_nieuweHuisstijl", true)}
-          />
-        </Fieldset>
+        <Switch
+          label="Huisstijl"
+          twoWay
+          offText="Huidig"
+          onText="Nieuw"
+          checked={zichtbareFlags.mox_nieuweHuisstijl}
+          onChange={(nieuw) => zetFlag("mox_nieuweHuisstijl", nieuw)}
+        />
       </div>
       <div className="prototype-side-overlay__footer">
         <Button

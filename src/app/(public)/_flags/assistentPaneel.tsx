@@ -5,7 +5,6 @@ import {
   Button,
   Fieldset,
   FormFieldCheckboxOption,
-  FormFieldRadio,
   FormFieldTextInput,
 } from "@rijkshuisstijl-community/components-react";
 import {
@@ -14,6 +13,7 @@ import {
   zetAssistentInstelling,
   type AssistentDemo,
 } from "./assistentInstellingen";
+import Switch from "@/components/Switch";
 
 const DEMO_KNOPPEN: [AssistentDemo, string][] = [
   ["testantwoord", "Testantwoord met bronvermelding tonen"],
@@ -42,30 +42,26 @@ const AssistentPaneel = ({
   return (
     <div>
       <Fieldset legend="Digitale assistent">
-        <Fieldset legend="LLM">
-          {(["vlam", "claude"] as const).map((waarde) => (
-            <FormFieldRadio
-              key={waarde}
-              name="assistent-llm"
-              value={waarde}
-              label={waarde.toUpperCase()}
-              checked={instellingen.llm === waarde}
-              onChange={() => zetAssistentInstelling("llm", waarde)}
-            />
-          ))}
-        </Fieldset>
-        <Fieldset legend="Transport">
-          {(["mcp", "cli"] as const).map((waarde) => (
-            <FormFieldRadio
-              key={waarde}
-              name="assistent-transport"
-              value={waarde}
-              label={waarde.toUpperCase()}
-              checked={instellingen.transport === waarde}
-              onChange={() => zetAssistentInstelling("transport", waarde)}
-            />
-          ))}
-        </Fieldset>
+        <Switch
+          label="LLM"
+          twoWay
+          offText="VLAM"
+          onText="Claude"
+          checked={instellingen.llm === "claude"}
+          onChange={(claude) =>
+            zetAssistentInstelling("llm", claude ? "claude" : "vlam")
+          }
+        />
+        <Switch
+          label="Transport"
+          twoWay
+          offText="MCP"
+          onText="CLI"
+          checked={instellingen.transport === "cli"}
+          onChange={(cli) =>
+            zetAssistentInstelling("transport", cli ? "cli" : "mcp")
+          }
+        />
         <FormFieldCheckboxOption
           label="Demo-modus: speel het draaiboek af zonder backend"
           description="Stel een voorbeeldvraag (energiebesparing, bedrijfsgegevens, belastingaangifte) en beantwoord de vragen. Typ “fout” voor de foutmelding."

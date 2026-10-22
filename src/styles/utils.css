@@ -124,7 +124,10 @@ dialog.prototype-side-overlay[open] {
 		margin-block: var(--rhc-space-lg);
 	}
 
-	button {
+	/* Not the knob of a Switch: that is a button too, but has its own look.
+	  :where() keeps the specificity of a plain "button", so a danger button
+	  (Hard reset) still wins. */
+	button:not(:where(.rhc-mox-switch__button)) {
 		background-color: var(--rhc-color-wit);
 		margin-block-start: var(--rhc-space-lg);
 	}

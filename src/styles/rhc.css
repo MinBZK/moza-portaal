@@ -1594,11 +1594,16 @@ body {
 /* --- Switch --- */
 /* Switch: role="switch". The knob moves and the text "Aan"/"Uit" changes,
   so the state is not shown by colour alone. */
+/* Label above, the switch below it on its own line, like a form field. */
 .rhc-mox-switch {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--rhc-space-md);
+  flex-direction: column;
+  gap: var(--rhc-space-2xs);
+}
+
+.utrecht-form-label.rhc-mox-switch__label {
+  display: block;
 }
 
 .rhc-mox-switch__button {
@@ -1609,9 +1614,13 @@ body {
   cursor: pointer;
   display: inline-flex;
   font: inherit;
-  gap: var(--rhc-space-sm);
+  gap: var(--rhc-space-md);
   min-block-size: 44px;
   padding: 0;
+
+  &:hover .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-lintblauw-600);
+  }
 
   &:focus-visible {
     border-radius: var(--rhc-border-radius-sm);
@@ -1649,19 +1658,52 @@ body {
 
 .rhc-mox-switch__button[aria-checked="true"] {
   .rhc-mox-switch__track {
-    background-color: var(--rhc-color-lintblauw-500);
+    background-color: var(--rhc-color-wit);
     border-color: var(--rhc-color-lintblauw-500);
+
+    &:hover .rhc-mox-switch__thumb {
+      background-color: var(--rhc-color-lintblauw-600);
+    }
   }
 
   .rhc-mox-switch__thumb {
-    background-color: var(--rhc-color-wit);
+    background-color: var(--rhc-color-lintblauw-500);
     transform: translateX(1.25rem);
+
+    &:hover {
+      background-color: var(--rhc-color-lintblauw-600);
+    }
   }
 }
 
 .rhc-mox-switch__state {
   font-weight: var(--rhc-text-font-weight-semi-bold);
   min-inline-size: 2rem;
+}
+
+/* Two-way: a choice between two options, not on/off. The track has the
+  same colour in both positions; the chosen option is in bold. */
+.rhc-mox-switch__button--two-way .rhc-mox-switch__track,
+.rhc-mox-switch__button--two-way[aria-checked="true"] .rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  border-color: var(--rhc-color-lintblauw-500);
+}
+
+.rhc-mox-switch__button--two-way .rhc-mox-switch__thumb {
+  background-color: var(--rhc-color-lintblauw-500);
+
+  &:hover {
+    background-color: var(--rhc-color-lintblauw-600);
+  }
+}
+
+.rhc-mox-switch__option {
+  color: var(--rhc-color-foreground-subtle);
+}
+
+.rhc-mox-switch__option--chosen {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
 /* --- Text badge --- */
