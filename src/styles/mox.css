@@ -339,30 +339,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		background-color: var(--rhc-color-groen-100);
 	}
 
-	/* --- Iconen en links --- */
-	.utrecht-icon {
-		block-size: var(--rhc-size-icon-md);
-		flex-shrink: 0;
-		inline-size: var(--rhc-size-icon-md)
-	}
-
-	.utrecht-link .utrecht-icon {
-		vertical-align: middle;
-	}
-
-	/* Icoon midden op de eerste regel tekst, zoals RHC dat bedoelt: het vak
-	  van het icoon is één regel hoog (1lh) en centreert de svg. De vaste maat
-	  hierboven zou dat anders tenietdoen. */
-	.rhc-link-list__item .utrecht-link-list__link {
-		align-items: flex-start;
-
-		.utrecht-icon {
-			block-size: 1lh;
-			/* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
-			inset-block-start: 0;
-		}
-	}
-
 	/* --- Kaarten --- */
 	.mox-card {
 		.rhc-row-gap {

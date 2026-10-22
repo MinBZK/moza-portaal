@@ -647,6 +647,12 @@ body {
   }
 }
 
+/* Paperclip bij een bericht met bijlage: 16 bij 16 pixels. Er is geen
+  token voor deze icoongrootte. */
+.rhc-attachment-icon {
+  --utrecht-icon-size: 1rem;
+}
+
 .rhc-notice-amount-inbox {
   color: var(--rhc-color-cool-grey-500);
   font-size: var(--rhc-text-font-size-sm);
@@ -740,6 +746,33 @@ body {
     &:hover {
       color: var(--rhc-color-rood-600);
     }
+  }
+}
+
+/* --- Bewaren --- */
+.rhc-icon-saved svg {
+  fill: var(--rhc-color-robijnrood-400);
+  stroke: var(--rhc-color-robijnrood-400);
+}
+
+/* --- Iconen en links --- */
+.utrecht-icon {
+  block-size: var(--rhc-size-icon-md);
+  flex-shrink: 0;
+  inline-size: var(--rhc-size-icon-md)
+}
+
+.utrecht-link .utrecht-icon {
+  vertical-align: middle;
+}
+
+.rhc-link-list__item .utrecht-link-list__link {
+  align-items: flex-start;
+
+  .utrecht-icon {
+    block-size: 1lh;
+    /* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
+    inset-block-start: 0;
   }
 }
 

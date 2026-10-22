@@ -67,7 +67,7 @@ const BerichtRij = ({
     <TableCell>
       {bericht.heeftBijlage && (
         <>
-          <Icon icon="paperclip" />
+          <Icon icon="paperclip" className="rhc-attachment-icon" />
           <VisuallyHidden>Heeft bijlage</VisuallyHidden>
         </>
       )}

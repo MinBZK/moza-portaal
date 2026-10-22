@@ -61,8 +61,11 @@ export const BewaarKnop = ({
         pressed={bewaard}
         onClick={() => zetBewaard(item, !bewaard)}
       >
-        <Icon icon={bewaard ? "vinkje" : "favoriet"} />
-        Bewaren
+        <Icon
+          icon="favoriet"
+          className={bewaard ? "rhc-icon-saved" : undefined}
+        />
+        {bewaard ? "Bewaard" : "Bewaren"}
         <VisuallyHidden>: {item.titel}</VisuallyHidden>
       </ActieKnop>
       {fout && <FoutMelding />}
