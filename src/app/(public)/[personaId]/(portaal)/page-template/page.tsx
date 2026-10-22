@@ -237,13 +237,13 @@ const TemplatePage = async () => {
       </DataSummary>
 
       <ActionGroup direction="row">
-        <Button appearance="secondary-action-button">Bewaar</Button>
-        <Button appearance="secondary-action-button">Deel</Button>
+        <Button appearance="secondary-action-button">Bewaren</Button>
+        <Button appearance="secondary-action-button">Delen</Button>
         <Button appearance="secondary-action-button">
           Niet relevant voor mij
         </Button>
         <Button appearance="secondary-action-button">
-          Vraag aan de digitale assistent
+          Aan digitale assistent vragen
         </Button>
       </ActionGroup>
 

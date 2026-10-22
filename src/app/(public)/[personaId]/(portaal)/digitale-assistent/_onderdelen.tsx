@@ -133,7 +133,7 @@ export const Suggesties = ({
     ))}
     {item.opnieuw && (
       <Button appearance="subtle-button" onClick={onUitleg}>
-        Toon de uitleg opnieuw
+        Uitleg opnieuw tonen
       </Button>
     )}
   </div>
@@ -513,7 +513,7 @@ export const VraagKaart = ({
               Antwoord versturen
             </Button>
             <Button appearance="secondary-action-button" onClick={uitleg}>
-              Leg mij dit uit
+              Uitleg vragen
             </Button>
           </ActionGroup>
         )}

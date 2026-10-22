@@ -219,7 +219,7 @@ dialog.prototype-side-overlay[open] {
 	transform: rotate(-45deg);
 }
 
-/* Label "Actief" op de plek van de knop "Gebruik deze persona". */
+/* Label "Actief" op de plek van de knop "Deze persona gebruiken". */
 .prototype-persona-card__active {
 	background: var(--rhc-color-groen-500);
 	border-radius: var(--rhc-border-radius-sm);

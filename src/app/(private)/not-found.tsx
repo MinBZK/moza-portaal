@@ -14,7 +14,7 @@ export default function PrivateNotFound() {
             href="/"
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Terug naar Home
+            Terug naar de startpagina
           </Link>
         </Paragraph>
       </div>

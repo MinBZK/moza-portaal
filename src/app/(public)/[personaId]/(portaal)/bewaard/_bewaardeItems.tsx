@@ -13,7 +13,7 @@ import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
 
 const tekst = {
   bewaard: {
-    knop: "Verwijder uit bewaarde items",
+    knop: "Uit bewaarde items verwijderen",
     melding: (titel: string) =>
       `"${titel}" staat niet meer bij uw bewaarde items.`,
   },

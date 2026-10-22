@@ -334,7 +334,7 @@ const Chat = ({
             id: nieuwId(),
             soort: "fout",
             tekst: uitTekst.tekst,
-            vervolg: { label: "Neem contact op", href: "/contact" },
+            vervolg: { label: "Contact opnemen", href: "/contact" },
           });
         } else {
           nieuw.push({
@@ -343,7 +343,7 @@ const Chat = ({
             tekst: uitTekst.tekst,
             bronnen,
             vervolg: beurt.zaakGemaakt
-              ? { label: "Bekijk in Lopende zaken", href: "/lopendezaken" }
+              ? { label: "In Lopende zaken bekijken", href: "/lopendezaken" }
               : undefined,
           });
         }

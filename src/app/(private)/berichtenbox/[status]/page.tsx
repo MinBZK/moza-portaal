@@ -27,7 +27,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
       <TableCell>
         <input
           type="checkbox"
-          aria-label="Selecteer bericht"
+          aria-label="Bericht selecteren"
           className="utrecht-checkbox utrecht-checkbox--html-input utrecht-checkbox--custom"
         />
       </TableCell>
@@ -121,11 +121,11 @@ const BerichtenboxPage = async ({
             <ActionGroup direction="row">
               <Button appearance="subtle-button" disabled>
                 <Icon icon="inbox" />
-                Verplaats naar inbox
+                Naar inbox verplaatsen
               </Button>
               <Button appearance="subtle-button" disabled>
                 <ArchiveIcon />
-                Verplaats naar archief
+                Naar archief verplaatsen
               </Button>
             </ActionGroup>
             <PageNumberNavigation page={1} totalPages={5} />
@@ -163,7 +163,7 @@ const BerichtenboxPage = async ({
               href="#"
               icon={<Icon key="icoon" icon="chevron-right" />}
             >
-              Haal machtigingen op
+              Machtigingen ophalen
             </LinkListLink>
           </LinkList>
 

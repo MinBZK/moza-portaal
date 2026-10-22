@@ -80,7 +80,7 @@ const OndernemingsgegevensPage = async () => {
                 href={href}
                 className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
               >
-                Ga naar {titel}
+                Naar {titel}
               </NextLink>
             </ActionGroup>
           </section>
