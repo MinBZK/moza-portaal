@@ -1352,6 +1352,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 /* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
 	 regelingkaarten en de tijdlijn van vastleggingen. */
 .mox-theme {
+	/* De gekozen waarde van een schuifregelaar ("32 uur") blijft op één regel. */
+	.rhc-range-slider__value {
+		white-space: nowrap;
+	}
+
 	.mox-hiring-steps {
 		display: flex;
 		flex-wrap: wrap;

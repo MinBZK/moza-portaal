@@ -12,7 +12,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemenRegeling, DemoAannemenTrace } from "@/demo";
-import NumberInput from "@/components/NumberInput";
+import RangeSlider from "@/components/RangeSlider";
 import Balans from "./_balans";
 import { euro } from "./_werkgever";
 import {
@@ -24,10 +24,13 @@ import {
 } from "./_useAannemen";
 
 /**
- * Scherm 1: vier korte vragen met getalvelden, en rechts live wat de
+ * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
+/** Bovengrens van de schuifregelaar voor het uurloon: € 30 per uur. */
+const MAX_UURLOON_EUROCENT = 3000;
+
 const Vragen = ({
   onderneming,
   traces,
@@ -67,48 +70,43 @@ const Vragen = ({
               />
             ))}
           </Fieldset>
-          <NumberInput
+          <RangeSlider
             label="2. Hoeveel uur per week gaat de kandidaat werken?"
             min={8}
             max={40}
             step={1}
             value={a.uren}
-            onChange={(event) => {
-              const uren = Number(event.target.value);
-              if (uren >= 8 && uren <= 40) zet({ uren });
-            }}
+            onChange={(uren) => zet({ uren })}
+            formatWaarde={(uren) => `${uren} uur`}
+            gevuld
           />
           <div>
-            <NumberInput
-              label="3. Hoeveel kan de kandidaat, in vergelijking met een collega zonder beperking?"
+            <RangeSlider
+              label="3. Hoeveel kan de kandidaat?"
               min={30}
               max={100}
               step={5}
               value={a.loonwaarde}
-              onChange={(event) => {
-                const loonwaarde = Number(event.target.value);
-                if (loonwaarde >= 30 && loonwaarde <= 100) zet({ loonwaarde });
-              }}
+              onChange={(loonwaarde) => zet({ loonwaarde })}
+              formatWaarde={(loonwaarde) => `${loonwaarde} procent`}
+              gevuld
             />
             <Paragraph className="mox-hiring-note">
-              In procent. Bij 100 procent kan de kandidaat het werk zelfstandig
-              doen en is er geen loonkostensubsidie. De gemeente meet dit later
-              op de werkplek.
+              In vergelijking met een collega zonder beperking. Bij 100 procent
+              kan de kandidaat het werk zelfstandig doen en is er geen
+              loonkostensubsidie. De gemeente meet dit later op de werkplek.
             </Paragraph>
           </div>
           <div>
-            <NumberInput
-              label="4. Wat wordt het bruto uurloon, in euro?"
-              min={WML_UUR_EUROCENT / 100}
-              max={100}
-              step={0.01}
-              // Ongestuurd: tijdens het typen is het getal vaak nog te laag.
-              defaultValue={a.uurloon / 100}
-              onChange={(event) => {
-                const uurloon = Math.round(Number(event.target.value) * 100);
-                if (uurloon >= WML_UUR_EUROCENT && uurloon <= 10000)
-                  zet({ uurloon });
-              }}
+            <RangeSlider
+              label="4. Wat wordt het bruto uurloon?"
+              min={WML_UUR_EUROCENT}
+              max={MAX_UURLOON_EUROCENT}
+              step={1}
+              value={Math.min(a.uurloon, MAX_UURLOON_EUROCENT)}
+              onChange={(uurloon) => zet({ uurloon })}
+              formatWaarde={euro}
+              gevuld
             />
             <Paragraph className="mox-hiring-note">
               Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per uur. De
