@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import {
   Alert,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
+  LinkList,
+  LinkListLink,
   VisuallyHidden,
 } from "@/components/rhc";
+import { PdfIcon } from "@/components/icons/pdfIcon";
+import { TextDocumentIcon } from "@/components/icons/textDocumentIcon";
+import ProgressBar from "@/components/ProgressBar";
 
 /** Hoe lang het laden duurt; anders flitst de melding alleen even. */
 const LAADTIJD = 1500;
@@ -16,7 +19,14 @@ const LAADTIJD = 1500;
  * Berichtenbox A/B/C-test, variant B: het bericht als pdf in de pagina, met
  * links om het te downloaden of als tekst te lezen. Uit moza-poc.
  */
-const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
+const PdfVoorbeeld = ({
+  pdf,
+  tekst,
+}: {
+  pdf: string;
+  /** Tekstversie; een bijlage uit het stelsel heeft die niet. */
+  tekst?: string;
+}) => {
   const [geladen, setGeladen] = useState(false);
 
   useEffect(() => {
@@ -30,6 +40,8 @@ const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
         {!geladen && (
           <Alert type="info">
             <Paragraph>De pdf wordt geladen.</Paragraph>
+            {/* Hoe lang het duurt is niet bekend: zonder value. */}
+            <ProgressBar label="De pdf laden" />
           </Alert>
         )}
       </div>
@@ -45,24 +57,22 @@ const PdfVoorbeeld = ({ pdf, tekst }: { pdf: string; tekst: string }) => {
           </Paragraph>
         </object>
       )}
-      <UnorderedList>
-        <UnorderedListItem>
-          <a href={pdf} download className="utrecht-link utrecht-link--html-a">
-            Download pdf
-          </a>
-        </UnorderedListItem>
-        <UnorderedListItem>
-          <a
+      <LinkList>
+        <LinkListLink href={pdf} download icon={<PdfIcon />}>
+          Pdf downloaden
+        </LinkListLink>
+        {tekst && (
+          <LinkListLink
             href={tekst}
             target="_blank"
             rel="noopener noreferrer"
-            className="utrecht-link utrecht-link--html-a"
+            icon={<TextDocumentIcon />}
           >
-            Lees tekst-versie
+            Tekst-versie lezen
             <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
-          </a>
-        </UnorderedListItem>
-      </UnorderedList>
+          </LinkListLink>
+        )}
+      </LinkList>
     </div>
   );
 };

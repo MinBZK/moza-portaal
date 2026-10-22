@@ -7,12 +7,14 @@ import {
   ActionGroup,
   Alert,
   Button,
+  LinkButton,
   Heading,
   Paragraph,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
+import TijdelijkeMelding from "@/components/TijdelijkeMelding";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
@@ -73,6 +75,10 @@ const BerichtDetail = ({
   // De knop die de mapkeuze opende; die krijgt na sluiten de focus terug.
   const [kiesMap, setKiesMap] = useState<HTMLElement | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
+  // (On)gelezen is een kleine wissel: die melding verdwijnt na 3 seconden.
+  const [tijdelijk, setTijdelijk] = useState(false);
+  // Telt mee in de key, zodat dezelfde tekst opnieuw verschijnt.
+  const [meldingNummer, setMeldingNummer] = useState(0);
   const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
   const [actieFout, setActieFout] = useState<string | null>(null);
@@ -115,6 +121,8 @@ const BerichtDetail = ({
   const wisselOngelezen = () => {
     if (!zetOngelezen(berichtId, !ongelezen)) return;
     setActieFout(null);
+    setTijdelijk(true);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       ongelezen
         ? "Het bericht is gemarkeerd als gelezen."
@@ -132,6 +140,7 @@ const BerichtDetail = ({
       return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
     }
     setActieFout(null);
+    setTijdelijk(false);
     setMelding(
       naar
         ? `Het bericht staat nu in de map ${naar}.`
@@ -223,7 +232,14 @@ const BerichtDetail = ({
             {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
             {actieFout && <Alert type="error">{actieFout}</Alert>}
             <div role="status">
-              {melding && <Alert type="ok">{melding}</Alert>}
+              {melding &&
+                (tijdelijk ? (
+                  <TijdelijkeMelding key={meldingNummer}>
+                    {melding}
+                  </TijdelijkeMelding>
+                ) : (
+                  <Alert type="ok">{melding}</Alert>
+                ))}
             </div>
             {map && status === "inbox" && (
               <Paragraph>
@@ -239,10 +255,9 @@ const BerichtDetail = ({
             )}
 
             {status && (
-              <ActionGroup direction="row">
-                <Button
-                  appearance="secondary-action-button"
-                  aria-pressed={gemarkeerd}
+              <ActionGroup direction="row" className="mox-action-group-dense">
+                <LinkButton
+                  pressed={gemarkeerd}
                   onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}
                 >
                   <FlagIcon
@@ -250,84 +265,72 @@ const BerichtDetail = ({
                     className={gemarkeerd ? "mox-button-mark-true" : ""}
                   />
                   Markeren
-                </Button>
+                </LinkButton>
 
-                <Button
-                  appearance="secondary-action-button"
-                  onClick={wisselOngelezen}
-                >
+                <LinkButton onClick={wisselOngelezen}>
                   {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
-                  {ongelezen ? "Markeer als gelezen" : "Markeer als ongelezen"}
-                </Button>
+                  {ongelezen
+                    ? "Markeren als gelezen"
+                    : "Markeren als ongelezen"}
+                </LinkButton>
 
                 {status === "inbox" && (
-                  <Button
-                    appearance="secondary-action-button"
+                  <LinkButton
                     aria-haspopup="dialog"
                     onClick={(event) => setKiesMap(event.currentTarget)}
                   >
                     <FolderIcon />
                     Verplaatsen naar map
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status === "inbox" && map && (
-                  <Button
-                    appearance="secondary-action-button"
-                    onClick={() => void zetInMap("")}
-                  >
+                  <LinkButton onClick={() => void zetInMap("")}>
                     <Icon icon="inbox" />
                     Uit map halen
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {/* Schets uit moza-poc: Delen doet nog niets. */}
                 {delen && (
-                  <Button appearance="secondary-action-button">
+                  <LinkButton>
                     <Icon icon="delen" />
                     Delen
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status !== "archief" && (
-                  <Button
-                    appearance="secondary-action-button"
-                    onClick={() => void verplaats("archief")}
-                  >
+                  <LinkButton onClick={() => void verplaats("archief")}>
                     <ArchiveIcon />
                     Archiveren
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status !== "inbox" && (
-                  <Button
-                    appearance="secondary-action-button"
-                    onClick={() => void verplaats("inbox")}
-                  >
+                  <LinkButton onClick={() => void verplaats("inbox")}>
                     <Icon icon="inbox" />
                     Terugzetten in inbox
-                  </Button>
+                  </LinkButton>
                 )}
 
                 {status === "prullenbak" ? (
-                  <Button
+                  <LinkButton
                     ref={voorgoedKnopRef}
-                    appearance="secondary-action-button"
-                    hint="danger"
+                    className="rhc-link-button--danger"
                     aria-haspopup="dialog"
                     onClick={() => setVraagVoorgoed(true)}
                   >
                     <Icon icon="verwijderen" />
                     Voorgoed verwijderen
-                  </Button>
+                  </LinkButton>
                 ) : (
-                  <Button
-                    appearance="secondary-action-button"
+                  <LinkButton
+                    className="rhc-link-button--danger"
                     onClick={() => void verplaats("prullenbak")}
                   >
                     <Icon icon="verwijderen" />
                     Verwijderen
-                  </Button>
+                  </LinkButton>
                 )}
               </ActionGroup>
             )}

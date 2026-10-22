@@ -26,6 +26,11 @@
 /* ==== 2. Tokens ============================================================= */
 
 .rhc-theme.mox-theme {
+  /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
+    tokens voor beweging. */
+  --mox-transition-duration: 150ms;
+  --mox-transition-easing: ease-out;
+
   /* Pagina-layout */
   --utrecht-page-body-padding-block-end: var(--rhc-space-max-2xl);
 
@@ -77,6 +82,7 @@
   --rhc-hero-message-padding-block-start: var(--rhc-space-4xl);
   --rhc-hero-message-padding-inline-end: var(--rhc-space-4xl);
   --rhc-hero-message-padding-inline-start: var(--rhc-space-4xl);
+  --utrecht-button-icon-gap: var(--rhc-space-sm);
 
   /* Kaders */
   --rhc-data-summary-item-border-width: 0;
@@ -307,6 +313,33 @@ body {
 
 /* ==== 4. Componenten ======================================================== */
 
+/* --- Interactie --- */
+
+/* Eén rustige overgang voor alle interactieve elementen. Alles in :where(),
+  ook de theme-classes, zodat de specificiteit 0 is en een eigen transition
+  van een component altijd wint. Niet op dialog: een RHC Drawer heeft
+  tabindex="0", en zijn in- en uitschuiven staat in globals.css.
+  Alleen kleuren, randen en schaduw: geen lay-out, en de focusrand verschijnt
+  meteen. Niet bij "minder beweging" in het systeem. */
+@media (prefers-reduced-motion: no-preference) {
+  :where(.rhc-theme.mox-theme) :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"], dialog)) {
+    transition-duration: var(--mox-transition-duration);
+    transition-property: color, background-color, border-color, outline-color, outline-offset, text-decoration-color, box-shadow;
+    transition-timing-function: var(--mox-transition-easing);
+  }
+
+  /* De knop van een schuifregelaar is een pseudo-element; :where() hierboven
+    raakt die niet. Per browser een eigen regel, anders vervalt de hele regel. */
+  .rhc-theme.mox-theme .rhc-range-slider__input::-webkit-slider-thumb {
+    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+
+  .rhc-theme.mox-theme .rhc-range-slider__input::-moz-range-thumb {
+    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+}
+
+
 /* --- DataSummary --- */
 
 .rhc-theme.mox-theme {
@@ -369,6 +402,48 @@ body {
   }
 }
 
+/* --- LinkButton --- */
+
+/* Destructieve actie als LinkButton, zoals Verwijderen in de Berichtenbox.
+  LinkButton kent geen hint="danger" (Button wel), daarom deze class. */
+.rhc-theme.mox-theme {
+  .rhc-link-button--danger {
+    --utrecht-link-button-color: var(--rhc-color-rood-500);
+    --utrecht-link-button-hover-color: var(--rhc-color-rood-600);
+    --utrecht-link-button-active-color: var(--rhc-color-rood-600);
+
+    color: var(--rhc-color-rood-500);
+
+    &:hover {
+      color: var(--rhc-color-rood-600);
+    }
+  }
+}
+
+/* --- Melding --- */
+
+/* Een lege live region (role="status", role="alert", aria-live) neemt geen
+  ruimte in, ook niet als gap in een flex- of grid-container. Hij blijft wel
+  in de DOM en in de toegankelijkheidsboom: verdwijnt hij met display: none,
+  dan melden schermlezers de tekst die er later in komt soms niet. */
+:where(.rhc-theme.mox-theme) :where([role="status"], [role="alert"], [aria-live]):empty {
+  position: absolute;
+}
+
+/* Een melding die na een tijd uitfadet (BerichtDetail). Het component haalt
+  hem daarna weg; bij "minder beweging" verdwijnt hij zonder fade. */
+.rhc-theme.mox-theme {
+  .rhc-fade-out {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 500ms ease-out;
+    }
+  }
+
+  .rhc-fade-out--hidden {
+    opacity: 0;
+  }
+}
+
 /* --- NavigationList --- */
 
 .rhc-theme.mox-theme {
@@ -414,6 +489,110 @@ body {
   }
 }
 
+/* --- Schuifregelaar --- */
+
+/* RangeSlider: label en gekozen waarde op één regel, grenzen eronder. */
+.rhc-theme.mox-theme {
+  .rhc-range-slider__header {
+    align-items: baseline;
+    display: flex;
+    gap: var(--rhc-space-md);
+    justify-content: space-between;
+  }
+
+  .rhc-range-slider__value {
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+
+  .rhc-range-slider__input {
+    accent-color: var(--rhc-color-lintblauw-500);
+    appearance: none;
+    background: transparent;
+    block-size: var(--rhc-space-2xl);
+    inline-size: 100%;
+    margin: 0;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      margin-block-start: -.5rem;
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+
+      &:hover {
+        background: var(--rhc-color-lintblauw-600);
+        border-color: var(--rhc-color-lintblauw-600);
+        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+      }
+    }
+
+    &::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+
+      &:hover {
+        background: var(--rhc-color-lintblauw-600);
+        border-color: var(--rhc-color-lintblauw-600);
+        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+      }
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &::-moz-range-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &:focus-visible {
+      border-radius: var(--rhc-border-radius-round);
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: calc(var(--utrecht-focus-outline-offset)*3);
+    }
+  }
+
+  /* RangeSlider met gevulde baan tot aan de knop (thumb). */
+  .rhc-range-slider__input--filled {
+    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
+    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
+    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
+
+    &::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
+    }
+
+    /* Firefox kent een eigen element voor het gevulde deel. */
+    &::-moz-range-progress {
+      background: var(--rhc-range-slider-fill-color);
+      block-size: 0.75rem;
+      border-radius: var(--rhc-border-radius-round);
+    }
+  }
+
+  .rhc-range-slider__limits {
+    color: var(--rhc-color-foreground-subtle);
+    display: flex;
+    font-size: var(--rhc-text-font-size-sm);
+    justify-content: space-between;
+  }
+}
+
 /* --- Paginering --- */
 
 .rhc-theme.mox-theme {
@@ -440,6 +619,30 @@ body {
   }
 }
 
+/* Een melding die in zijn geheel een link is, zoals de status van een zaak
+  die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
+.rhc-theme.mox-theme {
+  .rhc-alert-link {
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--utrecht-link-color);
+    display: block;
+    text-decoration-line: none;
+
+    .utrecht-alert {
+      margin: 0;
+    }
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+
+    &:focus-visible {
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: var(--utrecht-focus-outline-offset);
+    }
+  }
+}
+
 /* ==== 5. Pagina's en functies =============================================== */
 
 /* --- Berichtenbox --- */
@@ -459,7 +662,7 @@ body {
 
     /* De ruimte komt van gap; anders tellen de marges van kop, alinea en
       ActionGroup erbij op. */
-    > * {
+    >* {
       margin-block: 0;
     }
   }
@@ -468,16 +671,38 @@ body {
   .rhc-pdf-preview {
     display: flex;
     flex-direction: column;
-    gap: var(--rhc-space-md);
-    margin-block: var(--rhc-space-lg);
+    gap: var(--rhc-space-3xl);
   }
 
   .rhc-pdf-preview__viewer {
     block-size: 72rem;
-    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
-    border-radius: var(--rhc-border-radius-sm);
+    border-block-end: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
     inline-size: 100%;
     max-block-size: 80vh;
+  }
+
+  /* Een tabelrij waarvan de hele rij naar het bericht linkt. De link van het
+    onderwerp krijgt een ::after over de hele rij; knoppen in de rij (markeren,
+    acties) liggen erboven en blijven werken. Eén link per rij, dus geen
+    dubbele links voor toetsenbord en schermlezer. */
+  .rhc-row-linked {
+    position: relative;
+
+    &:hover {
+      background-color: var(--rhc-color-cool-grey-50);
+    }
+
+    :is(button, .mox-menu) {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .rhc-row-linked__link::after {
+    content: "";
+    inset: 0;
+    position: absolute;
   }
 
   /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */

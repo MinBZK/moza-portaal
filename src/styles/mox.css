@@ -12,1567 +12,1637 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 /* Alleen met de huidige huisstijl (Flags-paneel). :where() houdt de specificiteit gelijk. */
 .rhc-theme.mox-theme:where(.mox-current-brand) {
-  /* ==== 1. Tokens ============================================================= */
+	/* ==== 1. Tokens ============================================================= */
 
-  --rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
-  --rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
-  --mox-font-weight-medium: 500;
+	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
+	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
+	--mox-font-weight-medium: 500;
 
-  /* ==== 2. Typografie ========================================================= */
+	/* ==== 2. Typografie ========================================================= */
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    color: var(--rhc-color-light-cool-grey-900);
-    font-weight: normal;
-  }
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		color: var(--rhc-color-light-cool-grey-900);
+		font-weight: normal;
+	}
 
-  strong {
-    font-weight: var(--rhc-text-font-weight-semi-bold) !important;
-  }
+	strong {
+		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
+	}
 
-  /* ==== 3. Formulieren ======================================================== */
+	/* ==== 3. Formulieren ======================================================== */
 
-  .utrecht-textbox {
-    max-inline-size: 100%;
-  }
+	.utrecht-textbox {
+		max-inline-size: 100%;
+	}
 
-  .utrecht-form-label {
-    font-weight: var(--mox-font-weight-medium);
-  }
+	.utrecht-form-label {
+		font-weight: var(--mox-font-weight-medium);
+	}
 
-  .utrecht-form-field--radio,
-  .utrecht-form-field--checkbox {
-    gap: var(--rhc-space-xs);
-    margin-block-start: var(--rhc-space-md);
-  }
+	.utrecht-form-field--radio,
+	.utrecht-form-field--checkbox {
+		gap: var(--rhc-space-xs);
+		margin-block-start: var(--rhc-space-md);
+	}
 
-  [type="number"] {
-    inline-size: fit-content;
-    max-inline-size: fit-content;
-  }
+	[type="number"] {
+		inline-size: fit-content;
+		max-inline-size: fit-content;
+	}
 
-  /* ==== 4. Layout ============================================================= */
+	/* ==== 4. Layout ============================================================= */
 
-  /* --- Pagina --- */
-  .utrecht-page-body {
-    padding-block-end: 0;
-    padding-block-start: var(--rhc-space-2xl);
+	/* --- Pagina --- */
+	.utrecht-page-body {
+		padding-block-end: 0;
+		padding-block-start: var(--rhc-space-2xl);
 
-    /* Lange woorden afbreken op een smal scherm. break-word en niet anywhere:
+		/* Lange woorden afbreken op een smal scherm. break-word en niet anywhere:
 		  anywhere maakt de minimale breedte van tekst één letter, en dan knijpen
 		  tabellen al hun kolommen samen in plaats van te scrollen. */
-    @media screen and (width <=768px) {
-      hyphens: auto;
-      overflow-wrap: break-word;
+		@media screen and (width <=768px) {
+			hyphens: auto;
+			overflow-wrap: break-word;
 
-      /* Tabellen scrollen (mox-table-container); cellen breken niet midden in een woord. */
-      .utrecht-table {
-        hyphens: manual;
-        overflow-wrap: normal;
-      }
-    }
-  }
+			/* Tabellen scrollen (mox-table-container); cellen breken niet midden in een woord. */
+			.utrecht-table {
+				hyphens: manual;
+				overflow-wrap: normal;
+			}
+		}
+	}
 
-  .utrecht-page-body,
-  .utrecht-page-body__content {
-    background-color: var(--rhc-color-cool-grey-100);
-  }
+	.utrecht-page-body,
+	.utrecht-page-body__content {
+		background-color: var(--rhc-color-cool-grey-100);
+	}
 
-  #hoofd-inhoud {
-    padding-block-end: var(--rhc-space-max-4xl);
+	#hoofd-inhoud {
+		padding-block-end: var(--rhc-space-max-4xl);
 
-    /* De marge links en rechts komt van --mox-page-margin (rhc.css). */
-    @media screen and (width <=768px) {
-      padding-block: var(--rhc-space-lg);
-    }
-  }
+		/* De marge links en rechts komt van --mox-page-margin (rhc.css). */
+		@media screen and (width <=768px) {
+			padding-block: var(--rhc-space-lg);
+		}
+	}
 
-  /* --- Header --- */
-  .rhc-nav-bar__container {
-    border-block-end-width: 0;
-  }
+	/* --- Header --- */
+	.rhc-nav-bar__container {
+		border-block-end-width: 0;
+	}
 
-  .rhc-nav-bar,
-  .rhc-nav-bar__list {
-    align-items: flex-end;
-  }
+	.rhc-nav-bar,
+	.rhc-nav-bar__list {
+		align-items: flex-end;
+	}
 
-  .rhc-nav-bar__label {
-    white-space: nowrap;
-  }
+	.rhc-nav-bar__label {
+		white-space: nowrap;
+	}
 
-  .utrecht-page-header {
-    border-block-end-color: var(--rhc-color-lintblauw-400);
-    border-block-end-width: var(--rhc-border-width-md);
-  }
+	.utrecht-page-header {
+		border-block-end-color: var(--rhc-color-lintblauw-400);
+		border-block-end-width: var(--rhc-border-width-md);
+	}
 
-  .utrecht-page-header__content {
-    margin-block-end: 0;
-  }
+	.utrecht-page-header__content {
+		margin-block-end: 0;
+	}
 
-  .rhc-nav-bar__link,
-  .rhc-header-organizations__single {
-    align-items: baseline;
-    padding-block-end: var(--rhc-space-xl);
-  }
+	.rhc-nav-bar__link,
+	.rhc-header-organizations__single {
+		align-items: baseline;
+		padding-block-end: var(--rhc-space-xl);
+	}
 
-  .rhc-nav-bar__list:first-child .rhc-nav-bar__link {
-    color: var(--rhc-color-light-cool-grey-900);
-    font-size: var(--rhc-text-font-size-min-2xl);
-    font-weight: normal;
-  }
+	.rhc-nav-bar__list:first-child .rhc-nav-bar__link {
+		color: var(--rhc-color-light-cool-grey-900);
+		font-size: var(--rhc-text-font-size-min-2xl);
+		font-weight: normal;
+	}
 
-  .mox-logout-button {
-    cursor: pointer;
-    text-align: start;
-  }
+	.mox-logout-button {
+		cursor: pointer;
+		text-align: start;
+	}
 
-  .rhc-header-account {
-    --utrecht-icon-inset-block-start: var(--rhc-space-sm);
+	.rhc-header-account {
+		--utrecht-icon-inset-block-start: var(--rhc-space-sm);
 
-    .utrecht-icon {
-      margin-inline-end: var(--rhc-space-sm);
-    }
-  }
+		.utrecht-icon {
+			margin-inline-end: var(--rhc-space-sm);
+		}
+	}
 
-  .rhc-header-organizations__identity {
-    max-inline-size: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+	.rhc-header-organizations__identity {
+		max-inline-size: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
-  .rhc-header-organizations__single {
-    align-items: center;
-    display: inline-flex;
-    gap: var(--rhc-space-sm);
-  }
+	.rhc-header-organizations__single {
+		align-items: center;
+		display: inline-flex;
+		gap: var(--rhc-space-sm);
+	}
 
-  .rhc-menu {
-    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
-    border-radius: var(--rhc-border-radius-md);
-    box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-    margin-block-start: var(--rhc-space-3xs);
+	.rhc-menu {
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		margin-block-start: var(--rhc-space-3xs);
 
-    li + li {
-      margin-block-start: var(--rhc-space-2xs);
-    }
+		li+li {
+			margin-block-start: var(--rhc-space-2xs);
+		}
 
-    button[aria-pressed="true"] {
-      background: var(--rhc-color-cool-grey-200);
-      font-weight: var(--rhc-text-font-weight-semi-bold);
-    }
-  }
+		button[aria-pressed="true"] {
+			background: var(--rhc-color-cool-grey-200);
+			font-weight: var(--rhc-text-font-weight-semi-bold);
+		}
+	}
 
-  .rhc-header-organizations__choice {
-    background: transparent;
-    border: 0;
-    color: var(--rhc-color-foreground-default);
-    cursor: pointer;
-    display: block;
-    font: inherit;
-    inline-size: 100%;
-    padding: var(--rhc-space-lg) var(--rhc-space-xl);
-    text-align: start;
+	.rhc-header-organizations__choice {
+		background: transparent;
+		border: 0;
+		color: var(--rhc-color-foreground-default);
+		cursor: pointer;
+		display: block;
+		font: inherit;
+		inline-size: 100%;
+		padding: var(--rhc-space-lg) var(--rhc-space-xl);
+		text-align: start;
 
-    &:hover,
-    &[aria-pressed="true"] {
-      background: var(--rhc-color-cool-grey-100);
-    }
-  }
+		&:hover,
+		&[aria-pressed="true"] {
+			background: var(--rhc-color-cool-grey-100);
+		}
+	}
 
-  .mox-header-organization {
-    font-weight: var(--rhc-text-font-weight-semi-bold);
-    margin-inline-start: var(--rhc-space-md);
-  }
+	.mox-header-organization {
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+		margin-inline-start: var(--rhc-space-md);
+	}
 
-  .rhc-menu-button {
-    font-size: var(--rhc-text-font-size-sm);
-    inset-block-start: var(--rhc-space-sm);
-    inset-inline-start: var(--mox-page-margin, 0);
-    position: absolute;
-    z-index: 1;
-  }
+	.rhc-menu-button {
+		font-size: var(--rhc-text-font-size-sm);
+		inset-block-start: var(--rhc-space-sm);
+		inset-inline-start: var(--mox-page-margin, 0);
+		position: absolute;
+		z-index: 1;
+	}
 
-  .rhc-logo__caption {
-    margin-block-start: calc(-1 * var(--rhc-space-sm));
-  }
+	.rhc-logo__caption {
+		margin-block-start: calc(-1 * var(--rhc-space-sm));
+	}
 
-  .utrecht-page-header__content {
-    position: relative;
-  }
+	.utrecht-page-header__content {
+		position: relative;
+	}
 
-  .rhc-language-navigation {
-    inset-block-start: var(--rhc-space-2xl);
-    inset-inline-end: var(--mox-page-margin, 0);
-    position: absolute;
+	.rhc-language-navigation {
+		inset-block-start: var(--rhc-space-2xl);
+		inset-inline-end: var(--mox-page-margin, 0);
+		position: absolute;
 
-    button {
-      text-decoration: none;
-    }
+		button {
+			text-decoration: none;
+		}
 
-    .utrecht-icon {
-      display: none;
-    }
+		.utrecht-icon {
+			display: none;
+		}
 
-    @media (width < 768px) {
-      .rhc-language-navigation__trigger {
-        color: var(--rhc-color-light-cool-grey-900);
-        padding-inline-start: 0;
-      }
-    }
-  }
+		@media (width < 768px) {
+			.rhc-language-navigation__trigger {
+				color: var(--rhc-color-light-cool-grey-900);
+				padding-inline-start: 0;
+			}
+		}
+	}
 
-  /* --- Navigatie --- */
-  .rhc-side-nav__link {
-    border-radius: var(--rhc-border-radius-md);
-    color: var(--rhc-color-light-cool-grey-900);
-    padding-inline-start: var(--rhc-sidenav-link-padding-inline-start);
-    text-decoration: none;
+	/* --- Navigatie --- */
+	.rhc-side-nav__link {
+		border-radius: var(--rhc-border-radius-md);
+		color: var(--rhc-color-light-cool-grey-900);
+		padding-inline-start: var(--rhc-sidenav-link-padding-inline-start);
+		text-decoration: none;
 
-    &:hover {
-      background-color: var(--rhc-color-cool-grey-200);
-    }
+		&:hover {
+			background-color: var(--rhc-color-cool-grey-200);
+		}
 
-    &[aria-current="page"] {
-      background-color: var(--rhc-color-cool-grey-200);
-    }
-  }
+		&[aria-current="page"] {
+			background-color: var(--rhc-color-cool-grey-200);
+		}
+	}
 
-  [aria-labelledby="menu-organisaties"] {
-    margin-block-end: var(--rhc-space-2xl);
-  }
+	[aria-labelledby="menu-organisaties"] {
+		margin-block-end: var(--rhc-space-2xl);
+	}
 
-  /* --- Footer --- */
-  .rhc-page-footer {
-    background-color: var(--rhc-color-light-cool-grey-800);
+	/* --- Footer --- */
+	.rhc-page-footer {
+		background-color: var(--rhc-color-light-cool-grey-800);
 
-    h2 {
-      color: var(--rhc-color-wit);
-      font-size: var(--rhc-text-font-size-lg);
-      margin-block-end: var(--rhc-space-lg);
-    }
+		h2 {
+			color: var(--rhc-color-wit);
+			font-size: var(--rhc-text-font-size-lg);
+			margin-block-end: var(--rhc-space-lg);
+		}
 
-    .utrecht-link .utrecht-icon {
-      align-self: flex-start;
-      margin-block-start: var(--rhc-space-sm);
-    }
-  }
+		/* Iconen in de LinkList staan via 1lh al op de eerste regel (Iconen en
+		  links); een extra marge zou ze te laag zetten. */
+		.utrecht-link .utrecht-icon {
+			align-self: flex-start;
+		}
+	}
 
-  .rhc-page-footer span {
-    display: flex;
-  }
+	.rhc-page-footer span {
+		display: flex;
+	}
 
-  /* ==== 5. Componenten ======================================================== */
+	/* ==== 5. Componenten ======================================================== */
 
-  /* --- Accordion --- */
-  .utrecht-accordion .utrecht-button {
-    align-items: baseline;
-  }
+	/* --- Accordion --- */
+	.utrecht-accordion .utrecht-button {
+		align-items: baseline;
+	}
 
-  .utrecht-accordion {
-    padding: var(--rhc-space-max-xl);
-  }
+	.utrecht-accordion {
+		padding: var(--rhc-space-max-xl);
+	}
 
-  .utrecht-accordion__section {
-    border: 0;
-  }
+	.utrecht-accordion__section {
+		border: 0;
+	}
 
-  .utrecht-accordion__panel {
-    padding-block-start: var(--rhc-space-xl);
-    padding-inline-start: var(--rhc-space-4xl);
-  }
+	.utrecht-accordion__panel {
+		padding-block-start: var(--rhc-space-xl);
+		padding-inline-start: var(--rhc-space-4xl);
+	}
 
-  /* --- Action group --- */
-  .utrecht-action-group {
-    button {
-      text-align: start;
-    }
-  }
+	/* --- Action group --- */
+	/* Compacte rij acties op een grijze balk, zoals onder een bericht
+	  (BerichtDetail: Markeren, Markeren als ongelezen, …). */
+	.mox-action-group-dense {
+		background-color: var(--rhc-color-cool-grey-100);
+		padding: var(--rhc-space-md);
 
-  /* --- Actiemenu --- */
-  /* Popover in de top layer: valt niet weg in de scrollende tabel
+		button {
+			padding-block: var(--rhc-space-sm);
+			padding-inline: var(--rhc-space-md);
+			text-align: start;
+			text-decoration: none;
+		}
+	}
+
+	/* --- Actiemenu --- */
+	/* Popover in de top layer: valt niet weg in de scrollende tabel
 	  (mox-table-container). Anchor positioning zet het onder de knop. */
-  .mox-action-menu {
-    background-color: var(--rhc-color-wit);
-    border: 0;
-    border-radius: var(--rhc-border-radius-md);
-    box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-    inset: auto;
-    inset-block-start: anchor(end);
-    inset-inline-end: anchor(end);
-    margin: 0;
-    margin-block-start: var(--rhc-space-2xs);
-    padding: var(--rhc-space-md);
-    position-anchor: var(--mox-menu-anker);
-    position-try-fallbacks: flip-block;
+	.mox-action-menu {
+		background-color: var(--rhc-color-wit);
+		border: 0;
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+		inset: auto;
+		inset-block-start: anchor(end);
+		inset-inline-end: anchor(end);
+		margin: 0;
+		margin-block-start: var(--rhc-space-2xs);
+		padding: var(--rhc-space-md);
+		position-anchor: var(--mox-menu-anker);
+		position-try-fallbacks: flip-block;
 
-    /* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
-    --utrecht-button-inline-size: 100%;
-    --utrecht-button-max-inline-size: none;
+		/* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
+		--utrecht-button-inline-size: 100%;
+		--utrecht-button-max-inline-size: none;
 
-    .utrecht-button {
-      justify-content: flex-start;
-    }
-  }
+		.utrecht-button {
+			justify-content: flex-start;
+		}
+	}
 
-  .mox-menu-trigger {
-    anchor-name: var(--mox-menu-anker);
-  }
+	.mox-menu-trigger {
+		anchor-name: var(--mox-menu-anker);
+	}
 
-  /* --- Badges --- */
-  .rhc-number-badge {
-    --nl-number-badge-background-color: var(--rhc-color-light-rood-500);
-    font-size: 0.75rem;
-    min-inline-size: var(--rhc-space-md);
-    padding: 0 var(--rhc-space-md);
-  }
+	/* --- Badges --- */
+	.rhc-number-badge {
+		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
+		font-size: 0.75rem;
+		min-inline-size: var(--rhc-space-md);
+		padding: 0 var(--rhc-space-md);
+	}
 
-  /* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
+	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
 	  erft elk flex-item de onderstreping van de link, ook met text-decoration: none.
 	  In een gewoon blok (de houder) is de badge inline-flex, en daar loopt de
 	  onderstreping niet in door. */
-  .mox-badge-holder {
-    display: block;
-    line-height: 0;
-  }
+	.mox-badge-holder {
+		display: block;
+		line-height: 0;
+	}
 
-  /* Label met een type, zoals bij actualiteiten */
-  .mox-badge {
-    background-color: var(--rhc-color-cool-grey-100);
-    border-radius: var(--rhc-border-radius-sm);
-    color: var(--rhc-color-foreground-default);
-    display: inline-block;
-    font-size: var(--rhc-text-font-size-sm);
-    font-weight: var(--rhc-text-font-weight-semi-bold);
-    padding-block: var(--rhc-space-2xs);
-    padding-inline: var(--rhc-space-sm);
-  }
+	/* Label met een type, zoals bij actualiteiten */
+	.mox-badge {
+		background-color: var(--rhc-color-cool-grey-100);
+		border-radius: var(--rhc-border-radius-sm);
+		color: var(--rhc-color-foreground-default);
+		display: inline-block;
+		font-size: var(--rhc-text-font-size-sm);
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+		padding-block: var(--rhc-space-2xs);
+		padding-inline: var(--rhc-space-sm);
+	}
 
-  .mox-badge--article,
-  .mox-badge--step-by-step {
-    background-color: var(--rhc-color-lintblauw-100);
-  }
+	.mox-badge--article,
+	.mox-badge--step-by-step {
+		background-color: var(--rhc-color-lintblauw-100);
+	}
 
-  .mox-badge--video {
-    background-color: var(--rhc-color-paars-100);
-  }
+	.mox-badge--video {
+		background-color: var(--rhc-color-paars-100);
+	}
 
-  .mox-badge--rule {
-    background-color: var(--rhc-color-geel-100);
-  }
+	.mox-badge--rule {
+		background-color: var(--rhc-color-geel-100);
+	}
 
-  .mox-badge--law-change {
-    background-color: var(--rhc-color-rood-100);
-  }
+	.mox-badge--law-change {
+		background-color: var(--rhc-color-rood-100);
+	}
 
-  .mox-badge--subsidy {
-    background-color: var(--rhc-color-groen-100);
-  }
+	.mox-badge--subsidy {
+		background-color: var(--rhc-color-groen-100);
+	}
 
-  /* --- Iconen en links --- */
-  .utrecht-icon {
-    block-size: var(--rhc-size-icon-md);
-    flex-shrink: 0;
-    inline-size: var(--rhc-size-icon-md);
-  }
+	/* --- Iconen en links --- */
+	.utrecht-icon {
+		block-size: var(--rhc-size-icon-md);
+		flex-shrink: 0;
+		inline-size: var(--rhc-size-icon-md);
+	}
 
-  .utrecht-link .utrecht-icon {
-    vertical-align: middle;
-  }
+	.utrecht-link .utrecht-icon {
+		vertical-align: middle;
+	}
 
-  .rhc-link-list__item .utrecht-link-list__link {
-    align-items: baseline;
-  }
+	/* Icoon midden op de eerste regel tekst, zoals RHC dat bedoelt: het vak
+	  van het icoon is één regel hoog (1lh) en centreert de svg. De vaste maat
+	  hierboven zou dat anders tenietdoen. */
+	.rhc-link-list__item .utrecht-link-list__link {
+		align-items: flex-start;
 
-  /* --- Kaarten --- */
-  .mox-card {
-    .rhc-row-gap {
-      align-content: start;
-      display: grid;
-      gap: var(--rhc-space-xl);
+		.utrecht-icon {
+			block-size: 1lh;
+			/* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
+			inset-block-start: 0;
+		}
+	}
 
-      .utrecht-action-group {
-        margin-block-start: 0;
-      }
-    }
+	/* --- Kaarten --- */
+	.mox-card {
+		.rhc-row-gap {
+			align-content: start;
+			display: grid;
+			gap: var(--rhc-space-xl);
 
-    .ams-pagination {
-      margin-block-start: var(--rhc-space-2xl);
-    }
-  }
+			.utrecht-action-group {
+				margin-block-start: 0;
+			}
+		}
 
-  .mox-card,
-  .rhc-table {
-    background-color: var(--rhc-color-wit);
-    box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
-    padding: var(--rhc-space-3xl);
+		.ams-pagination {
+			margin-block-start: var(--rhc-space-2xl);
+		}
+	}
 
-    /* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
-    @media (width < 768px) {
-      padding: var(--rhc-space-lg);
-    }
-  }
+	.mox-card,
+	.rhc-table {
+		background-color: var(--rhc-color-wit);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
+		padding: var(--rhc-space-3xl);
 
-  .mox-faq-card {
-    background-color: var(--rhc-color-wit);
-    border-radius: var(--rhc-border-radius-md);
-    box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-  }
+		/* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
+		@media (width < 768px) {
+			padding: var(--rhc-space-lg);
+		}
+	}
 
-  .mox-card {
-    border-color: var(--rhc-color-light-cool-grey-300);
-    border-radius: var(--rhc-border-radius-md);
-    border-width: var(--rhc-border-width-sm);
+	.mox-faq-card {
+		background-color: var(--rhc-color-wit);
+		border-radius: var(--rhc-border-radius-md);
+		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	}
 
-    h2,
-    h4 {
-      margin-block-end: var(--rhc-space-xl);
+	.mox-card {
+		border-color: var(--rhc-color-light-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		border-width: var(--rhc-border-width-sm);
 
-      a {
-        color: var(--rhc-color-lintblauw-500);
-        font-weight: var(--rhc-text-font-weight-semi-bold);
-        text-decoration: none;
+		h2,
+		h4 {
+			margin-block-end: var(--rhc-space-xl);
 
-        .utrecht-icon {
-          display: none;
-        }
-      }
-    }
+			a {
+				color: var(--rhc-color-lintblauw-500);
+				font-weight: var(--rhc-text-font-weight-semi-bold);
+				text-decoration: none;
 
-    /* Ruimte onder tekst en lijsten, behalve onder het laatste element: daar
+				.utrecht-icon {
+					display: none;
+				}
+			}
+		}
+
+		/* Ruimte onder tekst en lijsten, behalve onder het laatste element: daar
 		  zorgt de padding van de kaart voor. */
-    p:not(:last-child),
-    ul:not(:last-child),
-    ol:not(.ams-pagination__list, :last-child) {
-      margin-block-end: var(--rhc-space-lg);
-    }
+		p:not(:last-child),
+		ul:not(:last-child),
+		ol:not(.ams-pagination__list, :last-child) {
+			margin-block-end: var(--rhc-space-lg);
+		}
 
-    .utrecht-action-group,
-    .utrecht-button--primary-action {
-      margin-block-start: var(--rhc-space-2xl);
-    }
+		.utrecht-action-group,
+		.utrecht-button--primary-action {
+			margin-block-start: var(--rhc-space-2xl);
+		}
 
-    .utrecht-table {
-      padding: 0;
-    }
+		.utrecht-table {
+			padding: 0;
+		}
 
-    .utrecht-accordion {
-      padding: 0;
-    }
-  }
+		.utrecht-accordion {
+			padding: 0;
+		}
 
-  .mox-card-topic-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-4xl);
-  }
+		/* Berichtenbox variant C: het paneel regelt de ruimte zelf met gap. */
+		.rhc-message-actions> :is(h2, p) {
+			margin-block: 0;
+		}
+	}
 
-  /* --- Meldingen --- */
-  .rhc-alert {
-    margin-block: var(--rhc-space-xl);
-  }
+	.mox-card-topic-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-4xl);
+	}
 
-  .utrecht-alert {
-    border-color: var(--rhc-color-hemelblauw-100);
-    border-width: var(--rhc-border-width-sm);
-  }
+	/* --- Meldingen --- */
+	/* .rhc-alert {
+		margin-block: var(--rhc-space-xl);
+	} */
 
-  .utrecht-alert--ok {
-    border-color: var(--rhc-color-groen-100);
-  }
+	.utrecht-alert {
+		border-color: var(--rhc-color-hemelblauw-100);
+		border-width: var(--rhc-border-width-sm);
+	}
 
-  .utrecht-alert--warning {
-    border-color: var(--rhc-color-oranje-100);
-  }
+	.utrecht-alert--ok {
+		border-color: var(--rhc-color-groen-100);
+	}
 
-  .utrecht-alert--error {
-    border-color: var(--rhc-color-rood-100);
-  }
+	.utrecht-alert--warning {
+		border-color: var(--rhc-color-oranje-100);
+	}
 
-  .utrecht-alert__content {
-    inline-size: 95%;
-  }
+	.utrecht-alert--error {
+		border-color: var(--rhc-color-rood-100);
+	}
 
-  /* --- Paginering --- */
-  .ams-pagination__link {
-    align-items: center;
-    background-color: var(--rhc-color-wit);
-    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
-    border-radius: var(--rhc-border-radius-md);
-    justify-content: center;
-    margin-inline: var(--rhc-space-sm);
-    min-block-size: var(--rhc-space-max-5xl);
-    min-inline-size: var(--rhc-space-max-5xl);
-    padding-inline: var(--rhc-space-max-lg);
+	.utrecht-alert__content {
+		inline-size: 95%;
+	}
 
-    &[aria-current="page"] {
-      background: var(--rhc-color-light-lintblauw-500);
-      color: var(--rhc-color-wit);
-    }
-  }
+	/* --- Paginering --- */
+	.ams-pagination__link {
+		align-items: center;
+		background-color: var(--rhc-color-wit);
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		justify-content: center;
+		margin-inline: var(--rhc-space-sm);
+		min-block-size: var(--rhc-space-max-5xl);
+		min-inline-size: var(--rhc-space-max-5xl);
+		padding-inline: var(--rhc-space-max-lg);
 
-  .ams-pagination__list {
-    li[aria-hidden="true"] {
-      font-size: var(--rhc-text-font-size-xl);
-      line-height: 1;
-      margin-inline: var(--rhc-space-md);
-    }
-  }
+		&[aria-current="page"] {
+			background: var(--rhc-color-light-lintblauw-500);
+			color: var(--rhc-color-wit);
+		}
+	}
 
-  /* --- Statusstip --- */
-  /* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
-  .mox-status {
-    background-color: var(--rhc-color-cool-grey-400);
-    block-size: calc(var(--rhc-size-icon-md) / 2);
-    border-radius: var(--rhc-border-radius-round);
-    display: inline-block;
-    flex-shrink: 0;
-    inline-size: calc(var(--rhc-size-icon-md) / 2);
-  }
+	.ams-pagination__list {
+		li[aria-hidden="true"] {
+			font-size: var(--rhc-text-font-size-xl);
+			line-height: 1;
+			margin-inline: var(--rhc-space-md);
+		}
+	}
 
-  .mox-status--accepted {
-    background-color: var(--rhc-color-groen-500);
-  }
+	/* --- Statusstip --- */
+	/* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
+	.mox-status {
+		background-color: var(--rhc-color-cool-grey-400);
+		block-size: calc(var(--rhc-size-icon-md)/2);
+		border-radius: var(--rhc-border-radius-round);
+		display: inline-block;
+		flex-shrink: 0;
+		inline-size: calc(var(--rhc-size-icon-md)/2);
+	}
 
-  .mox-status--permanent-failure {
-    background-color: var(--rhc-color-rood-500);
-  }
+	.mox-status--accepted {
+		background-color: var(--rhc-color-groen-500);
+	}
 
-  /* --- Tabel --- */
-  /* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
+	.mox-status--permanent-failure {
+		background-color: var(--rhc-color-rood-500);
+	}
+
+	/* --- Tabel --- */
+	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
 	  gepositioneerd) binnen de scrollcontainer; anders scrolt de hele pagina. */
-  .mox-table-container {
-    overflow-x: auto;
-    position: relative;
+	.mox-table-container {
+		overflow-x: auto;
+		position: relative;
 
-    .utrecht-link {
-      white-space: nowrap;
-    }
-  }
+		th {
+			white-space: nowrap;
+		}
 
-  /* --- Tabs --- */
-  /* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
+		.utrecht-alert {
+			padding-block: var(--rhc-space-sm);
+			padding-inline: var(--rhc-space-md);
+
+		}
+
+		.utrecht-alert__message {
+			font-size: var(--rhc-text-font-size-sm);
+		}
+	}
+
+	/* --- Tabs --- */
+	/* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
 	  horizontaal, op elke schermbreedte. De grijze lijn is een achtergrond in
 	  plaats van een rand: in een scrollende lijst kan de actieve tab niet over
 	  een rand heen hangen, want dan scrolt de lijst ook verticaal. */
-  .mox-tabs {
-    --mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
+	.mox-tabs {
+		--mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
 
-    background-image: linear-gradient(
-      var(--rhc-color-cool-grey-400),
-      var(--rhc-color-cool-grey-400)
-    );
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    background-size: 100% var(--rhc-border-width-md);
-    display: flex;
-    gap: var(--rhc-space-xl);
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-padding-inline: var(--rhc-space-md);
-    scrollbar-width: thin;
+		background-image: linear-gradient(
+			var(--rhc-color-cool-grey-400),
+			var(--rhc-color-cool-grey-400)
+		);
+		background-position: 0 100%;
+		background-repeat: no-repeat;
+		background-size: 100% var(--rhc-border-width-md);
+		display: flex;
+		gap: var(--rhc-space-xl);
+		margin-block-end: var(--rhc-space-lg);
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scroll-padding-inline: var(--rhc-space-md);
+		scrollbar-width: thin;
 
-    /* Smal scherm: minder ruimte tussen de tabs. */
-    @media (width < 768px) {
-      gap: 0 var(--rhc-space-md);
-    }
+		/* Smal scherm: minder ruimte tussen de tabs. */
+		@media (width < 768px) {
+			gap: 0 var(--rhc-space-md);
+		}
 
-    /* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
+		/* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
 		  Het verloop volgt de scrollpositie (scroll-driven animation). Zonder
 		  ondersteuning in de browser blijft de dunne scrollbalk de hint. */
-    @supports (animation-timeline: scroll()) {
-      animation: mox-tabs-fade linear both;
-      animation-timeline: scroll(self inline);
-      mask-image: linear-gradient(
-        to right,
-        transparent,
-        #000 var(--mox-tabs-fade-start),
-        #000 calc(100% - var(--mox-tabs-fade-end)),
-        transparent
-      );
-      scrollbar-width: none;
+		@supports (animation-timeline: scroll()) {
+			animation: mox-tabs-fade linear both;
+			animation-timeline: scroll(self inline);
+			mask-image: linear-gradient(
+				to right,
+				transparent,
+				#000 var(--mox-tabs-fade-start),
+				#000 calc(100% - var(--mox-tabs-fade-end)),
+				transparent
+			);
+			scrollbar-width: none;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-  }
+			&::-webkit-scrollbar {
+				display: none;
+			}
+		}
+	}
 
-  .mox-tab {
-    align-items: center;
-    display: flex;
-    gap: var(--rhc-space-md);
-    padding: var(--rhc-space-md);
-    /* Een tab die in beeld schuift, valt niet in het verloop. */
-    scroll-margin-inline: var(--mox-tabs-fade);
-    text-decoration: none;
-    white-space: nowrap;
+	.mox-tab {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-md);
+		padding: var(--rhc-space-md);
+		/* Een tab die in beeld schuift, valt niet in het verloop. */
+		scroll-margin-inline: var(--mox-tabs-fade);
+		text-decoration: none;
+		white-space: nowrap;
 
-    /* Binnen de tab, anders valt de focusrand weg aan de randen. */
-    &:focus-visible {
-      outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
-    }
+		/* Binnen de tab, anders valt de focusrand weg aan de randen. */
+		&:focus-visible {
+			outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
+		}
 
-    &[aria-current] {
-      border-block-end: var(--rhc-border-width-lg) solid
-        var(--rhc-color-lintblauw-500);
-      font-weight: var(--rhc-text-font-weight-semi-bold);
-    }
-  }
+		&[aria-current] {
+			border-block-end: var(--rhc-border-width-lg) solid
+				var(--rhc-color-lintblauw-500);
+			font-weight: var(--rhc-text-font-weight-semi-bold);
+		}
+	}
 
-  /* Mappen staan na een streep achter Inbox, Archief en Prullenbak. */
-  .mox-tabs-separator {
-    border-inline-start: var(--rhc-border-width-sm) solid
-      var(--rhc-color-cool-grey-400);
-    margin-block: var(--rhc-space-md);
-  }
+	/* Mappen staan na een streep achter Inbox, Archief en Prullenbak. */
+	.mox-tabs-separator {
+		border-inline-start: var(--rhc-border-width-sm) solid
+			var(--rhc-color-cool-grey-400);
+		margin-block: var(--rhc-space-md);
+	}
 
-  /* --- Tekst --- */
-  /* Tekst afkappen na twee regels */
-  .mox-line-clamp {
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
+	/* --- Tekst --- */
+	/* Tekst afkappen na twee regels */
+	.mox-line-clamp {
+		-webkit-box-orient: vertical;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+	}
 
-  /* HTML uit een API, zoals de tekst van een artikel */
-  .mox-rich-text {
-    > * + * {
-      margin-block-start: var(--rhc-space-lg);
-    }
+	/* HTML uit een API, zoals de tekst van een artikel */
+	.mox-rich-text {
+		>*+* {
+			margin-block-start: var(--rhc-space-lg);
+		}
 
-    h2,
-    h3,
-    h4 {
-      color: var(--nl-heading-level-1-color);
-      font-weight: var(--rhc-text-font-weight-bold);
-      margin-block-start: var(--rhc-space-2xl);
-    }
+		h2,
+		h3,
+		h4 {
+			color: var(--nl-heading-level-1-color);
+			font-weight: var(--rhc-text-font-weight-bold);
+			margin-block-start: var(--rhc-space-2xl);
+		}
 
-    h2 {
-      font-size: var(--nl-heading-level-2-font-size);
-    }
+		h2 {
+			font-size: var(--nl-heading-level-2-font-size);
+		}
 
-    h3 {
-      font-size: var(--nl-heading-level-3-font-size);
-    }
+		h3 {
+			font-size: var(--nl-heading-level-3-font-size);
+		}
 
-    ul,
-    ol {
-      padding-inline-start: var(--rhc-space-2xl);
-    }
+		ul,
+		ol {
+			padding-inline-start: var(--rhc-space-2xl);
+		}
 
-    ul {
-      list-style: disc;
-    }
+		ul {
+			list-style: disc;
+		}
 
-    ol {
-      list-style: decimal;
-    }
+		ol {
+			list-style: decimal;
+		}
 
-    a {
-      color: var(--nl-link-color, var(--utrecht-link-color));
-      text-decoration: underline;
-    }
-  }
+		a {
+			color: var(--nl-link-color, var(--utrecht-link-color));
+			text-decoration: underline;
+		}
+	}
 
-  /* --- Voortgangsbalk --- */
-  /* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
-  .mox-progressbar {
-    block-size: var(--rhc-space-lg);
-    border-color: var(--rhc-color-cool-grey-400);
-    border-radius: var(--rhc-border-radius-round);
-    border-width: var(--rhc-border-width-sm);
-    inline-size: 100%;
-    overflow: hidden;
-  }
+	/* --- Voortgangsbalk --- */
+	/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+	.mox-progressbar {
+		block-size: var(--rhc-space-lg);
+		border-color: var(--rhc-color-cool-grey-400);
+		border-radius: var(--rhc-border-radius-round);
+		border-width: var(--rhc-border-width-sm);
+		inline-size: 100%;
+		overflow: hidden;
+	}
 
-  .utrecht-alert--info .mox-progressbar {
-    background-color: var(--rhc-color-wit);
-  }
+	.utrecht-alert--info .mox-progressbar {
+		background-color: var(--rhc-color-wit);
+	}
 
-  .mox-progressbar-track {
-    background-color: var(--rhc-color-groen-500) !important;
-    block-size: 100%;
-    border-radius: var(--rhc-border-radius-round);
-  }
+	.mox-progressbar-track {
+		background-color: var(--rhc-color-groen-500) !important;
+		block-size: 100%;
+		border-radius: var(--rhc-border-radius-round);
+	}
 
-  /* ==== 6. Pagina's en functies =============================================== */
+	/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
+	  Bij "minder beweging" een stilstaande, halfvolle balk. */
+	/* In een info-melding de kleur van die melding (het info-icoon), zoals
+	  bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
+	.utrecht-alert--info .mox-progressbar-track {
+		background-color: var(--utrecht-alert-icon-info-color) !important;
+	}
 
-  /* --- Berichtenbox --- */
-  [aria-label="Berichtenbox"] {
-    a {
-      text-decoration: none;
-    }
-  }
+	.mox-progressbar--indeterminate .mox-progressbar-track {
+		inline-size: 40%;
 
-  .mox-notice-amount-inbox {
-    color: var(--rhc-color-cool-grey-500);
-    font-size: var(--rhc-text-font-size-sm);
-  }
+		@media (prefers-reduced-motion: no-preference) {
+			animation: mox-progressbar-indeterminate 1.4s ease-in-out infinite;
+		}
+	}
 
-  .mox-inbox-filter {
-    margin-block: var(--rhc-space-3xl);
-  }
+	/* ==== 6. Pagina's en functies =============================================== */
 
-  /* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
-  .mox-inbox-filters {
-    align-items: end;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--rhc-space-xl);
+	/* --- Berichtenbox --- */
+	[aria-label="Berichtenbox"] {
+		a {
+			text-decoration: none;
+		}
+	}
 
-    > :first-child {
-      flex: 2 1 16rem;
-    }
+	.mox-notice-amount-inbox {
+		color: var(--rhc-color-cool-grey-500);
+		font-size: var(--rhc-text-font-size-sm);
+	}
 
-    > :last-child {
-      flex: 1 1 12rem;
-    }
+	.mox-inbox-filter {
+		margin-block: var(--rhc-space-3xl);
+	}
 
-    .utrecht-form-field {
-      margin-block: 0;
-    }
-  }
+	/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+	.mox-inbox-filters {
+		align-items: end;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--rhc-space-xl);
 
-  .mox-button-mark {
-    align-items: center;
-    block-size: 1lh;
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    min-block-size: calc(var(--nl-button-min-block-size) / 2);
-    min-inline-size: calc(var(--nl-button-min-inline-size) / 2);
+		> :first-child {
+			flex: 2 1 16rem;
+		}
 
-    &[aria-pressed="true"] {
-      color: var(--rhc-color-oranje-500);
-    }
-  }
+		> :last-child {
+			flex: 1 1 12rem;
+		}
 
-  .mox-button-mark-true {
-    color: var(--rhc-color-oranje-500);
-  }
+		.utrecht-form-field {
+			margin-block: 0;
+		}
+	}
 
-  .mox-status-unread {
-    background-color: var(--rhc-color-oranje-500);
-    block-size: calc(var(--rhc-size-icon-md) / 2);
-    border-radius: var(--rhc-border-radius-round);
-    flex-shrink: 0;
-    inline-size: calc(var(--rhc-size-icon-md) / 2);
-    /* centreert de stip op de eerste regel van de afzender */
-    margin-block-start: calc((1lh - var(--rhc-size-icon-md) / 2) / 2);
-  }
+	.mox-button-mark {
+		align-items: center;
+		block-size: 1lh;
+		cursor: pointer;
+		display: inline-flex;
+		justify-content: center;
+		min-block-size: calc(var(--nl-button-min-block-size)/2);
+		min-inline-size: calc(var(--nl-button-min-inline-size)/2);
 
-  .mox-sender {
-    align-items: flex-start;
-    display: flex;
-    gap: var(--rhc-space-md);
-  }
+		&[aria-pressed="true"] {
+			color: var(--rhc-color-oranje-500);
+		}
+	}
 
-  .mox-unread {
-    font-weight: var(--mox-font-weight-medium);
-  }
+	.mox-button-mark-true {
+		color: var(--rhc-color-oranje-500);
+	}
 
-  /* Mapkeuze in de dialog */
-  .mox-folder-picker {
-    display: grid;
-    gap: var(--rhc-space-xs);
-    list-style: none;
-    margin-block-end: var(--rhc-space-xl);
-    padding: 0;
-  }
+	.mox-status-unread {
+		background-color: var(--rhc-color-oranje-500);
+		block-size: calc(var(--rhc-size-icon-md)/2);
+		border-radius: var(--rhc-border-radius-round);
+		flex-shrink: 0;
+		inline-size: calc(var(--rhc-size-icon-md)/2);
+		/* centreert de stip op de eerste regel van de afzender */
+		margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+	}
 
-  /* --- Contactmomenten --- */
-  /* Aftelbalk met pauzeknop (contactmomenten) */
-  .mox-countdown {
-    align-items: center;
-    display: flex;
-    gap: var(--rhc-space-lg);
+	.mox-sender {
+		align-items: flex-start;
+		display: flex;
+		gap: var(--rhc-space-md);
+	}
 
-    .mox-progressbar {
-      background-color: var(--rhc-color-cool-grey-200);
-      flex: 1;
-    }
-  }
+	.mox-unread {
+		font-weight: var(--mox-font-weight-medium);
+	}
 
-  /* Tijdlijn met contactmomenten: een lijn door de statusstippen */
-  .mox-timeline {
-    display: grid;
-    gap: var(--rhc-space-2xl);
-    padding-block: var(--rhc-space-lg);
-    position: relative;
+	/* Mapkeuze in de dialog */
+	.mox-folder-picker {
+		display: grid;
+		gap: var(--rhc-space-xs);
+		list-style: none;
+		margin-block-end: var(--rhc-space-xl);
+		padding: 0;
+	}
 
-    &::before {
-      background-color: var(--rhc-color-cool-grey-300);
-      content: "";
-      inline-size: var(--rhc-border-width-sm);
-      inset-block: 0;
-      inset-inline-start: calc(var(--rhc-size-icon-md) / 4);
-      position: absolute;
-    }
+	/* --- Contactmomenten --- */
+	/* Aftelbalk met pauzeknop (contactmomenten) */
+	.mox-countdown {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-lg);
 
-    > * {
-      align-items: baseline;
-      display: flex;
-      gap: var(--rhc-space-lg);
-      position: relative;
-    }
-  }
+		.mox-progressbar {
+			background-color: var(--rhc-color-cool-grey-200);
+			flex: 1;
+		}
+	}
 
-  /* --- Digitale assistent --- */
-  /* Digitale assistent: chat met ballonnen, zoals in moza-poc */
-  .mox-chat {
-    display: grid;
-    gap: var(--rhc-space-lg);
-  }
+	/* Tijdlijn met contactmomenten: een lijn door de statusstippen */
+	.mox-timeline {
+		display: grid;
+		gap: var(--rhc-space-2xl);
+		padding-block: var(--rhc-space-lg);
+		position: relative;
 
-  .mox-chat-messages {
-    block-size: max(24rem, 50dvh);
-    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
-    border-radius: var(--rhc-border-radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-lg);
-    overflow-y: auto;
-    padding: var(--rhc-space-lg);
-  }
+		&::before {
+			background-color: var(--rhc-color-cool-grey-300);
+			content: "";
+			inline-size: var(--rhc-border-width-sm);
+			inset-block: 0;
+			inset-inline-start: calc(var(--rhc-size-icon-md) / 4);
+			position: absolute;
+		}
 
-  .mox-chat-rule {
-    display: flex;
-    flex-direction: column;
-  }
+		>* {
+			align-items: baseline;
+			display: flex;
+			gap: var(--rhc-space-lg);
+			position: relative;
 
-  .mox-chat-message,
-  .mox-chat-card,
-  .mox-chat-suggestions {
-    border-radius: var(--rhc-border-radius-md);
-    display: grid;
-    gap: var(--rhc-space-md);
-    max-inline-size: min(80%, 48rem);
-    padding: var(--rhc-space-md) var(--rhc-space-lg);
-  }
+		.utrecht-link {
+			white-space: nowrap;
+		}
+		}
+	}
 
-  .mox-chat-message,
-  .mox-chat-suggestions {
-    margin-block-end: var(--rhc-space-2xl);
-    position: relative;
+	/* --- Digitale assistent --- */
+	/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
+	.mox-chat {
+		display: grid;
+		gap: var(--rhc-space-lg);
+	}
 
-    &:before {
-      background-color: var(--rhc-color-cool-grey-100);
-      block-size: var(--rhc-size-icon-md);
-      clip-path: shape(
-        from 0% 0%,
-        line to 100% 0%,
-        line to 20% 80%,
-        curve to 0% 80% with 0% 100%
-      );
-      content: "";
-      inline-size: var(--rhc-size-icon-md);
-      inset-block-end: calc(-1 * var(--rhc-size-icon-md));
-      inset-inline-start: var(--rhc-size-icon-md);
-      position: absolute;
-    }
+	.mox-chat-messages {
+		block-size: max(24rem, 50dvh);
+		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+		border-radius: var(--rhc-border-radius-md);
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-lg);
+		overflow-y: auto;
+		padding: var(--rhc-space-lg);
+	}
 
-    p:last-of-type {
-      margin-block-end: 0;
-    }
-  }
+	.mox-chat-rule {
+		display: flex;
+		flex-direction: column;
+	}
 
-  /* Omkadering zoals in moza-poc: vier drop-shadows van 1px in plaats van een
+	.mox-chat-message,
+	.mox-chat-card,
+	.mox-chat-suggestions {
+		border-radius: var(--rhc-border-radius-md);
+		display: grid;
+		gap: var(--rhc-space-md);
+		max-inline-size: min(80%, 48rem);
+		padding: var(--rhc-space-md) var(--rhc-space-lg);
+	}
+
+	.mox-chat-message,
+	.mox-chat-suggestions {
+		margin-block-end: var(--rhc-space-2xl);
+		position: relative;
+
+		&:before {
+			background-color: var(--rhc-color-cool-grey-100);
+			block-size: var(--rhc-size-icon-md);
+			clip-path: shape(
+				from 0% 0%,
+				line to 100% 0%,
+				line to 20% 80%,
+				curve to 0% 80% with 0% 100%
+			);
+			content: "";
+			inline-size: var(--rhc-size-icon-md);
+			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+			inset-inline-start: var(--rhc-size-icon-md);
+			position: absolute;
+		}
+
+		p:last-of-type {
+			margin-block-end: 0;
+		}
+	}
+
+	/* Omkadering zoals in moza-poc: vier drop-shadows van 1px in plaats van een
 	  border, zodat de lijn ook om het staartje (::before) heen loopt. */
-  .mox-chat-message--assistant,
-  .mox-chat-card,
-  .mox-chat-suggestions {
-    --mox-chat-border-color: var(--rhc-color-cool-grey-300);
+	.mox-chat-message--assistant,
+	.mox-chat-card,
+	.mox-chat-suggestions {
+		--mox-chat-border-color: var(--rhc-color-cool-grey-300);
 
-    align-self: flex-start;
-    background-color: var(--rhc-color-cool-grey-100);
-    filter: drop-shadow(1px 0 0 var(--mox-chat-border-color))
-      drop-shadow(-1px 0 0 var(--mox-chat-border-color))
-      drop-shadow(0 1px 0 var(--mox-chat-border-color))
-      drop-shadow(0 -1px 0 var(--mox-chat-border-color));
-  }
+		align-self: flex-start;
+		background-color: var(--rhc-color-cool-grey-100);
+		filter: drop-shadow(1px 0 0 var(--mox-chat-border-color))
+			drop-shadow(-1px 0 0 var(--mox-chat-border-color))
+			drop-shadow(0 1px 0 var(--mox-chat-border-color))
+			drop-shadow(0 -1px 0 var(--mox-chat-border-color));
+	}
 
-  .mox-chat-message--user {
-    align-self: flex-end;
-    background-color: var(--rhc-color-lintblauw-700);
-    color: var(--rhc-color-wit);
+	.mox-chat-message--user {
+		align-self: flex-end;
+		background-color: var(--rhc-color-lintblauw-700);
+		color: var(--rhc-color-wit);
 
-    &:before {
-      background-color: var(--rhc-color-lintblauw-700);
-      block-size: var(--rhc-size-icon-md);
-      clip-path: shape(
-        from 0% 0%,
-        line to 100% 0%,
-        line to 100% 80%,
-        curve to 80% 80% with 100% 100%
-      );
-      content: "";
-      inline-size: var(--rhc-size-icon-md);
-      inset-block-end: calc(-1 * var(--rhc-size-icon-md));
-      inset-inline-end: var(--rhc-size-icon-md);
-      position: absolute;
-    }
+		&:before {
+			background-color: var(--rhc-color-lintblauw-700);
+			block-size: var(--rhc-size-icon-md);
+			clip-path: shape(
+				from 0% 0%,
+				line to 100% 0%,
+				line to 100% 80%,
+				curve to 80% 80% with 100% 100%
+			);
+			content: "";
+			inline-size: var(--rhc-size-icon-md);
+			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+			inset-inline-end: var(--rhc-size-icon-md);
+			position: absolute;
+		}
 
-    .nl-paragraph {
-      color: inherit;
-    }
-  }
+		.nl-paragraph {
+			color: inherit;
+		}
+	}
 
-  .mox-chat-message--error {
-    align-self: flex-start;
-    background-color: var(--rhc-color-rood-50);
-    display: flex;
-    gap: var(--rhc-space-md);
+	.mox-chat-message--error {
+		align-self: flex-start;
+		background-color: var(--rhc-color-rood-50);
+		display: flex;
+		gap: var(--rhc-space-md);
 
-    > .utrecht-icon {
-      color: var(--rhc-color-rood-600);
-    }
-  }
+		>.utrecht-icon {
+			color: var(--rhc-color-rood-600);
+		}
+	}
 
-  .mox-chat-suggestions {
-    max-inline-size: 100%;
+	.mox-chat-suggestions {
+		max-inline-size: 100%;
 
-    .utrecht-button {
-      justify-self: start;
-    }
-  }
+		.utrecht-button {
+			justify-self: start;
+		}
+	}
 
-  .mox-chat-card {
-    inline-size: min(100%, 48rem);
-    max-inline-size: 100%;
+	.mox-chat-card {
+		inline-size: min(100%, 48rem);
+		max-inline-size: 100%;
 
-    fieldset {
-      display: grid;
-      gap: var(--rhc-space-sm);
-    }
-  }
+		fieldset {
+			display: grid;
+			gap: var(--rhc-space-sm);
+		}
+	}
 
-  .mox-chat-form {
-    display: grid;
-    gap: var(--rhc-space-lg);
-  }
+	.mox-chat-form {
+		display: grid;
+		gap: var(--rhc-space-lg);
+	}
 
-  .mox-chat-sources {
-    border-block-start: var(--rhc-border-width-sm) solid
-      var(--rhc-color-cool-grey-300);
-    display: grid;
-    gap: var(--rhc-space-sm);
-    padding-block-start: var(--rhc-space-md);
+	.mox-chat-sources {
+		border-block-start: var(--rhc-border-width-sm) solid
+			var(--rhc-color-cool-grey-300);
+		display: grid;
+		gap: var(--rhc-space-sm);
+		padding-block-start: var(--rhc-space-md);
 
-    ul {
-      display: grid;
-      gap: var(--rhc-space-sm);
-    }
+		ul {
+			display: grid;
+			gap: var(--rhc-space-sm);
+		}
 
-    li {
-      display: grid;
-    }
+		li {
+			display: grid;
+		}
 
-    small {
-      color: var(--rhc-color-foreground-subtle);
-    }
-  }
+		small {
+			color: var(--rhc-color-foreground-subtle);
+		}
+	}
 
-  .mox-chat-badge {
-    align-items: center;
-    background-color: var(--rhc-color-groen-100);
-    border-radius: var(--rhc-border-radius-md);
-    display: inline-flex;
-    font-size: var(--rhc-text-font-size-sm);
-    gap: var(--rhc-space-sm);
-    inline-size: fit-content;
-    padding: var(--rhc-space-2xs) var(--rhc-space-sm);
+	.mox-chat-badge {
+		align-items: center;
+		background-color: var(--rhc-color-groen-100);
+		border-radius: var(--rhc-border-radius-md);
+		display: inline-flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+		inline-size: fit-content;
+		padding: var(--rhc-space-2xs) var(--rhc-space-sm);
 
-    .utrecht-icon {
-      color: var(--rhc-color-groen-600);
-    }
-  }
+		.utrecht-icon {
+			color: var(--rhc-color-groen-600);
+		}
+	}
 
-  .mox-chat-energy {
-    display: grid;
-    gap: var(--rhc-space-md);
-  }
+	.mox-chat-energy {
+		display: grid;
+		gap: var(--rhc-space-md);
+	}
 
-  .mox-energy-figures {
-    display: grid;
-    gap: var(--rhc-space-lg);
-    grid-template-columns: repeat(2, 1fr);
+	.mox-energy-figures {
+		display: grid;
+		gap: var(--rhc-space-lg);
+		grid-template-columns: repeat(2, 1fr);
 
-    dt {
-      color: var(--rhc-color-foreground-subtle);
-      font-size: var(--rhc-text-font-size-sm);
-    }
-  }
+		dt {
+			color: var(--rhc-color-foreground-subtle);
+			font-size: var(--rhc-text-font-size-sm);
+		}
+	}
 
-  .mox-energy-value {
-    display: block;
-    font-weight: var(--rhc-text-font-weight-bold);
-  }
+	.mox-energy-value {
+		display: block;
+		font-weight: var(--rhc-text-font-weight-bold);
+	}
 
-  .mox-energy-threshold {
-    align-items: center;
-    display: flex;
-    font-size: var(--rhc-text-font-size-sm);
-    gap: var(--rhc-space-xs);
+	.mox-energy-threshold {
+		align-items: center;
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-xs);
 
-    &::before {
-      block-size: 0.5rem;
-      border-radius: var(--rhc-border-radius-round);
-      content: "";
-      flex: none;
-      inline-size: 0.5rem;
-    }
-  }
+		&::before {
+			block-size: 0.5rem;
+			border-radius: var(--rhc-border-radius-round);
+			content: "";
+			flex: none;
+			inline-size: 0.5rem;
+		}
+	}
 
-  .mox-energy-threshold--above::before {
-    background-color: var(--rhc-color-oranje-500);
-  }
+	.mox-energy-threshold--above::before {
+		background-color: var(--rhc-color-oranje-500);
+	}
 
-  .mox-energy-threshold--below::before {
-    background-color: var(--rhc-color-groen-600);
-  }
+	.mox-energy-threshold--below::before {
+		background-color: var(--rhc-color-groen-600);
+	}
 
-  /* Wachtindicatie: drie stippen die een voor een verschijnen */
-  .mox-chat-thinking {
-    align-items: center;
-    align-self: flex-start;
-    display: flex;
-    gap: var(--rhc-space-sm);
-  }
+	/* Wachtindicatie: drie stippen die een voor een verschijnen */
+	.mox-chat-thinking {
+		align-items: center;
+		align-self: flex-start;
+		display: flex;
+		gap: var(--rhc-space-sm);
+	}
 
-  .mox-wait {
-    animation: mox-wait 1s steps(4) infinite;
-    aspect-ratio: 4;
-    background: radial-gradient(
-        circle closest-side,
-        var(--rhc-color-foreground-default) 90%,
-        transparent
-      )
-      0 / calc(100% / 3) 100% space;
-    clip-path: inset(0 100% 0 0);
-    inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
-  }
+	.mox-wait {
+		animation: mox-wait 1s steps(4) infinite;
+		aspect-ratio: 4;
+		background: radial-gradient(
+				circle closest-side,
+				var(--rhc-color-foreground-default) 90%,
+				transparent
+			)
+			0 / calc(100% / 3) 100% space;
+		clip-path: inset(0 100% 0 0);
+		inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
+	}
 
-  .mox-chat-input {
-    display: grid;
-    gap: var(--rhc-space-md);
+	.mox-chat-input {
+		display: grid;
+		gap: var(--rhc-space-md);
 
-    textarea {
-      max-inline-size: none;
-      min-block-size: 6rem;
-    }
-  }
+		textarea {
+			max-inline-size: none;
+			min-block-size: 6rem;
+		}
+	}
 
-  .mox-chat-disclaimer {
-    align-items: flex-start;
-    color: var(--rhc-color-foreground-subtle);
-    display: flex;
-    font-size: var(--rhc-text-font-size-sm);
-    gap: var(--rhc-space-sm);
-  }
+	.mox-chat-disclaimer {
+		align-items: flex-start;
+		color: var(--rhc-color-foreground-subtle);
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+	}
 
-  /* --- Lopende zaken --- */
-  /* Voortgang van een zaak: genummerde stappen met een lijn ertussen,
+	/* --- Lopende zaken --- */
+	/* Voortgang van een zaak: genummerde stappen met een lijn ertussen,
 	  zoals de status-track in moza-poc. Voltooid = groen met vinkje,
 	  huidige stap = blauw, nog te doen = grijs en een stippellijn. */
-  .mox-status-track {
-    --mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.6);
-    --mox-stap-gap: var(--rhc-space-lg);
+	.mox-status-track {
+		--mox-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
+		--mox-stap-gap: var(--rhc-space-lg);
 
-    counter-reset: stap;
-    display: grid;
-    gap: var(--mox-stap-gap);
+		display: grid;
+		gap: var(--mox-stap-gap);
+		margin-block: var(--rhc-space-3xl);
 
-    > li {
-      counter-increment: stap;
-      display: flex;
-      gap: var(--rhc-space-md);
-      position: relative;
+		>li {
+			display: flex;
+			gap: var(--rhc-space-md);
+			position: relative;
 
-      &::before {
-        background-color: var(--rhc-color-groen-600);
-        block-size: var(--mox-stap-maat);
-        border-radius: var(--rhc-border-radius-round);
-        color: var(--rhc-color-wit);
-        content: counter(stap);
-        display: grid;
-        flex-shrink: 0;
-        font-weight: var(--rhc-text-font-weight-bold);
-        inline-size: var(--mox-stap-maat);
-        place-items: center;
-      }
+			/* Cirkel met het stapnummer, of een vinkje als de stap klaar is
+			  (StatusTrack). */
+			>.mox-status-marker {
+				background-color: var(--rhc-color-groen-600);
+				block-size: var(--mox-stap-maat);
+				border-radius: var(--rhc-border-radius-round);
+				color: var(--rhc-color-wit);
+				display: grid;
+				flex-shrink: 0;
+				font-weight: var(--rhc-text-font-weight-bold);
+				inline-size: var(--mox-stap-maat);
+				place-items: center;
 
-      &::after {
-        background-color: var(--rhc-color-groen-600);
-        content: "";
-        inline-size: var(--rhc-border-width-md);
-        inset-block: var(--mox-stap-maat) calc(-1 * var(--mox-stap-gap));
-        inset-inline-start: calc(
-          var(--mox-stap-maat) / 2 - var(--rhc-border-width-md) / 2
-        );
-        position: absolute;
-      }
+				.utrecht-icon {
+					block-size: 40%;
+					inline-size: 40%;
+				}
 
-      &:last-child::after {
-        content: none;
-      }
+				svg {
+					block-size: 100%;
+					inline-size: 100%;
+				}
+			}
 
-      /* Stappen voor de huidige stap zijn klaar */
-      &:has(~ [aria-current="step"])::before {
-        content: "\2713";
-      }
-    }
+			&::after {
+				background-color: var(--rhc-color-groen-600);
+				content: "";
+				inline-size: var(--rhc-border-width-md);
+				inset-block: var(--mox-stap-maat) calc(-1 * var(--mox-stap-gap));
+				inset-inline-start: calc(
+					var(--mox-stap-maat) / 2 - var(--rhc-border-width-md) / 2
+				);
+				position: absolute;
+			}
 
-    > [aria-current="step"] {
-      &::before {
-        background-color: var(--rhc-color-lintblauw-500);
-      }
+			&:last-child::after {
+				content: none;
+			}
+		}
 
-      ~ li::before {
-        background-color: var(--rhc-color-cool-grey-500);
-      }
+		>[aria-current="step"] {
+			>.mox-status-marker {
+				background-color: var(--rhc-color-lintblauw-500);
+			}
 
-      &::after,
-      ~ li::after {
-        background: repeating-linear-gradient(
-          var(--rhc-color-cool-grey-400) 0 4px,
-          transparent 4px 8px
-        );
-      }
-    }
+			~li>.mox-status-marker {
+				background-color: var(--rhc-color-cool-grey-500);
+			}
 
-    details {
-      flex: 1;
-      min-inline-size: 0;
-    }
+			&::after,
+			~li::after {
+				background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
+			}
+		}
 
-    summary {
-      align-items: center;
-      cursor: pointer;
-      display: flex;
-      font-weight: var(--rhc-text-font-weight-bold);
-      gap: var(--rhc-space-sm);
-      list-style: none;
-      min-block-size: var(--mox-stap-maat);
+		details {
+			flex: 1;
+			min-inline-size: 0;
+		}
 
-      &::-webkit-details-marker {
-        display: none;
-      }
+		summary {
+			align-items: center;
+			cursor: pointer;
+			display: flex;
+			font-weight: var(--rhc-text-font-weight-bold);
+			gap: var(--rhc-space-sm);
+			list-style: none;
+			min-block-size: var(--mox-stap-maat);
 
-      .utrecht-icon {
-        transition: transform 150ms;
-      }
-    }
+			&::-webkit-details-marker {
+				display: none;
+			}
 
-    details[open] > summary .utrecht-icon {
-      transform: rotate(90deg);
-    }
-  }
+			.utrecht-icon {
+				transition: transform 150ms;
+			}
+		}
 
-  .mox-status-details {
-    display: grid;
-    gap: var(--rhc-space-md);
-    margin-block-start: var(--rhc-space-sm);
-  }
+		details[open]>summary .utrecht-icon {
+			transform: rotate(90deg);
+		}
+	}
 
-  .mox-status-date {
-    align-items: center;
-    color: var(--rhc-color-foreground-subtle);
-    display: flex;
-    font-size: var(--rhc-text-font-size-sm);
-    gap: var(--rhc-space-sm);
-  }
+	.mox-status-details {
+		display: grid;
+		gap: var(--rhc-space-md);
+		margin-block-start: var(--rhc-space-sm);
 
-  /* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
-  .mox-action-required {
-    align-items: baseline;
-    display: inline-flex;
-    gap: var(--rhc-space-sm);
+		.utrecht-action-group {
+			margin-block-end: var(--rhc-space-xl);
+			margin-block-start: 0;
+		}
+	}
 
-    .utrecht-icon {
-      color: var(--rhc-color-oranje-500);
-      margin-block-start: var(--rhc-space-2xs);
-    }
-  }
+	.mox-status-date {
+		align-items: center;
+		color: var(--rhc-color-foreground-subtle);
+		display: flex;
+		font-size: var(--rhc-text-font-size-sm);
+		gap: var(--rhc-space-sm);
+	}
 
-  /* --- Subsidies --- */
-  /* Budget vergeven bij een subsidie: balk met het percentage ernaast */
-  .mox-budget {
-    align-items: center;
-    display: flex;
-    gap: var(--rhc-space-md);
+	/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
+	.mox-action-required {
+		align-items: baseline;
+		display: inline-flex;
+		gap: var(--rhc-space-sm);
 
-    .mox-progressbar {
-      background-color: var(--rhc-color-cool-grey-200);
-      flex: 1;
-      max-inline-size: 20rem;
-    }
-  }
+		.utrecht-icon {
+			color: var(--rhc-color-oranje-500);
+			margin-block-start: var(--rhc-space-2xs);
+		}
+	}
+
+	/* --- Subsidies --- */
+	/* Budget vergeven bij een subsidie: balk met het percentage ernaast */
+	.mox-budget {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-md);
+
+		.mox-progressbar {
+			background-color: var(--rhc-color-cool-grey-200);
+			flex: 1;
+			max-inline-size: 20rem;
+		}
+	}
 }
 
 /* Menu */
 .rhc-menu {
-  button {
-    color: var(--rhc-color-zwart);
-    inline-size: 100%;
-    padding-block: var(--rhc-space-xl);
-    padding-inline: var(--rhc-space-3xl);
-    text-align: start;
+	button {
+		color: var(--rhc-color-zwart);
+		inline-size: 100%;
+		padding-block: var(--rhc-space-xl);
+		padding-inline: var(--rhc-space-3xl);
+		text-align: start;
 
-    &[aria-pressed="true"] {
-      background-color: var(--rhc-color-cool-grey-200);
-      color: var(--rhc-color-zwart) !important;
-    }
+		&[aria-pressed="true"] {
+			background-color: var(--rhc-color-cool-grey-200);
+			color: var(--rhc-color-zwart) !important;
+		}
 
-    &:hover {
-      background-color: var(--rhc-color-cool-grey-200) !important;
-      color: var(--rhc-color-zwart);
-    }
-  }
+		&:hover {
+			background-color: var(--rhc-color-cool-grey-200) !important;
+			color: var(--rhc-color-zwart);
+		}
+	}
 }
 
 /* Verloop aan de randen van scrollende tabs (.mox-tabs op een smal scherm).
-  Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
-  @property en @keyframes mogen niet genest staan. */
+	Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
+	@property en @keyframes mogen niet genest staan. */
 @property --mox-tabs-fade-start {
-  inherits: false;
-  initial-value: 0px;
-  syntax: "<length>";
+	inherits: false;
+	initial-value: 0px;
+	syntax: "<length>";
 }
 
 @property --mox-tabs-fade-end {
-  inherits: false;
-  initial-value: 0;
-  syntax: "<length>";
+	inherits: false;
+	initial-value: 0;
+	syntax: "<length>";
 }
 
 /* Aan het begin alleen rechts een verloop, aan het eind alleen links. */
 @keyframes mox-tabs-fade {
-  0% {
-    --mox-tabs-fade-end: var(--mox-tabs-fade);
-    --mox-tabs-fade-start: 0;
-  }
+	0% {
+		--mox-tabs-fade-end: var(--mox-tabs-fade);
+		--mox-tabs-fade-start: 0;
+	}
 
-  10% {
-    --mox-tabs-fade-start: var(--mox-tabs-fade);
-  }
+	10% {
+		--mox-tabs-fade-start: var(--mox-tabs-fade);
+	}
 
-  90% {
-    --mox-tabs-fade-end: var(--mox-tabs-fade);
-  }
+	90% {
+		--mox-tabs-fade-end: var(--mox-tabs-fade);
+	}
 
-  100% {
-    --mox-tabs-fade-end: 0;
-    --mox-tabs-fade-start: var(--mox-tabs-fade);
-  }
+	100% {
+		--mox-tabs-fade-end: 0;
+		--mox-tabs-fade-start: var(--mox-tabs-fade);
+	}
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
-@keyframes mox-wait {
-  to {
-    clip-path: inset(0 -33% 0 0);
-  }
+@keyframes mox-progressbar-indeterminate {
+	from {
+		transform: translateX(-100%);
+	}
+
+	to {
+		transform: translateX(250%);
+	}
 }
 
+@keyframes mox-wait {
+	to {
+		clip-path: inset(0 -33% 0 0);
+	}
+}
 /* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
-   regelingkaarten en de tijdlijn van vastleggingen. */
+	 regelingkaarten en de tijdlijn van vastleggingen. */
 .mox-theme {
-  .mox-hiring-steps {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    gap: var(--rhc-space-inline-md, 1rem);
-    list-style: none;
-    margin-block: 0 var(--rhc-space-block-lg, 1.5rem);
-    padding: 0;
-  }
+	.mox-hiring-steps {
+		display: flex;
+		flex-wrap: wrap;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		gap: var(--rhc-space-inline-md, 1rem);
+		list-style: none;
+		margin-block: 0 var(--rhc-space-block-lg, 1.5rem);
+		padding: 0;
+	}
 
-  .mox-hiring-steps li {
-    border-block-end: 3px solid var(--rhc-color-grey-40, #ccc);
-    color: var(--rhc-color-grey-80, #555);
-    padding-block-end: 0.25rem;
-  }
+	.mox-hiring-steps li {
+		border-block-end: 3px solid var(--rhc-color-grey-40, #ccc);
+		color: var(--rhc-color-grey-80, #555);
+		padding-block-end: 0.25rem;
+	}
 
-  .mox-hiring-steps li[aria-current="step"] {
-    border-block-end-color: var(--rhc-color-blue-80, #01689b);
-    color: var(--rhc-color-black, #000);
-    font-weight: 700;
-  }
+	.mox-hiring-steps li[aria-current="step"] {
+		border-block-end-color: var(--rhc-color-blue-80, #01689b);
+		color: var(--rhc-color-black, #000);
+		font-weight: 700;
+	}
 
-  .mox-hiring-label {
-    border: 1px solid currentcolor;
-    border-radius: 1rem;
-    color: var(--rhc-color-blue-80, #01689b);
-    display: inline-block;
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    font-weight: 700;
-    margin-inline-start: 0.5rem;
-    padding-block: 0.125rem;
-    padding-inline: 0.625rem;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
+	.mox-hiring-label {
+		border: 1px solid currentcolor;
+		border-radius: 1rem;
+		color: var(--rhc-color-blue-80, #01689b);
+		display: inline-block;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		font-weight: 700;
+		margin-inline-start: 0.5rem;
+		padding-block: 0.125rem;
+		padding-inline: 0.625rem;
+		vertical-align: middle;
+		white-space: nowrap;
+	}
 
-  .mox-hiring-label--not-applicable {
-    color: var(--rhc-color-grey-80, #555);
-  }
+	.mox-hiring-label--not-applicable {
+		color: var(--rhc-color-grey-80, #555);
+	}
 
-  .mox-hiring-label--correction {
-    color: var(--rhc-color-oranje-80, #b35d00);
-  }
+	.mox-hiring-label--correction {
+		color: var(--rhc-color-oranje-80, #b35d00);
+	}
 
-  .mox-hiring-confirmed {
-    align-items: center;
-    color: var(--rhc-color-groen-80, #1d7040);
-    display: flex;
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    gap: 0.5rem;
-  }
+	.mox-hiring-confirmed {
+		align-items: center;
+		color: var(--rhc-color-groen-80, #1d7040);
+		display: flex;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		gap: 0.5rem;
+	}
 
-  /* Scherm 2: per organisatie de gegevens als vraag en antwoord, zoals in het eerste prototype. */
-  .mox-hiring-facts {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-md, 1rem);
-    margin: 0;
-  }
+	/* Scherm 2: per organisatie de gegevens als vraag en antwoord, zoals in het eerste prototype. */
+	.mox-hiring-facts {
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-md, 1rem);
+		margin: 0;
+	}
 
-  .mox-hiring-facts dt {
-    color: var(--rhc-color-grey-80, #555);
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-  }
+	.mox-hiring-facts dt {
+		color: var(--rhc-color-grey-80, #555);
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
 
-  .mox-hiring-facts dd {
-    margin: 0;
-  }
+	.mox-hiring-facts dd {
+		margin: 0;
+	}
 
-  .mox-hiring-legal-question {
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    margin-block-start: 0.25rem;
-  }
+	.mox-hiring-legal-question {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		margin-block-start: 0.25rem;
+	}
 
-  .mox-hiring-legal-question summary {
-    color: var(--rhc-color-blue-80, #01689b);
-    cursor: pointer;
-  }
+	.mox-hiring-legal-question summary {
+		color: var(--rhc-color-blue-80, #01689b);
+		cursor: pointer;
+	}
 
-  .mox-hiring-why {
-    margin-block-start: var(--rhc-space-block-md, 1rem);
-  }
+	.mox-hiring-why {
+		margin-block-start: var(--rhc-space-block-md, 1rem);
+	}
 
-  .mox-hiring-why > summary {
-    cursor: pointer;
-    font-weight: 700;
-  }
+	.mox-hiring-why > summary {
+		cursor: pointer;
+		font-weight: 700;
+	}
 
-  .mox-hiring-why > div > * + * {
-    margin-block-start: var(--rhc-space-block-sm, 0.75rem);
-  }
+	.mox-hiring-why > div > * + * {
+		margin-block-start: var(--rhc-space-block-sm, 0.75rem);
+	}
 
-  .mox-hiring-trace {
-    font-family: ui-monospace, monospace;
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-  }
+	.mox-hiring-trace {
+		font-family: ui-monospace, monospace;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
 
-  .mox-hiring-timeline {
-    border-inline-start: 3px solid var(--rhc-color-grey-40, #ccc);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+	.mox-hiring-timeline {
+		border-inline-start: 3px solid var(--rhc-color-grey-40, #ccc);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
 
-  .mox-hiring-event {
-    padding-block: var(--rhc-space-block-sm, 0.75rem);
-    padding-inline-start: var(--rhc-space-inline-lg, 1.5rem);
-    position: relative;
-  }
+	.mox-hiring-event {
+		padding-block: var(--rhc-space-block-sm, 0.75rem);
+		padding-inline-start: var(--rhc-space-inline-lg, 1.5rem);
+		position: relative;
+	}
 
-  .mox-hiring-event::before {
-    background: var(--rhc-color-blue-80, #01689b);
-    block-size: 0.75rem;
-    border-radius: 50%;
-    content: "";
-    inline-size: 0.75rem;
-    inset-block-start: calc(var(--rhc-space-block-sm, 0.75rem) + 0.35em);
-    inset-inline-start: calc(-0.5rem - 1.5px);
-    position: absolute;
-  }
+	.mox-hiring-event::before {
+		background: var(--rhc-color-blue-80, #01689b);
+		block-size: 0.75rem;
+		border-radius: 50%;
+		content: "";
+		inline-size: 0.75rem;
+		inset-block-start: calc(var(--rhc-space-block-sm, 0.75rem) + 0.35em);
+		inset-inline-start: calc(-0.5rem - 1.5px);
+		position: absolute;
+	}
 
-  .mox-hiring-event--decision::before {
-    background: var(--rhc-color-groen-80, #1d7040);
-  }
+	.mox-hiring-event--decision::before {
+		background: var(--rhc-color-groen-80, #1d7040);
+	}
 
-  .mox-hiring-event--regulation::before {
-    background: var(--rhc-color-grey-80, #555);
-  }
+	.mox-hiring-event--regulation::before {
+		background: var(--rhc-color-grey-80, #555);
+	}
 
-  .mox-hiring-event-kind {
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    letter-spacing: 0.04em;
-    margin: 0;
-    text-transform: uppercase;
-  }
+	.mox-hiring-event-kind {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		letter-spacing: 0.04em;
+		margin: 0;
+		text-transform: uppercase;
+	}
 
-  .mox-hiring-event-meta {
-    color: var(--rhc-color-grey-80, #555);
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-  }
+	.mox-hiring-event-meta {
+		color: var(--rhc-color-grey-80, #555);
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
 
-  .mox-hiring-event--corrected h3 {
-    text-decoration: line-through;
-    text-decoration-thickness: 1px;
-  }
+	.mox-hiring-event--corrected h3 {
+		text-decoration: line-through;
+		text-decoration-thickness: 1px;
+	}
 
-  .mox-hiring-research {
-    border-inline-start: 4px solid var(--rhc-color-oranje-80, #b35d00);
-  }
+	.mox-hiring-research {
+		border-inline-start: 4px solid var(--rhc-color-oranje-80, #b35d00);
+	}
 
-  .mox-hiring-control {
-    inline-size: 100%;
-    max-inline-size: 100%;
-  }
+	.mox-hiring-control {
+		inline-size: 100%;
+		max-inline-size: 100%;
+	}
 
-  /* Eerste scherm: getalvelden, balans en de aanvraag met panelen. */
-  .mox-hiring-note {
-    color: var(--rhc-color-grey-80, #555);
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-  }
+	/* Eerste scherm: getalvelden, balans en de aanvraag met panelen. */
+	.mox-hiring-note {
+		color: var(--rhc-color-grey-80, #555);
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
 
-  .mox-hiring-balance {
-    display: grid;
-    gap: 0.75rem;
-    margin: 0;
-  }
+	.mox-hiring-balance {
+		display: grid;
+		gap: 0.75rem;
+		margin: 0;
+	}
 
-  .mox-hiring-balance > div {
-    display: grid;
-    gap: 0.25rem 0.75rem;
-    grid-template-columns: 1fr auto;
-  }
+	.mox-hiring-balance > div {
+		display: grid;
+		gap: 0.25rem 0.75rem;
+		grid-template-columns: 1fr auto;
+	}
 
-  .mox-hiring-balance dt {
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-  }
+	.mox-hiring-balance dt {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
 
-  .mox-hiring-balance dd {
-    font-weight: 700;
-    margin: 0;
-    text-align: end;
-  }
+	.mox-hiring-balance dd {
+		font-weight: 700;
+		margin: 0;
+		text-align: end;
+	}
 
-  .mox-hiring-bar {
-    background: var(--rhc-color-grey-20, #e6e6e6);
-    block-size: 0.75rem;
-    border-radius: 0.125rem;
-    grid-column: 1 / -1;
-    overflow: hidden;
-  }
+	.mox-hiring-bar {
+		background: var(--rhc-color-grey-20, #e6e6e6);
+		block-size: 0.75rem;
+		border-radius: 0.125rem;
+		grid-column: 1 / -1;
+		overflow: hidden;
+	}
 
-  .mox-hiring-bar > span {
-    background: var(--rhc-color-blue-80, #01689b);
-    block-size: 100%;
-    display: block;
-  }
+	.mox-hiring-bar > span {
+		background: var(--rhc-color-blue-80, #01689b);
+		block-size: 100%;
+		display: block;
+	}
 
-  .mox-hiring-bar > .mox-hiring-bar--plus {
-    background: var(--rhc-color-groen-80, #1d7040);
-  }
+	.mox-hiring-bar > .mox-hiring-bar--plus {
+		background: var(--rhc-color-groen-80, #1d7040);
+	}
 
-  .mox-hiring-net {
-    background: var(--rhc-color-grey-10, #f3f3f3);
-    border-radius: 0.25rem;
-    padding: 1rem;
-  }
+	.mox-hiring-net {
+		background: var(--rhc-color-grey-10, #f3f3f3);
+		border-radius: 0.25rem;
+		padding: 1rem;
+	}
 
-  .mox-hiring-amount {
-    font-size: var(--rhc-font-size-2xl, 1.75rem);
-    font-weight: 700;
-    margin: 0;
-  }
+	.mox-hiring-amount {
+		font-size: var(--rhc-font-size-2xl, 1.75rem);
+		font-weight: 700;
+		margin: 0;
+	}
 
-  .mox-hiring-meta {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0;
-  }
+	.mox-hiring-meta {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0;
+	}
 
-  .mox-hiring-tag {
-    background: var(--rhc-color-grey-10, #f3f3f3);
-    border-radius: 0.25rem;
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    padding-block: 0.125rem;
-    padding-inline: 0.5rem;
-  }
+	.mox-hiring-tag {
+		background: var(--rhc-color-grey-10, #f3f3f3);
+		border-radius: 0.25rem;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		padding-block: 0.125rem;
+		padding-inline: 0.5rem;
+	}
 
-  .mox-hiring-progress {
-    align-items: center;
-    display: grid;
-    gap: 0.25rem 1rem;
-    grid-template-columns: auto 1fr auto;
-  }
+	.mox-hiring-progress {
+		align-items: center;
+		display: grid;
+		gap: 0.25rem 1rem;
+		grid-template-columns: auto 1fr auto;
+	}
 
-  .mox-hiring-progress progress {
-    accent-color: var(--rhc-color-blue-80, #01689b);
-    block-size: 0.5rem;
-    inline-size: 100%;
-  }
+	.mox-hiring-progress progress {
+		accent-color: var(--rhc-color-blue-80, #01689b);
+		block-size: 0.5rem;
+		inline-size: 100%;
+	}
 
-  .mox-hiring-panel {
-    background: var(--rhc-color-white, #fff);
-    border: 1px solid var(--rhc-color-grey-40, #ccc);
-    border-radius: 0.25rem;
-  }
+	.mox-hiring-panel {
+		background: var(--rhc-color-white, #fff);
+		border: 1px solid var(--rhc-color-grey-40, #ccc);
+		border-radius: 0.25rem;
+	}
 
-  .mox-hiring-panel > summary {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    gap: 0.75rem;
-    justify-content: space-between;
-    padding: 1rem;
-  }
+	.mox-hiring-panel > summary {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		gap: 0.75rem;
+		justify-content: space-between;
+		padding: 1rem;
+	}
 
-  .mox-hiring-panel > summary h2 {
-    font-size: var(--rhc-font-size-lg, 1.125rem);
-    margin: 0;
-  }
+	.mox-hiring-panel > summary h2 {
+		font-size: var(--rhc-font-size-lg, 1.125rem);
+		margin: 0;
+	}
 
-  .mox-hiring-panel > div {
-    border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
-    padding: 1rem;
-  }
+	.mox-hiring-panel > div {
+		border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
+		padding: 1rem;
+	}
 
-  .mox-hiring-label--done {
-    color: var(--rhc-color-groen-80, #1d7040);
-  }
+	.mox-hiring-label--done {
+		color: var(--rhc-color-groen-80, #1d7040);
+	}
 
-  .mox-hiring-label--todo {
-    color: var(--rhc-color-oranje-80, #b35d00);
-  }
+	.mox-hiring-label--todo {
+		color: var(--rhc-color-oranje-80, #b35d00);
+	}
 
-  .mox-hiring-reasoning,
-  .mox-hiring-derivation {
-    display: grid;
-    gap: 0.5rem;
-    margin: 0;
-    padding-inline-start: 1.25rem;
-  }
+	.mox-hiring-reasoning,
+	.mox-hiring-derivation {
+		display: grid;
+		gap: 0.5rem;
+		margin: 0;
+		padding-inline-start: 1.25rem;
+	}
 
-  .mox-hiring-derivation {
-    font-size: var(--rhc-font-size-sm, 0.875rem);
-    list-style: none;
-    padding-inline-start: 0;
-  }
+	.mox-hiring-derivation {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		list-style: none;
+		padding-inline-start: 0;
+	}
 
-  .mox-hiring-llm {
-    border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
-    padding-block-start: 1rem;
-  }
+	.mox-hiring-llm {
+		border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
+		padding-block-start: 1rem;
+	}
 }
