@@ -146,11 +146,11 @@ body {
   gap: var(--rhc-space-3xs);
 }
 
-/* Buttons inside a form field come after the input. The parts of the form
-  field have an order (label 1, input 5); without one the buttons would
-  show above the label, while they come after the input in the DOM. */
-.rhc-form-field > .utrecht-action-group {
-  order: 6;
+/* Show the parts in DOM order. Utrecht gives them an order (label 1, error
+  message 3, input 5) for its grid fields; in this flex column a part without
+  an order, such as a select or an ActionGroup, would end up above the label. */
+.rhc-form-field.utrecht-form-field > * {
+  order: 0;
 }
 
 /* --- Header --- */
@@ -501,6 +501,12 @@ body {
     flex-direction: column;
     gap: var(--rhc-space-lg);
     margin-block-end: var(--rhc-space-xl);
+  }
+
+  /* Cards in a row are equally tall: the buttons at the bottom line up,
+    however long the text above them is. */
+  .rhc-mox-card > .utrecht-action-group:last-child {
+    margin-block-start: auto;
   }
 }
 
