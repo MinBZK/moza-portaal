@@ -104,7 +104,11 @@ const Organisaties = ({
 
       {melding && (
         <div ref={meldingRef} tabIndex={-1}>
-          <Alert type={melding === "fout" ? "error" : "ok"}>
+          <Alert
+            type={melding === "fout" ? "error" : "ok"}
+            closable
+            onClose={() => setMelding(null)}
+          >
             <Paragraph>
               {melding === "fout"
                 ? "Uw keuze is niet opgeslagen. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit en probeer het opnieuw."
