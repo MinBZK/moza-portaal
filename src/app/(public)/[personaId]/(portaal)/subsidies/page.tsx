@@ -43,7 +43,7 @@ const SubsidiesPage = async ({
     <>
       <Heading level={1}>Subsidies en financiering</Heading>
 
-      <Alert type="info">
+      <Alert type="info" closable>
         <Paragraph>
           Subsidies en financiering waar u mogelijk voor in aanmerking komt,
           geselecteerd op basis van uw bedrijfsprofiel. Door items te bewaren of

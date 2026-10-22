@@ -4,15 +4,14 @@ import {
   DataSummary,
   DataSummaryItem,
   ActionGroup,
-  LinkButton,
 } from "@/components/rhc";
-import { Icon } from "@rijkshuisstijl-community/icon-react";
 import {
   BewaarKnop,
   NietRelevantKnop,
   RelevantItem,
 } from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
+import ShareButton from "@/components/ShareButton";
 import { getDemoBuurtberichten } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 
@@ -59,10 +58,11 @@ const OmgevingsberichtenPage = async () => {
               >
                 <BewaarKnop item={item} alsLink />
                 {flags.mox_delen && (
-                  <LinkButton>
-                    <Icon icon="delen" />
-                    Delen
-                  </LinkButton>
+                  <ShareButton
+                    title={bericht.titel}
+                    text={bericht.samenvatting}
+                    url={`/buurtberichten#${bericht.id}`}
+                  />
                 )}
                 <NietRelevantKnop item={item} alsLink />
               </ActionGroup>

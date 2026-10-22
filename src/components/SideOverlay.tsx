@@ -15,10 +15,10 @@ import {
 
 const OPEN_EVENT = "prototype:open-side-overlay";
 
-/** Even lang als de transition van dialog in globals.css. */
-const SCHUIF_MS = 300;
+/** As long as the dialog transition in globals.css. */
+const SLIDE_MS = 300;
 
-/** Opent het paneel met dit id, net als de sneltoets. */
+/** Opens the panel with this id, just like the keyboard shortcut. */
 export const openSideOverlay = (id: string) =>
   window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: id }));
 
@@ -37,26 +37,26 @@ const SideOverlay = ({
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const sluitendRef = useRef(false);
+  const closingRef = useRef(false);
 
   /**
-   * Eerst de dialog zelf sluiten, zodat hij naar rechts wegschuift; daarna
-   * pas uit de DOM. Bij "minder beweging" meteen.
+   * First close the dialog itself, so it slides out to the right; only then
+   * remove it from the DOM. With "reduced motion" right away.
    */
   const close = useCallback(() => {
-    if (sluitendRef.current) return;
-    sluitendRef.current = true;
+    if (closingRef.current) return;
+    closingRef.current = true;
     dialogRef.current?.close();
-    const rustig = window.matchMedia(
+    const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
     setTimeout(
       () => {
-        sluitendRef.current = false;
+        closingRef.current = false;
         setOpen(false);
         requestAnimationFrame(() => returnFocusRef.current?.focus());
       },
-      rustig ? 0 : SCHUIF_MS,
+      reducedMotion ? 0 : SLIDE_MS,
     );
   }, []);
   const titleId = `${id}-title`;

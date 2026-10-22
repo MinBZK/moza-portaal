@@ -1,7 +1,7 @@
 /**
- * Icoon voor de taalkeuze (LanguageNavigation).
+ * Icon for the language choice (LanguageNavigation).
  */
-export const TaalIcon = () => (
+export const LanguageIcon = () => (
   <span className="mox-language-icon" role="presentation" aria-hidden="true">
     <svg
       xmlns="http://www.w3.org/2000/svg"

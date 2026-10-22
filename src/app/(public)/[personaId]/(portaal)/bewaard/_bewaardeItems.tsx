@@ -87,7 +87,7 @@ const BewaardeItems = ({
     <>
       {fout && <Alert type="error">{bewaarFoutTekst}</Alert>}
       {melding && (
-        <Alert type="ok">
+        <Alert type="ok" closable>
           {/* Gewone <p>: Paragraph van RHC geeft geen ref door. */}
           <p ref={meldingRef} tabIndex={-1} className="nl-paragraph">
             {melding}

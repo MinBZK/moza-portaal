@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ActionGroup, Icon, LinkButton } from "@/components/rhc";
-import { DigitaleAssistentIcon } from "@/components/icons/digitaleAssistentIcon";
+import { ActionGroup } from "@/components/rhc";
+import ShareButton from "@/components/ShareButton";
+import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 import type { DemoWet } from "@/demo";
 import { BewaarKnop, NietRelevantKnop } from "../bewaard/_bewaarActies";
 import type { BewaarItem } from "../bewaard/_useBewaard";
@@ -38,14 +39,15 @@ const WetActies = ({
     >
       <BewaarKnop item={item} alsLink />
       {delen && (
-        <LinkButton>
-          <Icon icon="delen" />
-          Delen
-        </LinkButton>
+        <ShareButton
+          title={wet.titel}
+          text={wet.samenvatting}
+          url={item.href}
+        />
       )}
       {/* Een echte link (naar de assistent), met dezelfde opmaak. */}
       <Link href={assistentLink(wet)} className="utrecht-link-button">
-        <DigitaleAssistentIcon />
+        <DigitalAssistantIcon />
         Aan digitale assistent vragen
       </Link>
       <NietRelevantKnop item={item} alsLink />

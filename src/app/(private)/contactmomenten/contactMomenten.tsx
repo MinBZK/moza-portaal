@@ -38,7 +38,7 @@ const ContactmomentenPage = ({ kvk }: { kvk: string }) => {
         <div className="mox-timeline">
           {data?.Notificaties?.map((notificatie) => {
             return (
-              <ContactMoment notificatie={notificatie} key={notificatie.id} />
+              <ContactMoment notification={notificatie} key={notificatie.id} />
             );
           })}
         </div>

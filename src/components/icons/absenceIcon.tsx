@@ -1,4 +1,4 @@
-/** Ziekte en verlof-icoon. */
+/** Sickness and leave icon. */
 export const AbsenceIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

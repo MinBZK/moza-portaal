@@ -14,8 +14,9 @@ import {
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
-import TijdelijkeMelding from "@/components/TijdelijkeMelding";
+import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
+import ShareButton from "@/components/ShareButton";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
 import BerichtenboxNav from "./_berichtenboxNav";
@@ -236,9 +237,7 @@ const BerichtDetail = ({
             <div role="status">
               {melding &&
                 (tijdelijk ? (
-                  <TijdelijkeMelding key={meldingNummer}>
-                    {melding}
-                  </TijdelijkeMelding>
+                  <TemporaryAlert key={meldingNummer}>{melding}</TemporaryAlert>
                 ) : (
                   <Alert type="ok">{melding}</Alert>
                 ))}
@@ -293,12 +292,11 @@ const BerichtDetail = ({
                   </LinkButton>
                 )}
 
-                {/* Schets uit moza-poc: Delen doet nog niets. */}
                 {delen && (
-                  <LinkButton>
-                    <Icon icon="delen" />
-                    Delen
-                  </LinkButton>
+                  <ShareButton
+                    title={bericht?.onderwerp}
+                    url={`/berichtenbox/${berichtId}`}
+                  />
                 )}
 
                 {status !== "archief" && (

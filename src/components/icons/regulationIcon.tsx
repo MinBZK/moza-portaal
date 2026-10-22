@@ -1,4 +1,4 @@
-/** Wet en regelgeving-icoon. */
+/** Laws and regulations icon. */
 export const RegulationIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

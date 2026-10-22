@@ -1,7 +1,8 @@
 /**
- * Voortgangsbalk. Met value toont hij hoe ver iets is; zonder value is de
- * duur onbekend en loopt er een stuk balk heen en weer (zoals bij laden).
- * In een info-melding krijgt de balk de kleur van die melding (mox.css).
+ * Progress bar. With a value it shows how far along something is; without a
+ * value the duration is unknown and a piece of the bar moves back and forth
+ * (as when loading). In an info alert the bar takes that alert's colour
+ * (rhc.css).
  */
 const ProgressBar = ({
   label,
@@ -9,30 +10,30 @@ const ProgressBar = ({
   max = 100,
   valueText,
 }: {
-  /** Toegankelijke naam, bijvoorbeeld "Berichten ophalen". */
+  /** Accessible name, for example "Berichten ophalen". */
   label: string;
-  /** Huidige waarde; leeg laten als de duur onbekend is. */
+  /** Current value; leave empty when the duration is unknown. */
   value?: number;
   max?: number;
-  /** Wat een schermlezer voorleest, bijvoorbeeld "3 van 14 organisaties". */
+  /** What a screen reader reads out, for example "3 van 14 organisaties". */
   valueText?: string;
 }) => {
-  const bepaald = value !== undefined;
-  const procent = bepaald && max > 0 ? Math.round((value / max) * 100) : 0;
+  const determinate = value !== undefined;
+  const percent = determinate && max > 0 ? Math.round((value / max) * 100) : 0;
 
   return (
     <div
       role="progressbar"
       aria-label={label}
-      aria-valuemin={bepaald ? 0 : undefined}
-      aria-valuemax={bepaald ? max : undefined}
-      aria-valuenow={bepaald ? value : undefined}
-      aria-valuetext={bepaald ? valueText : undefined}
-      className={`rhc-progressbar${bepaald ? "" : " rhc-progressbar--indeterminate"}`}
+      aria-valuemin={determinate ? 0 : undefined}
+      aria-valuemax={determinate ? max : undefined}
+      aria-valuenow={determinate ? value : undefined}
+      aria-valuetext={determinate ? valueText : undefined}
+      className={`rhc-progressbar${determinate ? "" : " rhc-progressbar--indeterminate"}`}
     >
       <div
         className="rhc-progressbar-track"
-        style={bepaald ? { inlineSize: `${procent}%` } : undefined}
+        style={determinate ? { inlineSize: `${percent}%` } : undefined}
       />
     </div>
   );

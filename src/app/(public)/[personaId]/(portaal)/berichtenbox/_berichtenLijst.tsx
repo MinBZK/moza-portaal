@@ -21,8 +21,9 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
-import TijdelijkeMelding from "@/components/TijdelijkeMelding";
+import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
+import ShareButton from "@/components/ShareButton";
 import type { DemoBericht } from "@/demo";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
@@ -98,6 +99,7 @@ const SorteerKop = ({
 
 const RijActies = ({
   onderwerp,
+  href,
   ongelezen,
   map,
   onArchiveer,
@@ -107,6 +109,8 @@ const RijActies = ({
   onUitMap,
 }: {
   onderwerp: string;
+  /** Link to the message, for sharing. */
+  href: string;
   ongelezen: boolean;
   /** De map waarin het bericht staat. */
   map: string | null;
@@ -147,10 +151,12 @@ const RijActies = ({
       <ul ref={menuRef} id={menuId} popover="auto" className="rhc-action-menu">
         {delen && (
           <li>
-            <Button appearance="subtle-button" onClick={sluit}>
-              <Icon icon="delen" />
-              Delen
-            </Button>
+            <ShareButton
+              title={onderwerp}
+              url={href}
+              variant="menu"
+              onShared={sluit}
+            />
           </li>
         )}
         <li>
@@ -498,9 +504,9 @@ const BerichtenLijst = ({
       )}
       <div role="status">
         {!bezig && alleBinnen && weergave === "inbox" && (
-          <TijdelijkeMelding>
+          <TemporaryAlert closable>
             <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
-          </TijdelijkeMelding>
+          </TemporaryAlert>
         )}
       </div>
 
@@ -509,9 +515,11 @@ const BerichtenLijst = ({
         {melding &&
           !bezig &&
           (meldingTijdelijk ? (
-            <TijdelijkeMelding key={meldingNummer}>{melding}</TijdelijkeMelding>
+            <TemporaryAlert key={meldingNummer}>{melding}</TemporaryAlert>
           ) : (
-            <Alert type="ok">{melding}</Alert>
+            <Alert type="ok" closable>
+              {melding}
+            </Alert>
           ))}
       </div>
 
@@ -634,6 +642,7 @@ const BerichtenLijst = ({
                         <TableCell>
                           <RijActies
                             onderwerp={bericht.onderwerp}
+                            href={`/berichtenbox/${bericht.id}`}
                             ongelezen={isOngelezen(
                               staat,
                               bericht.id,

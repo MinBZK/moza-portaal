@@ -7,38 +7,38 @@ import {
   AccordionProvider,
 } from "@/components/rhc";
 
-export type Vraag = { vraag: string; antwoord: string };
+export type Question = { question: string; answer: string };
 
 /**
- * Pagina-inhoud voor een onderdeel dat nog niet werkt: wat het wordt, wanneer
- * het er is en antwoorden op veelgestelde vragen.
+ * Page content for a section that does not work yet: what it will be, when
+ * it arrives and answers to frequently asked questions.
  */
-const BinnenkortBeschikbaar = ({
-  titel,
-  samenvatting,
-  beschikbaarVanaf,
-  verwachtingen,
-  vragen,
+const ComingSoon = ({
+  title,
+  summary,
+  availableFrom,
+  expectations,
+  questions,
 }: {
-  titel: string;
-  samenvatting: string;
-  beschikbaarVanaf: string;
-  verwachtingen: string[];
-  vragen: Vraag[];
+  title: string;
+  summary: string;
+  availableFrom: string;
+  expectations: string[];
+  questions: Question[];
 }) => (
   <>
-    <Heading level={1}>{titel}</Heading>
+    <Heading level={1}>{title}</Heading>
 
     <Alert type="info">
-      <Heading level={2}>Binnenkort beschikbaar: {beschikbaarVanaf}</Heading>
-      <Paragraph>{samenvatting}</Paragraph>
+      <Heading level={2}>Binnenkort beschikbaar: {availableFrom}</Heading>
+      <Paragraph>{summary}</Paragraph>
     </Alert>
 
     <div className="mox-card">
       <Heading level={2}>Wat kunt u straks doen?</Heading>
       <UnorderedList>
-        {verwachtingen.map((verwachting) => (
-          <UnorderedListItem key={verwachting}>{verwachting}</UnorderedListItem>
+        {expectations.map((expectation) => (
+          <UnorderedListItem key={expectation}>{expectation}</UnorderedListItem>
         ))}
       </UnorderedList>
     </div>
@@ -46,13 +46,13 @@ const BinnenkortBeschikbaar = ({
     <Heading level={2}>Veelgestelde vragen</Heading>
     <div className="mox-faq-card">
       <AccordionProvider
-        sections={vragen.map(({ vraag, antwoord }) => ({
-          label: vraag,
-          body: <Paragraph>{antwoord}</Paragraph>,
+        sections={questions.map(({ question, answer }) => ({
+          label: question,
+          body: <Paragraph>{answer}</Paragraph>,
         }))}
       />
     </div>
   </>
 );
 
-export default BinnenkortBeschikbaar;
+export default ComingSoon;

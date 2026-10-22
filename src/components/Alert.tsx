@@ -8,25 +8,16 @@ import {
 
 type RhcAlertProps = ComponentProps<typeof RhcAlert>;
 
-/**
- * An error alert cannot be closed: the user has to resolve the problem
- * first. All other types can, with `closable`.
- */
-type AlertProps = Omit<RhcAlertProps, "type"> &
-  (
-    | {
-        type: "error";
-        closable?: never;
-        closeLabel?: never;
-        onClose?: never;
-      }
-    | {
-        type?: "info" | "ok" | "warning";
-        closable?: boolean;
-        closeLabel?: string;
-        onClose?: () => void;
-      }
-  );
+type AlertProps = Omit<RhcAlertProps, "type"> & {
+  type?: "info" | "ok" | "warning" | "error";
+  /**
+   * Show a close button. Ignored for errors: the user has to resolve the
+   * problem first. So `closable` can stay on when the type varies.
+   */
+  closable?: boolean;
+  closeLabel?: string;
+  onClose?: () => void;
+};
 
 /**
  * RHC Alert with an optional close button. After closing, focus moves to
@@ -43,7 +34,7 @@ export const Alert = ({
   const [closed, setClosed] = useState(false);
 
   if (closed) return null;
-  if (!closable) {
+  if (!closable || props.type === "error") {
     return (
       <RhcAlert className={className} {...props}>
         {children}
@@ -66,13 +57,15 @@ export const Alert = ({
       className={`rhc-alert-closable${className ? ` ${className}` : ""}`}
       {...props}
     >
-      {children}
-      <IconButton
-        className="rhc-alert-close-button"
-        icon="kruis"
-        label={closeLabel}
-        onClick={close}
-      />
+      <div className="rhc-alert-closable-content">
+        {children}
+        <IconButton
+          className="rhc-alert-close-button"
+          icon="kruis"
+          label={closeLabel}
+          onClick={close}
+        />
+      </div>
     </RhcAlert>
   );
 };

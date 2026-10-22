@@ -52,7 +52,7 @@ import {
   Toggletip,
 } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
-import { DigitaleAssistentIcon } from "@/components/icons/digitaleAssistentIcon";
+import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 
 const TemplatePage = async () => {
   return (
@@ -244,7 +244,7 @@ const TemplatePage = async () => {
           Niet relevant voor mij
         </Button>
         <Button appearance="secondary-action-button">
-          <DigitaleAssistentIcon />
+          <DigitalAssistantIcon />
           Aan digitale assistent vragen
         </Button>
       </ActionGroup>

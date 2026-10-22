@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import BinnenkortBeschikbaar from "@/components/binnenkortBeschikbaar";
+import ComingSoon from "@/components/ComingSoon";
 import { getDemoBinnenkort } from "@/demo";
 
 const MedewerkersPage = async () => {
@@ -7,12 +7,15 @@ const MedewerkersPage = async () => {
   if (!onderdeel) notFound();
 
   return (
-    <BinnenkortBeschikbaar
-      titel={onderdeel.titel}
-      samenvatting={onderdeel.samenvatting}
-      beschikbaarVanaf={onderdeel.beschikbaarVanaf}
-      verwachtingen={onderdeel.verwachtingen}
-      vragen={onderdeel.vragen}
+    <ComingSoon
+      title={onderdeel.titel}
+      summary={onderdeel.samenvatting}
+      availableFrom={onderdeel.beschikbaarVanaf}
+      expectations={onderdeel.verwachtingen}
+      questions={onderdeel.vragen.map(({ vraag, antwoord }) => ({
+        question: vraag,
+        answer: antwoord,
+      }))}
     />
   );
 };

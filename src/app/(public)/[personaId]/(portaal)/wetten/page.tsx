@@ -43,7 +43,7 @@ const WettenPage = async ({
     <>
       <Heading level={1}>Wetten en regelgeving</Heading>
 
-      <Alert type="info">
+      <Alert type="info" closable>
         <Paragraph>
           Wetten en regelgeving die mogelijk betrekking hebben op uw bedrijf of
           branche, geselecteerd op basis van uw bedrijfsprofiel. Door items te

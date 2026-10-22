@@ -9,7 +9,7 @@ const BewaardPage = async () => {
         soort="bewaard"
         zonderCategorie="Digitale assistent"
         leeg={
-          <Alert type="info">
+          <Alert type="info" closable>
             <Paragraph>
               U heeft nog niets bewaard. Gebruik de knop{" "}
               <strong>Bewaren</strong> bij{" "}
@@ -35,7 +35,7 @@ const BewaardPage = async () => {
         soort="bewaard"
         alleenCategorie="Digitale assistent"
         leeg={
-          <Alert type="info">
+          <Alert type="info" closable>
             <Paragraph>
               U heeft nog geen gesprekken bewaard. Start een gesprek bij{" "}
               <Link inline href="/digitale-assistent">

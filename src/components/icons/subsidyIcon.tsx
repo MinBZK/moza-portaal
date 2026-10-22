@@ -1,4 +1,4 @@
-/** Subsidies en financiering-icoon. */
+/** Subsidies and funding icon. */
 export const SubsidyIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

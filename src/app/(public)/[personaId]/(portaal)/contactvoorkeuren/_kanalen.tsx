@@ -135,7 +135,11 @@ const Formulier = ({
     <form className="rhc-row-gap" onSubmit={opslaan}>
       {melding && (
         <div ref={meldingRef} tabIndex={-1}>
-          <Alert type={melding === "opgeslagen" ? "ok" : "error"}>
+          <Alert
+            type={melding === "opgeslagen" ? "ok" : "error"}
+            closable
+            onClose={() => setMelding(null)}
+          >
             <Paragraph>
               {melding === "opgeslagen"
                 ? "Uw voorkeuren zijn opgeslagen."
@@ -186,7 +190,7 @@ const Formulier = ({
         )}
       </Fieldset>
 
-      <Alert type="info">
+      <Alert type="info" closable>
         <Paragraph>
           Blijft een bericht 14 dagen ongelezen? Dan stuurt de overheid
           automatisch een herinnering naar uw voorkeurskanaal.

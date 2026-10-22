@@ -118,6 +118,10 @@ body {
   /* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
     ontstaat er op een smal scherm een horizontale scrollbalk. */
   grid-template-columns: minmax(0, 1fr);
+
+  h1 {
+    margin-block-end: var(--rhc-space-xl);
+  }
 }
 
 .rhc-theme.mox-theme {
@@ -460,8 +464,14 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
-    margin-block-end: var(--rhc-space-5xl);
+    margin-block-end: var(--rhc-space-xl);
   }
+}
+
+.mox-card-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xl);
 }
 
 /* --- Tabs --- */
@@ -513,6 +523,248 @@ body {
   &[aria-current] {
     border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
     font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* --- Digitale assistent --- */
+/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
+.rhc-chat {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-chat-messages {
+  block-size: max(24rem, 50dvh);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-lg);
+  overflow-y: auto;
+  padding: var(--rhc-space-lg);
+}
+
+.rhc-chat-rule {
+  display: flex;
+  flex-direction: column;
+}
+
+.rhc-chat-message,
+.rhc-chat-card,
+.rhc-chat-suggestions {
+  border-radius: var(--rhc-border-radius-md);
+  display: grid;
+  gap: var(--rhc-space-md);
+  max-inline-size: min(80%, 48rem);
+  padding: var(--rhc-space-md) var(--rhc-space-lg);
+}
+
+.rhc-chat-message,
+.rhc-chat-suggestions {
+  margin-block-end: var(--rhc-space-2xl);
+  position: relative;
+
+  &:before {
+    background-color: var(--rhc-color-cool-grey-100);
+    block-size: var(--rhc-size-icon-md);
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
+    content: "";
+    inline-size: var(--rhc-size-icon-md);
+    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+    inset-inline-start: var(--rhc-size-icon-md);
+    position: absolute;
+  }
+
+  p:last-of-type {
+    margin-block-end: 0;
+  }
+}
+
+.rhc-chat-message--assistant,
+.rhc-chat-card,
+.rhc-chat-suggestions {
+  --rhc-chat-border-color: var(--rhc-color-cool-grey-300);
+
+  align-self: flex-start;
+  background-color: var(--rhc-color-cool-grey-100);
+  filter: drop-shadow(1px 0 0 var(--rhc-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-chat-border-color));
+}
+
+.rhc-chat-message--user {
+  align-self: flex-end;
+  background-color: var(--rhc-color-lintblauw-700);
+  color: var(--rhc-color-wit);
+
+  &:before {
+    background-color: var(--rhc-color-lintblauw-700);
+    block-size: var(--rhc-size-icon-md);
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
+    content: "";
+    inline-size: var(--rhc-size-icon-md);
+    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+    inset-inline-end: var(--rhc-size-icon-md);
+    position: absolute;
+  }
+
+  .nl-paragraph {
+    color: inherit;
+  }
+}
+
+.rhc-chat-message--error {
+  align-self: flex-start;
+  background-color: var(--rhc-color-rood-50);
+  display: flex;
+  gap: var(--rhc-space-md);
+
+  >.utrecht-icon {
+    color: var(--rhc-color-rood-600);
+  }
+}
+
+.rhc-chat-suggestions {
+  max-inline-size: 100%;
+
+  .utrecht-button {
+    justify-self: start;
+  }
+}
+
+.rhc-chat-card {
+  inline-size: min(100%, 48rem);
+  max-inline-size: 100%;
+
+  fieldset {
+    display: grid;
+    gap: var(--rhc-space-sm);
+  }
+}
+
+.rhc-chat-form {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-chat-sources {
+  border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+  display: grid;
+  gap: var(--rhc-space-sm);
+  padding-block-start: var(--rhc-space-md);
+
+  ul {
+    display: grid;
+    gap: var(--rhc-space-sm);
+  }
+
+  li {
+    display: grid;
+  }
+
+  small {
+    color: var(--rhc-color-foreground-subtle);
+  }
+}
+
+.rhc-chat-badge {
+  align-items: center;
+  background-color: var(--rhc-color-groen-100);
+  border-radius: var(--rhc-border-radius-md);
+  display: inline-flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+  inline-size: fit-content;
+  padding: var(--rhc-space-2xs) var(--rhc-space-sm);
+
+  .utrecht-icon {
+    color: var(--rhc-color-groen-600);
+  }
+}
+
+.rhc-chat-energy {
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-energy-figures {
+  display: grid;
+  gap: var(--rhc-space-lg);
+  grid-template-columns: repeat(2, 1fr);
+
+  dt {
+    color: var(--rhc-color-foreground-subtle);
+    font-size: var(--rhc-text-font-size-sm);
+  }
+}
+
+.rhc-energy-value {
+  display: block;
+  font-weight: var(--rhc-text-font-weight-bold);
+}
+
+.rhc-energy-threshold {
+  align-items: center;
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-xs);
+
+  &::before {
+    block-size: 0.5rem;
+    border-radius: var(--rhc-border-radius-round);
+    content: "";
+    flex: none;
+    inline-size: 0.5rem;
+  }
+}
+
+.rhc-energy-threshold--above::before {
+  background-color: var(--rhc-color-oranje-500);
+}
+
+.rhc-energy-threshold--below::before {
+  background-color: var(--rhc-color-groen-600);
+}
+
+/* Wachtindicatie: drie stippen die een voor een verschijnen */
+.rhc-chat-thinking {
+  align-items: center;
+  align-self: flex-start;
+  display: flex;
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-wait {
+  animation: rhc-wait 1s steps(4) infinite;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side, var(--rhc-color-foreground-default) 90%, transparent) 0 / calc(100% / 3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
+}
+
+@keyframes rhc-wait {
+  to {
+    clip-path: inset(0 -33% 0 0);
+  }
+}
+
+.rhc-chat-input {
+  display: grid;
+  gap: var(--rhc-space-md);
+
+  textarea {
+    max-inline-size: none;
+    min-block-size: 6rem;
+  }
+}
+
+.rhc-chat-disclaimer {
+  align-items: flex-start;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+
+  .utrecht-icon {
+    margin-block-start: var(--rhc-space-sm);
   }
 }
 
@@ -803,10 +1055,24 @@ body {
   position: relative;
 }
 
+.rhc-alert-closable-content {
+  padding-inline-end: var(--rhc-space-5xl);
+}
+
 .rhc-alert-close-button {
   inset-block-start: var(--utrecht-alert-padding-block-start);
   inset-inline-end: var(--utrecht-alert-padding-inline-end);
   position: absolute;
+
+  span {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+
+  &:hover {
+    background: transparent !important;
+  }
 }
 
 /* --- NavigationList --- */

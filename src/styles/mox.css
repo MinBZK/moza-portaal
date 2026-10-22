@@ -95,6 +95,10 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		.mox-card {
 			margin-block-end: 0;
 		}
+
+		h1 {
+			margin-block-end: 0;
+		}
 	}
 
 	/* --- Header --- */
@@ -427,12 +431,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	.mox-card-topic-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--rhc-space-4xl);
-	}
-
 	/* --- Meldingen --- */
 	/* .rhc-alert {
 		margin-block: var(--rhc-space-xl);
@@ -602,240 +600,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			position: relative;
 		}
 	}
-
-	/* --- Digitale assistent --- */
-	/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
-	.mox-chat {
-		display: grid;
-		gap: var(--rhc-space-lg);
-	}
-
-	.mox-chat-messages {
-		block-size: max(24rem, 50dvh);
-		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
-		border-radius: var(--rhc-border-radius-md);
-		display: flex;
-		flex-direction: column;
-		gap: var(--rhc-space-lg);
-		overflow-y: auto;
-		padding: var(--rhc-space-lg);
-	}
-
-	.mox-chat-rule {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.mox-chat-message,
-	.mox-chat-card,
-	.mox-chat-suggestions {
-		border-radius: var(--rhc-border-radius-md);
-		display: grid;
-		gap: var(--rhc-space-md);
-		max-inline-size: min(80%, 48rem);
-		padding: var(--rhc-space-md) var(--rhc-space-lg);
-	}
-
-	.mox-chat-message,
-	.mox-chat-suggestions {
-		margin-block-end: var(--rhc-space-2xl);
-		position: relative;
-
-		&:before {
-			background-color: var(--rhc-color-cool-grey-100);
-			block-size: var(--rhc-size-icon-md);
-			clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
-			content: "";
-			inline-size: var(--rhc-size-icon-md);
-			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
-			inset-inline-start: var(--rhc-size-icon-md);
-			position: absolute;
-		}
-
-		p:last-of-type {
-			margin-block-end: 0;
-		}
-	}
-
-	/* Omkadering zoals in moza-poc: vier drop-shadows van 1px in plaats van een
-	  border, zodat de lijn ook om het staartje (::before) heen loopt. */
-	.mox-chat-message--assistant,
-	.mox-chat-card,
-	.mox-chat-suggestions {
-		--mox-chat-border-color: var(--rhc-color-cool-grey-300);
-
-		align-self: flex-start;
-		background-color: var(--rhc-color-cool-grey-100);
-		filter: drop-shadow(1px 0 0 var(--mox-chat-border-color)) drop-shadow(-1px 0 0 var(--mox-chat-border-color)) drop-shadow(0 1px 0 var(--mox-chat-border-color)) drop-shadow(0 -1px 0 var(--mox-chat-border-color));
-	}
-
-	.mox-chat-message--user {
-		align-self: flex-end;
-		background-color: var(--rhc-color-lintblauw-700);
-		color: var(--rhc-color-wit);
-
-		&:before {
-			background-color: var(--rhc-color-lintblauw-700);
-			block-size: var(--rhc-size-icon-md);
-			clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
-			content: "";
-			inline-size: var(--rhc-size-icon-md);
-			inset-block-end: calc(-1 * var(--rhc-size-icon-md));
-			inset-inline-end: var(--rhc-size-icon-md);
-			position: absolute;
-		}
-
-		.nl-paragraph {
-			color: inherit;
-		}
-	}
-
-	.mox-chat-message--error {
-		align-self: flex-start;
-		background-color: var(--rhc-color-rood-50);
-		display: flex;
-		gap: var(--rhc-space-md);
-
-		>.utrecht-icon {
-			color: var(--rhc-color-rood-600);
-		}
-	}
-
-	.mox-chat-suggestions {
-		max-inline-size: 100%;
-
-		.utrecht-button {
-			justify-self: start;
-		}
-	}
-
-	.mox-chat-card {
-		inline-size: min(100%, 48rem);
-		max-inline-size: 100%;
-
-		fieldset {
-			display: grid;
-			gap: var(--rhc-space-sm);
-		}
-	}
-
-	.mox-chat-form {
-		display: grid;
-		gap: var(--rhc-space-lg);
-	}
-
-	.mox-chat-sources {
-		border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
-		display: grid;
-		gap: var(--rhc-space-sm);
-		padding-block-start: var(--rhc-space-md);
-
-		ul {
-			display: grid;
-			gap: var(--rhc-space-sm);
-		}
-
-		li {
-			display: grid;
-		}
-
-		small {
-			color: var(--rhc-color-foreground-subtle);
-		}
-	}
-
-	.mox-chat-badge {
-		align-items: center;
-		background-color: var(--rhc-color-groen-100);
-		border-radius: var(--rhc-border-radius-md);
-		display: inline-flex;
-		font-size: var(--rhc-text-font-size-sm);
-		gap: var(--rhc-space-sm);
-		inline-size: fit-content;
-		padding: var(--rhc-space-2xs) var(--rhc-space-sm);
-
-		.utrecht-icon {
-			color: var(--rhc-color-groen-600);
-		}
-	}
-
-	.mox-chat-energy {
-		display: grid;
-		gap: var(--rhc-space-md);
-	}
-
-	.mox-energy-figures {
-		display: grid;
-		gap: var(--rhc-space-lg);
-		grid-template-columns: repeat(2, 1fr);
-
-		dt {
-			color: var(--rhc-color-foreground-subtle);
-			font-size: var(--rhc-text-font-size-sm);
-		}
-	}
-
-	.mox-energy-value {
-		display: block;
-		font-weight: var(--rhc-text-font-weight-bold);
-	}
-
-	.mox-energy-threshold {
-		align-items: center;
-		display: flex;
-		font-size: var(--rhc-text-font-size-sm);
-		gap: var(--rhc-space-xs);
-
-		&::before {
-			block-size: 0.5rem;
-			border-radius: var(--rhc-border-radius-round);
-			content: "";
-			flex: none;
-			inline-size: 0.5rem;
-		}
-	}
-
-	.mox-energy-threshold--above::before {
-		background-color: var(--rhc-color-oranje-500);
-	}
-
-	.mox-energy-threshold--below::before {
-		background-color: var(--rhc-color-groen-600);
-	}
-
-	/* Wachtindicatie: drie stippen die een voor een verschijnen */
-	.mox-chat-thinking {
-		align-items: center;
-		align-self: flex-start;
-		display: flex;
-		gap: var(--rhc-space-sm);
-	}
-
-	.mox-wait {
-		animation: mox-wait 1s steps(4) infinite;
-		aspect-ratio: 4;
-		background: radial-gradient(circle closest-side, var(--rhc-color-foreground-default) 90%, transparent) 0 / calc(100% / 3) 100% space;
-		clip-path: inset(0 100% 0 0);
-		inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
-	}
-
-	.mox-chat-input {
-		display: grid;
-		gap: var(--rhc-space-md);
-
-		textarea {
-			max-inline-size: none;
-			min-block-size: 6rem;
-		}
-	}
-
-	.mox-chat-disclaimer {
-		align-items: flex-start;
-		color: var(--rhc-color-foreground-subtle);
-		display: flex;
-		font-size: var(--rhc-text-font-size-sm);
-		gap: var(--rhc-space-sm);
-	}
 }
 
 /* Menu */
@@ -894,12 +658,5 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	100% {
 		--rhc-tabs-fade-end: 0;
 		--rhc-tabs-fade-start: var(--rhc-tabs-fade);
-	}
-}
-
-/* Buiten .rhc-theme: @keyframes mag niet genest staan. */
-@keyframes mox-wait {
-	to {
-		clip-path: inset(0 -33% 0 0);
 	}
 }

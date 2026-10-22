@@ -1,5 +1,5 @@
-/** Digitale assistent-icoon. */
-export const DigitaleAssistentIcon = () => (
+/** Digital assistant icon. */
+export const DigitalAssistantIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg
       xmlns="http://www.w3.org/2000/svg"
