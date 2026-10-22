@@ -647,10 +647,8 @@ body {
   }
 }
 
-/* Paperclip bij een bericht met bijlage: 16 bij 16 pixels. Er is geen
-  token voor deze icoongrootte. */
 .rhc-attachment-icon {
-  --utrecht-icon-size: 1rem;
+  --utrecht-icon-size: var(--rhc-size-icon-md);
 }
 
 .rhc-notice-amount-inbox {
