@@ -108,7 +108,7 @@ const ComponentsExamplePage = async () => (
       <div className="rhc-grid__cell rhc-grid__cell-t-4">
         <StickyInfoBox title="Sticky infobox">
           <Paragraph>
-            Deze blijft staan wanneer je naar beneden scrolled.
+            Deze infobox blijft staan wanneer je naar beneden scrolled.
           </Paragraph>
         </StickyInfoBox>
       </div>
