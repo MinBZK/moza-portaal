@@ -1520,7 +1520,7 @@ body {
 
 .rhc-mox-step-indicator__list {
   display: flex;
-  gap: var(--rhc-space-lg);
+  gap: var(--rhc-space-xl);
   list-style: none;
   margin: 0;
   padding: 0;
