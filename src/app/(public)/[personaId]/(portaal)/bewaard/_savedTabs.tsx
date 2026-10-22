@@ -27,12 +27,12 @@ const tabIcon = (tab: SavedTab) => {
 /** Tabs of Bewaarde items, like the tabs of Lopende zaken. */
 const SavedTabs = ({ active }: { active: SavedTab }) => (
   <nav aria-label="Bewaarde items">
-    <ul className="rhc-tabs">
+    <ul className="rhc-mox-tabs">
       {TABS.map(({ tab, href, label }) => (
         <li key={tab}>
           <Link
             href={href}
-            className="rhc-tab utrecht-link utrecht-link--html-a"
+            className="rhc-mox-tab utrecht-link utrecht-link--html-a"
             aria-current={active === tab ? "page" : undefined}
           >
             {tabIcon(tab)}

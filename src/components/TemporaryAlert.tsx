@@ -36,7 +36,7 @@ const TemporaryAlert = ({
   if (phase === "gone") return null;
   return (
     <div
-      className={`rhc-fade-out${phase === "fading" ? " rhc-fade-out--hidden" : ""}`}
+      className={`rhc-mox-fade-out${phase === "fading" ? " rhc-mox-fade-out--hidden" : ""}`}
     >
       <Alert type={type} closable={closable}>
         {children}

@@ -126,7 +126,7 @@ export const ContactEditBox = ({
 
   return (
     <form
-      className="rhc-row-gap"
+      className="rhc-mox-row-gap"
       noValidate
       onSubmit={(e) => {
         e.preventDefault();

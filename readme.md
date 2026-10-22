@@ -8,7 +8,7 @@
 Dit project gebruikt **geen Tailwind** meer. Dat geldt voor nieuwe code en voor bestaande code die je aanpast.
 
 1. Gebruik eerst een component van de Rijkshuisstijl Community (NL Design System). Importeer ze via `@/components/rhc`.
-2. Volstaat een RHC-component niet, schrijf dan een eigen class. Layout en functionele opmaak die in elke huisstijl geldt, krijgt het voorvoegsel `rhc-` in `src/styles/rhc.css` (de basis). Opmaak van het MOx-thema krijgt het voorvoegsel `mox-` in `src/styles/mox.css` (bovenop de basis). Opmaak die alleen voor het prototype is, zoals het Flags- en persona-paneel en de PoC-banner, staat in `src/styles/utils.css`, met het voorvoegsel `prototype-`. Gebruik overal RHC-tokens (`--rhc-space-*`, `--rhc-color-*`, `--rhc-text-*`) en geen losse waarden.
+2. Volstaat een RHC-component niet, schrijf dan een eigen class. Layout en functionele opmaak die in elke huisstijl geldt, krijgt het voorvoegsel `rhc-mox-` in `src/styles/rhc.css` (de basis); zo is hij te onderscheiden van de classes van RHC zelf. Opmaak van het MOx-thema krijgt het voorvoegsel `mox-` in `src/styles/mox.css` (bovenop de basis). Opmaak die alleen voor het prototype is, zoals het Flags- en persona-paneel en de PoC-banner, staat in `src/styles/utils.css`, met het voorvoegsel `prototype-`. Gebruik overal RHC-tokens (`--rhc-space-*`, `--rhc-color-*`, `--rhc-text-*`) en geen losse waarden.
 3. Afwijkingen op de RHC-tokens zelf (MOx, MOBu, MOZa) staan in `src/styles/rhc.css`.
 
 `npm run lint` geeft een fout bij elke class in `className` die niet begint met `mox-`, `rhc-`, `prototype-`, `utrecht-`, `nl-` of `ams-` (regel `mox/geen-tailwind` in `eslint-rules/`). Tailwind zelf is niet meer geïnstalleerd; de basisopmaak van de browser staat in `src/styles/globals.css`.

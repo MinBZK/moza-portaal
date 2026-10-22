@@ -18,15 +18,15 @@ const ContactgegevensPage = async ({
   return (
     <>
       <Heading level={1}>Contactgegevens</Heading>
-      <div className="rhc-mox-card rhc-row-gap">
+      <div className="rhc-mox-card rhc-mox-row-gap">
         <nav aria-label="Soort contactgegevens">
-          <ul className="rhc-tabs">
+          <ul className="rhc-mox-tabs">
             {tabs.map((tab) => (
               <li key={tab.type}>
                 <Link
                   href={tab.href}
                   aria-current={tab.type === type ? "page" : undefined}
-                  className="rhc-tab utrecht-link utrecht-link--html-a"
+                  className="rhc-mox-tab utrecht-link utrecht-link--html-a"
                 >
                   {tab.label}
                 </Link>

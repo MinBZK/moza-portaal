@@ -38,7 +38,7 @@ export default async function PrivateLayout({
                 lopendeZakenBadge={<ZakenBadge />}
               />
             </nav>
-            <div className="rhc-grid__cell rhc-grid__cell-t-9 rhc-main-container">
+            <div className="rhc-grid__cell rhc-grid__cell-t-9 rhc-mox-main-container">
               <Breadcrumb />
               {children}
             </div>

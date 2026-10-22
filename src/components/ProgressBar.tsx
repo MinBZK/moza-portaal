@@ -29,10 +29,10 @@ const ProgressBar = ({
       aria-valuemax={determinate ? max : undefined}
       aria-valuenow={determinate ? value : undefined}
       aria-valuetext={determinate ? valueText : undefined}
-      className={`rhc-progressbar${determinate ? "" : " rhc-progressbar--indeterminate"}`}
+      className={`rhc-mox-progressbar${determinate ? "" : " rhc-mox-progressbar--indeterminate"}`}
     >
       <div
-        className="rhc-progressbar-track"
+        className="rhc-mox-progressbar-track"
         style={determinate ? { inlineSize: `${percent}%` } : undefined}
       />
     </div>

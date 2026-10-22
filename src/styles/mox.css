@@ -35,25 +35,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
 	}
 
-	/* ==== 3. Formulieren ======================================================== */
 
-	.utrecht-textbox {
-		max-inline-size: 100%;
-	}
-
-	.utrecht-form-label {
-		font-weight: var(--mox-font-weight-medium);
-	}
-
-	.utrecht-form-field--radio,
-	.utrecht-form-field--checkbox {
-		gap: var(--rhc-space-xs);
-		margin-block-start: var(--rhc-space-md);
-	}
-
-	.utrecht-checkbox {
-		background-color: var(--rhc-color-wit);
-	}
 
 	/* ==== 4. Layout ============================================================= */
 
@@ -91,7 +73,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	.rhc-main-container {
+	.rhc-mox-main-container {
 		.rhc-mox-card {
 			margin-block-end: 0;
 		}
@@ -125,7 +107,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.rhc-nav-bar__link,
-	.rhc-header-organizations__single {
+	.rhc-mox-header-organizations__single {
 		align-items: baseline;
 		padding-block-end: var(--rhc-space-xl);
 	}
@@ -141,7 +123,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		text-align: start;
 	}
 
-	.rhc-header-account {
+	.rhc-mox-header-account {
 		--utrecht-icon-inset-block-start: var(--rhc-space-sm);
 
 		.utrecht-icon {
@@ -149,19 +131,19 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	.rhc-header-organizations__identity {
+	.rhc-mox-header-organizations__identity {
 		max-inline-size: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
-	.rhc-header-organizations__single {
+	.rhc-mox-header-organizations__single {
 		align-items: center;
 		display: inline-flex;
 		gap: var(--rhc-space-sm);
 	}
 
-	.rhc-menu {
+	.rhc-mox-menu {
 		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
 		border-radius: var(--rhc-border-radius-md);
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
@@ -177,7 +159,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	.rhc-header-organizations__choice {
+	.rhc-mox-header-organizations__choice {
 		background: transparent;
 		border: 0;
 		color: var(--rhc-color-foreground-default);
@@ -199,7 +181,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-inline-start: var(--rhc-space-md);
 	}
 
-	.rhc-menu-button {
+	.rhc-mox-menu-button {
 		font-size: var(--rhc-text-font-size-sm);
 		inset-block-start: var(--rhc-space-sm);
 		inset-inline-start: var(--mox-page-margin, 0);
@@ -405,7 +387,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 
 		/* Berichtenbox variant C: het paneel regelt de ruimte zelf met gap. */
-		.rhc-message-actions> :is(h2, p) {
+		.rhc-mox-message-actions> :is(h2, p) {
 			margin-block: 0;
 		}
 	}
@@ -582,7 +564,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 }
 
 /* Menu */
-.rhc-menu {
+.rhc-mox-menu {
 	button {
 		color: var(--rhc-color-zwart);
 		inline-size: 100%;
@@ -604,7 +586,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 }
 
-/* Verloop aan de randen van scrollende tabs (.rhc-tabs op een smal scherm).
+/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm).
   Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
   @property en @keyframes mogen niet genest staan. */
 @property --rhc-tabs-fade-start {
@@ -620,7 +602,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 }
 
 /* Aan het begin alleen rechts een verloop, aan het eind alleen links. */
-@keyframes rhc-tabs-fade {
+@keyframes rhc-mox-tabs-fade {
 	0% {
 		--rhc-tabs-fade-end: var(--rhc-tabs-fade);
 		--rhc-tabs-fade-start: 0;

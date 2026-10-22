@@ -35,7 +35,7 @@ const WetActies = ({
     <ActionGroup
       role="group"
       direction="row"
-      className="mox-action-group rhc-action-group-dense"
+      className="mox-action-group rhc-mox-action-group-dense"
     >
       <BewaarKnop item={item} alsLink />
       {delen && (

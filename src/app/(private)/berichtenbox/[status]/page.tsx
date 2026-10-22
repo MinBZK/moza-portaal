@@ -32,10 +32,14 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         />
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "rhc-sender rhc-unread" : "rhc-sender"}>
+        <span
+          className={
+            ongelezen ? "rhc-mox-sender rhc-mox-unread" : "rhc-mox-sender"
+          }
+        >
           {ongelezen && (
             <>
-              <span aria-hidden="true" className="rhc-status-unread" />
+              <span aria-hidden="true" className="rhc-mox-status-unread" />
               <VisuallyHidden>Ongelezen.</VisuallyHidden>
             </>
           )}
@@ -43,7 +47,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         </span>
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "rhc-unread" : undefined}>
+        <span className={ongelezen ? "rhc-mox-unread" : undefined}>
           Aanslag belastingen 2025
         </span>
       </TableCell>
@@ -78,16 +82,16 @@ const BerichtenboxPage = async ({
     <>
       <Heading level={1}>Mijn Berichtenbox</Heading>
       <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
+        <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-mox-row-gap">
           <div className="rhc-mox-card">
             <nav aria-label="Berichtenbox">
-              <ul className="rhc-tabs">
+              <ul className="rhc-mox-tabs">
                 {tabs.map((tab) => (
                   <li key={tab.status}>
                     <Link
                       href={tab.href}
                       aria-current={status === tab.status ? "page" : undefined}
-                      className="rhc-tab utrecht-link utrecht-link--html-a"
+                      className="rhc-mox-tab utrecht-link utrecht-link--html-a"
                     >
                       {tab.label}
                     </Link>

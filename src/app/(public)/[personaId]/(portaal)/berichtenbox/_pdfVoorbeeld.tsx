@@ -35,7 +35,7 @@ const PdfVoorbeeld = ({
   }, []);
 
   return (
-    <div className="rhc-pdf-preview">
+    <div className="rhc-mox-pdf-preview">
       <div role="status">
         {!geladen && (
           <Alert type="info">
@@ -50,7 +50,7 @@ const PdfVoorbeeld = ({
           data={`${pdf}#navpanes=0&view=FitH`}
           type="application/pdf"
           aria-label="Voorbeeld van de pdf"
-          className="rhc-pdf-preview__viewer"
+          className="rhc-mox-pdf-preview__viewer"
         >
           <Paragraph>
             Uw browser kan de pdf niet tonen. Download de pdf hieronder.

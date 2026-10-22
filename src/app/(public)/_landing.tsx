@@ -15,7 +15,7 @@ import Link from "next/link";
 const PublicPage = () => {
   return (
     <div className="utrecht-page-body">
-      <div className="rhc-landing-hero rhc-rounded-corner rhc-rounded-corner--position-start-end">
+      <div className="rhc-mox-landing-hero rhc-rounded-corner rhc-rounded-corner--position-start-end">
         <div className="mox-landing-hero-text rhc-rounded-corner rhc-rounded-corner--position-end-end">
           <Heading level={1}>MijnOverheid Zakelijk</Heading>
           <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
@@ -84,7 +84,7 @@ const PublicPage = () => {
           src="/bg-full-zakelijk-cropped.webp"
         />
       </div>
-      <div className="rhc-landing-info">
+      <div className="rhc-mox-landing-info">
         <div>
           <Heading level={2}>Berichtenbox</Heading>
           <Paragraph>

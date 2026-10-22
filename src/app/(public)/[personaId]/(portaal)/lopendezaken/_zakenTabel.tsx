@@ -25,7 +25,7 @@ const StatusLink = ({ zaak }: { zaak: DemoZaak }) => {
     </>
   );
   return zaak.actieNodig ? (
-    <Link href={`/lopendezaken/${zaak.id}`} className="rhc-alert-link">
+    <Link href={`/lopendezaken/${zaak.id}`} className="rhc-mox-alert-link">
       <Alert type="warning">{tekst}</Alert>
     </Link>
   ) : (
