@@ -93,7 +93,7 @@ const DemoBerichtInhoud = ({
               rel="noopener noreferrer"
               className="utrecht-link utrecht-link--html-a"
             >
-              Open origineel bericht
+              Origineel bericht openen
               <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
             </a>
           </Paragraph>

@@ -15,7 +15,6 @@ import {
   DataSummary,
   FormFieldTextInput,
   Icon,
-  VisuallyHidden,
 } from "@/components/rhc";
 import { useQueryClient } from "@tanstack/react-query";
 import { EditBoxButton } from "@/app/(private)/contactgegevens/[type]/_editBoxButton";
@@ -263,6 +262,7 @@ export const ContactEditBox = ({
             </dd>
             <dd className="rhc-data-summary__item-action">
               <EditBoxButton
+                ariaLabel={`${label} aanpassen`}
                 icon={<Icon icon="bewerken" />}
                 onClick={() => {
                   setFieldState("edit");
@@ -272,7 +272,6 @@ export const ContactEditBox = ({
                 }}
               >
                 Aanpassen
-                <VisuallyHidden> {label.toLocaleLowerCase()}</VisuallyHidden>
               </EditBoxButton>
             </dd>
           </div>

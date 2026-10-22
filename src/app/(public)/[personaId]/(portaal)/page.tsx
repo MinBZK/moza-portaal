@@ -72,7 +72,7 @@ const HomePage = async ({
             href="/berichtenbox"
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Ga naar uw zakelijke berichtenbox
+            Naar uw zakelijke berichtenbox
           </Link>
         </ActionGroup>
       </section>
@@ -95,7 +95,7 @@ const HomePage = async ({
               href="/subsidies"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Ga naar Subsidies en financiering
+              Naar Subsidies en financiering
             </Link>
           </ActionGroup>
         </section>
@@ -117,7 +117,7 @@ const HomePage = async ({
               href="/wetten"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Ga naar Wetten en regelgeving
+              Naar Wetten en regelgeving
             </Link>
           </ActionGroup>
         </section>

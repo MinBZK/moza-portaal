@@ -1,5 +1,4 @@
 import {
-  PreHeading,
   Heading,
   Paragraph,
   Icon,
@@ -73,7 +72,7 @@ const PublicPage = () => {
             <span>Inloggen met E-Herkenning</span>
           </Link>
           <Link href="/inloggen/zakelijk" className="utrecht-link-button">
-            Bekijk alle inlogmogelijkheden
+            Alle inlogmogelijkheden bekijken
             <Icon icon="chevron-right" />
           </Link>
         </div>

@@ -99,7 +99,6 @@ const MapDialog = ({
               <li key={map}>
                 <LinkButton
                   ref={index === 0 ? eersteRef : undefined}
-                  appearance="subtle-button"
                   onClick={() => void kies(map)}
                 >
                   <FolderIcon />

@@ -23,7 +23,7 @@ const wetten: DemoWet[] = proefRegelgeving.map((regel) => ({
   voorWie: regel.geldtVoor,
   alinea: regel.inhoud,
   assistentVraag: regel.assistentVraag ?? undefined,
-  websiteLabel: "Bekijk op de website van wetten.overheid.nl",
+  websiteLabel: "Op de website van wetten.overheid.nl bekijken",
   href: regel.externUrl,
 }));
 

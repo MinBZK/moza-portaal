@@ -126,8 +126,8 @@ const PublicatieDetailPage = async ({
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
               {hasPreferredLink
-                ? "Bekijk op officielebekendmakingen.nl"
-                : "Bekijk op de website van de gemeente"}
+                ? "Op officielebekendmakingen.nl bekijken"
+                : "Op de website van de gemeente bekijken"}
               <Icon icon="externe-link" />
               <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
             </a>

@@ -82,7 +82,7 @@ const StelselBericht = ({
             href="/berichtenbox"
             className="utrecht-link utrecht-link--html-a"
           >
-            Ga naar uw inbox
+            Naar uw inbox
           </Link>
         </Paragraph>
       </>

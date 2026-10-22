@@ -138,7 +138,7 @@ const ArtikelDetailPage = async ({
               rel="noopener noreferrer"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Bekijk op ondernemersplein.nl
+              Op ondernemersplein.nl bekijken
               <Icon icon="externe-link" />
             </a>
           </ActionGroup>

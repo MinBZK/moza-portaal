@@ -17,9 +17,9 @@ const binnenkort: Record<string, DemoBinnenkort> = {
       "Straks vindt u hier uw belastingzaken overzichtelijk bij elkaar.",
     beschikbaarVanaf: "januari 2028",
     verwachtingen: [
-      "Zie welke aangiften u heeft ingediend en wanneer",
-      "Bekijk ontvangen aanslagen en beschikkingen",
-      "Houd bij of er nog iets openstaat",
+      "Zien welke aangiften u heeft ingediend en wanneer",
+      "Ontvangen aanslagen en beschikkingen bekijken",
+      "Bijhouden of er nog iets openstaat",
     ],
     vragen: [
       {
@@ -46,9 +46,9 @@ const binnenkort: Record<string, DemoBinnenkort> = {
       "Straks vindt u hier alles over de voertuigen van uw bedrijf.",
     beschikbaarVanaf: "medio 2028",
     verwachtingen: [
-      "Zie welke voertuigen op naam van uw bedrijf staan",
-      "Bekijk wanneer de APK verloopt",
-      "Ontvang bericht bij terugroepacties",
+      "Zien welke voertuigen op naam van uw bedrijf staan",
+      "Zien wanneer de APK verloopt",
+      "Bericht ontvangen bij terugroepacties",
     ],
     vragen: [
       {
@@ -75,9 +75,9 @@ const binnenkort: Record<string, DemoBinnenkort> = {
       "Straks vindt u hier uw personeelszaken overzichtelijk bij elkaar.",
     beschikbaarVanaf: "2029",
     verwachtingen: [
-      "Bekijk uw werknemers en hun dienstverbanden",
-      "Zie de status van verzuimmeldingen en verlof",
-      "Houd bij welke wijzigingen u doorgaf aan UWV en Belastingdienst",
+      "Uw werknemers en hun dienstverbanden bekijken",
+      "De status van verzuimmeldingen en verlof zien",
+      "Bijhouden welke wijzigingen u doorgaf aan UWV en Belastingdienst",
     ],
     vragen: [
       {
@@ -104,9 +104,9 @@ const binnenkort: Record<string, DemoBinnenkort> = {
       "Straks ziet u hier de ziekte- en verlofzaken van uw onderneming: meldingen bij UWV, de voortgang van re-integratie en belangrijke termijnen.",
     beschikbaarVanaf: "medio 2029",
     verwachtingen: [
-      "Zie welke ziekmeldingen lopen bij UWV",
-      "Houd termijnen bij, zoals de melding in week 42",
-      "Volg de voortgang van re-integratie",
+      "Zien welke ziekmeldingen lopen bij UWV",
+      "Termijnen bijhouden, zoals de melding in week 42",
+      "De voortgang van re-integratie volgen",
     ],
     vragen: [
       {

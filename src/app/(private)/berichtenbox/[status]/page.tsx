@@ -150,7 +150,7 @@ const BerichtenboxPage = async ({
                 href="/bedrijfsprofiel"
                 icon={<Icon key="icoon" icon="chevron-right" />}
               >
-                Ga naar bedrijfsprofiel
+                Naar bedrijfsprofiel
               </LinkListLink>
             </LinkList>
           </div>
