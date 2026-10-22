@@ -451,7 +451,7 @@ body {
     align-items: flex-start;
   }
 
-  .rhc-navigation-list--no-start-icon .rhc-navigation-list__item__start-icon {
+  .rhc-navigation-list__item__start-icon {
     display: none;
   }
 }

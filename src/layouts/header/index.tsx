@@ -240,7 +240,7 @@ const Header = ({
                   <div ref={wrapperRef}>
                     <button
                       onClick={() => setOpenKeycloakLogin((v) => !v)}
-                      className="utrecht-button utrecht-button--secondary-action rhc-button"
+                      className="utrecht-link-button utrecht-link-button--html-button rhc-button"
                       aria-expanded={openKeycloakLogin}
                       aria-haspopup="menu"
                     >
