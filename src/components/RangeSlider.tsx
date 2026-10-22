@@ -52,12 +52,12 @@ const RangeSlider = ({
   const fraction = max > min ? (current - min) / (max - min) : 0;
 
   return (
-    <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-range-slider">
-      <div className="utrecht-form-field__label rhc-range-slider__header">
+    <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-mox-range-slider">
+      <div className="utrecht-form-field__label rhc-mox-range-slider__header">
         <label htmlFor={fieldId} className="utrecht-form-label">
           {label}
         </label>
-        <output htmlFor={fieldId} className="rhc-range-slider__value">
+        <output htmlFor={fieldId} className="rhc-mox-range-slider__value">
           {formatValue(current)}
         </output>
       </div>
@@ -76,8 +76,8 @@ const RangeSlider = ({
             onChange?.(next, event);
           }}
           className={[
-            "rhc-range-slider__input",
-            filled && "rhc-range-slider__input--filled",
+            "rhc-mox-range-slider__input",
+            filled && "rhc-mox-range-slider__input--filled",
             className,
           ]
             .filter(Boolean)
@@ -92,7 +92,7 @@ const RangeSlider = ({
           }
           {...props}
         />
-        <div className="rhc-range-slider__limits" aria-hidden="true">
+        <div className="rhc-mox-range-slider__limits" aria-hidden="true">
           <span>{formatValue(min)}</span>
           <span>{formatValue(max)}</span>
         </div>

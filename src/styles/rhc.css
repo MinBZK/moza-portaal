@@ -91,6 +91,26 @@
   --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
 }
 
+/* ==== 3. Formulieren ======================================================== */
+
+.utrecht-textbox {
+  max-inline-size: 100%;
+}
+
+.utrecht-form-label {
+  font-weight: var(--mox-font-weight-medium);
+}
+
+.utrecht-form-field--radio,
+.utrecht-form-field--checkbox {
+  gap: var(--rhc-space-xs);
+  margin-block-start: var(--rhc-space-md);
+}
+
+.utrecht-checkbox {
+  background-color: var(--rhc-color-wit);
+}
+
 /* ==== 3. Layout ============================================================= */
 
 /* --- Pagina --- */
@@ -111,7 +131,7 @@ body {
   }
 }
 
-.rhc-main-container {
+.rhc-mox-main-container {
   align-content: start;
   display: grid;
   gap: var(--rhc-space-xl);
@@ -149,18 +169,18 @@ body {
 /* Show the parts in DOM order. Utrecht gives them an order (label 1, error
   message 3, input 5) for its grid fields; in this flex column a part without
   an order, such as a select or an ActionGroup, would end up above the label. */
-.rhc-form-field.utrecht-form-field > * {
+.rhc-form-field.utrecht-form-field>* {
   order: 0;
 }
 
 /* --- Header --- */
 
 .rhc-theme.mox-theme {
-  .rhc-header-organizations {
+  .rhc-mox-header-organizations {
     position: relative;
   }
 
-  .rhc-header-organizations__trigger {
+  .rhc-mox-header-organizations__trigger {
     background: transparent;
     border: 0;
     color: inherit;
@@ -170,11 +190,11 @@ body {
   }
 
   /* Eén organisatie: zelfde weergave als de knop, maar niets om te kiezen. */
-  .rhc-header-organizations__trigger--static {
+  .rhc-mox-header-organizations__trigger--static {
     cursor: default;
   }
 
-  .rhc-menu {
+  .rhc-mox-menu {
     background: var(--rhc-color-wit);
     border-color: var(--rhc-color-cool-grey-400);
     border-radius: var(--rhc-border-radius-md);
@@ -258,7 +278,7 @@ body {
   @media (width < 768px) {
 
     /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
-    .rhc-header-account {
+    .rhc-mox-header-account {
       display: none;
     }
   }
@@ -313,23 +333,23 @@ body {
 
   /* Hoofdmenu op een smal scherm: ingeklapt achter de knop "Menu", zoals in
     moza-poc. Vanaf 768px staat het menu in de linkerkolom van rhc-grid. */
-  .rhc-menu-button {
+  .rhc-mox-menu-button {
     display: none;
   }
 
   @media (width < 768px) {
-    .rhc-menu-button {
+    .rhc-mox-menu-button {
       display: inline-flex;
     }
 
-    .rhc-menu-lists:not(.rhc-menu-lists--open) {
+    .rhc-mox-menu-lists:not(.rhc-mox-menu-lists--open) {
       display: none;
     }
 
     /* Open menu: vult het scherm onder de header en verbergt de pagina. */
-    &:has(.rhc-menu-lists--open) {
+    &:has(.rhc-mox-menu-lists--open) {
 
-      .rhc-main-container,
+      .rhc-mox-main-container,
       .rhc-page-footer {
         display: none;
       }
@@ -341,12 +361,12 @@ body {
   }
 
   @media (width >=768px) {
-    .rhc-menu-account {
+    .rhc-mox-menu-account {
       display: none;
     }
   }
 
-  .rhc-menu-heading {
+  .rhc-mox-menu-heading {
     color: var(--rhc-color-foreground-subtle);
     font-size: var(--rhc-text-font-size-sm);
     margin-block: var(--rhc-space-md) 0;
@@ -354,12 +374,12 @@ body {
   }
 
   /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
-  .rhc-menu-account .rhc-side-nav__link[aria-current="true"] {
+  .rhc-mox-menu-account .rhc-side-nav__link[aria-current="true"] {
     color: var(--rhc-sidenav-link-current-color);
     font-weight: var(--rhc-sidenav-link-current-font-weight);
   }
 
-  .rhc-menu-account .rhc-language-navigation {
+  .rhc-mox-menu-account .rhc-language-navigation {
     margin-inline: var(--rhc-space-md) 0;
     position: static;
   }
@@ -384,11 +404,11 @@ body {
 
   /* De knop van een schuifregelaar is een pseudo-element; :where() hierboven
     raakt die niet. Per browser een eigen regel, anders vervalt de hele regel. */
-  .rhc-theme.mox-theme .rhc-range-slider__input::-webkit-slider-thumb {
+  .rhc-theme.mox-theme .rhc-mox-range-slider__input::-webkit-slider-thumb {
     transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
   }
 
-  .rhc-theme.mox-theme .rhc-range-slider__input::-moz-range-thumb {
+  .rhc-theme.mox-theme .rhc-mox-range-slider__input::-moz-range-thumb {
     transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
   }
 }
@@ -408,7 +428,7 @@ body {
 
 /* --- Kaarten --- */
 .rhc-mox-card {
-  .rhc-row-gap {
+  .rhc-mox-row-gap {
     align-content: start;
     display: grid;
     gap: var(--rhc-space-xl);
@@ -431,7 +451,7 @@ body {
 
 /* --- Dialog --- */
 
-.rhc-dialog {
+.rhc-mox-dialog {
   background: var(--rhc-color-wit);
   border: 0;
   border-radius: var(--rhc-border-radius-md);
@@ -466,7 +486,7 @@ body {
 }
 
 /* --- Actiemenu --- */
-.rhc-action-menu {
+.rhc-mox-action-menu {
   background-color: var(--rhc-color-wit);
   border: 0;
   border-radius: var(--rhc-border-radius-md);
@@ -505,7 +525,7 @@ body {
 
   /* Cards in a row are equally tall: the buttons at the bottom line up,
     however long the text above them is. */
-  .rhc-mox-card > .utrecht-action-group:last-child {
+  .rhc-mox-card>.utrecht-action-group:last-child {
     margin-block-start: auto;
   }
 }
@@ -524,7 +544,7 @@ body {
 }
 
 /* --- Tabs --- */
-.rhc-tabs {
+.rhc-mox-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
   background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
   background-position: 0 100%;
@@ -543,7 +563,7 @@ body {
   }
 
   @supports (animation-timeline: scroll()) {
-    animation: rhc-tabs-fade linear both;
+    animation: rhc-mox-tabs-fade linear both;
     animation-timeline: scroll(self inline);
     mask-image: linear-gradient(to right, transparent, #000 var(--rhc-tabs-fade-start), #000 calc(100% - var(--rhc-tabs-fade-end)), transparent);
     scrollbar-width: none;
@@ -554,7 +574,7 @@ body {
   }
 }
 
-.rhc-tab {
+.rhc-mox-tab {
   align-items: center;
   display: flex;
   gap: var(--rhc-space-md);
@@ -582,12 +602,12 @@ body {
 
 /* --- Digitale assistent --- */
 /* Digitale assistent: chat met ballonnen, zoals in moza-poc */
-.rhc-chat {
+.rhc-mox-chat {
   display: grid;
   gap: var(--rhc-space-lg);
 }
 
-.rhc-chat-messages {
+.rhc-mox-chat-messages {
   block-size: max(24rem, 50dvh);
   border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
   border-radius: var(--rhc-border-radius-md);
@@ -598,14 +618,14 @@ body {
   padding: var(--rhc-space-lg);
 }
 
-.rhc-chat-rule {
+.rhc-mox-chat-rule {
   display: flex;
   flex-direction: column;
 }
 
-.rhc-chat-message,
-.rhc-chat-card,
-.rhc-chat-suggestions {
+.rhc-mox-chat-message,
+.rhc-mox-chat-card,
+.rhc-mox-chat-suggestions {
   border-radius: var(--rhc-border-radius-md);
   display: grid;
   gap: var(--rhc-space-md);
@@ -613,8 +633,8 @@ body {
   padding: var(--rhc-space-md) var(--rhc-space-lg);
 }
 
-.rhc-chat-message,
-.rhc-chat-suggestions {
+.rhc-mox-chat-message,
+.rhc-mox-chat-suggestions {
   margin-block-end: var(--rhc-space-2xl);
   position: relative;
 
@@ -634,9 +654,9 @@ body {
   }
 }
 
-.rhc-chat-message--assistant,
-.rhc-chat-card,
-.rhc-chat-suggestions {
+.rhc-mox-chat-message--assistant,
+.rhc-mox-chat-card,
+.rhc-mox-chat-suggestions {
   --rhc-chat-border-color: var(--rhc-color-cool-grey-300);
 
   align-self: flex-start;
@@ -644,7 +664,7 @@ body {
   filter: drop-shadow(1px 0 0 var(--rhc-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-chat-border-color));
 }
 
-.rhc-chat-message--user {
+.rhc-mox-chat-message--user {
   align-self: flex-end;
   background-color: var(--rhc-color-lintblauw-700);
   color: var(--rhc-color-wit);
@@ -665,7 +685,7 @@ body {
   }
 }
 
-.rhc-chat-message--error {
+.rhc-mox-chat-message--error {
   align-self: flex-start;
   background-color: var(--rhc-color-rood-50);
   display: flex;
@@ -676,7 +696,7 @@ body {
   }
 }
 
-.rhc-chat-suggestions {
+.rhc-mox-chat-suggestions {
   max-inline-size: 100%;
 
   .utrecht-button {
@@ -684,7 +704,7 @@ body {
   }
 }
 
-.rhc-chat-card {
+.rhc-mox-chat-card {
   inline-size: min(100%, 48rem);
   max-inline-size: 100%;
 
@@ -694,12 +714,12 @@ body {
   }
 }
 
-.rhc-chat-form {
+.rhc-mox-chat-form {
   display: grid;
   gap: var(--rhc-space-lg);
 }
 
-.rhc-chat-sources {
+.rhc-mox-chat-sources {
   border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
   display: grid;
   gap: var(--rhc-space-sm);
@@ -719,7 +739,7 @@ body {
   }
 }
 
-.rhc-chat-badge {
+.rhc-mox-chat-badge {
   align-items: center;
   background-color: var(--rhc-color-groen-100);
   border-radius: var(--rhc-border-radius-md);
@@ -734,12 +754,12 @@ body {
   }
 }
 
-.rhc-chat-energy {
+.rhc-mox-chat-energy {
   display: grid;
   gap: var(--rhc-space-md);
 }
 
-.rhc-energy-figures {
+.rhc-mox-energy-figures {
   display: grid;
   gap: var(--rhc-space-lg);
   grid-template-columns: repeat(2, 1fr);
@@ -750,12 +770,12 @@ body {
   }
 }
 
-.rhc-energy-value {
+.rhc-mox-energy-value {
   display: block;
   font-weight: var(--rhc-text-font-weight-bold);
 }
 
-.rhc-energy-threshold {
+.rhc-mox-energy-threshold {
   align-items: center;
   display: flex;
   font-size: var(--rhc-text-font-size-sm);
@@ -770,37 +790,37 @@ body {
   }
 }
 
-.rhc-energy-threshold--above::before {
+.rhc-mox-energy-threshold--above::before {
   background-color: var(--rhc-color-oranje-500);
 }
 
-.rhc-energy-threshold--below::before {
+.rhc-mox-energy-threshold--below::before {
   background-color: var(--rhc-color-groen-600);
 }
 
 /* Wachtindicatie: drie stippen die een voor een verschijnen */
-.rhc-chat-thinking {
+.rhc-mox-chat-thinking {
   align-items: center;
   align-self: flex-start;
   display: flex;
   gap: var(--rhc-space-sm);
 }
 
-.rhc-wait {
-  animation: rhc-wait 1s steps(4) infinite;
+.rhc-mox-wait {
+  animation: rhc-mox-wait 1s steps(4) infinite;
   aspect-ratio: 4;
   background: radial-gradient(circle closest-side, var(--rhc-color-foreground-default) 90%, transparent) 0 / calc(100% / 3) 100% space;
   clip-path: inset(0 100% 0 0);
   inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
 }
 
-@keyframes rhc-wait {
+@keyframes rhc-mox-wait {
   to {
     clip-path: inset(0 -33% 0 0);
   }
 }
 
-.rhc-chat-input {
+.rhc-mox-chat-input {
   display: grid;
   gap: var(--rhc-space-md);
 
@@ -810,7 +830,7 @@ body {
   }
 }
 
-.rhc-chat-disclaimer {
+.rhc-mox-chat-disclaimer {
   align-items: flex-start;
   color: var(--rhc-color-foreground-subtle);
   display: flex;
@@ -823,7 +843,7 @@ body {
 }
 
 /* --- Lopende zaken --- */
-.rhc-status-track {
+.rhc-mox-status-track {
   --rhc-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
   --rhc-stap-gap: var(--rhc-space-lg);
 
@@ -838,7 +858,7 @@ body {
 
     /* Cirkel met het stapnummer, of een vinkje als de stap klaar is
       (StatusTrack). */
-    >.rhc-status-marker {
+    >.rhc-mox-status-marker {
       background-color: var(--rhc-color-groen-600);
       block-size: var(--rhc-stap-maat);
       border-radius: var(--rhc-border-radius-round);
@@ -875,11 +895,11 @@ body {
   }
 
   >[aria-current="step"] {
-    >.rhc-status-marker {
+    >.rhc-mox-status-marker {
       background-color: var(--rhc-color-lintblauw-500);
     }
 
-    ~li>.rhc-status-marker {
+    ~li>.rhc-mox-status-marker {
       background-color: var(--rhc-color-cool-grey-500);
     }
 
@@ -917,7 +937,7 @@ body {
   }
 }
 
-.rhc-status-details {
+.rhc-mox-status-details {
   display: grid;
   gap: var(--rhc-space-md);
   margin-block-start: var(--rhc-space-sm);
@@ -928,7 +948,7 @@ body {
   }
 }
 
-.rhc-status-date {
+.rhc-mox-status-date {
   align-items: center;
   color: var(--rhc-color-foreground-subtle);
   display: flex;
@@ -936,7 +956,7 @@ body {
   gap: var(--rhc-space-sm);
 }
 
-.rhc-action-required {
+.rhc-mox-action-required {
   align-items: center;
   display: inline-flex;
   gap: var(--rhc-space-sm);
@@ -953,26 +973,26 @@ body {
   }
 }
 
-.rhc-attachment-icon {
+.rhc-mox-attachment-icon {
   --utrecht-icon-size: var(--rhc-size-icon-md);
 }
 
-.rhc-notice-amount-inbox {
+.rhc-mox-notice-amount-inbox {
   color: var(--rhc-color-cool-grey-500);
   font-size: var(--rhc-text-font-size-sm);
 }
 
-.rhc-inbox-filter {
+.rhc-mox-inbox-filter {
   margin-block: var(--rhc-space-3xl);
 }
 
-.rhc-tabs-separator {
+.rhc-mox-tabs-separator {
   border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
   margin-block: var(--rhc-space-md);
 }
 
 /* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
-.rhc-inbox-filters {
+.rhc-mox-inbox-filters {
   align-items: end;
   display: flex;
   flex-wrap: wrap;
@@ -995,7 +1015,7 @@ body {
   }
 }
 
-.rhc-button-mark {
+.rhc-mox-button-mark {
   align-items: center;
   block-size: 1lh;
   cursor: pointer;
@@ -1009,11 +1029,11 @@ body {
   }
 }
 
-.rhc-button-mark-true {
+.rhc-mox-button-mark-true {
   color: var(--rhc-color-oranje-500);
 }
 
-.rhc-status-unread {
+.rhc-mox-status-unread {
   background-color: var(--rhc-color-oranje-500);
   block-size: calc(var(--rhc-size-icon-md)/2);
   border-radius: var(--rhc-border-radius-round);
@@ -1023,13 +1043,13 @@ body {
   margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
 }
 
-.rhc-sender {
+.rhc-mox-sender {
   align-items: flex-start;
   display: flex;
   gap: var(--rhc-space-md);
 }
 
-.rhc-unread {
+.rhc-mox-unread {
   /* 500 komt uit mox.css (huidige huisstijl); de nieuwe huisstijl valt
     terug op semi-bold. */
   font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
@@ -1040,7 +1060,7 @@ body {
 /* Destructieve actie als LinkButton, zoals Verwijderen in de Berichtenbox.
   LinkButton kent geen hint="danger" (Button wel), daarom deze class. */
 .rhc-theme.mox-theme {
-  .rhc-link-button--danger {
+  .rhc-mox-link-button--danger {
     --utrecht-link-button-color: var(--rhc-color-rood-500);
     --utrecht-link-button-hover-color: var(--rhc-color-rood-600);
     --utrecht-link-button-active-color: var(--rhc-color-rood-600);
@@ -1054,7 +1074,7 @@ body {
 }
 
 /* --- Bewaren --- */
-.rhc-icon-saved svg {
+.rhc-mox-icon-saved svg {
   fill: var(--rhc-color-robijnrood-400);
   stroke: var(--rhc-color-robijnrood-400);
 }
@@ -1093,27 +1113,27 @@ body {
 /* Een melding die na een tijd uitfadet (BerichtDetail). Het component haalt
   hem daarna weg; bij "minder beweging" verdwijnt hij zonder fade. */
 .rhc-theme.mox-theme {
-  .rhc-fade-out {
+  .rhc-mox-fade-out {
     @media (prefers-reduced-motion: no-preference) {
       transition: opacity 500ms ease-out;
     }
   }
 
-  .rhc-fade-out--hidden {
+  .rhc-mox-fade-out--hidden {
     opacity: 0;
   }
 }
 
 /* Alert with a close button (closable) in the top right corner. */
-.rhc-alert-closable {
+.rhc-mox-alert-closable {
   position: relative;
 }
 
-.rhc-alert-closable-content {
+.rhc-mox-alert-closable-content {
   padding-inline-end: var(--rhc-space-5xl);
 }
 
-.rhc-alert-close-button {
+.rhc-mox-alert-close-button {
   inset-block-start: var(--utrecht-alert-padding-block-start);
   inset-inline-end: var(--utrecht-alert-padding-inline-end);
   position: absolute;
@@ -1145,18 +1165,18 @@ body {
 
 /* RangeSlider: label en gekozen waarde op één regel, grenzen eronder. */
 .rhc-theme.mox-theme {
-  .rhc-range-slider__header {
+  .rhc-mox-range-slider__header {
     align-items: baseline;
     display: flex;
     gap: var(--rhc-space-md);
     justify-content: space-between;
   }
 
-  .rhc-range-slider__value {
+  .rhc-mox-range-slider__value {
     font-weight: var(--rhc-text-font-weight-semi-bold);
   }
 
-  .rhc-range-slider__input {
+  .rhc-mox-range-slider__input {
     accent-color: var(--rhc-color-lintblauw-500);
     appearance: none;
     background: transparent;
@@ -1220,7 +1240,7 @@ body {
   }
 
   /* RangeSlider met gevulde baan tot aan de knop (thumb). */
-  .rhc-range-slider__input--filled {
+  .rhc-mox-range-slider__input--filled {
     --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
     --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
     --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
@@ -1237,7 +1257,7 @@ body {
     }
   }
 
-  .rhc-range-slider__limits {
+  .rhc-mox-range-slider__limits {
     color: var(--rhc-color-foreground-subtle);
     display: flex;
     font-size: var(--rhc-text-font-size-sm);
@@ -1248,7 +1268,7 @@ body {
 /* --- Voortgangsbalk --- */
 /* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
 
-.rhc-progressbar {
+.rhc-mox-progressbar {
   background-color: var(--rhc-color-wit);
   block-size: var(--rhc-space-lg);
   border-color: var(--rhc-color-cool-grey-400);
@@ -1258,7 +1278,7 @@ body {
   overflow: hidden;
 }
 
-.rhc-progressbar-track {
+.rhc-mox-progressbar-track {
   background-color: var(--rhc-color-groen-500) !important;
   block-size: 100%;
   border-radius: var(--rhc-border-radius-round);
@@ -1266,21 +1286,21 @@ body {
 
 /* In een info-melding de kleur van die melding (het info-icoon), zoals
   bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
-.utrecht-alert--info .rhc-progressbar-track {
+.utrecht-alert--info .rhc-mox-progressbar-track {
   background-color: var(--utrecht-alert-icon-info-color) !important;
 }
 
 /* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
   Bij "minder beweging" een stilstaande, halfvolle balk. */
-.rhc-progressbar--indeterminate .rhc-progressbar-track {
+.rhc-mox-progressbar--indeterminate .rhc-mox-progressbar-track {
   inline-size: 40%;
 
   @media (prefers-reduced-motion: no-preference) {
-    animation: rhc-progressbar-indeterminate 1.4s ease-in-out infinite;
+    animation: rhc-mox-progressbar-indeterminate 1.4s ease-in-out infinite;
   }
 }
 
-@keyframes rhc-progressbar-indeterminate {
+@keyframes rhc-mox-progressbar-indeterminate {
   from {
     transform: translateX(-100%);
   }
@@ -1293,12 +1313,12 @@ body {
 /* --- Aftelbalk --- */
 /* Aftelbalk met pauzeknop (contactmomenten) */
 
-.rhc-countdown {
+.rhc-mox-countdown {
   align-items: center;
   display: flex;
   gap: var(--rhc-space-lg);
 
-  .rhc-progressbar {
+  .rhc-mox-progressbar {
     background-color: var(--rhc-color-cool-grey-200);
     flex: 1;
   }
@@ -1307,12 +1327,12 @@ body {
 /* --- Meter --- */
 /* Gemeten stand binnen een bereik, zoals budget vergeven: balk met de waarde ernaast */
 
-.rhc-graph-meter {
+.rhc-mox-graph-meter {
   align-items: center;
   display: flex;
   gap: var(--rhc-space-md);
 
-  .rhc-progressbar {
+  .rhc-mox-progressbar {
     background-color: var(--rhc-color-cool-grey-200);
     flex: 1;
     max-inline-size: 20rem;
@@ -1349,7 +1369,7 @@ body {
 /* Een melding die in zijn geheel een link is, zoals de status van een zaak
   die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
 .rhc-theme.mox-theme {
-  .rhc-alert-link {
+  .rhc-mox-alert-link {
     border-radius: var(--rhc-border-radius-md);
     color: var(--utrecht-link-color);
     display: block;
@@ -1380,7 +1400,7 @@ body {
   margin-block-start: var(--rhc-space-lg);
 }
 
-.rhc-action-group-dense {
+.rhc-mox-action-group-dense {
   margin-block-start: 0 !important;
 
   /* Knoppen en links in de balk zien er hetzelfde uit: geen onderstreping. */
@@ -1399,7 +1419,7 @@ body {
 .rhc-theme.mox-theme {
 
   /* Berichtenbox A/B/C-test, variant C: uitleg en directe acties. */
-  .rhc-message-actions {
+  .rhc-mox-message-actions {
     background-color: var(--rhc-color-cool-grey-50);
     border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
     border-radius: var(--rhc-border-radius-md);
@@ -1417,13 +1437,13 @@ body {
   }
 
   /* Variant B: het bericht als pdf in de pagina. */
-  .rhc-pdf-preview {
+  .rhc-mox-pdf-preview {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-3xl);
   }
 
-  .rhc-pdf-preview__viewer {
+  .rhc-mox-pdf-preview__viewer {
     block-size: 72rem;
     border-block-end: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-200);
     border-radius: var(--rhc-border-radius-md);
@@ -1435,7 +1455,7 @@ body {
     onderwerp krijgt een ::after over de hele rij; knoppen in de rij (markeren,
     acties) liggen erboven en blijven werken. Eén link per rij, dus geen
     dubbele links voor toetsenbord en schermlezer. */
-  .rhc-row-linked {
+  .rhc-mox-row-linked {
     position: relative;
 
     &:hover {
@@ -1448,7 +1468,7 @@ body {
     }
   }
 
-  .rhc-row-linked__link::after {
+  .rhc-mox-row-linked__link::after {
     content: "";
     inset: 0;
     position: absolute;
@@ -1456,14 +1476,14 @@ body {
 
   /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
   @media (prefers-reduced-motion: no-preference) {
-    .rhc-row-new {
-      animation: rhc-row-new 2s ease-out;
+    .rhc-mox-row-new {
+      animation: rhc-mox-row-new 2s ease-out;
     }
   }
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
-@keyframes rhc-row-new {
+@keyframes rhc-mox-row-new {
   from {
     background-color: var(--rhc-color-core-50);
   }
@@ -1476,14 +1496,14 @@ body {
     border-block-end: none;
   }
 
-  .rhc-landing-hero {
+  .rhc-mox-landing-hero {
     background: var(--mox-landing-info-background);
     block-size: calc(var(--rhc-size-lint) * 10);
     display: grid;
     grid-template-columns: 50% 50%;
   }
 
-  .rhc-landing-info {
+  .rhc-mox-landing-info {
     background: var(--mox-landing-info-background);
     display: grid;
     grid-template-columns: 50% 50%;

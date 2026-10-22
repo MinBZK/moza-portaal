@@ -54,7 +54,7 @@ const OmgevingsberichtenPage = async () => {
               <ActionGroup
                 role="group"
                 direction="row"
-                className="rhc-action-group-dense"
+                className="rhc-mox-action-group-dense"
               >
                 <BewaarKnop item={item} alsLink />
                 {flags.mox_delen && (

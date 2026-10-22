@@ -55,7 +55,7 @@ const geenTailwind = {
     },
     messages: {
       verboden:
-        'Class "{{naam}}" is niet toegestaan. Gebruik een RHC-component, of schrijf een eigen class: rhc- in rhc.css, mox- in mox.css of prototype- in utils.css.',
+        'Class "{{naam}}" is niet toegestaan. Gebruik een RHC-component, of schrijf een eigen class: rhc-mox- in rhc.css, mox- in mox.css of prototype- in utils.css.',
     },
     schema: [],
   },

@@ -17,7 +17,7 @@ const FoutMelding = () => <span role="alert">{bewaarFoutTekst}</span>;
 /**
  * Een knop van een actie bij een item. Met `alsLink` een knop met de opmaak
  * van een link (LinkButton), zoals in een compacte actiebalk
- * (rhc-action-group-dense); anders een secundaire knop.
+ * (rhc-mox-action-group-dense); anders een secundaire knop.
  */
 const ActieKnop = ({
   alsLink,
@@ -63,7 +63,7 @@ export const BewaarKnop = ({
       >
         <Icon
           icon="favoriet"
-          className={bewaard ? "rhc-icon-saved" : undefined}
+          className={bewaard ? "rhc-mox-icon-saved" : undefined}
         />
         {bewaard ? "Bewaard" : "Bewaren"}
         <VisuallyHidden>: {item.titel}</VisuallyHidden>

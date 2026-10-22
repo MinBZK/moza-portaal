@@ -825,19 +825,19 @@ const Chat = ({
   };
 
   return (
-    <section className="rhc-mox-card rhc-chat" aria-label="Gesprek">
+    <section className="rhc-mox-card rhc-mox-chat" aria-label="Gesprek">
       {toonBronstatus && status !== undefined && (
         <BronStatus status={status} transport={instellingen.transport} />
       )}
 
       <div
         ref={berichtenRef}
-        className="rhc-chat-messages"
+        className="rhc-mox-chat-messages"
         role="log"
         aria-live="polite"
       >
         {items.map((item) => (
-          <div key={item.id} data-item={item.id} className="rhc-chat-rule">
+          <div key={item.id} data-item={item.id} className="rhc-mox-chat-rule">
             {item.soort === "gebruiker" && <Gebruiker item={item} />}
             {item.soort === "assistent" && <Assistent item={item} />}
             {item.soort === "fout" && <Fout item={item} />}
@@ -888,7 +888,7 @@ const Chat = ({
         {denkt !== null && <Denkt tekst={denkt} />}
       </div>
 
-      <form ref={formRef} className="rhc-chat-input" onSubmit={verzend}>
+      <form ref={formRef} className="rhc-mox-chat-input" onSubmit={verzend}>
         <label htmlFor="chat-invoer">
           <VisuallyHidden>Uw vraag</VisuallyHidden>
         </label>
@@ -941,7 +941,7 @@ const Chat = ({
         </p>
       </form>
 
-      <Paragraph className="rhc-chat-disclaimer">
+      <Paragraph className="rhc-mox-chat-disclaimer">
         <Icon icon="info-circle" />
         De antwoorden van deze assistent worden door AI gemaakt en kunnen fouten
         bevatten. De assistent gebruikt onder meer het KVK Handelsregister, de

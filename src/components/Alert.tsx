@@ -54,13 +54,13 @@ export const Alert = ({
 
   return (
     <RhcAlert
-      className={`rhc-alert-closable${className ? ` ${className}` : ""}`}
+      className={`rhc-mox-alert-closable${className ? ` ${className}` : ""}`}
       {...props}
     >
-      <div className="rhc-alert-closable-content">
+      <div className="rhc-mox-alert-closable-content">
         {children}
         <IconButton
-          className="rhc-alert-close-button"
+          className="rhc-mox-alert-close-button"
           icon="kruis"
           label={closeLabel}
           onClick={close}

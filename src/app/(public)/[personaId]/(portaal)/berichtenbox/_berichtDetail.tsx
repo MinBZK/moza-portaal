@@ -256,14 +256,17 @@ const BerichtDetail = ({
             )}
 
             {status && (
-              <ActionGroup direction="row" className="rhc-action-group-dense">
+              <ActionGroup
+                direction="row"
+                className="rhc-mox-action-group-dense"
+              >
                 <LinkButton
                   pressed={gemarkeerd}
                   onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}
                 >
                   <FlagIcon
                     filled={gemarkeerd}
-                    className={gemarkeerd ? "rhc-button-mark-true" : ""}
+                    className={gemarkeerd ? "rhc-mox-button-mark-true" : ""}
                   />
                   Markeren
                 </LinkButton>
@@ -316,7 +319,7 @@ const BerichtDetail = ({
                 {status === "prullenbak" ? (
                   <LinkButton
                     ref={voorgoedKnopRef}
-                    className="rhc-link-button--danger"
+                    className="rhc-mox-link-button--danger"
                     aria-haspopup="dialog"
                     onClick={() => setVraagVoorgoed(true)}
                   >
@@ -325,7 +328,7 @@ const BerichtDetail = ({
                   </LinkButton>
                 ) : (
                   <LinkButton
-                    className="rhc-link-button--danger"
+                    className="rhc-mox-link-button--danger"
                     onClick={() => void verplaats("prullenbak")}
                   >
                     <Icon icon="verwijderen" />
@@ -352,7 +355,7 @@ const BerichtDetail = ({
       {status === "prullenbak" && (
         <dialog
           ref={dialogRef}
-          className="rhc-dialog"
+          className="rhc-mox-dialog"
           aria-labelledby="voorgoed-kop"
           aria-describedby="voorgoed-vraag"
           onClose={sluitVraag}

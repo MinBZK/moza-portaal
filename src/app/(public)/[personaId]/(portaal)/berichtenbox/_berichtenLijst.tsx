@@ -148,7 +148,12 @@ const RijActies = ({
         <Icon icon="meer" />
         <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
       </Button>
-      <ul ref={menuRef} id={menuId} popover="auto" className="rhc-action-menu">
+      <ul
+        ref={menuRef}
+        id={menuId}
+        popover="auto"
+        className="rhc-mox-action-menu"
+      >
         {delen && (
           <li>
             <ShareButton
@@ -442,7 +447,7 @@ const BerichtenLijst = ({
       {bezig ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
-        <Paragraph className="rhc-notice-amount-inbox">
+        <Paragraph className="rhc-mox-notice-amount-inbox">
           {map && `Map ${map}: `}
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
@@ -524,7 +529,7 @@ const BerichtenLijst = ({
       </div>
 
       {weergave === "inbox" && (
-        <div className="rhc-inbox-filter rhc-inbox-filters">
+        <div className="rhc-mox-inbox-filter rhc-mox-inbox-filters">
           <FormFieldTextInput
             label="Filter berichten"
             type="search"

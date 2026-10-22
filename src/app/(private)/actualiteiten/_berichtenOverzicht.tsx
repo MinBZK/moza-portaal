@@ -34,7 +34,7 @@ const BerichtenOverzicht = ({
   }
 
   return (
-    <div className="rhc-row-gap">
+    <div className="rhc-mox-row-gap">
       <PaginatedList
         items={berichten}
         status={status}

@@ -55,7 +55,7 @@ const DemoBerichtInhoud = ({
         {variant === "c" && bericht.acties && (
           <section
             aria-labelledby="wat-kunt-u-doen"
-            className="rhc-message-actions"
+            className="rhc-mox-message-actions"
           >
             <Heading level={2} id="wat-kunt-u-doen">
               Wat kunt u doen?

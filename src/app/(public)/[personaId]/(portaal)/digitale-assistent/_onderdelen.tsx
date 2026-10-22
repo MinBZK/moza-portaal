@@ -39,7 +39,7 @@ type ItemVan<S extends Item["soort"]> = Extract<Item, { soort: S }>;
 export const Bronnen = ({ bronnen }: { bronnen?: Bron[] }) => {
   if (!bronnen?.length) return null;
   return (
-    <div className="rhc-chat-sources">
+    <div className="rhc-mox-chat-sources">
       <Paragraph>{bronnen.length === 1 ? "Bron:" : "Bronnen:"}</Paragraph>
       <ul>
         {bronnen.map((bron) => {
@@ -78,14 +78,14 @@ const Vervolg = ({ vervolg }: { vervolg?: { label: string; href: string } }) =>
   ) : null;
 
 export const Gebruiker = ({ item }: { item: ItemVan<"gebruiker"> }) => (
-  <div className="rhc-chat-message rhc-chat-message--user">
+  <div className="rhc-mox-chat-message rhc-mox-chat-message--user">
     <VisuallyHidden>U: </VisuallyHidden>
     <Paragraph>{item.tekst}</Paragraph>
   </div>
 );
 
 export const Assistent = ({ item }: { item: ItemVan<"assistent"> }) => (
-  <div className="rhc-chat-message rhc-chat-message--assistant">
+  <div className="rhc-mox-chat-message rhc-mox-chat-message--assistant">
     <VisuallyHidden>Assistent: </VisuallyHidden>
     <Markdown tekst={item.tekst} />
     <Bronnen bronnen={item.bronnen} />
@@ -94,7 +94,10 @@ export const Assistent = ({ item }: { item: ItemVan<"assistent"> }) => (
 );
 
 export const Fout = ({ item }: { item: ItemVan<"fout"> }) => (
-  <div className="rhc-chat-message rhc-chat-message--error" role="alert">
+  <div
+    className="rhc-mox-chat-message rhc-mox-chat-message--error"
+    role="alert"
+  >
     <Icon icon="let-op" />
     <div>
       <Paragraph>{item.tekst}</Paragraph>
@@ -118,7 +121,7 @@ export const Suggesties = ({
   onVraag: (vraag: string) => void;
   onUitleg: () => void;
 }) => (
-  <div className="rhc-chat-suggestions">
+  <div className="rhc-mox-chat-suggestions">
     <Paragraph>
       Stel uw vraag, of probeer een van deze voorbeeldvragen:
     </Paragraph>
@@ -141,8 +144,8 @@ export const Suggesties = ({
 
 /** Wachtindicatie terwijl de assistent "denkt". */
 export const Denkt = ({ tekst }: { tekst: string }) => (
-  <div className="rhc-chat-message rhc-chat-message--assistant rhc-chat-thinking">
-    <span className="rhc-wait" aria-hidden="true" />
+  <div className="rhc-mox-chat-message rhc-mox-chat-message--assistant rhc-mox-chat-thinking">
+    <span className="rhc-mox-wait" aria-hidden="true" />
     <Paragraph>
       {tekst || <VisuallyHidden>Even geduld</VisuallyHidden>}
     </Paragraph>
@@ -165,15 +168,15 @@ const Cijfer = ({
     <div>
       <dt>{label}</dt>
       <dd>
-        <span className="rhc-energy-value">
+        <span className="rhc-mox-energy-value">
           {getal(waarde)} {eenheid}
         </span>
         {grens !== null && (
           <span
             className={
               boven
-                ? "rhc-energy-threshold rhc-energy-threshold--above"
-                : "rhc-energy-threshold rhc-energy-threshold--below"
+                ? "rhc-mox-energy-threshold rhc-mox-energy-threshold--above"
+                : "rhc-mox-energy-threshold rhc-mox-energy-threshold--below"
             }
           >
             {boven ? "boven" : "onder"} de grens van {getal(grens)} {eenheid}
@@ -199,7 +202,7 @@ export const EnergieKaart = ({
   const totaal = data.verbruik?.totaal ?? {};
   const peiljaar = data.credential?.peiljaar;
   return (
-    <div className="rhc-chat-energy">
+    <div className="rhc-mox-chat-energy">
       <Heading level={3} id={`${id}-energie`} tabIndex={-1}>
         Energieverbruik (uit uw Business Wallet)
       </Heading>
@@ -208,12 +211,12 @@ export const EnergieKaart = ({
         {peiljaar ? ` · peiljaar ${peiljaar}` : ""}
       </Paragraph>
       {data.toestemming?.met_toestemming_ondernemer && (
-        <Paragraph className="rhc-chat-badge">
+        <Paragraph className="rhc-mox-chat-badge">
           <Icon icon="circle-check" />
           Geverifieerd, met toestemming gedeeld
         </Paragraph>
       )}
-      <dl className="rhc-energy-figures">
+      <dl className="rhc-mox-energy-figures">
         <Cijfer
           label="Elektriciteit"
           waarde={Number(totaal.jaarlijks_elektriciteitsverbruik_kwh ?? 0)}
@@ -252,7 +255,7 @@ export const Deelverzoek = ({
   onNietDelen: () => void;
 }) => (
   <section
-    className="rhc-chat-card"
+    className="rhc-mox-chat-card"
     data-kaart={item.id}
     aria-labelledby={`${item.id}-kop`}
   >
@@ -387,7 +390,7 @@ export const VraagKaart = ({
   const id = item.id;
   return (
     <section
-      className="rhc-chat-card"
+      className="rhc-mox-chat-card"
       data-kaart={id}
       aria-labelledby={`${id}-kop`}
     >
@@ -400,7 +403,7 @@ export const VraagKaart = ({
           {spec.tekst && <Paragraph>{spec.tekst}</Paragraph>}
         </div>
       )}
-      <form className="rhc-chat-form" onSubmit={verstuur} noValidate>
+      <form className="rhc-mox-chat-form" onSubmit={verstuur} noValidate>
         {spec.velden.map((veld, index) => {
           const naam = `${id}-${index}`;
           if (veld.type === "categorieen") {
@@ -503,7 +506,7 @@ export const VraagKaart = ({
           </FormFieldErrorMessage>
         )}
         {verstuurd ? (
-          <Paragraph className="rhc-chat-badge">
+          <Paragraph className="rhc-mox-chat-badge">
             <Icon icon="circle-check" />
             Antwoord verstuurd
           </Paragraph>

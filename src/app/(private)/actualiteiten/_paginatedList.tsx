@@ -48,7 +48,7 @@ const PaginatedList = <T,>({
   const visible = items.slice(0, visibleCount);
 
   return (
-    <div className="rhc-row-gap">
+    <div className="rhc-mox-row-gap">
       {visible.map((item, i) => (
         <div key={getKey(item, i)}>{renderItem(item)}</div>
       ))}
