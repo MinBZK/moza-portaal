@@ -1,4 +1,4 @@
-/** Vlag voor gemarkeerde berichten. Omlijnd als niet gemarkeerd, gevuld als wel. */
+/** Flag for marked messages. Outlined when not marked, filled when marked. */
 export const FlagIcon = ({
   filled = false,
   ...props

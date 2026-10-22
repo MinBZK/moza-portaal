@@ -1,4 +1,4 @@
-/** Vinkje, voor een afgeronde stap. Dezelfde lijnstijl als de andere iconen. */
+/** Check mark, for a completed step. Same line style as the other icons. */
 export const CheckIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

@@ -8,12 +8,12 @@ import {
   Link,
   Paragraph,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
 
 const tekst = {
   bewaard: {
-    knop: "Verwijder uit bewaarde items",
+    knop: "Uit bewaarde items verwijderen",
     melding: (titel: string) =>
       `"${titel}" staat niet meer bij uw bewaarde items.`,
   },
@@ -87,7 +87,7 @@ const BewaardeItems = ({
     <>
       {fout && <Alert type="error">{bewaarFoutTekst}</Alert>}
       {melding && (
-        <Alert type="ok">
+        <Alert type="ok" closable>
           {/* Gewone <p>: Paragraph van RHC geeft geen ref door. */}
           <p ref={meldingRef} tabIndex={-1} className="nl-paragraph">
             {melding}
@@ -98,7 +98,7 @@ const BewaardeItems = ({
       {items.length === 0
         ? leeg
         : [...perCategorie].map(([categorie, inCategorie]) => (
-            <section key={categorie} className="mox-card">
+            <section key={categorie} className="rhc-mox-card">
               <Heading
                 level={2}
                 tabIndex={-1}

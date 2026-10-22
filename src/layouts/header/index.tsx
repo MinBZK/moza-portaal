@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Logo, NavBar, Icon } from "@/components/rhc";
 import MenuKnop from "@/layouts/navigation/menuKnop";
-import LanguageSelect, { TALEN } from "@/components/languageSelect";
+import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
 import { useCookie } from "@/utils/useCookie";
 import { useKiesOrganisatie } from "./useKiesOrganisatie";
@@ -137,7 +137,10 @@ const Header = ({
           >
             {/* Op een smal scherm staan taal, naam en uitloggen in het menu. */}
             <div className={metMenu ? "rhc-header-account" : undefined}>
-              <LanguageSelect selectedLanguage="Nederlands" languages={TALEN} />
+              <LanguageSelect
+                selectedLanguage="Nederlands"
+                languages={LANGUAGES}
+              />
             </div>
             <ul className="rhc-nav-bar__list">
               <li className="rhc-nav-bar__item"></li>
@@ -240,7 +243,7 @@ const Header = ({
                   <div ref={wrapperRef}>
                     <button
                       onClick={() => setOpenKeycloakLogin((v) => !v)}
-                      className="utrecht-button utrecht-button--secondary-action rhc-button"
+                      className="utrecht-link-button utrecht-link-button--html-button rhc-button"
                       aria-expanded={openKeycloakLogin}
                       aria-haspopup="menu"
                     >
@@ -248,7 +251,7 @@ const Header = ({
                     </button>
 
                     {openKeycloakLogin && (
-                      <div className="prototype-login-keycloak mox-card">
+                      <div className="prototype-login-keycloak rhc-mox-card">
                         <div role="menu" aria-orientation="vertical">
                           <button
                             onClick={() => {

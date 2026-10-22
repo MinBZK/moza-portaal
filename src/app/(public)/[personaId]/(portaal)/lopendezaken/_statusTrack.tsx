@@ -21,14 +21,14 @@ const voorvoegsel: Record<DemoZaakStap["soort"], string> = {
 
 /** Voortgang van een zaak als genummerde stappen, zoals in moza-poc. */
 const StatusTrack = ({ stappen }: { stappen: DemoZaakStap[] }) => (
-  <ol className="mox-status-track">
+  <ol className="rhc-status-track">
     {stappen.map((stap, index) => (
       <li
         key={stap.titel}
         aria-current={stap.soort === "huidig" ? "step" : undefined}
       >
         {/* Alleen beeld: de soort stap staat al in de verborgen tekst. */}
-        <span className="mox-status-marker" aria-hidden="true">
+        <span className="rhc-status-marker" aria-hidden="true">
           {stap.soort === "voltooid" || stap.soort === "afgerond" ? (
             <CheckIcon />
           ) : (
@@ -41,9 +41,9 @@ const StatusTrack = ({ stappen }: { stappen: DemoZaakStap[] }) => (
             {stap.titel}
             <Icon icon="chevron-right" />
           </summary>
-          <div className="mox-status-details">
+          <div className="rhc-status-details">
             {stap.datum && (
-              <Paragraph className="mox-status-date">
+              <Paragraph className="rhc-status-date">
                 <CalendarIcon />
                 {stap.datum}
               </Paragraph>

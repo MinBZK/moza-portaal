@@ -41,7 +41,7 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Nieuwe subsidie aanvragen</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <form
           onSubmit={(e) => {
             e.preventDefault();

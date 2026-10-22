@@ -15,8 +15,9 @@ import {
 } from "@rijkshuisstijl-community/components-react";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
 import { useKiesOrganisatie } from "@/layouts/header/useKiesOrganisatie";
-import LanguageSelect, { TALEN } from "@/components/languageSelect";
+import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import { AbsenceIcon } from "@/components/icons/absenceIcon";
+import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 import { StaffIcon } from "@/components/icons/staffIcon";
 import { RegulationIcon } from "@/components/icons/regulationIcon";
 import { SubsidyIcon } from "@/components/icons/subsidyIcon";
@@ -153,8 +154,8 @@ const Navigation = ({
               <SideNavLink
                 current={isActief("/digitale-assistent")}
                 href="/digitale-assistent"
-                icon="comment"
               >
+                <DigitalAssistantIcon />
                 Digitale assistent (AI)
               </SideNavLink>
             </SideNavItem>
@@ -288,8 +289,8 @@ const Navigation = ({
           </SideNavList>
           <LanguageSelect
             selectedLanguage="Nederlands"
-            languages={TALEN}
-            metIcoon
+            languages={LANGUAGES}
+            withIcon
           />
         </div>
       </div>

@@ -37,7 +37,7 @@ const OndernemingsgegevensPage = async () => {
         en de Belastingdienst.
       </Paragraph>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Algemeen</Heading>
         <DataSummary appearance="column" className="rhc-data-summary--columns">
           {gegevens.map(({ label, waarde, href }) =>
@@ -68,7 +68,7 @@ const OndernemingsgegevensPage = async () => {
         {onderdelen.map(({ id, titel, beschrijving, href }) => (
           <section
             key={id}
-            className="mox-card rhc-grid__cell rhc-grid__cell-t-6"
+            className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
             aria-labelledby={`onderdeel-${id}`}
           >
             <Heading level={3} id={`onderdeel-${id}`}>
@@ -80,7 +80,7 @@ const OndernemingsgegevensPage = async () => {
                 href={href}
                 className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
               >
-                Ga naar {titel}
+                Naar {titel}
               </NextLink>
             </ActionGroup>
           </section>
@@ -90,6 +90,7 @@ const OndernemingsgegevensPage = async () => {
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
+          headingLevel={3}
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
             body: <Paragraph>{antwoord}</Paragraph>,

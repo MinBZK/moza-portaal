@@ -105,7 +105,7 @@ const BerichtenboxNav = ({
     <nav aria-label="Berichtenbox">
       <ul
         ref={tabsRef}
-        className="mox-tabs"
+        className="rhc-tabs"
         // Met Tab door de tabs: de tab met focus helemaal in beeld.
         onFocus={(event) =>
           event.target.scrollIntoView({ block: "nearest", inline: "nearest" })
@@ -120,7 +120,7 @@ const BerichtenboxNav = ({
                 aria-current={
                   isActief ? (opLijst ? "page" : "true") : undefined
                 }
-                className={`mox-tab utrecht-link utrecht-link--html-a`}
+                className={`rhc-tab utrecht-link utrecht-link--html-a`}
               >
                 {tab.icon}
                 {tab.label}
@@ -135,7 +135,7 @@ const BerichtenboxNav = ({
           );
         })}
         {mappen.length > 0 && (
-          <li className="mox-tabs-separator">
+          <li className="rhc-tabs-separator">
             <VisuallyHidden>Mappen:</VisuallyHidden>
           </li>
         )}
@@ -144,7 +144,7 @@ const BerichtenboxNav = ({
             <Link
               href={`/berichtenbox?${new URLSearchParams({ map })}`}
               aria-current={map === actieveMap ? "page" : undefined}
-              className="mox-tab utrecht-link utrecht-link--html-a"
+              className="rhc-tab utrecht-link utrecht-link--html-a"
             >
               <FolderIcon />
               {map}

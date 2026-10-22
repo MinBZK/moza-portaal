@@ -25,7 +25,7 @@ const PublicatieDetailPage = async ({
     return (
       <>
         <Heading level={1}>Publicatie niet gevonden</Heading>
-        <div className="mox-card">
+        <div className="rhc-mox-card">
           <Paragraph>Deze publicatie kon niet worden opgehaald.</Paragraph>
           <Paragraph>
             <Link
@@ -71,7 +71,7 @@ const PublicatieDetailPage = async ({
 
       <Heading level={1}>{publicatie.title || "Onbekende titel"}</Heading>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         {publicatie.abstract && <Paragraph>{publicatie.abstract}</Paragraph>}
 
         <DataSummary appearance="column">
@@ -126,8 +126,8 @@ const PublicatieDetailPage = async ({
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
               {hasPreferredLink
-                ? "Bekijk op officielebekendmakingen.nl"
-                : "Bekijk op de website van de gemeente"}
+                ? "Op officielebekendmakingen.nl bekijken"
+                : "Op de website van de gemeente bekijken"}
               <Icon icon="externe-link" />
               <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
             </a>

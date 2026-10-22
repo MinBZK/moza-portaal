@@ -3,13 +3,7 @@
 import { useRef, useState } from "react";
 import { components } from "@/network/profiel/generated";
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
-import {
-  ActionGroup,
-  Button,
-  DataSummary,
-  Icon,
-  VisuallyHidden,
-} from "@/components/rhc";
+import { ActionGroup, Button, DataSummary, Icon } from "@/components/rhc";
 import {
   FormFieldSelect,
   SelectOption,
@@ -124,6 +118,7 @@ export const TaalEditBox = ({
             </dd>
             <dd className="rhc-data-summary__item-action">
               <EditBoxButton
+                ariaLabel="Taalvoorkeur aanpassen"
                 icon={<Icon icon="bewerken" />}
                 onClick={() => {
                   setFieldState("edit");
@@ -131,7 +126,6 @@ export const TaalEditBox = ({
                 }}
               >
                 Aanpassen
-                <VisuallyHidden> taalvoorkeur</VisuallyHidden>
               </EditBoxButton>
             </dd>
           </div>

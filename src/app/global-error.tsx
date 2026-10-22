@@ -11,7 +11,7 @@ export default function GlobalError(props: ErrorBoundaryProps) {
       </head>
       <body>
         <main>
-          <div className="mox-card">
+          <div className="rhc-mox-card">
             <Heading level={1}>Er is iets misgegaan...</Heading>
             <ErrorBoundary {...props} />
           </div>

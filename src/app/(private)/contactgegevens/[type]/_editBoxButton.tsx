@@ -7,12 +7,15 @@ export const EditBoxButton = ({
   children,
   type = "button",
   icon,
+  ariaLabel,
 }: {
   className?: string;
   onClick?: () => void;
   children: React.ReactNode;
   type?: "button" | "submit" | "reset";
   icon?: React.ReactNode;
+  /** Naam voor schermlezers, als de zichtbare tekst te kort is ("Aanpassen"). */
+  ariaLabel?: string;
 }) => {
   return (
     <Button
@@ -20,6 +23,7 @@ export const EditBoxButton = ({
       type={type}
       onClick={onClick}
       className={className}
+      aria-label={ariaLabel}
     >
       {icon}
       {children}

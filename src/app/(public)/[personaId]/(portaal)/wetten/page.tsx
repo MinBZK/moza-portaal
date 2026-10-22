@@ -43,7 +43,7 @@ const WettenPage = async ({
     <>
       <Heading level={1}>Wetten en regelgeving</Heading>
 
-      <Alert type="info">
+      <Alert type="info" closable>
         <Paragraph>
           Wetten en regelgeving die mogelijk betrekking hebben op uw bedrijf of
           branche, geselecteerd op basis van uw bedrijfsprofiel. Door items te
@@ -58,7 +58,7 @@ const WettenPage = async ({
 
       {opPagina.map((wet) => (
         <RelevantItem key={wet.id} item={bewaarItemVan(wet)}>
-          <article className="mox-card" aria-labelledby={`kop-${wet.id}`}>
+          <article className="rhc-mox-card" aria-labelledby={`kop-${wet.id}`}>
             <Heading level={2} id={`kop-${wet.id}`}>
               <Link
                 href={`/wetten/${wet.id}`}

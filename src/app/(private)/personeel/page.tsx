@@ -22,7 +22,7 @@ const Personeel = async () => {
   return (
     <>
       <Heading level={1}>Personeel</Heading>
-      <section className="mox-card" aria-labelledby="nieuwe-meldingen">
+      <section className="rhc-mox-card" aria-labelledby="nieuwe-meldingen">
         <Heading level={2} id="nieuwe-meldingen">
           Nieuwe meldingen
         </Heading>
@@ -35,7 +35,7 @@ const Personeel = async () => {
           </Link>
         </ActionGroup>
       </section>
-      <section className="mox-card" aria-labelledby="lopende-meldingen">
+      <section className="rhc-mox-card" aria-labelledby="lopende-meldingen">
         <Heading level={2} id="lopende-meldingen">
           Lopende meldingen
         </Heading>

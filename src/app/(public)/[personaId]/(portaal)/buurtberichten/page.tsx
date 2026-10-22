@@ -4,15 +4,14 @@ import {
   DataSummary,
   DataSummaryItem,
   ActionGroup,
-  Button,
 } from "@/components/rhc";
-import { Icon } from "@rijkshuisstijl-community/icon-react";
 import {
   BewaarKnop,
   NietRelevantKnop,
   RelevantItem,
 } from "../bewaard/_bewaarActies";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
+import ShareButton from "@/components/ShareButton";
 import { getDemoBuurtberichten } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 
@@ -38,7 +37,7 @@ const OmgevingsberichtenPage = async () => {
         };
         return (
           <RelevantItem key={bericht.id} item={item}>
-            <div className="mox-card" id={bericht.id}>
+            <div className="rhc-mox-card" id={bericht.id}>
               <Heading level={2}>{bericht.titel}</Heading>
               <Paragraph>{bericht.samenvatting}</Paragraph>
 
@@ -52,15 +51,20 @@ const OmgevingsberichtenPage = async () => {
               </DataSummary>
 
               {/* role vast: ActionGroup telt de children anders op server en client */}
-              <ActionGroup role="group" direction="row">
-                <BewaarKnop item={item} />
+              <ActionGroup
+                role="group"
+                direction="row"
+                className="rhc-action-group-dense"
+              >
+                <BewaarKnop item={item} alsLink />
                 {flags.mox_delen && (
-                  <Button appearance="secondary-action-button">
-                    <Icon icon="delen" />
-                    Deel
-                  </Button>
+                  <ShareButton
+                    title={bericht.titel}
+                    text={bericht.samenvatting}
+                    url={`/buurtberichten#${bericht.id}`}
+                  />
                 )}
-                <NietRelevantKnop item={item} />
+                <NietRelevantKnop item={item} alsLink />
               </ActionGroup>
             </div>
           </RelevantItem>

@@ -2,8 +2,8 @@
 
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Alert } from "@/components/rhc";
 import {
-  Alert,
   Button,
   FormFieldSelect,
   FormFieldTextInput,
@@ -21,8 +21,9 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
-import TijdelijkeMelding from "@/components/TijdelijkeMelding";
+import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
+import ShareButton from "@/components/ShareButton";
 import type { DemoBericht } from "@/demo";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
@@ -98,6 +99,7 @@ const SorteerKop = ({
 
 const RijActies = ({
   onderwerp,
+  href,
   ongelezen,
   map,
   onArchiveer,
@@ -107,6 +109,8 @@ const RijActies = ({
   onUitMap,
 }: {
   onderwerp: string;
+  /** Link to the message, for sharing. */
+  href: string;
   ongelezen: boolean;
   /** De map waarin het bericht staat. */
   map: string | null;
@@ -144,19 +148,21 @@ const RijActies = ({
         <Icon icon="meer" />
         <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
       </Button>
-      <ul ref={menuRef} id={menuId} popover="auto" className="mox-action-menu">
+      <ul ref={menuRef} id={menuId} popover="auto" className="rhc-action-menu">
         {delen && (
           <li>
-            <Button appearance="subtle-button" onClick={sluit}>
-              <Icon icon="delen" />
-              Delen
-            </Button>
+            <ShareButton
+              title={onderwerp}
+              url={href}
+              variant="menu"
+              onShared={sluit}
+            />
           </li>
         )}
         <li>
           <Button appearance="subtle-button" onClick={actie(onOngelezen)}>
             {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
-            {ongelezen ? "Markeren als gelezen" : "Markeren als ongelezen"}
+            {ongelezen ? "Als gelezen markeren" : "Als ongelezen markeren"}
           </Button>
         </li>
         <li>
@@ -168,7 +174,7 @@ const RijActies = ({
             }}
           >
             <FolderIcon />
-            Verplaatsen naar map
+            Naar map verplaatsen
           </Button>
         </li>
         {map && (
@@ -242,6 +248,10 @@ const BerichtenLijst = ({
   const [zoek, setZoek] = useState("");
   const [sortering, setSortering] = useState<Sortering | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
+  // Een map kiezen is een kleine wissel: die melding fadet na 3 seconden uit.
+  // De nummer-key toont dezelfde tekst opnieuw.
+  const [meldingTijdelijk, setMeldingTijdelijk] = useState(false);
+  const [meldingNummer, setMeldingNummer] = useState(0);
   const [actieFout, setActieFout] = useState<string | null>(null);
   const meldingRef = useRef<HTMLDivElement>(null);
 
@@ -284,6 +294,7 @@ const BerichtenLijst = ({
     if (!storing) return;
     const naam = storing.bron?.naam;
     storing.herstel();
+    setMeldingTijdelijk(false);
     setMelding(
       naam
         ? `De berichten van ${naam} staan weer in uw inbox.`
@@ -377,6 +388,7 @@ const BerichtenLijst = ({
         actie === "archiveren" ? archiveer(bericht.id) : verwijder(bericht.id);
       if (!gelukt) return;
     }
+    setMeldingTijdelijk(false);
     setMelding(
       actie === "archiveren"
         ? `Het bericht "${bericht.onderwerp}" staat nu in het archief.`
@@ -388,6 +400,7 @@ const BerichtenLijst = ({
     const wordtOngelezen = !isOngelezen(staat, bericht.id, bericht.isOngelezen);
     if (!zetOngelezen(bericht.id, wordtOngelezen)) return;
     setActieFout(null);
+    setMeldingTijdelijk(false);
     setMelding(
       wordtOngelezen
         ? `Het bericht "${bericht.onderwerp}" is gemarkeerd als ongelezen.`
@@ -405,6 +418,8 @@ const BerichtenLijst = ({
       return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
     }
     setActieFout(null);
+    setMeldingTijdelijk(true);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       naar
         ? `Het bericht "${bericht.onderwerp}" staat nu in de map ${naar}.`
@@ -427,7 +442,7 @@ const BerichtenLijst = ({
       {bezig ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
-        <Paragraph className="mox-notice-amount-inbox">
+        <Paragraph className="rhc-notice-amount-inbox">
           {map && `Map ${map}: `}
           {meervoud(inWeergave.length, "bericht", "berichten")} van{" "}
           {meervoud(organisaties, "organisatie", "organisaties")}, {ongelezen}{" "}
@@ -489,19 +504,27 @@ const BerichtenLijst = ({
       )}
       <div role="status">
         {!bezig && alleBinnen && weergave === "inbox" && (
-          <TijdelijkeMelding>
+          <TemporaryAlert closable>
             <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
-          </TijdelijkeMelding>
+          </TemporaryAlert>
         )}
       </div>
 
       {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
       <div ref={meldingRef} tabIndex={-1} role="status">
-        {melding && !bezig && <Alert type="ok">{melding}</Alert>}
+        {melding &&
+          !bezig &&
+          (meldingTijdelijk ? (
+            <TemporaryAlert key={meldingNummer}>{melding}</TemporaryAlert>
+          ) : (
+            <Alert type="ok" closable>
+              {melding}
+            </Alert>
+          ))}
       </div>
 
       {weergave === "inbox" && (
-        <div className="mox-inbox-filter mox-inbox-filters">
+        <div className="rhc-inbox-filter rhc-inbox-filters">
           <FormFieldTextInput
             label="Filter berichten"
             type="search"
@@ -619,6 +642,7 @@ const BerichtenLijst = ({
                         <TableCell>
                           <RijActies
                             onderwerp={bericht.onderwerp}
+                            href={`/berichtenbox/${bericht.id}`}
                             ongelezen={isOngelezen(
                               staat,
                               bericht.id,

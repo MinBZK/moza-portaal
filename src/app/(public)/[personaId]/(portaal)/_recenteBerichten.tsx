@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 import {
   Alert,
   Paragraph,
@@ -9,7 +11,7 @@ import {
   TableHeaderCell,
   TableRow,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import type { DemoBericht } from "@/demo";
 import BerichtRij from "./berichtenbox/_berichtRij";
 import {
@@ -37,13 +39,17 @@ const AANTAL = 5;
  * voor demo-berichten, echt voor een persona op het Federatief Berichtenstelsel.
  *
  * @param ontvanger Voor een aangesloten persona; zonder: de demo-berichten.
+ * @param children Shown only once the messages have loaded, such as a link
+ *   to the Berichtenbox.
  */
 const RecenteBerichten = ({
   berichten: demo,
   ontvanger = null,
+  children,
 }: {
   berichten: DemoBericht[];
   ontvanger?: string | null;
+  children?: ReactNode;
 }) => {
   const { staat, zetGemarkeerd } = useBerichtenboxState();
   const stelsel = !!ontvanger;
@@ -85,16 +91,24 @@ const RecenteBerichten = ({
   if (bezig) return <OphaalVoortgang voortgang={voortgang} />;
 
   if (keten.fout)
-    return <Alert type="error">{ketenFoutTekst[keten.fout]}</Alert>;
+    return (
+      <>
+        <Alert type="error">{ketenFoutTekst[keten.fout]}</Alert>
+        {children}
+      </>
+    );
 
   if (storing?.scenario === "geen") {
     return (
-      <Alert type="error">
-        <Paragraph>
-          Er gaat iets mis met het ophalen van berichten bij de organisaties.
-          Probeer het later opnieuw.
-        </Paragraph>
-      </Alert>
+      <>
+        <Alert type="error">
+          <Paragraph>
+            Er gaat iets mis met het ophalen van berichten bij de organisaties.
+            Probeer het later opnieuw.
+          </Paragraph>
+        </Alert>
+        {children}
+      </>
     );
   }
 
@@ -152,6 +166,7 @@ const RecenteBerichten = ({
           </Table>
         </div>
       )}
+      {children}
     </>
   );
 };

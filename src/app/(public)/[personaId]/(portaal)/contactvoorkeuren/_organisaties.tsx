@@ -16,7 +16,7 @@ import {
   Paragraph,
   UnorderedList,
   UnorderedListItem,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import type { DemoOrganisatie } from "@/demo";
 
 /**

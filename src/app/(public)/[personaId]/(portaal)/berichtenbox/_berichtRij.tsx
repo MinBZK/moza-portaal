@@ -38,17 +38,17 @@ const BerichtRij = ({
         type="button"
         aria-pressed={gemarkeerd}
         onClick={onMarkeer}
-        className={`mox-button-mark`}
+        className={`rhc-button-mark`}
       >
         <FlagIcon filled={gemarkeerd} />
         <VisuallyHidden>Markeren</VisuallyHidden>
       </button>
     </TableCell>
     <TableCell>
-      <span className={ongelezen ? "mox-sender mox-unread" : "mox-sender"}>
+      <span className={ongelezen ? "rhc-sender rhc-unread" : "rhc-sender"}>
         {ongelezen && (
           <>
-            <span aria-hidden="true" className="mox-status-unread" />
+            <span aria-hidden="true" className="rhc-status-unread" />
             <VisuallyHidden>Ongelezen.</VisuallyHidden>
           </>
         )}
@@ -58,7 +58,7 @@ const BerichtRij = ({
     <TableCell>
       <Link
         href={`/berichtenbox/${bericht.id}`}
-        className={`utrecht-link utrecht-link--html-a rhc-row-linked__link ${ongelezen ? "mox-unread" : ""}`}
+        className={`utrecht-link utrecht-link--html-a rhc-row-linked__link ${ongelezen ? "rhc-unread" : ""}`}
       >
         {bericht.onderwerp}
       </Link>
@@ -67,7 +67,7 @@ const BerichtRij = ({
     <TableCell>
       {bericht.heeftBijlage && (
         <>
-          <Icon icon="paperclip" />
+          <Icon icon="paperclip" className="rhc-attachment-icon" />
           <VisuallyHidden>Heeft bijlage</VisuallyHidden>
         </>
       )}

@@ -1,9 +1,4 @@
-import {
-  Heading,
-  Paragraph,
-  Alert,
-  Link,
-} from "@rijkshuisstijl-community/components-react";
+import { Heading, Paragraph, Alert, Link } from "@/components/rhc";
 import BewaardeItems from "./_bewaardeItems";
 
 const BewaardPage = async () => {
@@ -14,10 +9,10 @@ const BewaardPage = async () => {
         soort="bewaard"
         zonderCategorie="Digitale assistent"
         leeg={
-          <Alert type="info">
+          <Alert type="info" closable>
             <Paragraph>
-              U heeft nog niets bewaard. Gebruik de knop <strong>Bewaar</strong>{" "}
-              bij{" "}
+              U heeft nog niets bewaard. Gebruik de knop{" "}
+              <strong>Bewaren</strong> bij{" "}
               <Link inline href="/subsidies">
                 Subsidies en financiering
               </Link>
@@ -40,7 +35,7 @@ const BewaardPage = async () => {
         soort="bewaard"
         alleenCategorie="Digitale assistent"
         leeg={
-          <Alert type="info">
+          <Alert type="info" closable>
             <Paragraph>
               U heeft nog geen gesprekken bewaard. Start een gesprek bij{" "}
               <Link inline href="/digitale-assistent">

@@ -38,7 +38,7 @@ const SubsidiePage = async ({
       </Paragraph>
 
       <RelevantItem item={bewaarItemVan(subsidie)}>
-        <section className="mox-card" aria-label={subsidie.titel}>
+        <section className="rhc-mox-card" aria-label={subsidie.titel}>
           <Paragraph purpose="lead">{subsidie.samenvatting}</Paragraph>
           <SubsidieGegevens subsidie={subsidie} />
 
@@ -52,7 +52,7 @@ const SubsidiePage = async ({
               href={assistentLink(subsidie)}
               className="utrecht-link utrecht-link--html-a"
             >
-              De digitale assistent zoekt voor u uit
+              Aan digitale assistent vragen
             </Link>
             . Bijvoorbeeld: komt u in aanmerking voor deze subsidie, en wat moet
             u doen vóór de aanvraagperiode sluit?

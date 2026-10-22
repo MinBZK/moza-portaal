@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
+import { Alert, Paragraph } from "@/components/rhc";
 import { getBerichtenboxVariant } from "@/app/actions";
 import { getDemoBerichtById, getDemoBerichten } from "@/demo";
 import { getActievePersona, getKetenAccount } from "@/app/(public)/_persona";

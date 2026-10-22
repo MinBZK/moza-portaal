@@ -24,8 +24,8 @@
 }
 
 /* ==== 2. Tokens ============================================================= */
-
 .rhc-theme.mox-theme {
+
   /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
     tokens voor beweging. */
   --mox-transition-duration: 150ms;
@@ -114,10 +114,14 @@ body {
 .rhc-main-container {
   align-content: start;
   display: grid;
-  gap: var(--rhc-space-2xl);
+  gap: var(--rhc-space-xl);
   /* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
     ontstaat er op een smal scherm een horizontale scrollbalk. */
   grid-template-columns: minmax(0, 1fr);
+
+  h1 {
+    margin-block-end: var(--rhc-space-xl);
+  }
 }
 
 .rhc-theme.mox-theme {
@@ -131,9 +135,22 @@ body {
 
   /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
     rijen kaarten elkaar. */
-  .rhc-grid:has(> .mox-card) {
+  .rhc-grid:has(> .rhc-mox-card) {
     row-gap: var(--rhc-space-2xl);
   }
+}
+
+.rhc-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xs);
+}
+
+/* Show the parts in DOM order. Utrecht gives them an order (label 1, error
+  message 3, input 5) for its grid fields; in this flex column a part without
+  an order, such as a select or an ActionGroup, would end up above the label. */
+.rhc-form-field.utrecht-form-field > * {
+  order: 0;
 }
 
 /* --- Header --- */
@@ -191,6 +208,15 @@ body {
     }
   }
 
+  #heading {
+    margin-inline-end: var(--rhc-space-2xl);
+  }
+
+  .rhc-nav-bar {
+    gap: 0;
+  }
+
+
   .rhc-nav-bar__link {
     align-items: center;
     display: inline-flex;
@@ -199,6 +225,34 @@ body {
 
   .rhc-language-navigation {
     margin-inline-start: auto;
+  }
+
+  /* De taalkeuze staat rechts, direct links naast de lijst met naam en
+    uitloggen. De NavBar verdeelt zijn onderdelen met space-between; de
+    automatische marge neemt alle vrije ruimte en duwt de taalkeuze naar
+    rechts. */
+  .utrecht-page-header .rhc-nav-bar> :has(> .rhc-language-navigation) {
+    margin-inline-start: auto;
+  }
+
+  /* Taalkeuze in de header: de lijst klapt uit over de pagina in plaats van
+    mee te tellen in de breedte. Anders wordt de navigatie breder; omdat die
+    rechts staat, schuift de knop "Nederlands" dan naar links. In het menu op
+    een smal scherm blijft de lijst gewoon onder de knop in de flow. */
+  :where(.utrecht-page-header) .rhc-language-navigation {
+    /* Houvast voor de lijst. :where(), zodat mox.css hem nog absoluut kan
+      zetten. */
+    position: relative;
+  }
+
+  .utrecht-page-header .rhc-language-navigation__list {
+    inset-block-start: 100%;
+    inset-inline-end: 0;
+    /* RHC begrenst de lijst op 100% van de navigatie, en die is zo smal als
+      de knop: dan gaat hij scrollen. Zonder grens krijgt hij zijn eigen
+      breedte van RHC terug (--utrecht-listbox-inline-size). */
+    max-inline-size: none;
+    position: absolute;
   }
 
   @media (width < 768px) {
@@ -352,6 +406,29 @@ body {
   }
 }
 
+/* --- Kaarten --- */
+.rhc-mox-card {
+  .rhc-row-gap {
+    align-content: start;
+    display: grid;
+    gap: var(--rhc-space-xl);
+
+    .utrecht-action-group {
+      margin-block-start: 0;
+    }
+  }
+
+  .utrecht-form-fieldset__legend,
+  .utrecht-form-field--checkbox,
+  .utrecht-form-field--radio {
+    margin-block-end: var(--rhc-space-md)
+  }
+
+  .ams-pagination {
+    margin-block-start: var(--rhc-space-2xl);
+  }
+}
+
 /* --- Dialog --- */
 
 .rhc-dialog {
@@ -360,27 +437,23 @@ body {
   border-radius: var(--rhc-border-radius-md);
   box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
   color: inherit;
-  /* De basisopmaak (globals.css) zet margin op 0; auto centreert de modal weer. */
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-lg);
   margin: auto;
   max-inline-size: min(36rem, calc(100% - 2 * var(--rhc-space-lg)));
-
-  /* Rustig in- en uitfaden; de transition staat al in globals.css. */
   opacity: 0;
   padding: var(--rhc-space-2xl);
   transform: none;
 
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+  }
+
   &::backdrop {
     background: color-mix(in srgb, var(--rhc-color-zwart) 40%, transparent);
-  }
-
-  /* Afstand via marges, niet via grid-gap: bij sluiten laat globals.css de
-    dialog nog 300ms staan zonder [open], en dan viel de gap weg. */
-  >* {
-    margin-block: 0;
-  }
-
-  >*+* {
-    margin-block-start: var(--rhc-space-lg);
   }
 
   &[open] {
@@ -392,14 +465,574 @@ body {
   }
 }
 
+/* --- Actiemenu --- */
+.rhc-action-menu {
+  background-color: var(--rhc-color-wit);
+  border: 0;
+  border-radius: var(--rhc-border-radius-md);
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+  inset: auto;
+  inset-block-start: anchor(end);
+  inset-inline-end: anchor(end);
+  margin: 0;
+  margin-block-start: var(--rhc-space-2xs);
+  padding: var(--rhc-space-md);
+  position-anchor: var(--mox-menu-anker);
+  position-try-fallbacks: flip-block;
+
+  /* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
+  --utrecht-button-inline-size: 100%;
+  --utrecht-button-max-inline-size: none;
+
+  .utrecht-button {
+    justify-content: flex-start;
+  }
+}
+
+.mox-menu-trigger {
+  anchor-name: var(--mox-menu-anker);
+}
+
 /* --- Kaarten --- */
 
 .rhc-theme.mox-theme {
-  .mox-card {
+  .rhc-mox-card {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
+    margin-block-end: var(--rhc-space-xl);
   }
+
+  /* Cards in a row are equally tall: the buttons at the bottom line up,
+    however long the text above them is. */
+  .rhc-mox-card > .utrecht-action-group:last-child {
+    margin-block-start: auto;
+  }
+}
+
+.mox-card-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xl);
+}
+
+/* --- Accordeon --- */
+.utrecht-accordion {
+  h1 {
+    margin-block-end: 0;
+  }
+}
+
+/* --- Tabs --- */
+.rhc-tabs {
+  --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
+  background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% var(--rhc-border-width-md);
+  display: flex;
+  gap: var(--rhc-space-xl);
+  margin-block-end: var(--rhc-space-lg);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: var(--rhc-space-md);
+  scrollbar-width: thin;
+
+  @media (width < 768px) {
+    gap: 0 var(--rhc-space-md);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    animation: rhc-tabs-fade linear both;
+    animation-timeline: scroll(self inline);
+    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-tabs-fade-start), #000 calc(100% - var(--rhc-tabs-fade-end)), transparent);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.rhc-tab {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+  padding: var(--rhc-space-md);
+  /* Een tab die in beeld schuift, valt niet in het verloop. */
+  scroll-margin-inline: var(--rhc-tabs-fade);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &.utrecht-link,
+  &.utrecht-link--html-a {
+    text-decoration: none !important;
+  }
+
+  /* Binnen de tab, anders valt de focusrand weg aan de randen. */
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
+  }
+
+  &[aria-current] {
+    border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* --- Digitale assistent --- */
+/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
+.rhc-chat {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-chat-messages {
+  block-size: max(24rem, 50dvh);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-lg);
+  overflow-y: auto;
+  padding: var(--rhc-space-lg);
+}
+
+.rhc-chat-rule {
+  display: flex;
+  flex-direction: column;
+}
+
+.rhc-chat-message,
+.rhc-chat-card,
+.rhc-chat-suggestions {
+  border-radius: var(--rhc-border-radius-md);
+  display: grid;
+  gap: var(--rhc-space-md);
+  max-inline-size: min(80%, 48rem);
+  padding: var(--rhc-space-md) var(--rhc-space-lg);
+}
+
+.rhc-chat-message,
+.rhc-chat-suggestions {
+  margin-block-end: var(--rhc-space-2xl);
+  position: relative;
+
+  &:before {
+    background-color: var(--rhc-color-cool-grey-100);
+    block-size: var(--rhc-size-icon-md);
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
+    content: "";
+    inline-size: var(--rhc-size-icon-md);
+    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+    inset-inline-start: var(--rhc-size-icon-md);
+    position: absolute;
+  }
+
+  p:last-of-type {
+    margin-block-end: 0;
+  }
+}
+
+.rhc-chat-message--assistant,
+.rhc-chat-card,
+.rhc-chat-suggestions {
+  --rhc-chat-border-color: var(--rhc-color-cool-grey-300);
+
+  align-self: flex-start;
+  background-color: var(--rhc-color-cool-grey-100);
+  filter: drop-shadow(1px 0 0 var(--rhc-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-chat-border-color));
+}
+
+.rhc-chat-message--user {
+  align-self: flex-end;
+  background-color: var(--rhc-color-lintblauw-700);
+  color: var(--rhc-color-wit);
+
+  &:before {
+    background-color: var(--rhc-color-lintblauw-700);
+    block-size: var(--rhc-size-icon-md);
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
+    content: "";
+    inline-size: var(--rhc-size-icon-md);
+    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+    inset-inline-end: var(--rhc-size-icon-md);
+    position: absolute;
+  }
+
+  .nl-paragraph {
+    color: inherit;
+  }
+}
+
+.rhc-chat-message--error {
+  align-self: flex-start;
+  background-color: var(--rhc-color-rood-50);
+  display: flex;
+  gap: var(--rhc-space-md);
+
+  >.utrecht-icon {
+    color: var(--rhc-color-rood-600);
+  }
+}
+
+.rhc-chat-suggestions {
+  max-inline-size: 100%;
+
+  .utrecht-button {
+    justify-self: start;
+  }
+}
+
+.rhc-chat-card {
+  inline-size: min(100%, 48rem);
+  max-inline-size: 100%;
+
+  fieldset {
+    display: grid;
+    gap: var(--rhc-space-sm);
+  }
+}
+
+.rhc-chat-form {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-chat-sources {
+  border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+  display: grid;
+  gap: var(--rhc-space-sm);
+  padding-block-start: var(--rhc-space-md);
+
+  ul {
+    display: grid;
+    gap: var(--rhc-space-sm);
+  }
+
+  li {
+    display: grid;
+  }
+
+  small {
+    color: var(--rhc-color-foreground-subtle);
+  }
+}
+
+.rhc-chat-badge {
+  align-items: center;
+  background-color: var(--rhc-color-groen-100);
+  border-radius: var(--rhc-border-radius-md);
+  display: inline-flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+  inline-size: fit-content;
+  padding: var(--rhc-space-2xs) var(--rhc-space-sm);
+
+  .utrecht-icon {
+    color: var(--rhc-color-groen-600);
+  }
+}
+
+.rhc-chat-energy {
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-energy-figures {
+  display: grid;
+  gap: var(--rhc-space-lg);
+  grid-template-columns: repeat(2, 1fr);
+
+  dt {
+    color: var(--rhc-color-foreground-subtle);
+    font-size: var(--rhc-text-font-size-sm);
+  }
+}
+
+.rhc-energy-value {
+  display: block;
+  font-weight: var(--rhc-text-font-weight-bold);
+}
+
+.rhc-energy-threshold {
+  align-items: center;
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-xs);
+
+  &::before {
+    block-size: 0.5rem;
+    border-radius: var(--rhc-border-radius-round);
+    content: "";
+    flex: none;
+    inline-size: 0.5rem;
+  }
+}
+
+.rhc-energy-threshold--above::before {
+  background-color: var(--rhc-color-oranje-500);
+}
+
+.rhc-energy-threshold--below::before {
+  background-color: var(--rhc-color-groen-600);
+}
+
+/* Wachtindicatie: drie stippen die een voor een verschijnen */
+.rhc-chat-thinking {
+  align-items: center;
+  align-self: flex-start;
+  display: flex;
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-wait {
+  animation: rhc-wait 1s steps(4) infinite;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side, var(--rhc-color-foreground-default) 90%, transparent) 0 / calc(100% / 3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
+}
+
+@keyframes rhc-wait {
+  to {
+    clip-path: inset(0 -33% 0 0);
+  }
+}
+
+.rhc-chat-input {
+  display: grid;
+  gap: var(--rhc-space-md);
+
+  textarea {
+    max-inline-size: none;
+    min-block-size: 6rem;
+  }
+}
+
+.rhc-chat-disclaimer {
+  align-items: flex-start;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+
+  .utrecht-icon {
+    margin-block-start: var(--rhc-space-sm);
+  }
+}
+
+/* --- Lopende zaken --- */
+.rhc-status-track {
+  --rhc-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
+  --rhc-stap-gap: var(--rhc-space-lg);
+
+  display: grid;
+  gap: var(--rhc-stap-gap);
+  margin-block: var(--rhc-space-3xl);
+
+  >li {
+    display: flex;
+    gap: var(--rhc-space-md);
+    position: relative;
+
+    /* Cirkel met het stapnummer, of een vinkje als de stap klaar is
+      (StatusTrack). */
+    >.rhc-status-marker {
+      background-color: var(--rhc-color-groen-600);
+      block-size: var(--rhc-stap-maat);
+      border-radius: var(--rhc-border-radius-round);
+      color: var(--rhc-color-wit);
+      display: grid;
+      flex-shrink: 0;
+      font-weight: var(--rhc-text-font-weight-bold);
+      inline-size: var(--rhc-stap-maat);
+      place-items: center;
+
+      .utrecht-icon {
+        block-size: 40%;
+        inline-size: 40%;
+      }
+
+      svg {
+        block-size: 100%;
+        inline-size: 100%;
+      }
+    }
+
+    &::after {
+      background-color: var(--rhc-color-groen-600);
+      content: "";
+      inline-size: var(--rhc-border-width-md);
+      inset-block: var(--rhc-stap-maat) calc(-1 * var(--rhc-stap-gap));
+      inset-inline-start: calc(var(--rhc-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+      position: absolute;
+    }
+
+    &:last-child::after {
+      content: none;
+    }
+  }
+
+  >[aria-current="step"] {
+    >.rhc-status-marker {
+      background-color: var(--rhc-color-lintblauw-500);
+    }
+
+    ~li>.rhc-status-marker {
+      background-color: var(--rhc-color-cool-grey-500);
+    }
+
+    &::after,
+    ~li::after {
+      background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
+    }
+  }
+
+  details {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-weight: var(--rhc-text-font-weight-bold);
+    gap: var(--rhc-space-sm);
+    list-style: none;
+    min-block-size: var(--rhc-stap-maat);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    .utrecht-icon {
+      transition: transform 150ms;
+    }
+  }
+
+  details[open]>summary .utrecht-icon {
+    transform: rotate(90deg);
+  }
+}
+
+.rhc-status-details {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin-block-start: var(--rhc-space-sm);
+
+  .utrecht-action-group {
+    margin-block-end: var(--rhc-space-xl);
+    margin-block-start: 0;
+  }
+}
+
+.rhc-status-date {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-action-required {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--rhc-space-sm);
+
+  .utrecht-icon {
+    color: var(--rhc-color-oranje-500);
+  }
+}
+
+/* --- Berichtenbox --- */
+[aria-label=Berichtenbox] {
+  a {
+    text-decoration: none;
+  }
+}
+
+.rhc-attachment-icon {
+  --utrecht-icon-size: var(--rhc-size-icon-md);
+}
+
+.rhc-notice-amount-inbox {
+  color: var(--rhc-color-cool-grey-500);
+  font-size: var(--rhc-text-font-size-sm);
+}
+
+.rhc-inbox-filter {
+  margin-block: var(--rhc-space-3xl);
+}
+
+.rhc-tabs-separator {
+  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+  margin-block: var(--rhc-space-md);
+}
+
+/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+.rhc-inbox-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-xl);
+
+  > :first-child {
+    flex: 2 1 16rem;
+  }
+
+  > :last-child {
+    flex: 1 1 12rem;
+  }
+
+  .utrecht-form-field {
+    margin-block: 0;
+  }
+
+  .utrecht-textbox {
+    max-inline-size: 100%;
+  }
+}
+
+.rhc-button-mark {
+  align-items: center;
+  block-size: 1lh;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: calc(var(--nl-button-min-block-size)/2);
+  min-inline-size: calc(var(--nl-button-min-inline-size)/2);
+
+  &[aria-pressed=true] {
+    color: var(--rhc-color-oranje-500);
+  }
+}
+
+.rhc-button-mark-true {
+  color: var(--rhc-color-oranje-500);
+}
+
+.rhc-status-unread {
+  background-color: var(--rhc-color-oranje-500);
+  block-size: calc(var(--rhc-size-icon-md)/2);
+  border-radius: var(--rhc-border-radius-round);
+  flex-shrink: 0;
+  inline-size: calc(var(--rhc-size-icon-md)/2);
+  /* centreert de stip op de eerste regel van de afzender */
+  margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+}
+
+.rhc-sender {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-unread {
+  /* 500 komt uit mox.css (huidige huisstijl); de nieuwe huisstijl valt
+    terug op semi-bold. */
+  font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
 }
 
 /* --- LinkButton --- */
@@ -417,6 +1050,33 @@ body {
     &:hover {
       color: var(--rhc-color-rood-600);
     }
+  }
+}
+
+/* --- Bewaren --- */
+.rhc-icon-saved svg {
+  fill: var(--rhc-color-robijnrood-400);
+  stroke: var(--rhc-color-robijnrood-400);
+}
+
+/* --- Iconen en links --- */
+.utrecht-icon {
+  block-size: var(--rhc-size-icon-md);
+  flex-shrink: 0;
+  inline-size: var(--rhc-size-icon-md)
+}
+
+.utrecht-link .utrecht-icon {
+  vertical-align: middle;
+}
+
+.rhc-link-list__item .utrecht-link-list__link {
+  align-items: flex-start;
+
+  .utrecht-icon {
+    block-size: 1lh;
+    /* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
+    inset-block-start: 0;
   }
 }
 
@@ -444,6 +1104,31 @@ body {
   }
 }
 
+/* Alert with a close button (closable) in the top right corner. */
+.rhc-alert-closable {
+  position: relative;
+}
+
+.rhc-alert-closable-content {
+  padding-inline-end: var(--rhc-space-5xl);
+}
+
+.rhc-alert-close-button {
+  inset-block-start: var(--utrecht-alert-padding-block-start);
+  inset-inline-end: var(--utrecht-alert-padding-inline-end);
+  position: absolute;
+
+  span {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+
+  &:hover {
+    background: transparent !important;
+  }
+}
+
 /* --- NavigationList --- */
 
 .rhc-theme.mox-theme {
@@ -451,7 +1136,7 @@ body {
     align-items: flex-start;
   }
 
-  .rhc-navigation-list--no-start-icon .rhc-navigation-list__item__start-icon {
+  .rhc-navigation-list__item__start-icon {
     display: none;
   }
 }
@@ -560,6 +1245,80 @@ body {
   }
 }
 
+/* --- Voortgangsbalk --- */
+/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+
+.rhc-progressbar {
+  background-color: var(--rhc-color-wit);
+  block-size: var(--rhc-space-lg);
+  border-color: var(--rhc-color-cool-grey-400);
+  border-radius: var(--rhc-border-radius-round);
+  border-width: var(--rhc-border-width-sm);
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.rhc-progressbar-track {
+  background-color: var(--rhc-color-groen-500) !important;
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+}
+
+/* In een info-melding de kleur van die melding (het info-icoon), zoals
+  bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
+.utrecht-alert--info .rhc-progressbar-track {
+  background-color: var(--utrecht-alert-icon-info-color) !important;
+}
+
+/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
+  Bij "minder beweging" een stilstaande, halfvolle balk. */
+.rhc-progressbar--indeterminate .rhc-progressbar-track {
+  inline-size: 40%;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rhc-progressbar-indeterminate 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes rhc-progressbar-indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* --- Aftelbalk --- */
+/* Aftelbalk met pauzeknop (contactmomenten) */
+
+.rhc-countdown {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-lg);
+
+  .rhc-progressbar {
+    background-color: var(--rhc-color-cool-grey-200);
+    flex: 1;
+  }
+}
+
+/* --- Meter --- */
+/* Gemeten stand binnen een bereik, zoals budget vergeven: balk met de waarde ernaast */
+
+.rhc-graph-meter {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+
+  .rhc-progressbar {
+    background-color: var(--rhc-color-cool-grey-200);
+    flex: 1;
+    max-inline-size: 20rem;
+  }
+}
+
 /* --- Paginering --- */
 
 .rhc-theme.mox-theme {
@@ -586,6 +1345,7 @@ body {
   }
 }
 
+
 /* Een melding die in zijn geheel een link is, zoals de status van een zaak
   die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
 .rhc-theme.mox-theme {
@@ -607,6 +1367,28 @@ body {
       outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
       outline-offset: var(--utrecht-focus-outline-offset);
     }
+  }
+
+}
+
+/* --- Action group --- */
+.utrecht-action-group {
+  margin-block-start: var(--rhc-space-2xl);
+}
+
+.utrecht-button--primary-action {
+  margin-block-start: var(--rhc-space-lg);
+}
+
+.rhc-action-group-dense {
+  margin-block-start: 0 !important;
+
+  /* Knoppen en links in de balk zien er hetzelfde uit: geen onderstreping. */
+  :is(button, a) {
+    padding-block: var(--rhc-space-sm);
+    padding-inline: var(--rhc-space-md);
+    text-align: start;
+    text-decoration: none;
   }
 }
 

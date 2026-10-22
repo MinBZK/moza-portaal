@@ -5,10 +5,11 @@ import {
   ActionGroup,
   Alert,
   Button,
+  LinkButton,
   FormFieldTextInput,
   Heading,
   Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { FolderIcon } from "@/components/icons/folderIcon";
 
 /**
@@ -87,23 +88,22 @@ const MapDialog = ({
       onClose={sluit}
     >
       <Heading level={2} id={`${id}-kop`}>
-        Verplaatsen naar map
+        Naar map verplaatsen
       </Heading>
       {fout && <Alert type="error">{fout}</Alert>}
       {andere.length > 0 && (
         <>
           <Paragraph>Kies een map:</Paragraph>
-          <ul className="mox-folder-picker">
+          <ul>
             {andere.map((map, index) => (
               <li key={map}>
-                <Button
+                <LinkButton
                   ref={index === 0 ? eersteRef : undefined}
-                  appearance="subtle-button"
                   onClick={() => void kies(map)}
                 >
                   <FolderIcon />
                   {map}
-                </Button>
+                </LinkButton>
               </li>
             ))}
           </ul>

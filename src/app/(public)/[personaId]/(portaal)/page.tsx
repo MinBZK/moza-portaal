@@ -49,11 +49,23 @@ const HomePage = async ({
     getKetenAccount().then(getKetenStatus),
   ]);
 
+  // Only shown once the messages have loaded (RecenteBerichten).
+  const naarBerichtenbox = (
+    <ActionGroup>
+      <Link
+        href="/berichtenbox"
+        className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+      >
+        Naar uw zakelijke berichtenbox
+      </Link>
+    </ActionGroup>
+  );
+
   return (
     <>
       <Heading level={1}>Welkom {naam}</Heading>
 
-      <section className="mox-card" aria-labelledby="recente-berichten">
+      <section className="rhc-mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">
           Recente berichten
         </Heading>
@@ -61,25 +73,22 @@ const HomePage = async ({
           <RecenteBerichten
             berichten={keten.soort === "demo" ? berichten : []}
             ontvanger={keten.soort === "keten" ? keten.ontvanger : null}
-          />
-        ) : (
-          <Alert type="error">
-            <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
-          </Alert>
-        )}
-        <ActionGroup>
-          <Link
-            href="/berichtenbox"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Ga naar uw zakelijke berichtenbox
-          </Link>
-        </ActionGroup>
+            {naarBerichtenbox}
+          </RecenteBerichten>
+        ) : (
+          <>
+            <Alert type="error">
+              <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+            </Alert>
+            {naarBerichtenbox}
+          </>
+        )}
       </section>
 
       <div className="rhc-grid">
         <section
-          className="mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           aria-labelledby="home-subsidies"
         >
           <Heading level={2} id="home-subsidies">
@@ -95,13 +104,13 @@ const HomePage = async ({
               href="/subsidies"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Ga naar Subsidies en financiering
+              Naar Subsidies en financiering
             </Link>
           </ActionGroup>
         </section>
 
         <section
-          className="mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           aria-labelledby="home-wetten"
         >
           <Heading level={2} id="home-wetten">
@@ -117,7 +126,7 @@ const HomePage = async ({
               href="/wetten"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Ga naar Wetten en regelgeving
+              Naar Wetten en regelgeving
             </Link>
           </ActionGroup>
         </section>
@@ -126,6 +135,7 @@ const HomePage = async ({
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
+          headingLevel={3}
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
             body: <Paragraph>{antwoord}</Paragraph>,

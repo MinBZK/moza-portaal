@@ -52,6 +52,7 @@ import {
   Toggletip,
 } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
+import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 
 const TemplatePage = async () => {
   return (
@@ -84,7 +85,7 @@ const TemplatePage = async () => {
         subHeading="Subtekst"
       />
 
-      <Alert type="warning">
+      <Alert type="warning" closable>
         <Heading level={3}>Let op!</Heading>
         <Paragraph>
           Lorem ipsum dolor sit amet, consectetur ad isicing elit, sed do
@@ -170,6 +171,7 @@ const TemplatePage = async () => {
       </Drawer>
 
       <AccordionProvider
+        headingLevel={2}
         sections={[
           {
             body: "Accordioninhoud 1",
@@ -237,13 +239,14 @@ const TemplatePage = async () => {
       </DataSummary>
 
       <ActionGroup direction="row">
-        <Button appearance="secondary-action-button">Bewaar</Button>
-        <Button appearance="secondary-action-button">Deel</Button>
+        <Button appearance="secondary-action-button">Bewaren</Button>
+        <Button appearance="secondary-action-button">Delen</Button>
         <Button appearance="secondary-action-button">
           Niet relevant voor mij
         </Button>
         <Button appearance="secondary-action-button">
-          Vraag aan de digitale assistent
+          <DigitalAssistantIcon />
+          Aan digitale assistent vragen
         </Button>
       </ActionGroup>
 

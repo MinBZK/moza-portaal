@@ -334,7 +334,7 @@ const Chat = ({
             id: nieuwId(),
             soort: "fout",
             tekst: uitTekst.tekst,
-            vervolg: { label: "Neem contact op", href: "/contact" },
+            vervolg: { label: "Contact opnemen", href: "/contact" },
           });
         } else {
           nieuw.push({
@@ -343,7 +343,7 @@ const Chat = ({
             tekst: uitTekst.tekst,
             bronnen,
             vervolg: beurt.zaakGemaakt
-              ? { label: "Bekijk in Lopende zaken", href: "/lopendezaken" }
+              ? { label: "In Lopende zaken bekijken", href: "/lopendezaken" }
               : undefined,
           });
         }
@@ -825,19 +825,19 @@ const Chat = ({
   };
 
   return (
-    <section className="mox-card mox-chat" aria-label="Gesprek">
+    <section className="rhc-mox-card rhc-chat" aria-label="Gesprek">
       {toonBronstatus && status !== undefined && (
         <BronStatus status={status} transport={instellingen.transport} />
       )}
 
       <div
         ref={berichtenRef}
-        className="mox-chat-messages"
+        className="rhc-chat-messages"
         role="log"
         aria-live="polite"
       >
         {items.map((item) => (
-          <div key={item.id} data-item={item.id} className="mox-chat-rule">
+          <div key={item.id} data-item={item.id} className="rhc-chat-rule">
             {item.soort === "gebruiker" && <Gebruiker item={item} />}
             {item.soort === "assistent" && <Assistent item={item} />}
             {item.soort === "fout" && <Fout item={item} />}
@@ -888,7 +888,7 @@ const Chat = ({
         {denkt !== null && <Denkt tekst={denkt} />}
       </div>
 
-      <form ref={formRef} className="mox-chat-input" onSubmit={verzend}>
+      <form ref={formRef} className="rhc-chat-input" onSubmit={verzend}>
         <label htmlFor="chat-invoer">
           <VisuallyHidden>Uw vraag</VisuallyHidden>
         </label>
@@ -941,7 +941,7 @@ const Chat = ({
         </p>
       </form>
 
-      <Paragraph className="mox-chat-disclaimer">
+      <Paragraph className="rhc-chat-disclaimer">
         <Icon icon="info-circle" />
         De antwoorden van deze assistent worden door AI gemaakt en kunnen fouten
         bevatten. De assistent gebruikt onder meer het KVK Handelsregister, de

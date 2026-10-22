@@ -63,7 +63,7 @@ const PublicatiesOverzicht = () => {
             appearance="secondary-action-button"
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
           >
-            Meer berichten over uw buurt
+            Meer berichten laden
             <Icon icon="chevron-right" />
           </Button>
         </ActionGroup>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
+import { Alert, Paragraph } from "@/components/rhc";
 import { AanhefEditBox } from "@/app/(private)/contactgegevens/[type]/_aanhefEditBox";
 import { ContactEditBox } from "@/app/(private)/contactgegevens/[type]/_contactEditBox";
 import { TaalEditBox } from "@/app/(private)/contactgegevens/[type]/_taalEditBox";
