@@ -17,6 +17,7 @@ import { MENU_ID, useMenuOpen } from "./menuKnop";
 import { useKiesOrganisatie } from "@/layouts/header/useKiesOrganisatie";
 import LanguageSelect, { TALEN } from "@/components/languageSelect";
 import { AbsenceIcon } from "@/components/icons/absenceIcon";
+import { DigitaleAssistentIcon } from "@/components/icons/digitaleAssistentIcon";
 import { StaffIcon } from "@/components/icons/staffIcon";
 import { RegulationIcon } from "@/components/icons/regulationIcon";
 import { SubsidyIcon } from "@/components/icons/subsidyIcon";
@@ -153,8 +154,8 @@ const Navigation = ({
               <SideNavLink
                 current={isActief("/digitale-assistent")}
                 href="/digitale-assistent"
-                icon="comment"
               >
+                <DigitaleAssistentIcon />
                 Digitale assistent (AI)
               </SideNavLink>
             </SideNavItem>

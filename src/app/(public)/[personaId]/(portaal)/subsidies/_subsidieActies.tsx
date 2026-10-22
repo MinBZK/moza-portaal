@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ActionGroup, Icon, LinkButton } from "@/components/rhc";
+import { DigitaleAssistentIcon } from "@/components/icons/digitaleAssistentIcon";
 import type { DemoSubsidie } from "@/demo";
 import { BewaarKnop, NietRelevantKnop } from "../bewaard/_bewaarActies";
 import type { BewaarItem } from "../bewaard/_useBewaard";
@@ -44,7 +45,7 @@ const SubsidieActies = ({
       )}
       {/* Een echte link (naar de assistent), met dezelfde opmaak. */}
       <Link href={assistentLink(subsidie)} className="utrecht-link-button">
-        <Icon icon="communicatie" />
+        <DigitaleAssistentIcon />
         Aan digitale assistent vragen
       </Link>
       <NietRelevantKnop item={item} alsLink />
