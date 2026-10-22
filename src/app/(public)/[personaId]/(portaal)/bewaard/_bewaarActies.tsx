@@ -128,8 +128,8 @@ export const RelevantItem = ({
     <div ref={meldingRef} tabIndex={-1} className="rhc-mox-card">
       <Paragraph>
         U ziet &quot;{item.titel}&quot; niet meer. U vindt het terug bij{" "}
-        <Link inline href="/bewaard">
-          Bewaarde items
+        <Link inline href="/bewaard/niet-relevant">
+          Niet relevant gemarkeerd
         </Link>
         .
       </Paragraph>
