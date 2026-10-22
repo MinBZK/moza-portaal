@@ -1418,6 +1418,239 @@ body {
   }
 }
 
+/* --- Bar graph --- */
+/* BarGraph: label, bar and value per row. The bar is only visual; the
+  value is always there as text. */
+.rhc-mox-bar-graph {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__title {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+.rhc-mox-bar-graph__list {
+  display: grid;
+  gap: var(--rhc-space-sm);
+  grid-template-columns: minmax(auto, 12rem) 1fr;
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__item {
+  align-items: center;
+  display: grid;
+  gap: var(--rhc-space-md);
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+.rhc-mox-bar-graph__value {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-sm);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__bar {
+  background-color: var(--rhc-color-lintblauw-500);
+  block-size: var(--rhc-space-lg);
+  border-radius: var(--rhc-border-radius-sm);
+  /* At least a sliver, so a value of 0 still shows where the bar starts. */
+  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+}
+
+/* --- Step indicator --- */
+/* StepIndicator: numbered steps in a row; done, current and still to do. */
+.rhc-mox-step-indicator {
+  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
+
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-step-indicator__count {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  margin: 0;
+}
+
+.rhc-mox-step-indicator__list {
+  display: flex;
+  gap: var(--rhc-space-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rhc-mox-step-indicator__step {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-step-indicator__marker {
+  block-size: var(--rhc-step-indicator-size);
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
+  border-radius: var(--rhc-border-radius-round);
+  display: grid;
+  flex-shrink: 0;
+  font-weight: var(--rhc-text-font-weight-bold);
+  inline-size: var(--rhc-step-indicator-size);
+  place-items: center;
+
+  .utrecht-icon {
+    block-size: 60%;
+    inline-size: 60%;
+  }
+}
+
+.rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
+  background-color: var(--rhc-color-groen-600);
+  border-color: var(--rhc-color-groen-600);
+  color: var(--rhc-color-wit);
+}
+
+.rhc-mox-step-indicator__step--current {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+
+  .rhc-mox-step-indicator__marker {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-color: var(--rhc-color-lintblauw-500);
+    color: var(--rhc-color-wit);
+  }
+}
+
+/* Narrow screen: only "Stap 2 van 4" and the current step. */
+@media (width < 768px) {
+  .rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
+    display: none;
+  }
+}
+
+/* --- Sticky info box --- */
+/* StickyInfoBox: stays in view while the page scrolls; on a narrow screen
+  it scrolls along. */
+.rhc-mox-sticky-info-box {
+  align-self: start;
+  background-color: var(--rhc-color-hemelblauw-50);
+  border-inline-start: var(--rhc-border-width-lg) solid var(--rhc-color-hemelblauw-500);
+  display: grid;
+  gap: var(--rhc-space-md);
+  inset-block-start: var(--rhc-space-xl);
+  padding: var(--rhc-space-xl);
+  position: sticky;
+
+  @media (width < 768px) {
+    position: static;
+  }
+}
+
+/* --- Switch --- */
+/* Switch: role="switch". The knob moves and the text "Aan"/"Uit" changes,
+  so the state is not shown by colour alone. */
+.rhc-mox-switch {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-switch__button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: var(--rhc-space-sm);
+  min-block-size: 44px;
+  padding: 0;
+
+  &:focus-visible {
+    border-radius: var(--rhc-border-radius-sm);
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: var(--utrecht-focus-outline-offset);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  block-size: 1.5rem;
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-500);
+  border-radius: var(--rhc-border-radius-round);
+  box-sizing: border-box;
+  display: inline-flex;
+  inline-size: 2.75rem;
+  padding: var(--rhc-space-2xs);
+}
+
+.rhc-mox-switch__thumb {
+  aspect-ratio: 1;
+  background-color: var(--rhc-color-cool-grey-500);
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+}
+
+.rhc-mox-switch__button[aria-checked="true"] {
+  .rhc-mox-switch__track {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-color: var(--rhc-color-lintblauw-500);
+  }
+
+  .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-wit);
+    transform: translateX(1.25rem);
+  }
+}
+
+.rhc-mox-switch__state {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  min-inline-size: 2rem;
+}
+
+/* --- Text badge --- */
+/* TextBadge: short label with text; the variant names its meaning. */
+.rhc-mox-text-badge {
+  background-color: var(--rhc-color-cool-grey-100);
+  border-radius: var(--rhc-border-radius-sm);
+  color: var(--rhc-color-foreground-default);
+  display: inline-block;
+  font-size: var(--rhc-text-font-size-sm);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  line-height: var(--rhc-text-line-height-md);
+  padding-block: var(--rhc-space-2xs);
+  padding-inline: var(--rhc-space-sm);
+}
+
+.rhc-mox-text-badge--info {
+  background-color: var(--rhc-color-hemelblauw-100);
+}
+
+.rhc-mox-text-badge--success {
+  background-color: var(--rhc-color-groen-100);
+}
+
+.rhc-mox-text-badge--warning {
+  background-color: var(--rhc-color-oranje-100);
+}
+
+.rhc-mox-text-badge--error {
+  background-color: var(--rhc-color-rood-100);
+}
+
 /* ==== 5. Pagina's en functies =============================================== */
 
 /* --- Berichtenbox --- */
