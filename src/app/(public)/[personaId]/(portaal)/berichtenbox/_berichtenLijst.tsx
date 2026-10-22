@@ -144,7 +144,7 @@ const RijActies = ({
         <Icon icon="meer" />
         <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
       </Button>
-      <ul ref={menuRef} id={menuId} popover="auto" className="mox-action-menu">
+      <ul ref={menuRef} id={menuId} popover="auto" className="rhc-action-menu">
         {delen && (
           <li>
             <Button appearance="subtle-button" onClick={sluit}>

@@ -426,7 +426,7 @@ body {
 }
 
 /* --- Actiemenu --- */
-.mox-action-menu {
+.rhc-action-menu {
   background-color: var(--rhc-color-wit);
   border: 0;
   border-radius: var(--rhc-border-radius-md);
@@ -465,13 +465,8 @@ body {
 }
 
 /* --- Tabs --- */
-/* Tab interface. De tabs blijven op één regel. Wat niet past, scrolt u
-	  horizontaal, op elke schermbreedte. De grijze lijn is een achtergrond in
-	  plaats van een rand: in een scrollende lijst kan de actieve tab niet over
-	  een rand heen hangen, want dan scrolt de lijst ook verticaal. */
 .rhc-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
-
   background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
   background-position: 0 100%;
   background-repeat: no-repeat;
@@ -484,14 +479,10 @@ body {
   scroll-padding-inline: var(--rhc-space-md);
   scrollbar-width: thin;
 
-  /* Smal scherm: minder ruimte tussen de tabs. */
   @media (width < 768px) {
     gap: 0 var(--rhc-space-md);
   }
 
-  /* Geen scrollbalk, wel een verloop aan de kant waar nog tabs staan.
-		  Het verloop volgt de scrollpositie (scroll-driven animation). Zonder
-		  ondersteuning in de browser blijft de dunne scrollbalk de hint. */
   @supports (animation-timeline: scroll()) {
     animation: rhc-tabs-fade linear both;
     animation-timeline: scroll(self inline);
@@ -525,10 +516,129 @@ body {
   }
 }
 
-/* Mappen staan na een streep achter Inbox, Archief en Prullenbak. */
-.rhc-tabs-separator {
-  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
-  margin-block: var(--rhc-space-md);
+/* --- Lopende zaken --- */
+.rhc-status-track {
+  --rhc-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
+  --rhc-stap-gap: var(--rhc-space-lg);
+
+  display: grid;
+  gap: var(--rhc-stap-gap);
+  margin-block: var(--rhc-space-3xl);
+
+  >li {
+    display: flex;
+    gap: var(--rhc-space-md);
+    position: relative;
+
+    /* Cirkel met het stapnummer, of een vinkje als de stap klaar is
+      (StatusTrack). */
+    >.rhc-status-marker {
+      background-color: var(--rhc-color-groen-600);
+      block-size: var(--rhc-stap-maat);
+      border-radius: var(--rhc-border-radius-round);
+      color: var(--rhc-color-wit);
+      display: grid;
+      flex-shrink: 0;
+      font-weight: var(--rhc-text-font-weight-bold);
+      inline-size: var(--rhc-stap-maat);
+      place-items: center;
+
+      .utrecht-icon {
+        block-size: 40%;
+        inline-size: 40%;
+      }
+
+      svg {
+        block-size: 100%;
+        inline-size: 100%;
+      }
+    }
+
+    &::after {
+      background-color: var(--rhc-color-groen-600);
+      content: "";
+      inline-size: var(--rhc-border-width-md);
+      inset-block: var(--rhc-stap-maat) calc(-1 * var(--rhc-stap-gap));
+      inset-inline-start: calc(var(--rhc-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+      position: absolute;
+    }
+
+    &:last-child::after {
+      content: none;
+    }
+  }
+
+  >[aria-current="step"] {
+    >.rhc-status-marker {
+      background-color: var(--rhc-color-lintblauw-500);
+    }
+
+    ~li>.rhc-status-marker {
+      background-color: var(--rhc-color-cool-grey-500);
+    }
+
+    &::after,
+    ~li::after {
+      background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
+    }
+  }
+
+  details {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-weight: var(--rhc-text-font-weight-bold);
+    gap: var(--rhc-space-sm);
+    list-style: none;
+    min-block-size: var(--rhc-stap-maat);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    .utrecht-icon {
+      transition: transform 150ms;
+    }
+  }
+
+  details[open]>summary .utrecht-icon {
+    transform: rotate(90deg);
+  }
+}
+
+.rhc-status-details {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin-block-start: var(--rhc-space-sm);
+
+  .utrecht-action-group {
+    margin-block-end: var(--rhc-space-xl);
+    margin-block-start: 0;
+  }
+}
+
+.rhc-status-date {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+}
+
+/* Status met een waarschuwingsicoon, zoals "Extra informatie opgevraagd" */
+.rhc-action-required {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--rhc-space-sm);
+
+  .utrecht-icon {
+    color: var(--rhc-color-oranje-500);
+  }
 }
 
 /* --- Berichtenbox --- */
@@ -545,6 +655,11 @@ body {
 
 .rhc-inbox-filter {
   margin-block: var(--rhc-space-3xl);
+}
+
+.rhc-tabs-separator {
+  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+  margin-block: var(--rhc-space-md);
 }
 
 /* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
