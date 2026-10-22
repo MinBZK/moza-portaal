@@ -163,7 +163,7 @@ body {
 .rhc-form-field {
   display: flex;
   flex-direction: column;
-  gap: var(--rhc-space-3xs);
+  gap: var(--rhc-space-2xs);
 }
 
 /* Show the parts in DOM order. Utrecht gives them an order (label 1, error
@@ -1439,7 +1439,10 @@ body {
 }
 
 .rhc-mox-bar-graph__item {
-  align-items: center;
+  /* Here and not on the bar: the patterns of the variants use it. */
+  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
+
+  align-items: baseline;
   display: grid;
   gap: var(--rhc-space-md);
   grid-column: 1 / -1;
@@ -1449,16 +1452,30 @@ body {
 .rhc-mox-bar-graph__value {
   align-items: center;
   display: flex;
-  gap: var(--rhc-space-sm);
+  gap: var(--rhc-space-md);
   margin: 0;
 }
 
 .rhc-mox-bar-graph__bar {
-  background-color: var(--rhc-color-lintblauw-500);
+  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
+  background-image: var(--rhc-bar-graph-pattern, none);
   block-size: var(--rhc-space-lg);
-  border-radius: var(--rhc-border-radius-sm);
+  border-radius: var(--rhc-border-radius-round);
   /* At least a sliver, so a value of 0 still shows where the bar starts. */
   inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+}
+
+/* Variants: neutral (blue, plain), positive (green, diagonal stripes) and
+  negative (red, cross-hatched). The pattern tells them apart without colour,
+  for example for colour blindness or in grayscale. */
+.rhc-mox-bar-graph__item--positive {
+  --rhc-bar-graph-color: var(--rhc-color-groen-400);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+}
+
+.rhc-mox-bar-graph__item--negative {
+  --rhc-bar-graph-color: var(--rhc-color-rood-500);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
 }
 
 /* --- Step indicator --- */
@@ -1498,6 +1515,7 @@ body {
   flex-shrink: 0;
   font-weight: var(--rhc-text-font-weight-bold);
   inline-size: var(--rhc-step-indicator-size);
+  line-height: 1;
   place-items: center;
 
   .utrecht-icon {
@@ -1536,7 +1554,6 @@ body {
 .rhc-mox-sticky-info-box {
   align-self: start;
   background-color: var(--rhc-color-hemelblauw-50);
-  border-inline-start: var(--rhc-border-width-lg) solid var(--rhc-color-hemelblauw-500);
   display: grid;
   gap: var(--rhc-space-md);
   inset-block-start: var(--rhc-space-xl);
@@ -1622,33 +1639,48 @@ body {
 }
 
 /* --- Text badge --- */
-/* TextBadge: short label with text; the variant names its meaning. */
+/* TextBadge: short label with text and, per type, the icon of the RHC Alert
+  in the colour of that alert. */
 .rhc-mox-text-badge {
+  --utrecht-icon-size: 1em;
+
+  align-items: center;
   background-color: var(--rhc-color-cool-grey-100);
-  border-radius: var(--rhc-border-radius-sm);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-foreground-default);
+  border-radius: var(--rhc-border-radius-round);
   color: var(--rhc-color-foreground-default);
-  display: inline-block;
+  display: inline-flex;
   font-size: var(--rhc-text-font-size-sm);
   font-weight: var(--rhc-text-font-weight-semi-bold);
+  gap: var(--rhc-space-2xs);
   line-height: var(--rhc-text-line-height-md);
-  padding-block: var(--rhc-space-2xs);
-  padding-inline: var(--rhc-space-sm);
+  padding-block: var(--rhc-space-sm);
+  padding-inline: var(--rhc-space-lg);
+  vertical-align: middle;
 }
 
 .rhc-mox-text-badge--info {
-  background-color: var(--rhc-color-hemelblauw-100);
+  --utrecht-icon-color: var(--utrecht-alert-icon-info-color);
+  background-color: var(--rhc-color-hemelblauw-50);
+  border-color: var(--rhc-color-hemelblauw-500);
 }
 
-.rhc-mox-text-badge--success {
-  background-color: var(--rhc-color-groen-100);
+.rhc-mox-text-badge--ok {
+  --utrecht-icon-color: var(--utrecht-alert-icon-ok-color);
+  background-color: var(--rhc-color-groen-50);
+  border-color: var(--rhc-color-groen-500);
 }
 
 .rhc-mox-text-badge--warning {
-  background-color: var(--rhc-color-oranje-100);
+  --utrecht-icon-color: var(--utrecht-alert-icon-warning-color);
+  background-color: var(--rhc-color-oranje-50);
+  border-color: var(--rhc-color-oranje-500);
 }
 
 .rhc-mox-text-badge--error {
-  background-color: var(--rhc-color-rood-100);
+  --utrecht-icon-color: var(--utrecht-alert-icon-error-color);
+  background-color: var(--rhc-color-rood-50);
+  border-color: var(--rhc-color-rood-500);
 }
 
 /* ==== 5. Pagina's en functies =============================================== */
