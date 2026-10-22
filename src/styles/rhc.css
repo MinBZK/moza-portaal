@@ -474,6 +474,13 @@ body {
   gap: var(--rhc-space-3xl);
 }
 
+/* --- Accordeon --- */
+.utrecht-accordion {
+  h1 {
+    margin-block-end: 0;
+  }
+}
+
 /* --- Tabs --- */
 .rhc-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));

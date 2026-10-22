@@ -10,7 +10,6 @@ const BelastingenPage = async () => {
     <ComingSoon
       title={onderdeel.titel}
       summary={onderdeel.samenvatting}
-      availableFrom={onderdeel.beschikbaarVanaf}
       expectations={onderdeel.verwachtingen}
       questions={onderdeel.vragen.map(({ vraag, antwoord }) => ({
         question: vraag,

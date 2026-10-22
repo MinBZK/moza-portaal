@@ -10,19 +10,17 @@ import {
 export type Question = { question: string; answer: string };
 
 /**
- * Page content for a section that does not work yet: what it will be, when
- * it arrives and answers to frequently asked questions.
+ * Page content for a section that does not work yet: what it will be and
+ * answers to frequently asked questions.
  */
 const ComingSoon = ({
   title,
   summary,
-  availableFrom,
   expectations,
   questions,
 }: {
   title: string;
   summary: string;
-  availableFrom: string;
   expectations: string[];
   questions: Question[];
 }) => (
@@ -30,7 +28,7 @@ const ComingSoon = ({
     <Heading level={1}>{title}</Heading>
 
     <Alert type="info">
-      <Heading level={2}>Binnenkort beschikbaar: {availableFrom}</Heading>
+      <Paragraph>Binnenkort beschikbaar</Paragraph>
       <Paragraph>{summary}</Paragraph>
     </Alert>
 

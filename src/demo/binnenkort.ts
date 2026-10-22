@@ -3,8 +3,6 @@ import type { DemoOnderdeel } from "./types";
 export type DemoVraag = { vraag: string; antwoord: string };
 
 export type DemoBinnenkort = DemoOnderdeel & {
-  /** Wanneer het onderdeel er komt, bijvoorbeeld "januari 2028" */
-  beschikbaarVanaf: string;
   verwachtingen: string[];
   vragen: DemoVraag[];
 };
@@ -15,7 +13,6 @@ const binnenkort: Record<string, DemoBinnenkort> = {
     titel: "Belastingen",
     samenvatting:
       "Straks vindt u hier uw belastingzaken overzichtelijk bij elkaar.",
-    beschikbaarVanaf: "januari 2028",
     verwachtingen: [
       "Zien welke aangiften u heeft ingediend en wanneer",
       "Ontvangen aanslagen en beschikkingen bekijken",
@@ -44,7 +41,6 @@ const binnenkort: Record<string, DemoBinnenkort> = {
     titel: "Zakelijk vervoer",
     samenvatting:
       "Straks vindt u hier alles over de voertuigen van uw bedrijf.",
-    beschikbaarVanaf: "medio 2028",
     verwachtingen: [
       "Zien welke voertuigen op naam van uw bedrijf staan",
       "Zien wanneer de APK verloopt",
@@ -73,7 +69,6 @@ const binnenkort: Record<string, DemoBinnenkort> = {
     titel: "Personeel en rollen",
     samenvatting:
       "Straks vindt u hier uw personeelszaken overzichtelijk bij elkaar.",
-    beschikbaarVanaf: "2029",
     verwachtingen: [
       "Uw werknemers en hun dienstverbanden bekijken",
       "De status van verzuimmeldingen en verlof zien",
@@ -102,7 +97,6 @@ const binnenkort: Record<string, DemoBinnenkort> = {
     titel: "Ziekte en verlof",
     samenvatting:
       "Straks ziet u hier de ziekte- en verlofzaken van uw onderneming: meldingen bij UWV, de voortgang van re-integratie en belangrijke termijnen.",
-    beschikbaarVanaf: "medio 2029",
     verwachtingen: [
       "Zien welke ziekmeldingen lopen bij UWV",
       "Termijnen bijhouden, zoals de melding in week 42",
