@@ -19,8 +19,9 @@ const DOOR_TE_GEVEN = [
   "x-claude-api-key",
 ];
 
-// Alleen de paden die de chat gebruikt.
-const TOEGESTAAN = /^(chat|chat\/stream|health|tools|regelrecht\/definities)$/;
+// Alleen de paden die de chat en de uitleg in gewone taal gebruiken.
+const TOEGESTAAN =
+  /^(chat|chat\/stream|health|tools|regelrecht\/definities|uitleg)$/;
 
 const stuurDoor = async (
   request: NextRequest,

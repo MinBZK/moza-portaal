@@ -1,0 +1,293 @@
+{
+  "bestanden": [
+    {
+      "blobhash": "7040e18406d179b814d920205a21f87c0e05d158",
+      "pad": "regulation/nl/amvb/besluit_wfsv/2022-01-01.yaml"
+    },
+    {
+      "blobhash": "dbb7bbc00eb1836f87968d83828b6f2f995574a3",
+      "pad": "regulation/nl/amvb/besluit_wfsv/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "bf0516533e2aeee827bb491c3fe2e42fb8d30af8",
+      "pad": "regulation/nl/amvb/besluit_wfsv/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "55b043f0dd8ef81c54bea7b9ea10cb64bf07bbab",
+      "pad": "regulation/nl/amvb/besluit_wfsv/2026-04-01.yaml"
+    },
+    {
+      "blobhash": "6234d722b132d3ae8bfdb769ebb7d522a5b10b42",
+      "pad": "regulation/nl/amvb/dagloonbesluit_werknemersverzekeringen/2017-09-01.yaml"
+    },
+    {
+      "blobhash": "992e69503972681681a9ea1726bac65547713188",
+      "pad": "regulation/nl/amvb/dagloonbesluit_werknemersverzekeringen/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "f8ce2554cb6080e8fa7e29bd74e0f7ee2e4b782c",
+      "pad": "regulation/nl/amvb/reintegratiebesluit/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "ab51cc5a2d1b7f431df83acfa38cba60a232f5fc",
+      "pad": "regulation/nl/amvb/reintegratiebesluit/2026-05-02.yaml"
+    },
+    {
+      "blobhash": "4ba0e24df826d908499cd9c7f2409e330df271dc",
+      "pad": "regulation/nl/wet/besluit_loondispensatie_wajong/2010-08-19.yaml"
+    },
+    {
+      "blobhash": "351ecf552c14cd2ede97418f4979daced4642cca",
+      "pad": "regulation/nl/wet/participatiewet/2023-01-01.yaml"
+    },
+    {
+      "blobhash": "4acd2c8bdc7b1660a9bd0398c3c5346c66704fb4",
+      "pad": "regulation/nl/wet/participatiewet/2023-07-01.yaml"
+    },
+    {
+      "blobhash": "9bfecb986a96b78991a35be6ba0a2c4e115b2c37",
+      "pad": "regulation/nl/wet/participatiewet/2023-10-01.yaml"
+    },
+    {
+      "blobhash": "ea6ef78a729441489bfd7b5150df532d30fc9ff7",
+      "pad": "regulation/nl/wet/participatiewet/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "3329b47c677178e8af7ff3c3205496d9e3378292",
+      "pad": "regulation/nl/wet/participatiewet/2024-07-01.yaml"
+    },
+    {
+      "blobhash": "361942f7b4abeb5a419da966538b1e568d8e20e8",
+      "pad": "regulation/nl/wet/participatiewet/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "2a8b7b7a58910221aa0a10e816acae7d44e1a5ec",
+      "pad": "regulation/nl/wet/participatiewet/2026-04-03.yaml"
+    },
+    {
+      "blobhash": "750fbdfa28835666a884c79d24e37f44a79bbb11",
+      "pad": "regulation/nl/wet/participatiewet/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "507a7252c9be7d73637057647593ea9899cd8cc5",
+      "pad": "regulation/nl/wet/participatiewet/scenarios/financieel_cv_koen.feature"
+    },
+    {
+      "blobhash": "61ad88371d15de7feeb35db6ba0c605abdfbe85e",
+      "pad": "regulation/nl/wet/participatiewet/scenarios/financieel_cv_sadee.feature"
+    },
+    {
+      "blobhash": "5f2e404f077d3a21a19ee2c9e5360b3f746fa797",
+      "pad": "regulation/nl/wet/regeling_loonkostensubsidie_participatiewet_2021/2021-07-01.yaml"
+    },
+    {
+      "blobhash": "a072ce89e7fa8429df68f74c62ac08238fc02c29",
+      "pad": "regulation/nl/wet/regeling_loonkostensubsidie_participatiewet_2021/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "3502527a77be42a897ff8de2af4ab42f129c21e0",
+      "pad": "regulation/nl/wet/werkloosheidswet/2022-08-02.yaml"
+    },
+    {
+      "blobhash": "b3c11b715949f651afe7b3f65d2d0fded74c4a9c",
+      "pad": "regulation/nl/wet/werkloosheidswet/2023-10-01.yaml"
+    },
+    {
+      "blobhash": "0a1b3e450bc14fe9e0d37f9fb7ac3172249a32dd",
+      "pad": "regulation/nl/wet/werkloosheidswet/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "3922f259dd9113d3b46450beb6726489817193eb",
+      "pad": "regulation/nl/wet/werkloosheidswet/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "eb4a712b473df79f107c1ac2fe4f8496df794efc",
+      "pad": "regulation/nl/wet/werkloosheidswet/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "a13d5de41257bf417802a0b5f8cc8c6793b856ce",
+      "pad": "regulation/nl/wet/werkloosheidswet/scenarios/financieel_cv_koen.feature"
+    },
+    {
+      "blobhash": "fec57926e71d64278112b64f375968ab52feb3af",
+      "pad": "regulation/nl/wet/werkloosheidswet/scenarios/financieel_cv_sadee.feature"
+    },
+    {
+      "blobhash": "063ead4c9aae40bfd0cf59190c738de7e56442b3",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/2023-01-01.yaml"
+    },
+    {
+      "blobhash": "07b63ea4ca30460f89e6453f28cf95ef36a0b272",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/2023-10-01.yaml"
+    },
+    {
+      "blobhash": "9cc12579ecea369b1f82960e4eddc75eea16741b",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "c8849340a420909a5cd190933c78eabaa942069c",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "0727f6a363ac1d9a0ea2a04eb639c4a3741ab0eb",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "8e869e53be8bda2fe13284300928fe5f2bfaaa4d",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "83ce37308b63a69b5ccb4082e797fb328c8eabce",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/scenarios/financieel_cv_koen.feature"
+    },
+    {
+      "blobhash": "76c489db9b906e2a1a56335ec400dbbcb43e1a10",
+      "pad": "regulation/nl/wet/wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten/scenarios/financieel_cv_sadee.feature"
+    },
+    {
+      "blobhash": "77ca50e8bf1a26f6f238b7e80c12a89a7f0d3fb6",
+      "pad": "regulation/nl/wet/wet_financiering_sociale_verzekeringen/2023-01-01.yaml"
+    },
+    {
+      "blobhash": "d37d50d857fadb6f3931c8d8c7d38cc5d6b04135",
+      "pad": "regulation/nl/wet/wet_financiering_sociale_verzekeringen/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "6dff35fda229e964396ba25668e43c4f25cac9b0",
+      "pad": "regulation/nl/wet/wet_financiering_sociale_verzekeringen/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "c9e2f4d0c56ac3046fca158ed227a6fed66d0ce5",
+      "pad": "regulation/nl/wet/wet_financiering_sociale_verzekeringen/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "a80f938a4e023e447dc52239f337dda55d05d6a1",
+      "pad": "regulation/nl/wet/wet_financiering_sociale_verzekeringen/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "eddbe58f67ba3e21deed84e241f9c9bf0bb72f57",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2023-01-01.yaml"
+    },
+    {
+      "blobhash": "4a9c320be41743e7cb22da3a95486394c2199aa0",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2023-07-01.yaml"
+    },
+    {
+      "blobhash": "aa5abcf54fb2d9ab8287b13e053e7d55e22d4f01",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "94268c1c99d6fe1ae7ecae4bd6179f9ad58f1ded",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2024-07-01.yaml"
+    },
+    {
+      "blobhash": "1d3a3c4af91610cac23c9821d7a6a765cdec23b3",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "ad9697386eb6012c730ce978b33175c17017edff",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2025-07-01.yaml"
+    },
+    {
+      "blobhash": "028548317d3c7f7d4f82c0cf9f58ad6e9f8d2746",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "dc795e89fa0161c955e1cb9dd4a7e49e56c0308a",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2026-02-04.yaml"
+    },
+    {
+      "blobhash": "6e5d9c6026f5b6aa1b4fc6e804335c03e4787715",
+      "pad": "regulation/nl/wet/wet_minimumloon_en_minimumvakantiebijslag/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "ff2da5d4e61f673275a5ffa6247dea27e2a66c9b",
+      "pad": "regulation/nl/wet/wet_tegemoetkomingen_loondomein/2023-01-01.yaml"
+    },
+    {
+      "blobhash": "94c8cde687852cd26b1bca9c20d8ab760808404c",
+      "pad": "regulation/nl/wet/wet_tegemoetkomingen_loondomein/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "d6e2a020168a6b7aedbb008d5bd4a2062fbfbdc7",
+      "pad": "regulation/nl/wet/wet_tegemoetkomingen_loondomein/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "0a174323cd05998f6a67a3ae672f6d5c8c3f48b0",
+      "pad": "regulation/nl/wet/wet_tegemoetkomingen_loondomein/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "40806553262725c7330180d6ba748d49434c86e5",
+      "pad": "regulation/nl/wet/wet_tegemoetkomingen_loondomein/scenarios/financieel_cv_koen.feature"
+    },
+    {
+      "blobhash": "bc526fbb7d5aa54d6446ec253ec2bc3b420e04a8",
+      "pad": "regulation/nl/wet/wet_tegemoetkomingen_loondomein/scenarios/financieel_cv_sadee.feature"
+    },
+    {
+      "blobhash": "84965975713d2e2ebb9ce3486c589cf06cde913c",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/2023-01-01.yaml"
+    },
+    {
+      "blobhash": "1ac0ac41ab64abd7fecfdb381aafcbc8898074ad",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/2023-10-01.yaml"
+    },
+    {
+      "blobhash": "451cfc348b37e440898a1d7bf454eba49a1c1730",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "c58ed02828bc36549d6c98f261b8457dfd2d93ff",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "03d8b7fe81889b9b7a59d52146ec9c696ac19327",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "5002f2f1aeb5a99267930b975bf7f48993ae2d5e",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "0f6957f5147364575630c5b9556c8e42646e219e",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/scenarios/financieel_cv_koen.feature"
+    },
+    {
+      "blobhash": "904caa9067d513b6a9dd804443a100fa8b90a162",
+      "pad": "regulation/nl/wet/wet_werk_en_inkomen_naar_arbeidsvermogen/scenarios/financieel_cv_sadee.feature"
+    },
+    {
+      "blobhash": "925fce749123c962d6de01b271e9dccaaff86cdc",
+      "pad": "regulation/nl/wet/ziektewet/2015-01-01.yaml"
+    },
+    {
+      "blobhash": "6d4b6768d0141cd0a4ddb9d40505342b5ba61d26",
+      "pad": "regulation/nl/wet/ziektewet/2024-01-01.yaml"
+    },
+    {
+      "blobhash": "79d1a76f7fab5cff8e4ccd3713e0b302d5428253",
+      "pad": "regulation/nl/wet/ziektewet/2025-01-01.yaml"
+    },
+    {
+      "blobhash": "09f3910d914d3b0a173b814a68350f379b5477ba",
+      "pad": "regulation/nl/wet/ziektewet/2026-01-01.yaml"
+    },
+    {
+      "blobhash": "324a3abc20713e1adadf24535d9772b376b488bc",
+      "pad": "regulation/nl/wet/ziektewet/2026-07-01.yaml"
+    },
+    {
+      "blobhash": "59b8a18e2a27a29fce3d3b10b605c7f885104030",
+      "pad": "regulation/nl/wet/ziektewet/scenarios/financieel_cv_koen.feature"
+    },
+    {
+      "blobhash": "8b603d4fbbb46f88011835a5e9f2dbe95a1285d6",
+      "pad": "regulation/nl/wet/ziektewet/scenarios/financieel_cv_sadee.feature"
+    }
+  ],
+  "corpus": {
+    "repo": "MinBZK/regelrecht-corpus",
+    "revisie": "42054d7df3d5ad91386c5bf0231193968d096765"
+  },
+  "regelrecht": "0a1a76c84f1d31a7ed06db6e7a8d39165009c622"
+}

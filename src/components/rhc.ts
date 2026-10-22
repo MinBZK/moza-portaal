@@ -1,8 +1,10 @@
 "use client";
 
 export {
-  ActionGroup,
+  Accordion,
   AccordionProvider,
+  AccordionSection,
+  ActionGroup,
   Alert,
   Article,
   BreadcrumbNav,

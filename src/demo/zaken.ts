@@ -67,3 +67,82 @@ export const getDemoZaakById = async (
 ): Promise<DemoZaak | undefined> => zaken.find((zaak) => zaak.id === id);
 
 export const getDemoZakenVragen = async (): Promise<DemoVraag[]> => vragen;
+
+/** Een aanvraag die is opgeslagen maar nog niet ingediend. */
+export type DemoConceptAanvraag = {
+  id: string;
+  titel: string;
+  organisatie: string;
+  /** Voor welke onderneming van de persona. */
+  onderneming: string;
+  /** Hoe lang het invullen nog duurt, als tekst. */
+  tijdsduur: string;
+  indienenVoor: string;
+  /** Waar de antwoorden vandaan komen, zoals Ondernemersplein. */
+  bewaardVan?: string;
+  /** Wat er van daar is overgenomen, voor de melding op de detailpagina. */
+  overgenomen?: string;
+  /** Alinea's onder die melding. */
+  toelichting?: string[];
+  /** Startwaarden voor "Wat kost het?": uren per week en brutoloon. */
+  berekening?: { urenPerWeek: number; brutoPerMaand: number };
+  /** Flow in het portaal die deze aanvraag uitwerkt met de regelrecht-engine; zonder flow alleen de kostenschatting. */
+  flow?: "iemand-aannemen";
+};
+
+/**
+ * Fictieve, nog niet ingediende aanvragen per persona: Karin Jansen (Kwekerij
+ * De Bloesem) en Robin Vogel (Bloom B.V.).
+ */
+const conceptAanvragen: Record<string, DemoConceptAanvraag[]> = {
+  karin: [
+    {
+      id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+      titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+      organisatie: "UWV, Belastingdienst en gemeente",
+      onderneming: "Kwekerij De Bloesem",
+      tijdsduur: "Ongeveer 15 minuten",
+      indienenVoor: "1 januari 2027",
+      bewaardVan: "Ondernemersplein",
+      overgenomen:
+        "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. De berekening hieronder gaat nu uit van Kwekerij De Bloesem.",
+      toelichting: [
+        "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
+        "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
+      ],
+      flow: "iemand-aannemen",
+    },
+  ],
+  bloom: [
+    {
+      id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+      titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+      organisatie: "UWV, Belastingdienst en gemeente",
+      onderneming: "Bloom B.V.",
+      tijdsduur: "Ongeveer 15 minuten",
+      indienenVoor: "1 januari 2027",
+      bewaardVan: "Ondernemersplein",
+      overgenomen:
+        "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. De berekening hieronder gaat nu uit van Bloom B.V.",
+      berekening: { urenPerWeek: 32, brutoPerMaand: 2250 },
+      flow: "iemand-aannemen",
+      toelichting: [
+        "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
+        "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
+      ],
+    },
+  ],
+};
+
+export const getDemoConceptAanvragen = async (
+  personaId?: string,
+): Promise<DemoConceptAanvraag[]> =>
+  (personaId && conceptAanvragen[personaId]) || [];
+
+export const getDemoConceptAanvraagById = async (
+  personaId: string | undefined,
+  id: string,
+): Promise<DemoConceptAanvraag | undefined> =>
+  (await getDemoConceptAanvragen(personaId)).find(
+    (aanvraag) => aanvraag.id === id,
+  );

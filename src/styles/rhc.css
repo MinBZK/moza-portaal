@@ -456,6 +456,39 @@ body {
   }
 }
 
+/* --- Getalveld --- */
+
+/* NumberInput: knoppen - en + voor en na het invoerveld. */
+.rhc-theme.mox-theme {
+  .rhc-number-input {
+    align-items: stretch;
+    display: flex;
+    gap: var(--rhc-space-sm);
+
+    .utrecht-textbox {
+      /* Firefox: geen pijltjes in het veld; de knoppen - en + doen dat. */
+      appearance: textfield;
+      flex: 1;
+      min-inline-size: 0;
+      text-align: center;
+
+      /* Chrome, Edge en Safari: idem. */
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+    }
+
+    .utrecht-button {
+      flex-shrink: 0;
+      justify-content: center;
+      margin: 0;
+      min-inline-size: var(--utrecht-button-min-block-size, 3rem);
+    }
+  }
+}
+
 /* --- Schuifregelaar --- */
 
 /* RangeSlider: label en gekozen waarde op één regel, grenzen eronder. */
