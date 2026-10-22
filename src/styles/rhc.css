@@ -1460,6 +1460,7 @@ body {
   background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
   background-image: var(--rhc-bar-graph-pattern, none);
   block-size: var(--rhc-space-lg);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-500);
   border-radius: var(--rhc-border-radius-round);
   /* At least a sliver, so a value of 0 still shows where the bar starts. */
   inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
@@ -1471,11 +1472,13 @@ body {
 .rhc-mox-bar-graph__item--positive {
   --rhc-bar-graph-color: var(--rhc-color-groen-400);
   --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  border-color: var(--rhc-color-groen-500);
 }
 
 .rhc-mox-bar-graph__item--negative {
   --rhc-bar-graph-color: var(--rhc-color-rood-500);
   --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  border-color: var(--rhc-color-rood-500);
 }
 
 /* --- Step indicator --- */
