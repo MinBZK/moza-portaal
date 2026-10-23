@@ -93,89 +93,114 @@
       "doelgroep": "ondernemer",
       "labelKleur": "rood"
     },
-    "basis": "bloemenkweker",
     "persoon": {
       "voornaam": "Karin",
       "achternaam": "Jansen"
     },
     "organisaties": [
       {
-        "handelsnaam": "Kwekerij De Bloesem",
+        "handelsnaam": "Koffiezaak Noon",
         "functies": "Eigenaar-directeur",
-        "website": "https://www.kwekerijdebloesem.nl",
-        "kvkNummer": "62345681",
-        "rsinNummer": "62345681",
-        "btwNummer": "NL00062345681",
-        "omzetbelastingnummer": "062345681B01",
-        "startdatum": "12 februari 2011",
-        "rechtsvorm": "Vennootschap onder firma",
-        "branche": "Landbouw, bosbouw en visserij",
-        "vestigingsadres": "Hoefweg 210, Bleiswijk",
-        "gemeente": "Lansingerland",
-        "rol": "Eigenaar-directeur",
-        "vestigingsnummer": "000062345681",
-        "iban": "NL62 RABO 0006 2345 68",
-        "loonheffingennummer": "062345681L01",
-        "werkzamePersonenFulltime": 5,
-        "werkzamePersonenParttime": 2,
+        "website": "https://www.koffiezaaknoon.nl",
+        "kvkNummer": "85234567",
+        "rsinNummer": "85234567",
+        "btwNummer": "NL00085234567",
+        "omzetbelastingnummer": "085234567B01",
+        "startdatum": "14 maart 2021",
+        "rechtsvorm": "Eenmanszaak",
+        "branche": "Horeca",
+        "vestigingsadres": "Meent 88, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Eigenaar",
+        "vestigingsnummer": "000085234567",
+        "iban": "NL58 INGB 0008 5234 56",
+        "loonheffingennummer": "085234567L01",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 3,
+        "energie": {
+          "elektriciteitKwh": 61250,
+          "gasM3": 9800
+        },
         "sbi": [
           {
-            "code": "01192",
-            "omschrijving": "Teelt van bloemen, bloembollen en perkplanten (onder glas)"
-          },
-          {
-            "code": "01300",
-            "omschrijving": "Teelt van sierplanten voor vermeerdering"
+            "code": "56102",
+            "omschrijving": "Cafés"
           }
         ],
-        "vestigingsadresVolledig": "Hoefweg 210, 2665 KG Bleiswijk",
-        "postadres": "Hoefweg 210, 2665 KG Bleiswijk",
+        "vestigingsadresVolledig": "Meent 88, 3011 JM Rotterdam",
+        "postadres": "Meent 88, 3011 JM Rotterdam",
         "vestigingen": [
           {
-            "nummer": "000062345681",
+            "nummer": "000085234567",
             "type": "Hoofdvestiging",
-            "adres": "Hoefweg 210, 2665 KG Bleiswijk"
+            "adres": "Meent 88, 3011 JM Rotterdam"
           }
         ],
-        "ubo": [
+        "ubo": [],
+        "jaarrekeningen": []
+      },
+      {
+        "handelsnaam": "Koffiebranderij Blend",
+        "functies": "Eigenaar-directeur",
+        "website": "https://www.koffiebranderijblend.nl",
+        "kvkNummer": "91827364",
+        "rsinNummer": "865432109",
+        "btwNummer": "NL865432109B01",
+        "omzetbelastingnummer": "865432109B01",
+        "startdatum": "2 september 2024",
+        "rechtsvorm": "Besloten vennootschap",
+        "branche": "Voedingsmiddelenindustrie",
+        "vestigingsadres": "Keileweg 12, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Eigenaar",
+        "vestigingsnummer": "000091827364",
+        "iban": "NL12 RABO 0918 2736 40",
+        "loonheffingennummer": "865432109L01",
+        "werkzamePersonenFulltime": 2,
+        "werkzamePersonenParttime": 1,
+        "energie": {
+          "elektriciteitKwh": 48300,
+          "gasM3": 21400
+        },
+        "sbi": [
           {
-            "naam": "Robin Vogel",
-            "aardVanBelang": "Vennoot",
-            "groottevanBelang": "50% – 75%"
-          },
-          {
-            "naam": "T.J. van Leeuwen",
-            "aardVanBelang": "Vennoot",
-            "groottevanBelang": "25% – 50%"
+            "code": "10831",
+            "omschrijving": "Koffiebranderijen en theepakkerijen"
           }
         ],
+        "vestigingsadresVolledig": "Keileweg 12, 3029 BS Rotterdam",
+        "postadres": "Keileweg 12, 3029 BS Rotterdam",
+        "vestigingen": [
+          {
+            "nummer": "000091827364",
+            "type": "Hoofdvestiging",
+            "adres": "Keileweg 12, 3029 BS Rotterdam"
+          }
+        ],
+        "ubo": [],
         "jaarrekeningen": []
       }
     ],
-    "belangen": [
-      {
-        "naam": "Glastuinbouw Nederland",
-        "rol": "Lid"
-      }
-    ],
+    "belangen": [],
     "subsidies": [
-      "sde",
-      "isde",
-      "mia-vamil",
       "eia",
+      "isde",
       "kia",
-      "precisielandbouw",
-      "groenprojecten"
+      "mkb-groen",
+      "tek",
+      "rotterdam-verduurzaming-bedrijfspand",
+      "rotterdam-ondernemen-in-de-wijk"
     ],
     "regelgeving": [
+      "warenwet",
       "arbowet",
       "minimumloon",
-      "loonbelasting",
-      "bestrijdingsmiddelen",
-      "milieubeheer"
+      "avg",
+      "tabakswet",
+      "dienstenwet"
     ],
-    "buurt": null,
-    "homepageSubsidies": ["precisielandbouw"],
+    "buurt": "rotterdam",
+    "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
     "homepageRegelgeving": ["milieubeheer"]
   },
   {
@@ -190,89 +215,114 @@
       "doelgroep": "ondernemer",
       "labelKleur": "paars"
     },
-    "basis": "bloemenkweker",
     "persoon": {
       "voornaam": "Bilal",
       "achternaam": "Yılmaz"
     },
     "organisaties": [
       {
-        "handelsnaam": "Kwekerij De Bloesem",
+        "handelsnaam": "Koffiezaak Noon",
         "functies": "Administratief medewerker (gemachtigd)",
-        "website": "https://www.kwekerijdebloesem.nl",
-        "kvkNummer": "62345681",
-        "rsinNummer": "62345681",
-        "btwNummer": "NL00062345681",
-        "omzetbelastingnummer": "062345681B01",
-        "startdatum": "12 februari 2011",
-        "rechtsvorm": "Vennootschap onder firma",
-        "branche": "Landbouw, bosbouw en visserij",
-        "vestigingsadres": "Hoefweg 210, Bleiswijk",
-        "gemeente": "Lansingerland",
+        "website": "https://www.koffiezaaknoon.nl",
+        "kvkNummer": "85234567",
+        "rsinNummer": "85234567",
+        "btwNummer": "NL00085234567",
+        "omzetbelastingnummer": "085234567B01",
+        "startdatum": "14 maart 2021",
+        "rechtsvorm": "Eenmanszaak",
+        "branche": "Horeca",
+        "vestigingsadres": "Meent 88, Rotterdam",
+        "gemeente": "Rotterdam",
         "rol": "Gemachtigde",
-        "vestigingsnummer": "000062345681",
-        "iban": "NL62 RABO 0006 2345 68",
-        "loonheffingennummer": "062345681L01",
-        "werkzamePersonenFulltime": 5,
-        "werkzamePersonenParttime": 2,
+        "vestigingsnummer": "000085234567",
+        "iban": "NL58 INGB 0008 5234 56",
+        "loonheffingennummer": "085234567L01",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 3,
+        "energie": {
+          "elektriciteitKwh": 61250,
+          "gasM3": 9800
+        },
         "sbi": [
           {
-            "code": "01192",
-            "omschrijving": "Teelt van bloemen, bloembollen en perkplanten (onder glas)"
-          },
-          {
-            "code": "01300",
-            "omschrijving": "Teelt van sierplanten voor vermeerdering"
+            "code": "56102",
+            "omschrijving": "Cafés"
           }
         ],
-        "vestigingsadresVolledig": "Hoefweg 210, 2665 KG Bleiswijk",
-        "postadres": "Hoefweg 210, 2665 KG Bleiswijk",
+        "vestigingsadresVolledig": "Meent 88, 3011 JM Rotterdam",
+        "postadres": "Meent 88, 3011 JM Rotterdam",
         "vestigingen": [
           {
-            "nummer": "000062345681",
+            "nummer": "000085234567",
             "type": "Hoofdvestiging",
-            "adres": "Hoefweg 210, 2665 KG Bleiswijk"
+            "adres": "Meent 88, 3011 JM Rotterdam"
           }
         ],
-        "ubo": [
+        "ubo": [],
+        "jaarrekeningen": []
+      },
+      {
+        "handelsnaam": "Koffiebranderij Blend",
+        "functies": "Administratief medewerker (gemachtigd)",
+        "website": "https://www.koffiebranderijblend.nl",
+        "kvkNummer": "91827364",
+        "rsinNummer": "865432109",
+        "btwNummer": "NL865432109B01",
+        "omzetbelastingnummer": "865432109B01",
+        "startdatum": "2 september 2024",
+        "rechtsvorm": "Besloten vennootschap",
+        "branche": "Voedingsmiddelenindustrie",
+        "vestigingsadres": "Keileweg 12, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Gemachtigde",
+        "vestigingsnummer": "000091827364",
+        "iban": "NL12 RABO 0918 2736 40",
+        "loonheffingennummer": "865432109L01",
+        "werkzamePersonenFulltime": 2,
+        "werkzamePersonenParttime": 1,
+        "energie": {
+          "elektriciteitKwh": 48300,
+          "gasM3": 21400
+        },
+        "sbi": [
           {
-            "naam": "Robin Vogel",
-            "aardVanBelang": "Vennoot",
-            "groottevanBelang": "50% – 75%"
-          },
-          {
-            "naam": "T.J. van Leeuwen",
-            "aardVanBelang": "Vennoot",
-            "groottevanBelang": "25% – 50%"
+            "code": "10831",
+            "omschrijving": "Koffiebranderijen en theepakkerijen"
           }
         ],
+        "vestigingsadresVolledig": "Keileweg 12, 3029 BS Rotterdam",
+        "postadres": "Keileweg 12, 3029 BS Rotterdam",
+        "vestigingen": [
+          {
+            "nummer": "000091827364",
+            "type": "Hoofdvestiging",
+            "adres": "Keileweg 12, 3029 BS Rotterdam"
+          }
+        ],
+        "ubo": [],
         "jaarrekeningen": []
       }
     ],
-    "belangen": [
-      {
-        "naam": "Glastuinbouw Nederland",
-        "rol": "Lid"
-      }
-    ],
+    "belangen": [],
     "subsidies": [
-      "sde",
-      "isde",
-      "mia-vamil",
       "eia",
+      "isde",
       "kia",
-      "precisielandbouw",
-      "groenprojecten"
+      "mkb-groen",
+      "tek",
+      "rotterdam-verduurzaming-bedrijfspand",
+      "rotterdam-ondernemen-in-de-wijk"
     ],
     "regelgeving": [
+      "warenwet",
       "arbowet",
       "minimumloon",
-      "loonbelasting",
-      "bestrijdingsmiddelen",
-      "milieubeheer"
+      "avg",
+      "tabakswet",
+      "dienstenwet"
     ],
-    "buurt": null,
-    "homepageSubsidies": ["precisielandbouw"],
+    "buurt": "rotterdam",
+    "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
     "homepageRegelgeving": ["milieubeheer"]
   },
   {
@@ -2014,164 +2064,6 @@
     "buurt": "rotterdam",
     "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
     "homepageRegelgeving": ["ai-verordening"],
-    "archief": true
-  },
-  {
-    "id": "koffiezaak",
-    "actief": false,
-    "label": "Horecaondernemer",
-    "beschrijving": "Deze persona heeft twee horecabedrijven.",
-    "persoon": {
-      "voornaam": "Robin",
-      "achternaam": "Vogel"
-    },
-    "organisaties": [
-      {
-        "handelsnaam": "Koffiezaak Noon",
-        "functies": "Eigenaar, Barista",
-        "website": "https://www.koffiezaaknoon.nl",
-        "kvkNummer": "85234567",
-        "rsinNummer": "85234567",
-        "btwNummer": "NL00085234567",
-        "omzetbelastingnummer": "085234567B01",
-        "startdatum": "14 maart 2021",
-        "rechtsvorm": "Eenmanszaak",
-        "branche": "Horeca",
-        "vestigingsadres": "Meent 88, Rotterdam",
-        "gemeente": "Rotterdam",
-        "rol": "Eigenaar",
-        "vestigingsnummer": "000085234567",
-        "iban": "NL58 INGB 0008 5234 56",
-        "loonheffingennummer": "085234567L01",
-        "werkzamePersonenFulltime": 1,
-        "werkzamePersonenParttime": 3,
-        "energie": {
-          "elektriciteitKwh": 61250,
-          "gasM3": 9800
-        },
-        "sbi": [
-          {
-            "code": "56102",
-            "omschrijving": "Cafés"
-          }
-        ],
-        "vestigingsadresVolledig": "Meent 88, 3011 JM Rotterdam",
-        "postadres": "Meent 88, 3011 JM Rotterdam",
-        "vestigingen": [
-          {
-            "nummer": "000085234567",
-            "type": "Hoofdvestiging",
-            "adres": "Meent 88, 3011 JM Rotterdam"
-          }
-        ],
-        "ubo": [],
-        "jaarrekeningen": []
-      },
-      {
-        "handelsnaam": "Koffiebranderij Blend",
-        "rol": "Eigenaar"
-      }
-    ],
-    "belangen": [],
-    "subsidies": [
-      "eia",
-      "isde",
-      "kia",
-      "mkb-groen",
-      "tek",
-      "rotterdam-verduurzaming-bedrijfspand",
-      "rotterdam-ondernemen-in-de-wijk"
-    ],
-    "regelgeving": [
-      "warenwet",
-      "arbowet",
-      "minimumloon",
-      "avg",
-      "tabakswet",
-      "dienstenwet"
-    ],
-    "buurt": "rotterdam",
-    "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
-    "homepageRegelgeving": ["milieubeheer"],
-    "archief": true
-  },
-  {
-    "id": "koffiebranderij",
-    "actief": false,
-    "label": "Koffiebrander",
-    "beschrijving": "Deze persona heeft twee bedrijven op haar naam.",
-    "persoon": {
-      "voornaam": "Robin",
-      "achternaam": "Vogel"
-    },
-    "organisaties": [
-      {
-        "handelsnaam": "Koffiebranderij Blend",
-        "functies": "Eigenaar, Koffiebrander",
-        "website": "https://www.koffiebranderijblend.nl",
-        "kvkNummer": "91827364",
-        "rsinNummer": "865432109",
-        "btwNummer": "NL865432109B01",
-        "omzetbelastingnummer": "865432109B01",
-        "startdatum": "2 september 2024",
-        "rechtsvorm": "Besloten vennootschap",
-        "branche": "Voedingsmiddelenindustrie",
-        "vestigingsadres": "Keileweg 12, Rotterdam",
-        "gemeente": "Rotterdam",
-        "rol": "Eigenaar",
-        "vestigingsnummer": "000091827364",
-        "iban": "NL12 RABO 0918 2736 40",
-        "loonheffingennummer": "865432109L01",
-        "werkzamePersonenFulltime": 2,
-        "werkzamePersonenParttime": 1,
-        "energie": {
-          "elektriciteitKwh": 48300,
-          "gasM3": 21400
-        },
-        "sbi": [
-          {
-            "code": "10831",
-            "omschrijving": "Koffiebranderijen en theepakkerijen"
-          }
-        ],
-        "vestigingsadresVolledig": "Keileweg 12, 3029 BS Rotterdam",
-        "postadres": "Keileweg 12, 3029 BS Rotterdam",
-        "vestigingen": [
-          {
-            "nummer": "000091827364",
-            "type": "Hoofdvestiging",
-            "adres": "Keileweg 12, 3029 BS Rotterdam"
-          }
-        ],
-        "ubo": [],
-        "jaarrekeningen": []
-      },
-      {
-        "handelsnaam": "Koffiezaak Noon",
-        "rol": "Eigenaar"
-      }
-    ],
-    "belangen": [],
-    "subsidies": [
-      "eia",
-      "isde",
-      "kia",
-      "mkb-groen",
-      "tek",
-      "rotterdam-verduurzaming-bedrijfspand",
-      "rotterdam-ondernemen-in-de-wijk"
-    ],
-    "regelgeving": [
-      "warenwet",
-      "arbowet",
-      "minimumloon",
-      "avg",
-      "tabakswet",
-      "dienstenwet"
-    ],
-    "buurt": "rotterdam",
-    "homepageSubsidies": ["verduurzaming-bedrijfspanden"],
-    "homepageRegelgeving": ["milieubeheer"],
     "archief": true
   },
   {
