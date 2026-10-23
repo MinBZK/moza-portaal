@@ -27,20 +27,36 @@ export const zetSessie = async (token: string | null) => {
   });
 };
 
+const vergelijkbaar = (naam: string) =>
+  naam
+    .replace(/ı/g, "i")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
 /**
- * De persona bij het KVK-nummer uit de bevoegdheid: eerst een persona met die
- * onderneming als eerste organisatie (zoals de Horecaondernemer bij Koffiezaak
- * Noon), anders de enige persona met die onderneming.
+ * De persona bij het KVK-nummer uit de bevoegdheid: eerst de persona met die
+ * onderneming en dezelfde naam als in de wallet (Karin Jansen en Bilal Yılmaz
+ * horen allebei bij Koffiezaak Noon), dan een persona met die onderneming als
+ * eerste organisatie, anders de enige persona met die onderneming.
  */
-const personaBij = async (kvkNummer: string) => {
+const personaBij = async (kvkNummer: string, naam: string) => {
   const personas = await getDemoPersonas();
-  const eerst = personas.find(
-    (persona) => persona.organisaties[0]?.kvkNummer === kvkNummer,
-  );
-  if (eerst) return eerst;
   const met = personas.filter((persona) =>
     persona.organisaties.some((o) => o.kvkNummer === kvkNummer),
   );
+  const zelfde = met.find(
+    (persona) =>
+      vergelijkbaar(
+        `${persona.persoon.voornaam} ${persona.persoon.achternaam}`,
+      ) === vergelijkbaar(naam),
+  );
+  if (zelfde) return zelfde;
+  const eerst = met.find(
+    (persona) => persona.organisaties[0]?.kvkNummer === kvkNummer,
+  );
+  if (eerst) return eerst;
   return met.length === 1 ? met[0] : undefined;
 };
 
@@ -51,8 +67,9 @@ const personaBij = async (kvkNummer: string) => {
 export const logInMetWallet = async (inlog: Inlog) => {
   const jar = await cookies();
   const maxAge = 60 * 60 * 24 * 30;
+  const naam = `${inlog.voornaam} ${inlog.achternaam}`;
   const persona = inlog.bevoegdheid
-    ? await personaBij(inlog.bevoegdheid.kvkNummer)
+    ? await personaBij(inlog.bevoegdheid.kvkNummer, naam)
     : undefined;
   if (persona && inlog.bevoegdheid) {
     jar.set("personaId", persona.id, { path: "/", maxAge });
@@ -67,7 +84,7 @@ export const logInMetWallet = async (inlog: Inlog) => {
       NL_WALLET_INLOG_COOKIE,
       JSON.stringify({
         personaId,
-        naam: `${inlog.voornaam} ${inlog.achternaam}`,
+        naam,
       }),
       { path: "/", httpOnly: true, sameSite: "lax" },
     );

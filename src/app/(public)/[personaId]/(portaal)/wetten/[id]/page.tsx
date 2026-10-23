@@ -3,11 +3,16 @@ import { notFound } from "next/navigation";
 import { ActionGroup, Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoWetById } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
-import { getActievePersona } from "@/app/(public)/_persona";
+import {
+  getActieveOrganisatie,
+  getActievePersona,
+} from "@/app/(public)/_persona";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import { RelevantItem } from "../../bewaard/_bewaarActies";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
 import WetGegevens from "../_wetGegevens";
+
+const KVK_KOFFIEZAAK = "85234567";
 
 const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -20,7 +25,8 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   // In moza-poc alleen voor de koffiezaak: hulp bij de informatieplicht.
   const toonAssistentStart =
-    !!wet.assistentVraag && persona?.id === "koffiezaak";
+    !!wet.assistentVraag &&
+    (await getActieveOrganisatie(persona))?.kvkNummer === KVK_KOFFIEZAAK;
 
   return (
     <>
