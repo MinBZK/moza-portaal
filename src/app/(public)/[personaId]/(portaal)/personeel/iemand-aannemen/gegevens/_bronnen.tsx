@@ -23,6 +23,7 @@ import {
   useAannemen,
   type BronId,
 } from "../_useAannemen";
+import InfoToggletip from "@/components/InfoToggletip";
 import { situatieVan } from "../_route";
 import { datumNL, type Werkgever } from "../_werkgever";
 
@@ -283,15 +284,24 @@ const Bronnen = ({
         </Paragraph>
         {weetNiet ? (
           <>
-            <Paragraph>
-              Volgens deze gegevens staat de kandidaat in het doelgroepregister
-              en krijgt die bijstand. De berekening gebruikt nu die gegevens.
-            </Paragraph>
+            {gekozen && (
+              <div className="mox-hiring-note">
+                Volgens deze gegevens staat de kandidaat in het
+                doelgroepregister en krijgt die bijstand. De berekening gebruikt
+                nu die gegevens.{" "}
+                <InfoToggletip label="Toelichting bij de opgehaalde gegevens">
+                  In dit prototype staat de kandidaat altijd in het
+                  doelgroepregister en krijgt die bijstand. In het echte portaal
+                  komt dit uit de gegevens van UWV en de gemeente.
+                </InfoToggletip>
+              </div>
+            )}
             <ActionGroup>
               <Button
                 appearance="primary-action-button"
+                aria-disabled={!gekozen}
                 onClick={() => {
-                  if (!staat) return;
+                  if (!staat || !gekozen) return;
                   werkBij({
                     antwoorden: {
                       ...staat.antwoorden,
