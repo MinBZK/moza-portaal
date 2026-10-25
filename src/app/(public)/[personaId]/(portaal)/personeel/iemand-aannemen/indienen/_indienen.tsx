@@ -49,7 +49,7 @@ const Indienen = ({
   werkgever: Werkgever;
 }) => {
   const router = useRouter();
-  const { staat, werkBij } = useAannemen();
+  const { staat, werkZaakBij } = useAannemen();
   const [bevestigd, setBevestigd] = useState(false);
   const [fout, setFout] = useState(false);
   if (!staat) return null;
@@ -79,7 +79,11 @@ const Indienen = ({
       setFout(true);
       return;
     }
-    werkBij({ ingediend: true, verstuurdOp: "2026-10-05", fase: "ontvangst" });
+    werkZaakBij("gemeente", {
+      ingediend: true,
+      verstuurdOp: "2026-10-05",
+      fase: "ontvangst",
+    });
     voegZaakToe({
       referentienummer: zaak.nummer,
       onderwerp: zaak.onderwerp,
@@ -125,7 +129,10 @@ const Indienen = ({
         </Link>
       </Paragraph>
 
-      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="wat-gebeurt">
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="wat-gebeurt"
+      >
         <Heading level={2} id="wat-gebeurt">
           Wat er gebeurt als u indient
         </Heading>

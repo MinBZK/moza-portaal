@@ -2,6 +2,15 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
+import {
+  faseIndex as faseIndexVan,
+  migreerZaken,
+  type Situatie,
+  type TaakId,
+  type TaakStand,
+  type ZaakStand,
+  type Zaken,
+} from "./_route";
 import { euro } from "./_werkgever";
 
 /**
@@ -79,10 +88,10 @@ export type AannemenStaat = {
     wpa?: "ja" | "later" | "nee";
     pp?: "ja" | "nee";
   };
-  ingediend: boolean;
-  verstuurdOp?: string;
-  fase: Fase;
-  vraag?: string;
+  /** Per situatie een eigen zaak: ingediend, fase en vraag. */
+  zaken: Zaken;
+  /** Per taak van de werknemer waar die staat. */
+  taken: Partial<Record<TaakId, TaakStand>>;
 };
 
 export const STANDAARD_ANTWOORDEN: Antwoorden = {
@@ -98,9 +107,15 @@ const LEEG: AannemenStaat = {
   rol: "eigenaar",
   gecontroleerd: {},
   keuzes: {},
-  ingediend: false,
-  fase: "ontvangst",
+  zaken: {},
+  taken: {},
 };
+
+const NIEUWE_ZAAK: ZaakStand = { ingediend: false, fase: "ontvangst" };
+
+/** De zaak van een situatie; zonder zaak is de aanvraag nog niet verstuurd. */
+export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
+  staat.zaken[situatie] ?? NIEUWE_ZAAK;
 
 /** Het doelgroepregister volgens de antwoorden: ja, nee of onbekend. */
 export const inRegister = (a: Antwoorden) =>
@@ -139,7 +154,17 @@ const lees = (): AannemenStaat => {
       const antwoorden = { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) };
       if (oud?.doelgroep && !g.antwoorden?.doelgroepen)
         antwoorden.doelgroepen = kiesDoelgroep([], oud.doelgroep, true);
-      staat = { ...LEEG, ...g, antwoorden };
+      const oudeZaak = g as Parameters<typeof migreerZaken>[0];
+      staat = {
+        ...LEEG,
+        ...g,
+        antwoorden,
+        zaken: migreerZaken(oudeZaak),
+        taken: g.taken ?? {},
+      };
+      // De losse velden van eerdere versies zijn nu opgegaan in zaken.
+      for (const sleutel of ["ingediend", "verstuurdOp", "fase", "vraag"])
+        delete (staat as Record<string, unknown>)[sleutel];
     }
   } catch {
     // Onleesbaar: als leeg behandelen.
@@ -175,7 +200,12 @@ export const wisAannemen = () => {
   luisteraars.forEach((luisteraar) => luisteraar());
 };
 
-export const faseIndex = (fase: Fase) => Math.max(0, FASEN.indexOf(fase));
+/** Plaats in de vaste fasen van de gemeente-zaak. */
+export const faseIndex = (fase: string) =>
+  faseIndexVan(
+    fase,
+    FASEN.map((id) => ({ id })),
+  );
 
 export const bronBevestigd = (staat: AannemenStaat, id: BronId) =>
   staat.bronnen[id] !== false;
@@ -183,8 +213,9 @@ export const bronBevestigd = (staat: AannemenStaat, id: BronId) =>
 export const alleBronnenBevestigd = (staat: AannemenStaat) =>
   BRONNEN.every((id) => bronBevestigd(staat, id));
 
-export const statusTekst = (staat: AannemenStaat) => {
-  if (!staat.ingediend) return "Nog niet verstuurd";
+/** Voorlopig alleen de fasen van de gemeente-zaak. */
+export const statusTekst = (zaak: ZaakStand) => {
+  if (!zaak.ingediend) return "Nog niet verstuurd";
   return (
     [
       "",
@@ -194,7 +225,7 @@ export const statusTekst = (staat: AannemenStaat) => {
       "Besluit genomen",
       "Besluit genomen, vraag beantwoord",
       "Betaald",
-    ][faseIndex(staat.fase)] ?? "In behandeling"
+    ][faseIndex(zaak.fase)] ?? "In behandeling"
   );
 };
 
@@ -208,5 +239,18 @@ export const useAannemen = () => {
   const werkBij = useCallback((wijziging: Partial<AannemenStaat>) => {
     schrijf({ ...lees(), ...wijziging });
   }, []);
-  return { staat, werkBij };
+  const werkZaakBij = useCallback(
+    (situatie: Situatie, wijziging: Partial<ZaakStand>) => {
+      const nu = lees();
+      schrijf({
+        ...nu,
+        zaken: {
+          ...nu.zaken,
+          [situatie]: { ...zaakVan(nu, situatie), ...wijziging },
+        },
+      });
+    },
+    [],
+  );
+  return { staat, werkBij, werkZaakBij };
 };

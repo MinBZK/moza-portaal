@@ -8,6 +8,16 @@ import type { Doelgroep, Uitkomsten } from "./_uitkomsten";
 export type Situatie =
   "gemeente" | "wajong" | "wia" | "register" | "uitleg" | "weetniet";
 
+/** De stand van één zaak; de fase is een id uit de fasen van die situatie. */
+export type ZaakStand = {
+  ingediend: boolean;
+  verstuurdOp?: string;
+  fase: string;
+  vraag?: string;
+};
+export type Zaken = Partial<Record<Situatie, ZaakStand>>;
+export type TaakStand = "open" | "aangevraagd" | "verstrekt";
+
 export type PaneelId = "lks" | "jc" | "wpa" | "pp" | "ld";
 export type TaakId = "doelgroepverklaring" | "vz_wajong" | "vz_wia";
 export type VanzelfId = "lkv" | "nrp";
@@ -66,3 +76,39 @@ export const routeVoor = (doelgroepen: Doelgroep[], u: Uitkomsten): Route => {
 
   return { situatie, panelen, taken, vanzelf, zaak, overzicht: zaak === null };
 };
+
+/**
+ * Zaken uit de opslag. Eerdere versies bewaarden één zaak bovenaan
+ * (ingediend, verstuurdOp, fase, vraag); die hoort bij de gemeente.
+ */
+export const migreerZaken = (oud: {
+  ingediend?: boolean;
+  verstuurdOp?: string;
+  fase?: string;
+  vraag?: string;
+  zaken?: Zaken;
+}): Zaken => {
+  if (oud.zaken && typeof oud.zaken === "object") return oud.zaken;
+  const { ingediend, verstuurdOp, fase, vraag } = oud;
+  if (
+    ingediend === undefined &&
+    verstuurdOp === undefined &&
+    fase === undefined &&
+    vraag === undefined
+  )
+    return {};
+  const zaak: ZaakStand = {
+    ingediend: ingediend === true,
+    fase: fase ?? "ontvangst",
+  };
+  if (verstuurdOp !== undefined) zaak.verstuurdOp = verstuurdOp;
+  if (vraag !== undefined) zaak.vraag = vraag;
+  return { gemeente: zaak };
+};
+
+/** Plaats van de fase in de fasen van de situatie; onbekend telt als de eerste. */
+export const faseIndex = (fase: string, fasen: { id: string }[]): number =>
+  Math.max(
+    0,
+    fasen.findIndex((f) => f.id === fase),
+  );

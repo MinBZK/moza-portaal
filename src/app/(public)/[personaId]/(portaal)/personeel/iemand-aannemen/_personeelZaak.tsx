@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button, Heading, Paragraph } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
-import { statusTekst, useAannemen, wisAannemen } from "./_useAannemen";
+import { statusTekst, useAannemen, wisAannemen, zaakVan } from "./_useAannemen";
 
 /**
  * Op Personeel: de zaak van Koen zodra de aanvraag is verstuurd, en het blok
@@ -14,7 +14,7 @@ const PersoneelZaak = ({ zaak }: { zaak: DemoAannemen["zaak"] }) => {
   const { staat } = useAannemen();
   return (
     <>
-      {staat?.ingediend && (
+      {staat && zaakVan(staat, "gemeente").ingediend && (
         <section className="rhc-mox-card" aria-labelledby="personeel-zaken">
           <Heading level={2} id="personeel-zaken">
             Lopende zaken over personeel
@@ -24,7 +24,7 @@ const PersoneelZaak = ({ zaak }: { zaak: DemoAannemen["zaak"] }) => {
               {zaak.onderwerp}
             </Link>
             <br />
-            {zaak.organisatie} · {statusTekst(staat)}
+            {zaak.organisatie} · {statusTekst(zaakVan(staat, "gemeente"))}
           </Paragraph>
         </section>
       )}

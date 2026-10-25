@@ -16,6 +16,7 @@ import {
 import type { DemoAannemen, DemoAannemenBron, DemoAannemenTrace } from "@/demo";
 import {
   faseIndex,
+  zaakVan,
   useAannemen,
 } from "../../../personeel/iemand-aannemen/_useAannemen";
 import { datumNL, waarde } from "../../../personeel/iemand-aannemen/_werkgever";
@@ -35,12 +36,13 @@ const Besluit = ({
   trace: DemoAannemenTrace | undefined;
   labels: Record<string, string>;
 }) => {
-  const { staat, werkBij } = useAannemen();
+  const { staat, werkZaakBij } = useAannemen();
   const [melding, setMelding] = useState("");
   const [tekst, setTekst] = useState("");
   if (!staat) return null;
+  const zaakStand = zaakVan(staat, "gemeente");
 
-  if (!staat.ingediend || faseIndex(staat.fase) < 4)
+  if (!zaakStand.ingediend || faseIndex(zaakStand.fase) < 4)
     return (
       <Alert type="info">
         <Paragraph>
@@ -55,14 +57,14 @@ const Besluit = ({
 
   const verstuurVraag = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const vraag = (tekst || staat.vraag || "").trim();
+    const vraag = (tekst || zaakStand.vraag || "").trim();
     if (!vraag) {
       setMelding("Typ eerst uw vraag.");
       return;
     }
-    werkBij({
+    werkZaakBij("gemeente", {
       vraag,
-      fase: faseIndex(staat.fase) < 4 ? "besluit" : staat.fase,
+      fase: faseIndex(zaakStand.fase) < 4 ? "besluit" : zaakStand.fase,
     });
     setMelding(
       "Uw vraag is verstuurd en staat in de zaak. De gemeente antwoordt binnen vijf werkdagen.",
@@ -194,7 +196,7 @@ const Besluit = ({
             className="utrecht-textarea utrecht-textarea--html-textarea mox-hiring-control"
             rows={3}
             placeholder="Bijvoorbeeld: telt de vergoeding voor werkgeverslasten niet mee in het bedrag?"
-            defaultValue={staat.vraag ?? ""}
+            defaultValue={zaakStand.vraag ?? ""}
             onChange={(event) => setTekst(event.target.value)}
           />
           <ActionGroup>
@@ -204,7 +206,7 @@ const Besluit = ({
           </ActionGroup>
           <Paragraph role="status">
             {melding ||
-              (staat.vraag
+              (zaakStand.vraag
                 ? "Uw vraag is verstuurd op 3 november 2026 en staat in de zaak. De gemeente antwoordt binnen vijf werkdagen."
                 : "")}
           </Paragraph>

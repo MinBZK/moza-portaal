@@ -23,6 +23,7 @@ import {
   FASEN,
   faseIndex,
   statusTekst,
+  zaakVan,
   useAannemen,
   wisAannemen,
   type Fase,
@@ -53,7 +54,7 @@ const SOORT: Record<DemoAannemenGebeurtenis["soort"], string> = {
 };
 
 /** De voortgang als stappen voor StatusTrack, afhankelijk van de stand. */
-const voortgang = (fase: Fase, zaakUrl: string): DemoZaakStap[] => {
+const voortgang = (fase: string, zaakUrl: string): DemoZaakStap[] => {
   const i = faseIndex(fase);
   const stappen: { fase: Fase; titel: string; datum: string; tekst: string }[] =
     [
@@ -118,9 +119,10 @@ const ZaakKoen = ({
   gebeurtenissen: DemoAannemenGebeurtenis[];
   komtHierna: DemoAannemen["komtHierna"];
 }) => {
-  const { staat, werkBij } = useAannemen();
+  const { staat, werkZaakBij } = useAannemen();
   if (!staat) return null;
-  const i = faseIndex(staat.fase);
+  const zaakStand = zaakVan(staat, "gemeente");
+  const i = faseIndex(zaakStand.fase);
 
   const onderzoeker = (
     <section
@@ -138,10 +140,10 @@ const ZaakKoen = ({
         className="utrecht-select utrecht-select--html-select mox-hiring-control"
         value={FASEN[i]}
         onChange={(event) =>
-          werkBij({
+          werkZaakBij("gemeente", {
             fase: event.target.value as Fase,
             ingediend: true,
-            verstuurdOp: staat.verstuurdOp ?? "2026-10-05",
+            verstuurdOp: zaakStand.verstuurdOp ?? "2026-10-05",
           })
         }
       >
@@ -159,7 +161,7 @@ const ZaakKoen = ({
     </section>
   );
 
-  if (!staat.ingediend)
+  if (!zaakStand.ingediend)
     return (
       <>
         <Alert type="info">
@@ -196,7 +198,10 @@ const ZaakKoen = ({
             <DataSummaryItem itemKey="Zaaknummer" itemValue={zaak.nummer} />
             <DataSummaryItem itemKey="Verstuurd" itemValue="5 oktober 2026" />
             <DataSummaryItem itemKey="Regel" itemValue={zaak.regel} />
-            <DataSummaryItem itemKey="Status" itemValue={statusTekst(staat)} />
+            <DataSummaryItem
+              itemKey="Status"
+              itemValue={statusTekst(zaakStand)}
+            />
           </DataSummary>
         </section>
 
@@ -204,7 +209,7 @@ const ZaakKoen = ({
           <Heading level={2} id="zaak-voortgang">
             Voortgang
           </Heading>
-          <StatusTrack stappen={voortgang(staat.fase, zaak.url)} />
+          <StatusTrack stappen={voortgang(zaakStand.fase, zaak.url)} />
           {i >= 4 && (
             <Paragraph>
               <Link
@@ -263,8 +268,8 @@ const ZaakKoen = ({
                   </Heading>
                   {g.tekst && (
                     <Paragraph>
-                      {g.id === "g13" && staat.vraag
-                        ? `“${staat.vraag}”`
+                      {g.id === "g13" && zaakStand.vraag
+                        ? `“${zaakStand.vraag}”`
                         : g.tekst}
                     </Paragraph>
                   )}

@@ -426,3 +426,37 @@ for (const situatie of ["wajong", "wia"]) {
         );
   });
 }
+
+test("opslag: oude losse velden gaan naar zaken.gemeente", () => {
+  assert.deepEqual(
+    R.migreerZaken({
+      ingediend: true,
+      fase: "besluit",
+      verstuurdOp: "2026-10-05",
+    }),
+    {
+      gemeente: {
+        ingediend: true,
+        fase: "besluit",
+        verstuurdOp: "2026-10-05",
+      },
+    },
+  );
+  assert.deepEqual(
+    R.migreerZaken({ ingediend: true, fase: "besluit", vraag: "Waarom?" })
+      .gemeente.vraag,
+    "Waarom?",
+  );
+  assert.deepEqual(R.migreerZaken({}), {});
+});
+
+test("opslag: nieuwe zaken blijven ongewijzigd", () => {
+  const zaken = { wajong: { ingediend: true, fase: "meting" } };
+  assert.equal(R.migreerZaken({ zaken, ingediend: true }), zaken);
+});
+
+test("opslag: faseIndex met onbekende fase is 0", () => {
+  const fasen = [{ id: "a" }, { id: "b" }];
+  assert.equal(R.faseIndex("b", fasen), 1);
+  assert.equal(R.faseIndex("x", fasen), 0);
+});
