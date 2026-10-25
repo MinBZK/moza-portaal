@@ -65,7 +65,9 @@ export {
 } from "./bedrijfsonderdelen";
 export {
   getDemoIemandAannemen,
+  getDemoIemandAannemenSituaties,
   getDemoIemandAannemenTraces,
+  type DemoAannemenSituatie,
   type DemoAannemen,
   type DemoAannemenBron,
   type DemoAannemenGegeven,

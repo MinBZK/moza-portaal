@@ -334,3 +334,72 @@ test("route: uitleg en weetniet geven een overzicht zonder zaak", () => {
     assert.equal(r.zaak, null, d.join());
   }
 });
+
+// Demo-gegevens per situatie (src/demo/iemand-aannemen-*.json)
+const SITUATIES = {
+  gemeente: "iemand-aannemen-koen.json",
+  wajong: "iemand-aannemen-wajong.json",
+  wia: "iemand-aannemen-wia.json",
+};
+const PLAATSHOUDERS = new Set([
+  "onderneming",
+  "kvkNummer",
+  "vestiging",
+  "iban",
+  "fulltime",
+  "parttime",
+  "uren",
+  "loonwaarde",
+  "lksPerMaand",
+  "lksTweeMaanden",
+  "aanspraakPerUur",
+  "lkvPerJaar",
+]);
+const BRON_IDS = ["uwv", "gemeente", "kvk", "belastingdienst", "eigen"];
+
+for (const [situatie, bestand] of Object.entries(SITUATIES)) {
+  const demo = JSON.parse(readFileSync("src/demo/" + bestand, "utf8"));
+
+  test(`demo ${situatie}: fasen en gebeurtenissen kloppen`, () => {
+    const ids = demo.fasen.map((f) => f.id);
+    assert.equal(new Set(ids).size, ids.length, "fase-ids uniek");
+    for (const g of demo.gebeurtenissen)
+      assert.ok(
+        g.stap === "vooraf" || ids.includes(g.stap),
+        `${g.id}: stap ${g.stap}`,
+      );
+    assert.ok(demo.zaak.url.endsWith("/" + situatie), demo.zaak.url);
+  });
+
+  test(`demo ${situatie}: plaatshouders en bronnen`, () => {
+    const teksten = [
+      demo.zaak.onderwerp,
+      ...demo.fasen.map((f) => f.label),
+      ...demo.gebeurtenissen.flatMap((g) => [g.titel, g.tekst]),
+      ...demo.komtHierna.flatMap((k) => [k.titel, k.tekst]),
+      ...demo.bronnen.flatMap((b) => b.gegevens.map((x) => x.waarde)),
+    ];
+    for (const t of teksten)
+      for (const [, naam] of t.matchAll(/\{([^}]*)\}/g))
+        assert.ok(PLAATSHOUDERS.has(naam), `{${naam}} in "${t}"`);
+    const bronIds = demo.bronnen.map((b) => b.id);
+    for (const id of bronIds) assert.ok(BRON_IDS.includes(id), id);
+    if (situatie !== "gemeente") assert.ok(!bronIds.includes("gemeente"));
+  });
+}
+
+test("demo: gemeente heeft geen vaste uitkomsten in gebeurtenissen", () => {
+  const demo = JSON.parse(
+    readFileSync("src/demo/" + SITUATIES.gemeente, "utf8"),
+  );
+  const tekst = JSON.stringify([demo.gebeurtenissen, demo.komtHierna]);
+  assert.doesNotMatch(tekst, /897,41|1\.794,82|420,16|60 procent/);
+});
+
+test("demo: WIA heeft geen besluit voor de werkgever, de andere wel", () => {
+  const lees = (s) =>
+    JSON.parse(readFileSync("src/demo/" + SITUATIES[s], "utf8"));
+  assert.equal(lees("wia").besluit, undefined);
+  assert.equal(lees("wajong").besluit.organisatie, "UWV");
+  assert.equal(lees("gemeente").besluit.datum, "2026-11-03");
+});

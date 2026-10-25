@@ -30,7 +30,7 @@ const Besluit = ({
 }: {
   zaak: DemoAannemen["zaak"];
   kandidaat: DemoAannemen["kandidaat"];
-  berekening: DemoAannemen["berekeningLks"];
+  berekening: NonNullable<DemoAannemen["berekeningLks"]>;
   bronnen: DemoAannemenBron[];
   trace: DemoAannemenTrace | undefined;
   labels: Record<string, string>;

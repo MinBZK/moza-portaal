@@ -24,7 +24,7 @@
     "organisatie": "Gemeente Lansingerland",
     "onderwerp": "Loonkostensubsidie voor Koen de Wit",
     "regel": "Artikel 10d van de Participatiewet, wetsversie 1 juli 2026",
-    "url": "/lopendezaken/loonkostensubsidie-koen"
+    "url": "/lopendezaken/iemand-aannemen/gemeente"
   },
   "bronnen": [
     {
@@ -146,7 +146,7 @@
           "vraag": "Hoeveel uur per week gaat Koen werken?",
           "wetsvraag": "Wat is de overeengekomen arbeidsduur in uren per week?",
           "parameter": "overeengekomen_arbeidsduur_uren_per_week",
-          "waarde": "32 uur",
+          "waarde": "{uren} uur",
           "grond": "Pwet 10d lid 4"
         },
         {
@@ -398,7 +398,7 @@
       "actor": "U",
       "soort": "uitvoering",
       "titel": "Dienstbetrekking begonnen",
-      "tekst": "Koen is gestart voor 32 uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
+      "tekst": "Koen is gestart voor {uren} uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
       "grond": "Wtl 2.10 lid 1",
       "stap": "ontvangst"
     },
@@ -465,8 +465,8 @@
       "tijd": "15:20",
       "actor": "College van Lansingerland",
       "soort": "besluit",
-      "titel": "Loonwaarde vastgesteld: 60 procent van het minimumloon",
-      "tekst": "Het college heeft de loonwaarde van Koen vastgesteld op 60 procent van het wettelijk minimumloon.",
+      "titel": "Loonwaarde vastgesteld: {loonwaarde} van het minimumloon",
+      "tekst": "Het college heeft de loonwaarde van Koen vastgesteld op {loonwaarde} van het wettelijk minimumloon.",
       "grond": "Pwet 10d lid 1 en 2",
       "stap": "loonwaarde"
     },
@@ -476,7 +476,7 @@
       "tijd": "11:41",
       "actor": "College van Lansingerland",
       "soort": "besluit",
-      "titel": "Besluit: loonkostensubsidie toegekend, € 897,41 per maand vanaf 1 oktober 2026",
+      "titel": "Besluit: loonkostensubsidie toegekend, {lksPerMaand} per maand vanaf 1 oktober 2026",
       "tekst": "Het college kent loonkostensubsidie toe. De berekening staat bij het besluit; u kunt binnen zes weken bezwaar maken.",
       "grond": "Pwet 10d lid 4; Awb 6:7",
       "stap": "besluit",
@@ -511,8 +511,8 @@
       "tijd": "06:00",
       "actor": "Gemeente Lansingerland",
       "soort": "uitvoering",
-      "titel": "Betaling loonkostensubsidie oktober en november: € 1.794,82",
-      "tekst": "Twee maanden van € 897,41, overgemaakt naar {iban}.",
+      "titel": "Betaling loonkostensubsidie oktober en november: {lksTweeMaanden}",
+      "tekst": "Twee maanden loonkostensubsidie, overgemaakt naar {iban}.",
       "grond": "Pwet 10d",
       "stap": "betaling"
     }
@@ -522,7 +522,7 @@
       "datum": "2027-03-15",
       "actor": "Belastingdienst",
       "titel": "Voorlopige berekening loonkostenvoordeel 2026",
-      "tekst": "416 verloonde uren (oktober tot en met december) × € 1,01 = € 420,16.",
+      "tekst": "Het bedrag over 2026 is een deel van het loonkostenvoordeel per jaar ({lkvPerJaar}), naar verhouding van de verloonde uren in oktober tot en met december.",
       "grond": "Wtl 4.1"
     },
     {
@@ -570,5 +570,10 @@
     "datum_opname_doelgroepregister": "Datum van opname",
     "heeft_recht_op_loondispensatie": "Recht op loondispensatie (2:20)",
     "heeft_recht_op_arbeidsondersteuning": "Recht op arbeidsondersteuning (2:15)"
+  },
+  "besluit": {
+    "organisatie": "College van burgemeester en wethouders van Lansingerland",
+    "datum": "2026-11-03",
+    "bezwaar": "zes weken, Awb 6:7"
   }
 }

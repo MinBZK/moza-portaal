@@ -1,4 +1,6 @@
 import koen from "./iemand-aannemen-koen.json";
+import wajong from "./iemand-aannemen-wajong.json";
+import wia from "./iemand-aannemen-wia.json";
 import traces from "./iemand-aannemen-traces.json";
 
 /**
@@ -16,7 +18,7 @@ export type DemoAannemenGegeven = {
   wetsvraag: string;
   /** Naam van het gegeven in het wetmodel van de engine. */
   parameter: string;
-  /** Kan plaatshouders bevatten: {onderneming} {kvkNummer} {vestiging} {fulltime} {parttime}. */
+  /** Kan plaatshouders bevatten: {onderneming} {kvkNummer} {vestiging} {fulltime} {parttime} {uren}. */
   waarde: string;
   grond: string;
 };
@@ -62,19 +64,16 @@ export type DemoAannemenGebeurtenis = {
   actor: string;
   soort: "regelgeving" | "besluit" | "uitvoering";
   titel: string;
-  /** Kan plaatshouders bevatten: {onderneming} {iban}. */
+  /**
+   * Kan plaatshouders bevatten: {onderneming} {iban} {uren} (aantal uur per
+   * week) {loonwaarde} (percentage, "60 procent") {lksPerMaand}
+   * {lksTweeMaanden} {aanspraakPerUur} {lkvPerJaar} (bedragen, "€ 897,41").
+   */
   tekst: string;
   grond: string;
   /** Vanaf welke stand van de zaak de gebeurtenis zichtbaar is. */
-  stap:
-    | "vooraf"
-    | "indicatie"
-    | "ontvangst"
-    | "meting"
-    | "loonwaarde"
-    | "besluit"
-    | "antwoord"
-    | "betaling";
+  /** "vooraf" of het id van een fase van de situatie. */
+  stap: string;
   url?: string;
   /** Deze gebeurtenis corrigeert een eerdere (die blijft staan als "gecorrigeerd"). */
   herstelt?: string;
@@ -83,14 +82,7 @@ export type DemoAannemenGebeurtenis = {
 };
 
 export type DemoAannemenFase = {
-  id:
-    | "indicatie"
-    | "ontvangst"
-    | "meting"
-    | "loonwaarde"
-    | "besluit"
-    | "antwoord"
-    | "betaling";
+  id: string;
   label: string;
   datum: string;
 };
@@ -123,9 +115,12 @@ export type DemoAannemen = {
     regel: string;
     url: string;
   };
+  /** Beslissing van de uitvoerder, voor de situaties met een besluit voor de werkgever. */
+  besluit?: { organisatie: string; datum: string; bezwaar: string };
   bronnen: DemoAannemenBron[];
-  regelingen: DemoAannemenRegeling[];
-  berekeningLks: {
+  /** Alleen in de situatie gemeente; de andere situaties halen dit uit de engine. */
+  regelingen?: DemoAannemenRegeling[];
+  berekeningLks?: {
     toelichting: string;
     stappen: {
       label: string;
@@ -162,10 +157,21 @@ export type DemoAannemenTrace = {
   ankers: string[][];
 };
 
-const data = koen as DemoAannemen;
+export type DemoAannemenSituatie = "gemeente" | "wajong" | "wia";
+
+const situaties: Record<DemoAannemenSituatie, DemoAannemen> = {
+  gemeente: koen as DemoAannemen,
+  wajong: wajong as DemoAannemen,
+  wia: wia as DemoAannemen,
+};
 const alleTraces = traces as unknown as Record<string, DemoAannemenTrace>;
 
-export const getDemoIemandAannemen = async (): Promise<DemoAannemen> => data;
+export const getDemoIemandAannemen = async (): Promise<DemoAannemen> =>
+  situaties.gemeente;
+
+export const getDemoIemandAannemenSituaties = async (): Promise<
+  Record<DemoAannemenSituatie, DemoAannemen>
+> => situaties;
 
 export const getDemoIemandAannemenTraces = async (): Promise<
   Record<string, DemoAannemenTrace>

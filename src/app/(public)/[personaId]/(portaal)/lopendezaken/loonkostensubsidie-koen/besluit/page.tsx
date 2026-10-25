@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getDemoIemandAannemen, getDemoIemandAannemenTraces } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Besluit from "./_besluit";
@@ -13,6 +14,7 @@ const BesluitPage = async () => {
     getDemoIemandAannemenTraces(),
     getActieveOrganisatie(),
   ]);
+  if (!aannemen.berekeningLks) notFound();
   const w = werkgeverVan(organisatie);
   const bronnen = aannemen.bronnen.map((bron) => ({
     ...bron,
