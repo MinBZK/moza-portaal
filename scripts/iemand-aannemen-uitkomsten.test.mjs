@@ -251,3 +251,86 @@ test("fix: loondispensatie telt niet mee bij een uurloon boven het minimumloon",
     true,
   );
 });
+
+const R = await import("../" + MAP + "_route.ts");
+const ids = (route) => route.panelen.map((p) => [p.organisatie, p.ids]);
+
+test("route: situatie volgt de volgorde wajong, wia, bijstand, register, uitleg", () => {
+  const s = R.situatieVan;
+  assert.equal(s(["bijstand"]), "gemeente");
+  assert.equal(s(["register", "wajong"]), "wajong");
+  assert.equal(s(["register", "wajong", "wia"]), "wajong");
+  assert.equal(s(["register", "wia"]), "wia");
+  assert.equal(s(["register"]), "register");
+  for (const d of ["beschut", "wsw", "geen"]) assert.equal(s([d]), "uitleg");
+  assert.equal(s(["weetniet"]), "weetniet");
+  assert.equal(s([]), "weetniet");
+});
+
+test("route: gemeente bij loonwaarde 60", () => {
+  const r = R.routeVoor(["bijstand"], reken(["bijstand"], 60));
+  assert.deepEqual(ids(r), [["gemeente", ["lks", "jc", "wpa", "pp"]]]);
+  assert.deepEqual(r.taken, []);
+  assert.deepEqual(r.vanzelf, ["lkv", "nrp"]);
+  assert.equal(r.zaak, "gemeente");
+  assert.equal(r.overzicht, false);
+});
+
+test("route: gemeente bij loonwaarde 100 heeft geen lks", () => {
+  const r = R.routeVoor(["bijstand"], reken(["bijstand"], 100));
+  assert.equal(r.panelen[0].ids.includes("lks"), false);
+  assert.equal(r.panelen[0].ids.includes("wpa"), true);
+  assert.equal(r.zaak, "gemeente");
+});
+
+test("route: wajong bij loonwaarde 70", () => {
+  const d = ["register", "wajong"];
+  const r = R.routeVoor(d, reken(d, 70));
+  assert.deepEqual(ids(r), [["uwv", ["ld"]]]);
+  assert.deepEqual(r.taken, ["vz_wajong"]);
+  assert.deepEqual(r.vanzelf, ["lkv", "nrp"]);
+  assert.equal(r.zaak, "wajong");
+});
+
+test("route: wajong bij loonwaarde 100 geeft alleen een overzicht", () => {
+  const d = ["register", "wajong"];
+  const r = R.routeVoor(d, reken(d, 100));
+  assert.deepEqual(r.panelen, []);
+  assert.deepEqual(r.taken, ["vz_wajong"]);
+  assert.equal(r.overzicht, true);
+  assert.equal(r.zaak, null);
+});
+
+test("route: wajong met uurloon 2000 geeft geen paneel", () => {
+  const d = ["register", "wajong"];
+  const r = R.routeVoor(d, reken(d, 70, 32, 2000));
+  assert.deepEqual(r.panelen, []);
+  assert.equal(r.overzicht, true);
+});
+
+test("route: wia bij loonwaarde 100", () => {
+  const d = ["register", "wia"];
+  const r = R.routeVoor(d, reken(d, 100));
+  assert.deepEqual(r.panelen, []);
+  assert.deepEqual(r.taken, ["doelgroepverklaring", "vz_wia"]);
+  assert.deepEqual(r.vanzelf, ["lkv", "nrp"]);
+  assert.equal(r.zaak, "wia");
+  assert.equal(r.overzicht, false);
+});
+
+test("route: register heeft alleen vanzelf en een overzicht", () => {
+  const r = R.routeVoor(["register"], reken(["register"], 100));
+  assert.deepEqual(r.panelen, []);
+  assert.deepEqual(r.taken, []);
+  assert.deepEqual(r.vanzelf, ["lkv", "nrp"]);
+  assert.equal(r.zaak, null);
+  assert.equal(r.overzicht, true);
+});
+
+test("route: uitleg en weetniet geven een overzicht zonder zaak", () => {
+  for (const d of [["beschut"], ["wsw"], ["geen"], ["weetniet"], []]) {
+    const r = R.routeVoor(d, reken(d, 100));
+    assert.equal(r.overzicht, true, d.join());
+    assert.equal(r.zaak, null, d.join());
+  }
+});
