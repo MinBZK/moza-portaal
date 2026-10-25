@@ -151,9 +151,10 @@ const Balans = ({
         <div>
           <dt>Loonkosten</dt>
           <dd>{euro(kosten)}</dd>
-          <span className="mox-hiring-bar">
+          {/* De balk is een eigen dd: in een dl mag een div alleen dt en dd bevatten. */}
+          <dd className="mox-hiring-bar" aria-hidden="true">
             <span style={{ inlineSize: "100%" }} />
-          </span>
+          </dd>
         </div>
         {regels.map((r) => (
           <div key={r.id}>
@@ -171,12 +172,12 @@ const Balans = ({
               )}
             </dt>
             <dd>− {bedrag(r.bedrag)}</dd>
-            <span className="mox-hiring-bar">
+            <dd className="mox-hiring-bar" aria-hidden="true">
               <span
                 className="mox-hiring-bar--plus"
                 style={{ inlineSize: `${pct(r.bedrag)}%` }}
               />
-            </span>
+            </dd>
           </div>
         ))}
       </dl>

@@ -833,11 +833,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		white-space: nowrap;
 	}
 
-	.mox-hiring-bar {
+	.mox-hiring-balance .mox-hiring-bar {
 		background: var(--rhc-color-grey-20, #e6e6e6);
 		block-size: 0.75rem;
 		border-radius: 0.125rem;
 		flex-basis: 100%;
+		margin-inline-start: 0;
 		overflow: hidden;
 	}
 

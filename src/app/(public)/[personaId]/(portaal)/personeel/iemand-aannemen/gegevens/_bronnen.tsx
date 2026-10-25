@@ -218,12 +218,14 @@ const Bronnen = ({
             iets niet, haal het vinkje weg; die gegevens vult u dan zelf aan in
             de aanvraag.
           </Paragraph>
-          <Accordion headingLevel={3}>
+          <Accordion>
             {bronnen.map((bron) => {
               const aan = !!staat && bronBevestigd(staat, bron.id);
               return (
                 <AccordionSection
                   key={bron.id}
+                  // Het niveau op Accordion geldt alleen voor diens eigen kop.
+                  headingLevel={3}
                   label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
                   // Het type eist `body`, de component rendert alleen `children`.
                   body={null}
