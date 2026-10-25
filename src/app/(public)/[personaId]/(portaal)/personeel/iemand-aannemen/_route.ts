@@ -193,3 +193,15 @@ export const besluitGeldt = (situatie: Situatie, u: Uitkomsten): boolean => {
     situatie === "gemeente" ? "lks" : situatie === "wajong" ? "ld" : null;
   return id === null || u.regels.some((r) => r.id === id);
 };
+
+/**
+ * De eerste zin van het overzicht. Heeft de werknemer een taak (zoals de
+ * doelgroepverklaring), dan is er wel iets aan te vragen, alleen niet door de
+ * werkgever.
+ */
+export const overzichtTekst = (route: Route): string =>
+  route.taken.length > 0
+    ? "U hoeft niets in te dienen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+    : ["gemeente", "wajong", "wia"].includes(route.situatie)
+      ? "Bij deze antwoorden is er niets aan te vragen."
+      : "Voor deze situatie dient u niets in. Dit is wat er wel geldt.";

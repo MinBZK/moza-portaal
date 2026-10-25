@@ -395,6 +395,16 @@ test("route: register heeft alleen vanzelf en een overzicht", () => {
   assert.equal(r.overzicht, true);
 });
 
+test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vragen'", () => {
+  const taak = R.routeVoor(["register", "wajong", "wia"], reken(["register", "wajong", "wia"], 100));
+  assert.match(R.overzichtTekst(taak), /werknemer aanvraagt/);
+  const niets = R.routeVoor(["register", "bijstand"], reken(["register", "bijstand"], 100));
+  assert.deepEqual(niets.taken, []);
+  assert.equal(R.overzichtTekst(niets), "Bij deze antwoorden is er niets aan te vragen.");
+  const register = R.routeVoor(["register"], reken(["register"], 100));
+  assert.equal(R.overzichtTekst(register), "Voor deze situatie dient u niets in. Dit is wat er wel geldt.");
+});
+
 test("route: uitleg en weetniet geven een overzicht zonder zaak", () => {
   for (const d of [["beschut"], ["wsw"], ["geen"], ["weetniet"], []]) {
     const r = R.routeVoor(d, reken(d, 100));

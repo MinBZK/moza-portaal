@@ -5,7 +5,7 @@ import { useMemo, type ReactNode } from "react";
 import { ActionGroup, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { AANNAMES, Aanname, duurTekst } from "../_balans";
-import { routeVoor, type TaakId } from "../_route";
+import { overzichtTekst, routeVoor, type TaakId } from "../_route";
 import type { Doelgroep } from "../_uitkomsten";
 import { useAannemen, type AannemenStaat } from "../_useAannemen";
 import { useUitkomsten } from "../_useUitkomsten";
@@ -83,7 +83,6 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
     const u = UITLEG[d];
     return u ? [{ ...u, id: d }] : [];
   });
-  const nietsAan = ["gemeente", "wajong", "wia"].includes(situatie);
 
   return (
     <>
@@ -104,9 +103,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
             ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
             : !bekend
               ? "De regelrecht-engine rekent uit wat voor u geldt…"
-              : nietsAan
-                ? "Bij deze antwoorden is er niets aan te vragen."
-                : "Voor deze situatie dient u niets in. Dit is wat er wel geldt."}
+              : overzichtTekst(route)}
         </Paragraph>
       )}
 
