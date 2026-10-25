@@ -69,3 +69,129 @@ test("vraag 1: acht opties, WIA zonder WAO", () => {
     "Iemand met een WIA-uitkering",
   );
 });
+
+/** Rekent een geval zoals de browser: invoer per doel, engine, schermmodel. */
+const reken = (doelgroepen, loonwaarde, uren = 32, uurloon = 1499) => {
+  const a = { doelgroepen, uren, loonwaarde, uurloon };
+  const uit = {};
+  for (const invoer of U.invoerVoor(a, basis))
+    uit[`${invoer.wet}:${invoer.output}`] = bereken(invoer).outputs;
+  return U.uitkomstenUit(a, uit);
+};
+// De engine rekent per maand onafgerond: € 897,408 (kaart: 89740.8 eurocent).
+const LKS_KOEN_JAAR = Math.round(89740.8 * 12);
+const regel = (u, id) => u.regels.find((r) => r.id === id);
+const overig = (u, id) => u.overige.find((o) => o.id === id);
+
+test("Koen: bijstand, loonwaarde 60", () => {
+  const u = reken(["bijstand"], 60);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_KOEN_JAAR);
+  assert.equal(regel(u, "lks").aanname, "lks_lid4");
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+  assert.equal(regel(u, "lkv").categorie, "banenafspraak");
+  assert.equal(regel(u, "ld"), undefined);
+  assert.equal(overig(u, "nrp").geldt, true);
+  assert.equal(overig(u, "nrp").duurJaren, -1);
+  assert.equal(overig(u, "pp_pwet").geldt, true);
+  assert.equal(overig(u, "begeleiding").geldt, true);
+});
+
+test("register op 100 procent: loonkostenvoordeel blijft", () => {
+  const u = reken(["register"], 100);
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+  assert.equal(overig(u, "nrp").geldt, true);
+});
+
+test("register op 60 procent: geen loonkostensubsidie zonder gemeente", () => {
+  const u = reken(["register"], 60);
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+});
+
+test("Sadee: Wajong, 70 procent", () => {
+  const u = reken(["register", "wajong"], 70);
+  const ld = regel(u, "ld");
+  assert.equal(ld.aanspraakPerUur, 1049.3);
+  assert.equal(
+    ld.bedragPerJaar,
+    Math.round((1499 - 1049.3) * 32 * 52 * 1.08 * 1.2),
+  );
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(overig(u, "nrp").geldt, true);
+  assert.equal(overig(u, "nrp").duurJaren, -1);
+  assert.equal(overig(u, "vz_wajong").geldt, true);
+  assert.equal(overig(u, "vz_wia").geldt, false);
+});
+
+test("Wajong 80 procent: geen loondispensatie", () => {
+  const u = reken(["register", "wajong"], 80);
+  assert.equal(regel(u, "ld"), undefined);
+});
+
+test("WIA: loonkostenvoordeel arbeidsgehandicapte, no-riskpolis vijf jaar", () => {
+  const u = reken(["wia"], 100);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 507520);
+  assert.equal(regel(u, "lkv").categorie, "arbeidsgehandicapte_werknemer");
+  assert.equal(regel(u, "lkv").aanname, "wia_nieuw");
+  assert.equal(overig(u, "nrp").geldt, true);
+  assert.equal(overig(u, "nrp").duurJaren, 5);
+  assert.equal(overig(u, "vz_wia").geldt, true);
+  assert.equal(regel(u, "lks"), undefined);
+});
+
+test("Wsw: zuinig, niets", () => {
+  const u = reken(["wsw"], 60);
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(regel(u, "lkv"), undefined);
+  assert.equal(overig(u, "nrp").geldt, false);
+  assert.ok(u.aannames.includes("wsw_zuinig"));
+});
+
+test("beschut werk: geen loonkostenvoordeel, wel no-riskpolis", () => {
+  const u = reken(["beschut"], 60);
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(regel(u, "lkv"), undefined);
+  assert.equal(overig(u, "nrp").geldt, true);
+  assert.equal(overig(u, "nrp").duurJaren, -1);
+  assert.ok(u.aannames.includes("beschut_lks"));
+});
+
+test("beschut werk + bijstand: loonkostensubsidie, geen loonkostenvoordeel", () => {
+  const u = reken(["bijstand", "beschut"], 60);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_KOEN_JAAR);
+  assert.equal(regel(u, "lkv"), undefined);
+});
+
+test("register + bijstand: als Koen", () => {
+  const u = reken(["register", "bijstand"], 60);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_KOEN_JAAR);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+});
+
+test("WIA + register: het hoogste loonkostenvoordeel", () => {
+  const u = reken(["register", "wia"], 100);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 507520);
+  assert.equal(regel(u, "lkv").categorie, "arbeidsgehandicapte_werknemer");
+});
+
+test("Wajong + bijstand: geen loonkostensubsidie", () => {
+  const u = reken(["register", "wajong", "bijstand"], 60);
+  assert.equal(regel(u, "lks"), undefined);
+});
+
+test("geen van deze: niets, wel de toelichting", () => {
+  const u = reken(["geen"], 60);
+  assert.deepEqual(u.regels, []);
+  assert.ok(u.overige.every((o) => !o.geldt));
+  assert.ok(u.aannames.includes("geen"));
+});
+
+test("weet ik nog niet: register via de blijfgrond", () => {
+  const u = reken(["weetniet"], 60);
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+  assert.equal(overig(u, "nrp").geldt, true);
+  assert.ok(u.aannames.includes("weetniet"));
+});
