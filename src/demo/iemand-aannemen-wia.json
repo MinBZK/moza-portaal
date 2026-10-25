@@ -36,7 +36,7 @@
         {
           "vraag": "Had Robin in september 2026 een WIA-uitkering?",
           "wetsvraag": "Had de werknemer in de maand vóór aanvang van de dienstbetrekking recht op een uitkering op grond van hoofdstuk 6 van de Wet WIA?",
-          "parameter": "heeft_wia_uitkering_hoofdstuk_6",
+          "parameter": "had_wia_recht_maand_voor_aanvang",
           "waarde": "Ja, WIA-uitkering",
           "grond": "Wtl 2.6"
         },
@@ -46,13 +46,6 @@
           "parameter": "heeft_wajong_arbeidsondersteuning_of_uitkering",
           "waarde": "Nee",
           "grond": "Wajong 2:15"
-        },
-        {
-          "vraag": "Is er al een doelgroepverklaring voor Robin?",
-          "wetsvraag": "Heeft UWV een doelgroepverklaring verstrekt?",
-          "parameter": "heeft_doelgroepverklaring",
-          "waarde": "Nog niet; de werknemer vraagt die zelf aan",
-          "grond": "Wtl 2.7 lid 1"
         }
       ]
     },

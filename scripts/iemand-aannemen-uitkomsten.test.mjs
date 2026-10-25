@@ -403,3 +403,26 @@ test("demo: WIA heeft geen besluit voor de werkgever, de andere wel", () => {
   assert.equal(lees("wajong").besluit.organisatie, "UWV");
   assert.equal(lees("gemeente").besluit.datum, "2026-11-03");
 });
+
+// Parameters in de bronnen zijn feiten uit _basisfeiten.json, uitkomsten van
+// de engine (labels) of weergavegegevens die de gemeente-situatie ook heeft.
+const WEERGAVE_PARAMETERS = [
+  "kvk_nummer",
+  "aantal_werknemers_loonaangifte",
+  "uurloon",
+];
+for (const situatie of ["wajong", "wia"]) {
+  test(`demo ${situatie}: parameters in de bronnen bestaan in het corpus`, () => {
+    const demo = JSON.parse(
+      readFileSync("src/demo/" + SITUATIES[situatie], "utf8"),
+    );
+    for (const bron of demo.bronnen)
+      for (const { parameter } of bron.gegevens)
+        assert.ok(
+          parameter in basis ||
+            parameter in demo.labels ||
+            WEERGAVE_PARAMETERS.includes(parameter),
+          `${situatie}/${bron.id}: ${parameter}`,
+        );
+  });
+}
