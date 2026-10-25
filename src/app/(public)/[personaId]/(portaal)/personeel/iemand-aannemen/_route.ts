@@ -14,6 +14,10 @@ export type ZaakStand = {
   verstuurdOp?: string;
   fase: string;
   vraag?: string;
+  /** De antwoorden bij het indienen (of bij "Klaar"); de zaak rekent daarmee. */
+  antwoorden?: Keuzes;
+  /** Het onderwerp zoals de zaak het bij het indienen kreeg. */
+  onderwerp?: string;
 };
 export type Zaken = Partial<Record<Situatie, ZaakStand>>;
 export type TaakStand = "open" | "aangevraagd" | "verstrekt";
@@ -51,19 +55,25 @@ export const routeVoor = (doelgroepen: Doelgroep[], u: Uitkomsten): Route => {
   const panelen: Route["panelen"] = [];
   const taken: TaakId[] = [];
 
+  // Het loonkostenvoordeel arbeidsgehandicapte vraagt om een doelgroepverklaring
+  // van de werknemer, in elke situatie (ook Wajong + WIA).
+  if (regel("lkv")?.categorie === "arbeidsgehandicapte_werknemer")
+    taken.push("doelgroepverklaring");
+
   if (situatie === "gemeente") {
     const ids: PaneelId[] = [];
     if (regel("lks")) ids.push("lks");
     if (geldt("begeleiding")) ids.push("jc");
     ids.push("wpa");
     if (geldt("pp_pwet")) ids.push("pp");
-    panelen.push({ organisatie: "gemeente", ids });
+    // Werkplekaanpassing alleen is geen aanvraag (de keuze kan "later" of
+    // "nee" zijn): zonder lks, jc of pp volgt de route het overzicht.
+    if (ids.some((id) => id !== "wpa"))
+      panelen.push({ organisatie: "gemeente", ids });
   } else if (situatie === "wajong") {
     if (regel("ld")) panelen.push({ organisatie: "uwv", ids: ["ld"] });
     if (geldt("vz_wajong")) taken.push("vz_wajong");
   } else if (situatie === "wia") {
-    if (regel("lkv")?.categorie === "arbeidsgehandicapte_werknemer")
-      taken.push("doelgroepverklaring");
     if (geldt("vz_wia")) taken.push("vz_wia");
   }
 
@@ -71,7 +81,11 @@ export const routeVoor = (doelgroepen: Doelgroep[], u: Uitkomsten): Route => {
   if (regel("lkv")) vanzelf.push("lkv");
   if (geldt("nrp")) vanzelf.push("nrp");
 
-  const heeftZaak = panelen.length > 0 || taken.includes("doelgroepverklaring");
+  // De taak doelgroepverklaring is alleen bij WIA een eigen zaak; bij Wajong
+  // hoort hij bij de zaak van de loondispensatie.
+  const heeftZaak =
+    panelen.length > 0 ||
+    (situatie === "wia" && taken.includes("doelgroepverklaring"));
   const zaak = heeftZaak ? situatie : null;
 
   return { situatie, panelen, taken, vanzelf, zaak, overzicht: zaak === null };
@@ -105,6 +119,26 @@ export const migreerZaken = (oud: {
   if (vraag !== undefined) zaak.vraag = vraag;
   return { gemeente: zaak };
 };
+
+/** De antwoorden waarmee een zaak rekent: de kopie van het indienen, anders (oude opslag) die van nu. */
+export const antwoordenVoorZaak = (
+  zaak: ZaakStand | undefined,
+  nu: Keuzes,
+): Keuzes => zaak?.antwoorden ?? nu;
+
+/**
+ * Het onderwerp van de zaak. Een gemeente-zaak zonder loonkostensubsidie gaat
+ * over de andere aanvragen bij de gemeente.
+ */
+export const onderwerpVoor = (
+  situatie: Situatie,
+  onderwerp: string,
+  kandidaat: string,
+  u: Uitkomsten,
+): string =>
+  situatie === "gemeente" && !u.regels.some((r) => r.id === "lks")
+    ? `Aanvraag bij de gemeente voor ${kandidaat}`
+    : onderwerp;
 
 /** Plaats van de fase in de fasen van de situatie; onbekend telt als de eerste. */
 export const faseIndex = (fase: string, fasen: { id: string }[]): number =>

@@ -21,8 +21,10 @@ import InfoToggletip from "@/components/InfoToggletip";
 import StatusTrack from "../../_statusTrack";
 import ZakenTabs from "../../_zakenTabs";
 import {
+  antwoordenVoorZaak,
   besluitGeldt,
   faseIndex,
+  onderwerpVoor,
   vulSjabloon,
   waardenVoor,
 } from "../../../personeel/iemand-aannemen/_route";
@@ -84,7 +86,10 @@ const Zaak = ({
   demo: DemoAannemen;
 }) => {
   const { staat, werkBij, werkZaakBij } = useAannemen();
-  const antwoorden = staat?.antwoorden ?? STANDAARD_ANTWOORDEN;
+  // De zaak rekent met de antwoorden van het indienen, niet met die van nu.
+  const antwoorden = staat
+    ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
+    : STANDAARD_ANTWOORDEN;
   const { uitkomsten, bekend, fout } = useUitkomsten(antwoorden);
   if (!staat) return null;
 
@@ -94,6 +99,14 @@ const Zaak = ({
   const w = waardenVoor(antwoorden, uitkomsten);
   const vulIn = (tekst: string) => vulSjabloon(tekst, w);
   const taak = staat.taken.doelgroepverklaring ?? "open";
+  const onderwerp = bekend
+    ? onderwerpVoor(
+        situatie,
+        zaak.onderwerp,
+        `${kandidaat.voornaam} ${kandidaat.achternaam}`,
+        uitkomsten,
+      )
+    : (zaakStand.onderwerp ?? zaak.onderwerp);
 
   const zetFase = (fase: string) => {
     werkZaakBij(situatie, {
@@ -247,7 +260,7 @@ const Zaak = ({
     <>
       <div className="rhc-mox-card rhc-mox-row-gap">
         <ZakenTabs actief="lopend" />
-        <Heading level={1}>{zaak.onderwerp}</Heading>
+        <Heading level={1}>{onderwerp}</Heading>
 
         <section aria-labelledby="zaak-gegevens">
           <Heading level={2} id="zaak-gegevens">

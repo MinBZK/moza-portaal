@@ -57,7 +57,13 @@ const Verstuurd = ({
       </>
     );
 
-  const onderwerp = zaak.onderwerp[0].toLowerCase() + zaak.onderwerp.slice(1);
+  // Het onderwerp van het indienen; een gemeente-zaak zonder loonkostensubsidie
+  // heet "Aanvraag bij de gemeente voor …".
+  const titel = stand.onderwerp ?? zaak.onderwerp;
+  const klein = titel[0].toLowerCase() + titel.slice(1);
+  const onderwerp = klein.startsWith("aanvraag ")
+    ? klein.slice("aanvraag ".length)
+    : klein;
   return (
     <>
       <Heading level={1}>Uw aanvraag is verstuurd</Heading>

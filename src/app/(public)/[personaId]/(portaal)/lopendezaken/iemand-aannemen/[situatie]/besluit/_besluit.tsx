@@ -15,6 +15,7 @@ import {
 import type { DemoAannemen, DemoAannemenSituatie } from "@/demo";
 import basis from "../../../../personeel/iemand-aannemen/_basisfeiten.json";
 import {
+  antwoordenVoorZaak,
   besluitGeldt,
   faseIndex,
   waardenVoor,
@@ -62,7 +63,10 @@ const Besluit = ({
   kvk: string;
 }) => {
   const { staat, werkZaakBij } = useAannemen();
-  const antwoorden = staat?.antwoorden ?? STANDAARD_ANTWOORDEN;
+  // Het besluit rekent met de antwoorden van het indienen, niet met die van nu.
+  const antwoorden = staat
+    ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
+    : STANDAARD_ANTWOORDEN;
   const { uitkomsten, bekend } = useUitkomsten(antwoorden);
   const invoer = useMemo(
     () =>

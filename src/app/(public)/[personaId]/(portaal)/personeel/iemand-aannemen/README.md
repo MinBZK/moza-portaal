@@ -36,7 +36,11 @@ past: Wajong, WIA, bijstand, register, beschut werk of Wsw of geen van deze,
 anders weet ik niet. `routeVoor` maakt daarvan de route met de uitkomsten van
 de engine: welke panelen er zijn per organisatie, welke taken de werknemer
 heeft, wat vanzelf gaat en of er een zaak is. Geeft de engine geen recht, dan
-is er geen paneel; blijft er niets over, dan volgt het overzicht.
+is er geen paneel; blijft er niets over, dan volgt het overzicht. Bij de
+gemeente telt werkplekaanpassing alleen niet als aanvraag: zonder
+loonkostensubsidie, jobcoaching of proefplaatsing volgt ook het overzicht. Het
+loonkostenvoordeel arbeidsgehandicapte geeft in elke situatie de taak
+doelgroepverklaring; alleen bij WIA is dat een eigen zaak.
 
 | Situatie | Route na de oriëntatie |
 |---|---|
@@ -48,7 +52,13 @@ is er geen paneel; blijft er niets over, dan volgt het overzicht.
 | `weetniet` | gegevens ophalen, dan terug naar de oriëntatie met ingevulde vinkjes |
 
 De opslag bewaart per situatie een eigen zaak (`zaken[situatie]`); een oudere
-opslag met één zaak hoort bij de gemeente (`migreerZaken`).
+opslag met één zaak hoort bij de gemeente (`migreerZaken`). Bij indienen (en
+bij "Klaar" voor WIA) krijgt de zaak een kopie van de antwoorden en het
+onderwerp; zaak en besluit rekenen met die kopie (`antwoordenVoorZaak`), zodat
+een andere oriëntatie een ingediende zaak niet verandert. In `moza-zaken`
+dragen de zaken `flow: "iemand-aannemen"` en de situatie; Lopende zaken linkt
+alleen die (en oude zaken met een zaaknummer uit de demo-bestanden) naar deze
+zaakpagina's, nooit een chat-zaak met een vergelijkbaar onderwerp.
 
 Schermafdrukken maakt `scripts/iemand-aannemen-schermen.mjs` (1280 en 390, consolefouten, overflow, live berekening); `docs/` staat in .gitignore, dus kies een eigen map.
 

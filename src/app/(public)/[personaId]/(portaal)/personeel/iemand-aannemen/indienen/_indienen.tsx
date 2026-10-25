@@ -15,10 +15,15 @@ import {
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import type { DemoAannemen } from "@/demo";
-import { routeVoor, type PaneelId, type TaakId } from "../_route";
+import {
+  onderwerpVoor,
+  routeVoor,
+  type PaneelId,
+  type TaakId,
+} from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { useAannemen, uurloonTekst, type AannemenStaat } from "../_useAannemen";
-import { INGEDIEND_OP, zaakAanmaken } from "../_zaakStart";
+import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, type Werkgever } from "../_werkgever";
 
 const Loket = ({
@@ -155,7 +160,9 @@ const IndienenInhoud = ({
   const vanzelf: string[] = [];
   if (route.vanzelf.includes("lkv"))
     vanzelf.push(
-      `Loonkostenvoordeel${lkv?.categorie === "arbeidsgehandicapte_werknemer" ? " arbeidsgehandicapte" : ""}: opgeven in uw loonaangifte, vanaf de eerste loonaangifte na de start`,
+      lkv?.categorie === "arbeidsgehandicapte_werknemer"
+        ? "Loonkostenvoordeel arbeidsgehandicapte: opgeven in uw loonaangifte, zodra u de doelgroepverklaring van de werknemer hebt"
+        : "Loonkostenvoordeel: opgeven in uw loonaangifte, vanaf de eerste loonaangifte na de start",
     );
   if (route.vanzelf.includes("nrp"))
     vanzelf.push(
@@ -163,17 +170,50 @@ const IndienenInhoud = ({
     );
   vanzelf.push(...later);
 
+  const onderwerp = onderwerpVoor(
+    situatie,
+    zaak.onderwerp,
+    `${kandidaat.voornaam} ${kandidaat.achternaam}`,
+    uitkomsten,
+  );
+
+  // Alles wat overblijft is "later" of "nee": er gaat niets naar de organisatie.
+  if (ingediend.length === 0)
+    return (
+      <>
+        <Alert type="info">
+          <Paragraph>
+            U heeft niets gekozen om in te dienen. Kies bij de aanvraag wat u
+            wilt aanvragen, of bekijk wat er zonder aanvraag geldt.
+          </Paragraph>
+        </Alert>
+        <ActionGroup>
+          <Link
+            href="/personeel/iemand-aannemen/overzicht"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Bekijk het overzicht
+          </Link>
+          <Link
+            href="/personeel/iemand-aannemen/concept-aanvraag"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Terug naar de aanvraag
+          </Link>
+        </ActionGroup>
+      </>
+    );
+
   const indienen = () => {
     if (!bevestigd) {
       setFout(true);
       return;
     }
-    werkZaakBij(situatie, {
-      ingediend: true,
-      verstuurdOp: INGEDIEND_OP,
-      fase: eersteFase,
-    });
-    zaakAanmaken(situatie, zaak, "In behandeling");
+    werkZaakBij(
+      situatie,
+      nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
+    );
+    zaakAanmaken(situatie, zaak, "In behandeling", onderwerp);
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
 

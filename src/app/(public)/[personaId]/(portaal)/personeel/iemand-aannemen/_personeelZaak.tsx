@@ -34,7 +34,8 @@ const PersoneelZaak = ({
                 href={zaken[situatie].url}
                 className="utrecht-link utrecht-link--html-a"
               >
-                {zaken[situatie].onderwerp}
+                {zaakVan(staat, situatie).onderwerp ??
+                  zaken[situatie].onderwerp}
               </Link>
               <br />
               {zaken[situatie].organisatie} ·{" "}

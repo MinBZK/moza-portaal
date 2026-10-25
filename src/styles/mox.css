@@ -792,6 +792,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		max-inline-size: 100%;
 	}
 
+	/* Een knoplink die (nog) niet werkt, zoals tijdens het rekenen. */
+	.mox-hiring-button-link[aria-disabled="true"] {
+		background-color: var(--utrecht-button-disabled-background-color);
+		border-color: var(--utrecht-button-disabled-border-color);
+		color: var(--utrecht-button-disabled-color);
+		cursor: not-allowed;
+	}
+
 	/* Eerste scherm: getalvelden, balans en de aanvraag met panelen. */
 	.mox-hiring-note {
 		color: var(--rhc-color-grey-80, #555);

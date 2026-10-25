@@ -79,13 +79,13 @@ const reken = (doelgroepen, loonwaarde, uren = 32, uurloon = 1499) => {
   return U.uitkomstenUit(a, uit);
 };
 // De engine rekent per maand onafgerond: € 897,408 (kaart: 89740.8 eurocent).
-const LKS_KOEN_JAAR = Math.round(89740.8 * 12);
+const LKS_GEMEENTE_60_JAAR = Math.round(89740.8 * 12);
 const regel = (u, id) => u.regels.find((r) => r.id === id);
 const overig = (u, id) => u.overige.find((o) => o.id === id);
 
-test("Koen: bijstand, loonwaarde 60", () => {
+test("gemeente (bijstand, 60)", () => {
   const u = reken(["bijstand"], 60);
-  assert.equal(regel(u, "lks").bedragPerJaar, LKS_KOEN_JAAR);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_GEMEENTE_60_JAAR);
   assert.equal(regel(u, "lks").aanname, "lks_lid4");
   assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
   assert.equal(regel(u, "lkv").categorie, "banenafspraak");
@@ -109,7 +109,7 @@ test("register op 60 procent: geen loonkostensubsidie zonder gemeente", () => {
   assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
 });
 
-test("Sadee: Wajong, 70 procent", () => {
+test("Wajong 70 procent", () => {
   const u = reken(["register", "wajong"], 70);
   const ld = regel(u, "ld");
   assert.equal(ld.aanspraakPerUur, 1049.3);
@@ -160,13 +160,13 @@ test("beschut werk: geen loonkostenvoordeel, wel no-riskpolis", () => {
 
 test("beschut werk + bijstand: loonkostensubsidie, geen loonkostenvoordeel", () => {
   const u = reken(["bijstand", "beschut"], 60);
-  assert.equal(regel(u, "lks").bedragPerJaar, LKS_KOEN_JAAR);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_GEMEENTE_60_JAAR);
   assert.equal(regel(u, "lkv"), undefined);
 });
 
-test("register + bijstand: als Koen", () => {
+test("register + bijstand: als gemeente (bijstand, 60)", () => {
   const u = reken(["register", "bijstand"], 60);
-  assert.equal(regel(u, "lks").bedragPerJaar, LKS_KOEN_JAAR);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_GEMEENTE_60_JAAR);
   assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
 });
 
@@ -268,11 +268,87 @@ test("route: gemeente bij loonwaarde 60", () => {
   assert.equal(r.overzicht, false);
 });
 
-test("route: gemeente bij loonwaarde 100 heeft geen lks", () => {
+test("route: gemeente bij loonwaarde 100 heeft geen lks, wel proefplaatsing", () => {
   const r = R.routeVoor(["bijstand"], reken(["bijstand"], 100));
-  assert.equal(r.panelen[0].ids.includes("lks"), false);
-  assert.equal(r.panelen[0].ids.includes("wpa"), true);
+  // Zonder lks blijft de zaak alleen omdat de engine proefplaatsing geeft.
+  assert.deepEqual(ids(r), [["gemeente", ["wpa", "pp"]]]);
   assert.equal(r.zaak, "gemeente");
+  assert.equal(r.overzicht, false);
+});
+
+test("fix: gemeente met alleen werkplekaanpassing volgt het overzicht", () => {
+  // Wat de engine bij bijstand 100 geeft, zonder proefplaatsing.
+  const u = reken(["bijstand"], 100);
+  const zonderPp = {
+    ...u,
+    overige: u.overige.map((o) =>
+      o.id === "pp_pwet" ? { ...o, geldt: false } : o,
+    ),
+  };
+  const r = R.routeVoor(["bijstand"], zonderPp);
+  assert.deepEqual(r.panelen, []);
+  assert.equal(r.zaak, null);
+  assert.equal(r.overzicht, true);
+});
+
+test("fix: Wajong + WIA krijgt de taak doelgroepverklaring", () => {
+  const d = ["register", "wajong", "wia"];
+  const r = R.routeVoor(d, reken(d, 70));
+  assert.ok(r.taken.includes("doelgroepverklaring"));
+  assert.equal(r.zaak, "wajong");
+  // Zonder loondispensatie is er geen zaak: de taak alleen maakt geen Wajong-zaak.
+  const r100 = R.routeVoor(d, reken(d, 100));
+  assert.ok(r100.taken.includes("doelgroepverklaring"));
+  assert.equal(r100.zaak, null);
+  assert.equal(r100.overzicht, true);
+});
+
+test("fix: onderwerp van de gemeente-zaak zonder loonkostensubsidie", () => {
+  const o = (lw) =>
+    R.onderwerpVoor(
+      "gemeente",
+      "Loonkostensubsidie voor Kim Jansen",
+      "Kim Jansen",
+      reken(["bijstand"], lw),
+    );
+  assert.equal(o(60), "Loonkostensubsidie voor Kim Jansen");
+  assert.equal(o(100), "Aanvraag bij de gemeente voor Kim Jansen");
+  assert.equal(
+    R.onderwerpVoor(
+      "wajong",
+      "Loondispensatie voor Kim Jansen",
+      "Kim Jansen",
+      reken(["register", "wajong"], 70),
+    ),
+    "Loondispensatie voor Kim Jansen",
+  );
+});
+
+test("fix: een oude zaak rekent met de antwoorden van het indienen", () => {
+  const toen = {
+    doelgroepen: ["bijstand"],
+    uren: 32,
+    loonwaarde: 60,
+    uurloon: 1499,
+  };
+  const nu = { ...toen, doelgroepen: ["register", "wajong"], loonwaarde: 70 };
+  const zaak = { ingediend: true, fase: "besluit", antwoorden: toen };
+  assert.equal(R.antwoordenVoorZaak(zaak, nu), toen);
+  // Oude opslag zonder kopie: de antwoorden van nu.
+  assert.equal(
+    R.antwoordenVoorZaak({ ingediend: true, fase: "besluit" }, nu),
+    nu,
+  );
+  assert.equal(R.antwoordenVoorZaak(undefined, nu), nu);
+  const k = R.antwoordenVoorZaak(zaak, nu);
+  assert.equal(
+    R.besluitGeldt("gemeente", reken(k.doelgroepen, k.loonwaarde)),
+    true,
+  );
+  assert.equal(
+    R.besluitGeldt("gemeente", reken(nu.doelgroepen, nu.loonwaarde)),
+    false,
+  );
 });
 
 test("route: wajong bij loonwaarde 70", () => {
@@ -483,4 +559,39 @@ test("opslag: faseIndex met onbekende fase is 0", () => {
   const fasen = [{ id: "a" }, { id: "b" }];
   assert.equal(R.faseIndex("b", fasen), 1);
   assert.equal(R.faseIndex("x", fasen), 0);
+});
+
+const Z =
+  await import("../src/app/(public)/[personaId]/(portaal)/lopendezaken/_assistentZaken.ts");
+const chatZaak = (velden) => ({ id: "x", aangemaaktOp: 1, ...velden });
+
+test("fix: een chat-zaak zonder flow-veld linkt niet naar de demozaak", () => {
+  assert.equal(Z.zaakRoute(chatZaak({ onderwerp: "Loondispensatie" })), "");
+  assert.equal(
+    Z.zaakRoute(chatZaak({ onderwerp: "Loonkostensubsidie aanvragen" })),
+    "",
+  );
+  assert.equal(Z.zaakRoute(chatZaak({ regeling: "doelgroepverklaring" })), "");
+  assert.equal(
+    Z.zaakRoute(
+      chatZaak({ onderwerp: "Rapportage informatieplicht energiebesparing" }),
+    ),
+    "/lopendezaken/informatieplicht-energiebesparing",
+  );
+});
+
+test("fix: zaken van de flow linken naar hun situatie", () => {
+  for (const s of ["gemeente", "wajong", "wia"])
+    assert.equal(
+      Z.zaakRoute(chatZaak({ flow: "iemand-aannemen", situatie: s })),
+      `/lopendezaken/iemand-aannemen/${s}`,
+    );
+  // Zaken van vóór het flow-veld: herkend aan het nummer uit het demo-bestand.
+  for (const [s, bestand] of Object.entries(SITUATIES)) {
+    const demo = JSON.parse(readFileSync("src/demo/" + bestand, "utf8"));
+    assert.equal(
+      Z.zaakRoute(chatZaak({ referentienummer: demo.zaak.nummer })),
+      `/lopendezaken/iemand-aannemen/${s}`,
+    );
+  }
 });

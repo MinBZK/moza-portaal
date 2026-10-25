@@ -229,13 +229,22 @@ const VragenMetStaat = ({
           beslist zelf of u indient. Tussendoor opslaan kan.
         </Paragraph>
         <ActionGroup>
+          {/* Zolang de engine rekent, ligt de route nog niet vast. */}
           <Link
             href={aanvraagHref}
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action mox-hiring-button-link"
+            aria-disabled={resultaat.bekend ? undefined : true}
+            aria-describedby={resultaat.bekend ? undefined : "aanvragen-bezig"}
+            onClick={(event) => {
+              if (!resultaat.bekend) event.preventDefault();
+            }}
           >
             Aanvraag laten invullen
           </Link>
         </ActionGroup>
+        <Paragraph role="status" id="aanvragen-bezig">
+          {resultaat.bekend ? "" : "De berekening is nog bezig."}
+        </Paragraph>
       </section>
     </>
   );

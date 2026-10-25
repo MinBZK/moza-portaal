@@ -89,22 +89,36 @@ export const voegZaakToe = (gegevens: Record<string, unknown>) => {
   luisteraars.forEach((luisteraar) => luisteraar());
 };
 
+/** De situaties van "Iemand aannemen" met een eigen zaakpagina. */
+const AANNEMEN_SITUATIES = ["gemeente", "wajong", "wia"];
+
+/**
+ * Zaaknummers uit de demo-bestanden (src/demo/iemand-aannemen-*.json), voor
+ * zaken die zijn opgeslagen vóór het veld flow. De test bewaakt dat ze gelijk
+ * blijven aan de bestanden.
+ */
+const AANNEMEN_NUMMERS: Record<string, string> = {
+  "LLD-LKS-2026-0417": "gemeente",
+  "UWV-LD-2026-0231": "wajong",
+  "UWV-DV-2026-0518": "wia",
+};
+
 /** Bekende zaak-typen hebben een detailpagina (alleen frontend-routing). */
 export const zaakRoute = (zaak: AssistentZaak) => {
+  // Zaken van "Iemand aannemen" dragen flow en situatie (zie _zaakStart.ts);
+  // een zaak uit de chat met een vergelijkbaar onderwerp hoort er niet bij.
+  const situatie =
+    zaak.flow === "iemand-aannemen" ? veld(zaak, ["situatie"]) : "";
+  if (AANNEMEN_SITUATIES.includes(situatie))
+    return `/lopendezaken/iemand-aannemen/${situatie}`;
+  const oud = AANNEMEN_NUMMERS[veld(zaak, ["referentienummer"])];
+  if (oud) return `/lopendezaken/iemand-aannemen/${oud}`;
   const tekst = [
     veld(zaak, ["onderwerp", "titel"]),
     veld(zaak, ["zaak_type"]),
     veld(zaak, ["regeling"]),
     veld(zaak, ["referentienummer"]),
   ].join(" ");
-  // Elke zaak van "Iemand aannemen" heeft een eigen pagina per situatie;
-  // zaken van vóór de situaties (alleen loonkostensubsidie) horen bij de gemeente.
-  if (/loondispensatie/i.test(tekst))
-    return "/lopendezaken/iemand-aannemen/wajong";
-  if (/doelgroepverklaring/i.test(tekst))
-    return "/lopendezaken/iemand-aannemen/wia";
-  if (/loonkostensubsidie/i.test(tekst))
-    return "/lopendezaken/iemand-aannemen/gemeente";
   return /energiebespar|informatieplicht/i.test(tekst)
     ? "/lopendezaken/informatieplicht-energiebesparing"
     : "";

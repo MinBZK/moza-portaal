@@ -34,7 +34,7 @@ import {
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
-import { zaakAanmaken } from "../_zaakStart";
+import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
 
 type Gegeven = { label: string; waarde: string; bron: string };
@@ -532,7 +532,9 @@ const AanvraagInhoud = ({
       werkBij({
         zaken: {
           ...staat.zaken,
-          wia: staat.zaken.wia ?? { ingediend: true, fase: "wacht" },
+          wia:
+            staat.zaken.wia ??
+            nieuweZaakStand("wacht", a, perSituatie.wia.zaak.onderwerp),
         },
         taken: {
           ...staat.taken,
@@ -573,7 +575,9 @@ const AanvraagInhoud = ({
             ? "De regelrecht-engine rekent uit welke regelingen gelden…"
             : regelingen === 0
               ? "Bij deze antwoorden is er niets aan te vragen."
-              : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
+              : paneelIds.length === 0
+                ? "U hoeft niets in te dienen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+                : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
       </Paragraph>
 
       <p className="mox-hiring-meta">

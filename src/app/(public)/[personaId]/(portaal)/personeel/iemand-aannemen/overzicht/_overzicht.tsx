@@ -87,15 +87,28 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
 
   return (
     <>
-      <Paragraph role={bekend ? undefined : "status"}>
-        {resultaat.fout
-          ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
-          : !bekend
-            ? "De regelrecht-engine rekent uit wat voor u geldt…"
-            : nietsAan
-              ? "Bij deze antwoorden is er niets aan te vragen."
-              : "Voor deze situatie dient u niets in. Dit is wat er wel geldt."}
-      </Paragraph>
+      {/* Volgens de engine is er wel iets aan te vragen: verwijs naar de aanvraag. */}
+      {bekend && !route.overzicht ? (
+        <Paragraph>
+          Bij deze antwoorden kunt u een aanvraag indienen.{" "}
+          <Link
+            href="/personeel/iemand-aannemen/gegevens"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Vul de aanvraag in
+          </Link>
+        </Paragraph>
+      ) : (
+        <Paragraph role={bekend ? undefined : "status"}>
+          {resultaat.fout
+            ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
+            : !bekend
+              ? "De regelrecht-engine rekent uit wat voor u geldt…"
+              : nietsAan
+                ? "Bij deze antwoorden is er niets aan te vragen."
+                : "Voor deze situatie dient u niets in. Dit is wat er wel geldt."}
+        </Paragraph>
+      )}
 
       {bekend && situatie === "weetniet" && (
         <Kaart id="uitleg-weetniet" kop="Weet ik nog niet">
@@ -154,8 +167,10 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
               <Paragraph>
                 U vraagt het loonkostenvoordeel aan door in de loonaangifte het
                 vakje loonkostenvoordeel aan te zetten; een aparte aanvraag is
-                niet nodig. De Belastingdienst rekent het na afloop van het jaar
-                uit.
+                niet nodig.
+                {lkv?.categorie === "arbeidsgehandicapte_werknemer" &&
+                  " Dat kan zodra u de doelgroepverklaring van de werknemer hebt."}{" "}
+                De Belastingdienst rekent het na afloop van het jaar uit.
               </Paragraph>
               {situatie === "register" && (
                 <div className="mox-hiring-note">
