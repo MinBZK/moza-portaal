@@ -590,7 +590,16 @@ const AanvraagInhoud = ({
               : `Ingevuld door ${ondernemer}`
           }
         />
-        <Tag tekst="Nog niet ingediend" />
+        {/* Zonder panelen dient de werkgever niets in: geen tag. */}
+        {paneelIds.length > 0 && (
+          <Tag
+            tekst={
+              staat.zaken[situatie]?.ingediend
+                ? "Ingediend"
+                : "Nog niet ingediend"
+            }
+          />
+        )}
       </p>
 
       {paneelIds.length > 0 && (

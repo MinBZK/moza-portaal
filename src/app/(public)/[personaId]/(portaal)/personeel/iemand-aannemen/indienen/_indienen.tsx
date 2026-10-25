@@ -126,6 +126,25 @@ const IndienenInhoud = ({
   // De zaak begint bij ontvangst; "indicatie" van de gemeente ligt vóór het indienen.
   const eersteFase = (fasen.find((f) => f.id === "ontvangst") ?? fasen[0]).id;
   const vn = kandidaat.voornaam;
+  // Opnieuw indienen zou de zaak terugzetten naar de eerste fase.
+  const bestaand = staat.zaken[situatie];
+  if (bestaand?.ingediend)
+    return (
+      <>
+        <Alert type="info">
+          <Paragraph>
+            Deze aanvraag is al ingediend
+            {bestaand.verstuurdOp ? ` op ${datumNL(bestaand.verstuurdOp)}` : ""}
+            . U volgt de aanvraag in Lopende zaken.
+          </Paragraph>
+        </Alert>
+        <Paragraph>
+          <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
+            Bekijk de zaak
+          </Link>
+        </Paragraph>
+      </>
+    );
   const uwv = situatie === "wajong";
   const organisatie = uwv ? "UWV" : `Gemeente ${kandidaat.gemeente}`;
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
