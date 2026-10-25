@@ -271,7 +271,13 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  "lks_lid4" | "wia_nieuw" | "wsw_zuinig" | "beschut_lks" | "weetniet" | "geen";
+  | "lks_lid4"
+  | "ld_cao"
+  | "wia_nieuw"
+  | "wsw_zuinig"
+  | "beschut_lks"
+  | "weetniet"
+  | "geen";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";
@@ -325,7 +331,10 @@ export const uitkomstenUit = (
       bedragPerJaar: Math.round(Number(lks.hoogte_lks_eurocent_per_maand) * 12),
       aanname: "lks_lid4",
     });
-  if (ld.heeft_recht_op_loondispensatie === true) {
+  // Boven het minimumloon hangt het van de cao af of loondispensatie het loon verlaagt.
+  const ldBovenWml =
+    ld.heeft_recht_op_loondispensatie === true && a.uurloon > WML_UUR_EUROCENT;
+  if (ld.heeft_recht_op_loondispensatie === true && !ldBovenWml) {
     const perUur = Number(ld.aanspraak_beloning_per_uur_eurocent);
     regels.push({
       id: "ld",
@@ -382,9 +391,35 @@ export const uitkomstenUit = (
   ];
 
   const aannames: AannameId[] = [];
+  if (ldBovenWml) aannames.push("ld_cao");
   if (d.has("wsw")) aannames.push("wsw_zuinig");
   if (d.has("beschut") && !d.has("bijstand")) aannames.push("beschut_lks");
   if (d.has("weetniet")) aannames.push("weetniet");
   if (d.has("geen")) aannames.push("geen");
   return { regels, overige, aannames };
 };
+
+type Uit = Record<string, Outputs>;
+
+/**
+ * Wat de hook teruggeeft: de uitkomsten van nu, aangevuld met de laatste van
+ * dezelfde aanroep zodat het scherm niet verspringt. Alleen als alles van nu
+ * is, telt het als bekend: een oud bedrag mag niet als geldig op het scherm.
+ */
+export const samenvoegen = (ids: string[], nu: Uit, alle: Uit) => {
+  const uit: Uit = {};
+  for (const id of ids) {
+    const waarde = nu[id] ?? alle[id];
+    if (waarde) uit[id] = waarde;
+  }
+  return {
+    uit,
+    bekend: ids.every((id) => id in nu),
+    bezig: ids.some((id) => !(id in nu)),
+  };
+};
+
+/** De aanvraag na de oriëntatie is uitgewerkt voor een kandidaat via de gemeente (bijstand). */
+export const aanvraagWijktAf = (doelgroepen: Doelgroep[]) =>
+  !doelgroepen.includes("bijstand") ||
+  doelgroepen.some((d) => d !== "register" && d !== "bijstand");

@@ -1,6 +1,7 @@
 "use client";
 
-import { Alert, Heading, Paragraph, Toggletip } from "@/components/rhc";
+import { Alert, Heading, Paragraph } from "@/components/rhc";
+import InfoToggletip from "@/components/InfoToggletip";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
 import type { AannameId, Regel } from "./_uitkomsten";
@@ -14,6 +15,11 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
     kort: "Gerekend met een loonwaarde die vooraf vaststaat.",
     uitleg:
       "Gerekend met een loonwaarde die de gemeente vooraf vaststelt. Stelt de gemeente die pas na de start vast, dan krijgt u de eerste zes maanden 50 procent: € 1.577,48 per maand bij 36 uur, naar rato van de uren.",
+  },
+  ld_cao: {
+    kort: "Loondispensatie niet meegeteld.",
+    uitleg:
+      "U betaalt meer dan het minimumloon. Of loondispensatie dan uw loonkosten verlaagt, hangt af van uw cao. Daarom staat het bedrag er niet in.",
   },
   wia_nieuw: {
     kort: "Gerekend als nieuwe werkgever.",
@@ -55,7 +61,10 @@ const naam = (r: Regel) =>
 export const Aanname = ({ id }: { id: AannameId }) => (
   // Een div: de Toggletip is een <details> en mag niet in een <p>.
   <div className="mox-hiring-note">
-    {AANNAMES[id].kort} <Toggletip>{AANNAMES[id].uitleg}</Toggletip>
+    {AANNAMES[id].kort}{" "}
+    <InfoToggletip label={`Toelichting: ${AANNAMES[id].kort}`}>
+      {AANNAMES[id].uitleg}
+    </InfoToggletip>
   </div>
 );
 
@@ -143,7 +152,11 @@ const Balans = ({
               {r.aanname && (
                 <>
                   {" "}
-                  <Toggletip>{AANNAMES[r.aanname].uitleg}</Toggletip>
+                  <InfoToggletip
+                    label={`Toelichting bij ${naam(r).toLowerCase()}`}
+                  >
+                    {AANNAMES[r.aanname].uitleg}
+                  </InfoToggletip>
                 </>
               )}
             </dt>

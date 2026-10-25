@@ -198,9 +198,10 @@ test("weet ik nog niet: register via de blijfgrond", () => {
 
 test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
   const doelen = (d) =>
-    U.invoerVoor({ doelgroepen: d, uren: 32, loonwaarde: 60, uurloon: 1499 }, basis).map(
-      (i) => i.output,
-    );
+    U.invoerVoor(
+      { doelgroepen: d, uren: 32, loonwaarde: 60, uurloon: 1499 },
+      basis,
+    ).map((i) => i.output);
   assert.deepEqual(doelen(["bijstand"]), [
     "heeft_recht_op_lks",
     "heeft_recht_op_lkv",
@@ -219,4 +220,34 @@ test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
     "mag_jobcoaching_toekennen",
   ]);
   assert.deepEqual(doelen(["geen"]), []);
+});
+
+test("fix: tijdens het rekenen geldt een oude uitkomst niet als bekend", () => {
+  const ids = ["participatiewet:heeft_recht_op_lks"];
+  const oud = {
+    "participatiewet:heeft_recht_op_lks": { heeft_recht_op_lks: true },
+  };
+  const r = U.samenvoegen(ids, {}, oud);
+  assert.equal(r.bekend, false);
+  assert.equal(r.bezig, true);
+  assert.deepEqual(r.uit, oud);
+  assert.equal(U.samenvoegen(ids, oud, {}).bekend, true);
+});
+
+test("fix: (i) bij de aanvraag zodra de keuze niet Koens situatie is", () => {
+  assert.equal(U.aanvraagWijktAf(["bijstand"]), false);
+  assert.equal(U.aanvraagWijktAf(["register", "bijstand"]), false);
+  assert.equal(U.aanvraagWijktAf(["register"]), true);
+  assert.equal(U.aanvraagWijktAf([]), true);
+  assert.equal(U.aanvraagWijktAf(["wia", "bijstand"]), true);
+});
+
+test("fix: loondispensatie telt niet mee bij een uurloon boven het minimumloon", () => {
+  const u = reken(["register", "wajong"], 70, 32, 2000);
+  assert.equal(regel(u, "ld"), undefined);
+  assert.ok(u.aannames.includes("ld_cao"));
+  assert.equal(
+    regel(reken(["register", "wajong"], 70), "ld").bedragPerJaar > 0,
+    true,
+  );
 });

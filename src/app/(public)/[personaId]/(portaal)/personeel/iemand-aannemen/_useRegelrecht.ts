@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { samenvoegen } from "./_uitkomsten";
 
 /**
  * De regelrecht-engine in de browser: een Web Worker met de WASM-kern van
@@ -217,15 +218,8 @@ export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
 
   const ids = invoeren.map((i) => `${i.wet}:${i.output}`);
   const nu = stand?.sleutel === sleutel ? stand.uit : {};
-  const uit: Record<string, Berekening["outputs"]> = {};
-  for (const id of ids) {
-    const waarde = nu[id] ?? stand?.alle[id];
-    if (waarde) uit[id] = waarde;
-  }
   return {
-    uit,
-    bekend: ids.every((id) => id in uit),
-    bezig: ids.some((id) => !(id in nu)),
+    ...samenvoegen(ids, nu, stand?.alle ?? {}),
     fout: stand?.sleutel === sleutel ? stand.fout : undefined,
   };
 };
