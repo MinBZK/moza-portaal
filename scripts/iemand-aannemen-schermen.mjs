@@ -1,7 +1,7 @@
 // Schermafdrukken en controles van "Iemand aannemen" in headless Chromium.
 // Gebruik: node scripts/iemand-aannemen-schermen.mjs <basis-url> <uitvoermap> [personaId]
 // Per pagina: 1280 en 390 breed, consolefouten, horizontale scroll, h1 aanwezig.
-// De zaak- en besluitpagina's krijgen de toestand "verstuurd, besluit genomen" via localStorage.
+// Per situatie (gemeente, Wajong, WIA, register, uitleg) de stand via localStorage.
 import { chromium } from "/home/claude/projects/regelrecht/node_modules/playwright/index.mjs";
 import { mkdir } from "node:fs/promises";
 
@@ -15,6 +15,49 @@ const alle = {
   eigen: true,
 };
 
+// Antwoorden per situatie; zaak- en besluitpagina's krijgen een ingediende zaak
+// met een kopie van de antwoorden, zoals Indienen die aanmaakt.
+const ANTWOORDEN = {
+  gemeente: {
+    doelgroepen: ["register", "bijstand"],
+    uren: 32,
+    loonwaarde: 60,
+    uurloon: 1499,
+  },
+  wajong: {
+    doelgroepen: ["register", "wajong"],
+    uren: 32,
+    loonwaarde: 70,
+    uurloon: 1499,
+  },
+  wia: {
+    doelgroepen: ["register", "wia"],
+    uren: 32,
+    loonwaarde: 100,
+    uurloon: 1499,
+  },
+  register: {
+    doelgroepen: ["register"],
+    uren: 32,
+    loonwaarde: 100,
+    uurloon: 1499,
+  },
+  uitleg: { doelgroepen: ["beschut"], uren: 32, loonwaarde: 60, uurloon: 1499 },
+};
+const zaak = (situatie, fase, extra = {}) => ({
+  antwoorden: ANTWOORDEN[situatie],
+  bronnen: alle,
+  zaken: {
+    [situatie]: {
+      ingediend: true,
+      verstuurdOp: "2026-10-05",
+      fase,
+      antwoorden: ANTWOORDEN[situatie],
+      ...extra,
+    },
+  },
+});
+
 const PAGINAS = [
   ["01-personeel", "/personeel", null],
   ["02-vragen", "/personeel/iemand-aannemen", null],
@@ -27,6 +70,7 @@ const PAGINAS = [
     "04-aanvraag",
     "/personeel/iemand-aannemen/concept-aanvraag",
     {
+      antwoorden: ANTWOORDEN.gemeente,
       bronnen: alle,
       gecontroleerd: { lks: true, lkv: true },
       keuzes: { jc: "ja" },
@@ -36,44 +80,71 @@ const PAGINAS = [
     "05-indienen",
     "/personeel/iemand-aannemen/indienen",
     {
+      antwoorden: ANTWOORDEN.gemeente,
       bronnen: alle,
-      gecontroleerd: {
-        lks: true,
-        lkv: true,
-        nrp: true,
-        jc: true,
-        wpa: true,
-        pp: true,
-      },
+      gecontroleerd: { lks: true, jc: true, wpa: true, pp: true },
       keuzes: { jc: "ja", wpa: "later", pp: "nee" },
     },
   ],
   [
     "06-verstuurd",
     "/personeel/iemand-aannemen/verstuurd",
-    { bronnen: alle, ingediend: true, fase: "ontvangst" },
+    zaak("gemeente", "ontvangst"),
   ],
-  ["07-zaken", "/lopendezaken", { ingediend: true, fase: "ontvangst" }],
+  ["07-zaken", "/lopendezaken", zaak("gemeente", "ontvangst")],
   [
     "08-zaak-ontvangst",
-    "/lopendezaken/loonkostensubsidie-koen",
-    { ingediend: true, fase: "ontvangst" },
+    "/lopendezaken/iemand-aannemen/gemeente",
+    zaak("gemeente", "ontvangst"),
   ],
   [
     "09-zaak-antwoord",
-    "/lopendezaken/loonkostensubsidie-koen",
-    {
-      ingediend: true,
-      fase: "antwoord",
+    "/lopendezaken/iemand-aannemen/gemeente",
+    zaak("gemeente", "antwoord", {
       vraag: "Telt de vergoeding voor werkgeverslasten niet mee in het bedrag?",
-    },
+    }),
   ],
   [
     "10-besluit",
-    "/lopendezaken/loonkostensubsidie-koen/besluit",
-    { ingediend: true, fase: "besluit" },
+    "/lopendezaken/iemand-aannemen/gemeente/besluit",
+    zaak("gemeente", "besluit"),
   ],
-  ["11-personeel-met-zaak", "/personeel", { ingediend: true, fase: "besluit" }],
+  ["11-personeel-met-zaak", "/personeel", zaak("gemeente", "besluit")],
+  [
+    "12-wajong-aanvraag",
+    "/personeel/iemand-aannemen/concept-aanvraag",
+    { antwoorden: ANTWOORDEN.wajong, bronnen: alle },
+  ],
+  [
+    "13-wajong-zaak",
+    "/lopendezaken/iemand-aannemen/wajong",
+    zaak("wajong", "besluit"),
+  ],
+  [
+    "14-wajong-besluit",
+    "/lopendezaken/iemand-aannemen/wajong/besluit",
+    zaak("wajong", "besluit"),
+  ],
+  [
+    "15-wia-aanvraag",
+    "/personeel/iemand-aannemen/concept-aanvraag",
+    { antwoorden: ANTWOORDEN.wia, bronnen: alle },
+  ],
+  [
+    "16-wia-zaak",
+    "/lopendezaken/iemand-aannemen/wia",
+    zaak("wia", "aangevraagd"),
+  ],
+  [
+    "17-register-overzicht",
+    "/personeel/iemand-aannemen/overzicht",
+    { antwoorden: ANTWOORDEN.register },
+  ],
+  [
+    "18-uitleg-overzicht",
+    "/personeel/iemand-aannemen/overzicht",
+    { antwoorden: ANTWOORDEN.uitleg },
+  ],
 ];
 
 const browser = await chromium.launch({
@@ -102,26 +173,37 @@ for (const breed of [1280, 390]) {
     }, staat);
     await page.reload({ waitUntil: "load" });
     await page.waitForTimeout(1200);
+    // Geen schermafdruk van een pagina die nog rekent.
+    await page
+      .waitForFunction(
+        () => !/berekend…|rekent…|rekent uit/.test(document.body.innerText),
+        null,
+        { timeout: 60000 },
+      )
+      .catch(() => {});
     if (naam === "02-vragen" || naam === "04-aanvraag") {
+      // Vragen: de noot onder de balans; aanvraag: de zin met het aantal regelingen.
       const live = await page
         .waitForFunction(
-          () => {
-            const noot = [...document.querySelectorAll(".mox-hiring-note")]
-              .map((p) => p.textContent)
-              .join(" ");
-            return (
-              noot.includes("berekend in uw browser") &&
-              !noot.includes("rekent…")
-            );
+          (vragen) => {
+            const tekst = vragen
+              ? [...document.querySelectorAll(".mox-hiring-note")]
+                  .map((p) => p.textContent)
+                  .join(" ")
+              : (document.querySelector("main")?.textContent ?? "");
+            return vragen
+              ? /berekend in uw browser/i.test(tekst) &&
+                  !tekst.includes("rekent…")
+              : /gelden? voor deze situatie/.test(tekst);
           },
-          null,
+          naam === "02-vragen",
           { timeout: 40000 },
         )
         .then(() =>
           page.evaluate(() =>
             [
               ...document.querySelectorAll(
-                ".mox-hiring-amount, dl.mox-hiring-balance dd",
+                ".mox-hiring-amount, dl.mox-hiring-balance dd:not(.mox-hiring-bar)",
               ),
             ]
               .map((e) => e.textContent.trim())

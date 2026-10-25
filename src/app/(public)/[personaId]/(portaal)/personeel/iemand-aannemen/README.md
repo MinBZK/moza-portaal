@@ -122,7 +122,9 @@ Ook zaak en besluit rekenen mee. De demo-bestanden per situatie
 (`src/demo/iemand-aannemen-koen.json` voor de gemeente, `-wajong.json` en
 `-wia.json`) bevatten datums, actoren en teksten; bedragen, percentages en uren
 staan erin als sjabloon met plaatshouders: `{uren}`, `{loonwaarde}`,
-`{lksPerMaand}`, `{lksTweeMaanden}`, `{aanspraakPerUur}` en `{lkvPerJaar}`.
+`{lksPerMaand}`, `{lksTweeMaanden}`, `{aanspraakPerUur}` en `{lkvPerJaar}`;
+de gegevens van de werkgever (`{onderneming}`, `{kvkNummer}`, `{vestiging}`,
+`{fulltime}`, `{parttime}`, `{iban}`) komen uit de persona (`_werkgever.ts`).
 `_route.ts` vult ze met `vulSjabloon` en `waardenVoor` uit de antwoorden en de
 uitkomsten van de engine. Een uitkomst die de engine niet geeft, staat als
 "—"; een onbekende plaatshouder blijft staan. `besluitGeldt` toont besluit en
@@ -145,10 +147,11 @@ npm run dev                                 # of: npm run build && PORT=3100 npm
 node scripts/iemand-aannemen-schermen.mjs http://localhost:3100 /tmp/iemand-aannemen-beeld karin
 ```
 
-Het script maakt per pagina schermafdrukken op 1280 en 390, meldt
-consolefouten en horizontale scroll, en wacht op "Wat het oplevert" tot de
-engine heeft gerekend. De testtabel rekent de gevallen uit de
-Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ongeveer 45 seconden):
+Het script maakt schermafdrukken op 1280 en 390 van de route via de gemeente
+en van Wajong, WIA, alleen het register en beschut werk (overzicht). Het meldt
+consolefouten en horizontale scroll, en wacht per pagina tot de engine heeft
+gerekend. De testtabel rekent de gevallen uit de
+Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ruim twee minuten):
 `node --test scripts/iemand-aannemen-uitkomsten.test.mjs`. CI: `npm run lint`, `npm run lint:css`,
 `npm run type-check`, `npm run build`.
 
