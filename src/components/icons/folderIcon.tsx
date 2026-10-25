@@ -1,4 +1,4 @@
-/** Map (folder). De iconenset van RHC heeft geen map-icoon. */
+/** Folder. The RHC icon set has no folder icon. */
 export const FolderIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

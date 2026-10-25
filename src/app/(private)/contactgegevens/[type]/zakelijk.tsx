@@ -1,9 +1,7 @@
 "use client";
 
 import { getKvkFromCookie } from "@/utils/kvknummer";
-import { AanhefEditBox } from "@/app/(private)/contactgegevens/[type]/_aanhefEditBox";
-import { ContactEditBox } from "@/app/(private)/contactgegevens/[type]/_contactEditBox";
-import { TaalEditBox } from "@/app/(private)/contactgegevens/[type]/_taalEditBox";
+import { ContactDetails } from "@/app/(private)/contactgegevens/[type]/_contactDetails";
 import CopyNotificatie from "@/app/(private)/contactgegevens/[type]/copyNotificatie";
 import { useEffect, useState } from "react";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
@@ -36,25 +34,14 @@ const Zakelijk = () => {
   }
 
   return (
-    <div className="rhc-row-gap">
-      <AanhefEditBox voorkeur={aanhef} idenType={"KVK"} idenValue={kvk} />
-
-      <TaalEditBox voorkeur={taal} idenType={"KVK"} idenValue={kvk} />
-
-      <ContactEditBox
-        name={"Email"}
-        label={"E-mailadres"}
-        contactGegeven={email}
+    <div className="rhc-mox-row-gap">
+      <ContactDetails
         idenType={"KVK"}
         idenValue={kvk}
-      />
-
-      <ContactEditBox
-        name={"Telefoonnummer"}
-        label={"Telefoonnummer"}
-        contactGegeven={telefoonnummer}
-        idenType={"KVK"}
-        idenValue={kvk}
+        salutation={aanhef}
+        language={taal}
+        email={email}
+        phone={telefoonnummer}
       />
 
       {data?.status === 404 && <CopyNotificatie kvkNummer={kvk} />}

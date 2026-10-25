@@ -199,7 +199,7 @@ const Aanvraag = ({
       )}
 
       <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-row-gap">
+        <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
           <details className="mox-hiring-panel" id="paneel-lks" open>
             <summary>
               <span>
@@ -210,7 +210,7 @@ const Aanvraag = ({
               </span>
               {status("lks")}
             </summary>
-            <div className="rhc-row-gap">
+            <div className="rhc-mox-row-gap">
               <Gegevens
                 rijen={[...werkgeverRijen, ...werknemerRijen, ...dienstRijen]}
               />
@@ -249,7 +249,7 @@ const Aanvraag = ({
               </span>
               {status("lkv")}
             </summary>
-            <div className="rhc-row-gap">
+            <div className="rhc-mox-row-gap">
               <Gegevens
                 rijen={[
                   ...werkgeverRijen,
@@ -295,7 +295,7 @@ const Aanvraag = ({
               </span>
               {status("nrp")}
             </summary>
-            <div className="rhc-row-gap">
+            <div className="rhc-mox-row-gap">
               <Paragraph>
                 Wordt {kandidaat.voornaam} ziek, dan betaalt UWV ziekengeld (70
                 procent van het dagloon) in plaats van dat u het loon
@@ -326,7 +326,7 @@ const Aanvraag = ({
               </span>
               {status("jc")}
             </summary>
-            <div className="rhc-row-gap">
+            <div className="rhc-mox-row-gap">
               <Paragraph>
                 Begeleiding op de werkvloer. Iedereen voor wie
                 loonkostensubsidie geldt, heeft hier recht op (Participatiewet
@@ -373,7 +373,7 @@ const Aanvraag = ({
               </span>
               {status("wpa")}
             </summary>
-            <div className="rhc-row-gap">
+            <div className="rhc-mox-row-gap">
               <Paragraph>
                 Vergoeding voor een aangepaste werkplek of een hulpmiddel. De
                 gemeente beoordeelt de aanvraag; voor een kandidaat met een
@@ -417,7 +417,7 @@ const Aanvraag = ({
               </span>
               {status("pp")}
             </summary>
-            <div className="rhc-row-gap">
+            <div className="rhc-mox-row-gap">
               <Paragraph>
                 Eerst maximaal twee maanden op proef, met behoud van uitkering
                 (Participatiewet 8a). Alleen vóór de eerste werkdag.
@@ -449,7 +449,7 @@ const Aanvraag = ({
             </div>
           </details>
 
-          <section className="mox-card" aria-labelledby="paneel-ld">
+          <section className="rhc-mox-card" aria-labelledby="paneel-ld">
             <Heading level={2} id="paneel-ld">
               Loondispensatie{" "}
               <span className="mox-hiring-label mox-hiring-label--not-applicable">
@@ -488,7 +488,7 @@ const Aanvraag = ({
         </div>
 
         <aside
-          className="mox-card rhc-grid__cell rhc-grid__cell-t-4 rhc-row-gap"
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap"
           aria-label="Wat dit u oplevert"
         >
           <Balans antwoorden={a} traces={traces} kort />

@@ -16,7 +16,7 @@ import {
   Paragraph,
   UnorderedList,
   UnorderedListItem,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import type { DemoOrganisatie } from "@/demo";
 
 /**
@@ -94,7 +94,7 @@ const Organisaties = ({
   };
 
   return (
-    <form className="rhc-row-gap" onSubmit={opslaan}>
+    <form className="rhc-mox-row-gap" onSubmit={opslaan}>
       <Paragraph>
         Deze organisaties gebruiken uw centrale contactgegevens om contact met u
         op te nemen. Kiest u een extra organisatie, dan gebruikt ook die uw
@@ -104,7 +104,11 @@ const Organisaties = ({
 
       {melding && (
         <div ref={meldingRef} tabIndex={-1}>
-          <Alert type={melding === "fout" ? "error" : "ok"}>
+          <Alert
+            type={melding === "fout" ? "error" : "ok"}
+            closable
+            onClose={() => setMelding(null)}
+          >
             <Paragraph>
               {melding === "fout"
                 ? "Uw keuze is niet opgeslagen. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit en probeer het opnieuw."

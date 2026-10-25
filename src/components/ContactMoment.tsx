@@ -1,17 +1,17 @@
 import { components } from "@/network/omc/generated";
 
-/** Statussen met een eigen kleur; de rest krijgt de standaardkleur. */
-const statusKlasse: Record<string, string> = {
+/** Statuses with their own colour; the rest gets the default colour. */
+const statusClass: Record<string, string> = {
   Accepted: "mox-status--accepted",
   PermanentFailure: "mox-status--permanent-failure",
 };
 
 const ContactMoment = ({
-  notificatie,
+  notification,
 }: {
-  notificatie: components["schemas"]["Notificatie"];
+  notification: components["schemas"]["Notificatie"];
 }) => {
-  const date = new Date(notificatie.createdAt!);
+  const date = new Date(notification.createdAt!);
   const sendAt = date.toLocaleString("nl-NL", {
     timeZone: "Europe/Amsterdam",
     dateStyle: "short",
@@ -20,18 +20,18 @@ const ContactMoment = ({
 
   return (
     <div>
-      {/* Kleur herhaalt de status hieronder; de tekst is de informatie. */}
+      {/* The colour repeats the status below; the text carries the information. */}
       <span
         aria-hidden="true"
-        className={`mox-status ${statusKlasse[notificatie.status ?? ""] ?? ""}`}
+        className={`mox-status ${statusClass[notification.status ?? ""] ?? ""}`}
       />
       <div>
         <div>
           <div>Scenario 8 met kanaalherstel</div>
           <time>{sendAt}</time>
         </div>
-        <div>Status: {notificatie.status}</div>
-        <div>Medium: {notificatie.type}</div>
+        <div>Status: {notification.status}</div>
+        <div>Medium: {notification.type}</div>
 
         <div>UWV</div>
       </div>

@@ -63,7 +63,7 @@ const AanvraagPage = async ({
         </Link>
       </Paragraph>
 
-      <div className="mox-card rhc-row-gap">
+      <div className="rhc-mox-card rhc-mox-row-gap">
         <Alert type="info">
           U heeft deze aanvraag opgeslagen, maar nog niet ingediend. Dien de
           aanvraag in voor {aanvraag.indienenVoor}.

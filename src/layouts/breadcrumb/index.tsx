@@ -30,6 +30,8 @@ const breadcrumbLabels: Record<string, string> = {
   wetten: "Wetten en regelgeving",
   berichten: "Berichten over uw buurt",
   bewaard: "Bewaarde items",
+  gesprekken: "Gesprekken met de digitale assistent",
+  "niet-relevant": "Niet relevant gemarkeerd",
   "digitale-assistent": "Digitale assistent (AI)",
   belastingen: "Belastingen",
   "zakelijk-vervoer": "Zakelijk vervoer",

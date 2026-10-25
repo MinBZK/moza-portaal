@@ -206,7 +206,7 @@ const PersonaPaneel = ({
                         type="button"
                         onClick={() => gebruik(persona)}
                       >
-                        Gebruik deze persona
+                        Deze persona gebruiken
                         <VisuallyHidden>
                           : {naamVan(persona)},{" "}
                           {persona.profiel

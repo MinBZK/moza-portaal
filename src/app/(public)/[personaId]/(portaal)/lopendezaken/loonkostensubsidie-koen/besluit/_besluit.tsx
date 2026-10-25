@@ -70,7 +70,7 @@ const Besluit = ({
   };
 
   return (
-    <div className="mox-card rhc-row-gap">
+    <div className="rhc-mox-card rhc-mox-row-gap">
       <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
         Terug naar de zaak
       </Link>
@@ -185,7 +185,7 @@ const Besluit = ({
           bestuursrecht, artikel 6:7). Heeft u eerst een vraag? Stel die
           hieronder; de gemeente antwoordt in deze zaak.
         </Paragraph>
-        <form onSubmit={verstuurVraag} className="rhc-row-gap">
+        <form onSubmit={verstuurVraag} className="rhc-mox-row-gap">
           <label className="utrecht-form-label" htmlFor="da-vraag">
             Klopt dit niet? Stel uw vraag
           </label>

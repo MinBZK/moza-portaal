@@ -5,7 +5,7 @@ export default function GlobalNotFound() {
   return (
     <>
       <Heading level={1}>Pagina niet gevonden</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Paragraph>De pagina die u zoekt bestaat niet.</Paragraph>
         <Paragraph>
           <Link

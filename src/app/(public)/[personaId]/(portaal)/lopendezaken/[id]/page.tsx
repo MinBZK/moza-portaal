@@ -34,7 +34,7 @@ const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <>
       <HuidigeKruimel pad={`/lopendezaken/${zaak.id}`} label={zaak.titel} />
-      <div className="mox-card rhc-row-gap">
+      <div className="rhc-mox-card rhc-mox-row-gap">
         <ZakenTabs actief={zaak.soort} />
         <Heading level={1}>{zaak.titel}</Heading>
         {zaak.gegevensBovenaan ? (

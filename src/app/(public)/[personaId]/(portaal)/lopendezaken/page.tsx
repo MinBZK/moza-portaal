@@ -35,13 +35,13 @@ const LopendeZakenPage = async () => {
     <>
       <BewaardeAanvragen aanvragen={concepten} />
       <Heading level={1}>Lopende zaken</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <ZakenTabs actief="lopend" />
         <ZakenTabel zaken={zaken} soort="lopend" />
       </div>
 
       {concepten.length > 0 && (
-        <section className="mox-card" aria-labelledby="nog-in-te-dienen">
+        <section className="rhc-mox-card" aria-labelledby="nog-in-te-dienen">
           <Heading level={2} id="nog-in-te-dienen">
             Nog in te dienen aanvragen
           </Heading>
@@ -90,6 +90,7 @@ const LopendeZakenPage = async () => {
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
+          headingLevel={3}
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
             body: <Paragraph>{antwoord}</Paragraph>,

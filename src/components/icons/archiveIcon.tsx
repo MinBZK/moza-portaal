@@ -1,4 +1,4 @@
-/** Archiefdoos. De iconenset van RHC heeft geen archief-icoon. */
+/** Archive box. The RHC icon set has no archive icon. */
 export const ArchiveIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

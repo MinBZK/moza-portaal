@@ -124,7 +124,7 @@ const ZaakKoen = ({
 
   const onderzoeker = (
     <section
-      className="mox-card mox-hiring-research rhc-row-gap"
+      className="rhc-mox-card mox-hiring-research rhc-mox-row-gap"
       aria-labelledby="onderzoeker"
     >
       <Heading level={2} id="onderzoeker">
@@ -180,7 +180,7 @@ const ZaakKoen = ({
 
   return (
     <>
-      <div className="mox-card rhc-row-gap">
+      <div className="rhc-mox-card rhc-mox-row-gap">
         <ZakenTabs actief="lopend" />
         <Heading level={1}>{zaak.onderwerp}</Heading>
 

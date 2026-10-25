@@ -30,7 +30,7 @@ const PersoneelPage = async () => {
     <>
       <Heading level={1}>Personeel</Heading>
 
-      <section className="mox-card" aria-labelledby="iemand-aannemen">
+      <section className="rhc-mox-card" aria-labelledby="iemand-aannemen">
         <Heading level={2} id="iemand-aannemen">
           Iemand aannemen met een afstand tot de arbeidsmarkt
         </Heading>

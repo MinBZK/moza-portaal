@@ -80,7 +80,7 @@ const Waarom = ({
               if (!a) return null;
               const kort = a.tekst.kort.filter((r) => !r.technisch);
               return (
-                <div key={o} className="rhc-row-gap">
+                <div key={o} className="rhc-mox-row-gap">
                   {kort.map((r) => (
                     <Paragraph key={r.tekst}>{r.tekst}</Paragraph>
                   ))}

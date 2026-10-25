@@ -48,7 +48,7 @@ const DataverwerkingPage = async ({
         en gebruiken.
       </Paragraph>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Activiteitenlogboek</Heading>
         <Paragraph>
           Dit is een overzicht van hoe uw bedrijfsgegevens worden gedeeld en
@@ -83,7 +83,7 @@ const DataverwerkingPage = async ({
         />
       </div>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Wat kunt u straks doen?</Heading>
         <UnorderedList>
           {verwachtingen.map((verwachting) => (
@@ -97,6 +97,7 @@ const DataverwerkingPage = async ({
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
+          headingLevel={3}
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
             body: <Paragraph>{antwoord}</Paragraph>,

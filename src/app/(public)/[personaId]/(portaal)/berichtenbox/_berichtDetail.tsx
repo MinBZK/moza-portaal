@@ -10,12 +10,13 @@ import {
   LinkButton,
   Heading,
   Paragraph,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
-import TijdelijkeMelding from "@/components/TijdelijkeMelding";
+import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
+import ShareButton from "@/components/ShareButton";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";
 import BerichtenboxNav from "./_berichtenboxNav";
@@ -75,7 +76,8 @@ const BerichtDetail = ({
   // De knop die de mapkeuze opende; die krijgt na sluiten de focus terug.
   const [kiesMap, setKiesMap] = useState<HTMLElement | null>(null);
   const [melding, setMelding] = useState<string | null>(null);
-  // (On)gelezen is een kleine wissel: die melding verdwijnt na 3 seconden.
+  // (On)gelezen en een map kiezen zijn kleine wissels: die melding verdwijnt
+  // na 3 seconden.
   const [tijdelijk, setTijdelijk] = useState(false);
   // Telt mee in de key, zodat dezelfde tekst opnieuw verschijnt.
   const [meldingNummer, setMeldingNummer] = useState(0);
@@ -140,7 +142,8 @@ const BerichtDetail = ({
       return "Het is niet gelukt om dit bericht te verplaatsen. Probeer het opnieuw.";
     }
     setActieFout(null);
-    setTijdelijk(false);
+    setTijdelijk(true);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       naar
         ? `Het bericht staat nu in de map ${naar}.`
@@ -201,7 +204,7 @@ const BerichtDetail = ({
 
   return (
     <>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <BerichtenboxNav
           berichten={berichten}
           actief={status === "weg" ? null : status}
@@ -221,7 +224,7 @@ const BerichtDetail = ({
                 href="/berichtenbox"
                 className="utrecht-link utrecht-link--html-a"
               >
-                Ga naar uw inbox
+                Naar uw inbox
               </Link>
             </Paragraph>
           </>
@@ -234,9 +237,7 @@ const BerichtDetail = ({
             <div role="status">
               {melding &&
                 (tijdelijk ? (
-                  <TijdelijkeMelding key={meldingNummer}>
-                    {melding}
-                  </TijdelijkeMelding>
+                  <TemporaryAlert key={meldingNummer}>{melding}</TemporaryAlert>
                 ) : (
                   <Alert type="ok">{melding}</Alert>
                 ))}
@@ -255,14 +256,17 @@ const BerichtDetail = ({
             )}
 
             {status && (
-              <ActionGroup direction="row" className="mox-action-group-dense">
+              <ActionGroup
+                direction="row"
+                className="rhc-mox-action-group-dense"
+              >
                 <LinkButton
                   pressed={gemarkeerd}
                   onClick={() => zetGemarkeerd(berichtId, !gemarkeerd)}
                 >
                   <FlagIcon
                     filled={gemarkeerd}
-                    className={gemarkeerd ? "mox-button-mark-true" : ""}
+                    className={gemarkeerd ? "rhc-mox-button-mark-true" : ""}
                   />
                   Markeren
                 </LinkButton>
@@ -270,8 +274,8 @@ const BerichtDetail = ({
                 <LinkButton onClick={wisselOngelezen}>
                   {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
                   {ongelezen
-                    ? "Markeren als gelezen"
-                    : "Markeren als ongelezen"}
+                    ? "Als gelezen markeren"
+                    : "Als ongelezen markeren"}
                 </LinkButton>
 
                 {status === "inbox" && (
@@ -280,7 +284,7 @@ const BerichtDetail = ({
                     onClick={(event) => setKiesMap(event.currentTarget)}
                   >
                     <FolderIcon />
-                    Verplaatsen naar map
+                    Naar map verplaatsen
                   </LinkButton>
                 )}
 
@@ -291,12 +295,11 @@ const BerichtDetail = ({
                   </LinkButton>
                 )}
 
-                {/* Schets uit moza-poc: Delen doet nog niets. */}
                 {delen && (
-                  <LinkButton>
-                    <Icon icon="delen" />
-                    Delen
-                  </LinkButton>
+                  <ShareButton
+                    title={bericht?.onderwerp}
+                    url={`/berichtenbox/${berichtId}`}
+                  />
                 )}
 
                 {status !== "archief" && (
@@ -309,14 +312,14 @@ const BerichtDetail = ({
                 {status !== "inbox" && (
                   <LinkButton onClick={() => void verplaats("inbox")}>
                     <Icon icon="inbox" />
-                    Terugzetten in inbox
+                    In inbox terugzetten
                   </LinkButton>
                 )}
 
                 {status === "prullenbak" ? (
                   <LinkButton
                     ref={voorgoedKnopRef}
-                    className="rhc-link-button--danger"
+                    className="rhc-mox-link-button--danger"
                     aria-haspopup="dialog"
                     onClick={() => setVraagVoorgoed(true)}
                   >
@@ -325,7 +328,7 @@ const BerichtDetail = ({
                   </LinkButton>
                 ) : (
                   <LinkButton
-                    className="rhc-link-button--danger"
+                    className="rhc-mox-link-button--danger"
                     onClick={() => void verplaats("prullenbak")}
                   >
                     <Icon icon="verwijderen" />
@@ -352,7 +355,7 @@ const BerichtDetail = ({
       {status === "prullenbak" && (
         <dialog
           ref={dialogRef}
-          className="rhc-dialog"
+          className="rhc-mox-dialog"
           aria-labelledby="voorgoed-kop"
           aria-describedby="voorgoed-vraag"
           onClose={sluitVraag}

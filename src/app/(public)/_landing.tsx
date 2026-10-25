@@ -1,5 +1,4 @@
 import {
-  PreHeading,
   Heading,
   Paragraph,
   Icon,
@@ -16,13 +15,9 @@ import Link from "next/link";
 const PublicPage = () => {
   return (
     <div className="utrecht-page-body">
-      <div className="rhc-landing-hero rhc-rounded-corner rhc-rounded-corner--position-start-end">
+      <div className="rhc-mox-landing-hero rhc-rounded-corner rhc-rounded-corner--position-start-end">
         <div className="mox-landing-hero-text rhc-rounded-corner rhc-rounded-corner--position-end-end">
-          <PreHeading
-            heading={<Heading level={1}>MijnOverheid Zakelijk</Heading>}
-          >
-            Pre-heading
-          </PreHeading>
+          <Heading level={1}>MijnOverheid Zakelijk</Heading>
           <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
           <Link href="/?persona=1111" className="mox-login-digid">
             <svg viewBox="0 0 150 150" width={40} height={40}>
@@ -77,7 +72,7 @@ const PublicPage = () => {
             <span>Inloggen met E-Herkenning</span>
           </Link>
           <Link href="/inloggen/zakelijk" className="utrecht-link-button">
-            Bekijk alle inlogmogelijkheden
+            Alle inlogmogelijkheden bekijken
             <Icon icon="chevron-right" />
           </Link>
         </div>
@@ -89,7 +84,7 @@ const PublicPage = () => {
           src="/bg-full-zakelijk-cropped.webp"
         />
       </div>
-      <div className="rhc-landing-info">
+      <div className="rhc-mox-landing-info">
         <div>
           <Heading level={2}>Berichtenbox</Heading>
           <Paragraph>

@@ -122,7 +122,7 @@ const UitlegTaalmodel = ({
   };
 
   return (
-    <div className="mox-hiring-llm rhc-row-gap">
+    <div className="mox-hiring-llm rhc-mox-row-gap">
       {stand.status !== "klaar" && (
         <Button
           appearance="secondary-action-button"

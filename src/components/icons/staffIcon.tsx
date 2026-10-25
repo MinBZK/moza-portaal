@@ -1,4 +1,4 @@
-/** Personeel en rollen-icoon. */
+/** Staff and roles icon. */
 export const StaffIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

@@ -78,7 +78,7 @@ const Bronnen = ({
 
   return (
     <>
-      <section className="mox-card rhc-row-gap" aria-labelledby="namens">
+      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="namens">
         <Heading level={2} id="namens">
           Namens wie vult u in?
         </Heading>
@@ -106,7 +106,7 @@ const Bronnen = ({
         )}
       </section>
 
-      <section className="mox-card rhc-row-gap" aria-labelledby="kandidaat">
+      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
         </Heading>
@@ -141,7 +141,7 @@ const Bronnen = ({
           />
         </Fieldset>
         {keuze === NIEUW && (
-          <div className="rhc-row-gap">
+          <div className="rhc-mox-row-gap">
             <FormFieldTextInput
               label="Naam van de kandidaat"
               value={nieuw.naam}
@@ -224,7 +224,7 @@ const Bronnen = ({
                     )
                   }
                 >
-                  <div className="rhc-row-gap">
+                  <div className="rhc-mox-row-gap">
                     <Paragraph className="mox-hiring-note">
                       {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
                     </Paragraph>
@@ -260,7 +260,7 @@ const Bronnen = ({
         </>
       )}
 
-      <section className="mox-card rhc-row-gap">
+      <section className="rhc-mox-card rhc-mox-row-gap">
         <Paragraph role="status">
           {wachtend
             ? "Wachten op toestemming van de kandidaat."

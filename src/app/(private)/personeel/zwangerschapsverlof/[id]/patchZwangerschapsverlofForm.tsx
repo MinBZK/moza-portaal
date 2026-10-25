@@ -39,7 +39,7 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
       <Heading level={1}>
         Opmerking aan zwangerschapsverlofaanvraag toevoegen
       </Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <form
           onSubmit={(e) => {
             e.preventDefault();

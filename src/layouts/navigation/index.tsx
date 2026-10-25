@@ -15,8 +15,9 @@ import {
 } from "@rijkshuisstijl-community/components-react";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
 import { useKiesOrganisatie } from "@/layouts/header/useKiesOrganisatie";
-import LanguageSelect, { TALEN } from "@/components/languageSelect";
+import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import { AbsenceIcon } from "@/components/icons/absenceIcon";
+import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 import { StaffIcon } from "@/components/icons/staffIcon";
 import { RegulationIcon } from "@/components/icons/regulationIcon";
 import { SubsidyIcon } from "@/components/icons/subsidyIcon";
@@ -62,7 +63,9 @@ const Navigation = ({
       <div
         id={MENU_ID}
         className={
-          open ? "rhc-menu-lists rhc-menu-lists--open" : "rhc-menu-lists"
+          open
+            ? "rhc-mox-menu-lists rhc-mox-menu-lists--open"
+            : "rhc-mox-menu-lists"
         }
       >
         <SideNavList>
@@ -153,8 +156,8 @@ const Navigation = ({
               <SideNavLink
                 current={isActief("/digitale-assistent")}
                 href="/digitale-assistent"
-                icon="comment"
               >
+                <DigitalAssistantIcon />
                 Digitale assistent (AI)
               </SideNavLink>
             </SideNavItem>
@@ -236,7 +239,7 @@ const Navigation = ({
           </SideNavItem>
         </SideNavList>
         {/* Alleen op een smal scherm; op breed staan deze in de header. */}
-        <div className="rhc-menu-account">
+        <div className="rhc-mox-menu-account">
           <Separator />
           <SideNavList>
             <SideNavItem>
@@ -255,7 +258,7 @@ const Navigation = ({
           {/* De contextwisselaar uit de header: kies de organisatie. */}
           {organisaties.length > 1 && (
             <>
-              <p id="menu-organisaties" className="rhc-menu-heading">
+              <p id="menu-organisaties" className="rhc-mox-menu-heading">
                 Organisatie kiezen
               </p>
               <SideNavList aria-labelledby="menu-organisaties">
@@ -288,8 +291,8 @@ const Navigation = ({
           </SideNavList>
           <LanguageSelect
             selectedLanguage="Nederlands"
-            languages={TALEN}
-            metIcoon
+            languages={LANGUAGES}
+            withIcon
           />
         </div>
       </div>

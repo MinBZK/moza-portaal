@@ -1,20 +1,20 @@
 "use client";
 
 import { LanguageNavigation } from "@/components/rhc";
-import { TaalIcon } from "@/components/icons/taalIcon";
+import { LanguageIcon } from "@/components/icons/languageIcon";
 
 export type Language = {
-  /** Taalcode, bijvoorbeeld "nl" */
+  /** Language code, for example "nl" */
   lang: string;
-  /** Naam in de eigen taal, bijvoorbeeld "Nederlands" */
+  /** Name in its own language, for example "Nederlands" */
   languageName: string;
-  /** Naam in de huidige taal, bijvoorbeeld "Engels" */
+  /** Name in the current language, for example "Engels" */
   localLanguageName?: string;
   href: string;
 };
 
-/** De talen van het portaal. */
-export const TALEN: Language[] = [
+/** The languages of the portal. */
+export const LANGUAGES: Language[] = [
   { lang: "nl", languageName: "Nederlands", href: "#" },
   {
     lang: "en",
@@ -22,28 +22,50 @@ export const TALEN: Language[] = [
     localLanguageName: "Engels",
     href: "#",
   },
+  {
+    lang: "fy",
+    languageName: "Frysk",
+    localLanguageName: "Fries",
+    href: "#",
+  },
+  {
+    // Papiamento as written on Aruba.
+    lang: "pap-AW",
+    languageName: "Papiamento",
+    href: "#",
+  },
+  {
+    // Papiamentu as written on Bonaire and Curaçao.
+    lang: "pap-CW",
+    languageName: "Papiamentu",
+    href: "#",
+  },
 ];
+
+/** Name as shown in the language menu, for example "English (Engels)". */
+export const languageLabel = ({ languageName, localLanguageName }: Language) =>
+  localLanguageName ? `${languageName} (${localLanguageName})` : languageName;
 
 const LanguageSelect = ({
   languages,
   selectedLanguage,
   label = "Taalkeuze",
-  metIcoon = false,
+  withIcon = false,
 }: {
   languages: Language[];
   selectedLanguage: string;
   label?: string;
-  /** Icoon voor de taal, zoals in het menu op een smal scherm. */
-  metIcoon?: boolean;
+  /** Icon for the language, as in the menu on a narrow screen. */
+  withIcon?: boolean;
 }) => (
   <LanguageNavigation
     aria-label={label}
     defaultSelectedLanguage={selectedLanguage}
   >
-    {/* Eigen inhoud: icoon voor de taal. Zonder children toont de trigger
-        alleen de naam van de taal. */}
+    {/* Custom content: an icon for the language. Without children the
+        trigger only shows the name of the language. */}
     <LanguageNavigation.Trigger>
-      {metIcoon && <TaalIcon />}
+      {withIcon && <LanguageIcon />}
       {selectedLanguage}
     </LanguageNavigation.Trigger>
     <LanguageNavigation.Content>

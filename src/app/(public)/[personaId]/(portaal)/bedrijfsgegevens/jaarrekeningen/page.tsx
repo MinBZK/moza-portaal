@@ -45,7 +45,7 @@ const JaarrekeningenPage = (props: OnderdeelPaginaProps) => (
                   target="_blank"
                 >
                   <VisuallyHidden>Jaarrekening {jaar}: </VisuallyHidden>
-                  Inzien bij KVK
+                  Bij KVK inzien
                   <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
                 </Link>
               </dd>

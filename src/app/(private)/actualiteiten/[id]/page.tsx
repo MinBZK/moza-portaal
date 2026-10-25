@@ -38,7 +38,7 @@ const ArtikelDetailPage = async ({
         <Heading level={1}>
           {error ? "Fout bij ophalen artikel" : "Artikel niet gevonden"}
         </Heading>
-        <div className="mox-card">
+        <div className="rhc-mox-card">
           <Paragraph>
             {error
               ? "Er is een fout opgetreden bij het ophalen van dit artikel. Probeer het later opnieuw."
@@ -84,7 +84,7 @@ const ArtikelDetailPage = async ({
 
       <Heading level={1}>{article.headLine ?? "Onbekend artikel"}</Heading>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {typeLabel && (
             <DataSummaryItem itemKey="Soort" itemValue={typeLabel} />
@@ -138,7 +138,7 @@ const ArtikelDetailPage = async ({
               rel="noopener noreferrer"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Bekijk op ondernemersplein.nl
+              Op ondernemersplein.nl bekijken
               <Icon icon="externe-link" />
             </a>
           </ActionGroup>

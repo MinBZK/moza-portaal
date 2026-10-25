@@ -14,8 +14,8 @@ const LogoutButton = ({
     type="button"
     className={className}
     onClick={async () => {
-      // Zonder werkende Keycloak (zoals op ZAD) faalt signOut; de demo moet
-      // dan toch uitloggen. Daarom eerst signOut zonder redirect, daarna zelf.
+      // Without a working Keycloak (as on ZAD) signOut fails; the demo must
+      // still log out. So first signOut without redirect, then redirect here.
       await signOut({ redirect: false }).catch(() => undefined);
       window.location.assign("/api/persona-logout");
     }}

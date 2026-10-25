@@ -95,7 +95,7 @@ const Dashboard = async () => {
       )}
 
       <Heading level={1}>Welkom gemachtigde voor KVK-nummer {kvk}</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Recente berichten in uw Berichtenbox</Heading>
         <div className="mox-table-container">
           <Table>
@@ -115,7 +115,7 @@ const Dashboard = async () => {
           </Link>
         </ActionGroup>
       </div>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Wat is MijnOverheid Zakelijk?</Heading>
         <Paragraph>
           MijnOverheid Zakelijk is uw centrale platform voor het veilig en

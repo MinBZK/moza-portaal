@@ -96,7 +96,11 @@ jobs:
           # Neem instellingen (env vars, poort) over van de vaste deployment "proef"
           clone-from: proef
           comment-on-pr: ${{ github.event_name == 'pull_request' }}
-          wait-for-ready: "true"
+          # Alleen bij een PR wachten tot de preview antwoordt. Bij een push
+          # naar ux-fork hangt de deployment via publish-on-web aan
+          # proef.moza.rijksapp.nl; de action controleert dan een zelf
+          # samengesteld adres dat niet bestaat (404) en faalt na 300 s.
+          wait-for-ready: ${{ github.event_name == 'pull_request' }}
 
   cleanup-preview:
     if: github.event.action == 'closed'

@@ -15,7 +15,7 @@ const PersoneelZaak = ({ zaak }: { zaak: DemoAannemen["zaak"] }) => {
   return (
     <>
       {staat?.ingediend && (
-        <section className="mox-card" aria-labelledby="personeel-zaken">
+        <section className="rhc-mox-card" aria-labelledby="personeel-zaken">
           <Heading level={2} id="personeel-zaken">
             Lopende zaken over personeel
           </Heading>
@@ -29,7 +29,7 @@ const PersoneelZaak = ({ zaak }: { zaak: DemoAannemen["zaak"] }) => {
         </section>
       )}
       <section
-        className="mox-card mox-hiring-research"
+        className="rhc-mox-card mox-hiring-research"
         aria-labelledby="onderzoeker"
       >
         <Heading level={2} id="onderzoeker">

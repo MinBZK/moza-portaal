@@ -2,17 +2,15 @@
 
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
-import { AanhefEditBox } from "@/app/(private)/contactgegevens/[type]/_aanhefEditBox";
-import { ContactEditBox } from "@/app/(private)/contactgegevens/[type]/_contactEditBox";
-import { TaalEditBox } from "@/app/(private)/contactgegevens/[type]/_taalEditBox";
+import { Alert, Paragraph } from "@/components/rhc";
+import { ContactDetails } from "@/app/(private)/contactgegevens/[type]/_contactDetails";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
 import type { DemoProfielIdentiteit } from "@/demo";
 
 /**
  * Contactgegevens uit de profielservice, met wijzigen en het verifiëren van
  * het e-mailadres. Zoals de island "contactgegevens" in moza-poc; de
- * bewerkvelden zijn dezelfde als in (private)/contactgegevens.
+ * gegevens en het bewerken zijn dezelfde als in (private)/contactgegevens.
  */
 const Lijst = ({
   identificatieType,
@@ -52,22 +50,13 @@ const Lijst = ({
   const iden = { idenType: identificatieType, idenValue: identificatieNummer };
 
   return (
-    <div>
-      <AanhefEditBox voorkeur={aanhef} {...iden} />
-      <TaalEditBox voorkeur={taal} {...iden} />
-      <ContactEditBox
-        name="Email"
-        label="E-mailadres"
-        contactGegeven={email}
-        {...iden}
-      />
-      <ContactEditBox
-        name="Telefoonnummer"
-        label="Telefoonnummer"
-        contactGegeven={telefoon}
-        {...iden}
-      />
-    </div>
+    <ContactDetails
+      {...iden}
+      salutation={aanhef}
+      language={taal}
+      email={email}
+      phone={telefoon}
+    />
   );
 };
 

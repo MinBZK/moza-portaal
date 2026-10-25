@@ -22,7 +22,7 @@ const VerstuurdPage = async () => {
           5 oktober 2026.
         </Paragraph>
       </Alert>
-      <section className="mox-card rhc-row-gap" aria-labelledby="wat-u-nu-ziet">
+      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="wat-u-nu-ziet">
         <Heading level={2} id="wat-u-nu-ziet">
           Wat u nu ziet
         </Heading>

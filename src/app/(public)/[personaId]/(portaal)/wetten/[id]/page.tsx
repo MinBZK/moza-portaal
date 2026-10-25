@@ -34,7 +34,7 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
       </Paragraph>
 
       <RelevantItem item={bewaarItemVan(wet)}>
-        <section className="mox-card" aria-label={wet.titel}>
+        <section className="rhc-mox-card" aria-label={wet.titel}>
           <Paragraph purpose="lead">{wet.samenvatting}</Paragraph>
           <WetGegevens wet={wet} detail />
 
@@ -53,7 +53,7 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                   href={assistentLink(wet)}
                   className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
                 >
-                  Start met de digitale assistent
+                  Digitale assistent starten
                 </Link>
               </ActionGroup>
             </>
@@ -65,7 +65,7 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
               href={assistentLink(wet)}
               className="utrecht-link utrecht-link--html-a"
             >
-              De digitale assistent zoekt voor u uit
+              Aan digitale assistent vragen
             </Link>
             . Bijvoorbeeld: geldt deze regeling voor uw bedrijf, en wat moet u
             dan doen?

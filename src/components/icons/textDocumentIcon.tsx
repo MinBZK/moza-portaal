@@ -1,4 +1,4 @@
-/** Tekstdocument, voor de link naar de tekstversie van een bericht. */
+/** Text document, for the link to the text version of a message. */
 export const TextDocumentIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

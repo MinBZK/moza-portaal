@@ -115,7 +115,7 @@ const ActualiteitenContent = () => {
 
       {viewMode === "sidebar" ? (
         <div className="rhc-grid">
-          <aside className="mox-card rhc-grid__cell rhc-grid__cell-d-4">
+          <aside className="rhc-mox-card rhc-grid__cell rhc-grid__cell-d-4">
             <VoorkeurenSidebar
               visibleSections={visibleSections}
               onToggleSection={toggleSection}
@@ -124,14 +124,14 @@ const ActualiteitenContent = () => {
             />
           </aside>
 
-          <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
+          <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-mox-row-gap">
             <ActiveFilters />
             {sections}
           </div>
         </div>
       ) : (
         <>
-          <div className="mox-card">
+          <div className="rhc-mox-card">
             <Heading level={2}>Uw onderwerpen</Heading>
             <Paragraph>
               Selecteer onderwerpen om relevante artikelen en informatie te

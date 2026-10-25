@@ -5,11 +5,11 @@ import { Icon } from "@/components/rhc";
 /** Tabs Overzicht en Afgehandeld, zoals de tabs van de Berichtenbox. */
 const ZakenTabs = ({ actief }: { actief: "lopend" | "afgehandeld" }) => (
   <nav aria-label="Lopende zaken">
-    <ul className="mox-tabs">
+    <ul className="rhc-mox-tabs">
       <li>
         <Link
           href="/lopendezaken"
-          className="mox-tab utrecht-link utrecht-link--html-a"
+          className="rhc-mox-tab utrecht-link utrecht-link--html-a"
           aria-current={actief === "lopend" ? "page" : undefined}
         >
           <Icon icon="activiteit" />
@@ -19,7 +19,7 @@ const ZakenTabs = ({ actief }: { actief: "lopend" | "afgehandeld" }) => (
       <li>
         <Link
           href="/lopendezaken/afgehandeld"
-          className="mox-tab utrecht-link utrecht-link--html-a"
+          className="rhc-mox-tab utrecht-link utrecht-link--html-a"
           aria-current={actief === "afgehandeld" ? "page" : undefined}
         >
           <ArchiveIcon />

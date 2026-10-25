@@ -9,12 +9,12 @@ const NextLink = ({
   ...props
 }: AnchorHTMLAttributes<HTMLAnchorElement>) => <Link href={href} {...props} />;
 
-// Zelfde breekpunt als het menu en rhc-grid.
-const SMAL = "(width < 768px)";
-const luisterNaarScherm = (luisteraar: () => void) => {
-  const query = window.matchMedia(SMAL);
-  query.addEventListener("change", luisteraar);
-  return () => query.removeEventListener("change", luisteraar);
+// Same breakpoint as the menu and rhc-grid.
+const NARROW = "(width < 768px)";
+const subscribeToScreen = (listener: () => void) => {
+  const query = window.matchMedia(NARROW);
+  query.addEventListener("change", listener);
+  return () => query.removeEventListener("change", listener);
 };
 
 const PageNumberNavigation = ({
@@ -27,16 +27,16 @@ const PageNumberNavigation = ({
   page: number;
   totalPages: number;
   maxVisiblePages?: number;
-  /** Naam van de query-parameter in de link, bijvoorbeeld "?pagina=2" */
+  /** Name of the query parameter in the link, for example "?pagina=2" */
   queryParam?: string;
-  /** Andere parameters die in de link blijven staan, zoals een filter. */
+  /** Other parameters that stay in the link, such as a filter. */
   query?: Record<string, string>;
 }) => {
-  // Op een smal scherm zo min mogelijk paginanummers (5 is het minimum van
-  // de component), zodat de paginering op één regel past.
-  const smal = useSyncExternalStore(
-    luisterNaarScherm,
-    () => window.matchMedia(SMAL).matches,
+  // On a narrow screen as few page numbers as possible (5 is the component's
+  // minimum), so the pagination fits on one line.
+  const narrow = useSyncExternalStore(
+    subscribeToScreen,
+    () => window.matchMedia(NARROW).matches,
     () => false,
   );
   return (
@@ -45,7 +45,7 @@ const PageNumberNavigation = ({
       linkTemplate={(pageNumber) =>
         `?${new URLSearchParams({ ...query, [queryParam]: String(pageNumber) })}`
       }
-      maxVisiblePages={smal ? 5 : maxVisiblePages}
+      maxVisiblePages={narrow ? 5 : maxVisiblePages}
       page={page}
       totalPages={totalPages}
     />

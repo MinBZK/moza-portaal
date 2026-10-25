@@ -27,7 +27,7 @@ const Loket = ({
   label?: string;
   items: string[];
 }) => (
-  <section className="mox-card rhc-row-gap" aria-label={titel}>
+  <section className="rhc-mox-card rhc-mox-row-gap" aria-label={titel}>
     <Heading level={3}>
       {titel}
       {label && <span className="mox-hiring-label">{label}</span>}
@@ -125,7 +125,7 @@ const Indienen = ({
         </Link>
       </Paragraph>
 
-      <section className="mox-card rhc-row-gap" aria-labelledby="wat-gebeurt">
+      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="wat-gebeurt">
         <Heading level={2} id="wat-gebeurt">
           Wat er gebeurt als u indient
         </Heading>

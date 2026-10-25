@@ -12,23 +12,23 @@ type RangeSliderProps = Omit<
   ComponentProps<"input">,
   "type" | "min" | "max" | "value" | "defaultValue" | "onChange"
 > & {
-  /** Zichtbare naam van de schuifregelaar. */
+  /** Visible name of the slider. */
   label: string;
   min: number;
   max: number;
-  /** Met value en onChange houdt de ouder de waarde bij. */
+  /** With value and onChange the parent keeps track of the value. */
   value?: number;
   defaultValue?: number;
-  onChange?: (waarde: number, event: ChangeEvent<HTMLInputElement>) => void;
-  /** Hoe de waarde wordt getoond, bijvoorbeeld "32 uur". */
-  formatWaarde?: (waarde: number) => string;
-  /** Kleur de baan van het begin tot aan de knop. */
-  gevuld?: boolean;
+  onChange?: (value: number, event: ChangeEvent<HTMLInputElement>) => void;
+  /** How the value is shown, for example "32 uur". */
+  formatValue?: (value: number) => string;
+  /** Colour the track from the start up to the thumb. */
+  filled?: boolean;
 };
 
 /**
- * Schuifregelaar met label, de gekozen waarde en de grenzen eronder, in de
- * opmaak van de form fields van RHC.
+ * Slider with a label, the chosen value and the limits below it, styled like
+ * the RHC form fields.
  */
 const RangeSlider = ({
   label,
@@ -38,63 +38,63 @@ const RangeSlider = ({
   value,
   defaultValue,
   onChange,
-  formatWaarde = String,
-  gevuld = false,
+  formatValue = String,
+  filled = false,
   className,
   style,
   ...props
 }: RangeSliderProps) => {
-  const eigenId = useId();
-  const veldId = id ?? eigenId;
-  const [eigenWaarde, setEigenWaarde] = useState(defaultValue ?? min);
-  const waarde = value ?? eigenWaarde;
-  // Hoe ver de knop staat, van 0 tot 1; de CSS kleurt de baan tot daar.
-  const deel = max > min ? (waarde - min) / (max - min) : 0;
+  const ownId = useId();
+  const fieldId = id ?? ownId;
+  const [ownValue, setOwnValue] = useState(defaultValue ?? min);
+  const current = value ?? ownValue;
+  // How far along the thumb is, from 0 to 1; the CSS colours the track up to there.
+  const fraction = max > min ? (current - min) / (max - min) : 0;
 
   return (
-    <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-range-slider">
-      <div className="utrecht-form-field__label rhc-range-slider__header">
-        <label htmlFor={veldId} className="utrecht-form-label">
+    <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-mox-range-slider">
+      <div className="utrecht-form-field__label rhc-mox-range-slider__header">
+        <label htmlFor={fieldId} className="utrecht-form-label">
           {label}
         </label>
-        <output htmlFor={veldId} className="rhc-range-slider__value">
-          {formatWaarde(waarde)}
+        <output htmlFor={fieldId} className="rhc-mox-range-slider__value">
+          {formatValue(current)}
         </output>
       </div>
       <div className="utrecht-form-field__input">
         <input
-          id={veldId}
+          id={fieldId}
           type="range"
           min={min}
           max={max}
-          value={waarde}
-          // Schermlezers lezen de getoonde waarde voor, niet alleen het getal.
-          aria-valuetext={formatWaarde(waarde)}
+          value={current}
+          // Screen readers read out the shown value, not just the number.
+          aria-valuetext={formatValue(current)}
           onChange={(event) => {
-            const nieuw = Number(event.target.value);
-            if (value === undefined) setEigenWaarde(nieuw);
-            onChange?.(nieuw, event);
+            const next = Number(event.target.value);
+            if (value === undefined) setOwnValue(next);
+            onChange?.(next, event);
           }}
           className={[
-            "rhc-range-slider__input",
-            gevuld && "rhc-range-slider__input--filled",
+            "rhc-mox-range-slider__input",
+            filled && "rhc-mox-range-slider__input--filled",
             className,
           ]
             .filter(Boolean)
             .join(" ")}
           style={
-            gevuld
+            filled
               ? ({
                   ...style,
-                  "--rhc-range-slider-fill": deel,
+                  "--rhc-range-slider-fill": fraction,
                 } as CSSProperties)
               : style
           }
           {...props}
         />
-        <div className="rhc-range-slider__limits" aria-hidden="true">
-          <span>{formatWaarde(min)}</span>
-          <span>{formatWaarde(max)}</span>
+        <div className="rhc-mox-range-slider__limits" aria-hidden="true">
+          <span>{formatValue(min)}</span>
+          <span>{formatValue(max)}</span>
         </div>
       </div>
     </div>

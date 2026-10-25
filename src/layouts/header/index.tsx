@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Logo, NavBar, Icon } from "@/components/rhc";
 import MenuKnop from "@/layouts/navigation/menuKnop";
-import LanguageSelect, { TALEN } from "@/components/languageSelect";
+import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
 import { useCookie } from "@/utils/useCookie";
 import { useKiesOrganisatie } from "./useKiesOrganisatie";
@@ -136,8 +136,11 @@ const Header = ({
             items={[]} // Pagina rendert niet zonder lege items
           >
             {/* Op een smal scherm staan taal, naam en uitloggen in het menu. */}
-            <div className={metMenu ? "rhc-header-account" : undefined}>
-              <LanguageSelect selectedLanguage="Nederlands" languages={TALEN} />
+            <div className={metMenu ? "rhc-mox-header-account" : undefined}>
+              <LanguageSelect
+                selectedLanguage="Nederlands"
+                languages={LANGUAGES}
+              />
             </div>
             <ul className="rhc-nav-bar__list">
               <li className="rhc-nav-bar__item"></li>
@@ -146,7 +149,7 @@ const Header = ({
                   <li
                     className={
                       metMenu
-                        ? "rhc-nav-bar__item rhc-header-account"
+                        ? "rhc-nav-bar__item rhc-mox-header-account"
                         : "rhc-nav-bar__item"
                     }
                   >
@@ -155,29 +158,29 @@ const Header = ({
                         niet klikbaar (een knop die niets doet, verwart). De
                         link is alleen voor iemand zonder organisatie. */}
                     {organisaties.length === 1 ? (
-                      <span className="rhc-nav-bar__link rhc-header-organizations__trigger rhc-header-organizations__trigger--static">
+                      <span className="rhc-nav-bar__link rhc-mox-header-organizations__trigger rhc-mox-header-organizations__trigger--static">
                         <Icon icon="user" />
-                        <span className="rhc-nav-bar__label rhc-header-organizations__identity">
+                        <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
                           {accountLabel}
                         </span>
                       </span>
                     ) : organisaties.length > 1 ? (
                       <div
                         ref={organisatiesRef}
-                        className="rhc-header-organizations"
+                        className="rhc-mox-header-organizations"
                       >
                         <button
                           ref={organisatieKnopRef}
                           type="button"
                           id="header-organisaties-knop"
-                          className="rhc-nav-bar__link rhc-header-organizations__trigger"
+                          className="rhc-nav-bar__link rhc-mox-header-organizations__trigger"
                           aria-expanded={openOrganisaties}
                           aria-controls="header-organisaties"
                           aria-label={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
                           onClick={() => setOpenOrganisaties((open) => !open)}
                         >
                           <Icon icon="user" />
-                          <span className="rhc-nav-bar__label rhc-header-organizations__identity">
+                          <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
                             {accountLabel}
                           </span>
                           <Icon icon="chevron-down" />
@@ -185,14 +188,14 @@ const Header = ({
                         {openOrganisaties && (
                           <ul
                             id="header-organisaties"
-                            className="rhc-menu"
+                            className="rhc-mox-menu"
                             aria-labelledby="header-organisaties-knop"
                           >
                             {organisaties.map((organisatie) => (
                               <li key={organisatie.id}>
                                 <button
                                   type="button"
-                                  className="rhc-header-organizations__choice"
+                                  className="rhc-mox-header-organizations__choice"
                                   aria-pressed={
                                     organisatie.id === actieveOrganisatieId
                                   }
@@ -211,11 +214,11 @@ const Header = ({
                       </div>
                     ) : (
                       <Link
-                        className="rhc-nav-bar__link rhc-header-organizations__single"
+                        className="rhc-nav-bar__link rhc-mox-header-organizations__single"
                         href="/"
                       >
                         <Icon icon="user" />
-                        <span className="rhc-nav-bar__label rhc-header-organizations__identity">
+                        <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
                           {accountLabel}
                         </span>
                       </Link>
@@ -224,7 +227,7 @@ const Header = ({
                   <li
                     className={
                       metMenu
-                        ? "rhc-nav-bar__item rhc-header-account"
+                        ? "rhc-nav-bar__item rhc-mox-header-account"
                         : "rhc-nav-bar__item"
                     }
                   >
@@ -240,7 +243,7 @@ const Header = ({
                   <div ref={wrapperRef}>
                     <button
                       onClick={() => setOpenKeycloakLogin((v) => !v)}
-                      className="utrecht-button utrecht-button--secondary-action rhc-button"
+                      className="utrecht-link-button utrecht-link-button--html-button rhc-button"
                       aria-expanded={openKeycloakLogin}
                       aria-haspopup="menu"
                     >
@@ -248,7 +251,7 @@ const Header = ({
                     </button>
 
                     {openKeycloakLogin && (
-                      <div className="prototype-login-keycloak mox-card">
+                      <div className="prototype-login-keycloak rhc-mox-card">
                         <div role="menu" aria-orientation="vertical">
                           <button
                             onClick={() => {

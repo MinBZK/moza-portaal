@@ -27,15 +27,19 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
       <TableCell>
         <input
           type="checkbox"
-          aria-label="Selecteer bericht"
+          aria-label="Bericht selecteren"
           className="utrecht-checkbox utrecht-checkbox--html-input utrecht-checkbox--custom"
         />
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "mox-sender mox-unread" : "mox-sender"}>
+        <span
+          className={
+            ongelezen ? "rhc-mox-sender rhc-mox-unread" : "rhc-mox-sender"
+          }
+        >
           {ongelezen && (
             <>
-              <span aria-hidden="true" className="mox-status-unread" />
+              <span aria-hidden="true" className="rhc-mox-status-unread" />
               <VisuallyHidden>Ongelezen.</VisuallyHidden>
             </>
           )}
@@ -43,7 +47,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
         </span>
       </TableCell>
       <TableCell>
-        <span className={ongelezen ? "mox-unread" : undefined}>
+        <span className={ongelezen ? "rhc-mox-unread" : undefined}>
           Aanslag belastingen 2025
         </span>
       </TableCell>
@@ -78,16 +82,16 @@ const BerichtenboxPage = async ({
     <>
       <Heading level={1}>Mijn Berichtenbox</Heading>
       <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-row-gap">
-          <div className="mox-card">
+        <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-mox-row-gap">
+          <div className="rhc-mox-card">
             <nav aria-label="Berichtenbox">
-              <ul className="mox-tabs">
+              <ul className="rhc-mox-tabs">
                 {tabs.map((tab) => (
                   <li key={tab.status}>
                     <Link
                       href={tab.href}
                       aria-current={status === tab.status ? "page" : undefined}
-                      className="mox-tab utrecht-link utrecht-link--html-a"
+                      className="rhc-mox-tab utrecht-link utrecht-link--html-a"
                     >
                       {tab.label}
                     </Link>
@@ -121,11 +125,11 @@ const BerichtenboxPage = async ({
             <ActionGroup direction="row">
               <Button appearance="subtle-button" disabled>
                 <Icon icon="inbox" />
-                Verplaats naar inbox
+                Naar inbox verplaatsen
               </Button>
               <Button appearance="subtle-button" disabled>
                 <ArchiveIcon />
-                Verplaats naar archief
+                Naar archief verplaatsen
               </Button>
             </ActionGroup>
             <PageNumberNavigation page={1} totalPages={5} />
@@ -138,7 +142,7 @@ const BerichtenboxPage = async ({
             </Alert>
           </div>
 
-          <div className="mox-card">
+          <div className="rhc-mox-card">
             <Heading level={2}>Uw e-mailadres(sen) aanpassen</Heading>
             <Paragraph>
               Wilt u de e-mailadres(sen) waarop u meldingen ontvangt aanpassen
@@ -150,12 +154,12 @@ const BerichtenboxPage = async ({
                 href="/bedrijfsprofiel"
                 icon={<Icon key="icoon" icon="chevron-right" />}
               >
-                Ga naar bedrijfsprofiel
+                Naar bedrijfsprofiel
               </LinkListLink>
             </LinkList>
           </div>
         </div>
-        <div className="mox-card rhc-grid__cell rhc-grid__cell-d-4">
+        <div className="rhc-mox-card rhc-grid__cell rhc-grid__cell-d-4">
           <Heading level={2}>Bent u gemachtigd voor iemand anders?</Heading>
           <Paragraph>U kunt hier uw machtiging ophalen en gebruiken.</Paragraph>
           <LinkList>
@@ -163,7 +167,7 @@ const BerichtenboxPage = async ({
               href="#"
               icon={<Icon key="icoon" icon="chevron-right" />}
             >
-              Haal machtigingen op
+              Machtigingen ophalen
             </LinkListLink>
           </LinkList>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Paragraph } from "@rijkshuisstijl-community/components-react";
+import { Alert, Paragraph } from "@/components/rhc";
 import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
 import {

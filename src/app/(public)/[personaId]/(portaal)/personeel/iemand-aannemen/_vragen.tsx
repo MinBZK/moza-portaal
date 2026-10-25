@@ -61,8 +61,11 @@ const Vragen = ({
         overheidsorganisatie.
       </Paragraph>
       <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-row-gap">
-          <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
+        <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
+          <Fieldset
+            legend="1. Wie wilt u aannemen? Kies wat past."
+            className="mox-hiring-choices"
+          >
             {DOELGROEPEN.map(([waarde, label]) => (
               <FormFieldCheckboxOption
                 key={waarde}
@@ -95,8 +98,8 @@ const Vragen = ({
             step={1}
             value={a.uren}
             onChange={(uren) => zet({ uren })}
-            formatWaarde={(uren) => `${uren} uur`}
-            gevuld
+            formatValue={(uren) => `${uren} uur`}
+            filled
           />
           <div>
             <RangeSlider
@@ -106,8 +109,8 @@ const Vragen = ({
               step={5}
               value={a.loonwaarde}
               onChange={(loonwaarde) => zet({ loonwaarde })}
-              formatWaarde={(loonwaarde) => `${loonwaarde} procent`}
-              gevuld
+              formatValue={(loonwaarde) => `${loonwaarde} procent`}
+              filled
             />
             <Paragraph className="mox-hiring-note">
               In vergelijking met een collega zonder beperking. Bij 100 procent
@@ -123,8 +126,8 @@ const Vragen = ({
               step={1}
               value={Math.min(a.uurloon, MAX_UURLOON_EUROCENT)}
               onChange={(uurloon) => zet({ uurloon })}
-              formatWaarde={euro}
-              gevuld
+              formatValue={euro}
+              filled
             />
             <Paragraph className="mox-hiring-note">
               Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per uur. De
@@ -143,7 +146,7 @@ const Vragen = ({
           )}
         </div>
         <aside
-          className="mox-card rhc-grid__cell rhc-grid__cell-t-5"
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-5"
           aria-label="Wat het kost en oplevert"
         >
           <Balans antwoorden={a} traces={traces} />
@@ -151,7 +154,10 @@ const Vragen = ({
       </div>
 
       {register !== "nee" && (
-        <section className="mox-card rhc-row-gap" aria-labelledby="overige">
+        <section
+          className="rhc-mox-card rhc-mox-row-gap"
+          aria-labelledby="overige"
+        >
           <Heading level={2} id="overige">
             Regelingen die verder kunnen gelden
           </Heading>
@@ -177,7 +183,10 @@ const Vragen = ({
         </section>
       )}
 
-      <section className="mox-card rhc-row-gap" aria-labelledby="aanvragen">
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="aanvragen"
+      >
         <Heading level={2} id="aanvragen">
           Wilt u deze regelingen aanvragen?
         </Heading>

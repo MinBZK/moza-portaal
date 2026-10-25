@@ -30,7 +30,7 @@ const SubsidieDetail = async ({
   return (
     <>
       <Heading level={1}>Subsidie details</Heading>
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {gegevens.map(({ label, waarde }) => (
             <DataSummaryItem

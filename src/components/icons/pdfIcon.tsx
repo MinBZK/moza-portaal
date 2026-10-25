@@ -1,4 +1,4 @@
-/** Document met PDF, voor de link om een pdf te downloaden. */
+/** Document with PDF, for the link to download a pdf. */
 export const PdfIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg

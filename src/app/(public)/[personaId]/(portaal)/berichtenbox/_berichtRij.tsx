@@ -30,25 +30,29 @@ const BerichtRij = ({
   /** Extra cellen achteraan, zoals acties. */
   children?: ReactNode;
 }) => (
-  // De link van het onderwerp beslaat de hele rij (rhc-row-linked): klikken op
+  // De link van het onderwerp beslaat de hele rij (rhc-mox-row-linked): klikken op
   // afzender of datum opent ook het bericht, met maar één link per bericht.
-  <TableRow className={`rhc-row-linked${nieuw ? " rhc-row-new" : ""}`}>
+  <TableRow className={`rhc-mox-row-linked${nieuw ? " rhc-mox-row-new" : ""}`}>
     <TableCell>
       <button
         type="button"
         aria-pressed={gemarkeerd}
         onClick={onMarkeer}
-        className={`mox-button-mark`}
+        className={`rhc-mox-button-mark`}
       >
         <FlagIcon filled={gemarkeerd} />
         <VisuallyHidden>Markeren</VisuallyHidden>
       </button>
     </TableCell>
     <TableCell>
-      <span className={ongelezen ? "mox-sender mox-unread" : "mox-sender"}>
+      <span
+        className={
+          ongelezen ? "rhc-mox-sender rhc-mox-unread" : "rhc-mox-sender"
+        }
+      >
         {ongelezen && (
           <>
-            <span aria-hidden="true" className="mox-status-unread" />
+            <span aria-hidden="true" className="rhc-mox-status-unread" />
             <VisuallyHidden>Ongelezen.</VisuallyHidden>
           </>
         )}
@@ -58,7 +62,7 @@ const BerichtRij = ({
     <TableCell>
       <Link
         href={`/berichtenbox/${bericht.id}`}
-        className={`utrecht-link utrecht-link--html-a rhc-row-linked__link ${ongelezen ? "mox-unread" : ""}`}
+        className={`utrecht-link utrecht-link--html-a rhc-mox-row-linked__link ${ongelezen ? "rhc-mox-unread" : ""}`}
       >
         {bericht.onderwerp}
       </Link>
@@ -67,7 +71,7 @@ const BerichtRij = ({
     <TableCell>
       {bericht.heeftBijlage && (
         <>
-          <Icon icon="paperclip" />
+          <Icon icon="paperclip" className="rhc-mox-attachment-icon" />
           <VisuallyHidden>Heeft bijlage</VisuallyHidden>
         </>
       )}

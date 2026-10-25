@@ -35,7 +35,7 @@ const ContactvoorkeurenPagina = async ({
         Uw contactgegevens en de organisaties die deze mogen gebruiken.
       </Paragraph>
       <section
-        className="mox-card rhc-row-gap"
+        className="rhc-mox-card rhc-mox-row-gap"
         aria-labelledby="contactgegevens"
       >
         <Heading level={2} id="contactgegevens">
@@ -46,13 +46,13 @@ const ContactvoorkeurenPagina = async ({
           deelt. U kunt ze hier direct aanpassen.
         </Paragraph>
         <nav aria-label="Soort contactgegevens">
-          <ul className="mox-tabs">
+          <ul className="rhc-mox-tabs">
             {tabs.map((tab) => (
               <li key={tab.soort}>
                 <Link
                   href={tab.href}
                   aria-current={tab.soort === soort ? "page" : undefined}
-                  className="mox-tab utrecht-link utrecht-link--html-a"
+                  className="rhc-mox-tab utrecht-link utrecht-link--html-a"
                 >
                   {tab.label}
                 </Link>
@@ -63,12 +63,12 @@ const ContactvoorkeurenPagina = async ({
         <Contactgegevens {...identiteit} />
       </section>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Aangesloten organisaties</Heading>
         <Organisaties organisaties={organisaties} />
       </div>
 
-      <div className="mox-card">
+      <div className="rhc-mox-card">
         <Heading level={2}>Hoe nemen organisaties contact op?</Heading>
         <Paragraph>
           Hoe wilt u dat overheidsorganisaties standaard contact met u opnemen
@@ -80,6 +80,7 @@ const ContactvoorkeurenPagina = async ({
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
+          headingLevel={3}
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
             body: <Paragraph>{antwoord}</Paragraph>,

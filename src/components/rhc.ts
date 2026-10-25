@@ -1,11 +1,10 @@
 "use client";
 
 export {
+  ActionGroup,
   Accordion,
   AccordionProvider,
   AccordionSection,
-  ActionGroup,
-  Alert,
   Article,
   BreadcrumbNav,
   BreadcrumbNavLink,
@@ -70,3 +69,6 @@ export {
   UnorderedListItem,
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react/no-side-effects";
+
+// RHC Alert with an optional close button.
+export { Alert } from "./Alert";

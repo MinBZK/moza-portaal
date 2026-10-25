@@ -46,7 +46,7 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
             className="utrecht-link utrecht-link--html-a"
           >
             <Icon icon="externe-link" />
-            Direct openen op officielebekendmakingen.nl
+            Op officielebekendmakingen.nl openen
             <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
           </a>
         </Paragraph>

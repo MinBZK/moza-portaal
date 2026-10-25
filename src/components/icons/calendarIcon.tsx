@@ -1,4 +1,4 @@
-/** Kalender met een dag (1), voor een datum. Zelfde lijnstijl als de andere iconen. */
+/** Calendar with a day (1), for a date. Same line style as the other icons. */
 export const CalendarIcon = () => (
   <span className="utrecht-icon" role="presentation" aria-hidden="true">
     <svg
