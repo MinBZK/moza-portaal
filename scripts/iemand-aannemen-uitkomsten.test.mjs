@@ -195,3 +195,28 @@ test("weet ik nog niet: register via de blijfgrond", () => {
   assert.equal(overig(u, "nrp").geldt, true);
   assert.ok(u.aannames.includes("weetniet"));
 });
+
+test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
+  const doelen = (d) =>
+    U.invoerVoor({ doelgroepen: d, uren: 32, loonwaarde: 60, uurloon: 1499 }, basis).map(
+      (i) => i.output,
+    );
+  assert.deepEqual(doelen(["bijstand"]), [
+    "heeft_recht_op_lks",
+    "heeft_recht_op_lkv",
+    "heeft_recht_op_no_risk_polis",
+    "mag_proefplaatsing_aangaan",
+    "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+  ]);
+  assert.deepEqual(doelen(["register", "wajong"]), [
+    "heeft_recht_op_loondispensatie",
+    "heeft_recht_op_lkv",
+    "heeft_recht_op_no_risk_polis",
+  ]);
+  assert.deepEqual(doelen(["wia"]), [
+    "heeft_recht_op_lkv",
+    "heeft_recht_op_no_risk_polis",
+    "mag_jobcoaching_toekennen",
+  ]);
+  assert.deepEqual(doelen(["geen"]), []);
+});

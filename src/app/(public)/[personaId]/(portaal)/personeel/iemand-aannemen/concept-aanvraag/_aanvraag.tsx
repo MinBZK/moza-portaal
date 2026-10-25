@@ -18,7 +18,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen, DemoAannemenBron, DemoAannemenTrace } from "@/demo";
-import Balans from "../_balans";
+import { KorteBalans } from "../_balans";
 import Waarom from "../_waarom";
 import {
   REGELINGEN,
@@ -491,7 +491,7 @@ const Aanvraag = ({
           className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap"
           aria-label="Wat dit u oplevert"
         >
-          <Balans antwoorden={a} traces={traces} kort />
+          <KorteBalans antwoorden={a} />
           <Heading level={2}>Wie ziet deze aanvraag?</Heading>
           <Paragraph>
             Alleen u. Er is nog niets naar de overheid gestuurd.

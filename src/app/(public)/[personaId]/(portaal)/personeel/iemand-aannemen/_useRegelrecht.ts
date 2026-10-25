@@ -148,6 +148,88 @@ export const useBerekening = (invoer: Invoer | null): Stand<Berekening> => {
   };
 };
 
+export type Berekeningen = {
+  /** Uitkomsten per "<wet>:<output>"; tijdens het rekenen de vorige van dezelfde aanroep. */
+  uit: Record<string, Berekening["outputs"]>;
+  /** Elke gevraagde aanroep heeft een (eventueel vorige) uitkomst. */
+  bekend: boolean;
+  bezig: boolean;
+  fout?: string;
+};
+
+/**
+ * Meerdere berekeningen tegelijk, na dezelfde korte stilte als useBerekening.
+ * De worker werkt ze af in de volgorde van `invoeren`; elke uitkomst komt
+ * binnen zodra hij klaar is. Een vorige uitkomst blijft alleen staan voor een
+ * aanroep die nog steeds gevraagd wordt, zodat er geen bedrag van een andere
+ * keuze blijft hangen.
+ */
+export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
+  const sleutel = JSON.stringify(invoeren);
+  const [stand, setStand] = useState<{
+    sleutel: string;
+    uit: Record<string, Berekening["outputs"]>;
+    /** De laatste uitkomst per aanroep, over alle invoer heen. */
+    alle: Record<string, Berekening["outputs"]>;
+    fout?: string;
+  } | null>(null);
+  const eerste = useRef(true);
+  useEffect(() => {
+    const lijst = JSON.parse(sleutel) as Invoer[];
+    let actueel = true;
+    const timer = setTimeout(
+      () => {
+        for (const invoer of lijst) {
+          const id = `${invoer.wet}:${invoer.output}`;
+          bereken(invoer).then(
+            (waarde) => {
+              if (!actueel) return;
+              setStand((s) => ({
+                sleutel,
+                uit: {
+                  ...(s?.sleutel === sleutel ? s.uit : {}),
+                  [id]: waarde.outputs,
+                },
+                alle: { ...s?.alle, [id]: waarde.outputs },
+                fout: s?.sleutel === sleutel ? s.fout : undefined,
+              }));
+            },
+            (fout: Error) => {
+              if (!actueel) return;
+              setStand((s) => ({
+                sleutel,
+                uit: s?.sleutel === sleutel ? s.uit : {},
+                alle: s?.alle ?? {},
+                fout: fout.message,
+              }));
+            },
+          );
+        }
+      },
+      eerste.current ? 0 : WACHT_MS,
+    );
+    eerste.current = false;
+    return () => {
+      actueel = false;
+      clearTimeout(timer);
+    };
+  }, [sleutel]);
+
+  const ids = invoeren.map((i) => `${i.wet}:${i.output}`);
+  const nu = stand?.sleutel === sleutel ? stand.uit : {};
+  const uit: Record<string, Berekening["outputs"]> = {};
+  for (const id of ids) {
+    const waarde = nu[id] ?? stand?.alle[id];
+    if (waarde) uit[id] = waarde;
+  }
+  return {
+    uit,
+    bekend: ids.every((id) => id in uit),
+    bezig: ids.some((id) => !(id in nu)),
+    fout: stand?.sleutel === sleutel ? stand.fout : undefined,
+  };
+};
+
 export const useManifest = () => {
   const [stand, setStand] = useState<Stand<Manifest>>({ status: "laden" });
   useEffect(() => {

@@ -110,13 +110,7 @@ const AanvraagPage = async ({
           </section>
         )}
       </div>
-      {flow && (
-        <Vragen
-          onderneming={flow.werkgever.onderneming}
-          traces={flow.traces}
-          regelingen={flow.aannemen.regelingen}
-        />
-      )}
+      {flow && <Vragen onderneming={flow.werkgever.onderneming} />}
     </>
   );
 };

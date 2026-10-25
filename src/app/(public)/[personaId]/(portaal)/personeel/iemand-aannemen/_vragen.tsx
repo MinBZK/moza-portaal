@@ -3,55 +3,102 @@
 import Link from "next/link";
 import {
   ActionGroup,
-  Alert,
   Fieldset,
   FormFieldCheckboxOption,
   Heading,
   Paragraph,
+  Toggletip,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import type { DemoAannemenRegeling, DemoAannemenTrace } from "@/demo";
 import RangeSlider from "@/components/RangeSlider";
 import Balans from "./_balans";
+import type { Overig } from "./_uitkomsten";
+import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
   DOELGROEPEN,
   WML_UUR_EUROCENT,
-  inRegister,
   kiesDoelgroep,
   registerVast,
   useAannemen,
   type Antwoorden,
 } from "./_useAannemen";
 
+/** Bovengrens van de schuifregelaar voor het uurloon: € 30 per uur. */
+const MAX_UURLOON_EUROCENT = 3000;
+
+/** "Regelingen die verder kunnen gelden": naam en uitleg per uitkomst van de engine. */
+const OVERIG: Record<
+  Overig["id"],
+  { naam: string; tekst: (o: Overig) => string }
+> = {
+  nrp: {
+    naam: "No-riskpolis",
+    tekst: (o) =>
+      `Wordt uw werknemer ziek, dan betaalt UWV ziekengeld in plaats van dat u het loon doorbetaalt. ${o.duurJaren === 5 ? "Vijf jaar vanaf de start." : "Zonder einddatum."}`,
+  },
+  pp_pwet: {
+    naam: "Proefplaatsing",
+    tekst: () =>
+      "De kandidaat werkt eerst twee maanden bij u terwijl de bijstand doorloopt, te verlengen tot zes maanden, als de gemeente instemt.",
+  },
+  pp_ww: {
+    naam: "Proefplaatsing met behoud van WW",
+    tekst: () =>
+      "De kandidaat werkt zes maanden bij u terwijl de WW-uitkering doorloopt, als UWV toestemming geeft.",
+  },
+  begeleiding: {
+    naam: "Begeleiding op de werkplek (jobcoach)",
+    tekst: () =>
+      "Een jobcoach helpt uw werknemer en u op de werkvloer. U vraagt dit aan bij de gemeente.",
+  },
+  vz_wia: {
+    naam: "Jobcoaching en werkplekaanpassing",
+    tekst: () =>
+      "UWV kan een jobcoach of een aanpassing van de werkplek vergoeden. U vraagt dit aan bij UWV.",
+  },
+  vz_wajong: {
+    naam: "Jobcoaching en werkplekaanpassing",
+    tekst: () =>
+      "Via de Wajong kan UWV een jobcoach of een aanpassing van de werkplek vergoeden. U vraagt dit aan bij UWV.",
+  },
+};
+
 /**
  * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
-/** Bovengrens van de schuifregelaar voor het uurloon: € 30 per uur. */
-const MAX_UURLOON_EUROCENT = 3000;
-
-const Vragen = ({
-  onderneming,
-  traces,
-  regelingen,
-}: {
-  onderneming: string;
-  traces: Record<string, DemoAannemenTrace>;
-  regelingen: DemoAannemenRegeling[];
-}) => {
+const Vragen = ({ onderneming }: { onderneming: string }) => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
-  const a = staat.antwoorden;
-  const zet = (deel: Partial<Antwoorden>) =>
-    werkBij({ antwoorden: { ...a, ...deel } });
-  const register = inRegister(a);
-  const anders =
-    a.doelgroepen.includes("wajong") || a.doelgroepen.includes("wia");
+  return (
+    <VragenMetStaat
+      onderneming={onderneming}
+      a={staat.antwoorden}
+      zet={(deel) => werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })}
+    />
+  );
+};
+
+const VragenMetStaat = ({
+  onderneming,
+  a,
+  zet,
+}: {
+  onderneming: string;
+  a: Antwoorden;
+  zet: (deel: Partial<Antwoorden>) => void;
+}) => {
+  const resultaat = useUitkomsten(a);
   const vast = registerVast(a);
-  const overige = regelingen.filter((r) => r.id !== "lks" && r.id !== "lkv");
+  const wajong = a.doelgroepen.includes("wajong");
+  // De aanvraag na de oriëntatie is uitgewerkt voor een kandidaat via de gemeente.
+  const andereAanvraag = a.doelgroepen.some(
+    (d) => d !== "register" && d !== "bijstand",
+  );
+  const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
 
   return (
     <>
@@ -113,9 +160,9 @@ const Vragen = ({
               filled
             />
             <Paragraph className="mox-hiring-note">
-              In vergelijking met een collega zonder beperking. Bij 100 procent
-              kan de kandidaat het werk zelfstandig doen en is er geen
-              loonkostensubsidie. De gemeente meet dit later op de werkplek.
+              {wajong
+                ? "Bij een Wajong-uitkering: het percentage van het minimumloon dat de kandidaat aankan. UWV stelt dit vast voor de loondispensatie."
+                : "In vergelijking met een collega zonder beperking. Bij 100 procent kan de kandidaat het werk zelfstandig doen en is er geen loonkostensubsidie. De gemeente meet dit later op de werkplek."}
             </Paragraph>
           </div>
           <div>
@@ -135,25 +182,16 @@ const Vragen = ({
               uurloon maakt alleen de loonkosten hoger.
             </Paragraph>
           </div>
-          {anders && (
-            <Alert type="info">
-              <Paragraph>
-                Dit prototype werkt de aanvraag uit voor een kandidaat uit het
-                doelgroepregister. Voor een Wajong-, WIA- of WAO-uitkering
-                volgen de bedragen hieronder dat uitgangspunt.
-              </Paragraph>
-            </Alert>
-          )}
         </div>
         <aside
           className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-5"
           aria-label="Wat het kost en oplevert"
         >
-          <Balans antwoorden={a} traces={traces} />
+          <Balans antwoorden={a} resultaat={resultaat} />
         </aside>
       </div>
 
-      {register !== "nee" && (
+      {overige.length > 0 && (
         <section
           className="rhc-mox-card rhc-mox-row-gap"
           aria-labelledby="overige"
@@ -162,23 +200,17 @@ const Vragen = ({
             Regelingen die verder kunnen gelden
           </Heading>
           <UnorderedList>
-            {overige.map((r) => (
-              <UnorderedListItem key={r.id}>
-                <strong>{r.naam}</strong>
-                <span
-                  className={`mox-hiring-label${r.soort === "niet" ? " mox-hiring-label--not-applicable" : ""}`}
-                >
-                  {r.soortLabel}
-                </span>
+            {overige.map((o) => (
+              <UnorderedListItem key={o.id}>
+                <strong>{OVERIG[o.id].naam}</strong>
                 <br />
-                {r.tekstAlgemeen ?? r.tekst}
+                {OVERIG[o.id].tekst(o)}
               </UnorderedListItem>
             ))}
           </UnorderedList>
           <Paragraph className="mox-hiring-note">
-            Of een regeling geldt, hangt af van de kandidaat. Dit zijn de
-            uitkomsten van de regelrecht-engine voor iemand uit het
-            doelgroepregister.
+            Uitkomsten van de regelrecht-engine bij uw antwoorden. Of een
+            regeling geldt, beslist de organisatie die haar uitvoert.
           </Paragraph>
         </section>
       )}
@@ -195,6 +227,16 @@ const Vragen = ({
           bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
           beslist zelf of u indient. Tussendoor opslaan kan.
         </Paragraph>
+        {andereAanvraag && (
+          <div className="mox-hiring-note">
+            De aanvraag in dit prototype is uitgewerkt voor één kandidaat.{" "}
+            <Toggletip>
+              Dit prototype vult de aanvraag in voor een kandidaat die via de
+              gemeente werk vindt, met loonkostensubsidie. Voor uw keuze kan de
+              aanvraag er anders uitzien.
+            </Toggletip>
+          </div>
+        )}
         <ActionGroup>
           <Link
             href="/personeel/iemand-aannemen/gegevens"

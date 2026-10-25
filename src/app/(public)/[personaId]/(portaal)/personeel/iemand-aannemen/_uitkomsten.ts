@@ -69,38 +69,61 @@ export const PEILDATUM = "2026-07-01";
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;
 
-/** Wat de oriëntatie rekent; dezelfde lijst als DOELEN in scripts/regelrecht-node.mjs. */
-export const DOELEN: Omit<EngineInvoer, "peildatum" | "parameters">[] = [
+type Doel = Omit<EngineInvoer, "peildatum" | "parameters"> & {
+  /** Kan deze uitkomst bij deze keuzes iets opleveren? Zo niet, dan blijft de aanroep weg. */
+  nodig: (d: Set<Doelgroep>) => boolean;
+};
+
+const viaGemeente = (d: Set<Doelgroep>) =>
+  d.has("bijstand") && !d.has("wajong") && !d.has("wia");
+const iets = (d: Set<Doelgroep>) => d.size > 0 && !d.has("geen");
+
+/**
+ * Wat de oriëntatie rekent, met de bedragen eerst: elke aanroep kost de kern
+ * bijna een seconde en de worker werkt ze na elkaar af. Dezelfde wetten en
+ * outputs als DOELEN in scripts/regelrecht-node.mjs. WW 76a heeft geen vinkje
+ * en blijft dus weg.
+ */
+export const DOELEN: Doel[] = [
   {
     wet: "participatiewet",
     output: "heeft_recht_op_lks",
     uitleggen: ["hoogte_lks_eurocent_per_maand"],
-  },
-  { wet: "participatiewet", output: "mag_proefplaatsing_aangaan" },
-  {
-    wet: "participatiewet",
-    output: "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+    nodig: viaGemeente,
   },
   {
     wet: "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
     output: "heeft_recht_op_loondispensatie",
     uitleggen: ["aanspraak_beloning_per_uur_eurocent"],
+    nodig: (d) => d.has("wajong"),
   },
   {
     wet: "wet_tegemoetkomingen_loondomein",
     output: "heeft_recht_op_lkv",
     uitleggen: ["hoogte_lkv_per_jaar_eurocent", "categorie_lkv"],
+    nodig: iets,
   },
   {
     wet: "ziektewet",
     output: "heeft_recht_op_no_risk_polis",
     uitleggen: ["duur_no_risk_polis_jaren"],
+    nodig: iets,
   },
-  { wet: "werkloosheidswet", output: "uwv_mag_toestemming_verlenen" },
+  {
+    wet: "participatiewet",
+    output: "mag_proefplaatsing_aangaan",
+    nodig: viaGemeente,
+  },
+  {
+    wet: "participatiewet",
+    output: "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+    nodig: viaGemeente,
+  },
   {
     wet: "wet_werk_en_inkomen_naar_arbeidsvermogen",
     output: "mag_jobcoaching_toekennen",
     uitleggen: ["mag_werkplekaanpassing_toekennen"],
+    nodig: (d) => d.has("wia"),
   },
 ];
 
@@ -234,8 +257,17 @@ export const feitenVoor = (a: Keuzes): Feiten => {
 
 /** Eén invoer per doel, met de basis en de feiten van de keuzes. */
 export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
+  const d = new Set(a.doelgroepen);
   const parameters = { ...basis, ...feitenVoor(a) };
-  return DOELEN.map((doel) => ({ ...doel, peildatum: PEILDATUM, parameters }));
+  return DOELEN.filter((doel) => doel.nodig(d)).map(
+    ({ wet, output, uitleggen }) => ({
+      wet,
+      output,
+      peildatum: PEILDATUM,
+      parameters,
+      ...(uitleggen ? { uitleggen } : {}),
+    }),
+  );
 };
 
 export type AannameId =
