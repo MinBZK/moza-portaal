@@ -67,6 +67,15 @@ const start = () => {
       wachtend.get(bericht.data.id)?.(bericht.data);
       wachtend.delete(bericht.data.id);
     };
+    // Laadt worker.js zelf niet, dan komt er nooit een antwoord: geef elk
+    // wachtend verzoek een fout, zodat het scherm niet blijft rekenen.
+    worker.onerror = (fout) => {
+      fout.preventDefault();
+      for (const [id, klaar] of wachtend)
+        klaar({ id, ok: false, fout: "de engine laadt niet" });
+      wachtend.clear();
+      worker = null;
+    };
   } catch {
     worker = null;
   }

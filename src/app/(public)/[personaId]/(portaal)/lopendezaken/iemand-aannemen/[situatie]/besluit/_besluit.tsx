@@ -67,7 +67,7 @@ const Besluit = ({
   const antwoorden = staat
     ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
     : STANDAARD_ANTWOORDEN;
-  const { uitkomsten, bekend } = useUitkomsten(antwoorden);
+  const { uitkomsten, bekend, fout } = useUitkomsten(antwoorden);
   const invoer = useMemo(
     () =>
       invoerVoor(antwoorden, basis as Feiten).find(
@@ -142,7 +142,11 @@ const Besluit = ({
       </DataSummary>
 
       {!bekend ? (
-        <Paragraph role="status">De bedragen worden berekend…</Paragraph>
+        <Paragraph role="status">
+          {fout
+            ? "De bedragen konden niet worden berekend. Laad de pagina opnieuw."
+            : "De bedragen worden berekend…"}
+        </Paragraph>
       ) : !heeftRegel ? (
         <Alert type="warning">
           <Paragraph>

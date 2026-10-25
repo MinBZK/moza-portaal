@@ -85,14 +85,20 @@ const IndienenInhoud = ({
   const a = staat.antwoorden;
   const k = staat.keuzes;
 
-  const { uitkomsten, bekend } = useUitkomsten(a);
+  const { uitkomsten, bekend, fout: engineFout } = useUitkomsten(a);
   const route = useMemo(
     () => routeVoor(a.doelgroepen, uitkomsten),
     [a.doelgroepen, uitkomsten],
   );
 
   if (!bekend)
-    return <Paragraph role="status">De aanvraag wordt berekend…</Paragraph>;
+    return (
+      <Paragraph role="status">
+        {engineFout
+          ? "De aanvraag kan nu niet worden berekend. Laad de pagina opnieuw."
+          : "De aanvraag wordt berekend…"}
+      </Paragraph>
+    );
 
   if (route.panelen.length === 0)
     return (

@@ -243,7 +243,11 @@ const VragenMetStaat = ({
           </Link>
         </ActionGroup>
         <Paragraph role="status" id="aanvragen-bezig">
-          {resultaat.bekend ? "" : "De berekening is nog bezig."}
+          {resultaat.bekend
+            ? ""
+            : resultaat.fout
+              ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+              : "De berekening is nog bezig."}
         </Paragraph>
       </section>
     </>
