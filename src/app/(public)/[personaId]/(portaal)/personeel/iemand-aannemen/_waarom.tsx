@@ -5,7 +5,7 @@ import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
 import UitlegTaalmodel from "./_uitlegTaalmodel";
-import { useBerekening } from "./_useRegelrecht";
+import { useBerekening, type Invoer } from "./_useRegelrecht";
 import { datumNL, waarde } from "./_werkgever";
 
 /**
@@ -15,19 +15,26 @@ import { datumNL, waarde } from "./_werkgever";
  * met per stap de bron. Deterministisch uit de trace, zonder taalmodel; zie
  * Bos, Schuth en Chen, "From Rules as Executed to Citizen Explanation"
  * (JURIX 2026): expliciete beslissende voorwaarden houden de uitleg trouw
- * aan de uitvoering. Lukt de engine niet, dan de vooraf berekende
- * tussenstappen.
+ * aan de uitvoering. Met `invoer` (uit invoerVoor) rekent hij die invoer
+ * direct, met de antwoorden van de oriëntatie; de `uitleggen` van die invoer
+ * bepaalt de afleidingen. Met `trace` rekent hij de trace met overschrijvingen
+ * uit de antwoorden. Lukt de engine niet, dan de vooraf berekende
+ * tussenstappen (alleen met `trace`).
  */
 const Waarom = ({
   trace,
   antwoorden,
+  invoer,
   labels,
   bedragOutput,
   regeling,
   kvk,
 }: {
-  trace: DemoAannemenTrace | undefined;
-  antwoorden: Antwoorden;
+  trace?: DemoAannemenTrace;
+  /** Nodig bij `trace`, voor de overschrijvingen. */
+  antwoorden?: Antwoorden;
+  /** Invoer voor de engine; gaat voor op `trace`. */
+  invoer?: Invoer;
   labels: Record<string, string>;
   /** De output met het bedrag, als de regeling er een heeft. */
   bedragOutput?: string;
@@ -36,15 +43,18 @@ const Waarom = ({
   /** KVK-nummer van de werkgever: de sessie van de Digitale assistent. */
   kvk: string;
 }) => {
-  const outputs = trace
-    ? [trace.uitkomst, ...(bedragOutput ? [bedragOutput] : [])]
-    : [];
+  const outputs = invoer
+    ? [invoer.output, ...(invoer.uitleggen ?? [])]
+    : trace
+      ? [trace.uitkomst, ...(bedragOutput ? [bedragOutput] : [])]
+      : [];
   const stand = useBerekening(
-    trace ? invoerVan(trace, antwoorden, outputs) : null,
+    invoer ??
+      (trace && antwoorden ? invoerVan(trace, antwoorden, outputs) : null),
   );
-  if (!trace) return null;
+  if (!invoer && !trace) return null;
 
-  const vooraf = (
+  const vooraf = trace ? (
     <>
       <Paragraph className="mox-hiring-note">
         Vooraf berekend door de regelrecht-engine op peildatum{" "}
@@ -63,6 +73,12 @@ const Waarom = ({
         ))}
       </DataSummary>
     </>
+  ) : (
+    <Paragraph className="mox-hiring-note">
+      De engine in de browser is niet beschikbaar
+      {stand.status === "fout" && `: ${stand.fout}`}. Probeer de pagina opnieuw
+      te laden.
+    </Paragraph>
   );
 
   return (

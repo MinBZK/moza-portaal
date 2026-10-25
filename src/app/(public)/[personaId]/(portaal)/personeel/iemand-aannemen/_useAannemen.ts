@@ -5,6 +5,7 @@ import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
 import {
   faseIndex as faseIndexVan,
   migreerZaken,
+  type PaneelId,
   type Situatie,
   type TaakId,
   type TaakStand,
@@ -63,8 +64,11 @@ export type Antwoorden = {
   uurloon: number;
 };
 
-export const REGELINGEN = ["lks", "lkv", "nrp", "jc", "wpa", "pp"] as const;
-export type RegelingId = (typeof REGELINGEN)[number];
+/**
+ * De regelingen met een paneel in de aanvraag. De opslag kan nog sleutels
+ * voor lkv en nrp hebben (eerdere versies); die tellen niet meer mee.
+ */
+export type RegelingId = PaneelId;
 
 export type AannemenStaat = {
   antwoorden: Antwoorden;

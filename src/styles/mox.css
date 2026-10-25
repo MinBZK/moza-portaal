@@ -899,7 +899,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding: 1rem;
 	}
 
-	.mox-hiring-panel > summary h2 {
+	.mox-hiring-panel > summary :is(h2, h3) {
 		font-size: var(--rhc-font-size-lg, 1.125rem);
 		margin: 0;
 	}

@@ -5,7 +5,7 @@ import InfoToggletip from "@/components/InfoToggletip";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
 import type { AannameId, Regel } from "./_uitkomsten";
-import { useUitkomsten, type Resultaat } from "./_useUitkomsten";
+import type { Resultaat } from "./_useUitkomsten";
 import { useManifest } from "./_useRegelrecht";
 import { euro } from "./_werkgever";
 
@@ -189,13 +189,16 @@ const Balans = ({
 };
 
 /**
- * De korte balans van de concept-aanvraag. Fase 2 is uitgewerkt voor een
- * kandidaat via de gemeente; die rekent dus met bijstand, en met de uren,
- * loonwaarde en het uurloon uit de oriëntatie.
+ * De korte balans van de concept-aanvraag: rekent met de antwoorden van de
+ * oriëntatie. De aanvraag geeft de uitkomsten mee die ze zelf al heeft, zodat
+ * de engine niet dubbel rekent.
  */
-export const KorteBalans = ({ antwoorden }: { antwoorden: Antwoorden }) => {
-  const a = { ...antwoorden, doelgroepen: ["bijstand" as const] };
-  return <Balans antwoorden={a} resultaat={useUitkomsten(a)} kort />;
-};
+export const KorteBalans = ({
+  antwoorden,
+  resultaat,
+}: {
+  antwoorden: Antwoorden;
+  resultaat: Resultaat;
+}) => <Balans antwoorden={antwoorden} resultaat={resultaat} kort />;
 
 export default Balans;

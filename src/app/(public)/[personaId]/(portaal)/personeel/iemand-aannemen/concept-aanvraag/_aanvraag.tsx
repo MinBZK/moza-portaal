@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   ActionGroup,
   Alert,
@@ -17,17 +17,24 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import type { DemoAannemen, DemoAannemenBron, DemoAannemenTrace } from "@/demo";
-import { KorteBalans } from "../_balans";
+import InfoToggletip from "@/components/InfoToggletip";
+import type { DemoAannemen, DemoAannemenTrace } from "@/demo";
+import basis from "../_basisfeiten.json";
+import { Aanname, KorteBalans } from "../_balans";
+import type { PaneelId, TaakId, VanzelfId } from "../_route";
+import { routeVoor } from "../_route";
+import Stappen from "../_stappen";
+import { invoerVoor, type Feiten } from "../_uitkomsten";
+import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
-  REGELINGEN,
   onderMinimumloon,
   useAannemen,
   uurloonTekst,
+  type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
-import { datumNL, type Werkgever } from "../_werkgever";
+import { datumNL, euro, type Werkgever } from "../_werkgever";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -47,48 +54,107 @@ const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
   </DataSummary>
 );
 
-/**
- * De vooringevulde aanvraag: per regeling een paneel met de gegevens en hun
- * bron, "Waarom deze uitkomst?" en een vinkje "gecontroleerd". Rechts wat het
- * oplevert, live uit de engine. Indienen kan pas als alle zes gecontroleerd zijn.
- */
-const Aanvraag = ({
-  aannemen,
-  traces,
-  bronnen,
-  werkgever,
-  ondernemer,
-}: {
-  aannemen: DemoAannemen;
+const NAAM: Record<PaneelId, string> = {
+  lks: "Loonkostensubsidie",
+  ld: "Loondispensatie",
+  jc: "Jobcoaching",
+  wpa: "Werkplekaanpassing",
+  pp: "Proefplaatsing",
+};
+
+const TAAK: Record<TaakId, string> = {
+  doelgroepverklaring: "Doelgroepverklaring aanvragen",
+  vz_wajong: "Jobcoach of werkplekaanpassing aanvragen",
+  vz_wia: "Jobcoach of werkplekaanpassing aanvragen",
+};
+
+const ORGANISATIE = { gemeente: "Naar de gemeente", uwv: "Naar UWV" } as const;
+
+const duurTekst = (jaren: number | undefined) =>
+  jaren === undefined || jaren === 0
+    ? ""
+    : jaren < 0
+      ? "De no-riskpolis loopt zonder einddatum."
+      : jaren === 5
+        ? "De no-riskpolis loopt vijf jaar."
+        : `De no-riskpolis loopt ${jaren} jaar.`;
+
+type Props = {
+  perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
   traces: Record<string, DemoAannemenTrace>;
-  bronnen: DemoAannemenBron[];
   werkgever: Werkgever;
   ondernemer: string;
-}) => {
-  const router = useRouter();
-  const { staat, werkBij } = useAannemen();
-  const [fout, setFout] = useState(false);
+};
+
+/**
+ * De vooringevulde aanvraag volgt de route van de situatie: per organisatie
+ * de panelen voor wat de werkgever zelf indient (met de gegevens en hun bron,
+ * "Waarom deze uitkomst?" en een vinkje "gecontroleerd"), daaronder de taken
+ * voor de werknemer en wat vanzelf of via de loonaangifte gaat. Rechts wat
+ * het oplevert, live uit de engine. Indienen kan pas als alle panelen
+ * gecontroleerd zijn; zonder panelen is er niets in te dienen.
+ */
+const Aanvraag = (props: Props) => {
+  const { staat } = useAannemen();
+  // De inhoud rekent met de engine; dat mag pas als de opslag gelezen is.
   if (!staat) return null;
-  const { kandidaat, dienstverband, labels } = aannemen;
+  return <AanvraagInhoud {...props} staat={staat} />;
+};
+
+const AanvraagInhoud = ({
+  perSituatie,
+  traces,
+  werkgever,
+  ondernemer,
+  staat,
+}: Props & { staat: AannemenStaat }) => {
+  const router = useRouter();
+  const { werkBij } = useAannemen();
+  const [fout, setFout] = useState(false);
   const a = staat.antwoorden;
   const g = staat.gecontroleerd;
   const k = staat.keuzes;
-  const aantal = REGELINGEN.filter((id) => g[id]).length;
+
+  const resultaat = useUitkomsten(a);
+  const { uitkomsten, bekend } = resultaat;
+  const route = useMemo(
+    () => routeVoor(a.doelgroepen, uitkomsten),
+    [a.doelgroepen, uitkomsten],
+  );
+  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
+  const invoer = (wet: string, output: string) =>
+    invoeren.find((i) => i.wet === wet && i.output === output);
+
+  const { situatie } = route;
+  const { kandidaat, dienstverband, labels, bronnen } =
+    perSituatie[
+      situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
+    ];
   const vind = (bronId: string, parameter: string) =>
     bronnen
       .find((b) => b.id === bronId)
       ?.gegevens.find((x) => x.parameter === parameter)?.waarde ?? "";
 
-  const controleer = (id: RegelingId, aan: boolean) =>
-    werkBij({ gecontroleerd: { ...g, [id]: aan } });
+  const paneelIds = route.panelen.flatMap((p) => p.ids);
+  const aantal = paneelIds.filter((id) => g[id]).length;
+  const regelingen =
+    paneelIds.length +
+    route.vanzelf.length +
+    route.taken.filter((t) => t !== "doelgroepverklaring").length;
+  const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
+  const ld = uitkomsten.regels.find((r) => r.id === "ld");
+  const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
+
+  const controleer = (id: RegelingId, aanvinken: boolean) =>
+    werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
   const kies = (deel: typeof k) => werkBij({ keuzes: { ...k, ...deel } });
 
-  const mist = (id: RegelingId) =>
+  const mist = (id: PaneelId) =>
     (id === "jc" && !k.jc) ||
     (id === "wpa" && !k.wpa) ||
     (id === "pp" && !k.pp);
 
-  const status = (id: RegelingId) =>
+  const status = (id: PaneelId) =>
     g[id] ? (
       <span className="mox-hiring-label mox-hiring-label--done">
         Gecontroleerd
@@ -101,7 +167,7 @@ const Aanvraag = ({
 
   // Een gewone functie, geen component: een component in de render zou bij
   // elke wijziging opnieuw worden aangemaakt.
-  const vinkje = (id: RegelingId) => (
+  const vinkje = (id: PaneelId) => (
     <FormFieldCheckboxOption
       label="Ik heb dit gecontroleerd"
       name={`ok-${id}`}
@@ -109,6 +175,26 @@ const Aanvraag = ({
       onChange={(event) => controleer(id, event.target.checked)}
     />
   );
+
+  const waarom = (
+    wet: string,
+    output: string,
+    regeling: string,
+    traceId?: string,
+  ) => {
+    const i = invoer(wet, output);
+    if (!i) return null;
+    return (
+      <Waarom
+        invoer={i}
+        trace={traceId ? traces[traceId] : undefined}
+        antwoorden={a}
+        regeling={regeling}
+        kvk={werkgever.kvkNummer}
+        labels={labels}
+      />
+    );
+  };
 
   const werkgeverRijen: Gegeven[] = [
     {
@@ -123,17 +209,29 @@ const Aanvraag = ({
       waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
       bron: "UWV doelgroepregister",
     },
-    {
-      label: "In het doelgroepregister",
-      waarde: vind("uwv", "is_arbeidsbeperkte"),
-      bron: "UWV doelgroepregister",
-    },
-    {
-      label: "Woonplaats werknemer",
-      waarde: `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
-      bron: "Basisregistratie Personen",
-    },
+    situatie === "wajong"
+      ? {
+          label: "Wajong",
+          waarde: vind("uwv", "heeft_wajong_arbeidsondersteuning_of_uitkering"),
+          bron: "UWV",
+        }
+      : situatie === "wia"
+        ? {
+            label: "WIA-uitkering in de maand voor de start",
+            waarde: vind("uwv", "had_wia_recht_maand_voor_aanvang"),
+            bron: "UWV",
+          }
+        : {
+            label: "In het doelgroepregister",
+            waarde: vind("uwv", "is_arbeidsbeperkte"),
+            bron: "UWV doelgroepregister",
+          },
   ];
+  const woonplaatsRij: Gegeven = {
+    label: "Woonplaats werknemer",
+    waarde: `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
+    bron: "Basisregistratie Personen",
+  };
   const dienstRijen: Gegeven[] = [
     { label: "Functie", waarde: dienstverband.functie, bron: "Uw opgave" },
     {
@@ -145,8 +243,316 @@ const Aanvraag = ({
     { label: "Loon", waarde: uurloonTekst(a), bron: "Uw antwoord" },
   ];
 
+  const paneel = (id: PaneelId): ReactNode => {
+    const kop = (note: string, kind: ReactNode) => (
+      <details
+        className="mox-hiring-panel"
+        id={`paneel-${id}`}
+        open={id === paneelIds[0]}
+        key={id}
+      >
+        <summary>
+          <span>
+            <Heading level={3}>{NAAM[id]}</Heading>
+            <span className="mox-hiring-note">{note}</span>
+          </span>
+          {status(id)}
+        </summary>
+        <div className="rhc-mox-row-gap">
+          {kind}
+          {vinkje(id)}
+        </div>
+      </details>
+    );
+    const gemeente = "Gemeente waar de kandidaat woont";
+
+    if (id === "lks")
+      return kop(
+        gemeente,
+        <>
+          <Gegevens
+            rijen={[
+              ...werkgeverRijen,
+              ...werknemerRijen,
+              woonplaatsRij,
+              ...dienstRijen,
+            ]}
+          />
+          <Gegevens
+            rijen={[
+              {
+                label: "Regeling werknemer",
+                waarde: "Participatiewet, doelgroep banenafspraak",
+                bron: "UWV doelgroepregister",
+              },
+              {
+                label: "Loonwaarde",
+                waarde: onderMinimumloon(a)
+                  ? `${a.loonwaarde} procent, uw schatting; de gemeente meet op de werkplek`
+                  : "Kandidaat kan het werk zelfstandig doen; geen subsidie",
+                bron: "Uw antwoord",
+              },
+            ]}
+          />
+          {waarom(
+            "participatiewet",
+            "heeft_recht_op_lks",
+            "Loonkostensubsidie",
+            "participatiewet:heeft_recht_op_lks",
+          )}
+        </>,
+      );
+
+    if (id === "ld")
+      return kop(
+        "UWV",
+        <>
+          <Gegevens
+            rijen={[
+              ...werkgeverRijen,
+              ...werknemerRijen,
+              ...dienstRijen,
+              {
+                label: "Percentage",
+                waarde: `${a.loonwaarde} procent, uw schatting; UWV stelt dit vast`,
+                bron: "Uw antwoord",
+              },
+              ...(ld?.aanspraakPerUur !== undefined
+                ? [
+                    {
+                      label: "Aanspraak per uur",
+                      waarde: `${euro(ld.aanspraakPerUur)}, het minimumloon maal het percentage`,
+                      bron: "Berekend door de engine",
+                    },
+                  ]
+                : []),
+            ]}
+          />
+          <div className="mox-hiring-note">
+            Het percentage is een schatting.{" "}
+            <InfoToggletip label="Toelichting bij het percentage">
+              UWV stelt het percentage vast na een onderzoek op de werkplek. Dat
+              kan hoger of lager uitvallen dan uw schatting. De aanspraak per
+              uur verandert dan mee.
+            </InfoToggletip>
+          </div>
+          {waarom(
+            "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+            "heeft_recht_op_loondispensatie",
+            "Loondispensatie",
+            "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie",
+          )}
+        </>,
+      );
+
+    if (id === "jc")
+      return kop(
+        gemeente,
+        <>
+          <Paragraph>
+            Begeleiding op de werkvloer. Iedereen voor wie loonkostensubsidie
+            geldt, heeft hier recht op (Participatiewet 10da). U kiest of u er
+            gebruik van maakt.
+          </Paragraph>
+          <Fieldset legend="Wilt u jobcoaching aanvragen?">
+            <FormFieldRadio
+              name="jc"
+              value="ja"
+              label="Ja, via de gemeente"
+              checked={k.jc === "ja"}
+              onChange={() => kies({ jc: "ja" })}
+            />
+            <FormFieldRadio
+              name="jc"
+              value="nee"
+              label="Nee, niet nodig"
+              checked={k.jc === "nee"}
+              onChange={() => kies({ jc: "nee" })}
+            />
+          </Fieldset>
+          {waarom(
+            "participatiewet",
+            "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+            "Jobcoaching",
+            "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek",
+          )}
+        </>,
+      );
+
+    if (id === "wpa")
+      return kop(
+        gemeente,
+        <>
+          <Paragraph>
+            Vergoeding voor een aangepaste werkplek of een hulpmiddel. De
+            gemeente beoordeelt de aanvraag; voor een kandidaat met een
+            UWV-uitkering doet UWV dat (Wet WIA 35, boven het drempelbedrag van
+            € 195,16).
+          </Paragraph>
+          <Fieldset legend="Is er een aanpassing nodig?">
+            <FormFieldRadio
+              name="wpa"
+              value="ja"
+              label="Ja, ik weet wat er nodig is"
+              checked={k.wpa === "ja"}
+              onChange={() => kies({ wpa: "ja" })}
+            />
+            <FormFieldRadio
+              name="wpa"
+              value="later"
+              label="Weet ik nog niet; later aanvragen"
+              checked={k.wpa === "later"}
+              onChange={() => kies({ wpa: "later" })}
+            />
+            <FormFieldRadio
+              name="wpa"
+              value="nee"
+              label="Nee"
+              checked={k.wpa === "nee"}
+              onChange={() => kies({ wpa: "nee" })}
+            />
+          </Fieldset>
+        </>,
+      );
+
+    return kop(
+      gemeente,
+      <>
+        <Paragraph>
+          Eerst maximaal twee maanden op proef, met behoud van uitkering
+          (Participatiewet 8a). Alleen vóór de eerste werkdag.
+        </Paragraph>
+        <Fieldset legend="Wilt u eerst een proefplaatsing?">
+          <FormFieldRadio
+            name="pp"
+            value="ja"
+            label="Ja, twee maanden"
+            checked={k.pp === "ja"}
+            onChange={() => kies({ pp: "ja" })}
+          />
+          <FormFieldRadio
+            name="pp"
+            value="nee"
+            label="Nee, meteen in dienst"
+            checked={k.pp === "nee"}
+            onChange={() => kies({ pp: "nee" })}
+          />
+        </Fieldset>
+        {waarom(
+          "participatiewet",
+          "mag_proefplaatsing_aangaan",
+          "Proefplaatsing",
+          "participatiewet:mag_proefplaatsing_aangaan",
+        )}
+      </>,
+    );
+  };
+
+  const taak = (id: TaakId): ReactNode => (
+    <section
+      className="rhc-mox-card rhc-mox-row-gap"
+      aria-labelledby={`taak-${id}`}
+      key={id}
+    >
+      <Heading level={3} id={`taak-${id}`}>
+        {TAAK[id]}
+      </Heading>
+      {id === "doelgroepverklaring" && (
+        <>
+          <Paragraph>
+            De werknemer vraagt de doelgroepverklaring zelf aan bij UWV, binnen
+            drie maanden na de start. U bewaart de verklaring bij de
+            loonadministratie. Zonder verklaring kunt u het loonkostenvoordeel
+            niet krijgen (Wet tegemoetkomingen loondomein 2.7).
+          </Paragraph>
+        </>
+      )}
+      {id === "vz_wajong" && (
+        <Paragraph>
+          De werknemer vraagt dit zelf aan bij UWV, als dat nodig is (Wajong
+          2:22). U kunt niet namens de werknemer aanvragen in dit portaal.
+        </Paragraph>
+      )}
+      {id === "vz_wia" && (
+        <Paragraph>
+          De werknemer vraagt dit zelf aan bij UWV, als dat nodig is (Wet WIA
+          35). U kunt niet namens de werknemer aanvragen in dit portaal.
+        </Paragraph>
+      )}
+    </section>
+  );
+
+  const vanzelf = (id: VanzelfId): ReactNode =>
+    id === "lkv" ? (
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="vanzelf-lkv"
+        key={id}
+      >
+        <Heading level={3} id="vanzelf-lkv">
+          Loonkostenvoordeel
+        </Heading>
+        {lkv && (
+          <p className="mox-hiring-amount">
+            {euro(lkv.bedragPerJaar)}{" "}
+            <span className="mox-hiring-note">per jaar</span>
+          </p>
+        )}
+        {lkv?.aanname && <Aanname id={lkv.aanname} />}
+        <Paragraph>
+          U vraagt het loonkostenvoordeel aan door in de loonaangifte het vakje
+          loonkostenvoordeel aan te zetten; een aparte aanvraag is niet nodig.
+          {lkv?.categorie === "arbeidsgehandicapte_werknemer" &&
+            " Dat kan zodra u de doelgroepverklaring van de werknemer hebt."}{" "}
+          De Belastingdienst rekent het na afloop van het jaar uit.
+        </Paragraph>
+        <Gegevens
+          rijen={[
+            {
+              label: "Loonheffingennummer",
+              waarde: werkgever.loonheffingennummer,
+              bron: "Belastingdienst",
+            },
+            {
+              label: "Verloonde uren per jaar",
+              waarde: `${a.uren * 52} (${a.uren} uur per week)`,
+              bron: "Uw antwoord",
+            },
+          ]}
+        />
+        {waarom(
+          "wet_tegemoetkomingen_loondomein",
+          "heeft_recht_op_lkv",
+          "Loonkostenvoordeel",
+          "wet_tegemoetkomingen_loondomein:heeft_recht_op_lkv",
+        )}
+      </section>
+    ) : (
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="vanzelf-nrp"
+        key={id}
+      >
+        <Heading level={3} id="vanzelf-nrp">
+          No-riskpolis
+        </Heading>
+        <Paragraph>
+          Wordt de werknemer ziek, dan betaalt UWV ziekengeld (70 procent van
+          het dagloon) in plaats van dat u het loon doorbetaalt. Dit geldt
+          vanzelf: u hoeft niets aan te vragen. {duurTekst(nrp?.duurJaren)} Bij
+          ziekte meldt u de werknemer ziek bij UWV.
+        </Paragraph>
+        {waarom(
+          "ziektewet",
+          "heeft_recht_op_no_risk_polis",
+          "No-riskpolis",
+          "ziektewet:heeft_recht_op_no_risk_polis",
+        )}
+      </section>
+    );
+
   const indienen = () => {
-    if (aantal < REGELINGEN.length) {
+    if (aantal < paneelIds.length) {
       setFout(true);
       return;
     }
@@ -156,6 +562,21 @@ const Aanvraag = ({
 
   return (
     <>
+      <Heading level={1}>
+        Regelingen voor het aannemen van {kandidaat.voornaam}{" "}
+        {kandidaat.achternaam}
+      </Heading>
+      <Stappen huidige={3} />
+      <Paragraph role={bekend ? undefined : "status"}>
+        {resultaat.fout
+          ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
+          : !bekend
+            ? "De regelrecht-engine rekent uit welke regelingen gelden…"
+            : regelingen === 0
+              ? "Bij deze antwoorden is er niets aan te vragen."
+              : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
+      </Paragraph>
+
       <p className="mox-hiring-meta">
         <span className="mox-hiring-label">Vooringevuld</span>
         <Tag tekst={werkgever.onderneming} />
@@ -169,329 +590,103 @@ const Aanvraag = ({
         <Tag tekst="Nog niet ingediend" />
       </p>
 
-      <div className="mox-hiring-progress">
-        <label htmlFor="voortgang">Gecontroleerd</label>
-        <progress id="voortgang" value={aantal} max={REGELINGEN.length} />
-        <span>
-          {aantal} van {REGELINGEN.length}
-        </span>
-      </div>
+      {paneelIds.length > 0 && (
+        <div className="mox-hiring-progress">
+          <label htmlFor="voortgang">Gecontroleerd</label>
+          <progress id="voortgang" value={aantal} max={paneelIds.length} />
+          <span>
+            {aantal} van {paneelIds.length}
+          </span>
+        </div>
+      )}
 
-      {fout && aantal < REGELINGEN.length && (
+      {fout && aantal < paneelIds.length && (
         <Alert type="error">
           <Paragraph>
             Nog niet klaar om in te dienen. Controleer eerst:
           </Paragraph>
           <UnorderedList>
-            {REGELINGEN.filter((id) => !g[id]).map((id) => (
-              <UnorderedListItem key={id}>
-                <a
-                  href={`#paneel-${id}`}
-                  className="utrecht-link utrecht-link--html-a"
-                >
-                  {NAAM[id]}
-                </a>
-                {mist(id) && ": vul eerst aan wat ontbreekt"}
-              </UnorderedListItem>
-            ))}
+            {paneelIds
+              .filter((id) => !g[id])
+              .map((id) => (
+                <UnorderedListItem key={id}>
+                  <a
+                    href={`#paneel-${id}`}
+                    className="utrecht-link utrecht-link--html-a"
+                  >
+                    {NAAM[id]}
+                  </a>
+                  {mist(id) && ": vul eerst aan wat ontbreekt"}
+                </UnorderedListItem>
+              ))}
           </UnorderedList>
         </Alert>
       )}
 
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
-          <details className="mox-hiring-panel" id="paneel-lks" open>
-            <summary>
-              <span>
-                <Heading level={2}>Loonkostensubsidie</Heading>
-                <span className="mox-hiring-note">
-                  Gemeente waar de kandidaat woont
-                </span>
-              </span>
-              {status("lks")}
-            </summary>
-            <div className="rhc-mox-row-gap">
-              <Gegevens
-                rijen={[...werkgeverRijen, ...werknemerRijen, ...dienstRijen]}
-              />
-              <Gegevens
-                rijen={[
-                  {
-                    label: "Regeling werknemer",
-                    waarde: "Participatiewet, doelgroep banenafspraak",
-                    bron: "UWV doelgroepregister",
-                  },
-                  {
-                    label: "Loonwaarde",
-                    waarde: onderMinimumloon(a)
-                      ? `${a.loonwaarde} procent, uw schatting; de gemeente meet op de werkplek`
-                      : "Kandidaat kan het werk zelfstandig doen; geen subsidie",
-                    bron: "Uw antwoord",
-                  },
-                ]}
-              />
-              <Waarom
-                trace={traces["participatiewet:heeft_recht_op_lks"]}
-                antwoorden={a}
-                regeling="Loonkostensubsidie"
-                kvk={werkgever.kvkNummer}
-                labels={labels}
-              />
-              {vinkje("lks")}
-            </div>
-          </details>
+          {bekend &&
+            route.panelen.map((groep) => (
+              <section
+                key={groep.organisatie}
+                className="rhc-mox-row-gap"
+                aria-labelledby={`naar-${groep.organisatie}`}
+              >
+                <Heading level={2} id={`naar-${groep.organisatie}`}>
+                  {ORGANISATIE[groep.organisatie]}
+                </Heading>
+                {groep.ids.map(paneel)}
+              </section>
+            ))}
 
-          <details className="mox-hiring-panel" id="paneel-lkv">
-            <summary>
-              <span>
-                <Heading level={2}>Loonkostenvoordeel</Heading>
-                <span className="mox-hiring-note">UWV en Belastingdienst</span>
-              </span>
-              {status("lkv")}
-            </summary>
-            <div className="rhc-mox-row-gap">
-              <Gegevens
-                rijen={[
-                  ...werkgeverRijen,
-                  {
-                    label: "Loonheffingennummer",
-                    waarde: werkgever.loonheffingennummer,
-                    bron: "Belastingdienst",
-                  },
-                  ...werknemerRijen.slice(0, 2),
-                  {
-                    label: "Verloonde uren per jaar",
-                    waarde: `${a.uren * 52} (${a.uren} uur per week)`,
-                    bron: "Uw antwoord",
-                  },
-                ]}
-              />
-              <Paragraph>
-                U vraagt het loonkostenvoordeel aan door in de loonaangifte het
-                vakje loonkostenvoordeel aan te zetten; een aparte verklaring is
-                niet nodig. De Belastingdienst rekent het na afloop van het jaar
-                uit.
-              </Paragraph>
-              <Waarom
-                trace={
-                  traces["wet_tegemoetkomingen_loondomein:heeft_recht_op_lkv"]
-                }
-                antwoorden={a}
-                regeling="Loonkostenvoordeel"
-                kvk={werkgever.kvkNummer}
-                labels={labels}
-              />
-              {vinkje("lkv")}
-            </div>
-          </details>
-
-          <details className="mox-hiring-panel" id="paneel-nrp">
-            <summary>
-              <span>
-                <Heading level={2}>No-riskpolis</Heading>
-                <span className="mox-hiring-note">
-                  UWV, geen aanvraag nodig
-                </span>
-              </span>
-              {status("nrp")}
-            </summary>
-            <div className="rhc-mox-row-gap">
-              <Paragraph>
-                Wordt {kandidaat.voornaam} ziek, dan betaalt UWV ziekengeld (70
-                procent van het dagloon) in plaats van dat u het loon
-                doorbetaalt. Dit geldt vanzelf, omdat {kandidaat.voornaam} in
-                het doelgroepregister staat en de dienstbetrekking op of na 1
-                januari 2015 begint. Bij ziekte meldt u {kandidaat.voornaam}{" "}
-                ziek bij UWV.
-              </Paragraph>
-              <Gegevens rijen={werknemerRijen.slice(0, 2)} />
-              <Waarom
-                trace={traces["ziektewet:heeft_recht_op_no_risk_polis"]}
-                antwoorden={a}
-                regeling="No-riskpolis"
-                kvk={werkgever.kvkNummer}
-                labels={labels}
-              />
-              {vinkje("nrp")}
-            </div>
-          </details>
-
-          <details className="mox-hiring-panel" id="paneel-jc">
-            <summary>
-              <span>
-                <Heading level={2}>Jobcoaching</Heading>
-                <span className="mox-hiring-note">
-                  Gemeente waar de kandidaat woont
-                </span>
-              </span>
-              {status("jc")}
-            </summary>
-            <div className="rhc-mox-row-gap">
-              <Paragraph>
-                Begeleiding op de werkvloer. Iedereen voor wie
-                loonkostensubsidie geldt, heeft hier recht op (Participatiewet
-                10da). U kiest of u er gebruik van maakt.
-              </Paragraph>
-              <Fieldset legend="Wilt u jobcoaching aanvragen?">
-                <FormFieldRadio
-                  name="jc"
-                  value="ja"
-                  label="Ja, via de gemeente"
-                  checked={k.jc === "ja"}
-                  onChange={() => kies({ jc: "ja" })}
-                />
-                <FormFieldRadio
-                  name="jc"
-                  value="nee"
-                  label="Nee, niet nodig"
-                  checked={k.jc === "nee"}
-                  onChange={() => kies({ jc: "nee" })}
-                />
-              </Fieldset>
-              <Waarom
-                trace={
-                  traces[
-                    "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek"
-                  ]
-                }
-                antwoorden={a}
-                regeling="Jobcoaching"
-                kvk={werkgever.kvkNummer}
-                labels={labels}
-              />
-              {vinkje("jc")}
-            </div>
-          </details>
-
-          <details className="mox-hiring-panel" id="paneel-wpa">
-            <summary>
-              <span>
-                <Heading level={2}>Werkplekaanpassing</Heading>
-                <span className="mox-hiring-note">
-                  Gemeente waar de kandidaat woont
-                </span>
-              </span>
-              {status("wpa")}
-            </summary>
-            <div className="rhc-mox-row-gap">
-              <Paragraph>
-                Vergoeding voor een aangepaste werkplek of een hulpmiddel. De
-                gemeente beoordeelt de aanvraag; voor een kandidaat met een
-                UWV-uitkering doet UWV dat (Wet WIA 35, boven het drempelbedrag
-                van € 195,16).
-              </Paragraph>
-              <Fieldset legend="Is er een aanpassing nodig?">
-                <FormFieldRadio
-                  name="wpa"
-                  value="ja"
-                  label="Ja, ik weet wat er nodig is"
-                  checked={k.wpa === "ja"}
-                  onChange={() => kies({ wpa: "ja" })}
-                />
-                <FormFieldRadio
-                  name="wpa"
-                  value="later"
-                  label="Weet ik nog niet; later aanvragen"
-                  checked={k.wpa === "later"}
-                  onChange={() => kies({ wpa: "later" })}
-                />
-                <FormFieldRadio
-                  name="wpa"
-                  value="nee"
-                  label="Nee"
-                  checked={k.wpa === "nee"}
-                  onChange={() => kies({ wpa: "nee" })}
-                />
-              </Fieldset>
-              {vinkje("wpa")}
-            </div>
-          </details>
-
-          <details className="mox-hiring-panel" id="paneel-pp">
-            <summary>
-              <span>
-                <Heading level={2}>Proefplaatsing</Heading>
-                <span className="mox-hiring-note">
-                  Gemeente waar de kandidaat woont
-                </span>
-              </span>
-              {status("pp")}
-            </summary>
-            <div className="rhc-mox-row-gap">
-              <Paragraph>
-                Eerst maximaal twee maanden op proef, met behoud van uitkering
-                (Participatiewet 8a). Alleen vóór de eerste werkdag.
-              </Paragraph>
-              <Fieldset legend="Wilt u eerst een proefplaatsing?">
-                <FormFieldRadio
-                  name="pp"
-                  value="ja"
-                  label="Ja, twee maanden"
-                  checked={k.pp === "ja"}
-                  onChange={() => kies({ pp: "ja" })}
-                />
-                <FormFieldRadio
-                  name="pp"
-                  value="nee"
-                  label="Nee, meteen in dienst"
-                  checked={k.pp === "nee"}
-                  onChange={() => kies({ pp: "nee" })}
-                />
-              </Fieldset>
-              <Waarom
-                trace={traces["participatiewet:mag_proefplaatsing_aangaan"]}
-                antwoorden={a}
-                regeling="Proefplaatsing"
-                kvk={werkgever.kvkNummer}
-                labels={labels}
-              />
-              {vinkje("pp")}
-            </div>
-          </details>
-
-          <section className="rhc-mox-card" aria-labelledby="paneel-ld">
-            <Heading level={2} id="paneel-ld">
-              Loondispensatie{" "}
-              <span className="mox-hiring-label mox-hiring-label--not-applicable">
-                Geldt niet
-              </span>
-            </Heading>
-            <Paragraph>
-              Alleen voor mensen met een Wajong-uitkering. {kandidaat.voornaam}{" "}
-              valt onder de Participatiewet; daarvoor is loonkostensubsidie
-              bedoeld.
-            </Paragraph>
-            <Waarom
-              trace={
-                traces[
-                  "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie"
-                ]
-              }
-              antwoorden={a}
-              regeling="Loondispensatie"
-              kvk={werkgever.kvkNummer}
-              labels={labels}
-            />
-          </section>
-
-          <ActionGroup>
-            <Button appearance="primary-action-button" onClick={indienen}>
-              Controleren en indienen
-            </Button>
-            <Link
-              href="/personeel"
-              className="utrecht-link utrecht-link--html-a"
+          {bekend && route.taken.length > 0 && (
+            <section
+              className="rhc-mox-row-gap"
+              aria-labelledby="taken-werknemer"
             >
-              Opslaan en later afronden
-            </Link>
-          </ActionGroup>
+              <Heading level={2} id="taken-werknemer">
+                Taken voor de werknemer
+              </Heading>
+              {route.taken.map(taak)}
+            </section>
+          )}
+
+          {bekend && route.vanzelf.length > 0 && (
+            <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
+              <Heading level={2} id="vanzelf">
+                Gaat vanzelf of via de loonaangifte
+              </Heading>
+              {route.vanzelf.map(vanzelf)}
+            </section>
+          )}
+
+          {bekend && (
+            <ActionGroup>
+              <Button
+                appearance="primary-action-button"
+                onClick={
+                  paneelIds.length > 0
+                    ? indienen
+                    : () => router.push("/personeel/iemand-aannemen/indienen")
+                }
+              >
+                {paneelIds.length > 0 ? "Controleren en indienen" : "Klaar"}
+              </Button>
+              <Link
+                href="/personeel"
+                className="utrecht-link utrecht-link--html-a"
+              >
+                Opslaan en later afronden
+              </Link>
+            </ActionGroup>
+          )}
         </div>
 
         <aside
           className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap"
           aria-label="Wat dit u oplevert"
         >
-          <KorteBalans antwoorden={a} />
+          <KorteBalans antwoorden={a} resultaat={resultaat} />
           <Heading level={2}>Wie ziet deze aanvraag?</Heading>
           <Paragraph>
             Alleen u. Er is nog niets naar de overheid gestuurd.
@@ -503,15 +698,6 @@ const Aanvraag = ({
       </div>
     </>
   );
-};
-
-const NAAM: Record<RegelingId, string> = {
-  lks: "Loonkostensubsidie",
-  lkv: "Loonkostenvoordeel",
-  nrp: "No-riskpolis",
-  jc: "Jobcoaching",
-  wpa: "Werkplekaanpassing",
-  pp: "Proefplaatsing",
 };
 
 export default Aanvraag;
