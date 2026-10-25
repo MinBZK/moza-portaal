@@ -48,11 +48,7 @@ const Kaart = ({
   kop: string;
   children: ReactNode;
 }) => (
-  <section
-    className="rhc-mox-card rhc-mox-row-gap"
-    aria-labelledby={id}
-    key={id}
-  >
+  <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby={id}>
     <Heading level={3} id={id}>
       {kop}
     </Heading>
@@ -83,7 +79,10 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
   const { situatie } = route;
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
-  const uitleg = a.doelgroepen.flatMap((d) => UITLEG[d] ?? []);
+  const uitleg = a.doelgroepen.flatMap((d) => {
+    const u = UITLEG[d];
+    return u ? [{ ...u, id: d }] : [];
+  });
   const nietsAan = ["gemeente", "wajong", "wia"].includes(situatie);
 
   return (
@@ -118,7 +117,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
             Wat voor deze situatie geldt
           </Heading>
           {uitleg.map((u) => (
-            <Kaart key={u.kop} id={`uitleg-${u.kop}`} kop={u.kop}>
+            <Kaart key={u.id} id={`uitleg-${u.id}`} kop={u.kop}>
               <Paragraph>{u.tekst}</Paragraph>
             </Kaart>
           ))}

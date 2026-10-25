@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   ActionGroup,
   Alert,
@@ -13,6 +13,7 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
+import InfoToggletip from "@/components/InfoToggletip";
 import type { DemoAannemen } from "@/demo";
 import { routeVoor, type PaneelId, type TaakId } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
@@ -27,7 +28,7 @@ const Loket = ({
 }: {
   titel: string;
   label?: string;
-  items: string[];
+  items: ReactNode[];
 }) => (
   <section className="rhc-mox-card rhc-mox-row-gap" aria-label={titel}>
     <Heading level={3}>
@@ -35,8 +36,8 @@ const Loket = ({
       {label && <span className="mox-hiring-label">{label}</span>}
     </Heading>
     <UnorderedList>
-      {items.map((i) => (
-        <UnorderedListItem key={i}>{i}</UnorderedListItem>
+      {items.map((i, n) => (
+        <UnorderedListItem key={n}>{i}</UnorderedListItem>
       ))}
     </UnorderedList>
   </section>
@@ -119,14 +120,20 @@ const IndienenInhoud = ({
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
 
   const aanvang = `vanaf ${datumNL(dienstverband.aanvang)}, ${a.uren} uur per week, ${uurloonTekst(a)}, functie ${dienstverband.functie}`;
-  const ingediend: string[] = [];
+  const ingediend: ReactNode[] = [];
   const later: string[] = [];
   const niet: string[] = [];
   for (const id of route.panelen.flatMap((p) => p.ids) as PaneelId[]) {
     if (id === "lks") ingediend.push(`Loonkostensubsidie: ${aanvang}`);
     else if (id === "ld")
       ingediend.push(
-        `Loondispensatie: ${aanvang}, percentage ${a.loonwaarde} procent (uw schatting; UWV stelt het vast)`,
+        <div key="ld">
+          {`Loondispensatie: ${aanvang}, percentage ${a.loonwaarde} procent (uw schatting)`}{" "}
+          <InfoToggletip label="Toelichting bij het percentage">
+            U geeft een schatting. Een arbeidsdeskundige van UWV bekijkt het
+            werk en stelt het percentage vast.
+          </InfoToggletip>
+        </div>,
       );
     else if (id === "jc")
       (k.jc === "ja" ? ingediend : niet).push(
