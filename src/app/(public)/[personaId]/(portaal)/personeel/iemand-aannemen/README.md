@@ -1,28 +1,54 @@
 # Iemand aannemen (Digitale assistent 2.0)
 
-Stand 20 oktober 2026, branch `feat/iemand-aannemen` vanaf `ux-fork`. Voor het
+Stand 25 oktober 2026, branch `feat/iemand-aannemen` vanaf `ux-fork`. Voor het
 gebruikersonderzoek van half november 2026 (usecase Financieel CV). De
 regelrecht-engine rekent live in de browser.
 
 ## Wat het is
 
-Negen pagina's onder Personeel en Lopende zaken, naar de flow van het prototype vooringevulde-aanvraag (KVK-versie): eerst vier korte vragen, dan de aanvraag, voor de persona die in het
-portaal actief is (standaard `karin`, Kwekerij De Bloesem, gemeente
-Lansingerland). Eén kloppend verhaal: de ondernemer neemt Koen de Wit aan,
-32 uur tegen het minimumloon vanaf 1 oktober 2026. Elke gebeurtenis met datum,
-actor en wetsgrond staat in `verhaallijn-koen-v1.md` (in deze map).
+Pagina's onder Personeel en Lopende zaken, naar de flow van het prototype
+vooringevulde-aanvraag (KVK-versie): eerst vier korte vragen, dan de aanvraag,
+voor de persona die in het portaal actief is (standaard `karin`, Kwekerij De
+Bloesem, gemeente Lansingerland). Na de oriëntatie volgt de route de situatie
+die de werkgever koos (zie "Route per situatie"). Elke gebeurtenis met datum,
+actor en wetsgrond van het verhaal via de gemeente staat in
+`verhaallijn-koen-v1.md` (in deze map); de ontwerpkeuzes van de routes in
+`ontwerp-fase2-per-situatie-v1.md`.
 
 | Pad | Wat de deelnemer doet |
 |---|---|
 | `/personeel` | Start "Iemand aannemen"; na het indienen staat de zaak hier |
 | `/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt` | De bewaarde aanvraag (melding op home en Lopende zaken, blok "Nog in te dienen aanvragen"): organisatie, tijdsduur, "antwoorden van Ondernemersplein overgenomen"; daaronder vier korte vragen (wie, als meerkeuze met acht opties: Wajong vinkt het doelgroepregister aan en zet het vast, beschut werk sluit het register uit; uren, loonwaarde en uurloon als schuifregelaar); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie, loondispensatie en loonkostenvoordeel uit de engine, met een (i) bij elke aanname; de regelingen die verder kunnen gelden, ook uit de engine; "Aanvraag laten invullen". `/personeel/iemand-aannemen` verwijst hierheen |
-| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat kiezen (Koen, met toestemming) of toevoegen (wacht op toestemming), per organisatie (UWV, gemeente, KVK, Belastingdienst, eigen opgave) een accordeon met de gegevens als vraag en antwoord, de datum en de wetsvraag; vinkje per organisatie, standaard aan |
-| `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag: per regeling een paneel met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing), "Ik heb dit gecontroleerd"; Gecontroleerd n van 6; rechts "Wat dit u oplevert" live |
-| `/personeel/iemand-aannemen/indienen` | Controleren en indienen: wat naar de gemeente gaat, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
+| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat kiezen (met toestemming) of toevoegen (wacht op toestemming), per organisatie een accordeon met de gegevens als vraag en antwoord, de datum en de wetsvraag; alleen de organisaties die iets weten over de situatie; vinkje per organisatie, standaard aan. Bij "weet ik nog niet" haalt deze stap de gegevens op en gaat de werkgever terug naar de oriëntatie, met de vinkjes ingevuld |
+| `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag, per organisatie: een paneel per regeling die de werkgever zelf indient, met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing bij de gemeente) en "Ik heb dit gecontroleerd"; daaronder "Taken voor de werknemer" en "Gaat vanzelf of via de loonaangifte"; Gecontroleerd n van N (alleen panelen); rechts "Wat dit u oplevert" live. Zonder paneel staat er "Klaar" in plaats van indienen |
+| `/personeel/iemand-aannemen/indienen` | Controleren en indienen bij de gemeente of UWV: wat naar die organisatie gaat, wat de werknemer zelf aanvraagt, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
 | `/personeel/iemand-aannemen/verstuurd` | Bevestiging, link naar de zaak |
+| `/personeel/iemand-aannemen/overzicht` | Waar niets in te dienen is (alleen doelgroepregister, beschut werk, Wsw, geen van deze, of een uitkomst zonder aanvraag): wat voor de werkgever geldt, met de (i)-teksten van de oriëntatie |
 | `/lopendezaken` | De zaak staat in het overzicht (via de opslag die ook de Digitale assistent gebruikt) |
-| `/lopendezaken/loonkostensubsidie-koen` | Voortgang (status-track), alles wat is vastgelegd (tijdlijn met correctie), komt hierna |
-| `/lopendezaken/loonkostensubsidie-koen/besluit` | Besluit van het college, dezelfde berekening als vooraf, "Waarom" met engine-stappen, "Klopt dit niet?" |
+| `/lopendezaken/iemand-aannemen/[situatie]` | De zaak van die situatie (gemeente, wajong of wia): voortgang (status-track), alles wat is vastgelegd (tijdlijn met correctie), komt hierna; bij WIA de doelgroepverklaring met de stand van de taak van de werknemer |
+| `/lopendezaken/iemand-aannemen/[situatie]/besluit` | Besluit (gemeente: college; wajong: UWV), dezelfde berekening als vooraf, "Waarom" met engine-stappen, "Klopt dit niet?". WIA heeft geen besluitpagina |
+| `/lopendezaken/loonkostensubsidie-koen` en `.../besluit` | Oude links; verwijzen door naar de zaak en het besluit van de gemeente |
+
+## Route per situatie
+
+`situatieVan` in `_route.ts` kiest uit de vinkjes van vraag 1 de eerste die
+past: Wajong, WIA, bijstand, register, beschut werk of Wsw of geen van deze,
+anders weet ik niet. `routeVoor` maakt daarvan de route met de uitkomsten van
+de engine: welke panelen er zijn per organisatie, welke taken de werknemer
+heeft, wat vanzelf gaat en of er een zaak is. Geeft de engine geen recht, dan
+is er geen paneel; blijft er niets over, dan volgt het overzicht.
+
+| Situatie | Route na de oriëntatie |
+|---|---|
+| `gemeente` (bijstand) | gegevens → concept-aanvraag → indienen bij de gemeente → verstuurd → zaak → besluit van het college |
+| `wajong` | idem bij UWV: loondispensatie; jobcoach en werkplek vraagt de werknemer aan (Wajong 2:22) |
+| `wia` | gegevens → concept-aanvraag → Klaar → zaak "Doelgroepverklaring"; de werkgever dient niets in, de werknemer vraagt de verklaring aan |
+| `register` | overzicht: loonkostenvoordeel in de loonaangifte en de no-riskpolis |
+| `uitleg` (beschut werk, Wsw, geen van deze) | overzicht met uitleg; geen aanvraag in het portaal |
+| `weetniet` | gegevens ophalen, dan terug naar de oriëntatie met ingevulde vinkjes |
+
+De opslag bewaart per situatie een eigen zaak (`zaken[situatie]`); een oudere
+opslag met één zaak hoort bij de gemeente (`migreerZaken`).
 
 Schermafdrukken maakt `scripts/iemand-aannemen-schermen.mjs` (1280 en 390, consolefouten, overflow, live berekening); `docs/` staat in .gitignore, dus kies een eigen map.
 
@@ -52,7 +78,7 @@ De loonkosten zelf zijn een vuistregel (opgegeven uurloon maal uren, plus 8 proc
 vakantiebijslag en 20 procent werkgeverslasten), geen wet. Het uurloon gaat
 niet naar de engine: subsidie en voordeel gaan uit van het minimumloon. De regel eronder
 noemt de engine- en corpusrevisie. Lukt de worker niet, dan staat er een
-melding en geen bedrag: vooraf berekende waarden van Koen kunnen voor een andere
+melding en geen bedrag: vooraf berekende waarden van de demo-kandidaat kunnen voor een andere
 keuze te gunstig zijn.
 
 Ook live: "Waarom deze uitkomst?" in elk paneel van de concept-aanvraag
@@ -82,10 +108,19 @@ het paper (begrijpelijk is niet hetzelfde als juridisch juist); vergelijk wat
 deelnemers van de kale afleiding begrijpen met wat ze van de taalmodeltekst
 begrijpen, en toets de taalmodeltekst zin voor zin aan de afleiding.
 
-Nog niet live: het besluit (vooraf berekende traces in
-`src/demo/iemand-aannemen-traces.json`). De stappen na de oriëntatie blijven
-uitgewerkt voor Koen; de korte balans van de concept-aanvraag rekent met een
-kandidaat via de gemeente. Dat is fase 2.
+Ook zaak en besluit rekenen mee. De demo-bestanden per situatie
+(`src/demo/iemand-aannemen-koen.json` voor de gemeente, `-wajong.json` en
+`-wia.json`) bevatten datums, actoren en teksten; bedragen, percentages en uren
+staan erin als sjabloon met plaatshouders: `{uren}`, `{loonwaarde}`,
+`{lksPerMaand}`, `{lksTweeMaanden}`, `{aanspraakPerUur}` en `{lkvPerJaar}`.
+`_route.ts` vult ze met `vulSjabloon` en `waardenVoor` uit de antwoorden en de
+uitkomsten van de engine. Een uitkomst die de engine niet geeft, staat als
+"—"; een onbekende plaatshouder blijft staan. `besluitGeldt` toont besluit en
+toekenning alleen als de engine de regel van de situatie geeft (lks bij de
+gemeente, ld bij Wajong). De vooraf berekende traces in
+`iemand-aannemen-traces.json` zijn alleen nog de terugval zonder uitkomst.
+Het verhaal van het besluit is uitgewerkt voor drie kandidaten, één per
+volledige route.
 
 Bundel vernieuwen (in regelrecht-uitleg, branch `feat/engine-live`):
 `just bundel`, dan `uit/bundel/pkg` en de browserbestanden naar
@@ -102,8 +137,8 @@ node scripts/iemand-aannemen-schermen.mjs http://localhost:3100 /tmp/iemand-aann
 
 Het script maakt per pagina schermafdrukken op 1280 en 390, meldt
 consolefouten en horizontale scroll, en wacht op "Wat het oplevert" tot de
-engine heeft gerekend. De testtabel rekent veertien gevallen uit de
-Uitkomstenkaart met dezelfde WASM-kern in Node (ongeveer 40 seconden):
+engine heeft gerekend. De testtabel rekent de gevallen uit de
+Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ongeveer 45 seconden):
 `node --test scripts/iemand-aannemen-uitkomsten.test.mjs`. CI: `npm run lint`, `npm run lint:css`,
 `npm run type-check`, `npm run build`.
 
@@ -111,11 +146,11 @@ Uitkomstenkaart met dezelfde WASM-kern in Node (ongeveer 40 seconden):
 
 - Persona wisselen: het Flags-paneel (persona) of `?persona=<id>`. Werkgever,
   KVK-nummer, vestiging, rekeningnummer en personeelsaantal volgen de persona;
-  Koen en de gemeente van de loonkostensubsidie (Lansingerland, zijn
-  woonplaats) blijven. Bij een wissel begint het scenario opnieuw
+  de kandidaat en de gemeente van de loonkostensubsidie (Lansingerland, de
+  woonplaats van de kandidaat) blijven. Bij een wissel begint het scenario opnieuw
   (`moza-iemand-aannemen` staat in de lijst van het persona-paneel).
-- Op de zaak- en besluitpagina: blok "Voor de onderzoeker" met het moment
-  (ontvangen, gemeten, vastgesteld, besluit, antwoord, betaling) en "Begin
+- Op de zaakpagina van elke situatie: blok "Voor de onderzoeker" met het moment
+  (per situatie eigen fasen; bij de gemeente ontvangen, gemeten, vastgesteld, besluit, antwoord, betaling; bij WIA de stand van de taak van de werknemer) en "Begin
   het scenario opnieuw".
 - "Klopt dit niet?" op het besluit zet de vraag in de tijdlijn; het antwoord
   van de gemeente verschijnt bij het moment "Antwoord op uw vraag".
@@ -135,10 +170,13 @@ Uitkomstenkaart met dezelfde WASM-kern in Node (ongeveer 40 seconden):
 ## Bestanden
 
 - Pagina's: `src/app/(public)/[personaId]/(portaal)/personeel/**`,
-  `.../lopendezaken/loonkostensubsidie-koen/**`; `personeel/page.tsx` vervangt
+  `.../lopendezaken/iemand-aannemen/[situatie]/**` (zaak en besluit),
+  `.../lopendezaken/loonkostensubsidie-koen/**` (doorverwijzing); `personeel/page.tsx` vervangt
   "binnenkort beschikbaar".
-- Demo-data: `src/demo/iemandAannemen.ts`, `iemand-aannemen-koen.json`,
-  `iemand-aannemen-traces.json` (alleen via `@/demo`).
+- Demo-data: `src/demo/iemandAannemen.ts`, `iemand-aannemen-koen.json`
+  (gemeente), `-wajong.json`, `-wia.json`, `iemand-aannemen-traces.json` (alleen via `@/demo`).
+- Route: `_route.ts` (situatieVan, routeVoor, vulSjabloon, waardenVoor,
+  besluitGeldt, migreerZaken), `_useAannemen.ts` (opslag per situatie).
 - Engine: `public/regelrecht/**`, `_useRegelrecht.ts`, `_engine.ts`,
   `_balans.tsx`, `_waarom.tsx`, `_uitlegTaalmodel.tsx`.
 - Stijl: classes `mox-hiring-*` in `src/styles/mox.css`.
@@ -154,4 +192,5 @@ Uitkomstenkaart met dezelfde WASM-kern in Node (ongeveer 40 seconden):
 3. De tijdlijn noemt Regelgeving, Besluit en Uitvoering; de termen lexogram,
    decretogram en executogram staan niet op het scherm.
 4. Berichtenbox: ontvangstbevestiging en besluit staan nog niet als bericht.
-5. Live rekenen voor de overige regelingen en het besluit.
+5. De gegevens-stap toont de kop van elke organisatie als h1 (accordeon van het
+   designsysteem); de pagina heeft dan zes h1's.
