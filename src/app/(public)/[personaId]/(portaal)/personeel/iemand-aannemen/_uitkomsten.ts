@@ -418,8 +418,3 @@ export const samenvoegen = (ids: string[], nu: Uit, alle: Uit) => {
     bezig: ids.some((id) => !(id in nu)),
   };
 };
-
-/** De aanvraag na de oriëntatie is uitgewerkt voor een kandidaat via de gemeente (bijstand). */
-export const aanvraagWijktAf = (doelgroepen: Doelgroep[]) =>
-  !doelgroepen.includes("bijstand") ||
-  doelgroepen.some((d) => d !== "register" && d !== "bijstand");

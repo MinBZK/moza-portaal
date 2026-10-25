@@ -10,10 +10,10 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import Balans from "./_balans";
-import { aanvraagWijktAf, type Overig } from "./_uitkomsten";
+import { type Overig } from "./_uitkomsten";
+import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -94,7 +94,11 @@ const VragenMetStaat = ({
   const resultaat = useUitkomsten(a);
   const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
-  const andereAanvraag = aanvraagWijktAf(a.doelgroepen);
+  const route = routeVoor(a.doelgroepen, resultaat.uitkomsten);
+  const aanvraagHref =
+    route.overzicht && route.situatie !== "weetniet"
+      ? "/personeel/iemand-aannemen/overzicht"
+      : "/personeel/iemand-aannemen/gegevens";
   const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
 
   return (
@@ -224,19 +228,9 @@ const VragenMetStaat = ({
           bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
           beslist zelf of u indient. Tussendoor opslaan kan.
         </Paragraph>
-        {andereAanvraag && (
-          <div className="mox-hiring-note">
-            De aanvraag in dit prototype is uitgewerkt voor één kandidaat.{" "}
-            <InfoToggletip label="Toelichting bij de aanvraag">
-              Dit prototype vult de aanvraag in voor een kandidaat die via de
-              gemeente werk vindt, met loonkostensubsidie. Voor uw keuze kan de
-              aanvraag er anders uitzien.
-            </InfoToggletip>
-          </div>
-        )}
         <ActionGroup>
           <Link
-            href="/personeel/iemand-aannemen/gegevens"
+            href={aanvraagHref}
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
             Aanvraag laten invullen

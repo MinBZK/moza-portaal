@@ -234,14 +234,6 @@ test("fix: tijdens het rekenen geldt een oude uitkomst niet als bekend", () => {
   assert.equal(U.samenvoegen(ids, oud, {}).bekend, true);
 });
 
-test("fix: (i) bij de aanvraag zodra de keuze niet Koens situatie is", () => {
-  assert.equal(U.aanvraagWijktAf(["bijstand"]), false);
-  assert.equal(U.aanvraagWijktAf(["register", "bijstand"]), false);
-  assert.equal(U.aanvraagWijktAf(["register"]), true);
-  assert.equal(U.aanvraagWijktAf([]), true);
-  assert.equal(U.aanvraagWijktAf(["wia", "bijstand"]), true);
-});
-
 test("fix: loondispensatie telt niet mee bij een uurloon boven het minimumloon", () => {
   const u = reken(["register", "wajong"], 70, 32, 2000);
   assert.equal(regel(u, "ld"), undefined);

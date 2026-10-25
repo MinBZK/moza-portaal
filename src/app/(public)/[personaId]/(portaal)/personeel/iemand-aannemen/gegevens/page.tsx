@@ -1,24 +1,33 @@
 import { Alert, Heading, Paragraph } from "@/components/rhc";
-import { getDemoIemandAannemen } from "@/demo";
+import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
+import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
 import Stappen from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
 
 /** Scherm 2: aanvraag laten invullen. Namens wie, de kandidaat, en per bron bevestigen. */
 const GegevensPage = async () => {
-  const [aannemen, organisatie] = await Promise.all([
-    getDemoIemandAannemen(),
+  const [situaties, organisatie] = await Promise.all([
+    getDemoIemandAannemenSituaties(),
     getActieveOrganisatie(),
   ]);
   const werkgever = werkgeverVan(organisatie);
-  const bronnen = aannemen.bronnen.map((bron) => ({
-    ...bron,
-    gegevens: bron.gegevens.map((g) => ({
-      ...g,
-      waarde: vul(g.waarde, werkgever),
+  const gevuld = (aannemen: DemoAannemen): DemoAannemen => ({
+    ...aannemen,
+    bronnen: aannemen.bronnen.map((bron) => ({
+      ...bron,
+      gegevens: bron.gegevens.map((g) => ({
+        ...g,
+        waarde: vul(g.waarde, werkgever),
+      })),
     })),
-  }));
+  });
+  const perSituatie = {
+    gemeente: gevuld(situaties.gemeente),
+    wajong: gevuld(situaties.wajong),
+    wia: gevuld(situaties.wia),
+  };
   return (
     <>
       <Heading level={1}>Aanvraag laten invullen</Heading>
@@ -33,11 +42,7 @@ const GegevensPage = async () => {
           omgeving, tot u zelf besluit om in te dienen.
         </Paragraph>
       </Alert>
-      <Bronnen
-        bronnen={bronnen}
-        kandidaat={aannemen.kandidaat}
-        werkgever={werkgever}
-      />
+      <Bronnen perSituatie={perSituatie} werkgever={werkgever} />
     </>
   );
 };

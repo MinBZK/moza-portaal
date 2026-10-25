@@ -15,7 +15,7 @@ import {
   Heading,
   Paragraph,
 } from "@/components/rhc";
-import type { DemoAannemen, DemoAannemenBron } from "@/demo";
+import type { DemoAannemen } from "@/demo";
 import {
   BRONNEN,
   alleBronnenBevestigd,
@@ -23,6 +23,7 @@ import {
   useAannemen,
   type BronId,
 } from "../_useAannemen";
+import { situatieVan } from "../_route";
 import { datumNL, type Werkgever } from "../_werkgever";
 
 const NIEUW = "nieuw";
@@ -34,16 +35,20 @@ const NIEUW = "nieuw";
  * zonder toestemming haalt het portaal niets op.
  */
 const Bronnen = ({
-  bronnen,
-  kandidaat,
+  perSituatie,
   werkgever,
 }: {
-  bronnen: DemoAannemenBron[];
-  kandidaat: DemoAannemen["kandidaat"];
+  perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
   werkgever: Werkgever;
 }) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
+  const situatie = situatieVan(staat?.antwoorden.doelgroepen ?? []);
+  const weetNiet = situatie === "weetniet";
+  const { bronnen, kandidaat } =
+    perSituatie[
+      situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
+    ];
   const [nieuw, setNieuw] = useState({ naam: "", geboortedatum: "" });
   const [open, setOpen] = useState<BronId[]>([]);
   const keuze = staat?.kandidaat;
@@ -78,7 +83,10 @@ const Bronnen = ({
 
   return (
     <>
-      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="namens">
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="namens"
+      >
         <Heading level={2} id="namens">
           Namens wie vult u in?
         </Heading>
@@ -106,7 +114,10 @@ const Bronnen = ({
         )}
       </section>
 
-      <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="kandidaat">
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="kandidaat"
+      >
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
         </Heading>
@@ -270,24 +281,52 @@ const Bronnen = ({
                 ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
                 : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
-        <ActionGroup>
-          <Button
-            appearance="primary-action-button"
-            aria-disabled={!gekozen}
-            onClick={() => {
-              if (gekozen)
-                router.push("/personeel/iemand-aannemen/concept-aanvraag");
-            }}
-          >
-            Vul de aanvraag in
-          </Button>
-          <Link
-            href="/personeel/iemand-aannemen"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Terug naar de vragen
-          </Link>
-        </ActionGroup>
+        {weetNiet ? (
+          <>
+            <Paragraph>
+              Volgens deze gegevens staat de kandidaat in het doelgroepregister
+              en krijgt die bijstand. De berekening gebruikt nu die gegevens.
+            </Paragraph>
+            <ActionGroup>
+              <Button
+                appearance="primary-action-button"
+                onClick={() => {
+                  if (!staat) return;
+                  werkBij({
+                    antwoorden: {
+                      ...staat.antwoorden,
+                      doelgroepen: ["register", "bijstand"],
+                    },
+                  });
+                  router.push(
+                    "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+                  );
+                }}
+              >
+                Terug naar de oriëntatie
+              </Button>
+            </ActionGroup>
+          </>
+        ) : (
+          <ActionGroup>
+            <Button
+              appearance="primary-action-button"
+              aria-disabled={!gekozen}
+              onClick={() => {
+                if (gekozen)
+                  router.push("/personeel/iemand-aannemen/concept-aanvraag");
+              }}
+            >
+              Vul de aanvraag in
+            </Button>
+            <Link
+              href="/personeel/iemand-aannemen"
+              className="utrecht-link utrecht-link--html-a"
+            >
+              Terug naar de vragen
+            </Link>
+          </ActionGroup>
+        )}
       </section>
     </>
   );
