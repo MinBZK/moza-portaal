@@ -212,6 +212,22 @@ is een fout, tenzij het een gedocumenteerde aanname met (i) is.
   bundel is gepind op `42054d7d`. Wijken ze af, dan geldt de bundel en wordt
   het verschil gemeld.
 
+## Wat de engine anders deed dan verwacht (bij de bouw, 25 oktober)
+
+- Elke aanroep van de kern kost ongeveer 0,8 seconde (de kern leest de wetten
+  per aanroep). Daarom alleen de aanroepen die bij de vinkjes iets kunnen
+  opleveren; WW 76a valt weg omdat er geen vinkje voor is.
+- De Ziektewet rekent het WIA-recht zelf uit de WIA-keten (ziek geworden,
+  wachttijd, verdiencapaciteit). Het feit `heeft_recht_op_uitkering_hoofdstuk_6_of_7`
+  sluit de WGA juist uit.
+- Bij beschut werk leest ZW 29b lid 2 f de Pwet-vaststelling
+  `is_uitgesloten_beschut_werk_pwet_10b`, naast de Wtl-variant.
+- De engine weigert `null` voor de meeste datums; `1900-01-01` staat voor
+  "geen datum" en houdt elke termijn dicht.
+- Wajong 2:22 (voorzieningen), Wajong 2:24 en WIA 37 (proefplaatsing) zijn
+  geen engine-aanroep in de oriëntatie; de voorzieningen via de Wajong volgen
+  het vinkje, zoals de kaart.
+
 ## Bijlage: doorsnede uit de Uitkomstenkaart (11 oktober 2026)
 
 Letterlijk overgenomen; per uitgangssituatie wat het model geeft. Een werknemer kan in meer rijen vallen.
