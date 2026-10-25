@@ -3,7 +3,6 @@
 import { useCallback, useSyncExternalStore } from "react";
 import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
 import {
-  faseIndex as faseIndexVan,
   migreerZaken,
   type PaneelId,
   type Situatie,
@@ -23,17 +22,6 @@ import { euro } from "./_werkgever";
  */
 
 export const SLEUTEL = "moza-iemand-aannemen";
-
-export const FASEN = [
-  "indicatie",
-  "ontvangst",
-  "meting",
-  "loonwaarde",
-  "besluit",
-  "antwoord",
-  "betaling",
-] as const;
-export type Fase = (typeof FASEN)[number];
 
 export const BRONNEN = [
   "uwv",
@@ -204,33 +192,38 @@ export const wisAannemen = () => {
   luisteraars.forEach((luisteraar) => luisteraar());
 };
 
-/** Plaats in de vaste fasen van de gemeente-zaak. */
-export const faseIndex = (fase: string) =>
-  faseIndexVan(
-    fase,
-    FASEN.map((id) => ({ id })),
-  );
-
 export const bronBevestigd = (staat: AannemenStaat, id: BronId) =>
   staat.bronnen[id] !== false;
 
 export const alleBronnenBevestigd = (staat: AannemenStaat) =>
   BRONNEN.every((id) => bronBevestigd(staat, id));
 
-/** Voorlopig alleen de fasen van de gemeente-zaak. */
-export const statusTekst = (zaak: ZaakStand) => {
+/** De status van een zaak in Lopende zaken, per fase-id van de situatie. */
+const STATUS: Partial<Record<Situatie, Record<string, string>>> = {
+  gemeente: {
+    ontvangst: "In behandeling",
+    meting: "Loonwaarde gemeten",
+    loonwaarde: "Loonwaarde vastgesteld",
+    besluit: "Besluit genomen",
+    antwoord: "Besluit genomen, vraag beantwoord",
+    betaling: "Betaald",
+  },
+  wajong: {
+    ontvangst: "In behandeling",
+    onderzoek: "Onderzoek op de werkplek uitgevoerd",
+    percentage: "Percentage vastgesteld",
+    besluit: "Besluit genomen",
+  },
+  wia: {
+    wacht: "Wacht op de aanvraag van de werknemer",
+    aangevraagd: "Doelgroepverklaring aangevraagd",
+    verstrekt: "Doelgroepverklaring verstrekt",
+  },
+};
+
+export const statusTekst = (zaak: ZaakStand, situatie: Situatie) => {
   if (!zaak.ingediend) return "Nog niet verstuurd";
-  return (
-    [
-      "",
-      "In behandeling",
-      "Loonwaarde gemeten",
-      "Loonwaarde vastgesteld",
-      "Besluit genomen",
-      "Besluit genomen, vraag beantwoord",
-      "Betaald",
-    ][faseIndex(zaak.fase)] ?? "In behandeling"
-  );
+  return STATUS[situatie]?.[zaak.fase] ?? "In behandeling";
 };
 
 /** null zolang de opslag nog niet gelezen is (op de server). */

@@ -1,0 +1,246 @@
+"use client";
+
+import Link from "next/link";
+import { useMemo, useState, type FormEvent } from "react";
+import InfoToggletip from "@/components/InfoToggletip";
+import {
+  ActionGroup,
+  Alert,
+  Button,
+  DataSummary,
+  DataSummaryItem,
+  Heading,
+  Paragraph,
+} from "@/components/rhc";
+import type { DemoAannemen, DemoAannemenSituatie } from "@/demo";
+import basis from "../../../../personeel/iemand-aannemen/_basisfeiten.json";
+import {
+  faseIndex,
+  waardenVoor,
+} from "../../../../personeel/iemand-aannemen/_route";
+import {
+  invoerVoor,
+  type Feiten,
+} from "../../../../personeel/iemand-aannemen/_uitkomsten";
+import {
+  STANDAARD_ANTWOORDEN,
+  uurloonTekst,
+  useAannemen,
+  zaakVan,
+} from "../../../../personeel/iemand-aannemen/_useAannemen";
+import { useUitkomsten } from "../../../../personeel/iemand-aannemen/_useUitkomsten";
+import Waarom from "../../../../personeel/iemand-aannemen/_waarom";
+import { datumNL } from "../../../../personeel/iemand-aannemen/_werkgever";
+
+/** Waar het besluit over gaat: de engine-uitkomst van de regeling en de fase met de vaststelling. */
+const REGELING = {
+  gemeente: {
+    naam: "Loonkostensubsidie",
+    wet: "participatiewet",
+    output: "heeft_recht_op_lks",
+    vaststelling: "loonwaarde",
+    vraagVoorbeeld:
+      "Bijvoorbeeld: telt de vergoeding voor werkgeverslasten niet mee in het bedrag?",
+  },
+  wajong: {
+    naam: "Loondispensatie",
+    wet: "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+    output: "heeft_recht_op_loondispensatie",
+    vaststelling: "percentage",
+    vraagVoorbeeld: "Bijvoorbeeld: hoe is het percentage vastgesteld?",
+  },
+} as const;
+
+const Besluit = ({
+  situatie,
+  demo,
+  kvk,
+}: {
+  situatie: Exclude<DemoAannemenSituatie, "wia">;
+  demo: DemoAannemen;
+  kvk: string;
+}) => {
+  const { staat, werkZaakBij } = useAannemen();
+  const antwoorden = staat?.antwoorden ?? STANDAARD_ANTWOORDEN;
+  const { uitkomsten, bekend } = useUitkomsten(antwoorden);
+  const invoer = useMemo(
+    () =>
+      invoerVoor(antwoorden, basis as Feiten).find(
+        (i) =>
+          i.wet === REGELING[situatie].wet &&
+          i.output === REGELING[situatie].output,
+      ),
+    [antwoorden, situatie],
+  );
+  const [melding, setMelding] = useState("");
+  const [tekst, setTekst] = useState("");
+  const { zaak, kandidaat, besluit, fasen, dienstverband } = demo;
+  if (!staat || !besluit) return null;
+
+  const regeling = REGELING[situatie];
+  const zaakStand = zaakVan(staat, situatie);
+  const w = waardenVoor(antwoorden, uitkomsten);
+  const vastgesteldOp = fasen.find((f) => f.id === regeling.vaststelling);
+  const heeftRegel = uitkomsten.regels.some(
+    (r) => r.id === (situatie === "gemeente" ? "lks" : "ld"),
+  );
+
+  if (
+    !zaakStand.ingediend ||
+    faseIndex(zaakStand.fase, fasen) < faseIndex("besluit", fasen)
+  )
+    return (
+      <Alert type="info">
+        <Paragraph>
+          Er is nog geen besluit op deze aanvraag.{" "}
+          <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
+            Bekijk de voortgang van de zaak
+          </Link>
+          .
+        </Paragraph>
+      </Alert>
+    );
+
+  const verstuurVraag = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const vraag = (tekst || zaakStand.vraag || "").trim();
+    if (!vraag) {
+      setMelding("Typ eerst uw vraag.");
+      return;
+    }
+    werkZaakBij(situatie, { vraag });
+    setMelding("Uw vraag is verstuurd en staat in de zaak.");
+  };
+
+  const dienstverbandTekst = `een dienstbetrekking van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden)})`;
+
+  return (
+    <div className="rhc-mox-card rhc-mox-row-gap">
+      <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
+        Terug naar de zaak
+      </Link>
+      <Heading level={1}>
+        Besluit: {regeling.naam.toLowerCase()} voor {kandidaat.voornaam}{" "}
+        {kandidaat.achternaam}
+      </Heading>
+
+      <DataSummary appearance="column">
+        <DataSummaryItem
+          itemKey="Genomen door"
+          itemValue={besluit.organisatie}
+        />
+        <DataSummaryItem itemKey="Datum" itemValue={datumNL(besluit.datum)} />
+        <DataSummaryItem itemKey="Kenmerk" itemValue={zaak.nummer} />
+        <DataSummaryItem itemKey="Regel" itemValue={zaak.regel} />
+        <DataSummaryItem
+          itemKey={situatie === "gemeente" ? "Loonwaarde" : "Percentage"}
+          itemValue={`${w.loonwaarde} van het wettelijk minimumloon${vastgesteldOp ? `, vastgesteld op ${datumNL(vastgesteldOp.datum)}` : ""}`}
+        />
+      </DataSummary>
+
+      {!bekend ? (
+        <Paragraph role="status">De bedragen worden berekend…</Paragraph>
+      ) : !heeftRegel ? (
+        <Alert type="warning">
+          <Paragraph>
+            Bij de antwoorden in de aanvraag geeft de berekening geen{" "}
+            {regeling.naam.toLowerCase()}. Pas de antwoorden aan in de
+            oriëntatie.
+          </Paragraph>
+        </Alert>
+      ) : (
+        <section aria-labelledby="besluit-tekst">
+          <Heading level={2} id="besluit-tekst">
+            Besluit
+          </Heading>
+          {situatie === "gemeente" ? (
+            <Paragraph>
+              Het college kent u loonkostensubsidie toe voor{" "}
+              {kandidaat.voornaam} {kandidaat.achternaam}:{" "}
+              <strong>{w.lksPerMaand} per maand</strong>, vanaf{" "}
+              {datumNL(dienstverband.aanvang)}, bij {dienstverbandTekst}. De
+              subsidie wordt maandelijks betaald en per 1 januari opnieuw
+              berekend bij wijziging van het minimumloon.
+            </Paragraph>
+          ) : (
+            <>
+              <Paragraph>
+                UWV kent u loondispensatie toe voor {kandidaat.voornaam}{" "}
+                {kandidaat.achternaam}, bij {dienstverbandTekst}. Het percentage
+                is <strong>{w.loonwaarde}</strong> van het wettelijk
+                minimumloon. De aanspraak is{" "}
+                <strong>{w.aanspraakPerUur} per uur</strong>.
+              </Paragraph>
+              <div className="mox-hiring-note">
+                De loondispensatie geldt voor de periode die naar verwachting
+                nodig is, ten hoogste vijf jaar. Verlenging is mogelijk.{" "}
+                <InfoToggletip label="Toelichting bij de termijn van het besluit">
+                  De wet noemt geen termijn waarbinnen UWV beslist. De datum van
+                  dit besluit is voor het prototype aangenomen.
+                </InfoToggletip>
+              </div>
+            </>
+          )}
+        </section>
+      )}
+
+      <section aria-labelledby="besluit-berekening">
+        <Heading level={2} id="besluit-berekening">
+          Berekening
+        </Heading>
+        <Paragraph>
+          Dezelfde berekening als u vooraf zag, nu met{" "}
+          {situatie === "gemeente"
+            ? "de vastgestelde loonwaarde"
+            : "het vastgestelde percentage"}
+          .
+        </Paragraph>
+        <Waarom
+          invoer={invoer}
+          antwoorden={antwoorden}
+          regeling={regeling.naam}
+          kvk={kvk}
+          labels={demo.labels}
+        />
+      </section>
+
+      <section aria-labelledby="besluit-bezwaar">
+        <Heading level={2} id="besluit-bezwaar">
+          Niet eens met dit besluit?
+        </Heading>
+        <Paragraph>
+          U kunt bezwaar maken bij {besluit.organisatie}. De termijn is{" "}
+          {besluit.bezwaar}, gerekend vanaf {datumNL(besluit.datum)}. Heeft u
+          eerst een vraag? Stel die hieronder; {zaak.organisatie} antwoordt in
+          deze zaak.
+        </Paragraph>
+        <form onSubmit={verstuurVraag} className="rhc-mox-row-gap">
+          <label className="utrecht-form-label" htmlFor="da-vraag">
+            Klopt dit niet? Stel uw vraag
+          </label>
+          <textarea
+            id="da-vraag"
+            className="utrecht-textarea utrecht-textarea--html-textarea mox-hiring-control"
+            rows={3}
+            placeholder={regeling.vraagVoorbeeld}
+            defaultValue={zaakStand.vraag ?? ""}
+            onChange={(event) => setTekst(event.target.value)}
+          />
+          <ActionGroup>
+            <Button type="submit" appearance="primary-action-button">
+              Verstuur uw vraag
+            </Button>
+          </ActionGroup>
+          <Paragraph role="status">
+            {melding ||
+              (zaakStand.vraag
+                ? "Uw vraag is verstuurd en staat in de zaak."
+                : "")}
+          </Paragraph>
+        </form>
+      </section>
+    </div>
+  );
+};
+
+export default Besluit;

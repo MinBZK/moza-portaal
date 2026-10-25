@@ -97,8 +97,14 @@ export const zaakRoute = (zaak: AssistentZaak) => {
     veld(zaak, ["regeling"]),
     veld(zaak, ["referentienummer"]),
   ].join(" ");
+  // Elke zaak van "Iemand aannemen" heeft een eigen pagina per situatie;
+  // zaken van vóór de situaties (alleen loonkostensubsidie) horen bij de gemeente.
+  if (/loondispensatie/i.test(tekst))
+    return "/lopendezaken/iemand-aannemen/wajong";
+  if (/doelgroepverklaring/i.test(tekst))
+    return "/lopendezaken/iemand-aannemen/wia";
   if (/loonkostensubsidie/i.test(tekst))
-    return "/lopendezaken/loonkostensubsidie-koen";
+    return "/lopendezaken/iemand-aannemen/gemeente";
   return /energiebespar|informatieplicht/i.test(tekst)
     ? "/lopendezaken/informatieplicht-energiebesparing"
     : "";

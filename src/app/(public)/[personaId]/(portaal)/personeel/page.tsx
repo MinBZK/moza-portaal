@@ -7,7 +7,7 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import { getDemoIemandAannemen } from "@/demo";
+import { getDemoIemandAannemenSituaties } from "@/demo";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
 
 const vragen = [
@@ -25,7 +25,7 @@ const vragen = [
 
 /** Personeel: de ingang naar Iemand aannemen (Digitale assistent 2.0). */
 const PersoneelPage = async () => {
-  const aannemen = await getDemoIemandAannemen();
+  const situaties = await getDemoIemandAannemenSituaties();
   return (
     <>
       <Heading level={1}>Personeel</Heading>
@@ -64,7 +64,13 @@ const PersoneelPage = async () => {
         </ActionGroup>
       </section>
 
-      <PersoneelZaak zaak={aannemen.zaak} />
+      <PersoneelZaak
+        zaken={{
+          gemeente: situaties.gemeente.zaak,
+          wajong: situaties.wajong.zaak,
+          wia: situaties.wia.zaak,
+        }}
+      />
 
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">

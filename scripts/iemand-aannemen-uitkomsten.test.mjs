@@ -327,6 +327,30 @@ test("route: uitleg en weetniet geven een overzicht zonder zaak", () => {
   }
 });
 
+test("sjabloon: onbekende plaatshouder blijft staan, bekende wordt gevuld", () => {
+  assert.equal(
+    R.vulSjabloon("{uren} uur, {onderneming}, {x}", { uren: "32" }),
+    "32 uur, {onderneming}, {x}",
+  );
+});
+
+test("sjabloon: waarden uit de engine", () => {
+  const w = (d, lw, uren = 32) =>
+    R.waardenVoor(
+      { doelgroepen: d, uren, loonwaarde: lw, uurloon: 1499 },
+      reken(d, lw, uren),
+    );
+  const g = w(["register", "bijstand"], 60);
+  assert.equal(g.lksPerMaand, "€ 897,41");
+  assert.equal(g.lksTweeMaanden, "€ 1.794,82");
+  assert.equal(g.uren, "32");
+  assert.equal(g.loonwaarde, "60 procent");
+  assert.equal(w(["register", "wajong"], 70).aanspraakPerUur, "€ 10,49");
+  assert.equal(w(["register", "wia"], 100).lkvPerJaar, "€ 5.075,20");
+  // Geen regel: leeg, geen oud bedrag.
+  assert.equal(w(["register", "bijstand"], 100).lksPerMaand, "—");
+});
+
 // Demo-gegevens per situatie (src/demo/iemand-aannemen-*.json)
 const SITUATIES = {
   gemeente: "iemand-aannemen-koen.json",

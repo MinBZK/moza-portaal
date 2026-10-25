@@ -1,4 +1,4 @@
-import type { Doelgroep, Uitkomsten } from "./_uitkomsten";
+import type { Doelgroep, Keuzes, Uitkomsten } from "./_uitkomsten";
 
 /**
  * Wat er na de oriëntatie volgt, per situatie van de werkgever.
@@ -112,3 +112,39 @@ export const faseIndex = (fase: string, fasen: { id: string }[]): number =>
     0,
     fasen.findIndex((f) => f.id === fase),
   );
+
+/** Vult {plaatshouders} in een tekst; een onbekende plaatshouder blijft staan. */
+export const vulSjabloon = (tekst: string, w: Record<string, string>): string =>
+  tekst.replace(/\{(\w+)\}/g, (heel, naam: string) =>
+    Object.hasOwn(w, naam) ? w[naam] : heel,
+  );
+
+/** Eurocenten als bedrag ("€ 897,41"); zelfde weergave als euro() in _werkgever.ts, dat Node niet direct laadt. */
+const bedrag = (eurocent: number) =>
+  `€ ${(Math.round(eurocent) / 100).toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+/**
+ * De waarden voor de plaatshouders in de demo-teksten, uit de antwoorden en de
+ * uitkomsten van de engine. Een uitkomst die de engine niet geeft, blijft leeg
+ * ("—"): nooit een oud of verzonnen bedrag.
+ */
+export const waardenVoor = (
+  a: Keuzes,
+  u: Uitkomsten,
+): Record<string, string> => {
+  const regel = (id: string) => u.regels.find((r) => r.id === id);
+  const lks = regel("lks");
+  const ld = regel("ld");
+  const lkv = regel("lkv");
+  // De opslag in Uitkomsten is round(maand x 12): terug naar hele centen.
+  const maand = lks ? Math.round(lks.bedragPerJaar / 12) : undefined;
+  return {
+    uren: String(a.uren),
+    loonwaarde: `${a.loonwaarde} procent`,
+    lksPerMaand: maand === undefined ? "—" : bedrag(maand),
+    lksTweeMaanden: maand === undefined ? "—" : bedrag(2 * maand),
+    aanspraakPerUur:
+      ld?.aanspraakPerUur === undefined ? "—" : bedrag(ld.aanspraakPerUur),
+    lkvPerJaar: lkv ? bedrag(lkv.bedragPerJaar) : "—",
+  };
+};

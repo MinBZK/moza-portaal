@@ -2,30 +2,45 @@
 
 import Link from "next/link";
 import { Button, Heading, Paragraph } from "@/components/rhc";
-import type { DemoAannemen } from "@/demo";
+import type { DemoAannemen, DemoAannemenSituatie } from "@/demo";
 import { statusTekst, useAannemen, wisAannemen, zaakVan } from "./_useAannemen";
 
+const SITUATIES: DemoAannemenSituatie[] = ["gemeente", "wajong", "wia"];
+
 /**
- * Op Personeel: de zaak van Koen zodra de aanvraag is verstuurd, en het blok
+ * Op Personeel: de zaak van elke situatie met een ingediende aanvraag, en het blok
  * voor de onderzoeker (opnieuw beginnen; persona's wisselt u in het
  * Flags-paneel, dat wist dit scenario mee).
  */
-const PersoneelZaak = ({ zaak }: { zaak: DemoAannemen["zaak"] }) => {
+const PersoneelZaak = ({
+  zaken,
+}: {
+  zaken: Record<DemoAannemenSituatie, DemoAannemen["zaak"]>;
+}) => {
   const { staat } = useAannemen();
+  const lopend = staat
+    ? SITUATIES.filter((situatie) => zaakVan(staat, situatie).ingediend)
+    : [];
   return (
     <>
-      {staat && zaakVan(staat, "gemeente").ingediend && (
+      {staat && lopend.length > 0 && (
         <section className="rhc-mox-card" aria-labelledby="personeel-zaken">
           <Heading level={2} id="personeel-zaken">
             Lopende zaken over personeel
           </Heading>
-          <Paragraph>
-            <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
-              {zaak.onderwerp}
-            </Link>
-            <br />
-            {zaak.organisatie} · {statusTekst(zaakVan(staat, "gemeente"))}
-          </Paragraph>
+          {lopend.map((situatie) => (
+            <Paragraph key={situatie}>
+              <Link
+                href={zaken[situatie].url}
+                className="utrecht-link utrecht-link--html-a"
+              >
+                {zaken[situatie].onderwerp}
+              </Link>
+              <br />
+              {zaken[situatie].organisatie} ·{" "}
+              {statusTekst(zaakVan(staat, situatie), situatie)}
+            </Paragraph>
+          ))}
         </section>
       )}
       <section
