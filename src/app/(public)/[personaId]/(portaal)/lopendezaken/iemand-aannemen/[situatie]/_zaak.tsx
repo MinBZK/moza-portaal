@@ -306,8 +306,7 @@ const Zaak = ({
               {situatie === "gemeente"
                 ? "loonkostensubsidie"
                 : "loondispensatie"}
-              , dus er is geen besluit te tonen. Pas de antwoorden aan in de
-              oriëntatie.
+              . Daarom is er geen besluit.
             </Paragraph>
           </Alert>
         )}

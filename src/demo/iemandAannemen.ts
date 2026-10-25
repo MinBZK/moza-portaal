@@ -116,6 +116,7 @@ export type DemoAannemen = {
     url: string;
   };
   /** Beslissing van de uitvoerder, voor de situaties met een besluit voor de werkgever. */
+  /** `bezwaar` is de termijn ("zes weken"); de grondslag is Awb 6:7. */
   besluit?: { organisatie: string; datum: string; bezwaar: string };
   bronnen: DemoAannemenBron[];
   /** Alleen in de situatie gemeente; de andere situaties halen dit uit de engine. */

@@ -151,8 +151,8 @@ const Besluit = ({
         <Alert type="warning">
           <Paragraph>
             Bij de antwoorden in de aanvraag geeft de berekening geen{" "}
-            {regeling.naam.toLowerCase()}. Pas de antwoorden aan in de
-            oriëntatie.
+            {regeling.naam.toLowerCase()}. Daarom is er geen besluit. Denkt u
+            dat dit niet klopt? Stel hieronder uw vraag.
           </Paragraph>
         </Alert>
       ) : (
@@ -212,14 +212,24 @@ const Besluit = ({
       </section>
 
       <section aria-labelledby="besluit-bezwaar">
-        <Heading level={2} id="besluit-bezwaar">
-          Niet eens met dit besluit?
-        </Heading>
-        <Paragraph>
-          U kunt bezwaar maken bij {besluit.organisatie}. De termijn is{" "}
-          {besluit.bezwaar}, gerekend vanaf {datumNL(besluit.datum)}. Heeft u
-          eerst een vraag? Stel die hieronder; uw vraag staat dan in deze zaak.
-        </Paragraph>
+        {/* Bezwaar kan alleen tegen een besluit; zonder besluit blijft de vraag. */}
+        {bekend && heeftRegel ? (
+          <>
+            <Heading level={2} id="besluit-bezwaar">
+              Niet eens met dit besluit?
+            </Heading>
+            <Paragraph>
+              Dan kunt u bezwaar maken bij {besluit.organisatie}. Doe dat binnen{" "}
+              {besluit.bezwaar} na {datumNL(besluit.datum)} (Algemene wet
+              bestuursrecht, artikel 6:7). Heeft u eerst een vraag? Stel die
+              hieronder. Uw vraag komt dan in deze zaak.
+            </Paragraph>
+          </>
+        ) : (
+          <Heading level={2} id="besluit-bezwaar">
+            Een vraag over deze aanvraag?
+          </Heading>
+        )}
         <form onSubmit={verstuurVraag} className="rhc-mox-row-gap">
           <label className="utrecht-form-label" htmlFor="da-vraag">
             Klopt dit niet? Stel uw vraag
