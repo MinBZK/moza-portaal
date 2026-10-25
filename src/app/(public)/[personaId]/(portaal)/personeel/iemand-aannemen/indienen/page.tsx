@@ -1,5 +1,5 @@
 import { Heading, Paragraph } from "@/components/rhc";
-import { getDemoIemandAannemen } from "@/demo";
+import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Indienen from "./_indienen";
 import Stappen from "../_stappen";
@@ -7,8 +7,8 @@ import { werkgeverVan } from "../_werkgever";
 
 /** Scherm 4: wat wordt ingediend, bij wie, en de bevestiging. */
 const IndienenPage = async () => {
-  const [aannemen, organisatie] = await Promise.all([
-    getDemoIemandAannemen(),
+  const [situaties, organisatie] = await Promise.all([
+    getDemoIemandAannemenSituaties(),
     getActieveOrganisatie(),
   ]);
   return (
@@ -19,7 +19,10 @@ const IndienenPage = async () => {
         Dit is wat u indient, en bij wie. Klopt er iets niet? Ga terug naar de
         aanvraag om het aan te passen.
       </Paragraph>
-      <Indienen aannemen={aannemen} werkgever={werkgeverVan(organisatie)} />
+      <Indienen
+        perSituatie={{ gemeente: situaties.gemeente, wajong: situaties.wajong }}
+        werkgever={werkgeverVan(organisatie)}
+      />
     </>
   );
 };

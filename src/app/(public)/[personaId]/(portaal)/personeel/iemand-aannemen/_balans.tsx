@@ -57,6 +57,16 @@ const naam = (r: Regel) =>
         ? "Loonkostenvoordeel arbeidsgehandicapte"
         : "Loonkostenvoordeel";
 
+/** Hoe lang de no-riskpolis loopt; negatief is zonder einddatum. */
+export const duurTekst = (jaren: number | undefined) =>
+  jaren === undefined || jaren === 0
+    ? ""
+    : jaren < 0
+      ? "De no-riskpolis loopt zonder einddatum."
+      : jaren === 5
+        ? "De no-riskpolis loopt vijf jaar."
+        : `De no-riskpolis loopt ${jaren} jaar.`;
+
 /** Een korte zin met de uitleg achter een (i). */
 export const Aanname = ({ id }: { id: AannameId }) => (
   // Een div: de Toggletip is een <details> en mag niet in een <p>.

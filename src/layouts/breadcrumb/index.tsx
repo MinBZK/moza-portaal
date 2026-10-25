@@ -39,6 +39,7 @@ const breadcrumbLabels: Record<string, string> = {
   "iemand-aannemen": "Iemand aannemen",
   gegevens: "Aanvraag laten invullen",
   indienen: "Controleren en indienen",
+  overzicht: "Overzicht",
   "concept-aanvraag": "Aanvraag",
   verstuurd: "Aanvraag verstuurd",
   "loonkostensubsidie-koen": "Loonkostensubsidie voor Koen de Wit",

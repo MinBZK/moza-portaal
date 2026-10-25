@@ -20,7 +20,7 @@ import {
 import InfoToggletip from "@/components/InfoToggletip";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
-import { Aanname, KorteBalans } from "../_balans";
+import { Aanname, duurTekst, KorteBalans } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
 import Stappen from "../_stappen";
@@ -34,6 +34,7 @@ import {
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
+import { zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
 
 type Gegeven = { label: string; waarde: string; bron: string };
@@ -69,15 +70,6 @@ const TAAK: Record<TaakId, string> = {
 };
 
 const ORGANISATIE = { gemeente: "Naar de gemeente", uwv: "Naar UWV" } as const;
-
-const duurTekst = (jaren: number | undefined) =>
-  jaren === undefined || jaren === 0
-    ? ""
-    : jaren < 0
-      ? "De no-riskpolis loopt zonder einddatum."
-      : jaren === 5
-        ? "De no-riskpolis loopt vijf jaar."
-        : `De no-riskpolis loopt ${jaren} jaar.`;
 
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
@@ -533,6 +525,31 @@ const AanvraagInhoud = ({
       </section>
     );
 
+  // Zonder panelen is er niets in te dienen. Bij WIA maakt "Klaar" de zaak
+  // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
+  const klaar = () => {
+    if (route.zaak === "wia") {
+      werkBij({
+        zaken: {
+          ...staat.zaken,
+          wia: staat.zaken.wia ?? { ingediend: true, fase: "wacht" },
+        },
+        taken: {
+          ...staat.taken,
+          doelgroepverklaring: staat.taken.doelgroepverklaring ?? "open",
+        },
+      });
+      zaakAanmaken(
+        "wia",
+        perSituatie.wia.zaak,
+        "Wacht op de aanvraag van de werknemer",
+      );
+      router.push(perSituatie.wia.zaak.url);
+      return;
+    }
+    router.push("/personeel/iemand-aannemen/overzicht");
+  };
+
   const indienen = () => {
     if (aantal < paneelIds.length) {
       setFout(true);
@@ -646,11 +663,7 @@ const AanvraagInhoud = ({
             <ActionGroup>
               <Button
                 appearance="primary-action-button"
-                onClick={
-                  paneelIds.length > 0
-                    ? indienen
-                    : () => router.push("/personeel/iemand-aannemen/indienen")
-                }
+                onClick={paneelIds.length > 0 ? indienen : klaar}
               >
                 {paneelIds.length > 0 ? "Controleren en indienen" : "Klaar"}
               </Button>
