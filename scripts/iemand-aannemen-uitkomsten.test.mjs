@@ -351,6 +351,14 @@ test("sjabloon: waarden uit de engine", () => {
   assert.equal(w(["register", "bijstand"], 100).lksPerMaand, "—");
 });
 
+test("besluit: geldt alleen als de engine de regel van de situatie geeft", () => {
+  const g = (d, lw, s) => R.besluitGeldt(s, reken(d, lw));
+  assert.equal(g(["register", "bijstand"], 60, "gemeente"), true);
+  assert.equal(g(["register", "bijstand"], 100, "gemeente"), false);
+  assert.equal(g(["register", "wajong"], 70, "wajong"), true);
+  assert.equal(g(["register", "wajong"], 100, "wajong"), false);
+});
+
 // Demo-gegevens per situatie (src/demo/iemand-aannemen-*.json)
 const SITUATIES = {
   gemeente: "iemand-aannemen-koen.json",

@@ -148,3 +148,14 @@ export const waardenVoor = (
     lkvPerJaar: lkv ? bedrag(lkv.bedragPerJaar) : "—",
   };
 };
+
+/**
+ * Een besluit (en wat erover in de zaak staat) hoort er alleen als de engine
+ * bij de antwoorden de regel van de situatie geeft: lks bij de gemeente, ld bij
+ * Wajong. Zonder die regel toont de zaak geen toekenning.
+ */
+export const besluitGeldt = (situatie: Situatie, u: Uitkomsten): boolean => {
+  const id =
+    situatie === "gemeente" ? "lks" : situatie === "wajong" ? "ld" : null;
+  return id === null || u.regels.some((r) => r.id === id);
+};

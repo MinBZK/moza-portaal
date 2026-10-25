@@ -15,6 +15,7 @@ import {
 import type { DemoAannemen, DemoAannemenSituatie } from "@/demo";
 import basis from "../../../../personeel/iemand-aannemen/_basisfeiten.json";
 import {
+  besluitGeldt,
   faseIndex,
   waardenVoor,
 } from "../../../../personeel/iemand-aannemen/_route";
@@ -81,9 +82,7 @@ const Besluit = ({
   const zaakStand = zaakVan(staat, situatie);
   const w = waardenVoor(antwoorden, uitkomsten);
   const vastgesteldOp = fasen.find((f) => f.id === regeling.vaststelling);
-  const heeftRegel = uitkomsten.regels.some(
-    (r) => r.id === (situatie === "gemeente" ? "lks" : "ld"),
-  );
+  const heeftRegel = besluitGeldt(situatie, uitkomsten);
 
   if (
     !zaakStand.ingediend ||
@@ -211,8 +210,7 @@ const Besluit = ({
         <Paragraph>
           U kunt bezwaar maken bij {besluit.organisatie}. De termijn is{" "}
           {besluit.bezwaar}, gerekend vanaf {datumNL(besluit.datum)}. Heeft u
-          eerst een vraag? Stel die hieronder; {zaak.organisatie} antwoordt in
-          deze zaak.
+          eerst een vraag? Stel die hieronder; uw vraag staat dan in deze zaak.
         </Paragraph>
         <form onSubmit={verstuurVraag} className="rhc-mox-row-gap">
           <label className="utrecht-form-label" htmlFor="da-vraag">

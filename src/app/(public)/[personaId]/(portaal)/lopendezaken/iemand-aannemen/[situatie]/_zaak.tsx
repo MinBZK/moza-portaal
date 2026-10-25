@@ -21,6 +21,7 @@ import InfoToggletip from "@/components/InfoToggletip";
 import StatusTrack from "../../_statusTrack";
 import ZakenTabs from "../../_zakenTabs";
 import {
+  besluitGeldt,
   faseIndex,
   vulSjabloon,
   waardenVoor,
@@ -54,6 +55,9 @@ const SOORT: Record<DemoAannemenGebeurtenis["soort"], string> = {
  * en het antwoord op een vraag bij het besluit (dat hoort bij de stap ervoor).
  */
 const NEVENFASEN = ["indicatie", "antwoord"];
+
+/** De gebeurtenis in het gemeente-bestand die de vraag bij het besluit toont. */
+const VRAAG_ID = "g13";
 
 /** De taak van de werknemer (doelgroepverklaring) hoort bij een fase van de WIA-zaak. */
 const TAAK_BIJ_FASE: Record<string, TaakStand> = {
@@ -174,13 +178,46 @@ const Zaak = ({
       </>
     );
 
+  // Zonder de regel van de situatie in de uitkomsten (bijvoorbeeld loonwaarde
+  // 100 bij de gemeente) toont de zaak geen besluit en niets daarna.
+  const geldt = !bekend || besluitGeldt(situatie, uitkomsten);
+  const besluitNr = faseIndex("besluit", fasen);
+  const grens = geldt || !besluit ? fasen.length : besluitNr;
+  const toonFase = (faseId: string) => faseIndex(faseId, fasen) < grens;
+
   // Elke gebeurtenis na "vooraf" hoort bij een fase; zichtbaar zodra de zaak er is.
   const zichtbaar = gebeurtenissen.filter(
-    (g) => g.stap === "vooraf" || faseIndex(g.stap, fasen) <= i,
+    (g) =>
+      g.stap === "vooraf" ||
+      (faseIndex(g.stap, fasen) <= i && toonFase(g.stap)),
   );
+  // De vraag bij het besluit staat ook in de tijdlijn als het demo-bestand
+  // er geen eigen gebeurtenis voor heeft (alleen bij een zichtbaar besluit).
+  if (
+    zaakStand.vraag &&
+    besluit &&
+    geldt &&
+    i >= besluitNr &&
+    !gebeurtenissen.some((g) => g.id === VRAAG_ID)
+  ) {
+    const na = zichtbaar.findLastIndex((g) => g.stap === "besluit");
+    zichtbaar.splice(na + 1, 0, {
+      id: "vraag",
+      datum: "",
+      tijd: "",
+      actor: "U",
+      soort: "uitvoering",
+      titel: "Uw vraag bij het besluit",
+      tekst: `“${zaakStand.vraag}”`,
+      grond: "",
+      stap: "besluit",
+    });
+  }
 
   // De stappen van de voortgang: elke fase die een eigen stap is.
-  const stapFasen = fasen.filter((f) => !NEVENFASEN.includes(f.id));
+  const stapFasen = fasen.filter(
+    (f) => !NEVENFASEN.includes(f.id) && toonFase(f.id),
+  );
   const stapVan = (faseId: string) => {
     const nr = faseIndex(faseId, fasen);
     let k = -1;
@@ -189,7 +226,7 @@ const Zaak = ({
     });
     return k;
   };
-  const huidig = stapVan(zaakStand.fase);
+  const huidig = Math.min(stapVan(zaakStand.fase), stapFasen.length - 1);
   const stappen: DemoZaakStap[] = stapFasen.map((f, k) => {
     const soort = k < huidig ? "voltooid" : k === huidig ? "huidig" : "later";
     const tekst = zichtbaar
@@ -204,8 +241,7 @@ const Zaak = ({
     };
   });
 
-  const besluitBereikt =
-    besluit !== undefined && i >= faseIndex("besluit", fasen);
+  const besluitBereikt = besluit !== undefined && geldt && i >= besluitNr;
 
   return (
     <>
@@ -237,11 +273,31 @@ const Zaak = ({
             <DataSummaryItem itemKey="Regel" itemValue={zaak.regel} />
             <DataSummaryItem
               itemKey="Status"
-              itemValue={statusTekst(zaakStand, situatie)}
+              itemValue={statusTekst(
+                geldt || !toonFase(zaakStand.fase)
+                  ? {
+                      ...zaakStand,
+                      fase: geldt ? zaakStand.fase : fasen[besluitNr - 1].id,
+                    }
+                  : zaakStand,
+                situatie,
+              )}
             />
           </DataSummary>
         </section>
 
+        {!geldt && (
+          <Alert type="warning">
+            <Paragraph>
+              Bij de antwoorden in de aanvraag geeft de berekening geen{" "}
+              {situatie === "gemeente"
+                ? "loonkostensubsidie"
+                : "loondispensatie"}
+              , dus er is geen besluit te tonen. Pas de antwoorden aan in de
+              oriëntatie.
+            </Paragraph>
+          </Alert>
+        )}
         {fout && (
           <Alert type="warning">
             <Paragraph>
@@ -325,14 +381,14 @@ const Zaak = ({
                     {g.tekst && (
                       <Paragraph>
                         {/* De vraag bij het besluit staat in de zaak als de werkgever hem stelde. */}
-                        {g.id === "g13" && zaakStand.vraag
+                        {g.id === VRAAG_ID && zaakStand.vraag
                           ? `“${zaakStand.vraag}”`
                           : vulIn(g.tekst)}
                       </Paragraph>
                     )}
                     <p className="mox-hiring-event-meta">
-                      Vastgelegd door {g.actor} op {datumNL(g.datum)} om{" "}
-                      {g.tijd}
+                      Vastgelegd door {g.actor}
+                      {g.datum && ` op ${datumNL(g.datum)} om ${g.tijd}`}
                       {g.grond && ` · ${g.grond}`}
                       {g.herstelt && " · vervangt de afspraak hieronder"}
                       {g.gecorrigeerdDoor && " · gecorrigeerd, zie hierboven"}
