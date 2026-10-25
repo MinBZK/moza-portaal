@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { DataSummary, DataSummaryItem, Paragraph } from "@/components/rhc";
 import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan } from "./_engine";
@@ -48,9 +49,13 @@ const Waarom = ({
     : trace
       ? [trace.uitkomst, ...(bedragOutput ? [bedragOutput] : [])]
       : [];
+  // Rekenen pas na het openklappen; daarna blijft de uitkomst staan.
+  const [geopend, setGeopend] = useState(false);
   const stand = useBerekening(
-    invoer ??
-      (trace && antwoorden ? invoerVan(trace, antwoorden, outputs) : null),
+    !geopend
+      ? null
+      : (invoer ??
+          (trace && antwoorden ? invoerVan(trace, antwoorden, outputs) : null)),
   );
   if (!invoer && !trace) return null;
 
@@ -82,7 +87,10 @@ const Waarom = ({
   );
 
   return (
-    <details className="mox-hiring-why">
+    <details
+      className="mox-hiring-why"
+      onToggle={(e) => e.currentTarget.open && setGeopend(true)}
+    >
       <summary>Waarom deze uitkomst?</summary>
       <div>
         {stand.status === "laden" && (

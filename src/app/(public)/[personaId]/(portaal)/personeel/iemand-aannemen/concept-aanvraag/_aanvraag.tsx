@@ -18,7 +18,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
-import type { DemoAannemen, DemoAannemenTrace } from "@/demo";
+import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, KorteBalans } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
@@ -81,7 +81,6 @@ const duurTekst = (jaren: number | undefined) =>
 
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
-  traces: Record<string, DemoAannemenTrace>;
   werkgever: Werkgever;
   ondernemer: string;
 };
@@ -103,7 +102,6 @@ const Aanvraag = (props: Props) => {
 
 const AanvraagInhoud = ({
   perSituatie,
-  traces,
   werkgever,
   ondernemer,
   staat,
@@ -176,18 +174,12 @@ const AanvraagInhoud = ({
     />
   );
 
-  const waarom = (
-    wet: string,
-    output: string,
-    regeling: string,
-    traceId?: string,
-  ) => {
+  const waarom = (wet: string, output: string, regeling: string) => {
     const i = invoer(wet, output);
     if (!i) return null;
     return (
       <Waarom
         invoer={i}
-        trace={traceId ? traces[traceId] : undefined}
         antwoorden={a}
         regeling={regeling}
         kvk={werkgever.kvkNummer}
@@ -298,7 +290,6 @@ const AanvraagInhoud = ({
             "participatiewet",
             "heeft_recht_op_lks",
             "Loonkostensubsidie",
-            "participatiewet:heeft_recht_op_lks",
           )}
         </>,
       );
@@ -340,7 +331,6 @@ const AanvraagInhoud = ({
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
             "heeft_recht_op_loondispensatie",
             "Loondispensatie",
-            "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie",
           )}
         </>,
       );
@@ -374,7 +364,6 @@ const AanvraagInhoud = ({
             "participatiewet",
             "heeft_aanspraak_op_begeleiding_op_de_werkplek",
             "Jobcoaching",
-            "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek",
           )}
         </>,
       );
@@ -442,7 +431,6 @@ const AanvraagInhoud = ({
           "participatiewet",
           "mag_proefplaatsing_aangaan",
           "Proefplaatsing",
-          "participatiewet:mag_proefplaatsing_aangaan",
         )}
       </>,
     );
@@ -524,7 +512,6 @@ const AanvraagInhoud = ({
           "wet_tegemoetkomingen_loondomein",
           "heeft_recht_op_lkv",
           "Loonkostenvoordeel",
-          "wet_tegemoetkomingen_loondomein:heeft_recht_op_lkv",
         )}
       </section>
     ) : (
@@ -542,12 +529,7 @@ const AanvraagInhoud = ({
           vanzelf: u hoeft niets aan te vragen. {duurTekst(nrp?.duurJaren)} Bij
           ziekte meldt u de werknemer ziek bij UWV.
         </Paragraph>
-        {waarom(
-          "ziektewet",
-          "heeft_recht_op_no_risk_polis",
-          "No-riskpolis",
-          "ziektewet:heeft_recht_op_no_risk_polis",
-        )}
+        {waarom("ziektewet", "heeft_recht_op_no_risk_polis", "No-riskpolis")}
       </section>
     );
 

@@ -1,7 +1,4 @@
-import {
-  getDemoIemandAannemenSituaties,
-  getDemoIemandAannemenTraces,
-} from "@/demo";
+import { getDemoIemandAannemenSituaties } from "@/demo";
 import type { DemoAannemen } from "@/demo";
 import {
   getActieveOrganisatie,
@@ -12,9 +9,8 @@ import { vul, werkgeverVan } from "../_werkgever";
 
 /** Scherm 3: de vooringevulde aanvraag, per organisatie de panelen van de situatie. */
 const ConceptAanvraagPage = async () => {
-  const [situaties, traces, persona] = await Promise.all([
+  const [situaties, persona] = await Promise.all([
     getDemoIemandAannemenSituaties(),
-    getDemoIemandAannemenTraces(),
     getActievePersona(),
   ]);
   const organisatie = await getActieveOrganisatie(persona);
@@ -36,7 +32,6 @@ const ConceptAanvraagPage = async () => {
         wajong: gevuld(situaties.wajong),
         wia: gevuld(situaties.wia),
       }}
-      traces={traces}
       werkgever={werkgever}
       ondernemer={
         persona
