@@ -212,8 +212,9 @@ const Besluit = ({
       </section>
 
       <section aria-labelledby="besluit-bezwaar">
-        {/* Bezwaar kan alleen tegen een besluit; zonder besluit blijft de vraag. */}
-        {bekend && heeftRegel ? (
+        {/* Bezwaar kan alleen tegen een besluit; zonder besluit blijft de vraag.
+            Tijdens het rekenen blijft de kop staan, zoals de zaak (geldt). */}
+        {!bekend || heeftRegel ? (
           <>
             <Heading level={2} id="besluit-bezwaar">
               Niet eens met dit besluit?
