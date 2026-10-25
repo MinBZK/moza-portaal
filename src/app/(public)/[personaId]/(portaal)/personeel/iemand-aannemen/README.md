@@ -15,7 +15,7 @@ actor en wetsgrond staat in `verhaallijn-koen-v1.md` (in deze map).
 | Pad | Wat de deelnemer doet |
 |---|---|
 | `/personeel` | Start "Iemand aannemen"; na het indienen staat de zaak hier |
-| `/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt` | De bewaarde aanvraag (melding op home en Lopende zaken, blok "Nog in te dienen aanvragen"): organisatie, tijdsduur, "antwoorden van Ondernemersplein overgenomen"; daaronder vier korte vragen (wie, als meerkeuze: Wajong vinkt het doelgroepregister aan en zet het vast, Wfsv 38b lid 1 onder c; uren, loonwaarde en uurloon als schuifregelaar; loonwaarde 100 is zelfstandig); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie en loonkostenvoordeel uit de engine; de overige regelingen; "Aanvraag laten invullen". `/personeel/iemand-aannemen` verwijst hierheen |
+| `/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt` | De bewaarde aanvraag (melding op home en Lopende zaken, blok "Nog in te dienen aanvragen"): organisatie, tijdsduur, "antwoorden van Ondernemersplein overgenomen"; daaronder vier korte vragen (wie, als meerkeuze met acht opties: Wajong vinkt het doelgroepregister aan en zet het vast, beschut werk sluit het register uit; uren, loonwaarde en uurloon als schuifregelaar); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie, loondispensatie en loonkostenvoordeel uit de engine, met een (i) bij elke aanname; de regelingen die verder kunnen gelden, ook uit de engine; "Aanvraag laten invullen". `/personeel/iemand-aannemen` verwijst hierheen |
 | `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat kiezen (Koen, met toestemming) of toevoegen (wacht op toestemming), per organisatie (UWV, gemeente, KVK, Belastingdienst, eigen opgave) een accordeon met de gegevens als vraag en antwoord, de datum en de wetsvraag; vinkje per organisatie, standaard aan |
 | `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag: per regeling een paneel met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing), "Ik heb dit gecontroleerd"; Gecontroleerd n van 6; rechts "Wat dit u oplevert" live |
 | `/personeel/iemand-aannemen/indienen` | Controleren en indienen: wat naar de gemeente gaat, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
@@ -38,15 +38,22 @@ Web Worker; `_useRegelrecht.ts` praat ermee. De kern toetst elk aangeleverd
 bestand aan zijn ingebakken pin: een ander bestand is een fout, geen stille
 afwijking.
 
-Wat live is: op het eerste scherm en in de zijkolom van de aanvraag rekent de
-engine loonkostensubsidie (Participatiewet 10d) en loonkostenvoordeel (Wtl
-2.10) bij elke wijziging van de antwoorden: uren en loonwaarde.
+Wat live is: de oriëntatie rekent voor elke uitgangssituatie van de
+Uitkomstenkaart Financieel CV de acht regelingen (loonkostensubsidie,
+loondispensatie, doelgroepregister, loonkostenvoordeel, no-riskpolis,
+proefplaatsing, begeleiding, voorzieningen WIA 35) bij elke wijziging van de
+antwoorden. `_uitkomsten.ts` zet de antwoorden om in feiten voor de engine
+(neutrale basis `_basisfeiten.json` plus feiten per vinkje) en de uitkomsten in
+wat het scherm toont; nooit te gunstig, met een (i) bij een aanname. Ontwerp en
+keuzes: `ontwerp-orientatie-alle-uitkomsten-v1.md`. Elke aanroep van de kern
+kost bijna een seconde, dus alleen de aanroepen die bij de vinkjes iets kunnen
+opleveren gaan naar de worker, de bedragen eerst.
 De loonkosten zelf zijn een vuistregel (opgegeven uurloon maal uren, plus 8 procent
 vakantiebijslag en 20 procent werkgeverslasten), geen wet. Het uurloon gaat
 niet naar de engine: subsidie en voordeel gaan uit van het minimumloon. De regel eronder
-noemt de engine- en corpusrevisie. Lukt de worker niet, dan blijven de vooraf
-berekende waarden staan (`src/demo/iemand-aannemen-traces.json`, uit een
-TRACE-run van de BDD-suite) met de melding waarom.
+noemt de engine- en corpusrevisie. Lukt de worker niet, dan staat er een
+melding en geen bedrag: vooraf berekende waarden van Koen kunnen voor een andere
+keuze te gunstig zijn.
 
 Ook live: "Waarom deze uitkomst?" in elk paneel van de concept-aanvraag
 (`_waarom.tsx`). De kern levert per output de afleiding in drie lagen: kort
@@ -75,13 +82,15 @@ het paper (begrijpelijk is niet hetzelfde als juridisch juist); vergelijk wat
 deelnemers van de kale afleiding begrijpen met wat ze van de taalmodeltekst
 begrijpen, en toets de taalmodeltekst zin voor zin aan de afleiding.
 
-Nog niet live: het besluit en de bedragen van de overige regelingen
-(no-riskpolis, begeleiding, proefplaatsing, loondispensatie) tonen de vooraf
-berekende traces. Zelfde engine, zelfde corpus; alleen nog niet aangesloten.
+Nog niet live: het besluit (vooraf berekende traces in
+`src/demo/iemand-aannemen-traces.json`). De stappen na de oriëntatie blijven
+uitgewerkt voor Koen; de korte balans van de concept-aanvraag rekent met een
+kandidaat via de gemeente. Dat is fase 2.
 
 Bundel vernieuwen (in regelrecht-uitleg, branch `feat/engine-live`):
 `just bundel`, dan `uit/bundel/pkg` en de browserbestanden naar
-`public/regelrecht/`.
+`public/regelrecht/`. Daarna `node scripts/iemand-aannemen-basisfeiten.mjs` en
+de testtabel.
 
 ## Draaien en controleren
 
@@ -93,7 +102,9 @@ node scripts/iemand-aannemen-schermen.mjs http://localhost:3100 /tmp/iemand-aann
 
 Het script maakt per pagina schermafdrukken op 1280 en 390, meldt
 consolefouten en horizontale scroll, en wacht op "Wat het oplevert" tot de
-engine heeft gerekend. CI: `npm run lint`, `npm run lint:css`,
+engine heeft gerekend. De testtabel rekent veertien gevallen uit de
+Uitkomstenkaart met dezelfde WASM-kern in Node (ongeveer 40 seconden):
+`node --test scripts/iemand-aannemen-uitkomsten.test.mjs`. CI: `npm run lint`, `npm run lint:css`,
 `npm run type-check`, `npm run build`.
 
 ## Voor de onderzoeker
