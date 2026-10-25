@@ -26,3 +26,46 @@ test("basis: elk doel rekent en alle routes staan dicht", () => {
     }
   }
 });
+
+const U = await import("../" + MAP + "_uitkomsten.ts");
+
+test("vraag 1: Wajong vinkt het register aan", () => {
+  assert.deepEqual(U.kiesDoelgroep([], "wajong", true), ["register", "wajong"]);
+});
+
+test("vraag 1: beschut werk haalt register en Wajong weg", () => {
+  assert.deepEqual(U.kiesDoelgroep(["register", "wajong"], "beschut", true), [
+    "beschut",
+  ]);
+});
+
+test("vraag 1: register haalt beschut werk weg", () => {
+  assert.deepEqual(U.kiesDoelgroep(["beschut", "bijstand"], "register", true), [
+    "register",
+    "bijstand",
+  ]);
+});
+
+test("vraag 1: geen van deze sluit de rest uit", () => {
+  assert.deepEqual(U.kiesDoelgroep(["register", "wia"], "geen", true), [
+    "geen",
+  ]);
+});
+
+test("vraag 1: acht opties, WIA zonder WAO", () => {
+  const ids = U.DOELGROEPEN.map(([id]) => id);
+  assert.deepEqual(ids, [
+    "register",
+    "wajong",
+    "wia",
+    "bijstand",
+    "wsw",
+    "beschut",
+    "geen",
+    "weetniet",
+  ]);
+  assert.equal(
+    U.DOELGROEPEN.find(([id]) => id === "wia")[1],
+    "Iemand met een WIA-uitkering",
+  );
+});

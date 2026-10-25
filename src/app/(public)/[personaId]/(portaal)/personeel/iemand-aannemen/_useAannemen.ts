@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
 import { euro } from "./_werkgever";
 
 /**
@@ -33,35 +34,7 @@ export const BRONNEN = [
 ] as const;
 export type BronId = (typeof BRONNEN)[number];
 
-export const DOELGROEPEN = [
-  ["register", "Iemand uit het doelgroepregister (banenafspraak)"],
-  ["wajong", "Iemand met een Wajong-uitkering"],
-  ["wia", "Iemand met een WIA- of WAO-uitkering"],
-  ["bijstand", "Iemand met een bijstandsuitkering"],
-  ["geen", "Geen van deze"],
-  ["weetniet", "Weet ik nog niet"],
-] as const;
-export type Doelgroep = (typeof DOELGROEPEN)[number][0];
-
-/** Deze twee sluiten de andere keuzes uit. */
-const ALLEEN: Doelgroep[] = ["geen", "weetniet"];
-
-/**
- * Vraag 1 is meerkeuze. Wie Wajong heeft, staat in het doelgroepregister
- * (Wfsv 38b lid 1 onder c), dus Wajong vinkt het register aan en houdt het vast.
- */
-export const kiesDoelgroep = (
-  huidig: Doelgroep[],
-  waarde: Doelgroep,
-  aan: boolean,
-): Doelgroep[] => {
-  if (aan && ALLEEN.includes(waarde)) return [waarde];
-  const rest = huidig.filter((d) => d !== waarde && !ALLEEN.includes(d));
-  const nieuw = aan ? [...rest, waarde] : rest;
-  if (nieuw.includes("wajong") && !nieuw.includes("register"))
-    nieuw.push("register");
-  return DOELGROEPEN.map(([d]) => d).filter((d) => nieuw.includes(d));
-};
+export { DOELGROEPEN, kiesDoelgroep, type Doelgroep };
 
 /** Het register staat vast aangevinkt zolang Wajong is gekozen. */
 export const registerVast = (a: Antwoorden) => a.doelgroepen.includes("wajong");
