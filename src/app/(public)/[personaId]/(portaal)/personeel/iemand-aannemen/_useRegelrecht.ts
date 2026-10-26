@@ -59,6 +59,38 @@ let worker: Worker | null = null;
 let volgnummer = 0;
 const wachtend = new Map<number, (a: Antwoord) => void>();
 
+/**
+ * De worker kan een berekening niet afbreken. Daarom gaat er steeds één
+ * verzoek tegelijk heen; een verzoek dat niet meer nodig is (`geldig`
+ * geeft false, bijvoorbeeld na een nieuwe stand van een schuifregelaar)
+ * gaat er nooit heen. Zo blijft er geen rij verouderde berekeningen staan.
+ */
+const rij: {
+  id: number;
+  opdracht: Record<string, unknown>;
+  geldig?: () => boolean;
+}[] = [];
+let onderweg = false;
+
+const pomp = () => {
+  if (onderweg || !worker) return;
+  while (rij.length > 0) {
+    const volgende = rij.shift()!;
+    if (volgende.geldig && !volgende.geldig()) {
+      wachtend.get(volgende.id)?.({
+        id: volgende.id,
+        ok: false,
+        fout: "niet meer nodig",
+      });
+      wachtend.delete(volgende.id);
+      continue;
+    }
+    onderweg = true;
+    worker.postMessage({ id: volgende.id, ...volgende.opdracht });
+    return;
+  }
+};
+
 const start = () => {
   if (worker || typeof window === "undefined") return worker;
   try {
@@ -66,6 +98,8 @@ const start = () => {
     worker.onmessage = (bericht: MessageEvent<Antwoord>) => {
       wachtend.get(bericht.data.id)?.(bericht.data);
       wachtend.delete(bericht.data.id);
+      onderweg = false;
+      pomp();
     };
     // Laadt worker.js zelf niet, dan komt er nooit een antwoord: geef elk
     // wachtend verzoek een fout, zodat het scherm niet blijft rekenen.
@@ -74,6 +108,8 @@ const start = () => {
       for (const [id, klaar] of wachtend)
         klaar({ id, ok: false, fout: "de engine laadt niet" });
       wachtend.clear();
+      rij.length = 0;
+      onderweg = false;
       worker = null;
     };
   } catch {
@@ -82,7 +118,10 @@ const start = () => {
   return worker;
 };
 
-const vraag = <T>(opdracht: Record<string, unknown>): Promise<T> =>
+const vraag = <T>(
+  opdracht: Record<string, unknown>,
+  geldig?: () => boolean,
+): Promise<T> =>
   new Promise((los, weiger) => {
     const w = start();
     if (!w) {
@@ -94,11 +133,12 @@ const vraag = <T>(opdracht: Record<string, unknown>): Promise<T> =>
       if (a.ok && a.json) los(JSON.parse(a.json) as T);
       else weiger(new Error(a.fout ?? "onbekende fout"));
     });
-    w.postMessage({ id, ...opdracht });
+    rij.push({ id, opdracht, geldig });
+    pomp();
   });
 
-export const bereken = (invoer: Invoer) =>
-  vraag<Berekening>({ soort: "bereken", invoer });
+export const bereken = (invoer: Invoer, geldig?: () => boolean) =>
+  vraag<Berekening>({ soort: "bereken", invoer }, geldig);
 
 export const manifest = () => vraag<Manifest>({ soort: "manifest" });
 
@@ -128,7 +168,7 @@ export const useBerekening = (invoer: Invoer | null): Stand<Berekening> => {
     let actueel = true;
     const timer = setTimeout(
       () => {
-        bereken(JSON.parse(sleutel) as Invoer).then(
+        bereken(JSON.parse(sleutel) as Invoer, () => actueel).then(
           (waarde) => {
             if (actueel)
               setUitkomst({ sleutel, stand: { status: "klaar", waarde } });
@@ -191,7 +231,7 @@ export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
       () => {
         for (const invoer of lijst) {
           const id = `${invoer.wet}:${invoer.output}`;
-          bereken(invoer).then(
+          bereken(invoer, () => actueel).then(
             (waarde) => {
               if (!actueel) return;
               setStand((s) => ({
