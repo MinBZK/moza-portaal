@@ -6,7 +6,8 @@
 import { writeFileSync } from "node:fs";
 import { DOELEN, gegevens } from "./regelrecht-node.mjs";
 
-const PEILDATUM = "2026-07-01";
+// Zelfde peildatum en eerste werkdag als PEILDATUM en AANVANG in _uitkomsten.ts.
+const PEILDATUM = "2026-10-01";
 const UIT =
   "src/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_basisfeiten.json";
 
@@ -14,8 +15,8 @@ const UIT =
 const NEUTRAAL = {
   bsn: "999990101",
   geboortedatum: "1984-03-15",
-  datum_aanvang_dienstbetrekking: "2026-01-01",
-  datum_aanvang_eerste_dienstbetrekking_2_6: "2026-01-01",
+  datum_aanvang_dienstbetrekking: "2026-10-01",
+  datum_aanvang_eerste_dienstbetrekking_2_6: "2026-10-01",
   verdiencapaciteit_percentage_maatmaninkomen: 100,
   verdiencapaciteit_wajong_percentage_maatmaninkomen: 100,
   is_verzekerde_wia: true,

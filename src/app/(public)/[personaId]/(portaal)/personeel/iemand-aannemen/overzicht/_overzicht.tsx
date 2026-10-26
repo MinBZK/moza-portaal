@@ -20,12 +20,18 @@ const TAAK: Record<TaakId, { kop: string; tekst: string }> = {
   vz_wajong: {
     kop: "Jobcoach of werkplekaanpassing aanvragen",
     tekst:
-      "De werknemer vraagt dit zelf aan bij UWV, als dat nodig is (Wajong 2:22). U kunt niet namens de werknemer aanvragen in dit portaal.",
+      "De werknemer vraagt een jobcoach of een aanpassing van de werkplek zelf aan bij UWV, als dat nodig is (Wajong 2:22). U kunt dit niet namens de werknemer aanvragen in dit portaal.",
   },
   vz_wia: {
     kop: "Jobcoach of werkplekaanpassing aanvragen",
     tekst:
-      "De werknemer vraagt dit zelf aan bij UWV, als dat nodig is (Wet WIA 35). U kunt niet namens de werknemer aanvragen in dit portaal.",
+      "De werknemer vraagt een jobcoach of een aanpassing van de werkplek zelf aan bij UWV, als dat nodig is (Wet WIA 35). U kunt dit niet namens de werknemer aanvragen in dit portaal. Duurt het dienstverband ten minste zes maanden, dan kunt u bij UWV zelf subsidie vragen voor de extra kosten van voorzieningen (Wet WIA 36). Daarvoor gelden meer voorwaarden. De kosten moeten bijvoorbeeld hoger zijn dan een drempelbedrag. UWV beslist of u de subsidie krijgt.",
+  },
+  // Pwet 6 h en 8a lid 2 d: vóór de eerste werkdag, toestemming aan de kandidaat.
+  pp: {
+    kop: "Proefplaats: toestemming vragen aan de gemeente",
+    tekst:
+      "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. De kandidaat vraagt de gemeente om toestemming. Dat gaat buiten de aanvraag om.",
   },
 };
 
@@ -170,11 +176,13 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
           {route.vanzelf.includes("nrp") && (
             <Kaart id="vanzelf-nrp" kop="No-riskpolis">
               <Paragraph>
-                Wordt de werknemer ziek, dan betaalt UWV ziekengeld (70 procent
-                van het dagloon) in plaats van dat u het loon doorbetaalt. Dit
-                geldt vanzelf: u hoeft niets aan te vragen.{" "}
-                {duurTekst(nrp?.duurJaren)} Bij ziekte meldt u de werknemer ziek
-                bij UWV.
+                Wordt de werknemer ziek? Dan betaalt u het loon door. UWV
+                betaalt u ziekengeld voor de werknemer: 70 procent van het
+                dagloon (Ziektewet 29b). In de eerste 52 weken van de ziekte
+                kunt u UWV vragen om het hele dagloon. Het ziekengeld is dan
+                niet hoger dan het loon. U hoeft de no-riskpolis niet aan te
+                vragen. {duurTekst(nrp?.duurJaren)} Bij ziekte meldt u de
+                werknemer ziek bij UWV.
               </Paragraph>
             </Kaart>
           )}

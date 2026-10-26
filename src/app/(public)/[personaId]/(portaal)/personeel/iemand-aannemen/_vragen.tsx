@@ -36,14 +36,16 @@ const OVERIG: Record<
   nrp: {
     naam: "No-riskpolis",
     uitvoerder: "uwv",
+    // ZW 29b lid 1, 2, 5 en 6; de loondoorbetaling blijft.
     tekst: (o) =>
-      `Wordt uw werknemer ziek, dan betaalt UWV ziekengeld in plaats van dat u het loon doorbetaalt. ${o.duurJaren === 5 ? "Vijf jaar vanaf de start." : "Zonder einddatum."}`,
+      `Wordt uw werknemer ziek? Dan betaalt u het loon door. UWV betaalt u dan ziekengeld: 70 procent van het dagloon. In de eerste 52 weken van de ziekte kunt u UWV vragen om het hele dagloon, maar niet meer dan het loon. ${o.duurJaren === 5 ? "Dit geldt bij ziekte die begint in de eerste vijf jaar na de start van het dienstverband." : "Er is geen einddatum."}`,
   },
   pp_pwet: {
     naam: "Proefplaatsing",
     uitvoerder: "gemeente",
+    // Pwet 6 h en 8a lid 2 d: onbeloond, vóór de dienstbetrekking, toestemming aan de kandidaat.
     tekst: () =>
-      "De kandidaat werkt eerst twee maanden bij u terwijl de bijstand doorloopt, te verlengen tot zes maanden, als de gemeente instemt.",
+      "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. De kandidaat vraagt de gemeente om toestemming.",
   },
   pp_ww: {
     naam: "Proefplaatsing met behoud van WW",
@@ -54,20 +56,23 @@ const OVERIG: Record<
   begeleiding: {
     naam: "Begeleiding op de werkplek (jobcoach)",
     uitvoerder: "gemeente",
+    // Pwet 10da: een aanspraak van de werknemer.
     tekst: () =>
-      "Een jobcoach helpt uw werknemer en u op de werkvloer. U vraagt dit aan bij de gemeente.",
+      "Uw werknemer heeft recht op begeleiding op de werkplek, bijvoorbeeld door een jobcoach. Dit loopt via de gemeente.",
   },
   vz_wia: {
     naam: "Jobcoaching en werkplekaanpassing",
     uitvoerder: "uwv",
+    // Wet WIA 35 (werknemer vraagt aan) en 36 (subsidie meerkosten voor de werkgever).
     tekst: () =>
-      "UWV kan een jobcoach of een aanpassing van de werkplek vergoeden. U vraagt dit aan bij UWV.",
+      "UWV kan uw werknemer een voorziening geven, zoals een jobcoach of een aangepaste werkplek. Uw werknemer vraagt dit zelf aan bij UWV. Maakt u zelf extra kosten voor een aangepaste werkplek? En duurt het dienstverband ten minste zes maanden? Dan kunt u bij UWV subsidie vragen voor die extra kosten. Daarvoor gelden meer voorwaarden. De kosten moeten bijvoorbeeld hoger zijn dan een drempelbedrag. UWV beslist of u de subsidie krijgt.",
   },
   vz_wajong: {
     naam: "Jobcoaching en werkplekaanpassing",
     uitvoerder: "uwv",
+    // Wajong 2:22: de werknemer vraagt aan.
     tekst: () =>
-      "Via de Wajong kan UWV een jobcoach of een aanpassing van de werkplek vergoeden. U vraagt dit aan bij UWV.",
+      "Via de Wajong kan UWV uw werknemer een voorziening geven, zoals een jobcoach of een aangepaste werkplek. Uw werknemer vraagt dit zelf aan bij UWV.",
   },
 };
 
@@ -179,9 +184,11 @@ const VragenMetStaat = ({
               filled
             />
             <Paragraph className="mox-hiring-note">
-              Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per uur. De
-              subsidie en het voordeel gaan uit van het minimumloon; een hoger
-              uurloon maakt alleen de loonkosten hoger.
+              Het wettelijk minimumloon voor iemand van 21 jaar of ouder is{" "}
+              {euro(WML_UUR_EUROCENT)} per uur. Voor jongere werknemers geldt
+              een ander minimumloon. De subsidie en het voordeel gaan uit van{" "}
+              {euro(WML_UUR_EUROCENT)}. Een hoger uurloon maakt alleen de
+              loonkosten hoger.
             </Paragraph>
           </div>
         </div>

@@ -37,8 +37,9 @@ export type BronId = (typeof BRONNEN)[number];
 
 export { DOELGROEPEN, kiesDoelgroep, type Doelgroep };
 
-/** Het register staat vast aangevinkt zolang Wajong is gekozen. */
-export const registerVast = (a: Antwoorden) => a.doelgroepen.includes("wajong");
+/** Het register staat vast aangevinkt bij Wajong zonder beschut werk. */
+export const registerVast = (a: Antwoorden) =>
+  a.doelgroepen.includes("wajong") && !a.doelgroepen.includes("beschut");
 
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;

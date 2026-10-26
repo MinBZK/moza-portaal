@@ -143,8 +143,8 @@ const Waarom = ({
             </details>
             <Paragraph className="mox-hiring-note">
               Afgeleid uit de uitvoering door de regelrecht-engine in uw
-              browser, wetsversie 1 juli 2026. Geen taalmodel: elke zin komt uit
-              een stap van de wet.
+              browser, wetsversie 1 juli 2026. De tekst hierboven komt niet van
+              een taalmodel: elke zin komt uit een stap van de wet.
             </Paragraph>
             <UitlegTaalmodel
               berekening={stand.waarde}

@@ -23,7 +23,7 @@
     "nummer": "UWV-DV-2026-0518",
     "organisatie": "UWV",
     "onderwerp": "Doelgroepverklaring voor Robin Visser",
-    "regel": "Artikelen 2.6 en 2.7 van de Wet tegemoetkomingen loondomein, wetsversie 1 juli 2026",
+    "regel": "Artikelen 2.6 en 2.7 van de Wet tegemoetkomingen loondomein, zoals die gelden op 1 juli 2026",
     "url": "/lopendezaken/iemand-aannemen/wia"
   },
   "bronnen": [
@@ -81,8 +81,8 @@
           "vraag": "Staat er al een verzoek om loonkostenvoordeel in de loonaangifte?",
           "wetsvraag": "Heeft de werkgever in de loonaangifte verzocht om het loonkostenvoordeel?",
           "parameter": "heeft_loonaangifte_verzoek_ingediend",
-          "waarde": "Nog niet; dat doet u in de eerste loonaangifte na de start",
-          "grond": "Wtl 2.10 lid 1"
+          "waarde": "Nog niet; dat doet u in de loonaangifte na de start",
+          "grond": "Wtl 2.1"
         }
       ]
     },
@@ -97,14 +97,14 @@
           "wetsvraag": "Wat is de overeengekomen arbeidsduur in uren per week?",
           "parameter": "overeengekomen_arbeidsduur_uren_per_week",
           "waarde": "{uren} uur",
-          "grond": "Pwet 10d lid 4"
+          "grond": "Wtl 2.9"
         },
         {
           "vraag": "Wanneer begint de dienstbetrekking?",
           "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
           "parameter": "datum_aanvang_dienstbetrekking",
           "waarde": "1 oktober 2026",
-          "grond": "ZW 29b lid 2 e"
+          "grond": "ZW 29b lid 1 a; Wtl 2.7 lid 1"
         },
         {
           "vraag": "Wat gaat Robin verdienen?",
@@ -141,7 +141,7 @@
       "actor": "Wetgever",
       "soort": "regelgeving",
       "titel": "Wetsversie van 1 juli 2026 geldt",
-      "tekst": "Wet tegemoetkomingen loondomein, Wet WIA, Wet financiering sociale verzekeringen en Wet minimumloon in de versie van 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "tekst": "Wet tegemoetkomingen loondomein, Wet WIA, Wet financiering sociale verzekeringen en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
       "grond": "Regeling indexatie wettelijk minimumloon",
       "stap": "vooraf"
     },
@@ -238,16 +238,16 @@
     {
       "datum": "2027-03-15",
       "actor": "Belastingdienst",
-      "titel": "Voorlopige berekening loonkostenvoordeel 2026",
-      "tekst": "Het bedrag over 2026 is een deel van het loonkostenvoordeel per jaar ({lkvPerJaar}), naar verhouding van de verloonde uren in oktober tot en met december.",
-      "grond": "Wtl 4.1"
+      "titel": "Overzicht met de voorgenomen berekening van het loonkostenvoordeel 2026",
+      "tekst": "Het loonkostenvoordeel is een bedrag per verloond uur. Over een heel jaar is dat {lkvPerJaar}. Over 2026 tellen de uren van oktober tot en met december.",
+      "grond": "Wtl 4.1 lid 4"
     },
     {
       "datum": "2027-08-01",
       "actor": "Belastingdienst",
-      "titel": "Beschikking loonkostenvoordeel 2026; uitbetaling in september 2027",
+      "titel": "Beschikking loonkostenvoordeel 2026",
       "tekst": "",
-      "grond": "Wtl 4.2 en 4.3"
+      "grond": "Wtl 4.2 lid 3"
     }
   ],
   "labels": {

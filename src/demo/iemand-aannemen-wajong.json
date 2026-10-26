@@ -23,7 +23,7 @@
     "nummer": "UWV-LD-2026-0231",
     "organisatie": "UWV",
     "onderwerp": "Loondispensatie voor Noor Hoekstra",
-    "regel": "Artikel 2:20 van de Wajong en de artikelen 1, 2, 3 en 5 van het Besluit loondispensatie Wajong, wetsversie 1 juli 2026",
+    "regel": "Artikel 2:20 van de Wajong en de artikelen 1 tot en met 5 van het Besluit loondispensatie Wajong, zoals die gelden op 1 juli 2026",
     "url": "/lopendezaken/iemand-aannemen/wajong"
   },
   "bronnen": [
@@ -102,8 +102,8 @@
           "vraag": "Staat er al een verzoek om loonkostenvoordeel in de loonaangifte?",
           "wetsvraag": "Heeft de werkgever in de loonaangifte verzocht om het loonkostenvoordeel?",
           "parameter": "heeft_loonaangifte_verzoek_ingediend",
-          "waarde": "Nog niet; dat doet u in de eerste loonaangifte na de start",
-          "grond": "Wtl 2.10 lid 1"
+          "waarde": "Nog niet; dat doet u in de loonaangifte na de start",
+          "grond": "Wtl 2.1"
         }
       ]
     },
@@ -118,14 +118,14 @@
           "wetsvraag": "Wat is de overeengekomen arbeidsduur in uren per week?",
           "parameter": "overeengekomen_arbeidsduur_uren_per_week",
           "waarde": "{uren} uur",
-          "grond": "Pwet 10d lid 4"
+          "grond": "Wtl 2.13"
         },
         {
           "vraag": "Wanneer begint de dienstbetrekking?",
           "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
           "parameter": "datum_aanvang_dienstbetrekking",
           "waarde": "1 oktober 2026",
-          "grond": "ZW 29b lid 2 e"
+          "grond": "ZW 29b lid 2 a"
         },
         {
           "vraag": "Wat gaat Noor verdienen?",
@@ -167,7 +167,7 @@
       "actor": "Wetgever",
       "soort": "regelgeving",
       "titel": "Wetsversie van 1 juli 2026 geldt",
-      "tekst": "Wajong, Besluit loondispensatie Wajong, Wet financiering sociale verzekeringen, Wet tegemoetkomingen loondomein en Wet minimumloon in de versie van 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "tekst": "Wajong, Besluit loondispensatie Wajong, Wet financiering sociale verzekeringen, Wet tegemoetkomingen loondomein en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
       "grond": "Regeling indexatie wettelijk minimumloon",
       "stap": "vooraf"
     },
@@ -212,7 +212,7 @@
       "soort": "uitvoering",
       "titel": "Dienstbetrekking begonnen",
       "tekst": "Noor is gestart voor {uren} uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
-      "grond": "Wtl 2.10 lid 1",
+      "grond": "Wtl 2.1",
       "stap": "ontvangst"
     },
     {
@@ -277,8 +277,8 @@
       "actor": "UWV",
       "soort": "besluit",
       "titel": "Besluit: loondispensatie toegekend, {aanspraakPerUur} per uur, ten hoogste vijf jaar (aanname over de termijn)",
-      "tekst": "UWV kent loondispensatie toe voor de periode die naar verwachting nodig is, ten hoogste vijf jaar. Verlenging is mogelijk. U kunt binnen zes weken bezwaar maken.",
-      "grond": "Wajong 2:20; Besluit loondispensatie Wajong 5; Awb 6:7",
+      "tekst": "UWV verleent loondispensatie vanaf {ingangLoondispensatie}, de eerste dag van de maand van de aanvraag. Die geldt voor de periode die naar verwachting nodig is, ten hoogste vijf jaar. Verlenging is mogelijk. U kunt binnen zes weken bezwaar maken.",
+      "grond": "Wajong 2:20; Besluit loondispensatie Wajong 4 en 5; Awb 6:7",
       "stap": "besluit",
       "url": "/lopendezaken/iemand-aannemen/wajong/besluit"
     }
@@ -287,16 +287,16 @@
     {
       "datum": "2027-03-15",
       "actor": "Belastingdienst",
-      "titel": "Voorlopige berekening loonkostenvoordeel 2026",
-      "tekst": "Het bedrag over 2026 is een deel van het loonkostenvoordeel per jaar ({lkvPerJaar}), naar verhouding van de verloonde uren in oktober tot en met december.",
-      "grond": "Wtl 4.1"
+      "titel": "Overzicht met de voorgenomen berekening van het loonkostenvoordeel 2026",
+      "tekst": "Het loonkostenvoordeel is een bedrag per verloond uur. Over een heel jaar is dat {lkvPerJaar}. Over 2026 tellen de uren van oktober tot en met december.",
+      "grond": "Wtl 4.1 lid 4"
     },
     {
       "datum": "2027-08-01",
       "actor": "Belastingdienst",
-      "titel": "Beschikking loonkostenvoordeel 2026; uitbetaling in september 2027",
+      "titel": "Beschikking loonkostenvoordeel 2026",
       "tekst": "",
-      "grond": "Wtl 4.2 en 4.3"
+      "grond": "Wtl 4.2 lid 3"
     }
   ],
   "labels": {

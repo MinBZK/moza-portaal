@@ -17,10 +17,11 @@ import { euro } from "./_werkgever";
 
 /** Wat bij een aanname in de (i) staat (ontwerp-orientatie-alle-uitkomsten-v1.md). */
 export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
+  // Pwet 10d lid 1 onder b en lid 5; de werkgeverslasten staan nog open, dus geen bedrag.
   lks_lid4: {
-    kort: "Gerekend met een loonwaarde die vooraf vaststaat.",
+    kort: "Gerekend met een loonwaarde die de gemeente vaststelt.",
     uitleg:
-      "Gerekend met een loonwaarde die de gemeente vooraf vaststelt. Stelt de gemeente die pas na de start vast, dan krijgt u de eerste zes maanden 50 procent: € 1.577,48 per maand bij 36 uur, naar rato van de uren.",
+      "Gerekend met een loonwaarde die de gemeente vaststelt. De gemeente kan ook met u afspreken dat zij de loonwaarde eerst niet vaststelt. Dan krijgt u ten hoogste de eerste zes maanden 50 procent van het minimumloon met vakantiebijslag, plus een vergoeding voor werkgeverslasten. Werkt de kandidaat minder dan 36 uur, dan is het bedrag naar rato lager. Daarna stelt de gemeente de loonwaarde alsnog vast. Hoe de vergoeding voor werkgeverslasten wordt berekend, staat nog niet vast.",
   },
   ld_cao: {
     kort: "Loondispensatie niet meegeteld.",
@@ -30,12 +31,18 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   wia_nieuw: {
     kort: "Gerekend als nieuwe werkgever.",
     uitleg:
-      "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Gaat iemand met een WIA-uitkering bij u weer aan het werk, dan geldt het loonkostenvoordeel één jaar.",
+      "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Het loonkostenvoordeel geldt dan ten hoogste drie jaar vanaf de start. Werkt de kandidaat al bij u en heeft die een WIA-uitkering? En gaat die weer aan het werk in het eigen werk of in een andere functie? Dan geldt een ander loonkostenvoordeel, ten hoogste één jaar.",
+  },
+  // Wajong 2:20 met Pwet 10b lid 9: de samenloop is niet getoetst.
+  ld_beschut: {
+    kort: "Loondispensatie bij beschut werk onder voorbehoud.",
+    uitleg:
+      "Bij beschut werk kan de gemeente ook loonkostensubsidie geven. Of loondispensatie en loonkostensubsidie samen kunnen, staat nog niet vast. Het bedrag voor loondispensatie is daarom onder voorbehoud.",
   },
   beschut_lks: {
-    kort: "Zonder loonkostensubsidie van de gemeente.",
+    kort: "Loonkostensubsidie bij beschut werk niet meegeteld.",
     uitleg:
-      "De gemeente kan bij beschut werk loonkostensubsidie geven. Dat staat er niet in, omdat het van de gemeente afhangt.",
+      "Bij beschut werk verstrekt de gemeente loonkostensubsidie als dat nodig is. Of dat zo is, beoordeelt de gemeente. Daarom staat het bedrag er niet in.",
   },
   geen: {
     kort: "Geen regeling met een bedrag.",
@@ -52,13 +59,33 @@ export const VOORBEHOUD: Record<VoorbehoudId, string> = {
     "Het loonkostenvoordeel kan samengaan met de no-riskpolis, loonkostensubsidie en loondispensatie. Hoe ze samen uitpakken, rekenen we hier niet uit.",
 };
 
-/** Het voorbehoud bij het loonkostenvoordeel, als korte notitie. */
-export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) =>
-  lkvVoorbehoud(categorie).map((id) => (
-    <Paragraph key={id} className="mox-hiring-note">
-      {VOORBEHOUD[id]}
-    </Paragraph>
-  ));
+/**
+ * Hoe lang het loonkostenvoordeel loopt: arbeidsgehandicapte ten hoogste drie
+ * jaar (Wtl 2.8), banenafspraak zolang de dienstbetrekking en de voorwaarden
+ * duren (Wtl 2.12).
+ */
+export const lkvDuurTekst = (categorie: string | undefined) =>
+  !categorie
+    ? ""
+    : categorie === "arbeidsgehandicapte_werknemer"
+      ? "Het loonkostenvoordeel geldt ten hoogste drie jaar vanaf de start."
+      : "Het loonkostenvoordeel geldt zolang de werknemer bij u in dienst is en aan de voorwaarden voldoet.";
+
+/** De duur en het voorbehoud bij het loonkostenvoordeel, als korte notities. */
+export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) => (
+  <>
+    {categorie && (
+      <Paragraph className="mox-hiring-note">
+        {lkvDuurTekst(categorie)}
+      </Paragraph>
+    )}
+    {lkvVoorbehoud(categorie).map((id) => (
+      <Paragraph key={id} className="mox-hiring-note">
+        {VOORBEHOUD[id]}
+      </Paragraph>
+    ))}
+  </>
+);
 
 /** Wie een regeling uitvoert; het label heeft tekst, niet alleen een kleur. */
 export const UITVOERDER = {
@@ -85,20 +112,30 @@ const naam = (r: BalansRegel) =>
   r.id === "lks"
     ? "Loonkostensubsidie"
     : r.id === "ld"
-      ? "Loondispensatie"
+      ? "Lagere loonkosten door loondispensatie"
       : r.regel?.categorie === "arbeidsgehandicapte_werknemer"
         ? "Loonkostenvoordeel arbeidsgehandicapte"
         : "Loonkostenvoordeel";
 
-/** Hoe lang de no-riskpolis loopt; negatief is zonder einddatum. */
+/** Hoe lang de no-riskpolis loopt (ZW 29b); negatief is zonder einddatum. */
 export const duurTekst = (jaren: number | undefined) =>
   jaren === undefined || jaren === 0
     ? ""
     : jaren < 0
-      ? "De no-riskpolis loopt zonder einddatum."
+      ? "De no-riskpolis heeft geen einddatum."
       : jaren === 5
-        ? "De no-riskpolis loopt vijf jaar."
-        : `De no-riskpolis loopt ${jaren} jaar.`;
+        ? "De no-riskpolis geldt bij ziekte die begint in de eerste vijf jaar na de start van het dienstverband."
+        : `De no-riskpolis geldt bij ziekte die begint in de eerste ${jaren} jaar na de start van het dienstverband.`;
+
+/** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
+const LdNotitie = ({ kort }: { kort?: boolean }) => (
+  <Paragraph className="mox-hiring-note">
+    Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt
+    hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting
+    van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.
+    {kort && " Het bedrag samen bevat dus ook deze lagere loonkosten."}
+  </Paragraph>
+);
 
 /** Een korte zin met de uitleg achter een (i). */
 export const Aanname = ({ id }: { id: AannameId }) => (
@@ -131,6 +168,12 @@ const Balans = ({
   const regels = balansRegels(uitkomsten, kosten);
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
   const netto = Math.max(0, kosten - terug);
+  const ldBedrag =
+    bekend && !fout && regels.some((r) => r.id === "ld" && r.bedrag > 0);
+  const lkvBedrag =
+    bekend && !fout
+      ? regels.find((r) => r.id === "lkv" && r.bedrag > 0)
+      : undefined;
   const bedrag = (cent: number) => (bekend && !fout ? euro(cent) : "…");
   // Tijdens het rekenen staan alle drie de regelingen er al, met "…".
   const waarde = (r: BalansRegel, min = "") =>
@@ -156,8 +199,8 @@ const Balans = ({
         manifest.status === "klaar" &&
         ` (engine ${manifest.waarde.regelrecht.slice(0, 8)}, corpus ${manifest.waarde.corpus.revisie.slice(0, 8)})`}
       {!fout && ". "}
-      De bedragen gelden als u de regelingen aanvraagt. De loonkosten zijn een
-      benadering.
+      Dit is een berekening vooraf. Na uw aanvraag beslist de organisatie die de
+      regeling uitvoert over het bedrag. De loonkosten zijn een schatting.
     </Paragraph>
   );
 
@@ -177,10 +220,16 @@ const Balans = ({
         </dl>
         <div className="mox-hiring-net">
           <Paragraph>
-            <strong>Samen per jaar</strong>
+            <strong>Samen ongeveer per jaar</strong>
           </Paragraph>
           <p className="mox-hiring-amount">{bedrag(terug)}</p>
         </div>
+        {ldBedrag && <LdNotitie kort />}
+        {lkvBedrag && (
+          <Paragraph className="mox-hiring-note">
+            {lkvDuurTekst(lkvBedrag.regel?.categorie)}
+          </Paragraph>
+        )}
         <Paragraph className="mox-hiring-note">
           Bij {antwoorden.uren} uur per week en {euro(antwoorden.uurloon)} per
           uur. De loonkosten zijn dan {euro(kosten)} per jaar.
@@ -232,6 +281,7 @@ const Balans = ({
           </div>
         ))}
       </dl>
+      {ldBedrag && <LdNotitie />}
       {bekend && !fout && (
         <LkvVoorbehoud
           categorie={regels.find((r) => r.id === "lkv")?.regel?.categorie}
@@ -246,7 +296,7 @@ const Balans = ({
       )}
       <div className="mox-hiring-net">
         <Paragraph>
-          <strong>Blijft voor uw rekening per jaar</strong>
+          <strong>Blijft ongeveer voor uw rekening per jaar</strong>
         </Paragraph>
         <p className="mox-hiring-amount">{bedrag(netto)}</p>
       </div>

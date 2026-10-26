@@ -77,7 +77,8 @@ export type DemoConceptAanvraag = {
   onderneming?: string;
   /** Hoe lang het invullen nog duurt, als tekst. */
   tijdsduur: string;
-  indienenVoor: string;
+  /** Uiterste datum om in te dienen; alleen als de wet of de organisatie er een noemt. */
+  indienenVoor?: string;
   /** Waar de antwoorden vandaan komen, zoals Ondernemersplein. */
   bewaardVan?: string;
   /** Wat er van daar is overgenomen, voor de melding op de detailpagina. */
@@ -100,13 +101,13 @@ const iemandAannemen: DemoConceptAanvraag = {
   titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
   organisatie: "UWV, Belastingdienst en gemeente",
   tijdsduur: "Ongeveer 15 minuten",
-  indienenVoor: "1 januari 2027",
   bewaardVan: "Ondernemersplein",
   overgenomen:
     "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. De berekening hieronder gaat uit van deze antwoorden.",
   toelichting: [
     "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
-    "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
+    "Na de vragen hieronder ziet u welke regelingen kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
+    "Let op de termijnen. Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag. Loondispensatie geldt pas vanaf de maand waarin die is aangevraagd. Een doelgroepverklaring vraagt de werknemer aan binnen drie maanden na de start.",
   ],
   flow: "iemand-aannemen",
 };

@@ -54,6 +54,8 @@ const TAAK: Record<TaakId, string> = {
   vz_wajong:
     "Jobcoach of werkplekaanpassing aanvragen bij UWV, als dat nodig is",
   vz_wia: "Jobcoach of werkplekaanpassing aanvragen bij UWV, als dat nodig is",
+  // Gaat buiten de aanvraag om: de proefplaats ligt vóór de eerste werkdag.
+  pp: "Proefplaatsing: de kandidaat vraagt de gemeente om toestemming, vóór de eerste werkdag",
 };
 
 type Props = {
@@ -161,25 +163,23 @@ const IndienenInhoud = ({
           {`Loondispensatie: ${aanvang}, percentage ${a.loonwaarde} procent (uw schatting)`}{" "}
           <InfoToggletip label="Toelichting bij het percentage">
             U geeft een schatting. Een arbeidsdeskundige van UWV bekijkt het
-            werk en stelt het percentage vast.
+            werk en stelt het percentage vast. Loondispensatie geldt vanaf de
+            eerste dag van de maand waarin u de aanvraag doet.
           </InfoToggletip>
         </div>,
       );
     else if (id === "jc")
       (k.jc === "ja" ? ingediend : niet).push(
-        k.jc === "ja" ? "Jobcoaching via de gemeente" : "Jobcoaching",
+        k.jc === "ja"
+          ? "Jobcoaching: begeleiding op de werkplek voor de werknemer, via de gemeente"
+          : "Jobcoaching",
       );
     else if (id === "wpa") {
       if (k.wpa === "ja") ingediend.push("Werkplekaanpassing");
       else if (k.wpa === "later")
         later.push("Werkplekaanpassing, als u weet wat er nodig is");
       else niet.push("Werkplekaanpassing");
-    } else
-      (k.pp === "ja" ? ingediend : niet).push(
-        k.pp === "ja"
-          ? "Proefplaatsing van maximaal twee maanden"
-          : "Proefplaatsing",
-      );
+    }
   }
 
   const vanzelf: string[] = [];
@@ -191,9 +191,20 @@ const IndienenInhoud = ({
     );
   if (route.vanzelf.includes("nrp"))
     vanzelf.push(
-      `No-riskpolis bij UWV, omdat ${vn} in het doelgroepregister staat`,
+      `No-riskpolis bij UWV: bij ziekte van ${vn} betaalt u het loon door en krijgt u ziekengeld van UWV`,
     );
   vanzelf.push(...later);
+
+  const taken = route.taken.length > 0 && (
+    <>
+      <Heading level={2}>Taken voor de werknemer</Heading>
+      <Loket
+        titel={`${vn} vraagt dit zelf aan`}
+        label="Geen aanvraag door u"
+        items={route.taken.map((t) => TAAK[t])}
+      />
+    </>
+  );
 
   const onderwerp = onderwerpVoor(
     situatie,
@@ -212,6 +223,7 @@ const IndienenInhoud = ({
             wilt aanvragen, of bekijk wat er zonder aanvraag geldt.
           </Paragraph>
         </Alert>
+        {taken}
         <ActionGroup>
           <Link
             href="/personeel/iemand-aannemen/overzicht"
@@ -253,16 +265,7 @@ const IndienenInhoud = ({
       )}
       <Heading level={2}>Wordt ingediend</Heading>
       <Loket titel={organisatie} label="Aanvraag" items={ingediend} />
-      {route.taken.length > 0 && (
-        <>
-          <Heading level={2}>Taken voor de werknemer</Heading>
-          <Loket
-            titel={`${vn} vraagt dit zelf aan`}
-            label="Geen aanvraag door u"
-            items={route.taken.map((t) => TAAK[t])}
-          />
-        </>
-      )}
+      {taken}
       {vanzelf.length > 0 && (
         <>
           <Heading level={2}>Gaat vanzelf of via de loonaangifte</Heading>
@@ -292,11 +295,11 @@ const IndienenInhoud = ({
           Wat er gebeurt als u indient
         </Heading>
         <Paragraph>
-          Tot nu toe heeft geen overheidsorganisatie deze aanvraag gezien. Als u
-          indient, stuurt MijnOverheid Zakelijk de aanvraag naar{" "}
-          {uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`}, die erover
-          beslist. U krijgt een ontvangstbevestiging met zaaknummer in uw
-          Berichtenbox, en u volgt de zaak bij Lopende zaken.
+          Tot nu toe heeft {uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`}{" "}
+          deze aanvraag niet gezien. Als u indient, stuurt MijnOverheid Zakelijk
+          de aanvraag naar {uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`},
+          die erover beslist. U krijgt een ontvangstbevestiging met zaaknummer
+          in uw Berichtenbox, en u volgt de zaak bij Lopende zaken.
         </Paragraph>
         <FormFieldCheckboxOption
           label={`Ik heb alles naar waarheid ingevuld${staat.rol === "namens" ? `, namens ${werkgever.onderneming}` : ""}.`}

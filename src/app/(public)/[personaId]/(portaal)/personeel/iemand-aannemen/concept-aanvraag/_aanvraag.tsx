@@ -61,13 +61,13 @@ const NAAM: Record<PaneelId, string> = {
   ld: "Loondispensatie",
   jc: "Jobcoaching",
   wpa: "Werkplekaanpassing",
-  pp: "Proefplaatsing",
 };
 
 const TAAK: Record<TaakId, string> = {
   doelgroepverklaring: "Doelgroepverklaring aanvragen",
   vz_wajong: "Jobcoach of werkplekaanpassing aanvragen",
   vz_wia: "Jobcoach of werkplekaanpassing aanvragen",
+  pp: "Proefplaats: toestemming vragen aan de gemeente",
 };
 
 const ORGANISATIE = { gemeente: "Naar de gemeente", uwv: "Naar UWV" } as const;
@@ -141,9 +141,7 @@ const AanvraagInhoud = ({
   const kies = (deel: typeof k) => werkBij({ keuzes: { ...k, ...deel } });
 
   const mist = (id: PaneelId) =>
-    (id === "jc" && !k.jc) ||
-    (id === "wpa" && !k.wpa) ||
-    (id === "pp" && !k.pp);
+    (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
 
   const status = (id: PaneelId) =>
     g[id] ? (
@@ -188,12 +186,20 @@ const AanvraagInhoud = ({
       bron: "KVK Handelsregister",
     },
   ];
+  // Gegevens uit het doelgroepregister alleen als het register bij de antwoorden hoort.
+  const inRegister = a.doelgroepen.includes("register");
   const werknemerRijen: Gegeven[] = [
     {
       label: "Werknemer",
       waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
-      bron: "UWV doelgroepregister",
+      bron: inRegister
+        ? "UWV doelgroepregister"
+        : situatie === "wajong" || situatie === "wia"
+          ? "UWV"
+          : "Basisregistratie Personen",
     },
+  ];
+  const situatieRij: Gegeven | null =
     situatie === "wajong"
       ? {
           label: "Wajong",
@@ -206,12 +212,14 @@ const AanvraagInhoud = ({
             waarde: vind("uwv", "had_wia_recht_maand_voor_aanvang"),
             bron: "UWV",
           }
-        : {
-            label: "In het doelgroepregister",
-            waarde: vind("uwv", "is_arbeidsbeperkte"),
-            bron: "UWV doelgroepregister",
-          },
-  ];
+        : inRegister
+          ? {
+              label: "In het doelgroepregister",
+              waarde: vind("uwv", "is_arbeidsbeperkte"),
+              bron: "UWV doelgroepregister",
+            }
+          : null;
+  if (situatieRij) werknemerRijen.push(situatieRij);
   const woonplaatsRij: Gegeven = {
     label: "Woonplaats werknemer",
     waarde: `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
@@ -265,11 +273,15 @@ const AanvraagInhoud = ({
           />
           <Gegevens
             rijen={[
-              {
-                label: "Regeling werknemer",
-                waarde: "Participatiewet, doelgroep banenafspraak",
-                bron: "UWV doelgroepregister",
-              },
+              ...(inRegister
+                ? [
+                    {
+                      label: "Regeling werknemer",
+                      waarde: "Doelgroep banenafspraak",
+                      bron: "UWV doelgroepregister",
+                    },
+                  ]
+                : []),
               {
                 label: "Loonwaarde",
                 waarde: onderMinimumloon(a)
@@ -279,6 +291,16 @@ const AanvraagInhoud = ({
               },
             ]}
           />
+          <Paragraph>
+            Is de werknemer al begonnen? Dan vraagt u de loonkostensubsidie aan
+            binnen zes maanden na de eerste werkdag (
+            {datumNL(dienstverband.aanvang)}). Dat staat in de Participatiewet,
+            artikel 10d lid 2. Vraagt u de subsidie aan voordat de werknemer
+            begint? Dan stelt de gemeente eerst de loonwaarde vast. De gemeente
+            kan ook met u afspreken dat dit eerst niet nodig is. Dan stelt de
+            gemeente de loonwaarde na ten hoogste zes maanden vast (artikel 10d
+            lid 1 en lid 5).
+          </Paragraph>
           {waarom(
             "participatiewet",
             "heeft_recht_op_lks",
@@ -320,6 +342,11 @@ const AanvraagInhoud = ({
               uur verandert dan mee.
             </InfoToggletip>
           </div>
+          <Paragraph>
+            Loondispensatie geldt vanaf de eerste dag van de maand waarin u de
+            aanvraag doet (Besluit loondispensatie Wajong, artikel 4). Vraagt u
+            later aan, dan geldt de loondispensatie ook later.
+          </Paragraph>
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
             "heeft_recht_op_loondispensatie",
@@ -333,9 +360,10 @@ const AanvraagInhoud = ({
         gemeente,
         <>
           <Paragraph>
-            Begeleiding op de werkvloer. Iedereen voor wie loonkostensubsidie
-            geldt, heeft hier recht op (Participatiewet 10da). U kiest of u er
-            gebruik van maakt.
+            Begeleiding op de werkplek door een jobcoach. Hoort de werknemer bij
+            de doelgroep loonkostensubsidie? Dan heeft de werknemer recht op
+            deze begeleiding (Participatiewet 10da). U kunt de begeleiding voor
+            de werknemer aanvragen bij de gemeente.
           </Paragraph>
           <Fieldset legend="Wilt u jobcoaching aanvragen?">
             <FormFieldRadio
@@ -361,70 +389,37 @@ const AanvraagInhoud = ({
         </>,
       );
 
-    if (id === "wpa")
-      return kop(
-        gemeente,
-        <>
-          <Paragraph>
-            Vergoeding voor een aangepaste werkplek of een hulpmiddel. De
-            gemeente beoordeelt de aanvraag; voor een kandidaat met een
-            UWV-uitkering doet UWV dat (Wet WIA 35, boven het drempelbedrag van
-            € 195,16).
-          </Paragraph>
-          <Fieldset legend="Is er een aanpassing nodig?">
-            <FormFieldRadio
-              name="wpa"
-              value="ja"
-              label="Ja, ik weet wat er nodig is"
-              checked={k.wpa === "ja"}
-              onChange={() => kies({ wpa: "ja" })}
-            />
-            <FormFieldRadio
-              name="wpa"
-              value="later"
-              label="Weet ik nog niet; later aanvragen"
-              checked={k.wpa === "later"}
-              onChange={() => kies({ wpa: "later" })}
-            />
-            <FormFieldRadio
-              name="wpa"
-              value="nee"
-              label="Nee"
-              checked={k.wpa === "nee"}
-              onChange={() => kies({ wpa: "nee" })}
-            />
-          </Fieldset>
-        </>,
-      );
-
     return kop(
       gemeente,
       <>
         <Paragraph>
-          Eerst maximaal twee maanden op proef, met behoud van uitkering
-          (Participatiewet 8a). Alleen vóór de eerste werkdag.
+          Vergoeding voor een aangepaste werkplek of een hulpmiddel. De gemeente
+          beslist of de aanpassing nodig is (Participatiewet 10). De gemeente
+          heeft daarvoor eigen regels.
         </Paragraph>
-        <Fieldset legend="Wilt u eerst een proefplaatsing?">
+        <Fieldset legend="Is er een aanpassing nodig?">
           <FormFieldRadio
-            name="pp"
+            name="wpa"
             value="ja"
-            label="Ja, twee maanden"
-            checked={k.pp === "ja"}
-            onChange={() => kies({ pp: "ja" })}
+            label="Ja, ik weet wat er nodig is"
+            checked={k.wpa === "ja"}
+            onChange={() => kies({ wpa: "ja" })}
           />
           <FormFieldRadio
-            name="pp"
+            name="wpa"
+            value="later"
+            label="Weet ik nog niet; later aanvragen"
+            checked={k.wpa === "later"}
+            onChange={() => kies({ wpa: "later" })}
+          />
+          <FormFieldRadio
+            name="wpa"
             value="nee"
-            label="Nee, meteen in dienst"
-            checked={k.pp === "nee"}
-            onChange={() => kies({ pp: "nee" })}
+            label="Nee"
+            checked={k.wpa === "nee"}
+            onChange={() => kies({ wpa: "nee" })}
           />
         </Fieldset>
-        {waarom(
-          "participatiewet",
-          "mag_proefplaatsing_aangaan",
-          "Proefplaatsing",
-        )}
       </>,
     );
   };
@@ -450,15 +445,46 @@ const AanvraagInhoud = ({
       )}
       {id === "vz_wajong" && (
         <Paragraph>
-          De werknemer vraagt dit zelf aan bij UWV, als dat nodig is (Wajong
-          2:22). U kunt niet namens de werknemer aanvragen in dit portaal.
+          De werknemer vraagt een jobcoach of een aanpassing van de werkplek
+          zelf aan bij UWV, als dat nodig is (Wajong 2:22). U kunt dit niet
+          namens de werknemer aanvragen in dit portaal.
         </Paragraph>
       )}
       {id === "vz_wia" && (
         <Paragraph>
-          De werknemer vraagt dit zelf aan bij UWV, als dat nodig is (Wet WIA
-          35). U kunt niet namens de werknemer aanvragen in dit portaal.
+          De werknemer vraagt een jobcoach of een aanpassing van de werkplek
+          zelf aan bij UWV, als dat nodig is (Wet WIA 35). U kunt dit niet
+          namens de werknemer aanvragen in dit portaal. Duurt het dienstverband
+          ten minste zes maanden, dan kunt u bij UWV zelf subsidie vragen voor
+          de extra kosten van voorzieningen (Wet WIA 36). Daarvoor gelden meer
+          voorwaarden. De kosten moeten bijvoorbeeld hoger zijn dan een
+          drempelbedrag. UWV beslist of u de subsidie krijgt.
         </Paragraph>
+      )}
+      {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
+          toestemming gaat naar de kandidaat (8a lid 2 d): geen deel van de
+          aanvraag, die van een vaste eerste werkdag uitgaat. */}
+      {id === "pp" && (
+        <>
+          <Paragraph>
+            Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De
+            proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier
+            maanden (Participatiewet 8a). De gemeente geeft de toestemming aan
+            de kandidaat, omdat de kandidaat bijstand krijgt. De gemeente heeft
+            daarvoor eigen regels.
+          </Paragraph>
+          <Paragraph>
+            Wilt u eerst een proefplaats? Dan vraagt de kandidaat de gemeente om
+            toestemming, vóór de eerste werkdag. Dat gaat buiten deze aanvraag
+            om. Of een proefplaats en loonkostensubsidie samen kunnen, staat nog
+            niet vast.
+          </Paragraph>
+          {waarom(
+            "participatiewet",
+            "mag_proefplaatsing_aangaan",
+            "Proefplaatsing",
+          )}
+        </>
       )}
     </section>
   );
@@ -518,9 +544,11 @@ const AanvraagInhoud = ({
           No-riskpolis
         </Heading>
         <Paragraph>
-          Wordt de werknemer ziek, dan betaalt UWV ziekengeld (70 procent van
-          het dagloon) in plaats van dat u het loon doorbetaalt. Dit geldt
-          vanzelf: u hoeft niets aan te vragen. {duurTekst(nrp?.duurJaren)} Bij
+          Wordt de werknemer ziek? Dan betaalt u het loon door. UWV betaalt u
+          ziekengeld voor de werknemer: 70 procent van het dagloon (Ziektewet
+          29b). In de eerste 52 weken van de ziekte kunt u UWV vragen om het
+          hele dagloon. Het ziekengeld is dan niet hoger dan het loon. U hoeft
+          de no-riskpolis niet aan te vragen. {duurTekst(nrp?.duurJaren)} Bij
           ziekte meldt u de werknemer ziek bij UWV.
         </Paragraph>
         {waarom("ziektewet", "heeft_recht_op_no_risk_polis", "No-riskpolis")}
@@ -698,7 +726,11 @@ const AanvraagInhoud = ({
               Wie ziet deze aanvraag?
             </Heading>
             <Paragraph>
-              Alleen u. Er is nog niets naar de overheid gestuurd.
+              Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
+            </Paragraph>
+            <Paragraph>
+              Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
+              gegevens van die uitkomst naar de Digitale assistent.
             </Paragraph>
             <Paragraph className="mox-hiring-note">
               Uw aanvraag is opgeslagen in deze browser. U kunt later verder.

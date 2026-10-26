@@ -21,8 +21,8 @@ export type ZaakStand = {
 export type Zaken = Partial<Record<Situatie, ZaakStand>>;
 export type TaakStand = "open" | "aangevraagd" | "verstrekt";
 
-export type PaneelId = "lks" | "jc" | "wpa" | "pp" | "ld";
-export type TaakId = "doelgroepverklaring" | "vz_wajong" | "vz_wia";
+export type PaneelId = "lks" | "jc" | "wpa" | "ld";
+export type TaakId = "doelgroepverklaring" | "vz_wajong" | "vz_wia" | "pp";
 export type VanzelfId = "lkv" | "nrp";
 
 export type Route = {
@@ -63,11 +63,13 @@ export const routeVoor = (doelgroepen: Doelgroep[], u: Uitkomsten): Route => {
     if (regel("lks")) ids.push("lks");
     if (geldt("begeleiding")) ids.push("jc");
     ids.push("wpa");
-    if (geldt("pp_pwet")) ids.push("pp");
     // Werkplekaanpassing alleen is geen aanvraag (de keuze kan "later" of
-    // "nee" zijn): zonder lks, jc of pp volgt de route het overzicht.
+    // "nee" zijn): zonder lks of jc volgt de route het overzicht.
     if (ids.some((id) => id !== "wpa"))
       panelen.push({ organisatie: "gemeente", ids });
+    // De proefplaats ligt vóór de eerste werkdag (Pwet 6 h) en de toestemming
+    // gaat naar de kandidaat (8a lid 2 d): een taak, geen deel van de aanvraag.
+    if (geldt("pp_pwet")) taken.push("pp");
   } else if (situatie === "wajong") {
     if (regel("ld")) panelen.push({ organisatie: "uwv", ids: ["ld"] });
     if (geldt("vz_wajong")) taken.push("vz_wajong");
@@ -180,6 +182,13 @@ export const waardenVoor = (
     lkvPerJaar: lkv ? bedrag(lkv.bedragPerJaar) : "—",
   };
 };
+
+/**
+ * De eerste dag van de maand van de aanvraag: dan gaat de loondispensatie in
+ * (Besluit loondispensatie Wajong 4). Datums als "2026-10-05".
+ */
+export const ingangLoondispensatie = (aanvraag: string): string =>
+  `${aanvraag.slice(0, 7)}-01`;
 
 /**
  * Een besluit (en wat erover in de zaak staat) hoort er alleen als de engine

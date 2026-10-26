@@ -18,6 +18,7 @@ import {
   antwoordenVoorZaak,
   besluitGeldt,
   faseIndex,
+  ingangLoondispensatie,
   waardenVoor,
 } from "../../../../personeel/iemand-aannemen/_route";
 import {
@@ -32,6 +33,7 @@ import {
 } from "../../../../personeel/iemand-aannemen/_useAannemen";
 import { useUitkomsten } from "../../../../personeel/iemand-aannemen/_useUitkomsten";
 import Waarom from "../../../../personeel/iemand-aannemen/_waarom";
+import { INGEDIEND_OP } from "../../../../personeel/iemand-aannemen/_zaakStart";
 import { datumNL } from "../../../../personeel/iemand-aannemen/_werkgever";
 
 /** Waar het besluit over gaat: de engine-uitkomst van de regeling en de fase met de vaststelling. */
@@ -115,6 +117,9 @@ const Besluit = ({
     setMelding("Uw vraag is verstuurd en staat in de zaak.");
   };
 
+  const ingangLd = datumNL(
+    ingangLoondispensatie(zaakStand.verstuurdOp ?? INGEDIEND_OP),
+  );
   const dienstverbandTekst = `een dienstbetrekking van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden)})`;
 
   return (
@@ -165,25 +170,33 @@ const Besluit = ({
               Het college kent u loonkostensubsidie toe voor{" "}
               {kandidaat.voornaam} {kandidaat.achternaam}:{" "}
               <strong>{w.lksPerMaand} per maand</strong>, vanaf{" "}
-              {datumNL(dienstverband.aanvang)}, bij {dienstverbandTekst}. De
-              subsidie wordt maandelijks betaald en per 1 januari opnieuw
-              berekend bij wijziging van het minimumloon.
+              {datumNL(dienstverband.aanvang)}, bij {dienstverbandTekst}. Het
+              college stelt de hoogte elk jaar per 1 januari opnieuw vast. Dat
+              volgt de ontwikkeling van het minimumloon. Het college kan de
+              loonwaarde ook later opnieuw vaststellen. Verandert de loonwaarde,
+              dan past het college de subsidie aan.
             </Paragraph>
           ) : (
             <>
               <Paragraph>
-                UWV kent u loondispensatie toe voor {kandidaat.voornaam}{" "}
-                {kandidaat.achternaam}, bij {dienstverbandTekst}. Het percentage
-                is <strong>{w.loonwaarde}</strong> van het wettelijk
-                minimumloon. De aanspraak is{" "}
+                UWV verleent loondispensatie voor {kandidaat.voornaam}{" "}
+                {kandidaat.achternaam}, bij {dienstverbandTekst}. U mag dan
+                minder betalen dan het minimumloon. Het percentage is{" "}
+                <strong>{w.loonwaarde}</strong> van het wettelijk minimumloon.{" "}
+                {kandidaat.voornaam} heeft recht op ten minste{" "}
                 <strong>{w.aanspraakPerUur} per uur</strong>.
               </Paragraph>
               <div className="mox-hiring-note">
-                De loondispensatie geldt voor de periode die naar verwachting
-                nodig is, ten hoogste vijf jaar. Verlenging is mogelijk.{" "}
+                {/* Besluit loondispensatie Wajong 4: eerste dag van de maand van de aanvraag. */}
+                De loondispensatie geldt vanaf {ingangLd}. Dat is de eerste dag
+                van de maand van de aanvraag. Ze geldt voor de periode die naar
+                verwachting nodig is, ten hoogste vijf jaar. Verlenging is
+                mogelijk.{" "}
                 <InfoToggletip label="Toelichting bij de termijn van het besluit">
-                  De wet noemt geen termijn waarbinnen UWV beslist. De datum van
-                  dit besluit is voor het prototype aangenomen.
+                  UWV beslist binnen een redelijke termijn. Die termijn is ten
+                  hoogste acht weken. Lukt dat niet, dan laat UWV weten wanneer
+                  het besluit komt. De datum van dit besluit is voor het
+                  prototype aangenomen.
                 </InfoToggletip>
               </div>
             </>

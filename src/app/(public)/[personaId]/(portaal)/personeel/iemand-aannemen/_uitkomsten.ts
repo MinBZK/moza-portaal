@@ -22,7 +22,8 @@ const ALLEEN: Doelgroep[] = ["geen"];
 
 /**
  * Vraag 1 is meerkeuze. Wajong vinkt het register aan (Wfsv 38b lid 1 c).
- * Beschut werk sluit het register uit (aanhef 38b lid 1), dus ook Wajong.
+ * Beschut werk sluit alleen het register uit (aanhef 38b lid 1); Pwet 10b
+ * lid 1 noemt de Wajong juist. Wajong met beschut werk blijft dus zonder register.
  */
 export const kiesDoelgroep = (
   huidig: Doelgroep[],
@@ -32,13 +33,15 @@ export const kiesDoelgroep = (
   if (aan && ALLEEN.includes(waarde)) return [waarde];
   let nieuw = huidig.filter((d) => d !== waarde && !ALLEEN.includes(d));
   if (aan) {
-    if (waarde === "beschut")
-      nieuw = nieuw.filter((d) => d !== "register" && d !== "wajong");
-    if (waarde === "register" || waarde === "wajong")
-      nieuw = nieuw.filter((d) => d !== "beschut");
+    if (waarde === "beschut") nieuw = nieuw.filter((d) => d !== "register");
+    if (waarde === "register") nieuw = nieuw.filter((d) => d !== "beschut");
     nieuw.push(waarde);
   }
-  if (nieuw.includes("wajong") && !nieuw.includes("register"))
+  if (
+    nieuw.includes("wajong") &&
+    !nieuw.includes("beschut") &&
+    !nieuw.includes("register")
+  )
     nieuw.push("register");
   return DOELGROEPEN.map(([d]) => d).filter((d) => nieuw.includes(d));
 };
@@ -63,7 +66,15 @@ export type EngineInvoer = {
   uitleggen?: string[];
 };
 
-export const PEILDATUM = "2026-07-01";
+/**
+ * De eerste werkdag en de dag van de aanvraag, zoals in de demo's
+ * (dienstverband.aanvang en INGEDIEND_OP in _zaakStart.ts). De engine rekent
+ * er termijnen mee: Pwet 10d lid 2, ZW 29b lid 1, Wtl 2.8. De peildatum ligt
+ * op de eerste werkdag; de wetsversies zijn die van 1 juli 2026.
+ */
+export const AANVANG = "2026-10-01";
+const AANVRAAG = "2026-10-05";
+export const PEILDATUM = AANVANG;
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;
 
@@ -147,6 +158,8 @@ export const feitenVoor = (a: Keuzes): Feiten => {
       "heeft_arbeidsverhouding_of_voorbereiding",
       "dienstbetrekking_aangevangen_na_aanvang_referteperiode",
     ),
+    datum_aanvang_dienstbetrekking: AANVANG,
+    datum_aanvang_eerste_dienstbetrekking_2_6: AANVANG,
     overeengekomen_arbeidsduur_uren_per_week: a.uren,
     loonwaarde_percentage: a.loonwaarde,
     verloonde_uren: verloond,
@@ -184,7 +197,7 @@ export const feitenVoor = (a: Keuzes): Feiten => {
           "kan_minimumloon_niet_verdienen",
           "college_heeft_loonwaarde_vastgesteld_conform_10d",
         ),
-        datum_aanvraag_lks: "2026-02-01",
+        datum_aanvraag_lks: AANVRAAG,
       };
   }
   if (d.has("wajong"))
@@ -256,7 +269,7 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  "lks_lid4" | "ld_cao" | "wia_nieuw" | "beschut_lks" | "geen";
+  "lks_lid4" | "ld_cao" | "ld_beschut" | "wia_nieuw" | "beschut_lks" | "geen";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";
@@ -367,6 +380,8 @@ export const uitkomstenUit = (
       bedragPerJaar: Math.round(
         (WML_UUR_EUROCENT - perUur) * a.uren * 52 * OPSLAG,
       ),
+      // Samen met loonkostensubsidie bij beschut werk (Pwet 10b lid 9) is niet getoetst.
+      aanname: d.has("beschut") ? "ld_beschut" : undefined,
     });
   }
   const lkvJaar = Number(lkv.hoogte_lkv_per_jaar_eurocent ?? 0);

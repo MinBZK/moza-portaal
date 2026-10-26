@@ -33,9 +33,33 @@ test("vraag 1: Wajong vinkt het register aan", () => {
   assert.deepEqual(U.kiesDoelgroep([], "wajong", true), ["register", "wajong"]);
 });
 
-test("vraag 1: beschut werk haalt register en Wajong weg", () => {
+// Beschut werk sluit het register uit (Wfsv 38b lid 1 aanhef), de Wajong
+// niet: Pwet 10b lid 1 noemt de Wajong juist.
+test("vraag 1: beschut werk haalt alleen register weg", () => {
   assert.deepEqual(U.kiesDoelgroep(["register", "wajong"], "beschut", true), [
+    "wajong",
     "beschut",
+  ]);
+});
+
+test("vraag 1: Wajong vinkt het register niet aan bij beschut werk", () => {
+  assert.deepEqual(U.kiesDoelgroep(["beschut"], "wajong", true), [
+    "wajong",
+    "beschut",
+  ]);
+});
+
+test("vraag 1: beschut werk uit bij Wajong vinkt het register weer aan", () => {
+  assert.deepEqual(U.kiesDoelgroep(["wajong", "beschut"], "beschut", false), [
+    "register",
+    "wajong",
+  ]);
+});
+
+test("vraag 1: register bij Wajong haalt beschut werk weg", () => {
+  assert.deepEqual(U.kiesDoelgroep(["wajong", "beschut"], "register", true), [
+    "register",
+    "wajong",
   ]);
 });
 
@@ -161,6 +185,23 @@ test("beschut werk + bijstand: loonkostensubsidie, geen loonkostenvoordeel", () 
   assert.equal(regel(u, "lkv"), undefined);
 });
 
+test("Wajong + beschut werk: zonder register, geen loonkostenvoordeel banenafspraak", () => {
+  const f = U.feitenVoor({
+    doelgroepen: ["wajong", "beschut"],
+    uren: 32,
+    loonwaarde: 70,
+    uurloon: 1499,
+  });
+  assert.equal(f.was_arbeidsbeperkte_lid_1_of_2, undefined);
+  assert.equal(f.datum_eerste_opname_doelgroepregister, undefined);
+  assert.equal(f.heeft_wajong_arbeidsondersteuning_of_uitkering, true);
+  assert.equal(f.is_uitgesloten_beschut_werk_pwet_10b, true);
+  const u = reken(["wajong", "beschut"], 70);
+  assert.notEqual(regel(u, "lkv")?.categorie, "banenafspraak");
+  assert.equal(regel(u, "lks"), undefined);
+  assert.equal(overig(u, "vz_wajong").geldt, true);
+});
+
 test("register + bijstand: als gemeente (bijstand, 60)", () => {
   const u = reken(["register", "bijstand"], 60);
   assert.equal(regel(u, "lks").bedragPerJaar, LKS_GEMEENTE_60_JAAR);
@@ -265,19 +306,21 @@ test("route: situatie volgt de volgorde wajong, wia, bijstand, register, uitleg"
 
 test("route: gemeente bij loonwaarde 60", () => {
   const r = R.routeVoor(["bijstand"], reken(["bijstand"], 60));
-  assert.deepEqual(ids(r), [["gemeente", ["lks", "jc", "wpa", "pp"]]]);
-  assert.deepEqual(r.taken, []);
+  assert.deepEqual(ids(r), [["gemeente", ["lks", "jc", "wpa"]]]);
+  // De proefplaats is vóór de dienstbetrekking; de toestemming gaat naar de kandidaat (Pwet 8a lid 2 d).
+  assert.deepEqual(r.taken, ["pp"]);
   assert.deepEqual(r.vanzelf, ["lkv", "nrp"]);
   assert.equal(r.zaak, "gemeente");
   assert.equal(r.overzicht, false);
 });
 
-test("route: gemeente bij loonwaarde 100 heeft geen lks, wel proefplaatsing", () => {
+test("route: gemeente bij loonwaarde 100 heeft geen lks; proefplaatsing is een taak", () => {
   const r = R.routeVoor(["bijstand"], reken(["bijstand"], 100));
-  // Zonder lks blijft de zaak alleen omdat de engine proefplaatsing geeft.
-  assert.deepEqual(ids(r), [["gemeente", ["wpa", "pp"]]]);
-  assert.equal(r.zaak, "gemeente");
-  assert.equal(r.overzicht, false);
+  // Werkplekaanpassing alleen is geen aanvraag; de proefplaatsing vraagt de kandidaat.
+  assert.deepEqual(ids(r), []);
+  assert.deepEqual(r.taken, ["pp"]);
+  assert.equal(r.zaak, null);
+  assert.equal(r.overzicht, true);
 });
 
 test("fix: gemeente met alleen werkplekaanpassing volgt het overzicht", () => {
@@ -405,10 +448,14 @@ test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vrag
     reken(["register", "wajong", "wia"], 100),
   );
   assert.match(R.overzichtTekst(taak), /werknemer aanvraagt/);
-  const niets = R.routeVoor(
-    ["register", "bijstand"],
-    reken(["register", "bijstand"], 100),
-  );
+  // Bijstand op 100 zonder proefplaatsing: in de gemeente-situatie is er dan niets.
+  const u = reken(["bijstand"], 100);
+  const niets = R.routeVoor(["bijstand"], {
+    ...u,
+    overige: u.overige.map((o) =>
+      o.id === "pp_pwet" ? { ...o, geldt: false } : o,
+    ),
+  });
   assert.deepEqual(niets.taken, []);
   assert.equal(
     R.overzichtTekst(niets),
@@ -480,6 +527,7 @@ const PLAATSHOUDERS = new Set([
   "lksTweeMaanden",
   "aanspraakPerUur",
   "lkvPerJaar",
+  "ingangLoondispensatie",
 ]);
 const BRON_IDS = ["uwv", "gemeente", "kvk", "belastingdienst", "eigen"];
 

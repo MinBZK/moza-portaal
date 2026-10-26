@@ -134,6 +134,13 @@ const UitlegTaalmodel = ({
             : "Leg dit uit in gewone taal"}
         </Button>
       )}
+      {stand.status !== "klaar" && (
+        <Paragraph className="mox-hiring-note">
+          Drukt u op deze knop? Dan gaan de gegevens van deze uitkomst en uw
+          KVK-nummer naar de Digitale assistent. Het taalmodel van de Digitale
+          assistent schrijft daarmee de uitleg.
+        </Paragraph>
+      )}
       {stand.status === "fout" && (
         <Paragraph className="mox-hiring-note" role="status">
           {stand.tekst}

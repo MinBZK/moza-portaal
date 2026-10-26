@@ -46,8 +46,10 @@ const LopendeZakenPage = async () => {
             Nog in te dienen aanvragen
           </Heading>
           <Paragraph>
-            Deze aanvragen heeft u opgeslagen, maar nog niet ingediend. Dien ze
-            in voor de uiterste datum.
+            Deze aanvragen heeft u opgeslagen, maar nog niet ingediend.
+            {/* Alleen een uiterste datum noemen als een aanvraag er een heeft. */}
+            {concepten.some((aanvraag) => aanvraag.indienenVoor) &&
+              " Dien ze in voor de uiterste datum."}
           </Paragraph>
           <div className="mox-table-container">
             <Table>

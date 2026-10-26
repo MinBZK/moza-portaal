@@ -24,6 +24,7 @@ import {
   antwoordenVoorZaak,
   besluitGeldt,
   faseIndex,
+  ingangLoondispensatie,
   onderwerpVoor,
   vulSjabloon,
   waardenVoor,
@@ -96,7 +97,12 @@ const Zaak = ({
   const { zaak, kandidaat, fasen, gebeurtenissen, komtHierna, besluit } = demo;
   const zaakStand = zaakVan(staat, situatie);
   const i = faseIndex(zaakStand.fase, fasen);
-  const w = waardenVoor(antwoorden, uitkomsten);
+  const w = {
+    ...waardenVoor(antwoorden, uitkomsten),
+    ingangLoondispensatie: datumNL(
+      ingangLoondispensatie(zaakStand.verstuurdOp ?? INGEDIEND_OP),
+    ),
+  };
   const vulIn = (tekst: string) => vulSjabloon(tekst, w);
   const taak = staat.taken.doelgroepverklaring ?? "open";
   const onderwerp = bekend
@@ -198,12 +204,31 @@ const Zaak = ({
   const grens = geldt || !besluit ? fasen.length : besluitNr;
   const toonFase = (faseId: string) => faseIndex(faseId, fasen) < grens;
 
+  // Geeft de engine geen loonkostenvoordeel (zoals bij beschut werk, Wtl 2.2
+  // lid 2 b), dan noemt de zaak het ook niet.
+  const heeftLkv = !bekend || uitkomsten.regels.some((r) => r.id === "lkv");
+  const isWtl = (grond: string) => grond.startsWith("Wtl");
+  const zonderLkv = (g: DemoAannemenGebeurtenis): DemoAannemenGebeurtenis =>
+    heeftLkv || !isWtl(g.grond)
+      ? g
+      : {
+          ...g,
+          tekst: g.tekst
+            .split(/(?<=\.)\s+/)
+            .filter((zin) => !zin.includes("loonkostenvoordeel"))
+            .join(" "),
+          grond: "",
+        };
+  const hierna = komtHierna.filter((k) => heeftLkv || !isWtl(k.grond));
+
   // Elke gebeurtenis na "vooraf" hoort bij een fase; zichtbaar zodra de zaak er is.
-  const zichtbaar = gebeurtenissen.filter(
-    (g) =>
-      g.stap === "vooraf" ||
-      (faseIndex(g.stap, fasen) <= i && toonFase(g.stap)),
-  );
+  const zichtbaar = gebeurtenissen
+    .filter(
+      (g) =>
+        g.stap === "vooraf" ||
+        (faseIndex(g.stap, fasen) <= i && toonFase(g.stap)),
+    )
+    .map(zonderLkv);
   // De vraag bij het besluit staat ook in de tijdlijn als het demo-bestand
   // er geen eigen gebeurtenis voor heeft (alleen bij een zichtbaar besluit).
   if (
@@ -331,9 +356,10 @@ const Zaak = ({
                 <div className="mox-hiring-note">
                   Een deel van de momenten is een aanname.{" "}
                   <InfoToggletip label="Toelichting bij de aanname over de termijn">
-                    De wet noemt geen termijn waarbinnen UWV beslist. De
-                    momenten met &ldquo;aanname&rdquo; zijn voor dit prototype
-                    aangenomen.
+                    UWV beslist binnen een redelijke termijn. Die termijn is ten
+                    hoogste acht weken. Lukt dat niet, dan laat UWV weten
+                    wanneer het besluit komt. De momenten met
+                    &ldquo;aanname&rdquo; zijn voor dit prototype aangenomen.
                   </InfoToggletip>
                 </div>
               )}
@@ -410,20 +436,23 @@ const Zaak = ({
               </ol>
             </section>
 
-            <section aria-labelledby="zaak-hierna">
-              <Heading level={2} id="zaak-hierna">
-                Komt hierna
-              </Heading>
-              <UnorderedList>
-                {komtHierna.map((k) => (
-                  <UnorderedListItem key={k.datum}>
-                    <strong>{datumNL(k.datum)}</strong>, {k.actor}:{" "}
-                    {vulIn(k.titel)}
-                    {k.tekst && ` ${vulIn(k.tekst)}`} ({k.grond})
-                  </UnorderedListItem>
-                ))}
-              </UnorderedList>
-            </section>
+            {hierna.length > 0 && (
+              <section aria-labelledby="zaak-hierna">
+                <Heading level={2} id="zaak-hierna">
+                  Komt hierna
+                </Heading>
+                <UnorderedList>
+                  {hierna.map((k) => (
+                    <UnorderedListItem key={k.datum}>
+                      {/* De Wtl noemt uiterste data: vóór 15 maart, vóór 1 augustus. */}
+                      <strong>Vóór {datumNL(k.datum)}</strong>, {k.actor}:{" "}
+                      {vulIn(k.titel)}
+                      {k.tekst && ` ${vulIn(k.tekst)}`} ({k.grond})
+                    </UnorderedListItem>
+                  ))}
+                </UnorderedList>
+              </section>
+            )}
           </>
         )}
         <Paragraph>
