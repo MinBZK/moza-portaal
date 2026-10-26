@@ -34,6 +34,7 @@ const Switch = ({
   twoWay?: boolean;
 }) => {
   const labelId = useId();
+  const buttonId = useId();
   const onTextId = useId();
   const [ownChecked, setOwnChecked] = useState(defaultChecked);
   const on = checked ?? ownChecked;
@@ -45,10 +46,16 @@ const Switch = ({
 
   return (
     <div className="rhc-mox-switch">
-      <span id={labelId} className="utrecht-form-label rhc-mox-switch__label">
+      {/* A real label: clicking it toggles the switch too. */}
+      <label
+        id={labelId}
+        htmlFor={buttonId}
+        className="utrecht-form-label rhc-mox-switch__label"
+      >
         {label}
-      </span>
+      </label>
       <button
+        id={buttonId}
         type="button"
         role="switch"
         aria-checked={on}

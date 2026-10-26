@@ -4,7 +4,7 @@ import { Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoWetById } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
-import { RelevantItem } from "../../bewaard/_bewaarActies";
+import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
 import WetGegevens from "../_wetGegevens";
 

@@ -9,7 +9,7 @@ import {
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
-import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
+import { bewaarFoutTekst, useBewaard, type BewaarItem } from "@/components/save/useSaved";
 
 // Een span: de knoppen staan in een ActionGroup, en dat is een <p>.
 const FoutMelding = () => <span role="alert">{bewaarFoutTekst}</span>;

@@ -9,7 +9,7 @@ import {
   Paragraph,
   VisuallyHidden,
 } from "@/components/rhc";
-import { bewaarFoutTekst, useBewaard, type BewaarItem } from "./_useBewaard";
+import { bewaarFoutTekst, useBewaard, type BewaarItem } from "@/components/save/useSaved";
 
 const tekst = {
   bewaard: {
