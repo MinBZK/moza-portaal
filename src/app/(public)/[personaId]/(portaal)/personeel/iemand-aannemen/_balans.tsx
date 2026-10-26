@@ -4,7 +4,13 @@ import { Alert, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
-import { balansRegels, type AannameId, type BalansRegel } from "./_uitkomsten";
+import {
+  balansRegels,
+  lkvVoorbehoud,
+  type AannameId,
+  type BalansRegel,
+  type VoorbehoudId,
+} from "./_uitkomsten";
 import type { Resultaat } from "./_useUitkomsten";
 import { useManifest } from "./_useRegelrecht";
 import { euro } from "./_werkgever";
@@ -42,6 +48,22 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
       "Is de kandidaat gekeurd voor de WIA, heeft de kandidaat een WAO- of een WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
   },
 };
+
+/** De disclaimers bij het loonkostenvoordeel (lkvVoorbehoud in _uitkomsten.ts). */
+export const VOORBEHOUD: Record<VoorbehoudId, string> = {
+  zes_maanden:
+    "Was de kandidaat in de zes maanden voor de start al bij u in dienst? Dan geldt het loonkostenvoordeel niet.",
+  samenloop:
+    "Het loonkostenvoordeel kan samengaan met de no-riskpolis, loonkostensubsidie en loondispensatie. Hoe ze samen uitpakken, rekenen we hier niet uit.",
+};
+
+/** Het voorbehoud bij het loonkostenvoordeel, als korte notitie. */
+export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) =>
+  lkvVoorbehoud(categorie).map((id) => (
+    <Paragraph key={id} className="mox-hiring-note">
+      {VOORBEHOUD[id]}
+    </Paragraph>
+  ));
 
 /** Wie een regeling uitvoert; het label heeft tekst, niet alleen een kleur. */
 export const UITVOERDER = {
@@ -215,6 +237,11 @@ const Balans = ({
           </div>
         ))}
       </dl>
+      {bekend && !fout && (
+        <LkvVoorbehoud
+          categorie={regels.find((r) => r.id === "lkv")?.regel?.categorie}
+        />
+      )}
       {bekend && !fout && terug === 0 && (
         <Alert type="info">
           <Paragraph>

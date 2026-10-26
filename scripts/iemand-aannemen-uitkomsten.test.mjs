@@ -194,6 +194,15 @@ test("niets aangevinkt: geen bedragen en geen no-riskpolis", () => {
   assert.deepEqual(u.aannames, []);
 });
 
+test("lkv-voorbehoud: zes maanden alleen bij arbeidsgehandicapte, samenloop altijd", () => {
+  assert.deepEqual(U.lkvVoorbehoud("banenafspraak"), ["samenloop"]);
+  assert.deepEqual(U.lkvVoorbehoud("arbeidsgehandicapte_werknemer"), [
+    "zes_maanden",
+    "samenloop",
+  ]);
+  assert.deepEqual(U.lkvVoorbehoud(undefined), []);
+});
+
 test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
   const doelen = (d) =>
     U.invoerVoor(

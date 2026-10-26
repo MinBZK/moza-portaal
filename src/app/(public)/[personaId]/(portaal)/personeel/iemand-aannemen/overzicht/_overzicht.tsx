@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import { ActionGroup, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
-import { AANNAMES, Aanname, duurTekst } from "../_balans";
+import { AANNAMES, Aanname, duurTekst, LkvVoorbehoud } from "../_balans";
 import { overzichtTekst, routeVoor, type TaakId } from "../_route";
 import type { Doelgroep } from "../_uitkomsten";
 import { useAannemen, type AannemenStaat } from "../_useAannemen";
@@ -147,6 +147,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
                 </p>
               )}
               {lkv?.aanname && <Aanname id={lkv.aanname} />}
+              <LkvVoorbehoud categorie={lkv?.categorie} />
               <Paragraph>
                 U vraagt het loonkostenvoordeel aan door in de loonaangifte het
                 vakje loonkostenvoordeel aan te zetten; een aparte aanvraag is

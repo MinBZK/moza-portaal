@@ -21,7 +21,7 @@ import InfoToggletip from "@/components/InfoToggletip";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
-import { Aanname, duurTekst, KorteBalans } from "../_balans";
+import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
 import Stappen from "../_stappen";
@@ -480,6 +480,7 @@ const AanvraagInhoud = ({
           </p>
         )}
         {lkv?.aanname && <Aanname id={lkv.aanname} />}
+        <LkvVoorbehoud categorie={lkv?.categorie} />
         <Paragraph>
           U vraagt het loonkostenvoordeel aan door in de loonaangifte het vakje
           loonkostenvoordeel aan te zetten; een aparte aanvraag is niet nodig.

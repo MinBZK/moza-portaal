@@ -293,6 +293,20 @@ export type Uitkomsten = {
   aannames: AannameId[];
 };
 
+export type VoorbehoudId = "zes_maanden" | "samenloop";
+
+/**
+ * Wat de engine bij het loonkostenvoordeel niet rekent en de jurist als
+ * disclaimer wil tonen (juristfeedback ronde 3, punt 4). De zes maanden staan
+ * alleen in Wtl 2.6 lid 1 b (arbeidsgehandicapte werknemer).
+ */
+export const lkvVoorbehoud = (categorie: string | undefined): VoorbehoudId[] =>
+  !categorie
+    ? []
+    : categorie === "arbeidsgehandicapte_werknemer"
+      ? ["zes_maanden", "samenloop"]
+      : ["samenloop"];
+
 export type BalansRegel = {
   id: Regel["id"];
   regel?: Regel;
