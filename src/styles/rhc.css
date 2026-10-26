@@ -379,7 +379,7 @@ body {
 
 /* --- DataSummary --- */
 .rhc-theme.mox-theme {
-  @media (width > 768px) {
+  @media (width >=768px) {
     .rhc-data-summary--columns {
       column-gap: var(--rhc-space-lg);
       display: grid;
@@ -413,6 +413,25 @@ body {
   .ams-pagination {
     margin-block-start: var(--rhc-space-2xl);
   }
+}
+
+.rhc-theme.mox-theme {
+  .rhc-mox-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+    margin-block-end: var(--rhc-space-xl);
+  }
+
+  .rhc-mox-card>.utrecht-action-group:last-child {
+    margin-block-start: auto;
+  }
+}
+
+.mox-card-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xl);
 }
 
 /* --- Dialog --- */
@@ -476,26 +495,6 @@ body {
 
 .mox-menu-trigger {
   anchor-name: var(--mox-menu-anker);
-}
-
-/* --- Kaarten --- */
-.rhc-theme.mox-theme {
-  .rhc-mox-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-lg);
-    margin-block-end: var(--rhc-space-xl);
-  }
-
-  .rhc-mox-card>.utrecht-action-group:last-child {
-    margin-block-start: auto;
-  }
-}
-
-.mox-card-topic-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rhc-space-3xl);
 }
 
 /* --- Accordeon --- */
@@ -915,105 +914,6 @@ body {
   gap: var(--rhc-space-sm);
 }
 
-.rhc-mox-action-required {
-  align-items: center;
-  display: inline-flex;
-  gap: var(--rhc-space-sm);
-
-  .utrecht-icon {
-    color: var(--rhc-color-oranje-500);
-  }
-}
-
-/* --- Berichtenbox --- */
-[aria-label=Berichtenbox] {
-  a {
-    text-decoration: none;
-  }
-}
-
-.rhc-mox-attachment-icon {
-  --utrecht-icon-size: var(--rhc-size-icon-md);
-}
-
-.rhc-mox-notice-amount-inbox {
-  color: var(--rhc-color-cool-grey-500);
-  font-size: var(--rhc-text-font-size-sm);
-}
-
-.rhc-mox-inbox-filter {
-  margin-block: var(--rhc-space-3xl);
-}
-
-.rhc-mox-tabs-separator {
-  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
-  margin-block: var(--rhc-space-md);
-}
-
-/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
-.rhc-mox-inbox-filters {
-  align-items: end;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--rhc-space-xl);
-
-  > :first-child {
-    flex: 2 1 16rem;
-  }
-
-  > :last-child {
-    flex: 1 1 12rem;
-  }
-
-  .utrecht-form-field {
-    margin-block: 0;
-  }
-
-  .utrecht-textbox {
-    max-inline-size: 100%;
-  }
-}
-
-.rhc-mox-button-mark {
-  align-items: center;
-  block-size: 1lh;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  min-block-size: calc(var(--nl-button-min-block-size)/2);
-  min-inline-size: calc(var(--nl-button-min-inline-size)/2);
-
-  &[aria-pressed=true] {
-    color: var(--rhc-color-oranje-500);
-  }
-}
-
-.rhc-mox-button-mark-true {
-  color: var(--rhc-color-oranje-500);
-}
-
-.rhc-mox-status-unread {
-  background-color: var(--rhc-color-oranje-500);
-  block-size: calc(var(--rhc-size-icon-md)/2);
-  border-radius: var(--rhc-border-radius-round);
-  flex-shrink: 0;
-  inline-size: calc(var(--rhc-size-icon-md)/2);
-  /* centreert de stip op de eerste regel van de afzender */
-  margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
-}
-
-.rhc-mox-sender {
-  align-items: flex-start;
-  display: flex;
-  gap: var(--rhc-space-md);
-}
-
-.rhc-mox-unread {
-  /* 500 komt uit mox.css (huidige huisstijl); de nieuwe huisstijl valt
-    terug op semi-bold. */
-  font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
-}
-
 /* --- LinkButton --- */
 /* Destructieve actie als LinkButton, zoals Verwijderen in Berichtenbox.
   LinkButton kent geen hint="danger", daarom deze class. */
@@ -1229,7 +1129,7 @@ body {
 }
 
 .rhc-mox-progressbar-track {
-  background-color: var(--rhc-color-groen-500) !important;
+  background-color: var(--rhc-color-groen-500);
   block-size: 100%;
   border-radius: var(--rhc-border-radius-round);
 }
@@ -1237,7 +1137,7 @@ body {
 /* In een info-melding de kleur van die melding (het info-icoon), zoals
   bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
 .utrecht-alert--info .rhc-mox-progressbar-track {
-  background-color: var(--utrecht-alert-icon-info-color) !important;
+  background-color: var(--utrecht-alert-icon-info-color);
 }
 
 /* Laadduur onbekend, zoals bij de pdf. */
@@ -1533,7 +1433,7 @@ body {
   display: inline-flex;
   font: inherit;
   gap: var(--rhc-space-md);
-  min-block-size: 44px;
+  min-block-size: var(--nl-button-min-block-size);
   padding: 0;
 
   &:hover .rhc-mox-switch__thumb {
@@ -1729,6 +1629,92 @@ body {
       animation: rhc-mox-row-new 2s ease-out;
     }
   }
+}
+
+[aria-label=Berichtenbox] {
+  a {
+    text-decoration: none;
+  }
+}
+
+.rhc-mox-attachment-icon {
+  --utrecht-icon-size: var(--rhc-size-icon-md);
+}
+
+.rhc-mox-notice-amount-inbox {
+  color: var(--rhc-color-cool-grey-500);
+  font-size: var(--rhc-text-font-size-sm);
+}
+
+.rhc-mox-inbox-filter {
+  margin-block: var(--rhc-space-3xl);
+}
+
+.rhc-mox-tabs-separator {
+  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+  margin-block: var(--rhc-space-md);
+}
+
+/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+.rhc-mox-inbox-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-xl);
+
+  > :first-child {
+    flex: 2 1 16rem;
+  }
+
+  > :last-child {
+    flex: 1 1 12rem;
+  }
+
+  .utrecht-form-field {
+    margin-block: 0;
+  }
+
+  .utrecht-textbox {
+    max-inline-size: 100%;
+  }
+}
+
+.rhc-mox-button-mark {
+  align-items: center;
+  block-size: 1lh;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: calc(var(--nl-button-min-block-size)/2);
+  min-inline-size: calc(var(--nl-button-min-inline-size)/2);
+
+  &[aria-pressed=true] {
+    color: var(--rhc-color-oranje-500);
+  }
+}
+
+.rhc-mox-button-mark-true {
+  color: var(--rhc-color-oranje-500);
+}
+
+.rhc-mox-status-unread {
+  background-color: var(--rhc-color-oranje-500);
+  block-size: calc(var(--rhc-size-icon-md)/2);
+  border-radius: var(--rhc-border-radius-round);
+  flex-shrink: 0;
+  inline-size: calc(var(--rhc-size-icon-md)/2);
+  /* centreert de stip op de eerste regel van de afzender */
+  margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+}
+
+.rhc-mox-sender {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-unread {
+  font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */

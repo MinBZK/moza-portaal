@@ -39,7 +39,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-block-end: 0;
 		padding-block-start: var(--rhc-space-2xl);
 
-		@media screen and (width <=768px) {
+		@media (width < 768px) {
 			hyphens: auto;
 			overflow-wrap: break-word;
 
@@ -59,7 +59,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	#hoofd-inhoud {
 		padding-block-end: var(--rhc-space-max-4xl);
 
-		@media screen and (width <=768px) {
+		@media (width < 768px) {
 			padding-block: var(--rhc-space-lg);
 		}
 	}

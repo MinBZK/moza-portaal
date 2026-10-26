@@ -70,13 +70,6 @@ dialog.prototype-side-overlay[open] {
 	}
 }
 
-.prototype-side-overlay-shortcuts {
-	color: var(--rhc-color-foreground-subtle);
-	font-size: var(--rhc-text-font-size-sm);
-	margin-block: var(--rhc-space-lg);
-	text-align: end;
-}
-
 .prototype-side-overlay__header {
 	align-items: center;
 	display: flex;
@@ -131,14 +124,6 @@ dialog.prototype-side-overlay[open] {
 		background-color: var(--rhc-color-wit);
 		margin-block-start: var(--rhc-space-lg);
 	}
-}
-
-/* Button used to trigger the flags panel (fixed in bottom-right) */
-.prototype-button-trigger-flags {
-	background: var(--rhc-color-wit);
-	inset-block-end: var(--rhc-space-md);
-	inset-inline-end: var(--rhc-space-md);
-	position: fixed;
 }
 
 /* Groepen kaarten (Ondernemers, Dienstverleners) met een kopje erboven. */
