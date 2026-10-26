@@ -396,13 +396,25 @@ test("route: register heeft alleen vanzelf en een overzicht", () => {
 });
 
 test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vragen'", () => {
-  const taak = R.routeVoor(["register", "wajong", "wia"], reken(["register", "wajong", "wia"], 100));
+  const taak = R.routeVoor(
+    ["register", "wajong", "wia"],
+    reken(["register", "wajong", "wia"], 100),
+  );
   assert.match(R.overzichtTekst(taak), /werknemer aanvraagt/);
-  const niets = R.routeVoor(["register", "bijstand"], reken(["register", "bijstand"], 100));
+  const niets = R.routeVoor(
+    ["register", "bijstand"],
+    reken(["register", "bijstand"], 100),
+  );
   assert.deepEqual(niets.taken, []);
-  assert.equal(R.overzichtTekst(niets), "Bij deze antwoorden is er niets aan te vragen.");
+  assert.equal(
+    R.overzichtTekst(niets),
+    "Bij deze antwoorden is er niets aan te vragen.",
+  );
   const register = R.routeVoor(["register"], reken(["register"], 100));
-  assert.equal(R.overzichtTekst(register), "Voor deze situatie dient u niets in. Dit is wat er wel geldt.");
+  assert.equal(
+    R.overzichtTekst(register),
+    "Voor deze situatie dient u niets in. Dit is wat er wel geldt.",
+  );
 });
 
 test("route: uitleg en weetniet geven een overzicht zonder zaak", () => {
@@ -604,4 +616,38 @@ test("fix: zaken van de flow linken naar hun situatie", () => {
       `/lopendezaken/iemand-aannemen/${s}`,
     );
   }
+});
+
+test("balans: altijd loonkostensubsidie, loondispensatie en loonkostenvoordeel, in die volgorde", () => {
+  const u = reken(["register", "bijstand"], 60);
+  const rijen = U.balansRegels(u, 10_000_000);
+  assert.deepEqual(
+    rijen.map((r) => [r.id, r.status]),
+    [
+      ["lks", "bedrag"],
+      ["ld", "geldt_niet"],
+      ["lkv", "bedrag"],
+    ],
+  );
+  assert.equal(rijen[0].bedrag, LKS_GEMEENTE_60_JAAR);
+  assert.equal(rijen[1].bedrag, 0);
+  assert.equal(rijen[2].bedrag, regel(u, "lkv").bedragPerJaar);
+});
+
+test("balans: nooit meer terug dan de loonkosten", () => {
+  const u = reken(["register", "bijstand"], 60);
+  const rijen = U.balansRegels(u, LKS_GEMEENTE_60_JAAR + 100);
+  assert.equal(rijen[0].bedrag, LKS_GEMEENTE_60_JAAR);
+  assert.equal(rijen[2].bedrag, 100);
+  assert.equal(
+    U.balansRegels(u, 0).reduce((s, r) => s + r.bedrag, 0),
+    0,
+  );
+});
+
+test("balans: loondispensatie boven het minimumloon is niet meegeteld", () => {
+  const u = reken(["register", "wajong"], 70, 32, 2000);
+  assert.equal(U.balansRegels(u, 10_000_000)[1].status, "niet_meegeteld");
+  const wml = reken(["register", "wajong"], 70);
+  assert.equal(U.balansRegels(wml, 10_000_000)[1].status, "bedrag");
 });

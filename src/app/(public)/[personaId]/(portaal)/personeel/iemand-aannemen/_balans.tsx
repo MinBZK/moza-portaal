@@ -4,7 +4,7 @@ import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
-import type { AannameId, Regel } from "./_uitkomsten";
+import { balansRegels, type AannameId, type BalansRegel } from "./_uitkomsten";
 import type { Resultaat } from "./_useUitkomsten";
 import { useManifest } from "./_useRegelrecht";
 import { euro } from "./_werkgever";
@@ -48,12 +48,12 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   },
 };
 
-const naam = (r: Regel) =>
+const naam = (r: BalansRegel) =>
   r.id === "lks"
     ? "Loonkostensubsidie"
     : r.id === "ld"
       ? "Loondispensatie"
-      : r.categorie === "arbeidsgehandicapte_werknemer"
+      : r.regel?.categorie === "arbeidsgehandicapte_werknemer"
         ? "Loonkostenvoordeel arbeidsgehandicapte"
         : "Loonkostenvoordeel";
 
@@ -95,18 +95,21 @@ const Balans = ({
   const manifest = useManifest();
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   const kosten = loonkostenPerJaar(antwoorden);
-  // Nooit meer terug dan de loonkosten; per regel afgetopt in volgorde.
-  const regels = uitkomsten.regels.reduce<(Regel & { bedrag: number })[]>(
-    (lijst, r) => {
-      const al = lijst.reduce((som, x) => som + x.bedrag, 0);
-      const bedrag = Math.min(r.bedragPerJaar, Math.max(0, kosten - al));
-      return [...lijst, { ...r, bedrag }];
-    },
-    [],
-  );
+  const regels = balansRegels(uitkomsten, kosten);
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
   const netto = Math.max(0, kosten - terug);
   const bedrag = (cent: number) => (bekend && !fout ? euro(cent) : "…");
+  // Tijdens het rekenen staan alle drie de regelingen er al, met "…".
+  const waarde = (r: BalansRegel, min = "") =>
+    !bekend || fout
+      ? "…"
+      : r.status === "bedrag"
+        ? `${min}${euro(r.bedrag)}`
+        : r.status === "niet_meegeteld"
+          ? "niet meegeteld"
+          : "geldt niet";
+  const klasse = (r: BalansRegel) =>
+    bekend && !fout && r.status !== "bedrag" ? "mox-hiring-none" : undefined;
   const pct = (v: number) =>
     kosten > 0 ? Math.min(100, Math.max(1, Math.round((v / kosten) * 100))) : 0;
 
@@ -129,13 +132,23 @@ const Balans = ({
     return (
       <>
         <Heading level={2}>Wat dit u oplevert</Heading>
-        <p className="mox-hiring-amount">{bedrag(terug)}</p>
+        <dl className="mox-hiring-balance">
+          {regels.map((r) => (
+            <div key={r.id}>
+              <dt>{naam(r)}</dt>
+              <dd className={klasse(r)}>{waarde(r)}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mox-hiring-net">
+          <Paragraph>
+            <strong>Samen per jaar</strong>
+          </Paragraph>
+          <p className="mox-hiring-amount">{bedrag(terug)}</p>
+        </div>
         <Paragraph className="mox-hiring-note">
-          per jaar
-          {regels.length > 0 &&
-            `: ${regels.map((r) => `${naam(r).toLowerCase()} ${bedrag(r.bedrag)}`).join(" en ")}`}
-          , bij {antwoorden.uren} uur per week en {euro(antwoorden.uurloon)} per
-          uur.
+          Bij {antwoorden.uren} uur per week en {euro(antwoorden.uurloon)} per
+          uur. De loonkosten zijn dan {euro(kosten)} per jaar.
         </Paragraph>
         {bron}
       </>
@@ -160,28 +173,30 @@ const Balans = ({
           <div key={r.id}>
             <dt>
               {naam(r)}
-              {r.aanname && (
+              {r.regel?.aanname && (
                 <>
                   {" "}
                   <InfoToggletip
                     label={`Toelichting bij ${naam(r).toLowerCase()}`}
                   >
-                    {AANNAMES[r.aanname].uitleg}
+                    {AANNAMES[r.regel.aanname].uitleg}
                   </InfoToggletip>
                 </>
               )}
             </dt>
-            <dd>− {bedrag(r.bedrag)}</dd>
+            <dd className={klasse(r)}>{waarde(r, "− ")}</dd>
             <dd className="mox-hiring-bar" aria-hidden="true">
               <span
                 className="mox-hiring-bar--plus"
-                style={{ inlineSize: `${pct(r.bedrag)}%` }}
+                style={{
+                  inlineSize: `${bekend && !fout && r.bedrag > 0 ? pct(r.bedrag) : 0}%`,
+                }}
               />
             </dd>
           </div>
         ))}
       </dl>
-      {bekend && !fout && regels.length === 0 && (
+      {bekend && !fout && terug === 0 && (
         <Alert type="info">
           <Paragraph>
             Bij deze keuze gelden geen regelingen met een bedrag.

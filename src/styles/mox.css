@@ -833,6 +833,11 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		white-space: nowrap;
 	}
 
+	/* Een regeling zonder bedrag ("geldt niet") is geen bedrag: niet vet. */
+	.mox-hiring-balance .mox-hiring-none {
+		font-weight: 400;
+	}
+
 	.mox-hiring-balance .mox-hiring-bar {
 		background: var(--rhc-color-grey-20, #e6e6e6);
 		block-size: 0.75rem;

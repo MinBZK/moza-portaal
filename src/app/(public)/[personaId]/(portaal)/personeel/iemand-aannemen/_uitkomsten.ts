@@ -300,6 +300,38 @@ export type Uitkomsten = {
   aannames: AannameId[];
 };
 
+export type BalansRegel = {
+  id: Regel["id"];
+  regel?: Regel;
+  /** Wat de regeling in de balans aftrekt, in eurocent per jaar. */
+  bedrag: number;
+  status: "bedrag" | "geldt_niet" | "niet_meegeteld";
+};
+
+/**
+ * De drie regelingen met een bedrag, altijd in dezelfde volgorde, zodat de
+ * balans ze ook toont als ze niet gelden. Nooit meer terug dan de loonkosten;
+ * per regeling afgetopt in volgorde.
+ */
+export const balansRegels = (u: Uitkomsten, kosten: number): BalansRegel[] => {
+  let over = Math.max(0, kosten);
+  return (["lks", "ld", "lkv"] as const).map((id) => {
+    const regel = u.regels.find((r) => r.id === id);
+    if (!regel)
+      return {
+        id,
+        bedrag: 0,
+        status:
+          id === "ld" && u.aannames.includes("ld_cao")
+            ? "niet_meegeteld"
+            : "geldt_niet",
+      };
+    const bedrag = Math.min(regel.bedragPerJaar, over);
+    over -= bedrag;
+    return { id, regel, bedrag, status: "bedrag" };
+  });
+};
+
 type Outputs = Record<string, unknown>;
 
 /** Loonkosten-vuistregel: plus 8 procent vakantiebijslag en 20 procent werkgeverslasten. */
