@@ -27,7 +27,6 @@
   --mox-transition-easing: ease-out;
 
   /* Pagina-layout */
-  --utrecht-page-body-padding-block-end: var(--rhc-space-max-2xl);
 
   --mox-page-margin: var(--rhc-space-max-xl);
 
@@ -58,6 +57,7 @@
   --nl-heading-level-1-color: var(--rhc-color-core-500);
   --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
   --utrecht-separator-color: var(--rhc-color-transparent);
+  --utrecht-form-control-invalid-background-color: red;
 
   --mox-landing-hero-background: var(--rhc-color-core-50);
   --mox-landing-info-background: var(--rhc-color-core-500);
@@ -91,6 +91,17 @@
 
 .utrecht-form-label {
   font-weight: var(--mox-font-weight-medium);
+}
+
+.rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
+  --utrecht-form-field-description-margin-block-start: var(--rhc-space-sm);
+}
+
+.rhc-theme.mox-theme .rhc-form-field {
+  --rhc-mox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-select-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-textarea-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-textbox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
 }
 
 .utrecht-form-field--radio,
@@ -342,6 +353,23 @@ body {
 
   .rhc-theme.mox-theme .rhc-mox-range-slider__input::-moz-range-thumb {
     transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+}
+
+.utrecht-button.utrecht-button--secondary-action.utrecht-button--danger {
+  background-color: var(--rhc-color-rood-500);
+  border-color: var(--rhc-color-rood-500);
+  color: var(--rhc-color-wit);
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--rhc-color-rood-600);
+    border-color: var(--rhc-color-rood-600);
+    color: var(--rhc-color-wit);
+  }
+
+  &:focus-visible {
+    outline-color: var(--rhc-color-rood-600);
   }
 }
 
@@ -1108,12 +1136,6 @@ body {
       margin-block-start: -.5rem;
       /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
       outline: var(--rhc-border-width-lg) solid transparent;
-
-      &:hover {
-        background: var(--rhc-color-lintblauw-600);
-        border-color: var(--rhc-color-lintblauw-600);
-        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
-      }
     }
 
     &::-moz-range-thumb {
@@ -1124,12 +1146,32 @@ body {
       inline-size: var(--rhc-size-icon-lg);
       /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
       outline: var(--rhc-border-width-lg) solid transparent;
+    }
 
-      &:hover {
-        background: var(--rhc-color-lintblauw-600);
-        border-color: var(--rhc-color-lintblauw-600);
-        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
-      }
+    /* Hover on the thumb, or keyboard focus on the slider: darker thumb with
+      a ring. A pseudo-element cannot have :focus itself, so the focus sits
+      on the input. One rule per browser: an unknown pseudo-element would
+      drop the whole list. */
+    &::-webkit-slider-thumb:hover,
+    &:focus-visible::-webkit-slider-thumb {
+      background: var(--rhc-color-lintblauw-600);
+      border-color: var(--rhc-color-lintblauw-600);
+      outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
+    }
+
+    &::-webkit-slider-thumb:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+
+    &::-moz-range-thumb:hover,
+    &:focus-visible::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-600);
+      border-color: var(--rhc-color-lintblauw-600);
+      outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+    }
+
+    &::-moz-range-thumb:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
     }
 
     &::-webkit-slider-runnable-track {
@@ -1486,7 +1528,11 @@ body {
     background-color: var(--rhc-color-lintblauw-600);
 
     &:hover {
-      outline: var(--rhc-border-width-md) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+      outline: var(--rhc-border-width-md) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
+    }
+
+    &:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
     }
   }
 

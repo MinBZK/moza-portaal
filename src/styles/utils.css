@@ -365,3 +365,18 @@ dialog.prototype-side-overlay[open] {
 		visibility: hidden;
 	}
 }
+
+code {
+	font-size: .875rem;
+}
+
+/* Demo page (/demo): text and a StickyInfoBox side by side in one card. */
+.prototype-demo-sticky {
+	display: grid;
+	gap: var(--rhc-space-xl);
+	grid-template-columns: 2fr 1fr;
+
+	@media (width < 768px) {
+		grid-template-columns: 1fr;
+	}
+}

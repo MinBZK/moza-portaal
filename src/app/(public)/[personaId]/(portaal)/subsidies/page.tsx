@@ -4,7 +4,7 @@ import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoSubsidies } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
-import { RelevantItem } from "../bewaard/_bewaarActies";
+import { RelevantItem } from "@/components/save/saveActions";
 import SubsidieActies, { bewaarItemVan } from "./_subsidieActies";
 import SubsidieGegevens from "./_subsidieGegevens";
 

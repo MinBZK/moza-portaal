@@ -5,7 +5,7 @@ import { getDemoWetById } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
-import { RelevantItem } from "../../bewaard/_bewaarActies";
+import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
 import WetGegevens from "../_wetGegevens";
 

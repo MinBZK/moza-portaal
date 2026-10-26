@@ -9,7 +9,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 .rhc-theme.mox-theme:where(.mox-current-brand) {
 
 	/* ==== Tokens ============================================================= */
-
+	--utrecht-page-body-padding-block-start: var(--rhc-space-xl);
 	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
@@ -35,8 +35,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* --- Pagina --- */
 	.utrecht-page-body {
-		padding-block-end: 0;
-		padding-block-start: var(--rhc-space-2xl);
 
 		@media (width < 768px) {
 			hyphens: auto;
@@ -318,12 +316,14 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			}
 		}
 
-		/* Ruimte onder tekst en lijsten, behalve onder het laatste element: daar
-		  zorgt de padding van de kaart voor. */
-		p:not(:last-child),
-		ul:not(:last-child),
-		ol:not(.ams-pagination__list, :last-child) {
-			margin-block-end: var(--rhc-space-lg);
+		/* Space between consecutive text blocks only. Unlike :last-child, a close
+		  button, table or ActionGroup after the text does not count. */
+		:is(p, ul, ol:not(.ams-pagination__list)) {
+			margin-block-end: 0;
+		}
+
+		:is(p, ul, ol:not(.ams-pagination__list))+ :is(p, ul, ol:not(.ams-pagination__list)) {
+			margin-block-start: var(--rhc-space-lg);
 		}
 
 		.utrecht-table {

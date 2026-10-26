@@ -1,6 +1,7 @@
 "use client";
 
 import { useOptimistic, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Button,
@@ -124,6 +125,11 @@ const FlagsPaneel = ({
         />
       </div>
       <div className="prototype-side-overlay__footer">
+        <p className="nl-paragraph">
+          <Link className="utrecht-link utrecht-link--html-a" href="/demo">
+            Overzicht van componenten
+          </Link>
+        </p>
         <Button
           appearance="secondary-action-button"
           hint="danger"

@@ -22,6 +22,7 @@ type AlertProps = Omit<RhcAlertProps, "type"> & {
    */
   closable?: boolean;
   closeLabel?: string;
+  /** After the alert is closed, by the close button or by autoHide. */
   onClose?: () => void;
   /**
    * Fade out and disappear by itself, for a confirmation the user does not
@@ -67,6 +68,11 @@ export const Alert = ({
   const [closed, setClosed] = useState(false);
   const [fading, setFading] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  // The latest onClose, without restarting the autoHide timer when it changes.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
   const hides = autoHide !== false && props.type !== "error";
 
   useEffect(() => {
@@ -76,7 +82,10 @@ export const Alert = ({
         ? autoHide
         : readingTime(wrapperRef.current?.textContent ?? "");
     const fade = setTimeout(() => setFading(true), visible);
-    const gone = setTimeout(() => setClosed(true), visible + FADE_MS);
+    const gone = setTimeout(() => {
+      setClosed(true);
+      onCloseRef.current?.();
+    }, visible + FADE_MS);
     return () => {
       clearTimeout(fade);
       clearTimeout(gone);

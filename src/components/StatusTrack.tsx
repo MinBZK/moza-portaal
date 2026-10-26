@@ -9,9 +9,24 @@ import {
 } from "@/components/rhc";
 import { CalendarIcon } from "@/components/icons/calendarIcon";
 import { CheckIcon } from "@/components/icons/checkIcon";
-import type { DemoZaakStap } from "@/demo";
 
-const voorvoegsel: Record<DemoZaakStap["soort"], string> = {
+/** One step of a case. The demo data (StatusStep) has the same shape. */
+export type StatusStep = {
+  titel: string;
+  /** Afgerond = last step of a finished case. */
+  soort: "voltooid" | "huidig" | "volgende" | "later" | "afgerond";
+  /** Date as text, sometimes with "sinds" or "verwacht voor". */
+  datum?: string;
+  /** Expanded by default. */
+  open?: boolean;
+  tekst?: string[];
+  /** Something is expected from the entrepreneur. */
+  waarschuwing?: string;
+  /** Information the entrepreneur still has to supply. */
+  aanleveren?: { intro: string; items: string[]; knop: string };
+};
+
+const voorvoegsel: Record<StatusStep["soort"], string> = {
   voltooid: "Voltooide stap: ",
   huidig: "Huidige stap: ",
   volgende: "Volgende stap: ",
@@ -20,7 +35,7 @@ const voorvoegsel: Record<DemoZaakStap["soort"], string> = {
 };
 
 /** Voortgang van een zaak als genummerde stappen, zoals in moza-poc. */
-const StatusTrack = ({ stappen }: { stappen: DemoZaakStap[] }) => (
+const StatusTrack = ({ stappen }: { stappen: StatusStep[] }) => (
   <ol className="rhc-mox-status-track">
     {stappen.map((stap, index) => (
       <li

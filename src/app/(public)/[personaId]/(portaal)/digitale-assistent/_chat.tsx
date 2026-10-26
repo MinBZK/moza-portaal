@@ -21,7 +21,7 @@ import {
   useAssistentInstellingen,
   type AssistentDemo,
 } from "@/app/(public)/_flags/assistentInstellingen";
-import { leesBewaardItem, useBewaard } from "../bewaard/_useBewaard";
+import { leesBewaardItem, useBewaard } from "@/components/save/useSaved";
 import { voegZaakToe } from "../lopendezaken/_assistentZaken";
 import {
   DEMO_DREMPEL,
