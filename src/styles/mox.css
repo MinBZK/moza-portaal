@@ -650,28 +650,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin-block-start: var(--rhc-space-md);
 	}
 
-	.mox-hiring-steps {
-		display: flex;
-		flex-wrap: wrap;
-		font-size: var(--rhc-font-size-sm, 0.875rem);
-		gap: var(--rhc-space-inline-md, 1rem);
-		list-style: none;
-		margin-block: 0 var(--rhc-space-block-lg, 1.5rem);
-		padding: 0;
-	}
-
-	.mox-hiring-steps li {
-		border-block-end: 3px solid var(--rhc-color-grey-40, #ccc);
-		color: var(--rhc-color-grey-80, #555);
-		padding-block-end: 0.25rem;
-	}
-
-	.mox-hiring-steps li[aria-current="step"] {
-		border-block-end-color: var(--rhc-color-blue-80, #01689b);
-		color: var(--rhc-color-black, #000);
-		font-weight: 700;
-	}
-
 	.mox-hiring-label {
 		border: 1px solid currentcolor;
 		border-radius: 1rem;
@@ -825,8 +803,8 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin: 0;
 	}
 
-	/* Naam en bedrag naast elkaar; past dat niet in een smalle zijkolom, dan
-	  komt het bedrag rechts op de volgende regel. Het bedrag breekt nooit. */
+	/* Naam en bedrag naast elkaar, de organisatie onder de naam. Zo staat het
+	  bedrag in elke rij op dezelfde plek. Het bedrag breekt nooit. */
 	.mox-hiring-balance > div {
 		align-items: baseline;
 		display: flex;
@@ -836,7 +814,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	.mox-hiring-balance dt {
+		flex: 1 1 0;
 		font-size: var(--rhc-font-size-sm, 0.875rem);
+		min-inline-size: 0;
 	}
 
 	.mox-hiring-balance dd {
@@ -850,6 +830,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		line-height: 1.4;
 		padding-inline: var(--rhc-space-xs);
 		vertical-align: 0.1em;
+	}
+
+	.mox-hiring-balance .mox-hiring-org {
+		display: block;
+		inline-size: fit-content;
+		margin-block-start: var(--rhc-space-2xs);
 	}
 
 	/* Een regeling zonder bedrag ("geldt niet") is geen bedrag: niet vet. */

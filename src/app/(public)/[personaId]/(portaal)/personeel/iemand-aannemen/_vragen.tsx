@@ -11,6 +11,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import RangeSlider from "@/components/RangeSlider";
+import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
 import { type Overig } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
@@ -111,7 +112,7 @@ const VragenMetStaat = ({
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
           <Fieldset
-            legend="1. Wie wilt u aannemen? Kies wat past."
+            legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past."
             className="mox-hiring-choices"
           >
             {DOELGROEPEN.map(([waarde, label]) => (
@@ -140,7 +141,7 @@ const VragenMetStaat = ({
             ))}
           </Fieldset>
           <RangeSlider
-            label="2. Hoeveel uur per week gaat de kandidaat werken?"
+            label="2. Hoeveel uur per week gaat de kandidaat werken? (arbeidsduur)"
             min={8}
             max={40}
             step={1}
@@ -151,7 +152,7 @@ const VragenMetStaat = ({
           />
           <div>
             <RangeSlider
-              label="3. Hoeveel kan de kandidaat?"
+              label="3. Hoeveel kan de kandidaat? (loonwaarde)"
               min={30}
               max={100}
               step={5}
@@ -168,7 +169,7 @@ const VragenMetStaat = ({
           </div>
           <div>
             <RangeSlider
-              label="4. Wat wordt het bruto uurloon?"
+              label="4. Wat wordt het bruto uurloon? (loon)"
               min={WML_UUR_EUROCENT}
               max={MAX_UURLOON_EUROCENT}
               step={1}
@@ -184,12 +185,11 @@ const VragenMetStaat = ({
             </Paragraph>
           </div>
         </div>
-        <aside
-          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-5"
-          aria-label="Wat het kost en oplevert"
-        >
-          <Balans antwoorden={a} resultaat={resultaat} />
-        </aside>
+        <div className="rhc-grid__cell rhc-grid__cell-t-5">
+          <StickyInfoBox title="Wat het kost en oplevert">
+            <Balans antwoorden={a} resultaat={resultaat} />
+          </StickyInfoBox>
+        </div>
       </div>
 
       {overige.length > 0 && (

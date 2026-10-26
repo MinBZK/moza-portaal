@@ -18,6 +18,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
+import StickyInfoBox from "@/components/StickyInfoBox";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans } from "../_balans";
@@ -690,19 +691,23 @@ const AanvraagInhoud = ({
           )}
         </div>
 
-        <aside
-          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap"
-          aria-label="Wat dit u oplevert"
-        >
-          <KorteBalans antwoorden={a} resultaat={resultaat} />
-          <Heading level={2}>Wie ziet deze aanvraag?</Heading>
-          <Paragraph>
-            Alleen u. Er is nog niets naar de overheid gestuurd.
-          </Paragraph>
-          <Paragraph className="mox-hiring-note">
-            Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
-          </Paragraph>
-        </aside>
+        <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
+          <section className="rhc-mox-card" aria-labelledby="wie-ziet">
+            <Heading level={2} id="wie-ziet">
+              Wie ziet deze aanvraag?
+            </Heading>
+            <Paragraph>
+              Alleen u. Er is nog niets naar de overheid gestuurd.
+            </Paragraph>
+            <Paragraph className="mox-hiring-note">
+              Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
+            </Paragraph>
+          </section>
+          {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
+          <StickyInfoBox title="Wat dit u oplevert">
+            <KorteBalans antwoorden={a} resultaat={resultaat} />
+          </StickyInfoBox>
+        </div>
       </div>
     </>
   );

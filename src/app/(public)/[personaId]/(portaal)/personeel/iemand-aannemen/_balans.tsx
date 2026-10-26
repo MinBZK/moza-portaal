@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Heading, Paragraph } from "@/components/rhc";
+import { Alert, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
@@ -100,7 +100,7 @@ export const Aanname = ({ id }: { id: AannameId }) => (
 );
 
 /**
- * "Wat de regelingen opleveren": loonkosten (benadering) min wat de
+ * "Wat het kost en oplevert": loonkosten (benadering) min wat de
  * regelingen opleveren, live uit de regelrecht-engine (useUitkomsten).
  * Compact (`kort`) voor de zijkolom van de aanvraag.
  */
@@ -152,12 +152,12 @@ const Balans = ({
   if (kort)
     return (
       <>
-        <Heading level={2}>Wat dit u oplevert</Heading>
         <dl className="mox-hiring-balance">
           {regels.map((r) => (
             <div key={r.id}>
               <dt>
-                {naam(r)} <Uitvoerder id={UITVOERDER_VAN[r.id]} />
+                {naam(r)}
+                <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
               <dd className={klasse(r)}>{waarde(r)}</dd>
             </div>
@@ -179,7 +179,6 @@ const Balans = ({
 
   return (
     <>
-      <Heading level={3}>Wat de regelingen opleveren</Heading>
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
@@ -195,7 +194,7 @@ const Balans = ({
         {regels.map((r) => (
           <div key={r.id}>
             <dt>
-              {naam(r)} <Uitvoerder id={UITVOERDER_VAN[r.id]} />
+              {naam(r)}
               {r.regel?.aanname && (
                 <>
                   {" "}
@@ -206,16 +205,18 @@ const Balans = ({
                   </InfoToggletip>
                 </>
               )}
+              <Uitvoerder id={UITVOERDER_VAN[r.id]} />
             </dt>
             <dd className={klasse(r)}>{waarde(r, "− ")}</dd>
-            <dd className="mox-hiring-bar" aria-hidden="true">
-              <span
-                className="mox-hiring-bar--plus"
-                style={{
-                  inlineSize: `${bekend && !fout && r.bedrag > 0 ? pct(r.bedrag) : 0}%`,
-                }}
-              />
-            </dd>
+            {/* Alleen een balk bij een bedrag; een lege balk zegt niets. */}
+            {bekend && !fout && r.bedrag > 0 && (
+              <dd className="mox-hiring-bar" aria-hidden="true">
+                <span
+                  className="mox-hiring-bar--plus"
+                  style={{ inlineSize: `${pct(r.bedrag)}%` }}
+                />
+              </dd>
+            )}
           </div>
         ))}
       </dl>
