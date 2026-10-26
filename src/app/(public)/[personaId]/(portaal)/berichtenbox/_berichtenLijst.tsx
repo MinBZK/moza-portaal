@@ -21,7 +21,6 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
-import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import ShareButton from "@/components/ShareButton";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
@@ -365,7 +364,8 @@ const BerichtenLijst = ({
     const wordtOngelezen = !isOngelezen(staat, bericht.id, bericht.isOngelezen);
     if (!zetOngelezen(bericht.id, wordtOngelezen)) return;
     setActieFout(null);
-    setMeldingTijdelijk(false);
+    setMeldingTijdelijk(true);
+    setMeldingNummer((n) => n + 1);
     setMelding(
       wordtOngelezen
         ? `Het bericht "${bericht.onderwerp}" is gemarkeerd als ongelezen.`
@@ -469,23 +469,24 @@ const BerichtenLijst = ({
       )}
       <div role="status">
         {!bezig && alleBinnen && weergave === "inbox" && (
-          <TemporaryAlert closable>
+          <Alert type="ok" closable autoHide>
             <Paragraph>Alle demo-berichten zijn binnengekomen.</Paragraph>
-          </TemporaryAlert>
+          </Alert>
         )}
       </div>
 
       {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
       <div ref={meldingRef} tabIndex={-1} role="status">
-        {melding &&
-          !bezig &&
-          (meldingTijdelijk ? (
-            <TemporaryAlert key={meldingNummer}>{melding}</TemporaryAlert>
-          ) : (
-            <Alert type="ok" closable>
-              {melding}
-            </Alert>
-          ))}
+        {melding && !bezig && (
+          <Alert
+            key={`${meldingNummer}-${melding}`}
+            type="ok"
+            closable
+            autoHide={meldingTijdelijk}
+          >
+            {melding}
+          </Alert>
+        )}
       </div>
 
       {weergave === "inbox" && (

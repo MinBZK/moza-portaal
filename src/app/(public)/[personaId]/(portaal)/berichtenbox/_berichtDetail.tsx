@@ -14,7 +14,6 @@ import {
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
-import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import ShareButton from "@/components/ShareButton";
 import { FlagIcon } from "@/components/icons/flagIcon";
@@ -235,12 +234,15 @@ const BerichtDetail = ({
             {fout && <Alert type="error">{bewaarFoutTekst[fout]}</Alert>}
             {actieFout && <Alert type="error">{actieFout}</Alert>}
             <div role="status">
-              {melding &&
-                (tijdelijk ? (
-                  <TemporaryAlert key={meldingNummer}>{melding}</TemporaryAlert>
-                ) : (
-                  <Alert type="ok">{melding}</Alert>
-                ))}
+              {melding && (
+                <Alert
+                  key={`${meldingNummer}-${melding}`}
+                  type="ok"
+                  autoHide={tijdelijk}
+                >
+                  {melding}
+                </Alert>
+              )}
             </div>
             {map && status === "inbox" && (
               <Paragraph>

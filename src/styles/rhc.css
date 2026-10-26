@@ -1,9 +1,6 @@
-/* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl
+/* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl */
 
-  Indeling: 1. Lettertype, 2. Tokens, 3. Layout (pagina, header, navigatie),
-  4. Componenten (alfabetisch), 5. Pagina's en functies. */
-
-/* ==== 1. Lettertype ========================================================= */
+/* ==== Lettertype ========================================================= */
 
 @font-face {
   font-display: swap;
@@ -21,7 +18,7 @@
   src: url("./fonts/RijksSansVF-Italic.ttf") format("truetype");
 }
 
-/* ==== 2. Tokens ============================================================= */
+/* ==== Tokens ============================================================= */
 .rhc-theme.mox-theme {
 
   /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
@@ -86,7 +83,7 @@
   --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
 }
 
-/* ==== 3. Formulieren ======================================================== */
+/* ==== Formulieren ======================================================== */
 
 .utrecht-textbox {
   max-inline-size: 100%;
@@ -106,7 +103,7 @@
   background-color: var(--rhc-color-wit);
 }
 
-/* ==== 3. Layout ============================================================= */
+/* ==== Layout ============================================================= */
 
 /* --- Pagina --- */
 body {
@@ -323,7 +320,7 @@ body {
   }
 }
 
-/* ==== 4. Componenten ======================================================== */
+/* ==== Componenten ======================================================== */
 
 /* --- Interactie --- */
 
@@ -591,6 +588,39 @@ body {
   &[aria-current] {
     border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
     font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm). */
+@property --rhc-tabs-fade-start {
+  inherits: false;
+  initial-value: 0px;
+  syntax: "<length>";
+}
+
+@property --rhc-tabs-fade-end {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@keyframes rhc-mox-tabs-fade {
+  0% {
+    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+    --rhc-tabs-fade-start: 0;
+  }
+
+  10% {
+    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+  }
+
+  90% {
+    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+  }
+
+  100% {
+    --rhc-tabs-fade-end: 0;
+    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
   }
 }
 
@@ -1375,7 +1405,7 @@ body {
 
 .rhc-mox-step-indicator__list {
   display: flex;
-  gap: var(--rhc-space-lg);
+  gap: var(--rhc-space-xl);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1385,7 +1415,7 @@ body {
   align-items: center;
   color: var(--rhc-color-foreground-subtle);
   display: flex;
-  gap: var(--rhc-space-sm);
+  gap: var(--rhc-space-md);
 }
 
 .rhc-mox-step-indicator__marker {
@@ -1398,11 +1428,6 @@ body {
   inline-size: var(--rhc-step-indicator-size);
   line-height: 1;
   place-items: center;
-
-  .utrecht-icon {
-    block-size: 60%;
-    inline-size: 60%;
-  }
 }
 
 .rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
@@ -1468,8 +1493,12 @@ body {
   gap: var(--rhc-space-md);
   padding: 0;
 
-  &:hover .rhc-mox-switch__thumb {
+  &:not(:disabled):hover .rhc-mox-switch__thumb {
     background-color: var(--rhc-color-lintblauw-600);
+
+    &:hover {
+      outline: var(--rhc-border-width-md) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+    }
   }
 
   &:focus-visible {
@@ -1500,9 +1529,13 @@ body {
   background-color: var(--rhc-color-cool-grey-500);
   block-size: 100%;
   border-radius: var(--rhc-border-radius-round);
+  /* Transparent ring at rest, so its colour can fade in on hover. */
+  outline: var(--rhc-border-width-md) solid transparent;
 
   @media (prefers-reduced-motion: no-preference) {
-    transition: transform var(--mox-transition-duration) var(--mox-transition-easing);
+    transition-duration: var(--mox-transition-duration);
+    transition-property: transform, background-color, outline-color;
+    transition-timing-function: var(--mox-transition-easing);
   }
 }
 
@@ -1599,7 +1632,7 @@ body {
   border-color: var(--rhc-color-rood-500);
 }
 
-/* ==== 5. Pagina's en functies =============================================== */
+/* ==== Pagina's en functies =============================================== */
 
 /* --- Berichtenbox --- */
 .rhc-theme.mox-theme {
@@ -1747,7 +1780,7 @@ body {
 }
 
 .rhc-mox-unread {
-  font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
+  font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
