@@ -32,11 +32,6 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
     uitleg:
       "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Gaat iemand met een WIA-uitkering bij u weer aan het werk, dan geldt het loonkostenvoordeel één jaar.",
   },
-  wsw_zuinig: {
-    kort: "Gerekend met werk in de sociale werkvoorziening.",
-    uitleg:
-      "Gerekend met werk in de sociale werkvoorziening. Heeft de kandidaat alleen een Wsw-indicatie, dan kunnen het loonkostenvoordeel en de no-riskpolis wel gelden.",
-  },
   beschut_lks: {
     kort: "Zonder loonkostensubsidie van de gemeente.",
     uitleg:

@@ -35,7 +35,7 @@ export type Route = {
   overzicht: boolean;
 };
 
-/** Volgorde: wajong, wia, bijstand, register, anders uitleg (beschut, Wsw, geen of niets gekozen). */
+/** Volgorde: wajong, wia, bijstand, register, anders uitleg (beschut, geen of niets gekozen). */
 export const situatieVan = (doelgroepen: Doelgroep[]): Situatie => {
   const heeft = (d: Doelgroep) => doelgroepen.includes(d);
   if (heeft("wajong")) return "wajong";

@@ -12,7 +12,6 @@ export const DOELGROEPEN = [
   ["wajong", "Iemand met een Wajong-uitkering"],
   ["wia", "Iemand met een WIA-uitkering"],
   ["bijstand", "Iemand met een bijstandsuitkering"],
-  ["wsw", "Heeft een Wsw-indicatie of werkt in de sociale werkvoorziening"],
   ["beschut", "Is door de gemeente aangewezen op beschut werk"],
   ["geen", "Geen van deze"],
 ] as const;
@@ -227,19 +226,6 @@ export const feitenVoor = (a: Keuzes): Feiten => {
       // Boven het drempelbedrag van € 195,16 (Reïntegratiebesluit 3).
       kosten_voorziening_eurocent: 100000,
     };
-  if (d.has("wsw"))
-    f = {
-      ...f,
-      ...aan(
-        "is_wsw_geindiceerd_of_oude_indicatie",
-        "is_wsw_werknemer",
-        "is_wsw_dienstbetrekking",
-        "is_wsw_of_beschut_werk_dienstbetrekking",
-        "had_wsw_dienstbetrekking_of_indicatie_voorafgaand",
-        "verricht_wsw_arbeid_artikel_2_zonder_terbeschikkingstelling",
-        "verricht_arbeid_in_wsw_dienstbetrekking_artikel_2",
-      ),
-    };
   if (d.has("beschut"))
     f = {
       ...f,
@@ -270,7 +256,7 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  "lks_lid4" | "ld_cao" | "wia_nieuw" | "wsw_zuinig" | "beschut_lks" | "geen";
+  "lks_lid4" | "ld_cao" | "wia_nieuw" | "beschut_lks" | "geen";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";
@@ -431,7 +417,6 @@ export const uitkomstenUit = (
 
   const aannames: AannameId[] = [];
   if (ldBovenWml) aannames.push("ld_cao");
-  if (d.has("wsw")) aannames.push("wsw_zuinig");
   if (d.has("beschut") && !d.has("bijstand")) aannames.push("beschut_lks");
   if (d.has("geen")) aannames.push("geen");
   return { regels, overige, aannames };

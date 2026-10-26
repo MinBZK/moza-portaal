@@ -52,14 +52,13 @@ test("vraag 1: geen van deze sluit de rest uit", () => {
   ]);
 });
 
-test("vraag 1: zeven opties, WIA zonder WAO, geen weet ik nog niet", () => {
+test("vraag 1: zes opties, WIA zonder WAO, geen Wsw of weet ik nog niet", () => {
   const ids = U.DOELGROEPEN.map(([id]) => id);
   assert.deepEqual(ids, [
     "register",
     "wajong",
     "wia",
     "bijstand",
-    "wsw",
     "beschut",
     "geen",
   ]);
@@ -140,12 +139,11 @@ test("WIA: loonkostenvoordeel arbeidsgehandicapte, no-riskpolis vijf jaar", () =
   assert.equal(regel(u, "lks"), undefined);
 });
 
-test("Wsw: zuinig, niets", () => {
-  const u = reken(["wsw"], 60);
-  assert.equal(regel(u, "lks"), undefined);
-  assert.equal(regel(u, "lkv"), undefined);
-  assert.equal(overig(u, "nrp").geldt, false);
-  assert.ok(u.aannames.includes("wsw_zuinig"));
+test("Wsw-indicatie valt onder het register: loonkostenvoordeel en no-riskpolis", () => {
+  const u = reken(["register"], 60);
+  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+  assert.equal(overig(u, "nrp").geldt, true);
+  assert.ok(!U.DOELGROEPEN.some(([id]) => id === "wsw"));
 });
 
 test("beschut werk: geen loonkostenvoordeel, wel no-riskpolis", () => {
@@ -261,7 +259,7 @@ test("route: situatie volgt de volgorde wajong, wia, bijstand, register, uitleg"
   assert.equal(s(["register", "wajong", "wia"]), "wajong");
   assert.equal(s(["register", "wia"]), "wia");
   assert.equal(s(["register"]), "register");
-  for (const d of ["beschut", "wsw", "geen"]) assert.equal(s([d]), "uitleg");
+  for (const d of ["beschut", "geen"]) assert.equal(s([d]), "uitleg");
   assert.equal(s([]), "uitleg");
 });
 
@@ -424,7 +422,7 @@ test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vrag
 });
 
 test("route: uitleg en niets aangevinkt geven een overzicht zonder zaak", () => {
-  for (const d of [["beschut"], ["wsw"], ["geen"], []]) {
+  for (const d of [["beschut"], ["geen"], []]) {
     const r = R.routeVoor(d, reken(d, 100));
     assert.equal(r.overzicht, true, d.join());
     assert.equal(r.zaak, null, d.join());

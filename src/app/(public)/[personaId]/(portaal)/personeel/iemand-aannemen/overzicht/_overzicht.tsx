@@ -35,7 +35,6 @@ const UITLEG: Partial<Record<Doelgroep, { kop: string; tekst: string }>> = {
     kop: "Beschut werk",
     tekst: `${AANNAMES.beschut_lks.uitleg} De gemeente regelt de beschutte werkplek. Neem contact op met de gemeente. In het portaal is er geen aanvraag.`,
   },
-  wsw: { kop: "Wsw", tekst: AANNAMES.wsw_zuinig.uitleg },
   geen: { kop: "Geen van deze", tekst: AANNAMES.geen.uitleg },
 };
 
@@ -65,7 +64,7 @@ const Overzicht = () => {
 
 /**
  * Routes zonder aanvraag van de werkgever: alleen het doelgroepregister,
- * een uitleg (beschut werk, Wsw, geen van deze of niets gekozen) of
+ * een uitleg (beschut werk, geen van deze of niets gekozen) of
  * antwoorden waarbij de engine niets meer laat aanvragen.
  */
 const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
