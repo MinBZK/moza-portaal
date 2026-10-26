@@ -1,16 +1,11 @@
 /*
 
-Tijdelijke styling bovenop RHC componenten die de huidige huisstijl tonen
-
-Indeling: 1. Tokens, 2. Typografie, 3. Formulieren, 4. Layout (pagina, header,
-navigatie, footer), 5. Componenten (alfabetisch), 6. Pagina's en functies
-(alfabetisch). @property en @keyframes staan onderaan, buiten het theme-blok.
+Tijdelijke styling bovenop RHC componenten die de huidige MijnOverheid huisstijl tonen
 
 Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nieuwe MO huisstijl die in ontwikkeling (Q1/2027) is te overbruggen. Bij het verwijderen van dit CSS bestand zou de styling terugvallen op RHC (waar via rhc.css al enkele andere tweaks aan plaats hebben gevonden in de context van de richting die de nieuwe MO huisstijl op gaat.
 
 */
 
-/* Alleen met de huidige huisstijl (Flags-paneel). :where() houdt de specificiteit gelijk. */
 .rhc-theme.mox-theme:where(.mox-current-brand) {
 
 	/* ==== 1. Tokens ============================================================= */
@@ -44,9 +39,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding-block-end: 0;
 		padding-block-start: var(--rhc-space-2xl);
 
-		/* Lange woorden afbreken op een smal scherm. break-word en niet anywhere:
-		  anywhere maakt de minimale breedte van tekst één letter, en dan knijpen
-		  tabellen al hun kolommen samen in plaats van te scrollen. */
 		@media screen and (width <=768px) {
 			hyphens: auto;
 			overflow-wrap: break-word;
@@ -67,7 +59,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	#hoofd-inhoud {
 		padding-block-end: var(--rhc-space-max-4xl);
 
-		/* De marge links en rechts komt van --mox-page-margin (rhc.css). */
 		@media screen and (width <=768px) {
 			padding-block: var(--rhc-space-lg);
 		}
@@ -289,10 +280,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		padding: 0 var(--rhc-space-md);
 	}
 
-	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
-	  erft elk flex-item de onderstreping van de link, ook met text-decoration: none.
-	  In een gewoon blok (de houder) is de badge inline-flex, en daar loopt de
-	  onderstreping niet in door. */
 	.mox-badge-holder {
 		display: block;
 		line-height: 0;
@@ -340,7 +327,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 		padding: var(--rhc-space-3xl);
 
-		/* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
 		@media (width < 768px) {
 			padding: var(--rhc-space-lg);
 		}
@@ -395,10 +381,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Meldingen --- */
-	/* .rhc-alert {
-		margin-block: var(--rhc-space-xl);
-	} */
-
 	.utrecht-alert {
 		border-color: var(--rhc-color-hemelblauw-100);
 		border-width: var(--rhc-border-width-sm);
@@ -447,7 +429,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Statusstip --- */
-	/* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
 	.mox-status {
 		background-color: var(--rhc-color-cool-grey-400);
 		block-size: calc(var(--rhc-size-icon-md)/2);
@@ -488,7 +469,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Tekst --- */
-	/* Tekst afkappen na twee regels */
 	.mox-line-clamp {
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
@@ -540,7 +520,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	/* ==== 6. Pagina's en functies =============================================== */
 
 	/* --- Contactmomenten --- */
-	/* Tijdlijn met contactmomenten: een lijn door de statusstippen */
 	.mox-timeline {
 		display: grid;
 		gap: var(--rhc-space-2xl);
@@ -588,9 +567,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 }
 
-/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm).
-  Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
-  @property en @keyframes mogen niet genest staan. */
+/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm). */
 @property --rhc-tabs-fade-start {
 	inherits: false;
 	initial-value: 0px;
@@ -603,7 +580,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	syntax: "<length>";
 }
 
-/* Aan het begin alleen rechts een verloop, aan het eind alleen links. */
 @keyframes rhc-mox-tabs-fade {
 	0% {
 		--rhc-tabs-fade-end: var(--rhc-tabs-fade);
