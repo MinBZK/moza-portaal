@@ -123,13 +123,13 @@ const FlagsPaneel = ({
           checked={zichtbareFlags.mox_nieuweHuisstijl}
           onChange={(nieuw) => zetFlag("mox_nieuweHuisstijl", nieuw)}
         />
-      </div>
-      <div className="prototype-side-overlay__footer">
         <p className="nl-paragraph">
           <Link className="utrecht-link utrecht-link--html-a" href="/demo">
             Overzicht van componenten
           </Link>
         </p>
+      </div>
+      <div className="prototype-side-overlay__footer">
         <Button
           appearance="secondary-action-button"
           hint="danger"

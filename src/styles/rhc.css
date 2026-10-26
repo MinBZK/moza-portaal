@@ -736,17 +736,6 @@ body {
   }
 }
 
-.rhc-mox-chat-message--error {
-  align-self: flex-start;
-  background-color: var(--rhc-color-rood-50);
-  display: flex;
-  gap: var(--rhc-space-md);
-
-  >.utrecht-icon {
-    color: var(--rhc-color-rood-600);
-  }
-}
-
 .rhc-mox-chat-suggestions {
   max-inline-size: 100%;
 
@@ -1148,6 +1137,16 @@ body {
       outline: var(--rhc-border-width-lg) solid transparent;
     }
 
+    &:hover {
+      &::-webkit-slider-runnable-track {
+        border-color: color-mix(in srgb, var(--rhc-color-lintblauw-100) 60%, transparent);
+      }
+
+      &::-moz-range-track {
+        border-color: color-mix(in srgb, var(--rhc-color-lintblauw-100) 60%, transparent);
+      }
+    }
+
     /* Hover on the thumb, or keyboard focus on the slider: darker thumb with
       a ring. A pseudo-element cannot have :focus itself, so the focus sits
       on the input. One rule per browser: an unknown pseudo-element would
@@ -1272,7 +1271,6 @@ body {
   gap: var(--rhc-space-md);
 
   .rhc-mox-progressbar {
-    background-color: var(--rhc-color-cool-grey-200);
     flex: 1;
     max-inline-size: 20rem;
   }

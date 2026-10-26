@@ -277,7 +277,7 @@ dialog.prototype-side-overlay[open] {
 	text-decoration: none;
 	transform: rotate(45deg);
 	transform-origin: center;
-	z-index: 1;
+	z-index: 9;
 
 	&:hover {
 		opacity: 1;
@@ -379,4 +379,28 @@ code {
 	@media (width < 768px) {
 		grid-template-columns: 1fr;
 	}
+}
+
+/* Demo page (/demo): the house style switch at the top right, next to the
+  heading. Sticky with no height of its own, so it takes no space and stays in
+  view while you scroll. The box has the page background, which differs per
+  house style. */
+.prototype-demo-brand-switch {
+	block-size: 0;
+	display: flex;
+	inset-block-start: 0;
+	justify-content: flex-end;
+	position: sticky;
+	z-index: 3;
+}
+
+.prototype-demo-brand-switch__box {
+	background-color: var(--rhc-color-wit);
+	block-size: fit-content;
+	border-end-start-radius: var(--rhc-border-radius-md);
+	padding: var(--rhc-space-md);
+}
+
+.mox-current-brand .prototype-demo-brand-switch__box {
+	background-color: var(--rhc-color-cool-grey-100);
 }
