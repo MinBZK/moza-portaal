@@ -24,7 +24,6 @@ import {
   useAannemen,
   type BronId,
 } from "../_useAannemen";
-import InfoToggletip from "@/components/InfoToggletip";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL, type Werkgever } from "../_werkgever";
@@ -53,7 +52,6 @@ const Bronnen = ({
   const naarOverzicht =
     resultaat.bekend &&
     routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten).overzicht;
-  const weetNiet = situatie === "weetniet";
   const { bronnen, kandidaat } =
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
@@ -292,65 +290,28 @@ const Bronnen = ({
                 ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
                 : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
-        {weetNiet ? (
-          <>
-            {gekozen && (
-              <div className="mox-hiring-note">
-                Volgens deze gegevens staat de kandidaat in het
-                doelgroepregister en krijgt die bijstand. De berekening gebruikt
-                nu die gegevens.{" "}
-                <InfoToggletip label="Toelichting bij de opgehaalde gegevens">
-                  In dit prototype staat de kandidaat altijd in het
-                  doelgroepregister en krijgt die bijstand. In het echte portaal
-                  komt dit uit de gegevens van UWV en de gemeente.
-                </InfoToggletip>
-              </div>
-            )}
-            <ActionGroup>
-              <Button
-                appearance="primary-action-button"
-                aria-disabled={!gekozen}
-                onClick={() => {
-                  if (!staat || !gekozen) return;
-                  werkBij({
-                    antwoorden: {
-                      ...staat.antwoorden,
-                      doelgroepen: ["register", "bijstand"],
-                    },
-                  });
-                  router.push(
-                    "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
-                  );
-                }}
-              >
-                Terug naar de oriëntatie
-              </Button>
-            </ActionGroup>
-          </>
-        ) : (
-          <ActionGroup>
-            <Button
-              appearance="primary-action-button"
-              aria-disabled={!gekozen || !resultaat.bekend}
-              onClick={() => {
-                if (gekozen && resultaat.bekend)
-                  router.push(
-                    naarOverzicht
-                      ? "/personeel/iemand-aannemen/overzicht"
-                      : "/personeel/iemand-aannemen/concept-aanvraag",
-                  );
-              }}
-            >
-              {naarOverzicht ? "Bekijk wat voor u geldt" : "Vul de aanvraag in"}
-            </Button>
-            <Link
-              href="/personeel/iemand-aannemen"
-              className="utrecht-link utrecht-link--html-a"
-            >
-              Terug naar de vragen
-            </Link>
-          </ActionGroup>
-        )}
+        <ActionGroup>
+          <Button
+            appearance="primary-action-button"
+            aria-disabled={!gekozen || !resultaat.bekend}
+            onClick={() => {
+              if (gekozen && resultaat.bekend)
+                router.push(
+                  naarOverzicht
+                    ? "/personeel/iemand-aannemen/overzicht"
+                    : "/personeel/iemand-aannemen/concept-aanvraag",
+                );
+            }}
+          >
+            {naarOverzicht ? "Bekijk wat voor u geldt" : "Vul de aanvraag in"}
+          </Button>
+          <Link
+            href="/personeel/iemand-aannemen"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Terug naar de vragen
+          </Link>
+        </ActionGroup>
       </section>
     </>
   );

@@ -15,12 +15,11 @@ export const DOELGROEPEN = [
   ["wsw", "Heeft een Wsw-indicatie of werkt in de sociale werkvoorziening"],
   ["beschut", "Is door de gemeente aangewezen op beschut werk"],
   ["geen", "Geen van deze"],
-  ["weetniet", "Weet ik nog niet"],
 ] as const;
 export type Doelgroep = (typeof DOELGROEPEN)[number][0];
 
-/** Deze twee sluiten de andere keuzes uit. */
-const ALLEEN: Doelgroep[] = ["geen", "weetniet"];
+/** "Geen van deze" sluit de andere keuzes uit. */
+const ALLEEN: Doelgroep[] = ["geen"];
 
 /**
  * Vraag 1 is meerkeuze. Wajong vinkt het register aan (Wfsv 38b lid 1 c).
@@ -156,7 +155,7 @@ export const feitenVoor = (a: Keuzes): Feiten => {
     verloonde_uren_voorwaarden_2_10: verloond,
     verloonde_uren_voorwaarden_2_14: verloond,
   };
-  if (d.has("register") || d.has("weetniet"))
+  if (d.has("register"))
     f = {
       ...f,
       ...aan(
@@ -271,13 +270,7 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  | "lks_lid4"
-  | "ld_cao"
-  | "wia_nieuw"
-  | "wsw_zuinig"
-  | "beschut_lks"
-  | "weetniet"
-  | "geen";
+  "lks_lid4" | "ld_cao" | "wia_nieuw" | "wsw_zuinig" | "beschut_lks" | "geen";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";
@@ -426,7 +419,6 @@ export const uitkomstenUit = (
   if (ldBovenWml) aannames.push("ld_cao");
   if (d.has("wsw")) aannames.push("wsw_zuinig");
   if (d.has("beschut") && !d.has("bijstand")) aannames.push("beschut_lks");
-  if (d.has("weetniet")) aannames.push("weetniet");
   if (d.has("geen")) aannames.push("geen");
   return { regels, overige, aannames };
 };

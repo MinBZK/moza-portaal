@@ -5,8 +5,7 @@ import type { Doelgroep, Keuzes, Uitkomsten } from "./_uitkomsten";
  * Puur: alleen types uit _uitkomsten, zodat Node dit bestand direct laadt.
  */
 
-export type Situatie =
-  "gemeente" | "wajong" | "wia" | "register" | "uitleg" | "weetniet";
+export type Situatie = "gemeente" | "wajong" | "wia" | "register" | "uitleg";
 
 /** De stand van één zaak; de fase is een id uit de fasen van die situatie. */
 export type ZaakStand = {
@@ -36,15 +35,14 @@ export type Route = {
   overzicht: boolean;
 };
 
-/** Volgorde: wajong, wia, bijstand, register, beschut/wsw/geen, anders weet niet. */
+/** Volgorde: wajong, wia, bijstand, register, anders uitleg (beschut, Wsw, geen of niets gekozen). */
 export const situatieVan = (doelgroepen: Doelgroep[]): Situatie => {
   const heeft = (d: Doelgroep) => doelgroepen.includes(d);
   if (heeft("wajong")) return "wajong";
   if (heeft("wia")) return "wia";
   if (heeft("bijstand")) return "gemeente";
   if (heeft("register")) return "register";
-  if (heeft("beschut") || heeft("wsw") || heeft("geen")) return "uitleg";
-  return "weetniet";
+  return "uitleg";
 };
 
 export const routeVoor = (doelgroepen: Doelgroep[], u: Uitkomsten): Route => {

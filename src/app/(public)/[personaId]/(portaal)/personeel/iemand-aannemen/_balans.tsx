@@ -36,11 +36,6 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
     uitleg:
       "De gemeente kan bij beschut werk loonkostensubsidie geven. Dat staat er niet in, omdat het van de gemeente afhangt.",
   },
-  weetniet: {
-    kort: "Als de kandidaat in het doelgroepregister staat.",
-    uitleg:
-      "Gerekend alsof de kandidaat in het doelgroepregister staat. Helpt de gemeente de kandidaat aan werk, dan kan er ook loonkostensubsidie gelden.",
-  },
   geen: {
     kort: "Geen regeling met een bedrag.",
     uitleg:

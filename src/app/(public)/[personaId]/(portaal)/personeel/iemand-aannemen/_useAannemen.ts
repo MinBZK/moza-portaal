@@ -42,7 +42,7 @@ export const WML_UUR_EUROCENT = 1499;
 
 /** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
-  /** Meerkeuze; leeg telt als "weet ik nog niet". */
+  /** Meerkeuze; leeg betekent dat er niets is gekozen. */
   doelgroepen: Doelgroep[];
   /** Uren per week, 8 tot 40. */
   uren: number;
@@ -146,6 +146,10 @@ const lees = (): AannemenStaat => {
       const antwoorden = { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) };
       if (oud?.doelgroep && !g.antwoorden?.doelgroepen)
         antwoorden.doelgroepen = kiesDoelgroep([], oud.doelgroep, true);
+      // Eerdere versies kenden "weet ik nog niet"; die keuze bestaat niet meer.
+      antwoorden.doelgroepen = antwoorden.doelgroepen.filter((d) =>
+        DOELGROEPEN.some(([id]) => id === d),
+      );
       const oudeZaak = g as Parameters<typeof migreerZaken>[0];
       staat = {
         ...LEEG,

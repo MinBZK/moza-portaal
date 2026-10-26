@@ -65,7 +65,7 @@ const Overzicht = () => {
 
 /**
  * Routes zonder aanvraag van de werkgever: alleen het doelgroepregister,
- * een uitleg (beschut werk, Wsw, geen van deze, weet ik nog niet) of
+ * een uitleg (beschut werk, Wsw, geen van deze of niets gekozen) of
  * antwoorden waarbij de engine niets meer laat aanvragen.
  */
 const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
@@ -105,20 +105,6 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
               ? "De regelrecht-engine rekent uit wat voor u geldt…"
               : overzichtTekst(route)}
         </Paragraph>
-      )}
-
-      {bekend && situatie === "weetniet" && (
-        <Kaart id="uitleg-weetniet" kop="Weet ik nog niet">
-          <Paragraph>{AANNAMES.weetniet.uitleg}</Paragraph>
-          <Paragraph>
-            <Link
-              href="/personeel/iemand-aannemen/gegevens"
-              className="utrecht-link utrecht-link--html-a"
-            >
-              Gegevens van de kandidaat ophalen
-            </Link>
-          </Paragraph>
-        </Kaart>
       )}
 
       {bekend && uitleg.length > 0 && (

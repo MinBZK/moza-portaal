@@ -19,7 +19,7 @@ actor en wetsgrond van het verhaal via de gemeente staat in
 |---|---|
 | `/personeel` | Start "Iemand aannemen"; na het indienen staat de zaak hier |
 | `/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt` | De bewaarde aanvraag (melding op home en Lopende zaken, blok "Nog in te dienen aanvragen"): organisatie, tijdsduur, "antwoorden van Ondernemersplein overgenomen"; daaronder vier korte vragen (wie, als meerkeuze met acht opties: Wajong vinkt het doelgroepregister aan en zet het vast, beschut werk sluit het register uit; uren, loonwaarde en uurloon als schuifregelaar); rechts live "Wat de regelingen opleveren": loonkosten min loonkostensubsidie, loondispensatie en loonkostenvoordeel uit de engine, met een (i) bij elke aanname; de regelingen die verder kunnen gelden, ook uit de engine; "Aanvraag laten invullen". `/personeel/iemand-aannemen` verwijst hierheen |
-| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat kiezen (met toestemming) of toevoegen (wacht op toestemming), per organisatie een accordeon met de gegevens als vraag en antwoord, de datum en de wetsvraag; alleen de organisaties die iets weten over de situatie; vinkje per organisatie, standaard aan. Bij "weet ik nog niet" haalt deze stap de gegevens op en gaat de werkgever terug naar de oriëntatie, met de vinkjes ingevuld |
+| `/personeel/iemand-aannemen/gegevens` | Aanvraag laten invullen: namens wie, de kandidaat kiezen (met toestemming) of toevoegen (wacht op toestemming), per organisatie een accordeon met de gegevens als vraag en antwoord, de datum en de wetsvraag; alleen de organisaties die iets weten over de situatie; vinkje per organisatie, standaard aan. |
 | `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag, per organisatie: een paneel per regeling die de werkgever zelf indient, met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing bij de gemeente) en "Ik heb dit gecontroleerd"; daaronder "Taken voor de werknemer" en "Gaat vanzelf of via de loonaangifte"; Gecontroleerd n van N (alleen panelen); rechts "Wat dit u oplevert" live, per regeling (loonkostensubsidie, loondispensatie, loonkostenvoordeel; ook als die niet gelden) en samen. Zonder paneel staat er "Klaar" in plaats van indienen |
 | `/personeel/iemand-aannemen/indienen` | Controleren en indienen bij de gemeente of UWV: wat naar die organisatie gaat, wat de werknemer zelf aanvraagt, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
 | `/personeel/iemand-aannemen/verstuurd` | Bevestiging, link naar de zaak |
@@ -32,8 +32,8 @@ actor en wetsgrond van het verhaal via de gemeente staat in
 ## Route per situatie
 
 `situatieVan` in `_route.ts` kiest uit de vinkjes van vraag 1 de eerste die
-past: Wajong, WIA, bijstand, register, beschut werk of Wsw of geen van deze,
-anders weet ik niet. `routeVoor` maakt daarvan de route met de uitkomsten van
+past: Wajong, WIA, bijstand of register, anders uitleg (beschut werk, Wsw,
+geen van deze of niets gekozen). `routeVoor` maakt daarvan de route met de uitkomsten van
 de engine: welke panelen er zijn per organisatie, welke taken de werknemer
 heeft, wat vanzelf gaat en of er een zaak is. Geeft de engine geen recht, dan
 is er geen paneel; blijft er niets over, dan volgt na de gegevens het
@@ -50,8 +50,7 @@ doelgroepverklaring; alleen bij WIA is dat een eigen zaak.
 | `wajong` | idem bij UWV: loondispensatie; jobcoach en werkplek vraagt de werknemer aan (Wajong 2:22) |
 | `wia` | gegevens → concept-aanvraag → Klaar → zaak "Doelgroepverklaring"; de werkgever dient niets in, de werknemer vraagt de verklaring aan |
 | `register` | overzicht: loonkostenvoordeel in de loonaangifte en de no-riskpolis |
-| `uitleg` (beschut werk, Wsw, geen van deze) | overzicht met uitleg; geen aanvraag in het portaal |
-| `weetniet` | gegevens ophalen, dan terug naar de oriëntatie met ingevulde vinkjes |
+| `uitleg` (beschut werk, Wsw, geen van deze, niets gekozen) | overzicht met uitleg; geen aanvraag in het portaal |
 
 De opslag bewaart per situatie een eigen zaak (`zaken[situatie]`); een oudere
 opslag met één zaak hoort bij de gemeente (`migreerZaken`). Bij indienen (en

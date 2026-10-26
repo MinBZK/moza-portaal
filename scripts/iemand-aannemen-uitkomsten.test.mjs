@@ -52,7 +52,7 @@ test("vraag 1: geen van deze sluit de rest uit", () => {
   ]);
 });
 
-test("vraag 1: acht opties, WIA zonder WAO", () => {
+test("vraag 1: zeven opties, WIA zonder WAO, geen weet ik nog niet", () => {
   const ids = U.DOELGROEPEN.map(([id]) => id);
   assert.deepEqual(ids, [
     "register",
@@ -62,7 +62,6 @@ test("vraag 1: acht opties, WIA zonder WAO", () => {
     "wsw",
     "beschut",
     "geen",
-    "weetniet",
   ]);
   assert.equal(
     U.DOELGROEPEN.find(([id]) => id === "wia")[1],
@@ -188,12 +187,11 @@ test("geen van deze: niets, wel de toelichting", () => {
   assert.ok(u.aannames.includes("geen"));
 });
 
-test("weet ik nog niet: register via de blijfgrond", () => {
-  const u = reken(["weetniet"], 60);
-  assert.equal(regel(u, "lks"), undefined);
-  assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
-  assert.equal(overig(u, "nrp").geldt, true);
-  assert.ok(u.aannames.includes("weetniet"));
+test("niets aangevinkt: geen bedragen en geen no-riskpolis", () => {
+  const u = reken([], 60);
+  assert.deepEqual(u.regels, []);
+  assert.equal(overig(u, "nrp").geldt, false);
+  assert.deepEqual(u.aannames, []);
 });
 
 test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
@@ -255,8 +253,7 @@ test("route: situatie volgt de volgorde wajong, wia, bijstand, register, uitleg"
   assert.equal(s(["register", "wia"]), "wia");
   assert.equal(s(["register"]), "register");
   for (const d of ["beschut", "wsw", "geen"]) assert.equal(s([d]), "uitleg");
-  assert.equal(s(["weetniet"]), "weetniet");
-  assert.equal(s([]), "weetniet");
+  assert.equal(s([]), "uitleg");
 });
 
 test("route: gemeente bij loonwaarde 60", () => {
@@ -417,8 +414,8 @@ test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vrag
   );
 });
 
-test("route: uitleg en weetniet geven een overzicht zonder zaak", () => {
-  for (const d of [["beschut"], ["wsw"], ["geen"], ["weetniet"], []]) {
+test("route: uitleg en niets aangevinkt geven een overzicht zonder zaak", () => {
+  for (const d of [["beschut"], ["wsw"], ["geen"], []]) {
     const r = R.routeVoor(d, reken(d, 100));
     assert.equal(r.overzicht, true, d.join());
     assert.equal(r.zaak, null, d.join());
