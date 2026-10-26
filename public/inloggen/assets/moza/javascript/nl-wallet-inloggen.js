@@ -22,7 +22,7 @@
  * "inlog:ondernemingen" de bevoegdheden die in deze sessie gedeeld zijn (nl-wallet-portaal.js toont ze);
  * personas.js toont die naam in plaats van die van de persona. De persona is het bedrijf:
  * heeft precies één persona het KVK-nummer uit de bevoegdheid, dan gaat de gebruiker door
- * naar die persona (Karin Jansen met KVK 85234567 is de Horecaondernemer).
+ * naar die persona. In moza-portaal kiest de server de persona (zie api/nl-wallet).
  *
  * Afloopwegen bij het inloggen:
  *   - Andere telefoon (cross_device): dit script volgt de sessie via /api/nl-wallet/sessie
