@@ -98,7 +98,7 @@ const AanvraagPage = async ({
         {!flow && (
           <section aria-labelledby="aanvraag-kosten">
             <Heading level={2} id="aanvraag-kosten">
-              Wat kost het {aanvraag.onderneming}?
+              Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
             </Heading>
             <Paragraph>
               Deze berekening blijft op uw scherm. Er gaat niets naar een

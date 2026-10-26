@@ -158,11 +158,14 @@ Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ruim t
 
 ## Voor de onderzoeker
 
-- Persona wisselen: het Flags-paneel (persona) of `?persona=<id>`. Werkgever,
-  KVK-nummer, vestiging, rekeningnummer en personeelsaantal volgen de persona;
-  de kandidaat en de gemeente van de loonkostensubsidie (Lansingerland, de
-  woonplaats van de kandidaat) blijven. Bij een wissel begint het scenario opnieuw
-  (`moza-iemand-aannemen` staat in de lijst van het persona-paneel).
+- Persona of onderneming wisselen: het Flags-paneel (persona), `?persona=<id>`
+  of de keuze van de onderneming in de header. Elke persona heeft de aanvraag
+  onder "Nog in te dienen aanvragen". Werkgever, KVK-nummer, vestiging,
+  rekeningnummer en personeelsaantal volgen de actieve onderneming; de kandidaat
+  en de gemeente van de loonkostensubsidie (Lansingerland, de woonplaats van de
+  kandidaat) blijven. Bij een wissel begint het scenario opnieuw: de opslag
+  onthoudt van welke persona en onderneming hij is (`_eigenaar.ts`), en
+  `moza-iemand-aannemen` staat in de lijst van het persona-paneel.
 - Op de zaakpagina van elke situatie: blok "Voor de onderzoeker" met het moment
   (per situatie eigen fasen; bij de gemeente ontvangen, gemeten, vastgesteld, besluit, antwoord, betaling; bij WIA de stand van de taak van de werknemer) en "Begin
   het scenario opnieuw".

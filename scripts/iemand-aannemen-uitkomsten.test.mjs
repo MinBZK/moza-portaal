@@ -655,3 +655,21 @@ test("balans: loondispensatie boven het minimumloon is niet meegeteld", () => {
   const wml = reken(["register", "wajong"], 70);
   assert.equal(U.balansRegels(wml, 10_000_000)[1].status, "bedrag");
 });
+
+const E = await import("../" + MAP + "_eigenaar.ts");
+
+test("eigenaar: persona en onderneming uit de cookies", () => {
+  assert.equal(
+    E.eigenaarUit("flags=%7B%7D; personaId=karin; organisatieId=85234567"),
+    "karin:85234567",
+  );
+  assert.equal(E.eigenaarUit("personaId=bilal"), "bilal:");
+  assert.equal(E.eigenaarUit(""), ":");
+});
+
+test("eigenaar: opslag van een ander telt als leeg, oude opslag zonder eigenaar niet", () => {
+  assert.equal(E.isVanEigenaar({ eigenaar: "karin:1" }, "karin:1"), true);
+  assert.equal(E.isVanEigenaar({ eigenaar: "karin:1" }, "karin:2"), false);
+  assert.equal(E.isVanEigenaar({ eigenaar: "karin:1" }, "bilal:1"), false);
+  assert.equal(E.isVanEigenaar({}, "karin:1"), true);
+});

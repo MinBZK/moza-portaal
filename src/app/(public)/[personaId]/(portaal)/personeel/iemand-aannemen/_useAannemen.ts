@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { eigenaarUit, isVanEigenaar } from "./_eigenaar";
 import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
 import {
   migreerZaken,
@@ -18,7 +19,9 @@ import { euro } from "./_werkgever";
  * bevestigd, of de aanvraag is verstuurd, op welk moment de zaak staat en de
  * vraag bij het besluit. Het script rekent niets: alle uitkomsten staan in de
  * demo-data en komen uit de regelrecht-engine. Een persona-wissel wist deze
- * sleutel (zie _flags/personaPaneel.tsx).
+ * sleutel (zie _flags/personaPaneel.tsx); de opslag onthoudt ook van welke
+ * persona en onderneming hij is (_eigenaar.ts), zodat een wissel buiten het
+ * paneel om, of naar een andere onderneming, leeg begint.
  */
 
 export const SLEUTEL = "moza-iemand-aannemen";
@@ -126,7 +129,13 @@ export const uurloonTekst = (a: Antwoorden) =>
     : `${euro(a.uurloon)} per uur`;
 
 const luisteraars = new Set<() => void>();
-let vorige: { rauw: string | null; staat: AannemenStaat } | null = null;
+let vorige: {
+  rauw: string | null;
+  eigenaar: string;
+  staat: AannemenStaat;
+} | null = null;
+
+const huidigeEigenaar = () => eigenaarUit(document.cookie);
 
 const lees = (): AannemenStaat => {
   let rauw: string | null = null;
@@ -135,12 +144,19 @@ const lees = (): AannemenStaat => {
   } catch {
     // Geen opslag: elke pagina werkt los.
   }
-  if (vorige?.rauw === rauw) return vorige.staat;
+  const eigenaar = huidigeEigenaar();
+  if (vorige?.rauw === rauw && vorige.eigenaar === eigenaar)
+    return vorige.staat;
   let staat = LEEG;
   try {
     const gelezen: unknown = JSON.parse(rauw ?? "null");
-    if (gelezen && typeof gelezen === "object") {
-      const g = gelezen as Partial<AannemenStaat>;
+    if (
+      gelezen &&
+      typeof gelezen === "object" &&
+      isVanEigenaar(gelezen, eigenaar)
+    ) {
+      const g = gelezen as Partial<AannemenStaat> & { eigenaar?: string };
+      delete g.eigenaar;
       // Eerdere versies bewaarden één doelgroep.
       const oud = g.antwoorden as { doelgroep?: Doelgroep } | undefined;
       const antwoorden = { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) };
@@ -165,7 +181,7 @@ const lees = (): AannemenStaat => {
   } catch {
     // Onleesbaar: als leeg behandelen.
   }
-  vorige = { rauw, staat };
+  vorige = { rauw, eigenaar, staat };
   return staat;
 };
 
@@ -180,7 +196,10 @@ const subscribe = (luisteraar: () => void) => {
 
 const schrijf = (staat: AannemenStaat) => {
   try {
-    window.localStorage.setItem(SLEUTEL, JSON.stringify(staat));
+    window.localStorage.setItem(
+      SLEUTEL,
+      JSON.stringify({ ...staat, eigenaar: huidigeEigenaar() }),
+    );
   } catch {
     return;
   }

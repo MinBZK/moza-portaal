@@ -73,8 +73,8 @@ export type DemoConceptAanvraag = {
   id: string;
   titel: string;
   organisatie: string;
-  /** Voor welke onderneming van de persona. */
-  onderneming: string;
+  /** Voor welke onderneming van de persona; zonder: de actieve onderneming. */
+  onderneming?: string;
   /** Hoe lang het invullen nog duurt, als tekst. */
   tijdsduur: string;
   indienenVoor: string;
@@ -91,53 +91,29 @@ export type DemoConceptAanvraag = {
 };
 
 /**
- * Fictieve, nog niet ingediende aanvragen per persona: Karin Jansen (Kwekerij
- * De Bloesem) en Robin Vogel (Bloom B.V.).
+ * De fictieve, nog niet ingediende aanvraag "Iemand aannemen". Elke persona
+ * heeft hem, voor de onderneming die op dat moment actief is; daarom noemt de
+ * tekst geen onderneming.
  */
-const conceptAanvragen: Record<string, DemoConceptAanvraag[]> = {
-  karin: [
-    {
-      id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
-      titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
-      organisatie: "UWV, Belastingdienst en gemeente",
-      onderneming: "Kwekerij De Bloesem",
-      tijdsduur: "Ongeveer 15 minuten",
-      indienenVoor: "1 januari 2027",
-      bewaardVan: "Ondernemersplein",
-      overgenomen:
-        "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. De berekening hieronder gaat nu uit van Kwekerij De Bloesem.",
-      toelichting: [
-        "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
-        "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
-      ],
-      flow: "iemand-aannemen",
-    },
+const iemandAannemen: DemoConceptAanvraag = {
+  id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+  titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+  organisatie: "UWV, Belastingdienst en gemeente",
+  tijdsduur: "Ongeveer 15 minuten",
+  indienenVoor: "1 januari 2027",
+  bewaardVan: "Ondernemersplein",
+  overgenomen:
+    "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. De berekening hieronder gaat uit van deze antwoorden.",
+  toelichting: [
+    "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
+    "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
   ],
-  bloom: [
-    {
-      id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
-      titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
-      organisatie: "UWV, Belastingdienst en gemeente",
-      onderneming: "Bloom B.V.",
-      tijdsduur: "Ongeveer 15 minuten",
-      indienenVoor: "1 januari 2027",
-      bewaardVan: "Ondernemersplein",
-      overgenomen:
-        "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. De berekening hieronder gaat nu uit van Bloom B.V.",
-      berekening: { urenPerWeek: 32, brutoPerMaand: 2250 },
-      flow: "iemand-aannemen",
-      toelichting: [
-        "U kunt een deel van de loonkosten terugkrijgen en u loopt minder risico als uw werknemer ziek wordt. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat.",
-        "Zeven regelingen zijn nagelopen; zes kunnen gelden. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
-      ],
-    },
-  ],
+  flow: "iemand-aannemen",
 };
 
 export const getDemoConceptAanvragen = async (
   personaId?: string,
-): Promise<DemoConceptAanvraag[]> =>
-  (personaId && conceptAanvragen[personaId]) || [];
+): Promise<DemoConceptAanvraag[]> => (personaId ? [iemandAannemen] : []);
 
 export const getDemoConceptAanvraagById = async (
   personaId: string | undefined,
