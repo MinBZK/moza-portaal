@@ -14,7 +14,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
 	--mox-font-weight-medium: 500;
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
-
+	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
 	/* ==== 2. Typografie ========================================================= */
 
 	h1,
@@ -132,44 +132,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		align-items: center;
 		display: inline-flex;
 		gap: var(--rhc-space-sm);
-	}
-
-	.rhc-mox-menu {
-		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
-		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		margin-block-start: var(--rhc-space-2xs);
-
-		li+li {
-			margin-block-start: var(--rhc-space-2xs);
-		}
-
-		button[aria-pressed=true] {
-			background: var(--rhc-color-cool-grey-200);
-			font-weight: var(--rhc-text-font-weight-semi-bold);
-		}
-	}
-
-	.rhc-mox-header-organizations__choice {
-		background: transparent;
-		border: 0;
-		color: var(--rhc-color-foreground-default);
-		cursor: pointer;
-		display: block;
-		font: inherit;
-		inline-size: 100%;
-		padding: var(--rhc-space-lg) var(--rhc-space-xl);
-		text-align: start;
-
-		&:hover,
-		&[aria-pressed="true"] {
-			background: var(--rhc-color-cool-grey-100);
-		}
-	}
-
-	.mox-header-organization {
-		font-weight: var(--rhc-text-font-weight-semi-bold);
-		margin-inline-start: var(--rhc-space-md);
 	}
 
 	.rhc-mox-menu-button {
@@ -541,29 +503,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			gap: var(--rhc-space-lg);
 			position: relative;
 		}
-	}
-}
-
-/* Menu */
-.rhc-mox-menu {
-	button {
-		color: var(--rhc-color-zwart);
-		inline-size: 100%;
-		padding-block: var(--rhc-space-xl);
-		padding-inline: var(--rhc-space-3xl);
-		text-align: start;
-
-		&[aria-pressed=true] {
-			background-color: var(--rhc-color-cool-grey-200);
-			color: var(--rhc-color-zwart) !important;
-		}
-
-		&:hover {
-			background-color: var(--rhc-color-cool-grey-200) !important;
-			color: var(--rhc-color-zwart);
-		}
-
-
 	}
 }
 

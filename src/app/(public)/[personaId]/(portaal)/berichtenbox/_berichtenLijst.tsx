@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Alert } from "@/components/rhc";
 import {
@@ -24,6 +24,7 @@ import PageNumberNavigation from "@/components/pageNumberNavigation";
 import TemporaryAlert from "@/components/TemporaryAlert";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import ShareButton from "@/components/ShareButton";
+import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import type { DemoBericht } from "@/demo";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
@@ -122,88 +123,47 @@ const RijActies = ({
   onUitMap: () => void;
 }) => {
   const delen = useFlag("mox_delen");
-  const menuRef = useRef<HTMLUListElement>(null);
   const knopRef = useRef<HTMLButtonElement>(null);
-  // Het menu staat als popover in de top layer, dus buiten de scrollende
-  // tabel. Elk menu krijgt een eigen anker om onder zijn knop te staan.
-  const id = useId().replace(/[^\w-]/g, "");
-  const menuId = `acties-${id}`;
-  const sluit = () => menuRef.current?.hidePopover();
-  const actie = (uitvoeren: () => void) => () => {
-    sluit();
-    uitvoeren();
-  };
 
   return (
-    <div
-      className="mox-menu"
-      style={{ "--mox-menu-anker": `--${menuId}` } as CSSProperties}
+    <Dropdown
+      triggerRef={knopRef}
+      trigger={
+        <>
+          <Icon icon="meer" />
+          <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
+        </>
+      }
     >
-      <Button
-        ref={knopRef}
-        appearance="subtle-button"
-        className="mox-menu-trigger"
-        popoverTarget={menuId}
+      {delen && (
+        <li>
+          <ShareButton title={onderwerp} url={href} variant="menu" />
+        </li>
+      )}
+      <DropdownItem
+        icon={ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
+        onSelect={onOngelezen}
       >
-        <Icon icon="meer" />
-        <VisuallyHidden>Acties voor {onderwerp}</VisuallyHidden>
-      </Button>
-      <ul
-        ref={menuRef}
-        id={menuId}
-        popover="auto"
-        className="rhc-mox-action-menu"
+        {ongelezen ? "Als gelezen markeren" : "Als ongelezen markeren"}
+      </DropdownItem>
+      <DropdownItem
+        icon={<FolderIcon />}
+        onSelect={() => onVerplaats(knopRef.current)}
       >
-        {delen && (
-          <li>
-            <ShareButton
-              title={onderwerp}
-              url={href}
-              variant="menu"
-              onShared={sluit}
-            />
-          </li>
-        )}
-        <li>
-          <Button appearance="subtle-button" onClick={actie(onOngelezen)}>
-            {ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
-            {ongelezen ? "Als gelezen markeren" : "Als ongelezen markeren"}
-          </Button>
-        </li>
-        <li>
-          <Button
-            appearance="subtle-button"
-            onClick={() => {
-              sluit();
-              onVerplaats(knopRef.current);
-            }}
-          >
-            <FolderIcon />
-            Naar map verplaatsen
-          </Button>
-        </li>
-        {map && (
-          <li>
-            <Button appearance="subtle-button" onClick={actie(onUitMap)}>
-              <Icon icon="inbox" />
-              Uit map halen
-            </Button>
-          </li>
-        )}
-        <li>
-          <Button appearance="subtle-button" onClick={actie(onArchiveer)}>
-            <ArchiveIcon />
-            Archiveren
-          </Button>
-        </li>
-        <li>
-          <Button appearance="subtle-button" onClick={actie(onVerwijder)}>
-            <Icon icon="verwijderen" />
-            Verwijderen
-          </Button>
-        </li>
-      </ul>
-    </div>
+        Naar map verplaatsen
+      </DropdownItem>
+      {map && (
+        <DropdownItem icon={<Icon icon="inbox" />} onSelect={onUitMap}>
+          Uit map halen
+        </DropdownItem>
+      )}
+      <DropdownItem icon={<ArchiveIcon />} onSelect={onArchiveer}>
+        Archiveren
+      </DropdownItem>
+      <DropdownItem icon={<Icon icon="verwijderen" />} onSelect={onVerwijder}>
+        Verwijderen
+      </DropdownItem>
+    </Dropdown>
   );
 };
 

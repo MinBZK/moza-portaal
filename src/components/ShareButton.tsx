@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Icon, LinkButton, VisuallyHidden } from "@/components/rhc";
+import { Icon, LinkButton, VisuallyHidden } from "@/components/rhc";
+import { useDropdownClose } from "@/components/Dropdown";
 import { CheckIcon } from "@/components/icons/checkIcon";
 
 /** How long the "copied" confirmation stays visible. */
@@ -12,9 +13,9 @@ const CONFIRM_MS = 3000;
  * is not available, such as Firefox on desktop, it copies the link instead
  * and confirms that in the button.
  *
- * `variant="menu"` renders a subtle button for an action menu, as in the
- * Berichtenbox list. `onShared` runs after the share sheet closes, for
- * example to close that menu.
+ * `variant="menu"` renders an item for a Dropdown, as in the Berichtenbox
+ * list; after sharing it closes that dropdown. `onShared` runs after the
+ * share sheet closes.
  */
 const ShareButton = ({
   title,
@@ -32,6 +33,7 @@ const ShareButton = ({
   onShared?: () => void;
 }) => {
   const [result, setResult] = useState<"copied" | "failed" | null>(null);
+  const closeDropdown = useDropdownClose();
 
   useEffect(() => {
     if (!result) return;
@@ -53,6 +55,7 @@ const ShareButton = ({
         // Closed by the user (AbortError) or not allowed: nothing to report.
       }
       onShared?.();
+      closeDropdown();
       return;
     }
 
@@ -74,9 +77,13 @@ const ShareButton = ({
   return (
     <>
       {variant === "menu" ? (
-        <Button appearance="subtle-button" onClick={share}>
+        <button
+          type="button"
+          className="rhc-mox-dropdown__item"
+          onClick={share}
+        >
           {label}
-        </Button>
+        </button>
       ) : (
         <LinkButton onClick={share}>{label}</LinkButton>
       )}
