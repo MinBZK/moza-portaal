@@ -23,7 +23,7 @@ actor en wetsgrond van het verhaal via de gemeente staat in
 | `/personeel/iemand-aannemen/concept-aanvraag` | De vooringevulde aanvraag, per organisatie: een paneel per regeling die de werkgever zelf indient, met gegevens en bron, "Waarom deze uitkomst?", keuzes (jobcoaching, werkplekaanpassing, proefplaatsing bij de gemeente) en "Ik heb dit gecontroleerd"; daaronder "Taken voor de werknemer" en "Gaat vanzelf of via de loonaangifte"; Gecontroleerd n van N (alleen panelen); rechts "Wat dit u oplevert" live, per regeling (loonkostensubsidie, loondispensatie, loonkostenvoordeel; ook als die niet gelden) en samen. Zonder paneel staat er "Klaar" in plaats van indienen |
 | `/personeel/iemand-aannemen/indienen` | Controleren en indienen bij de gemeente of UWV: wat naar die organisatie gaat, wat de werknemer zelf aanvraagt, wat vanzelf geldt, wat later komt, wat niet; bevestiging; Indienen |
 | `/personeel/iemand-aannemen/verstuurd` | Bevestiging, link naar de zaak |
-| `/personeel/iemand-aannemen/overzicht` | Waar niets in te dienen is (alleen doelgroepregister, beschut werk, Wsw, geen van deze, of een uitkomst zonder aanvraag): wat voor de werkgever geldt, met de (i)-teksten van de oriëntatie |
+| `/personeel/iemand-aannemen/overzicht` | Na de gegevens, waar niets in te dienen is (alleen doelgroepregister, beschut werk, Wsw, geen van deze, of een uitkomst zonder aanvraag): wat voor de werkgever geldt, met de (i)-teksten van de oriëntatie |
 | `/lopendezaken` | De zaak staat in het overzicht (via de opslag die ook de Digitale assistent gebruikt) |
 | `/lopendezaken/iemand-aannemen/[situatie]` | De zaak van die situatie (gemeente, wajong of wia): voortgang (status-track), alles wat is vastgelegd (tijdlijn met correctie), komt hierna; bij WIA de doelgroepverklaring met de stand van de taak van de werknemer |
 | `/lopendezaken/iemand-aannemen/[situatie]/besluit` | Besluit (gemeente: college; wajong: UWV), dezelfde berekening als vooraf, "Waarom" met engine-stappen, "Klopt dit niet?". WIA heeft geen besluitpagina |
@@ -36,7 +36,9 @@ past: Wajong, WIA, bijstand, register, beschut werk of Wsw of geen van deze,
 anders weet ik niet. `routeVoor` maakt daarvan de route met de uitkomsten van
 de engine: welke panelen er zijn per organisatie, welke taken de werknemer
 heeft, wat vanzelf gaat en of er een zaak is. Geeft de engine geen recht, dan
-is er geen paneel; blijft er niets over, dan volgt het overzicht. Bij de
+is er geen paneel; blijft er niets over, dan volgt na de gegevens het
+overzicht. Elke route begint bij de gegevens (toestemming en wat de overheid al
+weet). Bij de
 gemeente telt werkplekaanpassing alleen niet als aanvraag: zonder
 loonkostensubsidie, jobcoaching of proefplaatsing volgt ook het overzicht. Het
 loonkostenvoordeel arbeidsgehandicapte geeft in elke situatie de taak

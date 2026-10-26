@@ -13,7 +13,6 @@ import {
 import RangeSlider from "@/components/RangeSlider";
 import Balans from "./_balans";
 import { type Overig } from "./_uitkomsten";
-import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -94,11 +93,6 @@ const VragenMetStaat = ({
   const resultaat = useUitkomsten(a);
   const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
-  const route = routeVoor(a.doelgroepen, resultaat.uitkomsten);
-  const aanvraagHref =
-    route.overzicht && route.situatie !== "weetniet"
-      ? "/personeel/iemand-aannemen/overzicht"
-      : "/personeel/iemand-aannemen/gegevens";
   const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
 
   return (
@@ -229,9 +223,9 @@ const VragenMetStaat = ({
           beslist zelf of u indient. Tussendoor opslaan kan.
         </Paragraph>
         <ActionGroup>
-          {/* Zolang de engine rekent, ligt de route nog niet vast. */}
+          {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
           <Link
-            href={aanvraagHref}
+            href="/personeel/iemand-aannemen/gegevens"
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action mox-hiring-button-link"
             aria-disabled={resultaat.bekend ? undefined : true}
             aria-describedby={resultaat.bekend ? undefined : "aanvragen-bezig"}

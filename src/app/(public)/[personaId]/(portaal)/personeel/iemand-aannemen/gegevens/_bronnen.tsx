@@ -20,11 +20,13 @@ import {
   BRONNEN,
   alleBronnenBevestigd,
   bronBevestigd,
+  STANDAARD_ANTWOORDEN,
   useAannemen,
   type BronId,
 } from "../_useAannemen";
 import InfoToggletip from "@/components/InfoToggletip";
-import { situatieVan } from "../_route";
+import { routeVoor, situatieVan } from "../_route";
+import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL, type Werkgever } from "../_werkgever";
 
 const NIEUW = "nieuw";
@@ -45,6 +47,12 @@ const Bronnen = ({
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
   const situatie = situatieVan(staat?.antwoorden.doelgroepen ?? []);
+  // Zonder iets om aan te vragen gaat de route na de gegevens naar het overzicht.
+  const antwoorden = staat?.antwoorden ?? STANDAARD_ANTWOORDEN;
+  const resultaat = useUitkomsten(antwoorden);
+  const naarOverzicht =
+    resultaat.bekend &&
+    routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten).overzicht;
   const weetNiet = situatie === "weetniet";
   const { bronnen, kandidaat } =
     perSituatie[
@@ -323,13 +331,17 @@ const Bronnen = ({
           <ActionGroup>
             <Button
               appearance="primary-action-button"
-              aria-disabled={!gekozen}
+              aria-disabled={!gekozen || !resultaat.bekend}
               onClick={() => {
-                if (gekozen)
-                  router.push("/personeel/iemand-aannemen/concept-aanvraag");
+                if (gekozen && resultaat.bekend)
+                  router.push(
+                    naarOverzicht
+                      ? "/personeel/iemand-aannemen/overzicht"
+                      : "/personeel/iemand-aannemen/concept-aanvraag",
+                  );
               }}
             >
-              Vul de aanvraag in
+              {naarOverzicht ? "Bekijk wat voor u geldt" : "Vul de aanvraag in"}
             </Button>
             <Link
               href="/personeel/iemand-aannemen"
