@@ -3,9 +3,10 @@
 // Overview of the project's own components (src/components, not RHC), with
 // their options and a live example. Prototype page: delete the folder
 // (demo) when it is no longer needed; nothing else links to it.
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import {
   Alert,
+  Button,
   Heading,
   Paragraph,
   Table,
@@ -17,6 +18,7 @@ import {
 } from "@/components/rhc";
 import BarGraph from "@/components/BarGraph";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
+import CountdownBar from "@/components/CountdownBar";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
 import ShareButton from "@/components/ShareButton";
@@ -75,6 +77,8 @@ const Options = ({ options }: { options: Option[] }) => (
 const ComponentsDemoPage = () => {
   const [organisation, setOrganisation] = useState("Bloemenkwekerij");
   const [slider, setSlider] = useState(32);
+  const countdownRef = useRef<{ reset: () => void }>(null);
+  const [countdownDone, setCountdownDone] = useState(0);
 
   const entries: Entry[] = [
     {
@@ -235,6 +239,40 @@ const ComponentsDemoPage = () => {
             </DropdownItem>
             <DropdownItem icon={<ArchiveIcon />}>Archiveren</DropdownItem>
           </Dropdown>
+        </div>
+      ),
+    },
+    {
+      name: "CountdownBar",
+      file: "src/components/CountdownBar.tsx",
+      description:
+        "Aftelbalk: een ProgressBar die van vol naar leeg loopt, standaard in 60 seconden. Na afloop roept hij onComplete aan; via een ref begint de ouder opnieuw. Gebruikt op de pagina Contactmomenten.",
+      options: [
+        ["onComplete", "() => void", "–", "Als de tijd om is."],
+        ["seconds", "number", "60", "Duur van één ronde."],
+        [
+          "label",
+          "string",
+          "Tijd tot de volgende update",
+          "Toegankelijke naam van de balk.",
+        ],
+        ["ref.reset()", "() => void", "–", "Begint opnieuw met de volle tijd."],
+      ],
+      example: (
+        <div className="rhc-mox-row-gap">
+          <CountdownBar
+            ref={countdownRef}
+            onComplete={() => setCountdownDone((n) => n + 1)}
+          />
+          <Paragraph>
+            <div>Klaar: {countdownDone} keer. </div>
+            <Button
+              appearance="secondary-action-button"
+              onClick={() => countdownRef.current?.reset()}
+            >
+              Opnieuw beginnen
+            </Button>
+          </Paragraph>
         </div>
       ),
     },
@@ -420,12 +458,8 @@ const ComponentsDemoPage = () => {
       "Pagina-inhoud voor een onderdeel dat nog niet werkt (title, summary, expectations, questions).",
     ],
     [
-      "CountdownBar",
-      "Aftelbalk met pauzeknop (contactmomenten); onComplete, reset via ref.",
-    ],
-    [
       "SideOverlay",
-      "Paneel dat van rechts inschuift, met sneltoets (id, title, shortcut). Voor het Flags- en persona-paneel.",
+      "Paneel dat van rechts inschuift, met sneltoets (id, title, shortcut). Alleen voor demo doeleinden gebruikt door het Flags- en Persona-paneel.",
     ],
     [
       "LanguageSelect",
@@ -461,6 +495,16 @@ const ComponentsDemoPage = () => {
         <Paragraph>
           Overzicht van de componenten in src/components die niet uit RHC komen,
           met hun opties en een voorbeeld.
+        </Paragraph>
+        <Paragraph>
+          Overige componenten gebruiken{" "}
+          <a
+            href="https://rijkshuisstijl-community.vercel.app/?path=/docs/react-components-readme--docs"
+            rel="extrenal"
+          >
+            RHC React-componenten
+          </a>{" "}
+          met aanpassingen middels CSS.
         </Paragraph>
       </Alert>
 

@@ -1181,10 +1181,11 @@ body {
 
 /* --- Voortgangsbalk --- */
 /* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
-.rhc-mox-progressbar {
-  background-color: var(--rhc-color-wit);
-  block-size: var(--rhc-space-lg);
-  border-color: var(--rhc-color-cool-grey-400);
+.rhc-mox-progressbar,
+.rhc-mox-bar-graph__track {
+  background-color: var(--rhc-color-cool-grey-50);
+  block-size: var(--rhc-space-xl);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
   border-radius: var(--rhc-border-radius-round);
   border-width: var(--rhc-border-width-sm);
   inline-size: 100%;
@@ -1192,7 +1193,7 @@ body {
 }
 
 .rhc-mox-progressbar-track {
-  background-color: var(--rhc-color-groen-500);
+  background-color: var(--rhc-color-hemelblauw-500);
   block-size: 100%;
   border-radius: var(--rhc-border-radius-round);
 }
@@ -1219,18 +1220,6 @@ body {
 
   to {
     transform: translateX(250%);
-  }
-}
-
-/* --- Aftelbalk --- */
-.rhc-mox-countdown {
-  align-items: center;
-  display: flex;
-  gap: var(--rhc-space-lg);
-
-  .rhc-mox-progressbar {
-    background-color: var(--rhc-color-cool-grey-200);
-    flex: 1;
   }
 }
 
@@ -1363,7 +1352,7 @@ body {
 .rhc-mox-bar-graph__track {
   --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
 
-  background-color: var(--rhc-color-cool-grey-100);
+  background-color: var(--rhc-color-cool-grey-50);
   border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
   border-radius: var(--rhc-border-radius-round);
   display: flex;
