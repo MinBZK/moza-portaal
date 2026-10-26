@@ -15,6 +15,7 @@ import {
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
+import { Alert } from "@/components/rhc";
 import { Markdown } from "./_markdown";
 import {
   BRONNEN,
@@ -94,16 +95,10 @@ export const Assistent = ({ item }: { item: ItemVan<"assistent"> }) => (
 );
 
 export const Fout = ({ item }: { item: ItemVan<"fout"> }) => (
-  <div
-    className="rhc-mox-chat-message rhc-mox-chat-message--error"
-    role="alert"
-  >
-    <Icon icon="let-op" />
-    <div>
-      <Paragraph>{item.tekst}</Paragraph>
-      <Vervolg vervolg={item.vervolg} />
-    </div>
-  </div>
+  <Alert type="error" role="alert">
+    <Paragraph>{item.tekst}</Paragraph>
+    <Vervolg vervolg={item.vervolg} />
+  </Alert>
 );
 
 export const VOORBEELDVRAGEN = [

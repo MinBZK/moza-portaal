@@ -3,7 +3,16 @@
 // Overview of the project's own components (src/components, not RHC), with
 // their options and a live example. Prototype page: delete the folder
 // (demo) when it is no longer needed; nothing else links to it.
-import { useRef, useState, type ReactNode } from "react";
+import {
+  useOptimistic,
+  useRef,
+  useState,
+  useTransition,
+  type ReactNode,
+} from "react";
+import { useRouter } from "next/navigation";
+import { setFeatureFlag } from "@/app/actions";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import {
   AccordionProvider,
   ActionGroup,
@@ -58,6 +67,19 @@ import Switch from "@/components/Switch";
 import TextBadge from "@/components/TextBadge";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import { FolderIcon } from "@/components/icons/folderIcon";
+import type { DemoBericht } from "@/demo";
+import BerichtRij from "../berichtenbox/_berichtRij";
+import MapDialog from "../berichtenbox/_mapDialog";
+import OphaalVoortgang from "../berichtenbox/_ophaalVoortgang";
+import PdfVoorbeeld from "../berichtenbox/_pdfVoorbeeld";
+import {
+  Assistent,
+  Bronnen,
+  Deelverzoek,
+  Denkt,
+  Gebruiker,
+  Suggesties,
+} from "../digitale-assistent/_onderdelen";
 
 /** One option: name, type, default and what it does. */
 type Option = [
@@ -360,6 +382,33 @@ const DemoDialog = () => {
   );
 };
 
+/**
+ * Switch between the current and the new MijnOverheid house style, as in the
+ * Flags panel: saves the flag in the cookie and reloads the server parts.
+ */
+const BrandSwitch = () => {
+  const router = useRouter();
+  const newBrand = useFlag("mox_nieuweHuisstijl");
+  const [shown, setShown] = useOptimistic(newBrand);
+  const [, startTransition] = useTransition();
+  return (
+    <Switch
+      label="Huisstijl"
+      twoWay
+      offText="Huidig"
+      onText="Nieuw"
+      checked={shown}
+      onChange={(next) =>
+        startTransition(async () => {
+          setShown(next);
+          await setFeatureFlag("mox_nieuweHuisstijl", next);
+          router.refresh();
+        })
+      }
+    />
+  );
+};
+
 /** Card per component: description, options and an example. */
 const card = ({ name, file, description, options, example }: Entry) => (
   <section key={name} className="rhc-mox-card" aria-label={name}>
@@ -399,6 +448,497 @@ const SimpleTable = ({ rows }: { rows: [string, string][] }) => (
     </Table>
   </div>
 );
+
+const DEMO_INBOX: DemoBericht[] = [
+  {
+    id: "demo-1",
+    afzenderId: "belastingdienst",
+    afzender: "Belastingdienst",
+    onderwerp: "Uw voorlopige aanslag 2026",
+    inhoud: [],
+    datum: "2026-10-24",
+    isOngelezen: true,
+    heeftBijlage: true,
+  },
+  {
+    id: "demo-2",
+    afzenderId: "kvk",
+    afzender: "KVK",
+    onderwerp: "Uw inschrijving is gewijzigd",
+    inhoud: [],
+    datum: "2026-10-20",
+    isOngelezen: false,
+    heeftBijlage: false,
+  },
+  {
+    id: "demo-3",
+    afzenderId: "rvo",
+    afzender: "RVO",
+    onderwerp: "Uw aanvraag is ontvangen",
+    inhoud: [],
+    datum: "2026-10-26",
+    isOngelezen: true,
+    heeftBijlage: false,
+  },
+];
+
+/** Message rows; the first row is flagged, the third has just come in. */
+const DemoMessageRows = () => {
+  const [flagged, setFlagged] = useState<string[]>(["demo-2"]);
+  return (
+    <div className="mox-table-container">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHeaderCell>
+              <VisuallyHidden>Markering</VisuallyHidden>
+            </TableHeaderCell>
+            <TableHeaderCell>Afzender</TableHeaderCell>
+            <TableHeaderCell>Onderwerp</TableHeaderCell>
+            <TableHeaderCell>Datum</TableHeaderCell>
+            <TableHeaderCell>
+              <VisuallyHidden>Bijlage</VisuallyHidden>
+            </TableHeaderCell>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {DEMO_INBOX.map((message) => (
+            <BerichtRij
+              key={message.id}
+              bericht={message}
+              ongelezen={message.isOngelezen}
+              gemarkeerd={flagged.includes(message.id)}
+              nieuw={message.id === "demo-3"}
+              onMarkeer={() =>
+                setFlagged((ids) =>
+                  ids.includes(message.id)
+                    ? ids.filter((id) => id !== message.id)
+                    : [...ids, message.id],
+                )
+              }
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+const DemoFolderDialog = () => {
+  const [opener, setOpener] = useState<HTMLElement | null>(null);
+  const [folder, setFolder] = useState<string | null>("Belastingen");
+  return (
+    <>
+      <Paragraph>
+        Dit bericht staat in: <b>{folder ?? "geen map"}</b>
+      </Paragraph>
+      <Button
+        appearance="secondary-action-button"
+        onClick={(event) => setOpener(event.currentTarget)}
+      >
+        <FolderIcon />
+        Verplaats naar map
+      </Button>
+      {opener && (
+        <MapDialog
+          open
+          mappen={["Belastingen", "Personeel", "Vergunningen"]}
+          huidige={folder}
+          opener={opener}
+          onKies={(name) => {
+            setFolder(name);
+            return null;
+          }}
+          onSluit={() => setOpener(null)}
+        />
+      )}
+    </>
+  );
+};
+
+const berichtenboxEntries: Entry[] = [
+  {
+    name: "BerichtRij",
+    file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_berichtRij.tsx",
+    description:
+      "Een bericht als tabelrij: markeren, afzender, onderwerp, datum en bijlage. De link van het onderwerp beslaat de hele rij (rhc-mox-row-linked). Ongelezen: vet met een stip (rhc-mox-unread, rhc-mox-status-unread).",
+    options: [
+      ["bericht", "DemoBericht", "", "Het bericht."],
+      ["ongelezen", "boolean", "", "Vet, met een stip en de tekst Ongelezen."],
+      [
+        "gemarkeerd",
+        "boolean",
+        "",
+        "Gevulde vlag; de knop krijgt aria-pressed.",
+      ],
+      ["nieuw", "boolean", "false", "Net binnengekomen: licht kort op."],
+      ["onMarkeer", "() => void", "", "Klik op de vlag (rhc-mox-button-mark)."],
+      ["children", "ReactNode", "", "Extra cellen achteraan, zoals acties."],
+    ],
+    example: <DemoMessageRows />,
+  },
+  {
+    name: "Filterbalk",
+    file: "rhc-mox-inbox-filters in src/styles/rhc.css",
+    description:
+      "Zoekveld en keuzelijst naast elkaar boven de inbox. Daaronder het aantal berichten (rhc-mox-notice-amount-inbox).",
+    options: [
+      ["rhc-mox-inbox-filters", "class", "", "Zet de velden naast elkaar."],
+      [
+        "rhc-mox-notice-amount-inbox",
+        "class",
+        "",
+        "Regel met het aantal berichten en organisaties.",
+      ],
+    ],
+    example: (
+      <>
+        <div className="rhc-mox-inbox-filter rhc-mox-inbox-filters">
+          <FormFieldTextInput label="Filter berichten" type="search" />
+          <FormFieldSelect label="Afzender" defaultValue="">
+            <SelectOption value="">Alle afzenders</SelectOption>
+            <SelectOption value="belastingdienst">Belastingdienst</SelectOption>
+            <SelectOption value="kvk">KVK</SelectOption>
+          </FormFieldSelect>
+        </div>
+        <Paragraph className="rhc-mox-notice-amount-inbox">
+          3 berichten van 3 organisaties, 2 ongelezen
+        </Paragraph>
+      </>
+    ),
+  },
+  {
+    name: "OphaalVoortgang",
+    file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_ophaalVoortgang.tsx",
+    description:
+      "Melding met voortgang terwijl de inbox berichten ophaalt bij de organisaties. Met useNagebootstOphalen uit hetzelfde bestand.",
+    options: [
+      [
+        "voortgang",
+        "{ bronnen, klaar, gevonden } | null",
+        "",
+        "Aantal organisaties, hoeveel er klaar zijn en hoeveel berichten er gevonden zijn.",
+      ],
+    ],
+    example: (
+      <OphaalVoortgang voortgang={{ bronnen: 12, klaar: 7, gevonden: 23 }} />
+    ),
+  },
+  {
+    name: "Wat kunt u doen?",
+    file: "rhc-mox-message-actions in src/styles/rhc.css",
+    description:
+      "Blok onder een bericht met de acties die de ondernemer nu kan doen (variant C).",
+    options: [
+      [
+        "rhc-mox-message-actions",
+        "class",
+        "",
+        "Kader om kop, uitleg en knoppen.",
+      ],
+    ],
+    example: (
+      <section
+        aria-labelledby="demo-wat-kunt-u-doen"
+        className="rhc-mox-message-actions"
+      >
+        <Heading level={5} id="demo-wat-kunt-u-doen">
+          Wat kunt u doen?
+        </Heading>
+        <Paragraph>Betaal de aanslag voor 1 december.</Paragraph>
+        <ActionGroup role="group">
+          <Button appearance="primary-action-button">Nu betalen</Button>
+          <Button appearance="secondary-action-button">
+            Betalingsregeling aanvragen
+          </Button>
+        </ActionGroup>
+      </section>
+    ),
+  },
+  {
+    name: "MapDialog",
+    file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_mapDialog.tsx",
+    description:
+      "Modale dialog om een map te kiezen of een nieuwe map te maken. Na sluiten gaat de focus terug naar de knop.",
+    options: [
+      ["open", "boolean", "", "Toon de dialog."],
+      ["mappen", "string[]", "", "Bestaande mappen."],
+      ["huidige", "string | null", "", "De map waarin het bericht nu staat."],
+      ["opener", "HTMLElement | null", "", "Krijgt de focus na sluiten."],
+      [
+        "onKies",
+        "(map) => string | null | Promise",
+        "",
+        "Geeft null als het lukte, anders een foutmelding.",
+      ],
+      ["onSluit", "() => void", "", "Na sluiten."],
+    ],
+    example: <DemoFolderDialog />,
+  },
+  {
+    name: "PdfVoorbeeld",
+    file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_pdfVoorbeeld.tsx",
+    description:
+      "Het bericht als pdf in de pagina, met links om het te downloaden of als tekst te lezen (variant B).",
+    options: [
+      ["pdf", "string", "", "Adres van de pdf."],
+      [
+        "tekst",
+        "string",
+        "",
+        "Adres van de tekstversie. Zonder: geen tekstlink.",
+      ],
+    ],
+    example: (
+      <PdfVoorbeeld
+        pdf="/voorbeeld-bijlage.pdf"
+        tekst="/voorbeeld-bijlage.txt"
+      />
+    ),
+  },
+];
+
+const DEMO_SOURCES = [
+  { label: "KVK Handelsregister", geraadpleegdOp: "26 oktober 2026" },
+  {
+    label: "RVO",
+    titel: "Energiebesparingsplicht",
+    url: "https://www.rvo.nl/onderwerpen/energiebesparingsplicht",
+    geraadpleegdOp: "26 oktober 2026",
+  },
+];
+
+const noop = () => {};
+
+/** A message in the chat, aligned as in the conversation. */
+const ChatRule = ({ children }: { children: ReactNode }) => (
+  <div className="rhc-mox-chat-rule">{children}</div>
+);
+
+const assistantEntries: Entry[] = [
+  {
+    name: "Gebruiker en Assistent",
+    file: "src/app/(public)/[personaId]/(portaal)/digitale-assistent/_onderdelen.tsx",
+    description:
+      "Vraag van de gebruiker (rechts, blauw) en antwoord van de assistent (links), met verborgen 'U:' en 'Assistent:' voor schermlezers. Het antwoord mag markdown bevatten.",
+    options: [
+      [
+        "item",
+        "Item",
+        "",
+        "Gebruiker: { tekst }. Assistent: { tekst, bronnen?, vervolg? }; vervolg is een knop naar een pagina.",
+      ],
+    ],
+    example: (
+      <div className="rhc-mox-chat">
+        <ChatRule>
+          <Gebruiker
+            item={{
+              id: "demo-vraag",
+              soort: "gebruiker",
+              tekst: "Geldt de energiebesparingsplicht voor mij?",
+            }}
+          />
+        </ChatRule>
+        <ChatRule>
+          <Assistent
+            item={{
+              id: "demo-antwoord",
+              soort: "assistent",
+              tekst:
+                "Dat hangt af van uw **energieverbruik**. De plicht geldt als u per jaar:\n\n- meer dan 50.000 kWh stroom gebruikt, of\n- meer dan 25.000 m3 gas.",
+              bronnen: DEMO_SOURCES,
+              vervolg: {
+                label: "Bekijk uw gegevens",
+                href: "/bedrijfsgegevens",
+              },
+            }}
+          />
+        </ChatRule>
+      </div>
+    ),
+  },
+  {
+    name: "Bronnen",
+    file: "src/app/(public)/[personaId]/(portaal)/digitale-assistent/_onderdelen.tsx",
+    description:
+      "Bronvermelding onder een antwoord, met de datum van raadplegen. Zonder url zoekt het de link bij het label op.",
+    options: [
+      [
+        "bronnen",
+        "Bron[]",
+        "",
+        "{ label, titel?, url?, geraadpleegdOp? }. Leeg: niets.",
+      ],
+    ],
+    example: <Bronnen bronnen={DEMO_SOURCES} />,
+  },
+  {
+    name: "Denkt",
+    file: "src/app/(public)/[personaId]/(portaal)/digitale-assistent/_onderdelen.tsx",
+    description:
+      "Wachtteken terwijl de assistent een antwoord maakt (rhc-mox-chat-thinking, rhc-mox-wait).",
+    options: [
+      [
+        "tekst",
+        "string",
+        "",
+        "Wat de assistent nu doet. Leeg: alleen 'Even geduld' voor schermlezers.",
+      ],
+    ],
+    example: (
+      <ChatRule>
+        <Denkt tekst="Ik zoek in de KOOP Regelingenbank" />
+      </ChatRule>
+    ),
+  },
+  {
+    name: "Suggesties",
+    file: "src/app/(public)/[personaId]/(portaal)/digitale-assistent/_onderdelen.tsx",
+    description:
+      "Voorbeeldvragen aan het begin van een gesprek. Een klik stelt de vraag.",
+    options: [
+      [
+        "item",
+        "Item",
+        "",
+        "{ opnieuw }: met opnieuw ook de knop 'Uitleg opnieuw tonen'.",
+      ],
+      ["onVraag", "(vraag) => void", "", "Klik op een voorbeeldvraag."],
+      ["onUitleg", "() => void", "", "Klik op 'Uitleg opnieuw tonen'."],
+    ],
+    example: (
+      <ChatRule>
+        <Suggesties
+          item={{ id: "demo-suggesties", soort: "suggesties", opnieuw: true }}
+          onVraag={noop}
+          onUitleg={noop}
+        />
+      </ChatRule>
+    ),
+  },
+  {
+    name: "Deelverzoek",
+    file: "src/app/(public)/[personaId]/(portaal)/digitale-assistent/_onderdelen.tsx",
+    description:
+      "Vraag om toestemming om gegevens uit een bron te gebruiken. Na delen of weigeren toont de kaart de uitkomst.",
+    options: [
+      [
+        "item",
+        "Item",
+        "",
+        '{ bron, omschrijving, vanBackend, staat: "open" | "gedeeld" | "geweigerd", energie? }',
+      ],
+      [
+        "drempel",
+        "{ kwh, gas } | null",
+        "",
+        "Grens voor het energieverbruik na delen.",
+      ],
+      ["onDelen", "() => void", "", "Klik op Delen."],
+      ["onNietDelen", "() => void", "", "Klik op Niet delen."],
+    ],
+    example: (
+      <Deelverzoek
+        item={{
+          id: "demo-deelverzoek",
+          soort: "deelverzoek",
+          bron: "uw EU Business Wallet",
+          omschrijving:
+            "De assistent wil uw energieverbruik van 2025 gebruiken. Daarmee kan hij nagaan of de informatieplicht voor u geldt.",
+          vanBackend: false,
+          staat: "open",
+        }}
+        drempel={null}
+        onDelen={noop}
+        onNietDelen={noop}
+      />
+    ),
+  },
+  {
+    name: "Gesprek",
+    file: "rhc-mox-chat in src/styles/rhc.css; src/app/(public)/[personaId]/(portaal)/digitale-assistent/_chat.tsx",
+    description:
+      "Het geheel: berichten in een log (role=log, aria-live) dat scrolt, het invoerveld met knoppen en de uitleg over AI eronder.",
+    options: [
+      ["rhc-mox-chat", "class", "", "Kaart om het hele gesprek."],
+      [
+        "rhc-mox-chat-messages",
+        "class",
+        "",
+        "Lijst met berichten; scrolt bij een lang gesprek.",
+      ],
+      [
+        "rhc-mox-chat-rule",
+        "class",
+        "",
+        "Eén bericht; zet een vraag rechts en een antwoord links.",
+      ],
+      ["rhc-mox-chat-input", "class", "", "Invoerveld met knoppen."],
+      ["rhc-mox-chat-disclaimer", "class", "", "Uitleg over AI, met icoon."],
+    ],
+    example: (
+      <div className="rhc-mox-chat">
+        <div
+          className="rhc-mox-chat-messages"
+          role="log"
+          aria-live="polite"
+          aria-label="Voorbeeldgesprek"
+        >
+          <ChatRule>
+            <Gebruiker
+              item={{
+                id: "demo-gesprek-vraag",
+                soort: "gebruiker",
+                tekst: "Hoe kan ik mijn bedrijfsgegevens bekijken?",
+              }}
+            />
+          </ChatRule>
+          <ChatRule>
+            <Assistent
+              item={{
+                id: "demo-gesprek-antwoord",
+                soort: "assistent",
+                tekst:
+                  "Uw bedrijfsgegevens staan in het Handelsregister van de KVK. U ziet ze ook in dit portaal onder **Bedrijfsgegevens**.",
+              }}
+            />
+          </ChatRule>
+          <ChatRule>
+            <Denkt tekst="" />
+          </ChatRule>
+        </div>
+        <form
+          className="rhc-mox-chat-input"
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <label htmlFor="demo-chat-input">
+            <VisuallyHidden>Uw vraag</VisuallyHidden>
+          </label>
+          <textarea
+            className="utrecht-textarea utrecht-textarea--html-textarea rhc-textarea"
+            id="demo-chat-input"
+            placeholder="Waarmee kan ik u helpen?"
+          />
+          <ActionGroup>
+            <Button type="submit" appearance="primary-action-button">
+              Vraag stellen
+            </Button>
+            <Button appearance="secondary-action-button">
+              Nieuw gesprek starten
+            </Button>
+          </ActionGroup>
+        </form>
+        <Paragraph className="rhc-mox-chat-disclaimer">
+          <Icon icon="info-circle" />
+          De antwoorden van deze assistent worden door AI gemaakt en kunnen
+          fouten bevatten. Controleer belangrijke informatie altijd bij de
+          oorspronkelijke bron.
+        </Paragraph>
+      </div>
+    ),
+  },
+];
 
 const ComponentsDemoPage = () => {
   const [organisation, setOrganisation] = useState("Bloemenkwekerij");
@@ -448,9 +988,45 @@ const ComponentsDemoPage = () => {
       ],
       example: (
         <div className="rhc-mox-row-gap">
+          <Heading level={5}>Alle soorten</Heading>
+          <Alert type="info">
+            <Paragraph>Informatie: iets om te weten.</Paragraph>
+          </Alert>
+          <Alert type="ok">
+            <Paragraph>Gelukt: uw gegevens zijn opgeslagen.</Paragraph>
+          </Alert>
+          <Alert type="warning">
+            <Paragraph>
+              Let op: uw e-mailadres is nog niet geverifieerd.
+            </Paragraph>
+          </Alert>
+          <Alert type="error">
+            <Paragraph>
+              Fout: uw gegevens zijn niet opgeslagen. Probeer het opnieuw.
+            </Paragraph>
+          </Alert>
+          <Alert type="warning">
+            <Paragraph>
+              <strong>Met een vetgedrukte eerste regel</strong>
+            </Paragraph>
+            <Paragraph>
+              Een melding kan meerdere alinea&apos;s hebben. Gebruik een Heading
+              als de melding een echte kop nodig heeft.
+            </Paragraph>
+          </Alert>
+
+          <Heading level={5}>Met sluitknop</Heading>
           <Alert type="info" closable>
             <Paragraph>Info-melding met sluitknop.</Paragraph>
           </Alert>
+          <Alert type="error" closable>
+            <Paragraph>
+              Een foutmelding kan geen sluitknop krijgen, de betreffende fout
+              dient eerst actief hersteld te worden.
+            </Paragraph>
+          </Alert>
+
+          <Heading level={5}>Verdwijnt vanzelf</Heading>
           {autoHideShown ? (
             <Alert
               key={autoHideRound}
@@ -616,7 +1192,15 @@ const ComponentsDemoPage = () => {
       ],
       example: (
         <div className="rhc-mox-row-gap">
-          <Dropdown align="start" trigger={<>Organisatie: {organisation}</>}>
+          <Dropdown
+            align="start"
+            trigger={
+              <>
+                Organisatie: {organisation}
+                <Icon icon="chevron-down" />
+              </>
+            }
+          >
             {["Bloemenkwekerij", "Tuincentrum", "Groothandel"].map((name) => (
               <DropdownItem
                 key={name}
@@ -627,7 +1211,17 @@ const ComponentsDemoPage = () => {
               </DropdownItem>
             ))}
           </Dropdown>
-          <Dropdown align="start" trigger="Acties">
+          {/* As the actions of a message in the Berichtenbox: only an icon,
+              with the name for screen readers. */}
+          <Dropdown
+            align="start"
+            trigger={
+              <>
+                <Icon icon="meer" />
+                <VisuallyHidden>Acties voor dit bericht</VisuallyHidden>
+              </>
+            }
+          >
             <DropdownItem icon={<FolderIcon />}>
               Naar map verplaatsen
             </DropdownItem>
@@ -742,7 +1336,7 @@ const ComponentsDemoPage = () => {
       name: "ShareButton",
       file: "src/components/ShareButton.tsx",
       description:
-        "Opent het deelvenster van het systeem; zonder Web Share kopieert hij de link.",
+        "Opent het deelvenster van het systeem; zonder Web Share API wordt de link gekopieerd.",
       options: [
         ["title", "string", "paginatitel", "Titel om te delen."],
         ["text", "string", "–", "Korte tekst om te delen."],
@@ -813,8 +1407,7 @@ const ComponentsDemoPage = () => {
     {
       name: "Switch",
       file: "src/components/Switch.tsx",
-      description:
-        "Schakelaar (role=switch) voor een instelling die direct werkt. Label erboven, aan/uit met tekst.",
+      description: "Schakelaar voor een instelling die direct toegepast wordt.",
       options: [
         ["label", "string", "–", "Zichtbaar label; klikken schakelt ook."],
         [
@@ -1137,7 +1730,9 @@ const ComponentsDemoPage = () => {
               </TableBody>
             </Table>
           </div>
-          <Heading level={5}>Tabel zoals in de Berichtenbox</Heading>
+          <Heading level={5}>
+            Tabel met sorteerbare kolommen en actiemenu
+          </Heading>
           <DemoTable />
         </div>
       ),
@@ -1527,7 +2122,34 @@ const ComponentsDemoPage = () => {
                 className="rhc-mox-tab utrecht-link utrecht-link--html-a"
               >
                 <FolderIcon />
-                Belastingen
+                Belastingen 2023
+              </NextLink>
+            </li>
+            <li>
+              <NextLink
+                href="/demo"
+                className="rhc-mox-tab utrecht-link utrecht-link--html-a"
+              >
+                <FolderIcon />
+                Belastingen 2024
+              </NextLink>
+            </li>
+            <li>
+              <NextLink
+                href="/demo"
+                className="rhc-mox-tab utrecht-link utrecht-link--html-a"
+              >
+                <FolderIcon />
+                Belastingen 2025
+              </NextLink>
+            </li>
+            <li>
+              <NextLink
+                href="/demo"
+                className="rhc-mox-tab utrecht-link utrecht-link--html-a"
+              >
+                <FolderIcon />
+                Belastingen 2026
               </NextLink>
             </li>
           </ul>
@@ -1671,11 +2293,17 @@ const ComponentsDemoPage = () => {
 
   return (
     <>
+      {/* Sticky and without height of its own: the switch sits next to the
+          heading and stays in view while you scroll. */}
+      <div className="prototype-demo-brand-switch">
+        <div className="prototype-demo-brand-switch__box">
+          <BrandSwitch />
+        </div>
+      </div>
       <Heading level={1}>Componenten</Heading>
       <Alert type="info">
         <Paragraph>
-          Overzicht van eigen maatwerkcomponenten in src/components en
-          aangepaste{" "}
+          Overzicht van maatwerkcomponenten in src/components en aangepaste{" "}
           <a
             href="https://rijkshuisstijl-community.vercel.app/?path=/docs/react-components-readme--docs"
             rel="extrenal"
@@ -1713,6 +2341,12 @@ const ComponentsDemoPage = () => {
           </Paragraph>
           <SimpleTable rows={rhcLayout} />
         </section>
+
+        <Heading level={2}>Berichtenbox</Heading>
+        {berichtenboxEntries.map(card)}
+
+        <Heading level={2}>(AI) chat interface</Heading>
+        {assistantEntries.map(card)}
       </div>
     </>
   );
