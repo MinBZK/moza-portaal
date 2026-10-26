@@ -48,6 +48,27 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   },
 };
 
+/** Wie een regeling uitvoert; het label heeft tekst, niet alleen een kleur. */
+export const UITVOERDER = {
+  gemeente: { tekst: "Gemeente", klasse: "mox-badge--municipality" },
+  uwv: { tekst: "UWV", klasse: "mox-badge--uwv" },
+  loonaangifte: { tekst: "Loonaangifte", klasse: "mox-badge--payroll" },
+} as const;
+
+export type UitvoerderId = keyof typeof UITVOERDER;
+
+const UITVOERDER_VAN: Record<BalansRegel["id"], UitvoerderId> = {
+  lks: "gemeente",
+  ld: "uwv",
+  lkv: "loonaangifte",
+};
+
+export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
+  <span className={`mox-badge mox-hiring-org ${UITVOERDER[id].klasse}`}>
+    {UITVOERDER[id].tekst}
+  </span>
+);
+
 const naam = (r: BalansRegel) =>
   r.id === "lks"
     ? "Loonkostensubsidie"
@@ -135,7 +156,9 @@ const Balans = ({
         <dl className="mox-hiring-balance">
           {regels.map((r) => (
             <div key={r.id}>
-              <dt>{naam(r)}</dt>
+              <dt>
+                {naam(r)} <Uitvoerder id={UITVOERDER_VAN[r.id]} />
+              </dt>
               <dd className={klasse(r)}>{waarde(r)}</dd>
             </div>
           ))}
@@ -172,7 +195,7 @@ const Balans = ({
         {regels.map((r) => (
           <div key={r.id}>
             <dt>
-              {naam(r)}
+              {naam(r)} <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               {r.regel?.aanname && (
                 <>
                   {" "}

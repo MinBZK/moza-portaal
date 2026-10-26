@@ -329,6 +329,19 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		background-color: var(--rhc-color-groen-100);
 	}
 
+	/* Wie een regeling uitvoert (Iemand aannemen) */
+	.mox-badge--municipality {
+		background-color: var(--rhc-color-groen-100);
+	}
+
+	.mox-badge--uwv {
+		background-color: var(--rhc-color-lintblauw-100);
+	}
+
+	.mox-badge--payroll {
+		background-color: var(--rhc-color-geel-100);
+	}
+
 	/* --- Kaarten --- */
 	.rhc-mox-card,
 	.rhc-mox-sticky-info-box,
@@ -831,6 +844,12 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		margin: 0;
 		margin-inline-start: auto;
 		white-space: nowrap;
+	}
+
+	.mox-hiring-org {
+		line-height: 1.4;
+		padding-inline: var(--rhc-space-xs);
+		vertical-align: 0.1em;
 	}
 
 	/* Een regeling zonder bedrag ("geldt niet") is geen bedrag: niet vet. */

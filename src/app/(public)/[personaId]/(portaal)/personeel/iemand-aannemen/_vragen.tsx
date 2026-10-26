@@ -11,7 +11,7 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import RangeSlider from "@/components/RangeSlider";
-import Balans from "./_balans";
+import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
 import { type Overig } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
@@ -30,35 +30,41 @@ const MAX_UURLOON_EUROCENT = 3000;
 /** "Regelingen die verder kunnen gelden": naam en uitleg per uitkomst van de engine. */
 const OVERIG: Record<
   Overig["id"],
-  { naam: string; tekst: (o: Overig) => string }
+  { naam: string; uitvoerder: UitvoerderId; tekst: (o: Overig) => string }
 > = {
   nrp: {
     naam: "No-riskpolis",
+    uitvoerder: "uwv",
     tekst: (o) =>
       `Wordt uw werknemer ziek, dan betaalt UWV ziekengeld in plaats van dat u het loon doorbetaalt. ${o.duurJaren === 5 ? "Vijf jaar vanaf de start." : "Zonder einddatum."}`,
   },
   pp_pwet: {
     naam: "Proefplaatsing",
+    uitvoerder: "gemeente",
     tekst: () =>
       "De kandidaat werkt eerst twee maanden bij u terwijl de bijstand doorloopt, te verlengen tot zes maanden, als de gemeente instemt.",
   },
   pp_ww: {
     naam: "Proefplaatsing met behoud van WW",
+    uitvoerder: "uwv",
     tekst: () =>
       "De kandidaat werkt zes maanden bij u terwijl de WW-uitkering doorloopt, als UWV toestemming geeft.",
   },
   begeleiding: {
     naam: "Begeleiding op de werkplek (jobcoach)",
+    uitvoerder: "gemeente",
     tekst: () =>
       "Een jobcoach helpt uw werknemer en u op de werkvloer. U vraagt dit aan bij de gemeente.",
   },
   vz_wia: {
     naam: "Jobcoaching en werkplekaanpassing",
+    uitvoerder: "uwv",
     tekst: () =>
       "UWV kan een jobcoach of een aanpassing van de werkplek vergoeden. U vraagt dit aan bij UWV.",
   },
   vz_wajong: {
     naam: "Jobcoaching en werkplekaanpassing",
+    uitvoerder: "uwv",
     tekst: () =>
       "Via de Wajong kan UWV een jobcoach of een aanpassing van de werkplek vergoeden. U vraagt dit aan bij UWV.",
   },
@@ -197,7 +203,8 @@ const VragenMetStaat = ({
           <UnorderedList>
             {overige.map((o) => (
               <UnorderedListItem key={o.id}>
-                <strong>{OVERIG[o.id].naam}</strong>
+                <strong>{OVERIG[o.id].naam}</strong>{" "}
+                <Uitvoerder id={OVERIG[o.id].uitvoerder} />
                 <br />
                 {OVERIG[o.id].tekst(o)}
               </UnorderedListItem>
