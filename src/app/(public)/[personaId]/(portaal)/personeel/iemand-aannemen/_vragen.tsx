@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   ActionGroup,
   Fieldset,
   FormFieldCheckboxOption,
+  FormFieldRadio,
+  FormFieldTextInput,
   Heading,
   Paragraph,
   UnorderedList,
@@ -25,8 +28,17 @@ import {
   type Antwoorden,
 } from "./_useAannemen";
 
-/** Bovengrens van de schuifregelaar voor het uurloon: € 30 per uur. */
-const MAX_UURLOON_EUROCENT = 3000;
+/** Bovengrens van "anders, namelijk" bij het uurloon: € 200 per uur. */
+const MAX_UURLOON_EUROCENT = 20000;
+
+/** "15,50" of "15.50" naar eurocent; null als het geen bedrag is. */
+const naarEurocent = (tekst: string) => {
+  const schoon = tekst.trim().replace(/^€\s*/, "").replace(",", ".");
+  if (!/^\d+(\.\d{1,2})?$/.test(schoon)) return null;
+  return Math.round(Number(schoon) * 100);
+};
+
+const alsTekst = (cent: number) => (cent / 100).toFixed(2).replace(".", ",");
 
 /** "Regelingen die verder kunnen gelden": naam en uitleg per uitkomst van de engine. */
 const OVERIG: Record<
@@ -106,6 +118,32 @@ const VragenMetStaat = ({
   const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
   const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
+  // Vraag 4: het minimumloon, of een eigen bedrag dat pas telt als het klopt.
+  const [anders, setAnders] = useState(a.uurloon !== WML_UUR_EUROCENT);
+  const [loonTekst, setLoonTekst] = useState(
+    a.uurloon !== WML_UUR_EUROCENT ? alsTekst(a.uurloon) : "",
+  );
+  const loonCent = naarEurocent(loonTekst);
+  const loonFout =
+    !anders || loonTekst.trim() === ""
+      ? undefined
+      : loonCent === null
+        ? "Vul een bedrag in, bijvoorbeeld 16,50."
+        : loonCent < WML_UUR_EUROCENT
+          ? `Vul ten minste het minimumloon in: ${euro(WML_UUR_EUROCENT)}.`
+          : loonCent > MAX_UURLOON_EUROCENT
+            ? `Vul een bedrag in tot ${euro(MAX_UURLOON_EUROCENT)}.`
+            : undefined;
+  const zetLoon = (tekst: string) => {
+    setLoonTekst(tekst);
+    const cent = naarEurocent(tekst);
+    if (
+      cent !== null &&
+      cent >= WML_UUR_EUROCENT &&
+      cent <= MAX_UURLOON_EUROCENT
+    )
+      zet({ uurloon: cent });
+  };
 
   return (
     <>
@@ -157,40 +195,72 @@ const VragenMetStaat = ({
           />
           <div>
             <RangeSlider
-              label="3. Hoeveel kan de kandidaat? (loonwaarde)"
+              label="3. Heeft de kandidaat naar verwachting een verminderde loonwaarde? Zo ja, hoeveel? (loonwaarde)"
               min={30}
               max={100}
               step={5}
               value={a.loonwaarde}
               onChange={(loonwaarde) => zet({ loonwaarde })}
-              formatValue={(loonwaarde) => `${loonwaarde} procent`}
+              formatValue={(loonwaarde) =>
+                loonwaarde === 100
+                  ? "100 procent: geen verminderde loonwaarde"
+                  : `${loonwaarde} procent`
+              }
               filled
             />
             <Paragraph className="mox-hiring-note">
               {wajong
                 ? "Bij een Wajong-uitkering: het percentage van het minimumloon dat de kandidaat aankan. UWV stelt dit vast voor de loondispensatie."
-                : "In vergelijking met een collega zonder beperking. Bij 100 procent kan de kandidaat het werk zelfstandig doen en is er geen loonkostensubsidie. De gemeente meet dit later op de werkplek."}
+                : "De loonwaarde is wat de kandidaat in het werk presteert, in vergelijking met een collega zonder beperking in dezelfde functie. Onder 100 procent is de loonwaarde verminderd. Bij 100 procent is er geen loonkostensubsidie. Ook dan kan de kandidaat begeleiding nodig hebben, zoals een jobcoach. De gemeente meet de loonwaarde later op de werkplek."}
             </Paragraph>
           </div>
-          <div>
-            <RangeSlider
-              label="4. Wat wordt het bruto uurloon? (loon)"
-              min={WML_UUR_EUROCENT}
-              max={MAX_UURLOON_EUROCENT}
-              step={1}
-              value={Math.min(a.uurloon, MAX_UURLOON_EUROCENT)}
-              onChange={(uurloon) => zet({ uurloon })}
-              formatValue={euro}
-              filled
+          <Fieldset
+            legend="4. Wat wordt het bruto uurloon? (loon)"
+            className="mox-hiring-choices"
+          >
+            <FormFieldRadio
+              name="uurloon"
+              value="wml"
+              label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
+              description="Voor iemand van 21 jaar of ouder. Voor jongere werknemers geldt een lager minimumloon; daarmee rekent deze berekening niet."
+              checked={!anders}
+              onChange={() => {
+                setAnders(false);
+                zet({ uurloon: WML_UUR_EUROCENT });
+              }}
             />
-            <Paragraph className="mox-hiring-note">
-              Het wettelijk minimumloon voor iemand van 21 jaar of ouder is{" "}
-              {euro(WML_UUR_EUROCENT)} per uur. Voor jongere werknemers geldt
-              een ander minimumloon. De subsidie en het voordeel gaan uit van{" "}
-              {euro(WML_UUR_EUROCENT)}. Een hoger uurloon maakt alleen de
-              loonkosten hoger.
-            </Paragraph>
-          </div>
+            <FormFieldRadio
+              name="uurloon"
+              value="anders"
+              label="Anders, namelijk:"
+              checked={anders}
+              onChange={() => {
+                setAnders(true);
+                zetLoon(loonTekst);
+              }}
+            />
+            {anders && (
+              <FormFieldTextInput
+                name="uurloon-anders"
+                label="Bruto uurloon in euro"
+                inputMode="decimal"
+                autoComplete="off"
+                description="Bijvoorbeeld 16,50"
+                value={loonTekst}
+                invalid={loonFout !== undefined}
+                errorMessage={loonFout}
+                // Het event komt van de input, maar is getypt op de wrapper-div.
+                onChange={(e) => zetLoon((e.target as HTMLInputElement).value)}
+              />
+            )}
+          </Fieldset>
+          <Paragraph className="mox-hiring-note">
+            Volgens de wet is de loonkostensubsidie altijd het verschil tussen
+            het minimumloon en de loonwaarde. Betaalt u meer dan het
+            minimumloon, dan krijgt u dus niet meer subsidie. Het
+            loonkostenvoordeel is een vast bedrag per verloond uur. Een hoger
+            uurloon maakt alleen uw loonkosten hoger.
+          </Paragraph>
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
           <StickyInfoBox title="Wat het kost en oplevert">

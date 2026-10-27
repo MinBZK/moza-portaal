@@ -186,8 +186,6 @@ const Balans = ({
           : "geldt niet";
   const klasse = (r: BalansRegel) =>
     bekend && !fout && r.status !== "bedrag" ? "mox-hiring-none" : undefined;
-  const pct = (v: number) =>
-    kosten > 0 ? Math.min(100, Math.max(1, Math.round((v / kosten) * 100))) : 0;
 
   const bron = (
     <Paragraph className="mox-hiring-note" role={bezig ? "status" : undefined}>
@@ -247,10 +245,6 @@ const Balans = ({
         <div>
           <dt>Loonkosten</dt>
           <dd>{euro(kosten)}</dd>
-          {/* De balk is een eigen dd: in een dl mag een div alleen dt en dd bevatten. */}
-          <dd className="mox-hiring-bar" aria-hidden="true">
-            <span style={{ inlineSize: "100%" }} />
-          </dd>
         </div>
         {regels.map((r) => (
           <div key={r.id}>
@@ -269,15 +263,6 @@ const Balans = ({
               <Uitvoerder id={UITVOERDER_VAN[r.id]} />
             </dt>
             <dd className={klasse(r)}>{waarde(r, "− ")}</dd>
-            {/* Alleen een balk bij een bedrag; een lege balk zegt niets. */}
-            {bekend && !fout && r.bedrag > 0 && (
-              <dd className="mox-hiring-bar" aria-hidden="true">
-                <span
-                  className="mox-hiring-bar--plus"
-                  style={{ inlineSize: `${pct(r.bedrag)}%` }}
-                />
-              </dd>
-            )}
           </div>
         ))}
       </dl>
@@ -287,6 +272,16 @@ const Balans = ({
           categorie={regels.find((r) => r.id === "lkv")?.regel?.categorie}
         />
       )}
+      {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
+      {bekend &&
+        !fout &&
+        antwoorden.doelgroepen.includes("wia") &&
+        !antwoorden.doelgroepen.includes("wajong") && (
+          <Paragraph className="mox-hiring-note">
+            Bij een WIA-uitkering zijn loonkostensubsidie en loondispensatie
+            niet mogelijk.
+          </Paragraph>
+        )}
       {bekend && !fout && terug === 0 && (
         <Alert type="info">
           <Paragraph>
@@ -294,11 +289,17 @@ const Balans = ({
           </Paragraph>
         </Alert>
       )}
+      {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
       <div className="mox-hiring-net">
         <Paragraph>
-          <strong>Blijft ongeveer voor uw rekening per jaar</strong>
+          <strong>Uw loonkosten met deze regelingen, ongeveer per jaar</strong>
         </Paragraph>
         <p className="mox-hiring-amount">{bedrag(netto)}</p>
+        {bekend && !fout && terug > 0 && (
+          <Paragraph>
+            Dat is ongeveer {euro(terug)} per jaar minder dan zonder regelingen.
+          </Paragraph>
+        )}
       </div>
       {bron}
     </>

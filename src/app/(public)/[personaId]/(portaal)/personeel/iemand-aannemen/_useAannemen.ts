@@ -50,7 +50,7 @@ export type Antwoorden = {
   doelgroepen: Doelgroep[];
   /** Uren per week, 8 tot 40. */
   uren: number;
-  /** Geschatte loonwaarde in procent, 30 tot 100; 100 is zelfstandig tegen het minimumloon. */
+  /** Geschatte loonwaarde in procent, 30 tot 100; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
   /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
   uurloon: number;
@@ -121,7 +121,7 @@ export const inRegister = (a: Antwoorden) =>
       ? "nee"
       : "onbekend";
 
-/** Onder 100 procent kan de kandidaat het minimumloon niet zelfstandig verdienen. */
+/** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
 
 export const uurloonTekst = (a: Antwoorden) =>

@@ -286,7 +286,7 @@ const AanvraagInhoud = ({
                 label: "Loonwaarde",
                 waarde: onderMinimumloon(a)
                   ? `${a.loonwaarde} procent, uw schatting; de gemeente meet op de werkplek`
-                  : "Kandidaat kan het werk zelfstandig doen; geen subsidie",
+                  : "Geen verminderde loonwaarde; geen loonkostensubsidie",
                 bron: "Uw antwoord",
               },
             ]}
