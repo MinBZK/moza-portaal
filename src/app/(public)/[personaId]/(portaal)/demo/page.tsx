@@ -1754,6 +1754,29 @@ const ComponentsDemoPage = () => {
             <OrderedListItem>Stap één</OrderedListItem>
             <OrderedListItem>Stap twee</OrderedListItem>
           </OrderedList>
+          <Paragraph>Genummerde lijst in een opsomming:</Paragraph>
+          <UnorderedList>
+            <UnorderedListItem>
+              Een vergunning aanvragen
+              <OrderedList>
+                <OrderedListItem>Log in met eHerkenning</OrderedListItem>
+                <OrderedListItem>Vul het formulier in</OrderedListItem>
+                <OrderedListItem>Verstuur uw aanvraag</OrderedListItem>
+              </OrderedList>
+            </UnorderedListItem>
+            <UnorderedListItem>Een melding doen</UnorderedListItem>
+          </UnorderedList>
+          <Paragraph>Opsomming in een genummerde lijst:</Paragraph>
+          <OrderedList>
+            <OrderedListItem>
+              Verzamel uw gegevens
+              <UnorderedList nested>
+                <UnorderedListItem>KVK-nummer</UnorderedListItem>
+                <UnorderedListItem>Btw-nummer</UnorderedListItem>
+              </UnorderedList>
+            </OrderedListItem>
+            <OrderedListItem>Vul de aangifte in</OrderedListItem>
+          </OrderedList>
         </>
       ),
     },
