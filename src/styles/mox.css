@@ -276,6 +276,19 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		background-color: var(--rhc-color-groen-100);
 	}
 
+	/* Wie een regeling uitvoert (Iemand aannemen) */
+	.mox-badge--municipality {
+		background-color: var(--rhc-color-groen-100);
+	}
+
+	.mox-badge--uwv {
+		background-color: var(--rhc-color-lintblauw-100);
+	}
+
+	.mox-badge--payroll {
+		background-color: var(--rhc-color-geel-100);
+	}
+
 	/* --- Kaarten --- */
 	.rhc-mox-card,
 	.rhc-mox-sticky-info-box,
@@ -500,6 +513,331 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			display: flex;
 			gap: var(--rhc-space-lg);
 			position: relative;
+
+			.utrecht-link {
+				white-space: nowrap;
+			}
 		}
+	}
+}
+
+/* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
+	 regelingkaarten en de tijdlijn van vastleggingen. */
+.mox-theme {
+	/* De gekozen waarde van een schuifregelaar ("32 uur") blijft op één regel. */
+	.rhc-mox-range-slider__value {
+		white-space: nowrap;
+	}
+
+	/* Ruimte tussen de opties van vraag 1; de algemene regel in rhc.css verliest
+	  het van de CSS van Utrecht. */
+	.mox-hiring-choices .utrecht-form-field--checkbox {
+		gap: var(--rhc-space-xs);
+		margin-block-start: var(--rhc-space-md);
+	}
+
+	.mox-hiring-label {
+		border: 1px solid currentcolor;
+		border-radius: 1rem;
+		color: var(--rhc-color-blue-80, #01689b);
+		display: inline-block;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		font-weight: 700;
+		margin-inline-start: 0.5rem;
+		padding-block: 0.125rem;
+		padding-inline: 0.625rem;
+		vertical-align: middle;
+		white-space: nowrap;
+	}
+
+	.mox-hiring-label--not-applicable {
+		color: var(--rhc-color-grey-80, #555);
+	}
+
+	.mox-hiring-label--correction {
+		color: var(--rhc-color-oranje-80, #b35d00);
+	}
+
+	.mox-hiring-confirmed {
+		align-items: center;
+		color: var(--rhc-color-groen-80, #1d7040);
+		display: flex;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		gap: 0.5rem;
+	}
+
+	/* Scherm 2: per organisatie de gegevens als vraag en antwoord, zoals in het eerste prototype. */
+	.mox-hiring-facts {
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-md, 1rem);
+		margin: 0;
+	}
+
+	.mox-hiring-facts dt {
+		color: var(--rhc-color-grey-80, #555);
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
+
+	.mox-hiring-facts dd {
+		margin: 0;
+	}
+
+	.mox-hiring-legal-question {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		margin-block-start: 0.25rem;
+	}
+
+	.mox-hiring-legal-question summary {
+		color: var(--rhc-color-blue-80, #01689b);
+		cursor: pointer;
+	}
+
+	.mox-hiring-why {
+		margin-block-start: var(--rhc-space-block-md, 1rem);
+	}
+
+	.mox-hiring-why > summary {
+		cursor: pointer;
+		font-weight: 700;
+	}
+
+	.mox-hiring-why > div > * + * {
+		margin-block-start: var(--rhc-space-block-sm, 0.75rem);
+	}
+
+	.mox-hiring-trace {
+		font-family: ui-monospace, monospace;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
+
+	.mox-hiring-timeline {
+		border-inline-start: 3px solid var(--rhc-color-grey-40, #ccc);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.mox-hiring-event {
+		padding-block: var(--rhc-space-block-sm, 0.75rem);
+		padding-inline-start: var(--rhc-space-inline-lg, 1.5rem);
+		position: relative;
+	}
+
+	.mox-hiring-event::before {
+		background: var(--rhc-color-blue-80, #01689b);
+		block-size: 0.75rem;
+		border-radius: 50%;
+		content: "";
+		inline-size: 0.75rem;
+		inset-block-start: calc(var(--rhc-space-block-sm, 0.75rem) + 0.35em);
+		inset-inline-start: calc(-0.5rem - 1.5px);
+		position: absolute;
+	}
+
+	.mox-hiring-event--decision::before {
+		background: var(--rhc-color-groen-80, #1d7040);
+	}
+
+	.mox-hiring-event--regulation::before {
+		background: var(--rhc-color-grey-80, #555);
+	}
+
+	.mox-hiring-event-kind {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		letter-spacing: 0.04em;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.mox-hiring-event-meta {
+		color: var(--rhc-color-grey-80, #555);
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
+
+	.mox-hiring-event--corrected h3 {
+		text-decoration: line-through;
+		text-decoration-thickness: 1px;
+	}
+
+	.mox-hiring-research {
+		border-inline-start: 4px solid var(--rhc-color-oranje-80, #b35d00);
+	}
+
+	.mox-hiring-control {
+		inline-size: 100%;
+		max-inline-size: 100%;
+	}
+
+	/* Een knoplink die (nog) niet werkt, zoals tijdens het rekenen. */
+	.mox-hiring-button-link[aria-disabled="true"] {
+		background-color: var(--utrecht-button-disabled-background-color);
+		border-color: var(--utrecht-button-disabled-border-color);
+		color: var(--utrecht-button-disabled-color);
+		cursor: not-allowed;
+	}
+
+	/* Eerste scherm: getalvelden, balans en de aanvraag met panelen. */
+	.mox-hiring-note {
+		color: var(--rhc-color-grey-80, #555);
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+	}
+
+	.mox-hiring-balance {
+		display: grid;
+		gap: 0.75rem;
+		margin: 0;
+	}
+
+	/* Naam en bedrag naast elkaar, de organisatie onder de naam. Zo staat het
+	  bedrag in elke rij op dezelfde plek. Het bedrag breekt nooit. */
+	.mox-hiring-balance > div {
+		align-items: baseline;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+		justify-content: space-between;
+	}
+
+	.mox-hiring-balance dt {
+		flex: 1 1 0;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		min-inline-size: 0;
+	}
+
+	.mox-hiring-balance dd {
+		font-weight: 700;
+		margin: 0;
+		margin-inline-start: auto;
+		white-space: nowrap;
+	}
+
+	.mox-hiring-org {
+		line-height: 1.4;
+		padding-inline: var(--rhc-space-xs);
+		vertical-align: 0.1em;
+	}
+
+	.mox-hiring-balance .mox-hiring-org {
+		display: block;
+		inline-size: fit-content;
+		margin-block-start: var(--rhc-space-2xs);
+	}
+
+	/* Een regeling zonder bedrag ("geldt niet") is geen bedrag: niet vet. */
+	.mox-hiring-balance .mox-hiring-none {
+		font-weight: 400;
+	}
+
+	.mox-hiring-balance .mox-hiring-bar {
+		background: var(--rhc-color-grey-20, #e6e6e6);
+		block-size: 0.75rem;
+		border-radius: 0.125rem;
+		flex-basis: 100%;
+		margin-inline-start: 0;
+		overflow: hidden;
+	}
+
+	.mox-hiring-bar > span {
+		background: var(--rhc-color-blue-80, #01689b);
+		block-size: 100%;
+		display: block;
+	}
+
+	.mox-hiring-bar > .mox-hiring-bar--plus {
+		background: var(--rhc-color-groen-80, #1d7040);
+	}
+
+	.mox-hiring-net {
+		background: var(--rhc-color-grey-10, #f3f3f3);
+		border-radius: 0.25rem;
+		padding: 1rem;
+	}
+
+	.mox-hiring-amount {
+		font-size: var(--rhc-font-size-2xl, 1.75rem);
+		font-weight: 700;
+		margin: 0;
+	}
+
+	.mox-hiring-meta {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0;
+	}
+
+	.mox-hiring-tag {
+		background: var(--rhc-color-grey-10, #f3f3f3);
+		border-radius: 0.25rem;
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		padding-block: 0.125rem;
+		padding-inline: 0.5rem;
+	}
+
+	.mox-hiring-progress {
+		align-items: center;
+		display: grid;
+		gap: 0.25rem 1rem;
+		grid-template-columns: auto 1fr auto;
+	}
+
+	.mox-hiring-progress progress {
+		accent-color: var(--rhc-color-blue-80, #01689b);
+		block-size: 0.5rem;
+		inline-size: 100%;
+	}
+
+	.mox-hiring-panel {
+		background: var(--rhc-color-white, #fff);
+		border: 1px solid var(--rhc-color-grey-40, #ccc);
+		border-radius: 0.25rem;
+	}
+
+	.mox-hiring-panel > summary {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		gap: 0.75rem;
+		justify-content: space-between;
+		padding: 1rem;
+	}
+
+	.mox-hiring-panel > summary :is(h2, h3) {
+		font-size: var(--rhc-font-size-lg, 1.125rem);
+		margin: 0;
+	}
+
+	.mox-hiring-panel > div {
+		border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
+		padding: 1rem;
+	}
+
+	.mox-hiring-label--done {
+		color: var(--rhc-color-groen-80, #1d7040);
+	}
+
+	.mox-hiring-label--todo {
+		color: var(--rhc-color-oranje-80, #b35d00);
+	}
+
+	.mox-hiring-reasoning,
+	.mox-hiring-derivation {
+		display: grid;
+		gap: 0.5rem;
+		margin: 0;
+		padding-inline-start: 1.25rem;
+	}
+
+	.mox-hiring-derivation {
+		font-size: var(--rhc-font-size-sm, 0.875rem);
+		list-style: none;
+		padding-inline-start: 0;
+	}
+
+	.mox-hiring-llm {
+		border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
+		padding-block-start: 1rem;
 	}
 }

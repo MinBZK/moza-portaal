@@ -7,7 +7,13 @@ const eslintConfig = [
   {
     // public/inloggen: overgenomen scripts van DigiD, NL Wallet en moza-poc,
     // deels geminificeerd. Die beheren we niet zelf.
-    ignores: ["src/network/generated/**", ".next/**", "public/inloggen/**"],
+    // public/regelrecht/pkg: door wasm-bindgen gegenereerd (regelrecht-uitleg).
+    ignores: [
+      "src/network/generated/**",
+      ".next/**",
+      "public/inloggen/**",
+      "public/regelrecht/pkg/**",
+    ],
   },
   ...nextCoreWebVitals,
   ...nextTypescript,

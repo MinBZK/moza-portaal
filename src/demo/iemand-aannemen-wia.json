@@ -1,0 +1,291 @@
+{
+  "toelichting": "Demo-gegevens van de situatie. Uitkomsten staan als plaatshouder ({uren} {loonwaarde} {lksPerMaand} {lksTweeMaanden} {aanspraakPerUur} {lkvPerJaar}); de pagina vult ze met de uitkomsten van de regelrecht-engine. Plaatshouders {onderneming} {kvkNummer} {vestiging} {iban} {fulltime} {parttime} vult de pagina uit de actieve persona.",
+  "kandidaat": {
+    "voornaam": "Robin",
+    "achternaam": "Visser",
+    "geboortedatum": "1975-02-08",
+    "leeftijd": 51,
+    "woonplaats": "Amersfoort",
+    "gemeente": "Amersfoort",
+    "bsnMasker": "•••••0303",
+    "toestemmingOp": "2026-09-08"
+  },
+  "dienstverband": {
+    "functie": "Chauffeur bezorgdienst",
+    "urenPerWeek": 20,
+    "aanvang": "2026-10-01",
+    "uurloonEurocent": 1499,
+    "uurloonLabel": "wettelijk minimumloon, € 14,99 per uur",
+    "verloondeUrenPerJaar": 1040,
+    "soort": "Onbepaalde tijd"
+  },
+  "zaak": {
+    "nummer": "UWV-DV-2026-0518",
+    "organisatie": "UWV",
+    "onderwerp": "Doelgroepverklaring voor Robin Visser",
+    "regel": "Artikelen 2.6 en 2.7 van de Wet tegemoetkomingen loondomein, zoals die gelden op 1 juli 2026",
+    "url": "/lopendezaken/iemand-aannemen/wia"
+  },
+  "bronnen": [
+    {
+      "id": "uwv",
+      "organisatie": "UWV",
+      "register": "WIA-uitkering",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Had Robin in september 2026 een WIA-uitkering?",
+          "wetsvraag": "Had de werknemer in de maand vóór aanvang van de dienstbetrekking recht op een uitkering op grond van hoofdstuk 6 van de Wet WIA?",
+          "parameter": "had_wia_recht_maand_voor_aanvang",
+          "waarde": "Ja, WIA-uitkering",
+          "grond": "Wtl 2.6"
+        },
+        {
+          "vraag": "Heeft Robin Wajong met arbeidsondersteuning?",
+          "wetsvraag": "Heeft de werknemer recht op arbeidsondersteuning of een arbeidsongeschiktheidsuitkering op grond van de Wajong?",
+          "parameter": "heeft_wajong_arbeidsondersteuning_of_uitkering",
+          "waarde": "Nee",
+          "grond": "Wajong 2:15"
+        }
+      ]
+    },
+    {
+      "id": "kvk",
+      "organisatie": "KVK",
+      "register": "Handelsregister",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Welke onderneming neemt Robin aan?",
+          "wetsvraag": "Wie is de werkgever?",
+          "parameter": "kvk_nummer",
+          "waarde": "{onderneming}, KVK {kvkNummer}, {vestiging}",
+          "grond": "Handelsregisterwet"
+        }
+      ]
+    },
+    {
+      "id": "belastingdienst",
+      "organisatie": "Belastingdienst",
+      "register": "Loonaangifte",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Hoeveel werknemers heeft u nu in de loonaangifte?",
+          "wetsvraag": "Aantal werknemers in de laatste loonaangifte",
+          "parameter": "aantal_werknemers_loonaangifte",
+          "waarde": "{fulltime} fulltime en {parttime} parttime (loonaangifte augustus 2026)",
+          "grond": "Wet op de loonbelasting"
+        },
+        {
+          "vraag": "Staat er al een verzoek om loonkostenvoordeel in de loonaangifte?",
+          "wetsvraag": "Heeft de werkgever in de loonaangifte verzocht om het loonkostenvoordeel?",
+          "parameter": "heeft_loonaangifte_verzoek_ingediend",
+          "waarde": "Nog niet; dat doet u in de loonaangifte na de start",
+          "grond": "Wtl 2.1"
+        }
+      ]
+    },
+    {
+      "id": "eigen",
+      "organisatie": "Uw eigen opgave",
+      "register": "Wat de overheid nog niet weet",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Hoeveel uur per week gaat Robin werken?",
+          "wetsvraag": "Wat is de overeengekomen arbeidsduur in uren per week?",
+          "parameter": "overeengekomen_arbeidsduur_uren_per_week",
+          "waarde": "{uren} uur",
+          "grond": "Wtl 2.9"
+        },
+        {
+          "vraag": "Wanneer begint de dienstbetrekking?",
+          "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
+          "parameter": "datum_aanvang_dienstbetrekking",
+          "waarde": "1 oktober 2026",
+          "grond": "ZW 29b lid 1 a; Wtl 2.7 lid 1"
+        },
+        {
+          "vraag": "Wat gaat Robin verdienen?",
+          "wetsvraag": "Wat is het overeengekomen loon?",
+          "parameter": "uurloon",
+          "waarde": "Wettelijk minimumloon, € 14,99 per uur",
+          "grond": "WMM 8 en 15"
+        }
+      ]
+    }
+  ],
+  "fasen": [
+    {
+      "id": "wacht",
+      "label": "Wacht op de aanvraag van de werknemer (vanaf 1 oktober)",
+      "datum": "2026-10-01"
+    },
+    {
+      "id": "aangevraagd",
+      "label": "Doelgroepverklaring aangevraagd (12 oktober)",
+      "datum": "2026-10-12"
+    },
+    {
+      "id": "verstrekt",
+      "label": "Doelgroepverklaring verstrekt (26 oktober, aanname)",
+      "datum": "2026-10-26"
+    }
+  ],
+  "gebeurtenissen": [
+    {
+      "id": "v1",
+      "datum": "2026-07-01",
+      "tijd": "00:00",
+      "actor": "Wetgever",
+      "soort": "regelgeving",
+      "titel": "Wetsversie van 1 juli 2026 geldt",
+      "tekst": "Wet tegemoetkomingen loondomein, Wet WIA, Wet financiering sociale verzekeringen en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "grond": "Regeling indexatie wettelijk minimumloon",
+      "stap": "vooraf"
+    },
+    {
+      "id": "w2",
+      "datum": "2026-09-08",
+      "tijd": "14:05",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Robin toegevoegd als kandidaat",
+      "tekst": "Robin Visser gaf toestemming dat {onderneming} de gegevens bij UWV gebruikt voor deze aanvraag.",
+      "grond": "AVG 6 lid 1 a",
+      "stap": "vooraf"
+    },
+    {
+      "id": "w3",
+      "datum": "2026-09-08",
+      "tijd": "14:09",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Gegevens per bron bevestigd",
+      "tekst": "UWV, KVK, Belastingdienst en uw eigen opgave: per bron aangevinkt dat de gegevens kloppen en gebruikt mogen worden.",
+      "grond": "",
+      "stap": "vooraf"
+    },
+    {
+      "id": "w4",
+      "datum": "2026-10-01",
+      "tijd": "09:00",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Dienstbetrekking begonnen",
+      "tekst": "Robin is gestart voor {uren} uur per week tegen het wettelijk minimumloon. Robin had in september 2026 recht op een WIA-uitkering. Voor het loonkostenvoordeel is een doelgroepverklaring nodig.",
+      "grond": "Wtl 2.6",
+      "stap": "wacht"
+    },
+    {
+      "id": "w5",
+      "datum": "2026-10-01",
+      "tijd": "09:05",
+      "actor": "Wetgever",
+      "soort": "regelgeving",
+      "titel": "Doelgroepverklaring: de werknemer vraagt aan",
+      "tekst": "De doelgroepverklaring wordt op verzoek van de werknemer afgegeven. Robin kan die aanvragen binnen drie maanden na de start van de dienstbetrekking. U dient de aanvraag niet in.",
+      "grond": "Wtl 2.7 lid 1",
+      "stap": "wacht"
+    },
+    {
+      "id": "w6",
+      "datum": "2026-10-12",
+      "tijd": "10:30",
+      "actor": "Werknemer",
+      "soort": "uitvoering",
+      "titel": "Robin heeft de doelgroepverklaring aangevraagd bij UWV",
+      "tekst": "De aanvraag is binnen drie maanden na de start gedaan.",
+      "grond": "Wtl 2.7 lid 1",
+      "stap": "aangevraagd"
+    },
+    {
+      "id": "w7",
+      "datum": "2026-10-13",
+      "tijd": "09:14",
+      "actor": "UWV",
+      "soort": "uitvoering",
+      "titel": "Aanvraag doelgroepverklaring in behandeling",
+      "tekst": "UWV heeft de aanvraag van Robin ontvangen.",
+      "grond": "Awb 4:3a",
+      "stap": "aangevraagd"
+    },
+    {
+      "id": "w8",
+      "datum": "2026-10-26",
+      "tijd": "13:48",
+      "actor": "UWV",
+      "soort": "besluit",
+      "titel": "Doelgroepverklaring verstrekt (aanname over de termijn)",
+      "tekst": "UWV heeft de doelgroepverklaring voor Robin verstrekt. Het loonkostenvoordeel kan nu in de loonaangifte worden verzocht.",
+      "grond": "Wtl 2.7 lid 1",
+      "stap": "verstrekt"
+    },
+    {
+      "id": "w9",
+      "datum": "2026-10-27",
+      "tijd": "09:30",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Doelgroepverklaring bewaard bij de loonadministratie",
+      "tekst": "U bewaart de verklaring bij de loonadministratie.",
+      "grond": "Wtl 2.7 lid 3",
+      "stap": "verstrekt"
+    }
+  ],
+  "komtHierna": [
+    {
+      "datum": "2027-03-15",
+      "actor": "Belastingdienst",
+      "titel": "Overzicht met de voorgenomen berekening van het loonkostenvoordeel 2026",
+      "tekst": "Het loonkostenvoordeel is een bedrag per verloond uur. Over een heel jaar is dat {lkvPerJaar}. Over 2026 tellen de uren van oktober tot en met december.",
+      "grond": "Wtl 4.1 lid 4"
+    },
+    {
+      "datum": "2027-08-01",
+      "actor": "Belastingdienst",
+      "titel": "Beschikking loonkostenvoordeel 2026",
+      "tekst": "",
+      "grond": "Wtl 4.2 lid 3"
+    }
+  ],
+  "labels": {
+    "is_uitgesloten_lid_3": "Uitgesloten: Wsw-dienstbetrekking (lid 3)",
+    "heeft_recht_op_lks_lid_1": "Recht via lid 1 (loonwaarde vooraf vastgesteld)",
+    "voorafgaand_relevante_onderwijsroute_of_doelgroep": "Kwam uit de doelgroep of een onderwijsroute (lid 2 a tot en met c)",
+    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen zes maanden na de eerste werkdag (lid 2)",
+    "heeft_recht_op_lks_lid_2": "Recht via lid 2",
+    "heeft_recht_op_lks": "Recht op loonkostensubsidie",
+    "volgt_de_vijftig_procent_route": "Vijftigprocentroute (lid 5)",
+    "werkgeverslastenvergoeding_eurocent_per_maand": "Vergoeding werkgeverslasten (25 procent)",
+    "grondslag_maximum_eurocent_per_maand": "Grondslag van het maximum",
+    "maximum_subsidie_eurocent_per_maand": "Maximum: 70 procent van de grondslag",
+    "loonwaarde_eurocent_per_maand": "Loonwaarde in euro per maand",
+    "bruto_subsidie_eurocent_per_maand": "Verschil minimumloon en loonwaarde",
+    "hoogte_lks_lid_4_voltijd_eurocent_per_maand": "Hoogte volgens lid 4, voltijd",
+    "hoogte_lks_lid_5_voltijd_eurocent_per_maand": "Hoogte volgens lid 5, voltijd",
+    "hoogte_lks_voltijd_eurocent_per_maand": "Hoogte bij voltijd",
+    "arbeidsduur_voor_evenredigheid_uren_per_week": "Arbeidsduur voor de evenredigheid (uren per week)",
+    "hoogte_lks_eurocent_per_maand": "Loonkostensubsidie per maand",
+    "heeft_aanspraak_op_begeleiding_op_de_werkplek": "Aanspraak op begeleiding op de werkplek (10da)",
+    "mag_proefplaatsing_aangaan": "Proefplaatsing mogelijk (8a lid 2 d)",
+    "max_duur_proefplaatsing_maanden": "Duur proefplaatsing (maanden)",
+    "max_duur_verlenging_proefplaatsing_maanden": "Verlenging (maanden)",
+    "max_totale_duur_proefplaatsing_maanden": "Totale duur (maanden)",
+    "heeft_recht_op_lkv": "Recht op loonkostenvoordeel (2.1)",
+    "categorie_lkv": "Categorie loonkostenvoordeel",
+    "voldoet_aan_voorwaarden_2_10": "Voorwaarden banenafspraak (2.10)",
+    "is_uitgesloten_2_10_lid_2_of_3": "Uitgesloten (2.10 lid 2 of 3)",
+    "tegemoetkoming_banenafspraak_eurocent": "Tegemoetkoming banenafspraak (2.13)",
+    "hoogte_lkv_per_jaar_eurocent": "Loonkostenvoordeel per jaar",
+    "heeft_recht_op_no_risk_polis": "Recht op de no-riskpolis",
+    "duur_no_risk_polis_jaren": "Duur van de no-riskpolis (jaren)",
+    "is_uitgesloten_lid_8": "Uitgesloten: Wsw-dienstbetrekking (lid 8)",
+    "is_arbeidsbeperkte": "Arbeidsbeperkte (doelgroepregister)",
+    "grond_opname_doelgroepregister": "Grond van opname",
+    "datum_opname_doelgroepregister": "Datum van opname",
+    "heeft_recht_op_loondispensatie": "Recht op loondispensatie (2:20)",
+    "heeft_recht_op_arbeidsondersteuning": "Recht op arbeidsondersteuning (2:15)"
+  }
+}

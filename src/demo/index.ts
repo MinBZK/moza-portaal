@@ -18,9 +18,12 @@ export {
   type DemoOnderdeelLink,
 } from "./onderneming";
 export {
+  getDemoConceptAanvraagById,
+  getDemoConceptAanvragen,
   getDemoZaakById,
   getDemoZaken,
   getDemoZakenVragen,
+  type DemoConceptAanvraag,
   type DemoZaak,
   type DemoZaakStap,
 } from "./zaken";
@@ -60,3 +63,16 @@ export {
   type DemoBedrijfsdetails,
   type DemoBedrijfsonderdeel,
 } from "./bedrijfsonderdelen";
+export {
+  getDemoIemandAannemen,
+  getDemoIemandAannemenSituaties,
+  getDemoIemandAannemenTraces,
+  type DemoAannemenSituatie,
+  type DemoAannemen,
+  type DemoAannemenBron,
+  type DemoAannemenGegeven,
+  type DemoAannemenRegeling,
+  type DemoAannemenGebeurtenis,
+  type DemoAannemenFase,
+  type DemoAannemenTrace,
+} from "./iemandAannemen";

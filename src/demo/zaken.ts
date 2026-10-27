@@ -67,3 +67,59 @@ export const getDemoZaakById = async (
 ): Promise<DemoZaak | undefined> => zaken.find((zaak) => zaak.id === id);
 
 export const getDemoZakenVragen = async (): Promise<DemoVraag[]> => vragen;
+
+/** Een aanvraag die is opgeslagen maar nog niet ingediend. */
+export type DemoConceptAanvraag = {
+  id: string;
+  titel: string;
+  organisatie: string;
+  /** Voor welke onderneming van de persona; zonder: de actieve onderneming. */
+  onderneming?: string;
+  /** Hoe lang het invullen nog duurt, als tekst. */
+  tijdsduur: string;
+  /** Uiterste datum om in te dienen; alleen als de wet of de organisatie er een noemt. */
+  indienenVoor?: string;
+  /** Waar de antwoorden vandaan komen, zoals Ondernemersplein. */
+  bewaardVan?: string;
+  /** Wat er van daar is overgenomen, voor de melding op de detailpagina. */
+  overgenomen?: string;
+  /** Alinea's onder die melding. */
+  toelichting?: string[];
+  /** Startwaarden voor "Wat kost het?": uren per week en brutoloon. */
+  berekening?: { urenPerWeek: number; brutoPerMaand: number };
+  /** Flow in het portaal die deze aanvraag uitwerkt met de regelrecht-engine; zonder flow alleen de kostenschatting. */
+  flow?: "iemand-aannemen";
+};
+
+/**
+ * De fictieve, nog niet ingediende aanvraag "Iemand aannemen". Elke persona
+ * heeft hem, voor de onderneming die op dat moment actief is; daarom noemt de
+ * tekst geen onderneming.
+ */
+const iemandAannemen: DemoConceptAanvraag = {
+  id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+  titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+  organisatie: "UWV, Belastingdienst en gemeente",
+  tijdsduur: "Ongeveer 15 minuten",
+  bewaardVan: "Ondernemersplein",
+  overgenomen:
+    "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. Controleer hieronder of deze antwoorden nog kloppen. De berekening gaat ervan uit.",
+  toelichting: [
+    "Beantwoord vier korte vragen. U ziet dan meteen welke regelingen mogelijk gelden en wat ze u ongeveer opleveren.",
+    "Mogelijk kunt u een deel van de loonkosten vergoed krijgen of gebruikmaken van regelingen die het risico bij ziekte beperken. Welke regelingen gelden, hangt af van de kandidaat. Bijvoorbeeld of die in het doelgroepregister staat. Ze worden uitgevoerd door UWV, de Belastingdienst en de gemeente. U hoeft niet te weten welke organisatie waarover gaat.",
+    "Let op de termijnen. Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag. Loondispensatie geldt pas vanaf de maand waarin die is aangevraagd. Een doelgroepverklaring vraagt de werknemer aan binnen drie maanden na de start.",
+  ],
+  flow: "iemand-aannemen",
+};
+
+export const getDemoConceptAanvragen = async (
+  personaId?: string,
+): Promise<DemoConceptAanvraag[]> => (personaId ? [iemandAannemen] : []);
+
+export const getDemoConceptAanvraagById = async (
+  personaId: string | undefined,
+  id: string,
+): Promise<DemoConceptAanvraag | undefined> =>
+  (await getDemoConceptAanvragen(personaId)).find(
+    (aanvraag) => aanvraag.id === id,
+  );

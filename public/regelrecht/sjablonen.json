@@ -1,0 +1,89 @@
+{
+  "operatoren": {
+    "SUBTRACT": "{0} min {1}[ is {uitkomst}]",
+    "ADD": "{0} plus {1}[ is {uitkomst}]",
+    "MULTIPLY": "{0} maal {1}[ is {uitkomst}]",
+    "DIVIDE": "{0} gedeeld door {1}[ is {uitkomst}]",
+    "MIN": "[{uitkomst}: ]het laagste van {alle}",
+    "MAX": "[{uitkomst}: ]het hoogste van {alle}",
+    "GREATER_THAN": {
+      "waar": "{0} is hoger dan {1}",
+      "onwaar": "{0} is niet hoger dan {1}"
+    },
+    "LESS_THAN": {
+      "waar": "{0} is lager dan {1}",
+      "onwaar": "{0} is niet lager dan {1}"
+    },
+    "GREATER_THAN_OR_EQUAL": {
+      "waar": "{0} is ten minste {1}",
+      "onwaar": "{0} is lager dan {1}"
+    },
+    "LESS_THAN_OR_EQUAL": {
+      "waar": "{0} is ten hoogste {1}",
+      "onwaar": "{0} is hoger dan {1}"
+    },
+    "EQUALS": {
+      "waar": "{0} is {1}",
+      "onwaar": "{0} is niet {1}"
+    },
+    "NOT_EQUALS": {
+      "waar": "{0} is niet {1}",
+      "onwaar": "{0} is {1}"
+    },
+    "IS_NULL": {
+      "waar": "{0} is niet ingevuld",
+      "onwaar": "{0} is ingevuld"
+    },
+    "NOT_NULL": {
+      "waar": "{0} is ingevuld",
+      "onwaar": "{0} is niet ingevuld"
+    },
+    "AND": "aan alle voorwaarden hieronder voldaan: {uitkomst}",
+    "OR": "aan ten minste één voorwaarde hieronder voldaan: {uitkomst}",
+    "NOT": "voorwaarde hieronder niet vervuld: {uitkomst}",
+    "IF": "keuze: {uitkomst}"
+  },
+  "keten": {
+    "MIN": "blijft onder {ander}",
+    "MAX": "blijft boven {ander}",
+    "ADD": "plus {ander}",
+    "SUBTRACT": "min {ander}",
+    "MULTIPLY": "maal {ander}",
+    "DIVIDE": "gedeeld door {ander}"
+  },
+  "waar": "{label}: ja",
+  "onwaar": "{label}: nee",
+  "geen_waarde": "geen waarde",
+  "opsomming_en": "{a} en {b}",
+  "woorden": {
+    "feit": "{label}: {waarde}",
+    "operand": "{label} ({waarde})",
+    "geval": "geval {n}: {uitkomst}",
+    "dan": "dan: {uitkomst}",
+    "anders": "anders: {uitkomst}",
+    "ook_bekeken": "ook bekeken: {tekst}",
+    "niet_beoordeeld": "{label}: niet beoordeeld, de engine stopte eerder",
+    "zie_hierboven": "{tekst} (zie hierboven)",
+    "evenredig": "naar evenredigheid van {a} op {b}",
+    "onbeslist": "{0} vergeleken met {1}: {uitkomst}",
+    "onbeslist_een": "{0}: {uitkomst}",
+    "slot": "dat is {uitkomst}",
+    "kop": "peildatum {peildatum}; wetversie {wetversie}; wettekst-hash {hash}; engine {engine}",
+    "bevinding": "bevinding: {tekst}",
+    "bron_invoer": "invoer van de zaak",
+    "bron_register": "{naam}, opgehaald op {datum}",
+    "bron_register_zonder_datum": "{naam}",
+    "bron_constante": "constante uit de wet, {artikel}",
+    "bron_open_term": "open term, {artikel}",
+    "bron_letterlijk": "vaste waarde in de wet",
+    "bron_andere_wet": "uit de {wet}: {output}",
+    "bron_niet_te_volgen": "herkomst niet te volgen",
+    "grond": "artikel {artikel} van de {wet}",
+    "grond_lid": "artikel {artikel}, lid {lid}, van de {wet}",
+    "motivering_voorwaarde": "{grond}: {conclusie}, want {feiten}.",
+    "motivering_berekening": "{grond}: {conclusie}; {feiten}.",
+    "motivering_zonder_feiten": "{grond}: {conclusie}.",
+    "motivering_toelichting": "{motivering} Toelichting bij het wetsmodel: \"{toelichting}\"",
+    "generiek": "{op}: {operanden}[ → {uitkomst}]"
+  }
+}
