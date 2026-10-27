@@ -1,0 +1,1026 @@
+{
+ "participatiewet:heeft_recht_op_lks": {
+  "wet": "participatiewet",
+  "uitkomst": "heeft_recht_op_lks",
+  "peildatum": "2026-07-01",
+  "scenario": "Gemeente betaalt €897,41 per maand LKS aan werkgever van Koen (32 uur)",
+  "gegevens": {
+   "behoort_tot_doelgroep_lks": true,
+   "bsn": 999990101,
+   "college_heeft_loonwaarde_vastgesteld": false,
+   "datum_aanvang_dienstbetrekking": "2026-01-01",
+   "datum_aanvraag_lks": "2026-02-01",
+   "datum_einde_deelname_onderwijs_lid_2_a": null,
+   "dienstbetrekking_is_tot_stand_gekomen": false,
+   "is_wsw_dienstbetrekking": false,
+   "kan_minimumloon_niet_verdienen": true,
+   "loonwaarde_percentage": 60,
+   "overeengekomen_arbeidsduur_uren_per_week": 32,
+   "vaststelling_loonwaarde_blijft_achterwege": false,
+   "volgde_onderwijs_zonder_startkwalificatie_leerwerktraject": false,
+   "was_persoon_7_lid_1_a_of_7a_in_zes_maanden_voorafgaand": true,
+   "werkgever_is_voornemens_dienstbetrekking_aan_te_gaan": false
+  },
+  "tussenuitkomsten": {
+   "aanvraag_lks_binnen_zes_maanden": true,
+   "arbeidsduur_voor_evenredigheid_uren_per_week": 32,
+   "bruto_subsidie_eurocent_per_maand": 100958.4,
+   "grondslag_maximum_eurocent_per_maand": 315495.0,
+   "heeft_recht_op_lks": true,
+   "heeft_recht_op_lks_lid_1": false,
+   "heeft_recht_op_lks_lid_2": true,
+   "hoogte_lks_eurocent_per_maand": 89740.8,
+   "hoogte_lks_lid_4_voltijd_eurocent_per_maand": 100958.4,
+   "hoogte_lks_lid_5_voltijd_eurocent_per_maand": 0,
+   "hoogte_lks_voltijd_eurocent_per_maand": 100958.4,
+   "is_uitgesloten_lid_3": false,
+   "loonwaarde_eurocent_per_maand": 151437.6,
+   "maximum_subsidie_eurocent_per_maand": 220846.5,
+   "volgt_de_vijftig_procent_route": false,
+   "voorafgaand_relevante_onderwijsroute_of_doelgroep": true,
+   "werkgeverslastenvergoeding_eurocent_per_maand": 63099.0
+  },
+  "resultaat": {
+   "bruto_subsidie_eurocent_per_maand": 100958.4,
+   "heeft_recht_op_lks": true,
+   "hoogte_lks_eurocent_per_maand": 89740.8,
+   "hoogte_lks_voltijd_eurocent_per_maand": 100958.4,
+   "maximum_subsidie_eurocent_per_maand": 220846.5
+  },
+  "stappen": [
+   {
+    "tekst": "Computing is_uitgesloten_lid_3",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_lks_lid_1",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing voorafgaand_relevante_onderwijsroute_of_doelgroep",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing aanvraag_lks_binnen_zes_maanden",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_lks_lid_2",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_lks",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing volgt_de_vijftig_procent_route",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing werkgeverslastenvergoeding_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing minimumloon_plus_vakantiebijslag_eurocent_per_maand",
+    "artikel": "15"
+   },
+   {
+    "tekst": "",
+    "artikel": "15"
+   },
+   {
+    "tekst": "Computing minimumloon_per_maand_eurocent",
+    "artikel": "8"
+   },
+   {
+    "tekst": "Open term 'herzien_minimumloon_per_maand_eurocent' using default value",
+    "artikel": "8"
+   },
+   {
+    "tekst": "Open term 'werkgeverslastenvergoeding_percentage' implemented by regeling_loonkostensubsidie_participatiewet_2021 article 1",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing werkgeverslastenvergoeding_percentage",
+    "artikel": "1"
+   },
+   {
+    "tekst": "Computing grondslag_maximum_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing loonwaarde_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing bruto_subsidie_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing maximum_subsidie_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing hoogte_lks_lid_4_voltijd_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing hoogte_lks_lid_5_voltijd_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing hoogte_lks_voltijd_eurocent_per_maand",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing arbeidsduur_voor_evenredigheid_uren_per_week",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Open term 'gebruikelijke_volledige_dienstbetrekking_uren' not required, no implementation, resolved as null",
+    "artikel": "10d"
+   },
+   {
+    "tekst": "Computing hoogte_lks_eurocent_per_maand",
+    "artikel": "10d"
+   }
+  ],
+  "ankers": [
+   [
+    "participatiewet",
+    "1",
+    ""
+   ],
+   [
+    "participatiewet",
+    "10d",
+    ""
+   ],
+   [
+    "participatiewet",
+    "15",
+    ""
+   ],
+   [
+    "participatiewet",
+    "8",
+    ""
+   ]
+  ]
+ },
+ "participatiewet:heeft_aanspraak_op_begeleiding_op_de_werkplek": {
+  "wet": "participatiewet",
+  "uitkomst": "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+  "peildatum": "2026-07-01",
+  "scenario": "Koen heeft als LKS-doelgroep een harde aanspraak op begeleiding op de werkplek",
+  "gegevens": {
+   "behoort_tot_doelgroep_lks": true,
+   "bsn": 999990101,
+   "college_heeft_loonwaarde_vastgesteld": false,
+   "datum_aanvang_dienstbetrekking": "2026-01-01",
+   "dienstbetrekking_is_tot_stand_gekomen": false,
+   "vaststelling_loonwaarde_blijft_achterwege": false,
+   "werkgever_is_voornemens_dienstbetrekking_aan_te_gaan": false
+  },
+  "tussenuitkomsten": {
+   "heeft_aanspraak_op_begeleiding_op_de_werkplek": true
+  },
+  "resultaat": true,
+  "stappen": [
+   {
+    "tekst": "Computing heeft_aanspraak_op_begeleiding_op_de_werkplek",
+    "artikel": "10da"
+   }
+  ],
+  "ankers": [
+   [
+    "participatiewet",
+    "10da",
+    ""
+   ]
+  ]
+ },
+ "participatiewet:mag_proefplaatsing_aangaan": {
+  "wet": "participatiewet",
+  "uitkomst": "mag_proefplaatsing_aangaan",
+  "peildatum": "2026-07-01",
+  "scenario": "Koen kan via Pwet art. 8a op proefplaats met behoud van bijstand",
+  "gegevens": {
+   "behoort_tot_doelgroep_artikel_7_lid_1_a": true,
+   "behoort_tot_doelgroep_lks": true,
+   "bsn": 999990101,
+   "college_verleent_toestemming_proefplaatsing": true,
+   "ontvangt_algemene_bijstand": true
+  },
+  "tussenuitkomsten": {
+   "mag_proefplaatsing_aangaan": true,
+   "max_duur_proefplaatsing_maanden": 2,
+   "max_duur_verlenging_proefplaatsing_maanden": 4,
+   "max_totale_duur_proefplaatsing_maanden": 6
+  },
+  "resultaat": {
+   "mag_proefplaatsing_aangaan": true,
+   "max_duur_proefplaatsing_maanden": 2,
+   "max_duur_verlenging_proefplaatsing_maanden": 4,
+   "max_totale_duur_proefplaatsing_maanden": 6
+  },
+  "stappen": [
+   {
+    "tekst": "Computing mag_proefplaatsing_aangaan",
+    "artikel": "8a"
+   },
+   {
+    "tekst": "Computing max_duur_proefplaatsing_maanden",
+    "artikel": "8a"
+   },
+   {
+    "tekst": "Computing max_duur_verlenging_proefplaatsing_maanden",
+    "artikel": "8a"
+   },
+   {
+    "tekst": "Computing max_totale_duur_proefplaatsing_maanden",
+    "artikel": "8a"
+   }
+  ],
+  "ankers": [
+   [
+    "participatiewet",
+    "8a",
+    ""
+   ]
+  ]
+ },
+ "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten:heeft_recht_op_loondispensatie": {
+  "wet": "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+  "uitkomst": "heeft_recht_op_loondispensatie",
+  "peildatum": "2026-07-01",
+  "scenario": "Koen heeft geen recht op loondispensatie, want geen Wajong-status",
+  "gegevens": {
+   "aanvraag_loondispensatie_ingediend": false,
+   "arbeidsprestatie_duidelijk_minder_dan_minimumloon": true,
+   "bsn": 999990101,
+   "gebruikelijke_beloning_per_uur_eurocent": 1450,
+   "gerechtvaardigde_beloning_per_uur_eurocent": 1000,
+   "heeft_recht_op_arbeidsondersteuning_wajong": false,
+   "is_wsw_werknemer": false,
+   "minimumloon_per_uur_eurocent": 1450,
+   "vastgesteld_aanspraakpercentage_minimumloon": 70,
+   "verwachte_duur_verminderde_prestatie_maanden": 12
+  },
+  "tussenuitkomsten": {
+   "heeft_recht_op_loondispensatie": false
+  },
+  "resultaat": false,
+  "stappen": [
+   {
+    "tekst": "Computing heeft_recht_op_loondispensatie",
+    "artikel": "2:20"
+   }
+  ],
+  "ankers": [
+   [
+    "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+    "2:20",
+    ""
+   ]
+  ]
+ },
+ "wet_financiering_sociale_verzekeringen:is_arbeidsbeperkte": {
+  "wet": "wet_financiering_sociale_verzekeringen",
+  "uitkomst": "is_arbeidsbeperkte",
+  "peildatum": "2026-07-01",
+  "scenario": "Koen staat in het register op grond van onderdeel a",
+  "gegevens": {
+   "aantal_gerealiseerde_dienstbetrekkingen_beschut_werk": null,
+   "bsn": 999990101,
+   "college_heeft_loonwaarde_vastgesteld_conform_10d": true,
+   "datum_eerste_opname_doelgroepregister": "2025-11-03",
+   "experiment_instrument_82a_suwi_ingezet": false,
+   "heeft_duurzaam_geen_mogelijkheden_arbeidsparticipatie": false,
+   "heeft_wajong_arbeidsondersteuning_of_uitkering": false,
+   "heeft_wajong_duurzaam_geen_mogelijkheden": false,
+   "heeft_wia_uitkering_hoofdstuk_6": false,
+   "heeft_zich_schriftelijk_gemeld_bij_uwv": false,
+   "is_jonggehandicapt_uwv_oordeel_lid_2": false,
+   "is_pwet_toegeleid_naar_dienstbetrekking": false,
+   "is_pwet_toegeleid_of_lks_lid_2": true,
+   "is_uitgesloten_beschut_werk_pwet_10b": false,
+   "is_wsw_geindiceerd_of_oude_indicatie": false,
+   "komt_uit_praktijkonderwijs": false,
+   "komt_uit_voortgezet_speciaal_onderwijs": false,
+   "laatste_dag_persoon_lid_1_b_of_c": null,
+   "loonwaarde_percentage": 60,
+   "ontvangt_voorziening_pwet_10": false,
+   "ontvangt_voorziening_wia_35_lid_2": false,
+   "registratie_nog_niet_geeindigd": true,
+   "uwv_heeft_op_eigen_verzoek_vastgesteld_niet_in_staat_minimumloon": false,
+   "uwv_heeft_op_verzoek_college_vastgesteld_niet_in_staat_minimumloon": false,
+   "verricht_arbeid_in_dienstbetrekking": false,
+   "verzoek_van_college_of_eigen_aanvraag": false,
+   "was_arbeidsbeperkte_lid_1_of_2": false,
+   "was_lid_1_c_en_nu_wajong_duurzaam_geen_mogelijkheden": false
+  },
+  "tussenuitkomsten": {
+   "datum_opname_doelgroepregister": "2025-11-03",
+   "grond_opname_doelgroepregister": "pwet_lks_uwv_loonwaarde",
+   "is_arbeidsbeperkte": true,
+   "loonwaarde_onder_minimumloon_vastgesteld": true,
+   "vaststelling_door": "UWV",
+   "voldoet_aan_grond_38b_1_a": true,
+   "voldoet_aan_grond_38b_1_b": false,
+   "voldoet_aan_grond_38b_1_c": false,
+   "voldoet_aan_grond_38b_1_d": false,
+   "voldoet_aan_grond_38b_1_e": false,
+   "voldoet_aan_grond_38b_1_f": false,
+   "voldoet_aan_grond_38b_1_g": false,
+   "voldoet_aan_grond_38b_2": false,
+   "voldoet_aan_grond_38b_6": false
+  },
+  "resultaat": {
+   "datum_opname_doelgroepregister": "2025-11-03",
+   "grond_opname_doelgroepregister": "pwet_lks_uwv_loonwaarde",
+   "is_arbeidsbeperkte": true,
+   "vaststelling_door": "UWV",
+   "voldoet_aan_grond_38b_1_a": true,
+   "voldoet_aan_grond_38b_1_b": false,
+   "voldoet_aan_grond_38b_1_c": false,
+   "voldoet_aan_grond_38b_1_d": false,
+   "voldoet_aan_grond_38b_1_e": false,
+   "voldoet_aan_grond_38b_1_f": false,
+   "voldoet_aan_grond_38b_2": false,
+   "voldoet_aan_grond_38b_6": false
+  },
+  "stappen": [
+   {
+    "tekst": "Computing loonwaarde_onder_minimumloon_vastgesteld",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_a",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_b",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_c",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_d",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Open term 'amvb_indicatie_38b_1_d' implemented by besluit_wfsv article 2.24",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing behoort_tot_onderwijsdoelgroep_lid_1",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing is_uitgesloten_lid_3",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing amvb_indicatie_38b_1_d",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_e",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_f",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_g",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_2",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_6",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing is_arbeidsbeperkte",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing grond_opname_doelgroepregister",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing datum_opname_doelgroepregister",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing vaststelling_door",
+    "artikel": "38b"
+   }
+  ],
+  "ankers": [
+   [
+    "wet_financiering_sociale_verzekeringen",
+    "2.24",
+    ""
+   ],
+   [
+    "wet_financiering_sociale_verzekeringen",
+    "38b",
+    ""
+   ]
+  ]
+ },
+ "wet_tegemoetkomingen_loondomein:heeft_recht_op_lkv": {
+  "wet": "wet_tegemoetkomingen_loondomein",
+  "uitkomst": "heeft_recht_op_lkv",
+  "peildatum": "2026-07-01",
+  "scenario": "Werkgever ontvangt €1.680,64 per jaar LKV-banenafspraak voor Koen",
+  "gegevens": {
+   "aantal_gerealiseerde_dienstbetrekkingen_beschut_werk": null,
+   "behoort_tot_doelgroep_10b_lid_1": false,
+   "bsn": 999990101,
+   "college_heeft_loonwaarde_vastgesteld_conform_10d": true,
+   "datum_aanvang_aanvraagtermijn_doelgroepverklaring_2_15": null,
+   "datum_aanvang_eerste_dienstbetrekking_2_6": "2026-01-01",
+   "datum_eerste_opname_doelgroepregister": "2025-11-03",
+   "experiment_instrument_82a_suwi_ingezet": false,
+   "had_wia_recht_maand_voor_aanvang": false,
+   "heeft_dienstbetrekking_beschut_werk": false,
+   "heeft_duurzaam_geen_mogelijkheden_arbeidsparticipatie": false,
+   "heeft_geldige_doelgroepverklaring_2_15": false,
+   "heeft_geldige_doelgroepverklaring_2_7": false,
+   "heeft_loonaangifte_verzoek_ingediend": true,
+   "heeft_of_krijgt_wia_recht_bij_hervatting": false,
+   "heeft_pensioengerechtigde_leeftijd_bereikt": false,
+   "heeft_wajong_arbeidsondersteuning_of_uitkering": false,
+   "heeft_wajong_duurzaam_geen_mogelijkheden": false,
+   "heeft_wia_uitkering_hoofdstuk_6": false,
+   "heeft_zich_schriftelijk_gemeld_bij_uwv": false,
+   "hervat_eigen_arbeid_of_andere_functie": false,
+   "is_jonggehandicapt_uwv_oordeel_lid_2": false,
+   "is_pwet_toegeleid_naar_dienstbetrekking": false,
+   "is_pwet_toegeleid_of_lks_lid_2": true,
+   "is_uitgesloten_beschut_werk_pwet_10b": false,
+   "is_wsw_geindiceerd_of_oude_indicatie": false,
+   "is_wsw_of_beschut_werk_dienstbetrekking": false,
+   "komt_uit_praktijkonderwijs": false,
+   "komt_uit_voortgezet_speciaal_onderwijs": false,
+   "laatste_dag_persoon_lid_1_b_of_c": null,
+   "loonwaarde_percentage": 60,
+   "ontvangt_voorziening_pwet_10": false,
+   "ontvangt_voorziening_wia_35_lid_2": false,
+   "periode_2_12_is_verstreken": false,
+   "registratie_nog_niet_geeindigd": true,
+   "uwv_heeft_op_eigen_verzoek_vastgesteld_niet_in_staat_minimumloon": false,
+   "uwv_heeft_op_verzoek_college_vastgesteld_niet_in_staat_minimumloon": false,
+   "valt_onder_uitzondering_lid_2": false,
+   "verloonde_uren": 1664,
+   "verloonde_uren_voorwaarden_2_10": 1664,
+   "verloonde_uren_voorwaarden_2_14": 1664,
+   "verloonde_uren_voorwaarden_2_6": 1664,
+   "verricht_arbeid_in_dienstbetrekking": false,
+   "verricht_wsw_arbeid_artikel_2_zonder_terbeschikkingstelling": false,
+   "verzoek_van_college_of_eigen_aanvraag": false,
+   "was_arbeidsbeperkte_lid_1_of_2": false,
+   "was_in_dienst_bij_werkgever_binnen_zes_maanden": false,
+   "was_lid_1_c_en_nu_wajong_duurzaam_geen_mogelijkheden": false,
+   "was_rea_arbeidsgehandicapte_voor_2006": false
+  },
+  "tussenuitkomsten": {
+   "categorie_lkv": "banenafspraak",
+   "heeft_recht_op_lkv": true,
+   "hoogte_lkv_per_jaar_eurocent": 168064,
+   "is_uitgesloten_2_10_lid_2_of_3": false,
+   "periode_2_8_is_verstreken": false,
+   "tegemoetkoming_arbeidsgehandicapte_eurocent": 0,
+   "tegemoetkoming_banenafspraak_eurocent": 168064,
+   "tegemoetkoming_herplaatsen_eurocent": 0,
+   "voldoet_aan_voorwaarden_2_10": true
+  },
+  "resultaat": {
+   "categorie_lkv": "banenafspraak",
+   "heeft_recht_op_lkv": true,
+   "hoogte_lkv_per_jaar_eurocent": 168064,
+   "tegemoetkoming_banenafspraak_eurocent": 168064
+  },
+  "stappen": [
+   {
+    "tekst": "Computing is_uitgesloten_2_10_lid_2_of_3",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing voldoet_aan_voorwaarden_2_10",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing loonwaarde_onder_minimumloon_vastgesteld",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_a",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_b",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_c",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_d",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Open term 'amvb_indicatie_38b_1_d' implemented by besluit_wfsv article 2.24",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing behoort_tot_onderwijsdoelgroep_lid_1",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing is_uitgesloten_lid_3",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing amvb_indicatie_38b_1_d",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_e",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_f",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_g",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_2",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_6",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing is_arbeidsbeperkte",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing periode_2_8_is_verstreken",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_lkv",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_2_6_lid_1_a",
+    "artikel": "2.6"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_2_6_lid_1_b",
+    "artikel": "2.6"
+   },
+   {
+    "tekst": "Computing is_uitgesloten_2_6_lid_3",
+    "artikel": "2.6"
+   },
+   {
+    "tekst": "Computing is_arbeidsgehandicapte_werknemer",
+    "artikel": "2.6"
+   },
+   {
+    "tekst": "",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing periode_2_16_is_verstreken",
+    "artikel": "2.14"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_2_14_lid_1_a",
+    "artikel": "2.14"
+   },
+   {
+    "tekst": "Computing is_uitgesloten_2_14_lid_2",
+    "artikel": "2.14"
+   },
+   {
+    "tekst": "Computing is_herplaatsen_arbeidsgehandicapte",
+    "artikel": "2.14"
+   },
+   {
+    "tekst": "Computing tegemoetkoming_arbeidsgehandicapte_eurocent",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing tegemoetkoming_banenafspraak_eurocent",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing tegemoetkoming_herplaatsen_eurocent",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing hoogte_lkv_per_jaar_eurocent",
+    "artikel": "2.1"
+   },
+   {
+    "tekst": "Computing categorie_lkv",
+    "artikel": "2.1"
+   }
+  ],
+  "ankers": [
+   [
+    "wet_tegemoetkomingen_loondomein",
+    "2.1",
+    ""
+   ],
+   [
+    "wet_tegemoetkomingen_loondomein",
+    "2.14",
+    ""
+   ],
+   [
+    "wet_tegemoetkomingen_loondomein",
+    "2.24",
+    ""
+   ],
+   [
+    "wet_tegemoetkomingen_loondomein",
+    "2.6",
+    ""
+   ],
+   [
+    "wet_tegemoetkomingen_loondomein",
+    "38b",
+    ""
+   ]
+  ]
+ },
+ "ziektewet:heeft_recht_op_no_risk_polis": {
+  "wet": "ziektewet",
+  "uitkomst": "heeft_recht_op_no_risk_polis",
+  "peildatum": "2026-07-01",
+  "scenario": "Koen krijgt no-risk polis als banenafspraak-werknemer met LKS",
+  "gegevens": {
+   "aantal_dagloondagen_sinds_aanvang_dienstbetrekking": null,
+   "aantal_gerealiseerde_dienstbetrekkingen_beschut_werk": null,
+   "aanvraag_arbeidsondersteuning_wajong_ingediend": false,
+   "arbeidskundig_onderzoek_verricht": false,
+   "behoort_tot_doelgroep_10b_lid_1": false,
+   "behoort_tot_doelgroep_lks": true,
+   "bsn": 999990101,
+   "college_heeft_loonwaarde_vastgesteld": false,
+   "college_heeft_loonwaarde_vastgesteld_conform_10d": true,
+   "datum_aanvang_dienstbetrekking": "2026-01-01",
+   "datum_aanvraag_arbeidsondersteuning_wajong": "1900-01-01",
+   "datum_aanvraag_lks": "2026-02-01",
+   "datum_eerste_opname_doelgroepregister": "2025-11-03",
+   "datum_einde_deelname_onderwijs_lid_2_a": null,
+   "datum_ontstaan_recht_wajong": null,
+   "datum_voldaan_aan_lid_1": "1900-01-01",
+   "dienstbetrekking_aangevangen_na_aanvang_referteperiode": true,
+   "dienstbetrekking_is_tot_stand_gekomen": false,
+   "dienstbetrekking_voortgezet_na_vaststelling_wia_recht": false,
+   "eerste_dag_wachttijd_wia": "1900-01-01",
+   "einddatum_tijdvak_lid_1_b": null,
+   "experiment_instrument_82a_suwi_ingezet": false,
+   "geboortedatum": "1984-03-15",
+   "geen_dienstbetrekking_elders_elf_weken_voor_einde_wachttijd": false,
+   "had_of_heeft_wajong_arbeidsongeschiktheidsuitkering": false,
+   "had_wsw_dienstbetrekking_of_indicatie_voorafgaand": false,
+   "heeft_belemmering_bij_onderwijs_door_ziekte_of_gebrek": false,
+   "heeft_dienstbetrekking_beschut_werk": false,
+   "heeft_duurzaam_geen_mogelijkheden_arbeidsparticipatie": false,
+   "heeft_pensioengerechtigde_leeftijd_bereikt": false,
+   "heeft_recht_op_uitkering_hoofdstuk_6_of_7": false,
+   "heeft_wajong_arbeidsondersteuning_of_uitkering": false,
+   "heeft_wajong_duurzaam_geen_mogelijkheden": false,
+   "heeft_wia_uitkering_hoofdstuk_6": false,
+   "heeft_zich_schriftelijk_gemeld_bij_uwv": false,
+   "is_jonggehandicapt_uwv_oordeel_lid_2": false,
+   "is_jonggehandicapte_hoofdstuk_2_wajong": false,
+   "is_medisch_duurzaam_wia": false,
+   "is_overleden": false,
+   "is_pwet_toegeleid_naar_dienstbetrekking": false,
+   "is_pwet_toegeleid_of_lks_lid_2": true,
+   "is_rechtens_vrijheid_ontnomen": false,
+   "is_uitgesloten_beschut_werk_pwet_10b": false,
+   "is_uitreiziger": false,
+   "is_uitsluitingsgrond_2_11_wajong_van_toepassing": false,
+   "is_verzekerde_wia": true,
+   "is_volledig_en_duurzaam_arbeidsongeschikt_wajong": false,
+   "is_wsw_dienstbetrekking": false,
+   "is_wsw_geindiceerd_of_oude_indicatie": false,
+   "is_wsw_werknemer": false,
+   "is_ziek_geworden_wia": false,
+   "kan_minimumloon_niet_verdienen": true,
+   "komt_uit_praktijkonderwijs": false,
+   "komt_uit_voortgezet_speciaal_onderwijs": false,
+   "laatste_dag_persoon_lid_1_b_of_c": null,
+   "loon_referteperiode_eurocent": 0,
+   "loondoorbetalings_of_ziekengeldtijdvak_loopt_nog": false,
+   "loonwaarde_percentage": 60,
+   "niet_in_staat_tot_eigen_of_passende_arbeid_bij_eigen_werkgever": false,
+   "onttrekt_zich_aan_vrijheidsstraf": false,
+   "ontvangt_voorziening_pwet_10": false,
+   "ontvangt_voorziening_wia_35_lid_2": false,
+   "ontvangt_wazo_uitkering_wegens_ziekte_door_zwangerschap": false,
+   "opgebouwde_vakantiebijslag_referteperiode_eurocent": 0,
+   "overeengekomen_arbeidsduur_uren_per_week": 32,
+   "periode_zonder_ziekengeld_29_lid_11_loopt_nog": false,
+   "recht_op_arbeidsondersteuning_herleeft_2_17": false,
+   "registratie_nog_niet_geeindigd": true,
+   "uitbetaalde_vakantiebijslag_referteperiode_eurocent": 0,
+   "uwv_heeft_op_eigen_verzoek_vastgesteld_niet_in_staat_minimumloon": false,
+   "uwv_heeft_op_verzoek_college_vastgesteld_niet_in_staat_minimumloon": false,
+   "vaststelling_loonwaarde_blijft_achterwege": false,
+   "verdiencapaciteit_percentage_maatmaninkomen": 100,
+   "verdiencapaciteit_wajong_percentage_maatmaninkomen": 100,
+   "verricht_arbeid_in_dienstbetrekking": false,
+   "verricht_arbeid_in_wsw_dienstbetrekking_artikel_2": false,
+   "verzoek_van_college_of_eigen_aanvraag": false,
+   "volgde_onderwijs_zonder_startkwalificatie_leerwerktraject": false,
+   "was_arbeidsbeperkte_lid_1_of_2": false,
+   "was_lid_1_c_en_nu_wajong_duurzaam_geen_mogelijkheden": false,
+   "was_persoon_7_lid_1_a_of_7a_in_zes_maanden_voorafgaand": true,
+   "werkgever_is_voornemens_dienstbetrekking_aan_te_gaan": false,
+   "woont_niet_in_nederland": false,
+   "wsw_subsidiebedrag_per_werkdag_eurocent": null
+  },
+  "tussenuitkomsten": {
+   "dienstbetrekking_aangevangen_voor_achttien_en_voor_wajong_recht": false,
+   "duur_no_risk_polis_jaren": -1,
+   "heeft_recht_op_no_risk_polis": true,
+   "heeft_recht_op_wia_uitkering": false,
+   "is_uitgesloten_lid_8": false,
+   "peildatum_lid_1_b": null,
+   "voldoet_aan_lid_1": false,
+   "voldoet_aan_lid_1_a": false,
+   "voldoet_aan_lid_1_b": false,
+   "voldoet_aan_lid_1_c": false,
+   "voldoet_aan_lid_1_d": false,
+   "voldoet_aan_lid_2": true,
+   "voldoet_aan_lid_2_a": false,
+   "voldoet_aan_lid_2_e": true,
+   "voldoet_aan_lid_2_f": false,
+   "voldoet_aan_lid_4": false,
+   "ziekte_nu_binnen_termijn_lid_1": true,
+   "ziekte_nu_binnen_termijn_lid_4": {
+    "__unknown": true,
+    "missing": [
+     {
+      "kind": "not_passed",
+      "law": "ziektewet",
+      "name": "datum_vaststelling_recht_wia_uitkering"
+     }
+    ]
+   }
+  },
+  "resultaat": {
+   "duur_no_risk_polis_jaren": -1,
+   "heeft_recht_op_no_risk_polis": true,
+   "heeft_recht_op_wia_uitkering": false,
+   "voldoet_aan_lid_1": false,
+   "voldoet_aan_lid_2": true,
+   "voldoet_aan_lid_2_a": false,
+   "voldoet_aan_lid_2_e": true,
+   "voldoet_aan_lid_2_f": false,
+   "voldoet_aan_lid_4": false
+  },
+  "stappen": [
+   {
+    "tekst": "Computing heeft_recht_op_wia_uitkering",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_iva_uitkering",
+    "artikel": "47"
+   },
+   {
+    "tekst": "",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_wga_uitkering",
+    "artikel": "54"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_1_a",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing peildatum_lid_1_b",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_1_b",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_2_a",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_voorwaarden_lid_1",
+    "artikel": "2:15"
+   },
+   {
+    "tekst": "Computing ingangsdatum_recht_op_arbeidsondersteuning",
+    "artikel": "2:15"
+   },
+   {
+    "tekst": "Computing recht_kan_nog_ontstaan",
+    "artikel": "2:15"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_arbeidsondersteuning",
+    "artikel": "2:15"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_1_c",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_1_d",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_2_e",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing loonwaarde_onder_minimumloon_vastgesteld",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_a",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_d",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Open term 'amvb_indicatie_38b_1_d' implemented by besluit_wfsv article 2.24",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing behoort_tot_onderwijsdoelgroep_lid_1",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing is_uitgesloten_lid_3",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing amvb_indicatie_38b_1_d",
+    "artikel": "2.24"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_e",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_1_f",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_2",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_grond_38b_6",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing is_arbeidsbeperkte_grond_a_d_e_f_lid_2_of_6",
+    "artikel": "38b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_2_f",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing verricht_arbeid_in_beschut_werk",
+    "artikel": "10b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_1",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing dienstbetrekking_aangevangen_voor_achttien_en_voor_wajong_recht",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_2",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing voldoet_aan_lid_4",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing is_uitgesloten_lid_8",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing ziekte_nu_binnen_termijn_lid_1",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing ziekte_nu_binnen_termijn_lid_4",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing heeft_recht_op_no_risk_polis",
+    "artikel": "29b"
+   },
+   {
+    "tekst": "Computing duur_no_risk_polis_jaren",
+    "artikel": "29b"
+   }
+  ],
+  "ankers": [
+   [
+    "ziektewet",
+    "10b",
+    ""
+   ],
+   [
+    "ziektewet",
+    "2.24",
+    ""
+   ],
+   [
+    "ziektewet",
+    "29b",
+    ""
+   ],
+   [
+    "ziektewet",
+    "2:15",
+    ""
+   ],
+   [
+    "ziektewet",
+    "38b",
+    ""
+   ],
+   [
+    "ziektewet",
+    "47",
+    ""
+   ],
+   [
+    "ziektewet",
+    "54",
+    ""
+   ]
+  ]
+ }
+}

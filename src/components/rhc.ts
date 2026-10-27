@@ -2,7 +2,9 @@
 
 export {
   ActionGroup,
+  Accordion,
   AccordionProvider,
+  AccordionSection,
   Article,
   BreadcrumbNav,
   BreadcrumbNavLink,

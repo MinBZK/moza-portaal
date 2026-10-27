@@ -7,7 +7,11 @@ import {
   getBerichtenboxVariant,
   getFlagsFromServerCookie,
 } from "@/app/actions";
-import { getDemoOrganisatieId, getDemoPersonas } from "@/demo";
+import {
+  getDemoConceptAanvragen,
+  getDemoOrganisatieId,
+  getDemoPersonas,
+} from "@/demo";
 import { FlagsProvider } from "./_flags/flagsContext";
 import FlagsPaneel from "./_flags/flagsPaneel";
 import PersonaPaneel from "./_flags/personaPaneel";
@@ -33,9 +37,10 @@ export default async function PublicLayout({
     getDemoPersonas(),
     getBerichtenboxVariant(),
   ]);
-  const [organisatie, naam] = await Promise.all([
+  const [organisatie, naam, conceptAanvragen] = await Promise.all([
     getActieveOrganisatie(persona),
     getIngelogdeNaam(persona),
+    getDemoConceptAanvragen(persona?.id),
   ]);
 
   return (
@@ -65,7 +70,9 @@ export default async function PublicLayout({
                 <Navigation
                   flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
-                  lopendeZakenBadge={<ZakenBadge />}
+                  lopendeZakenBadge={
+                    <ZakenBadge nogInTeDienen={conceptAanvragen.length} />
+                  }
                   naam={naam}
                   actieveOrganisatieId={
                     organisatie ? getDemoOrganisatieId(organisatie) : undefined

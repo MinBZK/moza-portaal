@@ -1,0 +1,345 @@
+{
+  "toelichting": "Demo-gegevens van de situatie. Uitkomsten staan als plaatshouder ({uren} {loonwaarde} {lksPerMaand} {lksTweeMaanden} {aanspraakPerUur} {lkvPerJaar}); de pagina vult ze met de uitkomsten van de regelrecht-engine. Plaatshouders {onderneming} {kvkNummer} {vestiging} {iban} {fulltime} {parttime} vult de pagina uit de actieve persona.",
+  "kandidaat": {
+    "voornaam": "Noor",
+    "achternaam": "Hoekstra",
+    "geboortedatum": "2002-05-20",
+    "leeftijd": 24,
+    "woonplaats": "Zwolle",
+    "gemeente": "Zwolle",
+    "bsnMasker": "•••••0202",
+    "toestemmingOp": "2026-09-08"
+  },
+  "dienstverband": {
+    "functie": "Medewerker magazijn",
+    "urenPerWeek": 24,
+    "aanvang": "2026-10-01",
+    "uurloonEurocent": 1499,
+    "uurloonLabel": "wettelijk minimumloon, € 14,99 per uur",
+    "verloondeUrenPerJaar": 1248,
+    "soort": "Onbepaalde tijd"
+  },
+  "zaak": {
+    "nummer": "UWV-LD-2026-0231",
+    "organisatie": "UWV",
+    "onderwerp": "Loondispensatie voor Noor Hoekstra",
+    "regel": "Artikel 2:20 van de Wajong en de artikelen 1 tot en met 5 van het Besluit loondispensatie Wajong, zoals die gelden op 1 juli 2026",
+    "url": "/lopendezaken/iemand-aannemen/wajong"
+  },
+  "bronnen": [
+    {
+      "id": "uwv",
+      "organisatie": "UWV",
+      "register": "Wajong en doelgroepregister banenafspraak",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Heeft Noor Wajong met arbeidsondersteuning van UWV?",
+          "wetsvraag": "Heeft de werknemer recht op arbeidsondersteuning of een arbeidsongeschiktheidsuitkering op grond van de Wajong?",
+          "parameter": "heeft_wajong_arbeidsondersteuning_of_uitkering",
+          "waarde": "Ja, Wajong met arbeidsondersteuning",
+          "grond": "Wajong 2:15"
+        },
+        {
+          "vraag": "Staat Noor in het doelgroepregister banenafspraak?",
+          "wetsvraag": "Is de werknemer een arbeidsbeperkte als bedoeld in artikel 38b van de Wet financiering sociale verzekeringen?",
+          "parameter": "is_arbeidsbeperkte",
+          "waarde": "Ja, sinds 14 mei 2024",
+          "grond": "Wfsv 38b lid 1"
+        },
+        {
+          "vraag": "Op welke grond staat de registratie in het doelgroepregister?",
+          "wetsvraag": "Op welke grond is de werknemer opgenomen in het doelgroepregister?",
+          "parameter": "grond_opname_doelgroepregister",
+          "waarde": "Grond c: Wajong met arbeidsondersteuning",
+          "grond": "Wfsv 38b lid 1 c"
+        },
+        {
+          "vraag": "Loopt de registratie nog?",
+          "wetsvraag": "Is de registratie in het doelgroepregister nog niet geëindigd?",
+          "parameter": "registratie_nog_niet_geeindigd",
+          "waarde": "Ja",
+          "grond": "Wfsv 38b lid 6"
+        },
+        {
+          "vraag": "Heeft Noor een WIA-uitkering?",
+          "wetsvraag": "Heeft de werknemer een uitkering op grond van hoofdstuk 6 van de Wet WIA?",
+          "parameter": "heeft_wia_uitkering_hoofdstuk_6",
+          "waarde": "Nee",
+          "grond": "Wet WIA 4 en 5"
+        }
+      ]
+    },
+    {
+      "id": "kvk",
+      "organisatie": "KVK",
+      "register": "Handelsregister",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Welke onderneming neemt Noor aan?",
+          "wetsvraag": "Wie is de werkgever?",
+          "parameter": "kvk_nummer",
+          "waarde": "{onderneming}, KVK {kvkNummer}, {vestiging}",
+          "grond": "Handelsregisterwet"
+        }
+      ]
+    },
+    {
+      "id": "belastingdienst",
+      "organisatie": "Belastingdienst",
+      "register": "Loonaangifte",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Hoeveel werknemers heeft u nu in de loonaangifte?",
+          "wetsvraag": "Aantal werknemers in de laatste loonaangifte",
+          "parameter": "aantal_werknemers_loonaangifte",
+          "waarde": "{fulltime} fulltime en {parttime} parttime (loonaangifte augustus 2026)",
+          "grond": "Wet op de loonbelasting"
+        },
+        {
+          "vraag": "Staat er al een verzoek om loonkostenvoordeel in de loonaangifte?",
+          "wetsvraag": "Heeft de werkgever in de loonaangifte verzocht om het loonkostenvoordeel?",
+          "parameter": "heeft_loonaangifte_verzoek_ingediend",
+          "waarde": "Nog niet; dat doet u in de loonaangifte na de start",
+          "grond": "Wtl 2.1"
+        }
+      ]
+    },
+    {
+      "id": "eigen",
+      "organisatie": "Uw eigen opgave",
+      "register": "Wat de overheid nog niet weet",
+      "opgehaald": "2026-09-08",
+      "gegevens": [
+        {
+          "vraag": "Hoeveel uur per week gaat Noor werken?",
+          "wetsvraag": "Wat is de overeengekomen arbeidsduur in uren per week?",
+          "parameter": "overeengekomen_arbeidsduur_uren_per_week",
+          "waarde": "{uren} uur",
+          "grond": "Wtl 2.13"
+        },
+        {
+          "vraag": "Wanneer begint de dienstbetrekking?",
+          "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
+          "parameter": "datum_aanvang_dienstbetrekking",
+          "waarde": "1 oktober 2026",
+          "grond": "ZW 29b lid 2 a"
+        },
+        {
+          "vraag": "Wat gaat Noor verdienen?",
+          "wetsvraag": "Wat is het overeengekomen loon?",
+          "parameter": "uurloon",
+          "waarde": "Wettelijk minimumloon, € 14,99 per uur",
+          "grond": "WMM 8 en 15"
+        }
+      ]
+    }
+  ],
+  "fasen": [
+    {
+      "id": "ontvangst",
+      "label": "Aanvraag ontvangen (6 oktober)",
+      "datum": "2026-10-06"
+    },
+    {
+      "id": "onderzoek",
+      "label": "Onderzoek op de werkplek (19 oktober)",
+      "datum": "2026-10-19"
+    },
+    {
+      "id": "percentage",
+      "label": "Percentage vastgesteld (27 oktober, aanname)",
+      "datum": "2026-10-27"
+    },
+    {
+      "id": "besluit",
+      "label": "Besluit genomen (10 november, aanname)",
+      "datum": "2026-11-10"
+    }
+  ],
+  "gebeurtenissen": [
+    {
+      "id": "v1",
+      "datum": "2026-07-01",
+      "tijd": "00:00",
+      "actor": "Wetgever",
+      "soort": "regelgeving",
+      "titel": "Wetsversie van 1 juli 2026 geldt",
+      "tekst": "Wajong, Besluit loondispensatie Wajong, Wet financiering sociale verzekeringen, Wet tegemoetkomingen loondomein en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "grond": "Regeling indexatie wettelijk minimumloon",
+      "stap": "vooraf"
+    },
+    {
+      "id": "v2",
+      "datum": "2024-05-14",
+      "tijd": "10:12",
+      "actor": "UWV",
+      "soort": "besluit",
+      "titel": "Noor opgenomen in het doelgroepregister banenafspraak",
+      "tekst": "Op grond van Wajong met arbeidsondersteuning.",
+      "grond": "Wfsv 38b lid 1 c",
+      "stap": "vooraf"
+    },
+    {
+      "id": "v3",
+      "datum": "2026-09-08",
+      "tijd": "14:05",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Noor toegevoegd als kandidaat",
+      "tekst": "Noor Hoekstra gaf toestemming dat {onderneming} de gegevens bij UWV gebruikt voor deze aanvraag.",
+      "grond": "AVG 6 lid 1 a",
+      "stap": "vooraf"
+    },
+    {
+      "id": "v4",
+      "datum": "2026-09-08",
+      "tijd": "14:09",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Gegevens per bron bevestigd",
+      "tekst": "UWV, KVK, Belastingdienst en uw eigen opgave: per bron aangevinkt dat de gegevens kloppen en gebruikt mogen worden.",
+      "grond": "",
+      "stap": "vooraf"
+    },
+    {
+      "id": "v5",
+      "datum": "2026-10-01",
+      "tijd": "09:00",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Dienstbetrekking begonnen",
+      "tekst": "Noor is gestart voor {uren} uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
+      "grond": "Wtl 2.1",
+      "stap": "ontvangst"
+    },
+    {
+      "id": "v6",
+      "datum": "2026-10-05",
+      "tijd": "16:31",
+      "actor": "U",
+      "soort": "uitvoering",
+      "titel": "Aanvraag loondispensatie verstuurd",
+      "tekst": "De werkgever heeft loondispensatie voor Noor aangevraagd bij UWV. De wet laat de aanvraag toe op verzoek van de werkgever of de werknemer.",
+      "grond": "Wajong 2:20 lid 1",
+      "stap": "ontvangst"
+    },
+    {
+      "id": "v7",
+      "datum": "2026-10-06",
+      "tijd": "09:14",
+      "actor": "UWV",
+      "soort": "uitvoering",
+      "titel": "Ontvangstbevestiging, zaaknummer UWV-LD-2026-0231",
+      "tekst": "UWV heeft uw aanvraag ontvangen en in behandeling genomen.",
+      "grond": "Awb 4:3a",
+      "stap": "ontvangst"
+    },
+    {
+      "id": "v8",
+      "datum": "2026-10-12",
+      "tijd": "11:40",
+      "actor": "UWV",
+      "soort": "uitvoering",
+      "titel": "Afspraak onderzoek op de werkplek: 19 oktober (aanname)",
+      "tekst": "Een arbeidsdeskundige van UWV komt naar de werkplek. De arbeidsdeskundige onderzoekt of de prestatie van Noor een beloning per uur rechtvaardigt die ten minste 25 procent lager ligt dan de gebruikelijke beloning voor dezelfde arbeid.",
+      "grond": "Besluit loondispensatie Wajong 1",
+      "stap": "onderzoek"
+    },
+    {
+      "id": "v9",
+      "datum": "2026-10-19",
+      "tijd": "10:00",
+      "actor": "UWV",
+      "soort": "uitvoering",
+      "titel": "Onderzoek op de werkplek uitgevoerd",
+      "tekst": "De arbeidsdeskundige beoordeelt ook of de lagere arbeidsprestatie naar verwachting ten minste zes maanden duurt.",
+      "grond": "Besluit loondispensatie Wajong 2",
+      "stap": "onderzoek"
+    },
+    {
+      "id": "v10",
+      "datum": "2026-10-27",
+      "tijd": "15:20",
+      "actor": "UWV",
+      "soort": "besluit",
+      "titel": "Percentage vastgesteld: {loonwaarde} van het minimumloon (aanname over de termijn)",
+      "tekst": "UWV stelt het percentage vast waarmee de loondispensatie wordt berekend: {loonwaarde} van het wettelijk minimumloon per uur. De aanspraak per uur is dat percentage van het minimumloon.",
+      "grond": "Besluit loondispensatie Wajong 3",
+      "stap": "percentage"
+    },
+    {
+      "id": "v11",
+      "datum": "2026-11-10",
+      "tijd": "11:41",
+      "actor": "UWV",
+      "soort": "besluit",
+      "titel": "Besluit: loondispensatie toegekend, {aanspraakPerUur} per uur, ten hoogste vijf jaar (aanname over de termijn)",
+      "tekst": "UWV verleent loondispensatie vanaf {ingangLoondispensatie}, de eerste dag van de maand van de aanvraag. Die geldt voor de periode die naar verwachting nodig is, ten hoogste vijf jaar. Verlenging is mogelijk. U kunt binnen zes weken bezwaar maken.",
+      "grond": "Wajong 2:20; Besluit loondispensatie Wajong 4 en 5; Awb 6:7",
+      "stap": "besluit",
+      "url": "/lopendezaken/iemand-aannemen/wajong/besluit"
+    }
+  ],
+  "komtHierna": [
+    {
+      "datum": "2027-03-15",
+      "actor": "Belastingdienst",
+      "titel": "Overzicht met de voorgenomen berekening van het loonkostenvoordeel 2026",
+      "tekst": "Het loonkostenvoordeel is een bedrag per verloond uur. Over een heel jaar is dat {lkvPerJaar}. Over 2026 tellen de uren van oktober tot en met december.",
+      "grond": "Wtl 4.1 lid 4"
+    },
+    {
+      "datum": "2027-08-01",
+      "actor": "Belastingdienst",
+      "titel": "Beschikking loonkostenvoordeel 2026",
+      "tekst": "",
+      "grond": "Wtl 4.2 lid 3"
+    }
+  ],
+  "labels": {
+    "is_uitgesloten_lid_3": "Uitgesloten: Wsw-dienstbetrekking (lid 3)",
+    "heeft_recht_op_lks_lid_1": "Recht via lid 1 (loonwaarde vooraf vastgesteld)",
+    "voorafgaand_relevante_onderwijsroute_of_doelgroep": "Kwam uit de doelgroep of een onderwijsroute (lid 2 a tot en met c)",
+    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen zes maanden na de eerste werkdag (lid 2)",
+    "heeft_recht_op_lks_lid_2": "Recht via lid 2",
+    "heeft_recht_op_lks": "Recht op loonkostensubsidie",
+    "volgt_de_vijftig_procent_route": "Vijftigprocentroute (lid 5)",
+    "werkgeverslastenvergoeding_eurocent_per_maand": "Vergoeding werkgeverslasten (25 procent)",
+    "grondslag_maximum_eurocent_per_maand": "Grondslag van het maximum",
+    "maximum_subsidie_eurocent_per_maand": "Maximum: 70 procent van de grondslag",
+    "loonwaarde_eurocent_per_maand": "Loonwaarde in euro per maand",
+    "bruto_subsidie_eurocent_per_maand": "Verschil minimumloon en loonwaarde",
+    "hoogte_lks_lid_4_voltijd_eurocent_per_maand": "Hoogte volgens lid 4, voltijd",
+    "hoogte_lks_lid_5_voltijd_eurocent_per_maand": "Hoogte volgens lid 5, voltijd",
+    "hoogte_lks_voltijd_eurocent_per_maand": "Hoogte bij voltijd",
+    "arbeidsduur_voor_evenredigheid_uren_per_week": "Arbeidsduur voor de evenredigheid (uren per week)",
+    "hoogte_lks_eurocent_per_maand": "Loonkostensubsidie per maand",
+    "heeft_aanspraak_op_begeleiding_op_de_werkplek": "Aanspraak op begeleiding op de werkplek (10da)",
+    "mag_proefplaatsing_aangaan": "Proefplaatsing mogelijk (8a lid 2 d)",
+    "max_duur_proefplaatsing_maanden": "Duur proefplaatsing (maanden)",
+    "max_duur_verlenging_proefplaatsing_maanden": "Verlenging (maanden)",
+    "max_totale_duur_proefplaatsing_maanden": "Totale duur (maanden)",
+    "heeft_recht_op_lkv": "Recht op loonkostenvoordeel (2.1)",
+    "categorie_lkv": "Categorie loonkostenvoordeel",
+    "voldoet_aan_voorwaarden_2_10": "Voorwaarden banenafspraak (2.10)",
+    "is_uitgesloten_2_10_lid_2_of_3": "Uitgesloten (2.10 lid 2 of 3)",
+    "tegemoetkoming_banenafspraak_eurocent": "Tegemoetkoming banenafspraak (2.13)",
+    "hoogte_lkv_per_jaar_eurocent": "Loonkostenvoordeel per jaar",
+    "heeft_recht_op_no_risk_polis": "Recht op de no-riskpolis",
+    "duur_no_risk_polis_jaren": "Duur van de no-riskpolis (jaren)",
+    "is_uitgesloten_lid_8": "Uitgesloten: Wsw-dienstbetrekking (lid 8)",
+    "is_arbeidsbeperkte": "Arbeidsbeperkte (doelgroepregister)",
+    "grond_opname_doelgroepregister": "Grond van opname",
+    "datum_opname_doelgroepregister": "Datum van opname",
+    "heeft_recht_op_loondispensatie": "Recht op loondispensatie (2:20)",
+    "heeft_recht_op_arbeidsondersteuning": "Recht op arbeidsondersteuning (2:15)"
+  },
+  "besluit": {
+    "organisatie": "UWV",
+    "datum": "2026-11-10",
+    "bezwaar": "zes weken"
+  }
+}
