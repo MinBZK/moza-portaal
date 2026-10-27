@@ -974,8 +974,8 @@ const layoutEntries: Entry[] = [
     name: "Header",
     file: "src/layouts/header/index.tsx",
     description: [
-      "Kop van elke pagina met het logo, de naam van het portaal, de taalkeuze, de ingelogde persoon en Uitloggen. Gebouwd met RHC Logo en NavBar.",
-      "Heeft iemand meer organisaties, dan opent de naam een Dropdown om te wisselen. Op een smal scherm staan taal, naam en Uitloggen in het menu.",
+      "Kop van elke pagina met het logo, de naam van het portaal, de taalkeuze, de ingelogde persoon en optie om uit te loggen (in ingelogde staat).",
+      "Is iemand onderdeel van meer organisaties, dan opent de naam een Dropdown om te wisselen. Op een smal scherm staan taal, naam en Uitloggen in het menu.",
     ],
     options: [
       [
@@ -1061,7 +1061,7 @@ const layoutEntries: Entry[] = [
     name: "Navigatie",
     file: "src/layouts/navigation/index.tsx",
     description: [
-      "Het menu aan de linkerkant, gebouwd met RHC SideNav. Groepen links staan in een eigen SideNavList, met een Separator ertussen. De link van de huidige pagina krijgt current, en daarmee aria-current.",
+      'Het menu aan de linkerkant. Groepen links staan in een eigen <SideNavList>, met een <Separator> ertussen. De link van de huidige pagina wordt voorzien van aria-current="page".',
       "Op een smal scherm is het menu dicht en opent de knop Menu in de header het.",
     ],
     options: [
@@ -1136,7 +1136,7 @@ const layoutEntries: Entry[] = [
     name: "Breadcrumb",
     file: "src/layouts/breadcrumb/index.tsx",
     description: [
-      "Kruimelpad boven de inhoud, gebouwd met RHC BreadcrumbNav. Het maakt de kruimels uit het pad van de pagina; de namen staan in breadcrumbLabels. Niet op de homepage.",
+      "Kruimelpad boven de inhoud. Het maakt de ‘kruimels’ uit het pad van de pagina; de namen staan in <breadcrumbLabels>. Op de homepage is geen kruimelpad aanwezig.",
       <>
         Een pagina met een eigen naam, zoals een bericht, zet die met{" "}
         <code>HuidigeKruimel</code> uit{" "}
@@ -1172,7 +1172,7 @@ const layoutEntries: Entry[] = [
           <Icon icon="chevron-right" />
         </BreadcrumbNavSeparator>
         <BreadcrumbNavLink href="/berichtenbox" index={1}>
-          Berichtenbox
+          Eerste niveau
         </BreadcrumbNavLink>
         <BreadcrumbNavSeparator>
           <Icon icon="chevron-right" />
@@ -1183,7 +1183,7 @@ const layoutEntries: Entry[] = [
           current
           disabled
         >
-          Uw voorlopige aanslag 2026
+          Huidige pagina
         </BreadcrumbNavLink>
       </BreadcrumbNav>
     ),
@@ -1192,7 +1192,7 @@ const layoutEntries: Entry[] = [
     name: "Footer",
     file: "src/layouts/footer/index.tsx",
     description:
-      "Voettekst met groepen links, gebouwd met RHC Footer, LinkList en rhc-grid. Elke groep is een nav met een eigen kop. Een externe link krijgt een ander icoon en de verborgen tekst ‘opent in nieuw tabblad’.",
+      "Voettekst met groepen links. Elke groep is een <nav>-element met een eigen koptekst. Een externe link krijgt een ander icoon en de verborgen tekst ‘opent in nieuw tabblad’.",
     options: [
       [
         "groepen",
@@ -1279,7 +1279,7 @@ const layoutEntries: Entry[] = [
     name: "NavigationList en NavigationListItem",
     file: "@/components/rhc",
     description: [
-      "Lijst met navigatietegels: elk item is één link met een label, een korte uitleg en een pijl. Gebruikt bij ‘Snel naar’ op de landingspagina.",
+      "Lijst met navigatietegels: elk item is één link met een label, een korte uitleg en een pijl. Gebruikt bij ‘Snel naar …’ op de landingspagina.",
       <>
         Met de class <code>rhc-mox-navigation-grid</code> staan de items op een
         breed scherm in twee kolommen, en op een smal scherm onder elkaar.
@@ -2005,7 +2005,12 @@ const ComponentsDemoPage = () => {
           "level",
           "(Optioneel) Kopniveau met de styling van een ander kopniveau",
         ],
-        ["Paragraph purpose", '"lead"', "–", "Inleidende alinea, groter"],
+        [
+          "Paragraph purpose",
+          '"lead"',
+          "–",
+          "Inleidende alinea, grotere lettergrootte",
+        ],
       ],
       example: (
         <>
@@ -2328,10 +2333,10 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
-      name: "Formuliervelden",
+      name: "Invoervelden",
       file: "@/components/rhc",
       description:
-        "<FormFieldTextInput> en <FormFieldTextarea>: velden om tekst in te vullen. Om te kiezen, zie Keuze-elementen.",
+        "<FormFieldTextInput> en <FormFieldTextarea>: velden om tekst in te vullen. Optionele hulp-tekst staat onder het invoerveld, foutmeldingen verschijnen tussen het label en het invoerveld zelf.",
       options: [
         ["label", "ReactNode", "–", "Label van het veld"],
         ["description", "ReactNode", "–", "Uitleg onder het label"],
@@ -2450,9 +2455,9 @@ const ComponentsDemoPage = () => {
       ],
       example: (
         <>
-          <Paragraph>Content boven de lijn.</Paragraph>
+          <Paragraph>Content boven de scheidingslijn.</Paragraph>
           <Separator />
-          <Paragraph>Content onder de lijn.</Paragraph>
+          <Paragraph>Content onder de scheidingslijn.</Paragraph>
         </>
       ),
     },
@@ -2491,14 +2496,17 @@ const ComponentsDemoPage = () => {
   ];
 
   const rhcLayout: [string, string][] = [
-    ["SkipLink", "Link Naar de hoofdinhoud (src/app/layout.tsx)."],
+    [
+      "SkipLink",
+      "Link Naar de hoofdinhoud (src/app/layout.tsx). Krijg als eerste (toetsenbord-)focus.",
+    ],
     [
       "LanguageNavigation",
-      "Taalmenu, via LanguageSelect (src/components/languageSelect.tsx).",
+      "Taalmenu, via LanguageSelect (src/components/languageSelect.tsx)",
     ],
     [
       "Drawer",
-      "Paneel dat inschuift, via SideOverlay (Flags- en persona-paneel).",
+      "Paneel dat inschuift, via SideOverlay (Flags- en persona-paneel)",
     ],
   ];
 
@@ -2578,7 +2586,7 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Tabs",
-      file: "rhc-mox-tabs, rhc-mox-tab (rhc.css)",
+      file: "rhc-mox-tabs, rhc-mox-tab",
       description:
         "Tabbladen als navigatie tussen pagina's, zoals in de Berichtenbox en bij Lopende zaken. Op een smal scherm of bij veel tabbladen scrollen ze, met een verloop aan de uiteinden.",
       options: [
@@ -2660,7 +2668,7 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Actiebalk (compact)",
-      file: "rhc-mox-action-group-dense (rhc.css)",
+      file: "rhc-mox-action-group-dense",
       description:
         "Grijze balk met kleine acties als LinkButtons, zoals bij een wet of subsidie. Bewaren en Niet relevant komen uit src/components/save.",
       options: [
@@ -2706,7 +2714,7 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Meter",
-      file: "rhc-mox-graph-meter (rhc.css)",
+      file: "rhc-mox-graph-meter",
       description:
         "Eén waarde binnen een bereik, zoals het vergeven budget van een subsidie: een ProgressBar met de waarde ernaast.",
       options: [
@@ -2736,7 +2744,7 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Dialoog",
-      file: "rhc-mox-dialog (rhc.css)",
+      file: "rhc-mox-dialog",
       description:
         "Modaal venster op een gewoon dialog-element, geopend met showModal(). De Escape-toets sluit de dialoog.",
       options: [
@@ -2773,8 +2781,116 @@ const ComponentsDemoPage = () => {
       example: <StatusTrack stappen={DEMO_STEPS} />,
     },
     {
+      name: "Paginagrid",
+      file: "src/styles/page-grid.css",
+      description: [
+        "Elke pagina staat in een raster van kolommen: 4 op een smal scherm (tot 768 pixels), 8 op een middelbreed scherm (768 tot 1024 pixels) en 12 op een breed scherm (vanaf 1024 pixels).",
+        <>
+          Het grid rekent altijd in twaalfden: <code>rhc-grid__cell-N</code>,
+          met <code>-t-N</code> vanaf 768 en <code>-d-N</code> vanaf 1024
+          pixels. <code>page-grid.css</code> rekent die om naar het aantal
+          kolommen van het scherm, afgerond naar boven. Zo werkt gewone markup
+          zonder aanpassingen.
+        </>,
+        <>
+          De layout van het portaal (<code>src/app/(public)/_layout.tsx</code>)
+          zet het menu in <code>rhc-grid__cell-t-3</code> en de inhoud in{" "}
+          <code>rhc-grid__cell-t-9 rhc-mox-main-container</code>. Op een breed
+          scherm is dat 3 en 9 kolommen, op een middelbreed scherm 2 en 6. Op
+          een smal scherm is de inhoud vol breed en zit het menu achter de knop
+          Menu.
+        </>,
+        <>
+          Bekijk alle kolommen en breekpunten op de testpagina{" "}
+          <NextLink href="/page-grid" className="utrecht-link">
+            Pagina-grid
+          </NextLink>
+          .
+        </>,
+      ],
+      options: [
+        ["rhc-grid", "class", "–", "Het raster: 4, 8 of 12 kolommen"],
+        [
+          "rhc-grid__cell",
+          "class",
+          "–",
+          "Een cel; zonder breedte vult die de hele rij",
+        ],
+        [
+          "rhc-grid__cell-N",
+          "class, N = 1 tot 12",
+          "–",
+          "Breedte in twaalfden, op elk scherm",
+        ],
+        [
+          "rhc-grid__cell-t-N / -d-N",
+          "class, N = 1 tot 12",
+          "–",
+          "Breedte vanaf 768 (t) of 1024 (d) pixels",
+        ],
+        [
+          "--mox-page-margin",
+          "token",
+          "space-max-xl / -2xl / -5xl",
+          "Marge links en rechts van de pagina, per breekpunt",
+        ],
+        [
+          "--rhc-grid-vi-medium-column-gap",
+          "token",
+          "space-max-xl",
+          "Ruimte tussen de kolommen",
+        ],
+        [
+          "rhc-grid met rhc-mox-card",
+          "selector",
+          "space-2xl",
+          "Grotere ruimte tussen rijen met kaarten",
+        ],
+      ],
+      example: (
+        <>
+          <Paragraph>Twaalf cellen van één kolom (rhc-grid__cell-1):</Paragraph>
+          <div className="rhc-grid prototype-demo-grid">
+            {Array.from({ length: 12 }, (_, index) => (
+              <div
+                key={index}
+                className="rhc-grid__cell rhc-grid__cell-1 prototype-demo-grid-cell"
+              >
+                {index + 1}
+              </div>
+            ))}
+          </div>
+          <Paragraph>
+            Menu en inhoud, zoals op elke pagina (t-3 en t-9):
+          </Paragraph>
+          <div className="rhc-grid prototype-demo-grid">
+            <div className="rhc-grid__cell rhc-grid__cell-t-3 prototype-demo-grid-cell">
+              Menu
+            </div>
+            <div className="rhc-grid__cell rhc-grid__cell-t-9 prototype-demo-grid-cell">
+              Inhoud
+            </div>
+          </div>
+          <Paragraph>
+            Drie kaarten: vol op smal, de helft vanaf 768 en een derde vanaf
+            1024 pixels (t-6 en d-4):
+          </Paragraph>
+          <div className="rhc-grid prototype-demo-grid">
+            {["Kaart 1", "Kaart 2", "Kaart 3"].map((label) => (
+              <div
+                key={label}
+                className="rhc-grid__cell rhc-grid__cell-t-6 rhc-grid__cell-d-4 prototype-demo-grid-cell"
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+        </>
+      ),
+    },
+    {
       name: "Lay-outhulpen",
-      file: "rhc-mox-main-container, rhc-mox-row-gap (rhc.css)",
+      file: "rhc-mox-main-container, rhc-mox-row-gap",
       description:
         "Ruimte tussen blokken. Deze demopagina gebruikt rhc-mox-main-container tussen de kaarten.",
       options: [

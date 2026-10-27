@@ -410,3 +410,14 @@ code {
 		font-weight: var(--rhc-text-font-weight-semi-bold);
 	}
 }
+/* Demo page (/demo): makes the cells of the grid visible. The row gap is
+  only for the demo: rhc-grid has none, so wrapped cells would touch. */
+.prototype-demo-grid {
+	row-gap: var(--rhc-space-md);
+}
+
+.prototype-demo-grid-cell {
+	background-color: var(--rhc-color-cool-grey-200);
+	padding: var(--rhc-space-md);
+	text-align: center;
+}

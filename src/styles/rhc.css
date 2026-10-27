@@ -562,6 +562,45 @@ body {
   }
 }
 
+/* Het paneel uit- en inklappen. Het wisselt met [hidden], dus display loopt
+  mee via allow-discrete; interpolate-size maakt de hoogte auto animeerbaar.
+  Zonder interpolate-size (Safari, Firefox) alleen de fade. Binnen
+  .rhc-theme.mox-theme, zodat padding-block: 0 voorgaat op de padding uit
+  mox.css. */
+@media (prefers-reduced-motion: no-preference) {
+  .rhc-theme.mox-theme .utrecht-accordion {
+    interpolate-size: allow-keywords;
+
+    /* Hetzelfde pijltje, open 180 graden gedraaid: laat het meedraaien. */
+    .utrecht-accordion__button-icon {
+      transition: transform 250ms ease;
+    }
+
+    .utrecht-accordion__panel {
+      block-size: auto;
+      overflow: clip;
+      transition:
+        block-size 250ms ease,
+        opacity 250ms ease,
+        padding-block 250ms ease,
+        display 250ms allow-discrete;
+
+      /* Ook de padding, anders begint en eindigt de hoogte niet bij 0. */
+      @starting-style {
+        block-size: 0;
+        opacity: 0;
+        padding-block: 0;
+      }
+
+      &[hidden] {
+        block-size: 0;
+        opacity: 0;
+        padding-block: 0;
+      }
+    }
+  }
+}
+
 /* --- Tabs --- */
 .rhc-mox-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
@@ -972,6 +1011,24 @@ body {
 
   details[open]>summary .utrecht-icon {
     transform: rotate(90deg);
+  }
+
+  /* Openen en sluiten animeren. Zonder interpolate-size (Safari, Firefox)
+    klapt de stap direct open. */
+  @media (prefers-reduced-motion: no-preference) {
+    interpolate-size: allow-keywords;
+
+    details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 250ms ease,
+        content-visibility 250ms allow-discrete;
+    }
+
+    details[open]::details-content {
+      block-size: auto;
+    }
   }
 }
 
