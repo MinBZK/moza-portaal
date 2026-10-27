@@ -111,7 +111,7 @@ jobs:
       pull-requests: write # preview-comment verwijderen
     steps:
       - name: Cleanup ZAD deployment
-        uses: RijksICTGilde/zad-actions/cleanup@5ad04045d781ed153ad75625305bf14d57496128 # v2.4.0
+        uses: RijksICTGilde/zad-actions/cleanup@4217ceaa5c347f3c6d16142b5ad8ab94110c4cdb # v4.4.0
         with:
           api-key: ${{ secrets.ZAD_API_KEY }}
           project-id: ${{ env.ZAD_PROJECT_ID }}
