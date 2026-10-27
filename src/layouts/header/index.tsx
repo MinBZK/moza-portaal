@@ -1,185 +1,243 @@
 "use client";
 
-import ProfileSelect from "@/components/profileSelect";
-import { SignOutAction } from "@/utils/auth/signOutAction";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import Navigation from "../navigation";
-import ChevronIcon from "@/components/icons/chevronIcon";
-import { components } from "@/network/kvk/organisatieregister/generated";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { components } from "@/network/kvk/organisatieregister/generated";
+import Image from "next/image";
+import Link from "next/link";
+import { Logo, NavBar, Icon } from "@/components/rhc";
+import MenuKnop from "@/layouts/navigation/menuKnop";
+import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
+import LogoutButton from "@/components/LogoutButton";
+import { useCookie } from "@/utils/useCookie";
+import { useKiesOrganisatie } from "./useKiesOrganisatie";
+import { Dropdown, DropdownItem } from "@/components/Dropdown";
+import { useState, useRef, useEffect } from "react";
 
+// kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
+// (nog) niet in gebruik in deze header.
 const Header = ({
-  kvk,
-  kvkOpties,
-  isPublic = false,
+  signedIn = true,
+  naam = "Robin Vogel",
+  metMenu = false,
+  organisaties = [],
+  actieveOrganisatieId,
+  actieveOrganisatieNaam,
 }: {
   kvk?: string;
   kvkOpties?: components["schemas"]["MijnOverheidOrganisatiesResponse"];
   isPublic?: boolean;
+  signedIn?: boolean;
+  /** Toon de knop Menu (alleen als er een hoofdmenu is). */
+  metMenu?: boolean;
+  /** Naam van de ingelogde persoon. Komt van de actieve persona. */
+  naam?: string;
+  organisaties?: { id: string; handelsnaam: string }[];
+  actieveOrganisatieId?: string;
+  actieveOrganisatieNaam?: string;
 }) => {
-  const [menuOpened, setMenuOpened] = useState(false);
-  const mobileMenuRef = useRef<HTMLDialogElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const { set } = useCookie("loginMethod");
+  const kies = useKiesOrganisatie(actieveOrganisatieId);
+  const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (menuOpened && mobileMenuRef.current) mobileMenuRef.current.showModal();
-    if (menuOpened === false && mobileMenuRef.current)
-      mobileMenuRef.current.close();
-    if (menuOpened === true && closeButtonRef.current)
-      closeButtonRef.current.focus();
-  }, [menuOpened]);
+    // Outside click handler for Keycloak login dropdown
+    function handleClick(e: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpenKeycloakLogin(false);
+      }
+    }
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape" || e.key === "Esc") {
+        setOpenKeycloakLogin(false);
+      }
+    }
+
+    document.addEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, []);
+
+  const accountLabel = actieveOrganisatieNaam ? (
+    <>
+      <span>{naam}</span>
+      <span className="mox-header-organization">{actieveOrganisatieNaam}</span>
+    </>
+  ) : (
+    naam
+  );
 
   return (
     <>
-      <header className="border-primary mb-3 min-h-[50px] border-b-2 bg-white shadow">
-        <div className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] grid-rows-1 gap-x-2 gap-y-0 md:grid-rows-[auto_minmax(0,1fr)] md:gap-x-4 md:gap-y-[22px] md:pb-[5px]">
-          <button
-            type="button"
-            onClick={() => setMenuOpened(true)}
-            className="col-1 row-1 flex w-fit items-center gap-[6px] px-[5px] md:hidden"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              height="16"
-              width="16"
-              className="mt-1"
-            >
-              <path
-                d="M2.5 12h11a1 1 0 0 1 0 2h-11a1 1 0 0 1 0-2zm11-5a1 1 0 0 1 0 2h-11a1 1 0 1 1 0-2zm0-5a1 1 0 0 1 0 2h-11a1 1 0 1 1 0-2z"
-                fill="#007bc7"
-                fillRule="evenodd"
-              />
-            </svg>
-            <span className="pt-[2px] text-[14px] font-bold tracking-wide">
-              menu
-            </span>
-          </button>
-          {/* This logo should be just positioned in the perfect center, but MOBu did some weird incorrect styling instead: */}
-          <div className="relative col-2 row-1 grid h-[44px] w-[28px] content-end md:h-[78px]">
-            <Link
-              href="/"
-              className="bg-ro-blue absolute top-0 left-0 block h-[100%] w-[28px] md:w-[44px]"
-            >
-              <Image
-                src="/logo-rijksoverheid-wapen.svg"
-                alt="Rijksoverheid Logo"
-                width={44}
-                height={88}
-                className="absolute top-[19px] left-[2px] h-[18px] w-[24px] md:top-[34px] md:left-[3px] md:h-[32px] md:w-[38px]"
-              />
-            </Link>
-          </div>
-
-          <div className="col-3 row-1 flex items-end justify-between md:col-start-1 md:col-end-4 md:row-2">
-            <h1 className="text-h4 md:text-h1 pb-1 md:pb-0">
-              MijnOverheid Zakelijk (prototype)
-            </h1>
-            <div className="hidden gap-10 md:flex md:pr-[4px]">
-              {isPublic ? (
-                <button
-                  type="button"
-                  className="hover-up cursor-pointer font-bold"
-                  onClick={() => signIn(undefined, { callbackUrl: "/" })}
-                >
-                  Inloggen
-                </button>
-              ) : (
-                <>
-                  {kvkOpties && kvk && (
-                    <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
-                  )}
-                  <button
-                    type="button"
-                    className="hover-up cursor-pointer"
-                    onClick={() => {
-                      SignOutAction();
-                    }}
-                  >
-                    <div className="flex flex-row items-center gap-0.5">
-                      <svg
-                        className="text-primary mr-1 inline-block h-4 w-4 align-[-0.1rem]"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 32 32"
-                      >
-                        <path
-                          fill="currentColor"
-                          fillRule="evenodd"
-                          d="M16.512 0a1.81 1.81 0 1 1 0 3.62c-4.032 0-7.405.2-10.027.597-.642.097-1.119.492-1.214 1.005-.42 2.282-.65 6.11-.65 10.778s.23 8.496.65 10.779c.095.513.57.906 1.214 1.004 2.622.395 5.995.597 10.027.597a1.81 1.81 0 1 1 0 3.62c-4.212 0-7.768-.214-10.567-.637-2.194-.33-3.856-1.873-4.235-3.93C1.093 24.072 1 18.828 1 16v-.382c.009-2.897.12-7.834.71-11.05C2.09 2.51 3.75.967 5.944.635 8.744.214 12.3 0 16.512 0zm3.477 7.84a1.814 1.814 0 0 1 2.56 0l6.888 6.887.056.07c.06.065.118.13.168.206.034.05.059.104.086.158.027.051.059.1.081.153.026.063.041.128.06.193.014.049.033.096.043.146.024.117.036.235.036.355a1.86 1.86 0 0 1-.036.354c-.01.053-.03.102-.045.154-.019.061-.033.124-.058.185-.024.06-.058.113-.09.17-.025.047-.046.095-.076.14-.067.1-.142.194-.227.278l-6.87 6.87a1.811 1.811 0 1 1-2.561-2.56l3.782-3.78H10.64a1.811 1.811 0 0 1 0-3.622h13.146l-3.796-3.796a1.81 1.81 0 0 1 0-2.56z"
-                        ></path>
-                      </svg>
-                      <span className="font-bold">Uitloggen</span>
-                    </div>
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-      <dialog
-        ref={mobileMenuRef}
-        className={`fixed inset-0 z-1 max-h-full w-[288px] backdrop:bg-black/50 md:hidden`}
-        onClick={() => setMenuOpened(false)}
+      {/* Eigen markup in plaats van RHC PageHeader: die zet alles in
+          __content, en de menuknop hoort direct in de header. */}
+      <header
+        className={
+          signedIn
+            ? "utrecht-page-header"
+            : "utrecht-page-header header-landing"
+        }
       >
-        <div
-          className="flex flex-col gap-4"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            type="button"
-            onClick={() => setMenuOpened(false)}
-            className="flex w-fit gap-2 p-2"
-            ref={closeButtonRef}
+        {metMenu && <MenuKnop />}
+        <div className="utrecht-page-header__content">
+          <Logo organisation="MijnOverheid Zakelijk" subtitle="">
+            <Image
+              src="/beeldmerk-rijksoverheid.svg"
+              alt=""
+              width={50}
+              height={100}
+              unoptimized
+            />
+          </Logo>
+          <NavBar
+            headingItem={{
+              href: "/",
+              id: "heading",
+              label: "MijnOverheid Zakelijk",
+            }}
+            items={[]} // Pagina rendert niet zonder lege items
           >
-            <ChevronIcon className="stroke-primary w-4 rotate-180" />
-            <span className="text-sm font-bold">menu</span>
-          </button>
-
-          <Navigation />
-          <div className="px-2">
-            {isPublic ? (
-              <button
-                type="button"
-                className="hover-up cursor-pointer p-4 font-bold"
-                onClick={() => signIn(undefined, { callbackUrl: "/" })}
-              >
-                Inloggen
-              </button>
-            ) : (
-              <>
-                {kvkOpties && kvk && (
-                  <ProfileSelect selectedKvK={kvk} kvkOpties={kvkOpties} />
-                )}
-                <button
-                  type="button"
-                  className="hover-up cursor-pointer p-4 font-semibold"
-                  onClick={() => {
-                    SignOutAction();
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="text-primary h-4 w-4 align-[-0.1rem]"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 32 32"
+            {/* Op een smal scherm staan taal, naam en uitloggen in het menu. */}
+            <div className={metMenu ? "rhc-mox-header-account" : undefined}>
+              <LanguageSelect
+                selectedLanguage="Nederlands"
+                languages={LANGUAGES}
+              />
+            </div>
+            <ul className="rhc-nav-bar__list">
+              <li className="rhc-nav-bar__item"></li>
+              {signedIn ? (
+                <>
+                  <li
+                    className={
+                      metMenu
+                        ? "rhc-nav-bar__item rhc-mox-header-account"
+                        : "rhc-nav-bar__item"
+                    }
+                  >
+                    {/* Meerdere organisaties: knop met keuzelijst. Eén
+                        organisatie: dezelfde weergave, zonder keuzelijst en
+                        niet klikbaar (een knop die niets doet, verwart). De
+                        link is alleen voor iemand zonder organisatie. */}
+                    {organisaties.length === 1 ? (
+                      <span className="rhc-nav-bar__link rhc-mox-header-organizations__trigger rhc-mox-header-organizations__trigger--static">
+                        <Icon icon="user" />
+                        <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
+                          {accountLabel}
+                        </span>
+                      </span>
+                    ) : organisaties.length > 1 ? (
+                      <Dropdown
+                        align="end"
+                        triggerClassName="rhc-nav-bar__link rhc-mox-header-organizations__trigger"
+                        triggerLabel={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
+                        trigger={
+                          <>
+                            <Icon icon="user" />
+                            <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
+                              {accountLabel}
+                            </span>
+                            <Icon icon="chevron-down" />
+                          </>
+                        }
+                      >
+                        {organisaties.map((organisatie) => (
+                          <DropdownItem
+                            key={organisatie.id}
+                            selected={organisatie.id === actieveOrganisatieId}
+                            onSelect={() => kies(organisatie.id)}
+                          >
+                            {organisatie.handelsnaam}
+                          </DropdownItem>
+                        ))}
+                      </Dropdown>
+                    ) : (
+                      <Link
+                        className="rhc-nav-bar__link rhc-mox-header-organizations__single"
+                        href="/"
+                      >
+                        <Icon icon="user" />
+                        <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
+                          {accountLabel}
+                        </span>
+                      </Link>
+                    )}
+                  </li>
+                  <li
+                    className={
+                      metMenu
+                        ? "rhc-nav-bar__item rhc-mox-header-account"
+                        : "rhc-nav-bar__item"
+                    }
+                  >
+                    <LogoutButton className="rhc-nav-bar__link mox-logout-button">
+                      <Icon icon="uitloggen" />
+                      <span className="rhc-nav-bar__label">Uitloggen</span>
+                    </LogoutButton>
+                  </li>
+                </>
+              ) : (
+                <li className="rhc-nav-bar__item">
+                  {/* Dropdown trigger + menu for Keycloak login with two options */}
+                  <div ref={wrapperRef}>
+                    <button
+                      onClick={() => setOpenKeycloakLogin((v) => !v)}
+                      className="utrecht-link-button utrecht-link-button--html-button rhc-button"
+                      aria-expanded={openKeycloakLogin}
+                      aria-haspopup="menu"
                     >
-                      <path
-                        fill="currentColor"
-                        fillRule="evenodd"
-                        d="M16.512 0a1.81 1.81 0 1 1 0 3.62c-4.032 0-7.405.2-10.027.597-.642.097-1.119.492-1.214 1.005-.42 2.282-.65 6.11-.65 10.778s.23 8.496.65 10.779c.095.513.57.906 1.214 1.004 2.622.395 5.995.597 10.027.597a1.81 1.81 0 1 1 0 3.62c-4.212 0-7.768-.214-10.567-.637-2.194-.33-3.856-1.873-4.235-3.93C1.093 24.072 1 18.828 1 16v-.382c.009-2.897.12-7.834.71-11.05C2.09 2.51 3.75.967 5.944.635 8.744.214 12.3 0 16.512 0zm3.477 7.84a1.814 1.814 0 0 1 2.56 0l6.888 6.887.056.07c.06.065.118.13.168.206.034.05.059.104.086.158.027.051.059.1.081.153.026.063.041.128.06.193.014.049.033.096.043.146.024.117.036.235.036.355a1.86 1.86 0 0 1-.036.354c-.01.053-.03.102-.045.154-.019.061-.033.124-.058.185-.024.06-.058.113-.09.17-.025.047-.046.095-.076.14-.067.1-.142.194-.227.278l-6.87 6.87a1.811 1.811 0 1 1-2.561-2.56l3.782-3.78H10.64a1.811 1.811 0 0 1 0-3.622h13.146l-3.796-3.796a1.81 1.81 0 0 1 0-2.56z"
-                      ></path>
-                    </svg>
-                    Uitloggen
+                      Keycloak login
+                    </button>
+
+                    {openKeycloakLogin && (
+                      <div className="prototype-login-keycloak rhc-mox-card">
+                        <div role="menu" aria-orientation="vertical">
+                          <button
+                            onClick={() => {
+                              set("digid");
+                              signIn(undefined, { callbackUrl: "/" });
+                              setOpenKeycloakLogin(false);
+                            }}
+                            className="utrecht-button utrecht-button--secondary-action rhc-button"
+                            role="menuitem"
+                          >
+                            DigiD
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              set("eherkenning");
+                              signIn(undefined, { callbackUrl: "/" });
+                              setOpenKeycloakLogin(false);
+                            }}
+                            className="utrecht-button utrecht-button--secondary-action rhc-button"
+                            role="menuitem"
+                          >
+                            E-Herkenning
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </button>
-              </>
-            )}
-          </div>
+                </li>
+              )}
+            </ul>
+          </NavBar>
         </div>
-      </dialog>
+        <a
+          className="prototype-temp-poc-banner"
+          href="https://www.mijnoverheidzakelijk.nl/"
+        >
+          Proof of Concept
+        </a>
+      </header>
     </>
   );
 };

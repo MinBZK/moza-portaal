@@ -1,60 +1,39 @@
 import { components } from "@/network/omc/generated";
-import { tv } from "tailwind-variants";
 
-const TimelineButtonTV = tv({
-  base: "ml-3.5 flex h-3 w-3 items-center justify-center rounded-full border border-white bg-slate-300 text-slate-500 shadow",
-  variants: {
-    variant: {
-      Accepted: "bg-green-300",
-      PermanentFailure: "bg-red-400",
-      default: "bg-gray-400",
-    },
-  },
-  defaultVariants: {
-    variant: "Accepted",
-  },
-});
+/** Statuses with their own colour; the rest gets the default colour. */
+const statusClass: Record<string, string> = {
+  Accepted: "mox-status--accepted",
+  PermanentFailure: "mox-status--permanent-failure",
+};
 
 const ContactMoment = ({
-  notificatie,
+  notification,
 }: {
-  notificatie: components["schemas"]["Notificatie"];
+  notification: components["schemas"]["Notificatie"];
 }) => {
-  const date = new Date(notificatie.createdAt!);
+  const date = new Date(notification.createdAt!);
   const sendAt = date.toLocaleString("nl-NL", {
     timeZone: "Europe/Amsterdam",
     dateStyle: "short",
     timeStyle: "short",
   });
 
-  const x: boolean = ["Accepted", "PermanentFailure"].includes(
-    notificatie.status!,
-  );
-
   return (
-    <div className="relative flex items-center">
-      <div
-        className={TimelineButtonTV({
-          variant: x
-            ? (notificatie.status as "Accepted" | "PermanentFailure")
-            : "default",
-        })}
-      ></div>
-      <div className="ml-2 w-full rounded border border-slate-200 bg-white p-2 shadow">
-        <div className="flex items-center justify-between">
-          <div className="font-bold text-slate-900">
-            Scenario 8 met kanaalherstel
-          </div>
-          <time className="font-caveat text-primary font-medium">{sendAt}</time>
+    <div>
+      {/* The colour repeats the status below; the text carries the information. */}
+      <span
+        aria-hidden="true"
+        className={`mox-status ${statusClass[notification.status ?? ""] ?? ""}`}
+      />
+      <div>
+        <div>
+          <div>Scenario 8 met kanaalherstel</div>
+          <time>{sendAt}</time>
         </div>
-        <div className="text-slate-500">Status: {notificatie.status}</div>
-        <div className="text-slate-500">Medium: {notificatie.type}</div>
+        <div>Status: {notification.status}</div>
+        <div>Medium: {notification.type}</div>
 
-        <div
-          className={`font- w-fit rounded border-1 border-purple-500 bg-purple-500 p-1 text-xs text-white`}
-        >
-          UWV
-        </div>
+        <div>UWV</div>
       </div>
     </div>
   );

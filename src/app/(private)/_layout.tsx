@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import { getKvkFromCookie, getKvkOptionsFromCookie } from "@/utils/kvknummer";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
+import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
+import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import Breadcrumb from "@/layouts/breadcrumb";
 import Providers from "@/app/providers";
 import { getFlagsFromServerCookie } from "@/app/actions";
@@ -17,22 +19,28 @@ export default async function PrivateLayout({
   const kvk = await getKvkFromCookie();
   const kvkOpties = await getKvkOptionsFromCookie();
 
-  if (!session) {
+  // Zie src/app/page.tsx: zonder gebruiker is er geen geldige sessie.
+  if (!session?.user) {
     redirect("/");
   }
 
   return (
     <Providers session={session}>
-      <Header kvk={kvk!} kvkOpties={kvkOpties} />
-      <main className="border-b-ro-blue after:bg-ro-blue relative border-b-2 pb-[68] after:absolute after:bottom-0 after:left-1/2 after:block after:h-[32px] after:w-[44px] after:-translate-x-1/2 after:content-['']">
-        <div className="container mx-auto py-1.5">
-          <div className="grid max-w-screen-xl grid-cols-[288px_1fr_1fr_1fr] justify-between gap-3">
-            <div className="hidden md:col-span-1 md:block">
-              <Navigation flags={flags} />
-            </div>
-            <div className="col-span-4 md:col-span-3 md:pt-[9px]">
+      <Header kvk={kvk!} kvkOpties={kvkOpties} metMenu />
+      {/* Zelfde opbouw als de PublicLayout in (public)/_layout.tsx */}
+      <main id="hoofd-inhoud" className="utrecht-page-body">
+        <div className="utrecht-page-body__content">
+          <div className="rhc-grid">
+            <nav className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
+              <Navigation
+                flags={flags}
+                berichtenboxBadge={<OngelezenBadge />}
+                lopendeZakenBadge={<ZakenBadge />}
+              />
+            </nav>
+            <div className="rhc-grid__cell rhc-grid__cell-t-9 rhc-mox-main-container">
               <Breadcrumb />
-              <div className="space-y-4 pt-1.5">{children}</div>
+              {children}
             </div>
           </div>
         </div>

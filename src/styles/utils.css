@@ -1,0 +1,406 @@
+/* Alleen voor het prototype: hulpmiddelen voor wie test en demonstreert, zoals
+  het Flags- en persona-paneel en de PoC-banner. Geen onderdeel van de huisstijl
+  of van het product; dit bestand gaat er in een productieversie uit. Geldt in
+  beide huisstijlen. Classes krijgen het voorvoegsel `prototype-`. */
+
+/* ==== Hulpmiddelen voor het prototype ==================================== */
+
+/* --- Flags- en persona-paneel --- */
+
+/* Knoppen rechtsonder die het Flags- en persona-paneel openen. */
+.prototype-options {
+	align-items: end;
+	block-size: 5rem;
+	display: flex;
+	gap: var(--rhc-space-sm);
+	inline-size: 13rem;
+	inset-block-end: var(--rhc-space-md);
+	inset-inline-end: var(--rhc-space-md);
+	justify-content: end;
+	position: fixed;
+
+	button {
+		background-color: var(--rhc-color-wit);
+		opacity: 0;
+		transition: opacity 0.2s ease-in-out;
+	}
+
+	/* De knoppen zijn onzichtbaar tot je over dit vlak beweegt, of er met Tab
+	  op komt. */
+	&:hover button,
+	&:focus-within button {
+		opacity: 1;
+	}
+}
+
+/* Shared side overlay for flags and persona selection */
+dialog.prototype-side-overlay {
+	--utrecht-drawer-background-color: var(--rhc-color-cool-grey-100);
+	--utrecht-drawer-max-inline-size: calc(100vw - 44px);
+	--utrecht-drawer-min-inline-size: calc(100vw - 44px);
+	--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
+	--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
+	--utrecht-drawer-padding-inline-end: var(--rhc-space-3xl);
+	--utrecht-drawer-padding-inline-start: var(--rhc-space-3xl);
+	background: var(--utrecht-drawer-background-color);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	inset-block: 0;
+	inset-inline-end: 0;
+	position: fixed;
+	transform: translateX(100%);
+
+	.utrecht-button--danger {
+		background: var(--rhc-color-rood-500);
+		border-color: var(--rhc-color-rood-500);
+		color: var(--rhc-color-wit);
+	}
+
+	.utrecht-form-fieldset {
+		margin-block-end: var(--rhc-space-3xl)
+	}
+}
+
+dialog.prototype-side-overlay[open] {
+	transform: translateX(0);
+}
+
+@starting-style {
+	dialog.prototype-side-overlay[open] {
+		transform: translateX(100%);
+	}
+}
+
+.prototype-side-overlay__header {
+	align-items: center;
+	display: flex;
+	gap: var(--rhc-space-lg);
+	justify-content: space-between;
+	margin-block-end: var(--rhc-space-2xl);
+
+	h2 {
+		margin: 0;
+	}
+}
+
+.prototype-side-overlay__content {
+	column-gap: var(--rhc-space-5xl);
+	display: flex;
+	flex-wrap: wrap;
+	inline-size: 100%;
+	row-gap: var(--rhc-space-2xl);
+
+	/* De blokken delen de breedte gelijk: kolommen in het Flags-paneel, de
+	  volle breedte voor het ene blok in het persona-paneel. */
+	>* {
+		flex: 1 1 0;
+		min-inline-size: 0;
+	}
+
+	/* Een rij over de volle breedte onder de kolommen, zoals de Hard reset. */
+	>.prototype-side-overlay__footer {
+		flex-basis: 100%;
+	}
+
+	legend {
+		margin-block-end: var(--rhc-space-lg);
+	}
+
+	.utrecht-form-fieldset__fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-md);
+	}
+
+	summary {
+		font-size: 1.25rem;
+		font-weight: bold;
+		margin-block: var(--rhc-space-lg);
+	}
+
+	/* Not the knob of a Switch: that is a button too, but has its own look.
+	  :where() keeps the specificity of a plain "button", so a danger button
+	  (Hard reset) still wins. */
+	button:not(:where(.rhc-mox-switch__button)) {
+		background-color: var(--rhc-color-wit);
+		margin-block-start: var(--rhc-space-lg);
+	}
+}
+
+/* Groepen kaarten (Ondernemers, Dienstverleners) met een kopje erboven. */
+.prototype-persona-group+.prototype-persona-group {
+	margin-block-start: var(--rhc-space-2xl);
+}
+
+.prototype-persona-group__title {
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+	margin-block-end: var(--rhc-space-md);
+}
+
+/* Persona-kaarten in het persona-paneel, zoals op cx-moza. */
+.prototype-persona-cards {
+	display: grid;
+	gap: var(--rhc-space-lg);
+	grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+}
+
+.prototype-persona-card {
+	align-items: center;
+	background: var(--rhc-color-wit);
+	border: var(--rhc-border-width-sm) solid var(--rhc-color-light-cool-grey-300);
+	border-radius: var(--rhc-border-radius-md);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
+	display: flex;
+	flex-direction: column;
+	padding-block-end: var(--rhc-space-xl);
+	position: relative;
+	text-align: center;
+}
+
+/* Inhoud van de kaart; de knop en de link staan eronder. */
+.prototype-persona-card__body {
+	align-items: center;
+	align-self: stretch;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--rhc-space-md);
+	padding: var(--rhc-space-xl) var(--rhc-space-lg) var(--rhc-space-md);
+}
+
+.prototype-persona-card__actions {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: var(--rhc-space-sm);
+	padding-inline: var(--rhc-space-lg);
+}
+
+.prototype-persona-card__more {
+	font-size: var(--rhc-text-font-size-sm);
+}
+
+/* De persona die nu in gebruik is. */
+.prototype-persona-card--active {
+	border-color: var(--rhc-color-groen-500);
+	border-width: var(--rhc-border-width-md);
+	box-shadow: 0;
+}
+
+/* Schuine banner "Concept" over de hoek van een kaart, voor persona's die nog
+  in uitwerking zijn (op cx-moza "draft"). */
+.prototype-persona-card:has(.prototype-persona-card__concept) {
+	overflow: hidden;
+}
+
+.prototype-persona-card__concept {
+	background: var(--rhc-color-cool-grey-500);
+	color: var(--rhc-color-wit);
+	font-size: var(--rhc-text-font-size-sm);
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+	inline-size: 10rem;
+	inset-block-start: 1.25rem;
+	inset-inline-start: -2.75rem;
+	padding-block: var(--rhc-space-2xs);
+	pointer-events: none;
+	position: absolute;
+	text-align: center;
+	transform: rotate(-45deg);
+}
+
+/* Label "Actief" op de plek van de knop "Deze persona gebruiken". */
+.prototype-persona-card__active {
+	background: var(--rhc-color-groen-500);
+	border-radius: var(--rhc-border-radius-sm);
+	color: var(--rhc-color-wit);
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+	padding: var(--rhc-space-2xs) var(--rhc-space-md);
+}
+
+.prototype-persona-card__avatar {
+	aspect-ratio: 1;
+	background: var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100));
+	block-size: auto;
+	border-radius: var(--rhc-border-radius-round);
+	inline-size: 6rem;
+	object-fit: cover;
+}
+
+/* Testaccounts zonder eigen avatar. */
+.prototype-persona-card__avatar--placeholder {
+	align-items: center;
+	color: var(--rhc-color-cool-grey-500);
+	display: flex;
+	justify-content: center;
+}
+
+/* Met .prototype-persona-card ervoor, anders wint de icoonmaat uit mox.css. */
+.prototype-persona-card .prototype-persona-card__avatar--placeholder .utrecht-icon {
+	block-size: 3rem;
+	inline-size: 3rem;
+}
+
+.prototype-persona-card__name {
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+.prototype-persona-card__company {
+	color: var(--rhc-color-foreground-subtle);
+	font-size: var(--rhc-text-font-size-sm);
+	margin-block-start: calc(-1 * var(--rhc-space-xs));
+}
+
+.prototype-persona-card__role {
+	background: var(--prototype-persona-label-kleur, var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100)));
+	border-radius: var(--rhc-border-radius-sm);
+	font-size: var(--rhc-text-font-size-sm);
+	padding: var(--rhc-space-2xs) var(--rhc-space-md);
+}
+
+.prototype-persona-description {
+	font-size: var(--rhc-text-font-size-sm);
+	margin-block-start: var(--rhc-space-sm);
+}
+
+/* --- PoC-banner --- */
+
+.prototype-temp-poc-banner {
+	background: var(--rhc-color-groen-500);
+	color: var(--rhc-color-wit);
+	font-weight: var(--rhc-text-font-weight-bold);
+	inline-size: 256px;
+	inset-block-start: 3rem;
+	inset-inline-end: -4rem;
+	opacity: .8;
+	padding-block: var(--rhc-space-sm);
+	position: fixed;
+	text-align: center;
+	text-decoration: none;
+	transform: rotate(45deg);
+	transform-origin: center;
+	z-index: 9;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.prototype-landing-demo-info {
+	display: flex;
+	flex-direction: column;
+	gap: var(--rhc-card-column-gap);
+	padding-block: var(--rhc-hero-message-padding-block-start);
+	padding-inline: var(--rhc-hero-message-padding-inline-start);
+}
+
+.prototype-login-keycloak {
+	--utrecht-button-inline-size: 100%;
+	--utrecht-button-max-inline-size: none;
+	background: var(--rhc-color-wit);
+	border-radius: var(--rhc-border-radius-md);
+	border-width: var(--rhc-border-width-sm);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	inset-inline-end: 0;
+	padding: var(--rhc-space-2xs);
+	position: absolute;
+
+	button {
+		border: 0;
+		display: block;
+		inline-size: 100%;
+		text-align: start;
+	}
+}
+
+/* Status van bronnen in de Digitale assistent */
+.prototype-chat-status {
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--rhc-space-sm) var(--rhc-space-lg);
+	}
+
+	li {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-xs);
+		position: relative;
+
+		>.utrecht-icon {
+			color: var(--rhc-color-rood-600);
+		}
+	}
+
+	.prototype-chat-status--connected>.utrecht-icon {
+		color: var(--rhc-color-groen-600);
+	}
+}
+
+.prototype-chat-status-source {
+	border-block-end: var(--rhc-border-width-sm) dotted currentcolor;
+	cursor: help;
+}
+
+.prototype-chat-status-explanation {
+	background-color: var(--rhc-color-wit);
+	border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+	border-radius: var(--rhc-border-radius-md);
+	inline-size: max-content;
+	inset-block-end: calc(100% + var(--rhc-space-xs));
+	inset-inline-start: 0;
+	max-inline-size: 20rem;
+	opacity: 0;
+	padding: var(--rhc-space-md);
+	position: absolute;
+	visibility: hidden;
+	z-index: 1;
+
+	li:hover>&,
+	li:focus-within>& {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.prototype-chat-status--off & {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+code {
+	font-size: .875rem;
+}
+
+/* Demo page (/demo): text and a StickyInfoBox side by side in one card. */
+.prototype-demo-sticky {
+	display: grid;
+	gap: var(--rhc-space-xl);
+	grid-template-columns: 2fr 1fr;
+
+	@media (width < 768px) {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Demo page (/demo): the house style switch at the top right, next to the
+  heading. Sticky with no height of its own, so it takes no space and stays in
+  view while you scroll. The box has the page background, which differs per
+  house style. */
+.prototype-demo-brand-switch {
+	block-size: 0;
+	display: flex;
+	inset-block-start: 0;
+	justify-content: flex-end;
+	position: sticky;
+	z-index: 3;
+}
+
+.prototype-demo-brand-switch__box {
+	background-color: var(--rhc-color-wit);
+	block-size: fit-content;
+	border-end-start-radius: var(--rhc-border-radius-md);
+	padding: var(--rhc-space-md);
+}
+
+.mox-current-brand .prototype-demo-brand-switch__box {
+	background-color: var(--rhc-color-cool-grey-100);
+}

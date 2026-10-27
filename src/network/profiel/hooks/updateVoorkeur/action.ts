@@ -12,27 +12,33 @@ export const updateVoorkeur = async (
   scope?: components["schemas"]["ScopeRequest"],
 ) => {
   if (id) {
-    const response = await profielClient.PUT("/api/profielservice/v1/voorkeur", {
-      body: {
-        id,
-        voorkeurType,
-        waarde,
-        identificatieNummer,
-        identificatieType,
-        scope,
+    const response = await profielClient.PUT(
+      "/api/profielservice/v1/voorkeur",
+      {
+        body: {
+          id,
+          voorkeurType,
+          waarde,
+          identificatieNummer,
+          identificatieType,
+          scope,
+        },
       },
-    });
+    );
     return response.response.status;
   } else {
-    const response = await profielClient.POST("/api/profielservice/v1/voorkeur", {
-      body: {
-        voorkeurType,
-        waarde,
-        identificatieNummer,
-        identificatieType,
-        scope,
+    const response = await profielClient.POST(
+      "/api/profielservice/v1/voorkeur",
+      {
+        body: {
+          voorkeurType,
+          waarde,
+          identificatieNummer,
+          identificatieType,
+          scope,
+        },
       },
-    });
+    );
     return response.response.status;
   }
 };

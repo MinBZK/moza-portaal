@@ -1,0 +1,1939 @@
+/* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl */
+
+/* ==== Lettertype ========================================================= */
+
+@font-face {
+  font-display: swap;
+  font-family: "RijksSansVF";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("./fonts/RijksSansVF-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "RijksSansVF";
+  font-style: italic;
+  font-weight: 100 900;
+  src: url("./fonts/RijksSansVF-Italic.ttf") format("truetype");
+}
+
+/* ==== Tokens ============================================================= */
+.rhc-theme.mox-theme {
+
+  /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
+    tokens voor transities. */
+  --mox-transition-duration: 150ms;
+  --mox-transition-easing: ease-out;
+
+  /* Pagina-layout */
+
+  --mox-page-margin: var(--rhc-space-max-xl);
+
+  @media (width >=768px) {
+    --mox-page-margin: var(--rhc-space-max-2xl);
+  }
+
+  @media (width >=1024px) {
+    --mox-page-margin: var(--rhc-space-max-5xl);
+  }
+
+  --rhc-grid-vi-medium-column-gap: var(--rhc-space-max-xl);
+
+  /* Typografische wijzigingen t.o.v. RHC */
+  --nl-heading-level-1-font-size: 2rem;
+  --nl-heading-level-2-font-size: 1.75rem;
+  --nl-heading-level-3-font-size: 1.5rem;
+  --nl-paragraph-font-size: 1.125rem;
+  --nl-number-badge-font-size: var(--rhc-text-font-size-sm);
+  --nl-data-badge-font-size: 0.875rem;
+  --rhc-data-summary-item-key-font-weight: var(--rhc-text-font-weight-semi-bold);
+  --rhc-navigation-list-item-label-font-weight: var(--rhc-text-font-weight-semi-bold);
+  --rhc-text-font-size-min-md: 1rem;
+  --rhc-text-font-size-max-md: 1.125rem;
+
+  /* Kleurwijzigingen t.o.v. RHC */
+  --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
+  --nl-heading-level-1-color: var(--rhc-color-core-500);
+  --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
+  --utrecht-separator-color: var(--rhc-color-transparent);
+  --utrecht-form-control-invalid-background-color: red;
+
+  --mox-landing-hero-background: var(--rhc-color-core-50);
+  --mox-landing-info-background: var(--rhc-color-core-500);
+
+  /* Maatvoering en afstand wijzigingen t.o.v. RHC */
+  --rhc-border-width-lg: 4px;
+  --rhc-nav-bar-border-block-end-width: var(--rhc-border-width-lg);
+  --rhc-sidenav-link-padding-block-end: var(--rhc-space-md);
+  --rhc-sidenav-link-padding-block-start: var(--rhc-space-md);
+  --rhc-sidenav-link-padding-inline-start: var(--rhc-space-md);
+  --nl-number-badge-padding-block: var(--rhc-space-2xs);
+  --nl-number-badge-padding-inline: var(--rhc-space-2xs);
+  --rhc-hero-message-padding-block-end: var(--rhc-space-4xl);
+  --rhc-hero-message-padding-block-start: var(--rhc-space-4xl);
+  --rhc-hero-message-padding-inline-end: var(--rhc-space-4xl);
+  --rhc-hero-message-padding-inline-start: var(--rhc-space-4xl);
+  --utrecht-button-icon-gap: var(--rhc-space-sm);
+
+  /* Kaders */
+  --rhc-data-summary-item-border-width: 0;
+
+  /* NavigationList */
+  --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
+}
+
+/* ==== Formulieren ======================================================== */
+
+.utrecht-textbox {
+  max-inline-size: 100%;
+}
+
+.utrecht-form-label {
+  font-weight: var(--mox-font-weight-medium);
+}
+
+.rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
+  --utrecht-form-field-description-margin-block-start: var(--rhc-space-sm);
+}
+
+.rhc-theme.mox-theme .rhc-form-field {
+  --rhc-mox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-select-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-textarea-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-textbox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+}
+
+.utrecht-form-field--radio,
+.utrecht-form-field--checkbox {
+  gap: var(--rhc-space-xs);
+  margin-block-start: var(--rhc-space-md);
+}
+
+.utrecht-checkbox {
+  background-color: var(--rhc-color-wit);
+}
+
+/* ==== Layout ============================================================= */
+
+/* --- Pagina --- */
+body {
+  background: var(--mox-color-page-background, var(--rhc-color-wit));
+  color: var(--rhc-color-foreground-default);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--rhc-text-font-family-default);
+  font-size: var(--rhc-text-font-size-md);
+  font-weight: var(--rhc-text-font-weight-default);
+  line-height: var(--rhc-text-line-height-md);
+  min-block-size: 100dvh;
+
+  >.utrecht-page-body {
+    flex: 1 0 auto;
+  }
+}
+
+.rhc-mox-main-container {
+  align-content: start;
+  display: grid;
+  gap: var(--rhc-space-xl);
+  grid-template-columns: minmax(0, 1fr);
+
+  h1 {
+    margin-block-end: var(--rhc-space-xl);
+  }
+}
+
+.rhc-theme.mox-theme {
+
+  .utrecht-page-header__content,
+  .utrecht-page-body__content {
+    margin-block-end: var(--rhc-space-xl);
+    padding-inline: var(--mox-page-margin);
+  }
+
+  .rhc-grid:has(> .rhc-mox-card) {
+    row-gap: var(--rhc-space-2xl);
+  }
+}
+
+.rhc-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-2xs);
+}
+
+.rhc-form-field.utrecht-form-field>* {
+  order: 0;
+}
+
+/* --- Header --- */
+.rhc-theme.mox-theme {
+  .rhc-mox-header-organizations__trigger {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    gap: var(--rhc-space-sm);
+  }
+
+  .mox-header-organization {
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+    margin-inline-start: var(--rhc-space-md);
+  }
+
+  .rhc-mox-header-organizations__trigger--static {
+    cursor: default;
+  }
+
+  /* Name and organisation as two spans: space between them, in every theme. */
+  .rhc-mox-header-organizations__identity>*+* {
+    margin-inline-start: var(--rhc-space-sm);
+  }
+
+  #heading {
+    margin-inline-end: var(--rhc-space-2xl);
+  }
+
+  .rhc-nav-bar {
+    gap: 0;
+  }
+
+  .rhc-nav-bar__link {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--rhc-space-sm);
+  }
+
+  .rhc-language-navigation {
+    margin-inline-start: auto;
+  }
+
+  .utrecht-page-header .rhc-nav-bar> :has(> .rhc-language-navigation) {
+    margin-inline-start: auto;
+  }
+
+  :where(.utrecht-page-header) .rhc-language-navigation {
+    /* Houvast voor de lijst. :where(), zodat mox.css hem nog absoluut kan
+      zetten. */
+    position: relative;
+  }
+
+  .utrecht-page-header .rhc-language-navigation__list {
+    inset-block-start: 100%;
+    inset-inline-end: 0;
+    max-inline-size: none;
+    min-inline-size: max-content;
+    position: absolute;
+  }
+
+  @media (width < 768px) {
+    .rhc-mox-header-account {
+      display: none;
+    }
+  }
+
+  /* De productnaam MijnOverheid Zakelijk: op een smal scherm onder het logo, op een breed scherm als titel in de NavBar. */
+  @media (width < 768px) {
+    .utrecht-page-header .rhc-nav-bar__heading {
+      display: none;
+    }
+
+    .utrecht-page-header .rhc-logo {
+      --rhc-logo-image-block-size: calc(var(--rhc-size-2-lint) / 2);
+      --rhc-logo-image-inline-size: calc(var(--rhc-size-lint) / 2);
+      --rhc-logo-title-padding-block-start: calc(var(--rhc-size-lint) / 2);
+      margin-block-end: var(--rhc-space-md);
+    }
+  }
+
+  @media (width >=768px) {
+    .utrecht-page-header .rhc-logo__caption {
+      display: none;
+    }
+  }
+}
+
+/* --- Navigatie --- */
+.rhc-theme.mox-theme {
+  .rhc-side-nav__link {
+    align-items: baseline;
+
+    .utrecht-icon {
+      padding-block-start: var(--rhc-space-xs);
+
+      svg {
+        block-size: var(--rhc-size-icon-md);
+        flex: none;
+        inline-size: var(--rhc-size-icon-md);
+      }
+    }
+  }
+
+  .rhc-side-nav {
+    margin-block-end: var(--rhc-space-2xl);
+  }
+
+  .rhc-side-nav__list {
+    margin-inline: var(--rhc-space-md);
+  }
+
+  .rhc-mox-menu-button {
+    display: none;
+  }
+
+  @media (width < 768px) {
+    .rhc-mox-menu-button {
+      display: inline-flex;
+    }
+
+    .rhc-mox-menu-lists:not(.rhc-mox-menu-lists--open) {
+      display: none;
+    }
+
+    /* Open menu: vult het scherm onder de header en verbergt de pagina. */
+    &:has(.rhc-mox-menu-lists--open) {
+
+      .rhc-mox-main-container,
+      .rhc-page-footer {
+        display: none;
+      }
+
+      .utrecht-page-body {
+        min-block-size: calc(100dvh - var(--mox-header-hoogte, 0px));
+      }
+    }
+  }
+
+  @media (width >=768px) {
+    .rhc-mox-menu-account {
+      display: none;
+    }
+  }
+
+  .rhc-mox-menu-heading {
+    color: var(--rhc-color-foreground-subtle);
+    font-size: var(--rhc-text-font-size-sm);
+    margin-block: var(--rhc-space-md) 0;
+    padding-inline: var(--rhc-sidenav-link-padding-inline-start, 0);
+  }
+
+  /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
+  .rhc-mox-menu-account .rhc-side-nav__link[aria-current="true"] {
+    color: var(--rhc-sidenav-link-current-color);
+    font-weight: var(--rhc-sidenav-link-current-font-weight);
+  }
+
+  .rhc-mox-menu-account .rhc-language-navigation {
+    margin-inline: var(--rhc-space-md) 0;
+    position: static;
+  }
+}
+
+/* ==== Componenten ======================================================== */
+
+/* --- Interactie --- */
+
+/* Eén rustige overgang voor alle interactieve elementen. Alles in :where(),
+  ook de theme-classes, zodat de specificiteit 0 is en een eigen transition
+  van een component altijd wint. */
+@media (prefers-reduced-motion: no-preference) {
+  :where(.rhc-theme.mox-theme) :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"], dialog)) {
+    transition-duration: var(--mox-transition-duration);
+    transition-property: color, background-color, border-color, outline-color, outline-offset, text-decoration-color, box-shadow;
+    transition-timing-function: var(--mox-transition-easing);
+  }
+
+  /* De knop van een schuifregelaar is een pseudo-element; :where() hierboven
+    raakt die niet. Per browser een eigen regel. */
+  .rhc-theme.mox-theme .rhc-mox-range-slider__input::-webkit-slider-thumb {
+    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+
+  .rhc-theme.mox-theme .rhc-mox-range-slider__input::-moz-range-thumb {
+    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+  }
+}
+
+.utrecht-button.utrecht-button--secondary-action.utrecht-button--danger {
+  background-color: var(--rhc-color-rood-500);
+  border-color: var(--rhc-color-rood-500);
+  color: var(--rhc-color-wit);
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--rhc-color-rood-600);
+    border-color: var(--rhc-color-rood-600);
+    color: var(--rhc-color-wit);
+  }
+
+  &:focus-visible {
+    outline-color: var(--rhc-color-rood-600);
+  }
+}
+
+
+/* --- DataSummary --- */
+.rhc-theme.mox-theme {
+  @media (width >=768px) {
+    .rhc-data-summary--columns {
+      column-gap: var(--rhc-space-lg);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rhc-data-summary__item-key {
+      flex-basis: 25%;
+    }
+  }
+}
+
+/* --- Kaarten --- */
+.rhc-mox-card {
+  .rhc-mox-row-gap {
+    align-content: start;
+    display: grid;
+    gap: var(--rhc-space-xl);
+
+    .utrecht-action-group {
+      margin-block-start: 0;
+    }
+  }
+
+  .utrecht-form-fieldset__legend,
+  .utrecht-form-field--checkbox,
+  .utrecht-form-field--radio {
+    margin-block-end: var(--rhc-space-md)
+  }
+
+  .ams-pagination {
+    margin-block-start: var(--rhc-space-2xl);
+  }
+}
+
+.rhc-theme.mox-theme {
+  .rhc-mox-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+    margin-block-end: var(--rhc-space-xl);
+  }
+
+  .rhc-mox-card>.utrecht-action-group:last-child {
+    margin-block-start: auto;
+  }
+}
+
+.mox-card-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xl);
+}
+
+/* --- Dialog --- */
+.rhc-mox-dialog {
+  background: var(--rhc-color-wit);
+  border: 0;
+  border-radius: var(--rhc-border-radius-md);
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-lg);
+  margin: auto;
+  max-inline-size: min(36rem, calc(100% - 2 * var(--rhc-space-lg)));
+  opacity: 0;
+  padding: var(--rhc-space-2xl);
+  transform: none;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+  }
+
+  &::backdrop {
+    background: color-mix(in srgb, var(--rhc-color-zwart) 40%, transparent);
+  }
+
+  &[open] {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+/* --- Dropdown --- */
+/* Dropdown (src/components/Dropdown.tsx): a button with a popover menu.
+  Without anchor positioning the browser shows the menu in the middle of the
+  screen, the default for a popover. */
+.rhc-mox-dropdown__trigger {
+  anchor-name: var(--rhc-mox-dropdown-anchor);
+}
+
+.rhc-mox-dropdown__menu {
+  background-color: var(--rhc-mox-dropdown-background, var(--rhc-color-wit));
+  border: var(--rhc-border-width-sm) solid var(--rhc-mox-dropdown-border-color, var(--rhc-color-cool-grey-300));
+  border-radius: var(--rhc-border-radius-md);
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+  list-style: none;
+  min-inline-size: max-content;
+  padding: var(--rhc-space-2xs);
+
+  &:popover-open {
+    display: grid;
+    gap: var(--rhc-space-2xs);
+  }
+
+  @supports (anchor-name: --a) {
+    inset: auto;
+    inset-block-start: anchor(end);
+    margin: 0;
+    margin-block-start: var(--rhc-space-2xs);
+    position-anchor: var(--rhc-mox-dropdown-anchor);
+    position-try-fallbacks: flip-block;
+  }
+}
+
+@supports (anchor-name: --a) {
+  .rhc-mox-dropdown__menu--start {
+    inset-inline-start: anchor(start);
+  }
+
+  .rhc-mox-dropdown__menu--end {
+    inset-inline-end: anchor(end);
+  }
+}
+
+.rhc-mox-dropdown__item {
+  --utrecht-icon-size: var(--utrecht-button-icon-size, 1em);
+
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--rhc-border-radius-sm);
+  color: var(--rhc-color-foreground-default);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: var(--rhc-space-md);
+  inline-size: 100%;
+  min-block-size: var(--nl-button-min-block-size);
+  padding-block: var(--rhc-space-sm);
+  padding-inline: var(--rhc-space-xl);
+  text-align: start;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--rhc-mox-dropdown-item-hover-background, var(--rhc-color-cool-grey-100));
+  }
+
+  &:focus-visible {
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: calc(-1 * var(--utrecht-focus-outline-width));
+  }
+
+  /* Own icons (src/components/icons) have no size of their own. */
+  .utrecht-icon svg {
+    block-size: 100%;
+    inline-size: 100%;
+  }
+
+  /* The chosen option: check mark (DropdownItem), bold, white. */
+  &[aria-current="true"] {
+    background-color: var(--rhc-mox-dropdown-item-selected-background, var(--rhc-color-wit));
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* Space of the check mark for the options that are not chosen. */
+.rhc-mox-dropdown__icon-space {
+  flex-shrink: 0;
+  inline-size: var(--utrecht-icon-size, 1em);
+}
+
+/* --- Accordeon --- */
+.utrecht-accordion {
+  h1 {
+    margin-block-end: 0;
+  }
+}
+
+/* --- Tabs --- */
+.rhc-mox-tabs {
+  --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
+  background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% var(--rhc-border-width-md);
+  display: flex;
+  gap: var(--rhc-space-xl);
+  margin-block-end: var(--rhc-space-lg);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: var(--rhc-space-md);
+  scrollbar-width: thin;
+
+  @media (width < 768px) {
+    gap: 0 var(--rhc-space-md);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    animation: rhc-mox-tabs-fade linear both;
+    animation-timeline: scroll(self inline);
+    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-tabs-fade-start), #000 calc(100% - var(--rhc-tabs-fade-end)), transparent);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.rhc-mox-tab {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+  padding: var(--rhc-space-md);
+  /* Een tab die in beeld schuift, valt niet in het verloop. */
+  scroll-margin-inline: var(--rhc-tabs-fade);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &.utrecht-link,
+  &.utrecht-link--html-a {
+    text-decoration: none !important;
+  }
+
+  /* Binnen de tab, anders valt de focusrand weg aan de randen. */
+  &:focus-visible {
+    outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
+  }
+
+  &[aria-current] {
+    border-block-end: var(--rhc-border-width-lg) solid var(--rhc-color-lintblauw-500);
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm). */
+@property --rhc-tabs-fade-start {
+  inherits: false;
+  initial-value: 0px;
+  syntax: "<length>";
+}
+
+@property --rhc-tabs-fade-end {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@keyframes rhc-mox-tabs-fade {
+  0% {
+    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+    --rhc-tabs-fade-start: 0;
+  }
+
+  10% {
+    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+  }
+
+  90% {
+    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+  }
+
+  100% {
+    --rhc-tabs-fade-end: 0;
+    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+  }
+}
+
+/* --- Digitale assistent --- */
+.rhc-mox-chat {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-mox-chat-messages {
+  block-size: max(24rem, 50dvh);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-lg);
+  overflow-y: auto;
+  padding: var(--rhc-space-lg);
+}
+
+.rhc-mox-chat-rule {
+  display: flex;
+  flex-direction: column;
+}
+
+.rhc-mox-chat-message,
+.rhc-mox-chat-card,
+.rhc-mox-chat-suggestions {
+  border-radius: var(--rhc-border-radius-md);
+  display: grid;
+  gap: var(--rhc-space-md);
+  max-inline-size: min(80%, 48rem);
+  padding: var(--rhc-space-md) var(--rhc-space-lg);
+}
+
+.rhc-mox-chat-message,
+.rhc-mox-chat-suggestions {
+  margin-block-end: var(--rhc-space-2xl);
+  position: relative;
+
+  &:before {
+    background-color: var(--rhc-color-cool-grey-100);
+    block-size: var(--rhc-size-icon-md);
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
+    content: "";
+    inline-size: var(--rhc-size-icon-md);
+    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+    inset-inline-start: var(--rhc-size-icon-md);
+    position: absolute;
+  }
+
+  p:last-of-type {
+    margin-block-end: 0;
+  }
+}
+
+.rhc-mox-chat-message--assistant,
+.rhc-mox-chat-card,
+.rhc-mox-chat-suggestions {
+  --rhc-chat-border-color: var(--rhc-color-cool-grey-300);
+
+  align-self: flex-start;
+  background-color: var(--rhc-color-cool-grey-100);
+  filter: drop-shadow(1px 0 0 var(--rhc-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-chat-border-color));
+}
+
+.rhc-mox-chat-message--user {
+  align-self: flex-end;
+  background-color: var(--rhc-color-lintblauw-700);
+  color: var(--rhc-color-wit);
+
+  &:before {
+    background-color: var(--rhc-color-lintblauw-700);
+    block-size: var(--rhc-size-icon-md);
+    clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
+    content: "";
+    inline-size: var(--rhc-size-icon-md);
+    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
+    inset-inline-end: var(--rhc-size-icon-md);
+    position: absolute;
+  }
+
+  .nl-paragraph {
+    color: inherit;
+  }
+}
+
+.rhc-mox-chat-suggestions {
+  max-inline-size: 100%;
+
+  .utrecht-button {
+    justify-self: start;
+  }
+}
+
+.rhc-mox-chat-card {
+  inline-size: min(100%, 48rem);
+  max-inline-size: 100%;
+
+  fieldset {
+    display: grid;
+    gap: var(--rhc-space-sm);
+  }
+}
+
+.rhc-mox-chat-form {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-mox-chat-sources {
+  border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+  display: grid;
+  gap: var(--rhc-space-sm);
+  padding-block-start: var(--rhc-space-md);
+
+  ul {
+    display: grid;
+    gap: var(--rhc-space-sm);
+  }
+
+  li {
+    display: grid;
+  }
+
+  small {
+    color: var(--rhc-color-foreground-subtle);
+  }
+}
+
+.rhc-mox-chat-badge {
+  align-items: center;
+  background-color: var(--rhc-color-groen-100);
+  border-radius: var(--rhc-border-radius-md);
+  display: inline-flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+  inline-size: fit-content;
+  padding: var(--rhc-space-2xs) var(--rhc-space-sm);
+
+  .utrecht-icon {
+    color: var(--rhc-color-groen-600);
+  }
+}
+
+.rhc-mox-chat-energy {
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-energy-figures {
+  display: grid;
+  gap: var(--rhc-space-lg);
+  grid-template-columns: repeat(2, 1fr);
+
+  dt {
+    color: var(--rhc-color-foreground-subtle);
+    font-size: var(--rhc-text-font-size-sm);
+  }
+}
+
+.rhc-mox-energy-value {
+  display: block;
+  font-weight: var(--rhc-text-font-weight-bold);
+}
+
+.rhc-mox-energy-threshold {
+  align-items: center;
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-xs);
+
+  &::before {
+    block-size: 0.5rem;
+    border-radius: var(--rhc-border-radius-round);
+    content: "";
+    flex: none;
+    inline-size: 0.5rem;
+  }
+}
+
+.rhc-mox-energy-threshold--above::before {
+  background-color: var(--rhc-color-oranje-500);
+}
+
+.rhc-mox-energy-threshold--below::before {
+  background-color: var(--rhc-color-groen-600);
+}
+
+.rhc-mox-chat-thinking {
+  align-items: center;
+  align-self: flex-start;
+  display: flex;
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-wait {
+  animation: rhc-mox-wait 1s steps(4) infinite;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side, var(--rhc-color-foreground-default) 90%, transparent) 0 / calc(100% / 3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  inline-size: calc(var(--rhc-size-icon-lg) * 1.5);
+}
+
+@keyframes rhc-mox-wait {
+  to {
+    clip-path: inset(0 -33% 0 0);
+  }
+}
+
+.rhc-mox-chat-input {
+  display: grid;
+  gap: var(--rhc-space-md);
+
+  textarea {
+    max-inline-size: none;
+    min-block-size: 6rem;
+  }
+}
+
+.rhc-mox-chat-disclaimer {
+  align-items: flex-start;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+
+  .utrecht-icon {
+    margin-block-start: var(--rhc-space-sm);
+  }
+}
+
+/* --- Lopende zaken --- */
+.rhc-mox-status-track {
+  --rhc-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
+  --rhc-stap-gap: var(--rhc-space-lg);
+
+  display: grid;
+  gap: var(--rhc-stap-gap);
+  margin-block: var(--rhc-space-3xl);
+
+  >li {
+    display: flex;
+    gap: var(--rhc-space-md);
+    position: relative;
+
+    /* Cirkel met stapnummer, of vinkje als stap klaar is. */
+    >.rhc-mox-status-marker {
+      background-color: var(--rhc-color-groen-600);
+      block-size: var(--rhc-stap-maat);
+      border-radius: var(--rhc-border-radius-round);
+      color: var(--rhc-color-wit);
+      display: grid;
+      flex-shrink: 0;
+      font-weight: var(--rhc-text-font-weight-bold);
+      inline-size: var(--rhc-stap-maat);
+      place-items: center;
+
+      .utrecht-icon {
+        block-size: var(--utrecht-icon-size);
+        inline-size: var(--utrecht-icon-size);
+      }
+
+      svg {
+        block-size: 100%;
+        inline-size: 100%;
+      }
+    }
+
+    &::after {
+      background-color: var(--rhc-color-groen-600);
+      content: "";
+      inline-size: var(--rhc-border-width-md);
+      inset-block: var(--rhc-stap-maat) calc(-1 * var(--rhc-stap-gap));
+      inset-inline-start: calc(var(--rhc-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+      position: absolute;
+    }
+
+    &:last-child::after {
+      content: none;
+    }
+  }
+
+  >[aria-current="step"] {
+    >.rhc-mox-status-marker {
+      background-color: var(--rhc-color-lintblauw-500);
+    }
+
+    ~li>.rhc-mox-status-marker {
+      background-color: var(--rhc-color-cool-grey-500);
+    }
+
+    &::after,
+    ~li::after {
+      background: repeating-linear-gradient(var(--rhc-color-cool-grey-400) 0 4px, transparent 4px 8px);
+    }
+  }
+
+  details {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-weight: var(--rhc-text-font-weight-bold);
+    gap: var(--rhc-space-sm);
+    list-style: none;
+    min-block-size: var(--rhc-stap-maat);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    .utrecht-icon {
+      transition: transform 150ms;
+    }
+  }
+
+  details[open]>summary .utrecht-icon {
+    transform: rotate(90deg);
+  }
+}
+
+.rhc-mox-status-details {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin-block-start: var(--rhc-space-sm);
+
+  .utrecht-action-group {
+    margin-block-end: var(--rhc-space-xl);
+    margin-block-start: 0;
+  }
+}
+
+.rhc-mox-status-date {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  font-size: var(--rhc-text-font-size-sm);
+  gap: var(--rhc-space-sm);
+}
+
+/* --- LinkButton --- */
+/* Destructieve actie als LinkButton, zoals Verwijderen in Berichtenbox.
+  LinkButton kent geen hint="danger", daarom deze class. */
+.rhc-theme.mox-theme {
+  .rhc-mox-link-button--danger {
+    --utrecht-link-button-color: var(--rhc-color-rood-500);
+    --utrecht-link-button-hover-color: var(--rhc-color-rood-600);
+    --utrecht-link-button-active-color: var(--rhc-color-rood-600);
+
+    color: var(--rhc-color-rood-500);
+
+    &:hover {
+      color: var(--rhc-color-rood-600);
+    }
+  }
+}
+
+/* --- Bewaren --- */
+.rhc-mox-icon-saved svg {
+  fill: var(--rhc-color-robijnrood-400);
+  stroke: var(--rhc-color-robijnrood-400);
+}
+
+/* --- Iconen en links --- */
+.utrecht-icon {
+  block-size: var(--rhc-size-icon-md);
+  flex-shrink: 0;
+  inline-size: var(--rhc-size-icon-md)
+}
+
+.utrecht-link .utrecht-icon {
+  vertical-align: middle;
+}
+
+.rhc-link-list__item .utrecht-link-list__link {
+  align-items: flex-start;
+
+  .utrecht-icon {
+    block-size: 1lh;
+    /* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
+    inset-block-start: 0;
+  }
+}
+
+/* --- Melding --- */
+/* Een lege live region (role="status", role="alert", aria-live) neemt geen
+  ruimte in, ook niet als gap in een flex- of grid-container. Hij blijft wel
+  in de DOM en in de toegankelijkheidsboom. */
+:where(.rhc-theme.mox-theme) :where([role="status"], [role="alert"], [aria-live]):empty {
+  position: absolute;
+}
+
+/* Een melding die na een tijd uitfadet (BerichtDetail). */
+.rhc-theme.mox-theme {
+  .rhc-mox-fade-out {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 500ms ease-out;
+    }
+  }
+
+  .rhc-mox-fade-out--hidden {
+    opacity: 0;
+  }
+}
+
+.rhc-mox-alert-closable {
+  position: relative;
+}
+
+.rhc-mox-alert-closable-content {
+  padding-inline-end: var(--rhc-space-5xl);
+}
+
+.rhc-mox-alert-close-button {
+  inset-block-start: var(--utrecht-alert-padding-block-start);
+  inset-inline-end: var(--utrecht-alert-padding-inline-end);
+  position: absolute;
+
+  span {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+
+  &:hover {
+    background: transparent !important;
+  }
+}
+
+/* --- NavigationList --- */
+.rhc-theme.mox-theme {
+  .rhc-navigation-list__item-content {
+    align-items: flex-start;
+  }
+
+  .rhc-navigation-list__item__start-icon {
+    display: none;
+  }
+}
+
+/* --- Schuifregelaar --- */
+.rhc-theme.mox-theme {
+  .rhc-mox-range-slider__header {
+    align-items: baseline;
+    display: flex;
+    gap: var(--rhc-space-md);
+    justify-content: space-between;
+  }
+
+  .rhc-mox-range-slider__value {
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+
+  .rhc-mox-range-slider__input {
+    accent-color: var(--rhc-color-lintblauw-500);
+    appearance: none;
+    background: transparent;
+    block-size: var(--rhc-space-2xl);
+    inline-size: 100%;
+    margin: 0;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      margin-block-start: -.5rem;
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+    }
+
+    &::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+    }
+
+    &:hover {
+      &::-webkit-slider-runnable-track {
+        border-color: color-mix(in srgb, var(--rhc-color-lintblauw-100) 60%, transparent);
+      }
+
+      &::-moz-range-track {
+        border-color: color-mix(in srgb, var(--rhc-color-lintblauw-100) 60%, transparent);
+      }
+    }
+
+    /* Hover on the thumb, or keyboard focus on the slider: darker thumb with
+      a ring. A pseudo-element cannot have :focus itself, so the focus sits
+      on the input. One rule per browser: an unknown pseudo-element would
+      drop the whole list. */
+    &::-webkit-slider-thumb:hover,
+    &:focus-visible::-webkit-slider-thumb {
+      background: var(--rhc-color-lintblauw-600);
+      border-color: var(--rhc-color-lintblauw-600);
+      outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
+    }
+
+    &::-webkit-slider-thumb:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+
+    &::-moz-range-thumb:hover,
+    &:focus-visible::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-600);
+      border-color: var(--rhc-color-lintblauw-600);
+      outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+    }
+
+    &::-moz-range-thumb:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &::-moz-range-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &:focus-visible {
+      border-radius: var(--rhc-border-radius-round);
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: calc(var(--utrecht-focus-outline-offset)*3);
+    }
+  }
+
+  /* RangeSlider met gevulde baan tot aan de knop (thumb). */
+  .rhc-mox-range-slider__input--filled {
+    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
+    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
+    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
+
+    &::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
+    }
+
+    /* Firefox kent een eigen element voor het gevulde deel. */
+    &::-moz-range-progress {
+      background: var(--rhc-range-slider-fill-color);
+      block-size: 0.75rem;
+      border-radius: var(--rhc-border-radius-round);
+    }
+  }
+
+  .rhc-mox-range-slider__limits {
+    color: var(--rhc-color-foreground-subtle);
+    display: flex;
+    font-size: var(--rhc-text-font-size-sm);
+    justify-content: space-between;
+  }
+}
+
+/* --- Voortgangsbalk --- */
+/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+.rhc-mox-progressbar,
+.rhc-mox-bar-graph__track {
+  background-color: var(--rhc-color-cool-grey-50);
+  block-size: var(--rhc-space-xl);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-round);
+  border-width: var(--rhc-border-width-sm);
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.rhc-mox-progressbar-track {
+  background-color: var(--rhc-color-hemelblauw-500);
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+}
+
+/* In een info-melding de kleur van die melding (het info-icoon), zoals
+  bij "De pdf wordt geladen". */
+.utrecht-alert--info .rhc-mox-progressbar-track {
+  background-color: var(--utrecht-alert-icon-info-color);
+}
+
+/* Laadduur onbekend, zoals bij de pdf. */
+.rhc-mox-progressbar--indeterminate .rhc-mox-progressbar-track {
+  inline-size: 40%;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rhc-mox-progressbar-indeterminate 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes rhc-mox-progressbar-indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* --- Meter --- */
+.rhc-mox-graph-meter {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+
+  .rhc-mox-progressbar {
+    flex: 1;
+    max-inline-size: 20rem;
+  }
+}
+
+/* --- Paginering --- */
+.rhc-theme.mox-theme {
+  .ams-icon {
+    align-self: center;
+  }
+
+  @media (width < 768px) {
+
+    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
+      toegankelijke naam ("Vorige pagina") blijft. */
+    .ams-pagination__link[rel]>span[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}
+
+/* --- Tabel --- */
+.rhc-theme.mox-theme {
+  .utrecht-table__header-cell {
+    vertical-align: bottom;
+  }
+}
+
+/* Een melding die in zijn geheel een link is, zoals de status van een zaak
+  die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
+.rhc-theme.mox-theme {
+  .rhc-mox-alert-link {
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--utrecht-link-color);
+    display: block;
+    text-decoration-line: none;
+
+    .utrecht-alert {
+      margin: 0;
+    }
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+
+    &:focus-visible {
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: var(--utrecht-focus-outline-offset);
+    }
+  }
+
+}
+
+/* --- Action group --- */
+.utrecht-action-group {
+  margin-block-start: var(--rhc-space-2xl);
+}
+
+.utrecht-button--primary-action {
+  margin-block-start: var(--rhc-space-lg);
+}
+
+.rhc-mox-action-group-dense {
+  margin-block-start: 0 !important;
+
+  :is(button, a) {
+    padding-block: var(--rhc-space-sm);
+    padding-inline: var(--rhc-space-md);
+    text-align: start;
+    text-decoration: none;
+  }
+}
+
+/* --- Bar graph --- */
+.rhc-mox-bar-graph {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__title {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+.rhc-mox-bar-graph__list {
+  display: grid;
+  gap: var(--rhc-space-sm);
+  grid-template-columns: minmax(auto, 12rem) 1fr;
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__item {
+  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
+
+  align-items: baseline;
+  display: grid;
+  gap: var(--rhc-space-md);
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+.rhc-mox-bar-graph__value {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__bar {
+  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
+  background-image: var(--rhc-bar-graph-pattern, none);
+  block-size: var(--rhc-space-xl);
+  border: var(--rhc-border-width-sm) solid var(--rhc-bar-graph-border-color, var(--rhc-color-cool-grey-500));
+  border-radius: var(--rhc-border-radius-round);
+  /* At least a sliver, so a value of 0 still shows where the bar starts. */
+  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+}
+
+.rhc-mox-bar-graph__track {
+  --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
+
+  background-color: var(--rhc-color-cool-grey-50);
+  border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-round);
+  display: flex;
+  inline-size: calc(100% - 5rem);
+
+  >.rhc-mox-bar-graph__bar {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% + 2 * var(--rhc-bar-graph-track-border-width))));
+    margin-block: calc(-1 * var(--rhc-bar-graph-track-border-width));
+    margin-inline-start: calc(-1 * var(--rhc-bar-graph-track-border-width));
+  }
+}
+
+.rhc-mox-bar-graph__item--positive {
+  --rhc-bar-graph-color: var(--rhc-color-groen-400);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-bar-graph-border-color: var(--rhc-color-groen-400);
+}
+
+.rhc-mox-bar-graph__item--negative {
+  --rhc-bar-graph-color: var(--rhc-color-rood-500);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-bar-graph-border-color: var(--rhc-color-rood-400);
+}
+
+/* --- Step indicator --- */
+.rhc-mox-step-indicator {
+  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
+
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-step-indicator__count {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  margin: 0;
+}
+
+.rhc-mox-step-indicator__list {
+  display: flex;
+  gap: var(--rhc-space-xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rhc-mox-step-indicator__step {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-step-indicator__marker {
+  block-size: var(--rhc-step-indicator-size);
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
+  border-radius: var(--rhc-border-radius-round);
+  display: grid;
+  flex-shrink: 0;
+  font-weight: var(--rhc-text-font-weight-bold);
+  inline-size: var(--rhc-step-indicator-size);
+  line-height: 1;
+  place-items: center;
+}
+
+.rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
+  background-color: var(--rhc-color-groen-600);
+  border-color: var(--rhc-color-groen-600);
+  color: var(--rhc-color-wit);
+}
+
+.rhc-mox-step-indicator__step--current {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+
+  .rhc-mox-step-indicator__marker {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-color: var(--rhc-color-lintblauw-500);
+    color: var(--rhc-color-wit);
+  }
+}
+
+/* Small scherm: alleen "Stap 2 van 4" en huidige stap. */
+@media (width < 768px) {
+  .rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
+    display: none;
+  }
+}
+
+/* --- Sticky info box --- */
+/* StickyInfoBox blijft getoond worden bij pagina-scroll op een vaste plek; op een smal scherm blijft deze mee-scrollen. */
+.rhc-mox-sticky-info-box {
+  align-self: start;
+  background-color: var(--rhc-color-hemelblauw-50);
+  display: grid;
+  gap: var(--rhc-space-md);
+  inset-block-start: var(--rhc-space-xl);
+  padding: var(--rhc-space-xl);
+  position: sticky;
+
+  @media (width < 768px) {
+    position: static;
+  }
+}
+
+/* --- Switch --- */
+.rhc-mox-switch {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-2xs);
+}
+
+.utrecht-form-label.rhc-mox-switch__label {
+  display: block;
+}
+
+.rhc-mox-switch__button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: var(--rhc-space-md);
+  padding: 0;
+
+  &:not(:disabled):hover .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-lintblauw-600);
+
+    &:hover {
+      outline: var(--rhc-border-width-md) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
+    }
+
+    &:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+  }
+
+  &:focus-visible {
+    border-radius: var(--rhc-border-radius-sm);
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: var(--utrecht-focus-outline-offset);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  block-size: 1.5rem;
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-500);
+  border-radius: var(--rhc-border-radius-round);
+  box-sizing: border-box;
+  display: inline-flex;
+  inline-size: 2.75rem;
+  padding: var(--rhc-space-2xs);
+}
+
+.rhc-mox-switch__thumb {
+  aspect-ratio: 1;
+  background-color: var(--rhc-color-cool-grey-500);
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+  /* Transparent ring at rest, so its colour can fade in on hover. */
+  outline: var(--rhc-border-width-md) solid transparent;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition-duration: var(--mox-transition-duration);
+    transition-property: transform, background-color, outline-color;
+    transition-timing-function: var(--mox-transition-easing);
+  }
+}
+
+.rhc-mox-switch__button[aria-checked="true"] {
+  .rhc-mox-switch__track {
+    background-color: var(--rhc-color-wit);
+    border-color: var(--rhc-color-lintblauw-500);
+
+    &:hover .rhc-mox-switch__thumb {
+      background-color: var(--rhc-color-lintblauw-600);
+    }
+  }
+
+  .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-lintblauw-500);
+    transform: translateX(1.25rem);
+
+    &:hover {
+      background-color: var(--rhc-color-lintblauw-600);
+    }
+  }
+}
+
+.rhc-mox-switch__state {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  min-inline-size: 2rem;
+}
+
+/* Two-way: a choice between two options, not on/off. The track has the
+  same colour in both positions; the chosen option is in bold. */
+.rhc-mox-switch__button--two-way .rhc-mox-switch__track,
+.rhc-mox-switch__button--two-way[aria-checked="true"] .rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  border-color: var(--rhc-color-lintblauw-500);
+}
+
+.rhc-mox-switch__button--two-way .rhc-mox-switch__thumb {
+  background-color: var(--rhc-color-lintblauw-500);
+
+  &:hover {
+    background-color: var(--rhc-color-lintblauw-600);
+  }
+}
+
+.rhc-mox-switch__option {
+  color: var(--rhc-color-foreground-subtle);
+}
+
+.rhc-mox-switch__option--chosen {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+/* --- Text badge --- */
+.rhc-mox-text-badge {
+  --utrecht-icon-size: 1em;
+
+  align-items: center;
+  background-color: var(--rhc-color-cool-grey-100);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-foreground-default);
+  border-radius: var(--rhc-border-radius-round);
+  color: var(--rhc-color-foreground-default);
+  display: inline-flex;
+  font-size: var(--rhc-text-font-size-sm);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  gap: var(--rhc-space-sm);
+  line-height: var(--rhc-text-line-height-md);
+  padding-block: var(--rhc-space-sm);
+  padding-inline: var(--rhc-space-lg);
+  vertical-align: middle;
+}
+
+.rhc-mox-text-badge--info {
+  --utrecht-icon-color: var(--utrecht-alert-icon-info-color);
+  background-color: var(--rhc-color-hemelblauw-50);
+  border-color: var(--rhc-color-hemelblauw-500);
+}
+
+.rhc-mox-text-badge--ok {
+  --utrecht-icon-color: var(--utrecht-alert-icon-ok-color);
+  background-color: var(--rhc-color-groen-50);
+  border-color: var(--rhc-color-groen-500);
+}
+
+.rhc-mox-text-badge--warning {
+  --utrecht-icon-color: var(--utrecht-alert-icon-warning-color);
+  background-color: var(--rhc-color-oranje-50);
+  border-color: var(--rhc-color-oranje-500);
+}
+
+.rhc-mox-text-badge--error {
+  --utrecht-icon-color: var(--utrecht-alert-icon-error-color);
+  background-color: var(--rhc-color-rood-50);
+  border-color: var(--rhc-color-rood-500);
+}
+
+/* ==== Pagina's en functies =============================================== */
+
+/* --- Berichtenbox --- */
+.rhc-theme.mox-theme {
+
+  /* Berichtenbox A/B/C-test, variant C: uitleg en directe acties. */
+  .rhc-mox-message-actions {
+    background-color: var(--rhc-color-cool-grey-50);
+    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+    margin-block: var(--rhc-space-lg);
+    padding: var(--rhc-space-lg);
+
+    >* {
+      margin-block: 0;
+    }
+  }
+
+  /* Variant B: het bericht als pdf in de pagina. */
+  .rhc-mox-pdf-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-3xl);
+  }
+
+  .rhc-mox-pdf-preview__viewer {
+    block-size: 72rem;
+    border-block-end: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
+    inline-size: 100%;
+    max-block-size: 80vh;
+  }
+
+  /* Een tabelrij waarvan de hele rij naar het bericht linkt. */
+  .rhc-mox-row-linked {
+    position: relative;
+
+    &:hover {
+      background-color: var(--rhc-color-cool-grey-50);
+    }
+
+    :is(button, .rhc-mox-dropdown__trigger) {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .rhc-mox-row-linked__link::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+
+  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rhc-mox-row-new {
+      animation: rhc-mox-row-new 2s ease-out;
+    }
+  }
+}
+
+[aria-label=Berichtenbox] {
+  a {
+    text-decoration: none;
+  }
+}
+
+.rhc-mox-attachment-icon {
+  --utrecht-icon-size: var(--rhc-size-icon-md);
+}
+
+.rhc-mox-notice-amount-inbox {
+  color: var(--rhc-color-cool-grey-500);
+  font-size: var(--rhc-text-font-size-sm);
+  margin-block-end: var(--rhc-space-xl) !important;
+}
+
+.rhc-mox-inbox-filter {
+  margin-block: var(--rhc-space-3xl);
+}
+
+.rhc-mox-tabs-separator {
+  border-inline-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
+  margin-block: var(--rhc-space-md);
+}
+
+/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
+.rhc-mox-inbox-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-xl);
+
+  > :first-child {
+    flex: 2 1 16rem;
+  }
+
+  > :last-child {
+    flex: 1 1 12rem;
+  }
+
+  .utrecht-form-field {
+    margin-block: 0;
+  }
+
+  .utrecht-textbox {
+    max-inline-size: 100%;
+  }
+}
+
+.rhc-mox-button-mark {
+  align-items: center;
+  block-size: 1lh;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: calc(var(--nl-button-min-block-size)/2);
+  min-inline-size: calc(var(--nl-button-min-inline-size)/2);
+
+  &[aria-pressed=true] {
+    color: var(--rhc-color-oranje-500);
+  }
+}
+
+.rhc-mox-button-mark-true {
+  color: var(--rhc-color-oranje-500);
+}
+
+.rhc-mox-status-unread {
+  background-color: var(--rhc-color-oranje-500);
+  block-size: calc(var(--rhc-size-icon-md)/2);
+  border-radius: var(--rhc-border-radius-round);
+  flex-shrink: 0;
+  inline-size: calc(var(--rhc-size-icon-md)/2);
+  /* centreert de stip op de eerste regel van de afzender */
+  margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
+}
+
+.rhc-mox-sender {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-unread {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+/* Buiten .rhc-theme: @keyframes mag niet genest staan. */
+@keyframes rhc-mox-row-new {
+  from {
+    background-color: var(--rhc-color-core-50);
+  }
+}
+
+/* --- Landingspagina --- */
+.rhc-theme.mox-theme {
+  .header-landing .rhc-nav-bar__container {
+    border-block-end: none;
+  }
+
+  .rhc-mox-landing-hero {
+    background: var(--mox-landing-info-background);
+    block-size: calc(var(--rhc-size-lint) * 10);
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+
+  .rhc-mox-landing-info {
+    background: var(--mox-landing-info-background);
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+    >div {
+      padding-block-end: var(--rhc-hero-message-padding-block-end);
+      padding-block-start: var(--rhc-hero-message-padding-block-start);
+      padding-inline-end: var(--rhc-hero-message-padding-inline-end);
+      padding-inline-start: var(--rhc-hero-message-padding-inline-start);
+    }
+
+    .nl-heading--level-2,
+    .nl-paragraph,
+    ul,
+    ::marker {
+      color: var(--rhc-color-wit);
+    }
+  }
+}
+
+.mox-login-digid,
+.mox-login-eherkenning {
+  align-items: center;
+  background: var(--rhc-color-oranje-500);
+  border-radius: var(--rhc-border-radius-md);
+  color: var(--rhc-color-wit);
+  display: inline-flex;
+  gap: var(--nl-button-column-gap);
+  inline-size: fit-content;
+  padding-block: var(--nl-button-padding-block-start);
+  padding-inline: var(--nl-button-padding-inline-start);
+}
+
+.mox-login-eherkenning {
+  background: var(--rhc-color-wit);
+  color: var(--rhc-color-zwart);
+}
+
+.mox-landing-hero-text {
+  align-content: flex-end;
+  background: var(--mox-landing-hero-background);
+  display: grid;
+  flex-direction: column;
+  gap: var(--rhc-card-column-gap);
+  padding-block: var(--rhc-hero-message-padding-block-start);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
+
+  .utrecht-link-button {
+    inline-size: fit-content;
+    padding: 0;
+  }
+}
+
+.mox-landing-quicklinks {
+  display: flex;
+
+  div {
+    inline-size: 50%;
+    padding-block-end: var(--rhc-hero-message-padding-block-end);
+    padding-inline: var(--rhc-hero-message-padding-inline-start);
+  }
+}
+
+.mox-landing-quicklinks-heading {
+  padding-block: var(--rhc-hero-message-padding-block-start);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
+}
+
+/* --- Getalveld --- */
+
+/* NumberInput: knoppen - en + voor en na het invoerveld. */
+.rhc-theme.mox-theme {
+  .rhc-number-input {
+    align-items: stretch;
+    display: flex;
+    gap: var(--rhc-space-sm);
+
+    .utrecht-textbox {
+      /* Firefox: geen pijltjes in het veld; de knoppen - en + doen dat. */
+      appearance: textfield;
+      flex: 1;
+      min-inline-size: 0;
+      text-align: center;
+
+      /* Chrome, Edge en Safari: idem. */
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+    }
+
+    .utrecht-button {
+      flex-shrink: 0;
+      justify-content: center;
+      margin: 0;
+      min-inline-size: var(--utrecht-button-min-block-size, 3rem);
+    }
+  }
+}

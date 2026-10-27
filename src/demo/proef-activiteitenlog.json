@@ -1,0 +1,253 @@
+[
+  {
+    "id": "a3f5b9d4e8c12f01",
+    "datetime": "2026-06-14T14:23:10Z",
+    "source": "KVK",
+    "relatedProduct": { "type": "bericht", "id": "b1e7c3f9a2d44c88" },
+    "data": [
+      { "request": "telephone", "response": "(+31) (0)6 12 34 56 78" },
+      { "request": "email", "response": "info@bloombv.nl" }
+    ]
+  },
+  {
+    "id": "b7e2c4a19d9f33ef",
+    "datetime": "2026-06-13T09:12:45Z",
+    "source": "Belastingdienst",
+    "relatedProduct": null,
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "c9d1af4b22e441a3",
+    "datetime": "2026-06-12T17:05:30Z",
+    "source": "UWV",
+    "relatedProduct": { "type": "zaak", "id": "c2d9e4b701a23f66" },
+    "data": [
+      { "request": "telephone", "response": "(+31) (0)6 12 34 56 78" },
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "d2f8e6b7c4a90b6d",
+    "datetime": "2026-06-11T11:45:00Z",
+    "source": "Gemeente Amsterdam",
+    "relatedProduct": null,
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "e5a7b3c9f1d24e60",
+    "datetime": "2026-06-10T08:30:22Z",
+    "source": "Politie",
+    "relatedProduct": { "type": "bericht", "id": "d3f4a5b6c7e81234" },
+    "data": [
+      { "request": "email", "response": "info@bloombv.nl" },
+      { "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }
+    ]
+  },
+  {
+    "id": "f1c3d8b29a447f2b",
+    "datetime": "2026-06-09T13:14:55Z",
+    "source": "Gemeente Den Haag",
+    "relatedProduct": null,
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "0a9b8c7d6e5f4b3c",
+    "datetime": "2026-06-05T10:00:00Z",
+    "source": "RVO",
+    "relatedProduct": { "type": "zaak", "id": "e4a1b2c3d4f56789" },
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "1b2c3d4e5f6a7b8c",
+    "datetime": "2026-05-22T16:42:11Z",
+    "source": "Kadaster",
+    "relatedProduct": null,
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      },
+      { "request": "email", "response": "info@bloombv.nl" }
+    ]
+  },
+  {
+    "id": "2c3d4e5f6a7b8c9d",
+    "datetime": "2026-04-09T09:09:09Z",
+    "source": "Belastingdienst",
+    "relatedProduct": { "type": "bericht", "id": "f5b6c7d8e9a01234" },
+    "data": [{ "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }]
+  },
+  {
+    "id": "3d4e5f6a7b8c9d0e",
+    "datetime": "2026-03-01T12:00:00Z",
+    "source": "KVK",
+    "relatedProduct": null,
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "4e5f6a7b8c9d0e1f",
+    "datetime": "2025-12-28T15:30:30Z",
+    "source": "UWV",
+    "relatedProduct": { "type": "zaak", "id": "a6b7c8d9e0123456" },
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "5f6a7b8c9d0e1f20",
+    "datetime": "2025-11-15T07:18:05Z",
+    "source": "Gemeente Amsterdam",
+    "relatedProduct": null,
+    "data": [{ "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }]
+  },
+  {
+    "id": "6a7b8c9d0e1f2031",
+    "datetime": "2025-10-02T18:22:14Z",
+    "source": "Politie",
+    "relatedProduct": { "type": "bericht", "id": "b7c8d9e0f1234567" },
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "7b8c9d0e1f203142",
+    "datetime": "2025-08-20T11:11:11Z",
+    "source": "Belastingdienst",
+    "relatedProduct": null,
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "8c9d0e1f20314253",
+    "datetime": "2025-07-06T09:45:00Z",
+    "source": "KVK",
+    "relatedProduct": { "type": "zaak", "id": "c8d9e0f1a2345678" },
+    "data": [
+      { "request": "email", "response": "info@bloombv.nl" },
+      { "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }
+    ]
+  },
+  {
+    "id": "9d0e1f2031425364",
+    "datetime": "2025-06-01T14:00:00Z",
+    "source": "Gemeente Den Haag",
+    "relatedProduct": null,
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "0e1f203142536475",
+    "datetime": "2025-05-12T13:37:22Z",
+    "source": "RVO",
+    "relatedProduct": { "type": "bericht", "id": "d9e0f1a2b3456789" },
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "1f20314253647586",
+    "datetime": "2025-04-02T08:05:05Z",
+    "source": "Kadaster",
+    "relatedProduct": null,
+    "data": [{ "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }]
+  },
+  {
+    "id": "2031425364758697",
+    "datetime": "2025-03-18T16:50:10Z",
+    "source": "Politie",
+    "relatedProduct": { "type": "zaak", "id": "e0f1a2b3c4567890" },
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "3142536475869708",
+    "datetime": "2024-12-31T23:59:59Z",
+    "source": "Belastingdienst",
+    "relatedProduct": null,
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "4253647586970919",
+    "datetime": "2024-11-20T10:10:10Z",
+    "source": "KVK",
+    "relatedProduct": { "type": "bericht", "id": "f1a2b3c4d5678901" },
+    "data": [{ "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }]
+  },
+  {
+    "id": "5364758697091a2b",
+    "datetime": "2024-10-05T12:12:12Z",
+    "source": "UWV",
+    "relatedProduct": null,
+    "data": [
+      { "request": "email", "response": "info@bloombv.nl" },
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "64758697091a2b3c",
+    "datetime": "2024-08-14T09:30:00Z",
+    "source": "Gemeente Amsterdam",
+    "relatedProduct": null,
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "758697091a2b3c4d",
+    "datetime": "2024-07-01T07:07:07Z",
+    "source": "Gemeente Den Haag",
+    "relatedProduct": { "type": "zaak", "id": "a2b3c4d5e6789012" },
+    "data": [{ "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }]
+  },
+  {
+    "id": "8697091a2b3c4d5e",
+    "datetime": "2024-05-22T15:15:15Z",
+    "source": "Politie",
+    "relatedProduct": null,
+    "data": [{ "request": "email", "response": "info@bloombv.nl" }]
+  },
+  {
+    "id": "97091a2b3c4d5e6f",
+    "datetime": "2024-04-11T11:11:11Z",
+    "source": "RVO",
+    "relatedProduct": { "type": "bericht", "id": "b2c3d4e5f6789012" },
+    "data": [
+      {
+        "request": "postalAddress",
+        "response": "Herengracht 123, 1015 AB Amsterdam"
+      }
+    ]
+  },
+  {
+    "id": "091a2b3c4d5e6f70",
+    "datetime": "2024-02-27T08:08:08Z",
+    "source": "Kadaster",
+    "relatedProduct": null,
+    "data": [{ "request": "telephone", "response": "(+31) (0)6 12 34 56 78" }]
+  }
+]

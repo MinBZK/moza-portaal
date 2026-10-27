@@ -5,6 +5,8 @@ import { z, ZodSchema } from "zod";
 const schemas = {
   loginMethod: z.enum(["digid", "eherkenning"]),
   opties: z.string(),
+  personaId: z.string(),
+  organisatieId: z.string(),
 } as const satisfies Record<string, ZodSchema>;
 
 // Helper to get a cookie value by name
@@ -18,12 +20,13 @@ function getCookie(name: string): string | null {
 function setCookie(
   name: string,
   value: string,
-  options?: { path?: string; expires?: Date },
+  options?: { path?: string; expires?: Date; maxAge?: number },
 ) {
   if (typeof document === "undefined") return;
   let cookie = `${name}=${encodeURIComponent(value)}`;
   if (options?.path) cookie += `; path=${options.path}`;
   if (options?.expires) cookie += `; expires=${options.expires.toUTCString()}`;
+  if (options?.maxAge !== undefined) cookie += `; max-age=${options.maxAge}`;
   document.cookie = cookie;
 }
 
@@ -42,7 +45,10 @@ export function useCookie<K extends keyof typeof schemas>(name: K) {
 
   // Set cookie with validation
   const set = useCallback(
-    (value: Value, options?: { path?: string; expires?: Date }) => {
+    (
+      value: Value,
+      options?: { path?: string; expires?: Date; maxAge?: number },
+    ) => {
       const parsed = schemas[name].safeParse(value);
       if (!parsed.success) throw new Error("Invalid cookie value");
       if (typeof value === "string") {

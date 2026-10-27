@@ -1,0 +1,11 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+"editor.formatOnSave": true,
+"[css]": {
+	"editor.defaultFormatter": "vscode.css-language-features",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.stylelint": "explicit"
+	}
+},
+"stylelint.validate": ["css"]
+}

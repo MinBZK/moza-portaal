@@ -1,4 +1,8 @@
-export type SectionKey = "berichten" | "informatie" | "regelgeving" | "subsidies";
+export type SectionKey =
+  | "berichten"
+  | "informatie"
+  | "regelgeving"
+  | "subsidies";
 
 export const SECTION_LABELS: Record<SectionKey, string> = {
   berichten: "Berichten over uw buurt",

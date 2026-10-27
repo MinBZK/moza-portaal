@@ -4,847 +4,866 @@
  */
 
 export interface paths {
-    "/api/profielservice/v1/contactgegeven": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Update contactgegeven van een partij
-         * @description Werk type, waarde en scope van een contactgegeven bij. Identificatie kan niet aangepast worden.
-         */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["ContactgegevenUpdateRequest"];
-                };
-            };
-            responses: {
-                /** @description Contactgegeven succesvol bijgewerkt */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": unknown;
-                    };
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Contactgegeven of partij niet gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        /**
-         * Toevoegen nieuwe contactgegeven voor een partij
-         * @description Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende partijen.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["ContactgegevenRequest"];
-                };
-            };
-            responses: {
-                /** @description Contactgegeven was al geregistreerd voor deze partij en scope */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ContactgegevenResponse"];
-                    };
-                };
-                /** @description Contactgegeven succesvol toegevoegd */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ContactgegevenResponse"];
-                    };
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/api/profielservice/v1/contactgegeven": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/profielservice/v1/contactgegeven/{contactgegevenId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    /**
+     * Update contactgegeven van een partij
+     * @description Werk type, waarde en scope van een contactgegeven bij. Identificatie kan niet aangepast worden.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["ContactgegevenUpdateRequest"];
         };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Verwijder contactgegeven van een partij
-         * @description Verwijdert een contactgegeven volledig
-         */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    contactgegevenId: components["schemas"]["UUID"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PartijIdentificatieRequest"];
-                };
-            };
-            responses: {
-                /** @description Contactgegeven succesvol verwijderd */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Contactgegeven of partij niet gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+      };
+      responses: {
+        /** @description Contactgegeven succesvol bijgewerkt */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": unknown;
+          };
         };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Contactgegeven of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/api/profielservice/v1/dienstverlener": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    /**
+     * Toevoegen nieuwe contactgegeven voor een partij
+     * @description Voegt een nieuwe contactgegeven toe. Creëert automatisch ontbrekende partijen.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["ContactgegevenRequest"];
         };
-        get?: never;
-        put?: never;
-        /**
-         * Voegt een dienstverlener toe
-         * @description Voegt een nieuwe dienstverlener toe met optionele beschrijving
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["DienstverlenerRequest"];
-                };
-            };
-            responses: {
-                /** @description Dienstverlener succesvol toegevoegd */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+      };
+      responses: {
+        /** @description Contactgegeven was al geregistreerd voor deze partij en scope */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["ContactgegevenResponse"];
+          };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+        /** @description Contactgegeven succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["ContactgegevenResponse"];
+          };
+        };
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/api/profielservice/v1/dienstverlener/{dienstverlenerNaam}/diensten": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Voegt een dienst toe aan een dienstverlener
-         * @description Voegt een nieuwe dienst toe met beschrijving
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    dienstverlenerNaam: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["DienstRequest"];
-                };
-            };
-            responses: {
-                /** @description Dienst succesvol toegevoegd */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/contactgegeven/{contactgegevenId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/profielservice/v1/dienstverlener/{naam}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Verwijder contactgegeven van een partij
+     * @description Verwijdert een contactgegeven volledig
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          contactgegevenId: components["schemas"]["UUID"];
         };
-        /**
-         * Vraagt gegevens van dienstverlener
-         * @description Geeft gegevens van gevraagde Dienstverlener terug
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    naam: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Dienstverlener succesvol opgehaald */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Dienstverlener niet gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["PartijIdentificatieRequest"];
         };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
+      responses: {
+        /** @description Contactgegeven succesvol verwijderd */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Contactgegeven of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/api/profielservice/v1/emailverificatie": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Post Email Verificatie */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["EmailVerificatieRequest"];
-                };
-            };
-            responses: {
-                /** @description Email verificatie succesvol */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": unknown;
-                    };
-                };
-                /** @description Email verificatie mislukt */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/dienstverlener": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/profielservice/v1/emailverificatie/code": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Voegt een dienstverlener toe
+     * @description Voegt een nieuwe dienstverlener toe met optionele beschrijving
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["DienstverlenerRequest"];
         };
-        get?: never;
-        put?: never;
-        /**
-         * (Opnieuw) aanvragen voor een code van een (al geverifieerde) mail adres
-         * @description Vraagt een email verificatie code aan. Let op, bij het aanmaken van een profiel wordt al een email verificatie code aangevraagd. Dit is voor het opnieuw aanvragen van een code.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["EmailVerificatieCodeAanvraagRequest"];
-                };
-            };
-            responses: {
-                /** @description Email verificatie code aanvraag succesvol */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": unknown;
-                    };
-                };
-                /** @description Invalid request format */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Partij of Contactgegeven niet gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description NotifyNL API onbereikbaar */
-                503: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+      };
+      responses: {
+        /** @description Dienstverlener succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/api/profielservice/v1/partij": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Ophalen profiel van een partij
-         * @description Haalt het profiel op van een partij
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PartijRequest"];
-                };
-            };
-            responses: {
-                /** @description Partij succesvol opgehaald */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["PartijResponse"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Partij niet gevonden of is verwijderd */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/dienstverlener/{dienstverlenerNaam}/diensten": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/profielservice/v1/partijen/bulk": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Voegt een dienst toe aan een dienstverlener
+     * @description Voegt een nieuwe dienst toe met beschrijving
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          dienstverlenerNaam: string;
         };
-        get?: never;
-        put?: never;
-        /**
-         * Ophalen profielen van meerdere partijen
-         * @description Haalt profielen op van meerdere partijen. Niet-gevonden partijen worden stilzwijgend weggelaten.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PartijBulkRequest"];
-                };
-            };
-            responses: {
-                /** @description Alle profielen succesvol opgehaald */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": unknown;
-                    };
-                };
-                /** @description Profielen gedeeltelijk opgehaald */
-                206: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Geen enkel profiel gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["DienstRequest"];
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
+      responses: {
+        /** @description Dienst succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
-    "/api/profielservice/v1/voorkeur": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Update voorkeur van een partij
-         * @description Werk type, waarde en scope van een voorkeur bij. Identificatie kan niet aangepast worden.
-         */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["VoorkeurUpdateRequest"];
-                };
-            };
-            responses: {
-                /** @description Voorkeur succesvol bijgewerkt */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": unknown;
-                    };
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Voorkeur of partij niet gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        /**
-         * Toevoegen nieuwe voorkeur voor een partij
-         * @description Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende partijen.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["VoorkeurRequest"];
-                };
-            };
-            responses: {
-                /** @description Voorkeur was al geregistreerd voor deze partij en scope */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["VoorkeurResponse"];
-                    };
-                };
-                /** @description Voorkeur succesvol toegevoegd */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["VoorkeurResponse"];
-                    };
-                };
-                /** @description Request body mag niet leeg zijn */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/dienstverlener/{naam}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/profielservice/v1/voorkeur/{voorkeurId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    /**
+     * Vraagt gegevens van dienstverlener
+     * @description Geeft gegevens van gevraagde Dienstverlener terug
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          naam: string;
         };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Verwijder voorkeur van een partij
-         * @description Verwijdert een voorkeur volledig
-         */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    voorkeurId: components["schemas"]["UUID"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["PartijIdentificatieRequest"];
-                };
-            };
-            responses: {
-                /** @description Voorkeur succesvol verwijderd */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Voorkeur of partij niet gevonden */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Dienstverlener succesvol opgehaald */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+        /** @description Dienstverlener niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
     };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/emailverificatie": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Post Email Verificatie */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["EmailVerificatieRequest"];
+        };
+      };
+      responses: {
+        /** @description Email verificatie succesvol */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": unknown;
+          };
+        };
+        /** @description Email verificatie mislukt */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["ErrorResponse"];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/emailverificatie/code": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * (Opnieuw) aanvragen voor een code van een (al geverifieerde) mail adres
+     * @description Vraagt een email verificatie code aan. Let op, bij het aanmaken van een profiel wordt al een email verificatie code aangevraagd. Dit is voor het opnieuw aanvragen van een code.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["EmailVerificatieCodeAanvraagRequest"];
+        };
+      };
+      responses: {
+        /** @description Email verificatie code aanvraag succesvol */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": unknown;
+          };
+        };
+        /** @description Invalid request format */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["ErrorResponse"];
+          };
+        };
+        /** @description Partij of Contactgegeven niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Internal server error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["ErrorResponse"];
+          };
+        };
+        /** @description NotifyNL API onbereikbaar */
+        503: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/partij": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Ophalen profiel van een partij
+     * @description Haalt het profiel op van een partij
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["PartijRequest"];
+        };
+      };
+      responses: {
+        /** @description Partij succesvol opgehaald */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["PartijResponse"];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Partij niet gevonden of is verwijderd */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/partijen/bulk": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Ophalen profielen van meerdere partijen
+     * @description Haalt profielen op van meerdere partijen. Niet-gevonden partijen worden stilzwijgend weggelaten.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["PartijBulkRequest"];
+        };
+      };
+      responses: {
+        /** @description Alle profielen succesvol opgehaald */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": unknown;
+          };
+        };
+        /** @description Profielen gedeeltelijk opgehaald */
+        206: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Geen enkel profiel gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/voorkeur": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Update voorkeur van een partij
+     * @description Werk type, waarde en scope van een voorkeur bij. Identificatie kan niet aangepast worden.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["VoorkeurUpdateRequest"];
+        };
+      };
+      responses: {
+        /** @description Voorkeur succesvol bijgewerkt */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": unknown;
+          };
+        };
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Voorkeur of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    /**
+     * Toevoegen nieuwe voorkeur voor een partij
+     * @description Voegt een nieuwe voorkeur toe. Creëert automatisch ontbrekende partijen.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["VoorkeurRequest"];
+        };
+      };
+      responses: {
+        /** @description Voorkeur was al geregistreerd voor deze partij en scope */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["VoorkeurResponse"];
+          };
+        };
+        /** @description Voorkeur succesvol toegevoegd */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["VoorkeurResponse"];
+          };
+        };
+        /** @description Request body mag niet leeg zijn */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/profielservice/v1/voorkeur/{voorkeurId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Verwijder voorkeur van een partij
+     * @description Verwijdert een voorkeur volledig
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          voorkeurId: components["schemas"]["UUID"];
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["PartijIdentificatieRequest"];
+        };
+      };
+      responses: {
+        /** @description Voorkeur succesvol verwijderd */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Voorkeur of partij niet gevonden */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** @enum {string} */
-        ContactType: "Email" | "Telefoonnummer" | "ApplicatieId";
-        /** @description Request object voor het toevoegen van een contactgegeven aan een partij */
-        ContactgegevenRequest: {
-            identificatieType: components["schemas"]["IdentificatieType"];
-            identificatieNummer: string;
-            type: components["schemas"]["ContactType"];
-            waarde: string;
-            scope?: components["schemas"]["ScopeRequest"];
-        };
-        ContactgegevenResponse: {
-            id?: components["schemas"]["UUID"];
-            type?: components["schemas"]["ContactType"];
-            waarde?: string;
-            isGeverifieerd?: boolean;
-            isDefault?: boolean;
-            createdAt?: components["schemas"]["Instant"];
-            lastUpdated?: components["schemas"]["Instant"];
-            scopes?: components["schemas"]["ScopeResponse"][];
-        };
-        ContactgegevenUpdateRequest: {
-            identificatieType: components["schemas"]["IdentificatieType"];
-            identificatieNummer: string;
-            type: components["schemas"]["ContactType"];
-            waarde: string;
-            scope?: components["schemas"]["ScopeRequest"];
-            id?: components["schemas"]["UUID"];
-            isDefault?: boolean;
-        };
-        /** @description Request object voor het toevoegen van een dienst aan een dienstverlener */
-        DienstRequest: {
-            naam: string;
-            beschrijving?: string;
-        };
-        /** @description Request object voor het toevoegen van een dienstverlener */
-        DienstverlenerRequest: {
-            naam: string;
-            beschrijving?: string;
-        };
-        EmailVerificatieCodeAanvraagRequest: {
-            email: string;
-            identificatieNummer: string;
-            identificatieType: components["schemas"]["IdentificatieType"];
-        };
-        /** @description Request object voor het verifiëren van een emailadres */
-        EmailVerificatieRequest: {
-            email: string;
-            identificatieNummer: string;
-            identificatieType: components["schemas"]["IdentificatieType"];
-            verificatieCode: string;
-        };
-        ErrorResponse: {
-            type?: string;
-            title?: string;
-            /** Format: int32 */
-            status?: number;
-            detail?: string;
-            instance?: string;
-            timestamp?: components["schemas"]["OffsetDateTime"];
-        };
-        IdentificatieResponse: {
-            identificatieType?: components["schemas"]["IdentificatieType"];
-            identificatieNummer?: string;
-        };
-        /** @enum {string} */
-        IdentificatieType: "BSN" | "KVK" | "RSIN";
-        /**
-         * Format: date-time
-         * @example 2022-03-10T16:15:50Z
-         */
-        Instant: string;
-        /**
-         * Format: date-time
-         * @example 2022-03-10T12:15:50-04:00
-         */
-        OffsetDateTime: string;
-        PartijBulkRequest: {
-            identificaties: components["schemas"]["PartijIdentificatieRequest"][];
-        };
-        PartijIdentificatieRequest: {
-            identificatieType: components["schemas"]["IdentificatieType"];
-            identificatieNummer: string;
-        };
-        /** @description Request object voor het ophalen van een Partij */
-        PartijRequest: {
-            identificatieType: components["schemas"]["IdentificatieType"];
-            identificatieNummer: string;
-            dienstverlener?: string;
-            dienstNaam?: string;
-        };
-        PartijResponse: {
-            partijId?: components["schemas"]["UUID"];
-            identificaties?: components["schemas"]["IdentificatieResponse"][];
-            voorkeuren?: components["schemas"]["VoorkeurResponse"][];
-            contactgegevens?: components["schemas"]["ContactgegevenResponse"][];
-        };
-        ScopeRequest: {
-            dienstverlenerNaam?: string;
-            dienstNaam?: string;
-        };
-        ScopeResponse: {
-            dienstverlenerNaam?: string;
-            dienstNaam?: string;
-        };
-        /** Format: uuid */
-        UUID: string;
-        VoorkeurRequest: {
-            identificatieType: components["schemas"]["IdentificatieType"];
-            identificatieNummer: string;
-            voorkeurType: components["schemas"]["VoorkeurType"];
-            waarde: string;
-            scope?: components["schemas"]["ScopeRequest"];
-        };
-        VoorkeurResponse: {
-            id?: components["schemas"]["UUID"];
-            voorkeurType?: components["schemas"]["VoorkeurType"];
-            waarde?: string;
-            createdAt?: components["schemas"]["Instant"];
-            lastUpdated?: components["schemas"]["Instant"];
-            scopes?: components["schemas"]["ScopeResponse"][];
-        };
-        /** @enum {string} */
-        VoorkeurType: "WebsiteTaal" | "MagGebeldWorden" | "WebsiteThema" | "Aanhef" | "OntvangViaBerichtenbox";
-        VoorkeurUpdateRequest: {
-            identificatieType: components["schemas"]["IdentificatieType"];
-            identificatieNummer: string;
-            voorkeurType: components["schemas"]["VoorkeurType"];
-            waarde: string;
-            scope?: components["schemas"]["ScopeRequest"];
-            id?: components["schemas"]["UUID"];
-        };
+  schemas: {
+    /** @enum {string} */
+    ContactType: "Email" | "Telefoonnummer" | "ApplicatieId";
+    /** @description Request object voor het toevoegen van een contactgegeven aan een partij */
+    ContactgegevenRequest: {
+      identificatieType: components["schemas"]["IdentificatieType"];
+      identificatieNummer: string;
+      type: components["schemas"]["ContactType"];
+      waarde: string;
+      scope?: components["schemas"]["ScopeRequest"];
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    ContactgegevenResponse: {
+      id?: components["schemas"]["UUID"];
+      type?: components["schemas"]["ContactType"];
+      waarde?: string;
+      isGeverifieerd?: boolean;
+      isDefault?: boolean;
+      createdAt?: components["schemas"]["Instant"];
+      lastUpdated?: components["schemas"]["Instant"];
+      scopes?: components["schemas"]["ScopeResponse"][];
+    };
+    ContactgegevenUpdateRequest: {
+      identificatieType: components["schemas"]["IdentificatieType"];
+      identificatieNummer: string;
+      type: components["schemas"]["ContactType"];
+      waarde: string;
+      scope?: components["schemas"]["ScopeRequest"];
+      id?: components["schemas"]["UUID"];
+      isDefault?: boolean;
+    };
+    /** @description Request object voor het toevoegen van een dienst aan een dienstverlener */
+    DienstRequest: {
+      naam: string;
+      beschrijving?: string;
+    };
+    /** @description Request object voor het toevoegen van een dienstverlener */
+    DienstverlenerRequest: {
+      naam: string;
+      beschrijving?: string;
+    };
+    EmailVerificatieCodeAanvraagRequest: {
+      email: string;
+      identificatieNummer: string;
+      identificatieType: components["schemas"]["IdentificatieType"];
+    };
+    /** @description Request object voor het verifiëren van een emailadres */
+    EmailVerificatieRequest: {
+      email: string;
+      identificatieNummer: string;
+      identificatieType: components["schemas"]["IdentificatieType"];
+      verificatieCode: string;
+    };
+    ErrorResponse: {
+      type?: string;
+      title?: string;
+      /** Format: int32 */
+      status?: number;
+      detail?: string;
+      instance?: string;
+      timestamp?: components["schemas"]["OffsetDateTime"];
+    };
+    IdentificatieResponse: {
+      identificatieType?: components["schemas"]["IdentificatieType"];
+      identificatieNummer?: string;
+    };
+    /** @enum {string} */
+    IdentificatieType: "BSN" | "KVK" | "RSIN";
+    /**
+     * Format: date-time
+     * @example 2022-03-10T16:15:50Z
+     */
+    Instant: string;
+    /**
+     * Format: date-time
+     * @example 2022-03-10T12:15:50-04:00
+     */
+    OffsetDateTime: string;
+    PartijBulkRequest: {
+      identificaties: components["schemas"]["PartijIdentificatieRequest"][];
+    };
+    PartijIdentificatieRequest: {
+      identificatieType: components["schemas"]["IdentificatieType"];
+      identificatieNummer: string;
+    };
+    /** @description Request object voor het ophalen van een Partij */
+    PartijRequest: {
+      identificatieType: components["schemas"]["IdentificatieType"];
+      identificatieNummer: string;
+      dienstverlener?: string;
+      dienstNaam?: string;
+    };
+    PartijResponse: {
+      partijId?: components["schemas"]["UUID"];
+      identificaties?: components["schemas"]["IdentificatieResponse"][];
+      voorkeuren?: components["schemas"]["VoorkeurResponse"][];
+      contactgegevens?: components["schemas"]["ContactgegevenResponse"][];
+    };
+    ScopeRequest: {
+      dienstverlenerNaam?: string;
+      dienstNaam?: string;
+    };
+    ScopeResponse: {
+      dienstverlenerNaam?: string;
+      dienstNaam?: string;
+    };
+    /** Format: uuid */
+    UUID: string;
+    VoorkeurRequest: {
+      identificatieType: components["schemas"]["IdentificatieType"];
+      identificatieNummer: string;
+      voorkeurType: components["schemas"]["VoorkeurType"];
+      waarde: string;
+      scope?: components["schemas"]["ScopeRequest"];
+    };
+    VoorkeurResponse: {
+      id?: components["schemas"]["UUID"];
+      voorkeurType?: components["schemas"]["VoorkeurType"];
+      waarde?: string;
+      createdAt?: components["schemas"]["Instant"];
+      lastUpdated?: components["schemas"]["Instant"];
+      scopes?: components["schemas"]["ScopeResponse"][];
+    };
+    /** @enum {string} */
+    VoorkeurType:
+      | "WebsiteTaal"
+      | "MagGebeldWorden"
+      | "WebsiteThema"
+      | "Aanhef"
+      | "OntvangViaBerichtenbox";
+    VoorkeurUpdateRequest: {
+      identificatieType: components["schemas"]["IdentificatieType"];
+      identificatieNummer: string;
+      voorkeurType: components["schemas"]["VoorkeurType"];
+      waarde: string;
+      scope?: components["schemas"]["ScopeRequest"];
+      id?: components["schemas"]["UUID"];
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 type FlattenedDeepRequired<T> = {
-    [K in keyof T]-?: FlattenedDeepRequired<T[K] extends unknown[] | undefined | null ? Extract<T[K], unknown[]>[number] : T[K]>;
+  [K in keyof T]-?: FlattenedDeepRequired<
+    T[K] extends unknown[] | undefined | null
+      ? Extract<T[K], unknown[]>[number]
+      : T[K]
+  >;
 };
-type ReadonlyArray<T> = [
-    Exclude<T, undefined>
-] extends [
-    unknown[]
-] ? Readonly<Exclude<T, undefined>> : Readonly<Exclude<T, undefined>[]>;
-export const contactTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["ContactType"]> = ["Email", "Telefoonnummer", "ApplicatieId"];
-export const identificatieTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["IdentificatieType"]> = ["BSN", "KVK", "RSIN"];
-export const voorkeurTypeValues: ReadonlyArray<FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]> = ["WebsiteTaal", "MagGebeldWorden", "WebsiteThema", "Aanhef", "OntvangViaBerichtenbox"];
+type ReadonlyArray<T> = [Exclude<T, undefined>] extends [unknown[]]
+  ? Readonly<Exclude<T, undefined>>
+  : Readonly<Exclude<T, undefined>[]>;
+export const contactTypeValues: ReadonlyArray<
+  FlattenedDeepRequired<components>["schemas"]["ContactType"]
+> = ["Email", "Telefoonnummer", "ApplicatieId"];
+export const identificatieTypeValues: ReadonlyArray<
+  FlattenedDeepRequired<components>["schemas"]["IdentificatieType"]
+> = ["BSN", "KVK", "RSIN"];
+export const voorkeurTypeValues: ReadonlyArray<
+  FlattenedDeepRequired<components>["schemas"]["VoorkeurType"]
+> = [
+  "WebsiteTaal",
+  "MagGebeldWorden",
+  "WebsiteThema",
+  "Aanhef",
+  "OntvangViaBerichtenbox",
+];
 export type operations = Record<string, never>;

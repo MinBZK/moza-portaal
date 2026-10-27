@@ -24,6 +24,9 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+      - name: Run CSS lint
+        run: npm run lint:css
+
   test:
     name: Test
     runs-on: ubuntu-latest

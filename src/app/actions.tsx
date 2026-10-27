@@ -1,9 +1,13 @@
 "use server";
 
 import {
+  BERICHTENBOX_VARIANT_COOKIE,
+  type BerichtenboxVariant,
   defaultFlags,
+  FeatureFlagKey,
   FeatureFlags,
   featureFlagsSchema,
+  isBerichtenboxVariant,
 } from "@/app/(private)/instellingen/_featureFlags";
 import { cookies } from "next/headers";
 
@@ -24,21 +28,45 @@ export async function setFeatureFlagsCookie(flags: FeatureFlags) {
   });
 }
 
-export const getFlagsFromServerCookie = async () => {
+export const getFlagsFromServerCookie = async (): Promise<FeatureFlags> => {
   const cookieStore = await cookies();
   const flagsCookie = cookieStore.get("flags")?.value;
+  if (!flagsCookie) return defaultFlags;
 
-  let flags = {} as FeatureFlags;
-  if (flagsCookie) {
-    try {
-      flags = JSON.parse(decodeURIComponent(flagsCookie));
-      const result = featureFlagsSchema.safeParse(flags);
-      if (!result.success) {
-        flags = defaultFlags;
-      }
-    } catch {
-      flags = defaultFlags;
-    }
+  try {
+    // Een cookie van voor een nieuwe flag mist die sleutel: vul aan met de standaard.
+    const result = featureFlagsSchema
+      .partial()
+      .safeParse(JSON.parse(decodeURIComponent(flagsCookie)));
+    return result.success ? { ...defaultFlags, ...result.data } : defaultFlags;
+  } catch {
+    return defaultFlags;
   }
-  return flags;
 };
+
+export async function setFeatureFlag(key: FeatureFlagKey, value: boolean) {
+  const flags = await getFlagsFromServerCookie();
+  await setFeatureFlagsCookie({ ...flags, [key]: value });
+}
+
+export async function resetFeatureFlags() {
+  const cookiesStore = await cookies();
+  cookiesStore.delete("flags");
+  cookiesStore.delete(BERICHTENBOX_VARIANT_COOKIE);
+}
+
+/** De gekozen variant van de Berichtenbox A/B/C-test; standaard A. */
+export const getBerichtenboxVariant =
+  async (): Promise<BerichtenboxVariant> => {
+    const waarde = (await cookies()).get(BERICHTENBOX_VARIANT_COOKIE)?.value;
+    return isBerichtenboxVariant(waarde) ? waarde : "a";
+  };
+
+export async function setBerichtenboxVariant(variant: BerichtenboxVariant) {
+  if (!isBerichtenboxVariant(variant)) throw new Error("Onbekende variant");
+  (await cookies()).set(BERICHTENBOX_VARIANT_COOKIE, variant, {
+    path: "/",
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 30,
+  });
+}

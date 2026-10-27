@@ -1,0 +1,154 @@
+import Link from "next/link";
+import {
+  AccordionProvider,
+  ActionGroup,
+  Alert,
+  Heading,
+  Paragraph,
+} from "@/components/rhc";
+import {
+  getDemoBerichten,
+  getDemoConceptAanvragen,
+  getDemoPersona,
+  getDemoSubsidies,
+  getDemoWetten,
+} from "@/demo";
+import { getIngelogdeNaam, getKetenAccount } from "@/app/(public)/_persona";
+import { getKetenStatus } from "@/network/keten";
+import { stelselTekst } from "./berichtenbox/_lijstPagina";
+import BewaardeAanvragen from "./lopendezaken/_bewaardeAanvragen";
+import RecenteBerichten from "./_recenteBerichten";
+
+const vragen = [
+  {
+    vraag: "Hoe vraag ik een subsidie aan via MijnOverheid Zakelijk?",
+    antwoord:
+      "Via MijnOverheid Zakelijk vindt u een overzicht van subsidies. De aanvraag doet u bij de organisatie die de subsidie geeft, zoals RVO of uw gemeente. Bij elke subsidie staat een link naar de aanvraagpagina.",
+  },
+  {
+    vraag: "Welk betrouwbaarheidsniveau van DigiD heb ik nodig?",
+    antwoord:
+      "Voor de meeste diensten op MijnOverheid Zakelijk heeft u minimaal DigiD Midden nodig. Kijk bij de dienst of een hoger niveau nodig is.",
+  },
+  {
+    vraag: "Waar vind ik berichten van mijn gemeente?",
+    antwoord:
+      "Officiële bekendmakingen en besluiten over de buurt van uw vestigingsadres vindt u bij Berichten over uw buurt in het menu.",
+  },
+];
+
+const HomePage = async ({
+  params,
+}: {
+  params: Promise<{ personaId: string }>;
+}) => {
+  const persona = await getDemoPersona((await params).personaId);
+  const [berichten, subsidies, wetten, naam, keten, concepten] =
+    await Promise.all([
+      getDemoBerichten(persona?.id),
+      getDemoSubsidies(persona?.homepageSubsidies),
+      getDemoWetten(persona?.homepageRegelgeving),
+      getIngelogdeNaam(persona),
+      getKetenAccount().then(getKetenStatus),
+      getDemoConceptAanvragen(persona?.id),
+    ]);
+
+  // Only shown once the messages have loaded (RecenteBerichten).
+  const naarBerichtenbox = (
+    <ActionGroup>
+      <Link
+        href="/berichtenbox"
+        className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+      >
+        Naar uw zakelijke berichtenbox
+      </Link>
+    </ActionGroup>
+  );
+
+  return (
+    <>
+      <BewaardeAanvragen aanvragen={concepten} />
+      <Heading level={1}>Welkom {naam}</Heading>
+
+      <section className="rhc-mox-card" aria-labelledby="recente-berichten">
+        <Heading level={2} id="recente-berichten">
+          Recente berichten
+        </Heading>
+        {keten.soort === "demo" || keten.soort === "keten" ? (
+          <RecenteBerichten
+            berichten={keten.soort === "demo" ? berichten : []}
+            ontvanger={keten.soort === "keten" ? keten.ontvanger : null}
+          >
+            {naarBerichtenbox}
+          </RecenteBerichten>
+        ) : (
+          <>
+            <Alert type="error">
+              <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
+            </Alert>
+            {naarBerichtenbox}
+          </>
+        )}
+      </section>
+
+      <div className="rhc-grid">
+        <section
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          aria-labelledby="home-subsidies"
+        >
+          <Heading level={2} id="home-subsidies">
+            Subsidies en financiering
+          </Heading>
+          <Paragraph>
+            {subsidies.length === 1
+              ? "Er is 1 nieuwe subsidie of financiering die interessant kan zijn voor uw bedrijf."
+              : `Er zijn ${subsidies.length} nieuwe subsidies en financieringen die interessant kunnen zijn voor uw bedrijf.`}
+          </Paragraph>
+          <ActionGroup>
+            <Link
+              href="/subsidies"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Naar Subsidies en financiering
+            </Link>
+          </ActionGroup>
+        </section>
+
+        <section
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          aria-labelledby="home-wetten"
+        >
+          <Heading level={2} id="home-wetten">
+            Wetten en regelgeving
+          </Heading>
+          <Paragraph>
+            {wetten.length === 1
+              ? "Er is 1 nieuwe of gewijzigde regel die misschien voor uw bedrijf geldt."
+              : `Er zijn ${wetten.length} nieuwe of gewijzigde regels die misschien voor uw bedrijf gelden.`}
+          </Paragraph>
+          <ActionGroup>
+            <Link
+              href="/wetten"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Naar Wetten en regelgeving
+            </Link>
+          </ActionGroup>
+        </section>
+      </div>
+
+      <Heading level={2}>Veelgestelde vragen</Heading>
+      <div className="mox-faq-card">
+        <AccordionProvider
+          headingLevel={3}
+          sections={vragen.map(({ vraag, antwoord }) => ({
+            label: vraag,
+            body: <Paragraph>{antwoord}</Paragraph>,
+          }))}
+        />
+      </div>
+    </>
+  );
+};
+
+export default HomePage;

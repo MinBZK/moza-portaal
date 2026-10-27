@@ -7,7 +7,9 @@ export const useAddPostcodeVoorkeur = () => {
     mutationFn: ({ postcode }: { postcode: string }) =>
       addPostcodeVoorkeur(postcode),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["actualiteiten", "voorkeuren"] });
+      queryClient.invalidateQueries({
+        queryKey: ["actualiteiten", "voorkeuren"],
+      });
     },
   });
 };

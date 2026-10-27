@@ -1,5 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateEmail, verifyEmail, requestVerificationCode } from "./action";
+import {
+  updateEmail,
+  verifyEmail,
+  requestVerificationCode,
+  type ContactgegevenBody,
+} from "./action";
 import { components } from "@/network/profiel/generated";
 
 export const useUpdateOndernemengContactvoorkeur = () =>
@@ -11,7 +16,7 @@ export const useUpdateOndernemengContactvoorkeur = () =>
     }: {
       identificatieNummer: string;
       identificatieType: components["schemas"]["IdentificatieType"];
-      body: components["schemas"]["ContactgegevenUpdateRequest"];
+      body: ContactgegevenBody;
     }) => updateEmail(identificatieNummer, identificatieType, body),
   });
 
