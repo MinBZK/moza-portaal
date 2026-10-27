@@ -1,8 +1,8 @@
-# Moza Portaal
+# MijnOverheid Zakelijk Portaal
 
 ## Project
 
-Moza Portaal is een Nederlands overheidsportaal gebouwd met Next.js, React en TypeScript.
+Het MijnOverheid Zakelijk portaal is een overheidsportaal gebouwd met Next.js, React en TypeScript.
 
 ## Architectuur
 
@@ -32,7 +32,7 @@ Moza Portaal is een Nederlands overheidsportaal gebouwd met Next.js, React en Ty
 - Geef eigen classes een Engelse naam, ook als de rest van de code Nederlands is: `mox-sender`, niet `mox-afzender`. Varianten noem je naar hun betekenis, niet naar hun kleur: `mox-badge--article`, niet `mox-badge--blauw`.
 - Volg de Rijkshuisstijl, het NL Design System en de bestaande design tokens.
 - Gebruik NLDS/Rijkshuisstijl Community-componenten wanneer die passen.
-- Gebruik tokens voor de uitzonderingen van MOx, MOBu en MOZa in `src/styles/rhc.css` in plaats van nieuwe hardcoded ontwerp-waarden.
+- Gebruik tokens voor de uitzonderingen van MOx (MOBu en MOZa) in `src/styles/rhc.css` in plaats van nieuwe hardcoded ontwerp-waarden.
 - Gebruik semantische HTML, correcte headings, landmarks, keyboard navigation en zichtbare focus states.
 - Gebruik `aria-current="page"` voor actieve paginalinks.
 - Houd iconen schaalbaar met `viewBox="0 0 24 24"` en `currentColor`.
@@ -50,19 +50,62 @@ Moza Portaal is een Nederlands overheidsportaal gebouwd met Next.js, React en Ty
 ## WCAG en toegankelijkheid
 
 - Bouw volgens WCAG 2.2 AA en EN 301 549.
-- Gebruik semantische HTML voordat je ARIA toevoegt.
+- Gebruik semantische HTML voordat je ARIA toevoegt. Gebruik alleen ARIA als de juiste HTML elementen en/of attributen niet beschikbaar zijn.
 - Zorg voor toetsenbordbediening, logische focusvolgorde en zichtbare `:focus-visible`-stijlen.
 - Geef links, knoppen, formulieren, afbeeldingen en statusmeldingen een duidelijke toegankelijke naam.
 - Gebruik kleur nooit als enige informatiedrager.
 - Controleer loading-, error-, empty- en disabled-states.
+- Zet labels boven invoervelden, niet ernaast (WCAG 1.4.10 Reflow).
+- Gebruik `aria-disabled` in plaats van `disabled`, zodat een knop focusbaar blijft en een schermlezer deze voorleest.
 
-## B1 en overheidscommunicatie
+## Schrijfwijzer (kernregels)
 
-- Schrijf korte, actieve zinnen met één boodschap per zin.
-- Vermijd jargon, abstracte zelfstandige naamwoorden en onnodige Engelse termen.
-- Geef knoppen een concrete actie, zoals `Opslaan`, `Verder` of `Opnieuw proberen`.
-- Schrijf foutmeldingen oplossingsgericht: wat ging mis en wat kan de gebruiker doen?
-- Gebruik consistente termen in navigatie, breadcrumbs, pagina's en formulieren.
+Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Geldt voor de teksten die we zelf schrijven, niet voor inhoud uit andere bronnen (berichten van organisaties, regelgeving, antwoorden van de assistent).
+
+### Aanspreking en toon
+
+- Spreek de gebruiker aan met "u" en "uw", nooit "je" of "jij". Bij een begroeting mag de voornaam ("Welkom Robin Vogel").
+- Genderneutraal: "de ondernemer" of "u", en "die" of "diegene" als verwijswoord.
+- Formeel maar toegankelijk, B1-niveau, geen jargon zonder uitleg en geen onnodige Engelse termen.
+- Actief boven passief en noem wie iets doet: "De RVO heeft uw aanvraag ontvangen", niet "Uw aanvraag is ontvangen".
+- Zeg wat de gebruiker kan doen, niet wat het systeem doet.
+- Bij lege staten en fouten: zeg wat de gebruiker kan doen, niet alleen wat er misgaat.
+- Zinnen van 8 tot 16 woorden, hoogstens één bijzin. Splits lange zinnen.
+- Veronderstel geen beperking: "Dit is niet zichtbaar", niet "U kunt dit niet zien".
+
+### Terminologie
+
+| Handeling of begrip                   | Gebruik                 | Niet                                         |
+| ------------------------------------- | ----------------------- | -------------------------------------------- |
+| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer                |
+| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen           |
+| Item doorsturen                       | Delen                   | Doorsturen, Verzend                          |
+| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox (behalve de tab "Inbox") |
+| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel               |
+| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers                   |
+| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed                        |
+| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaar, Verstuur, Bevestig                   |
+| Formulier naar een organisatie sturen | Versturen               | Bewaar, Opslaan, Bevestig, Deel              |
+| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen                      |
+
+### Notatie en leestekens
+
+- Datums: dag, volledige maandnaam, jaar (12 februari 2018). Na een datum met beschrijving een dubbele punt: "19 februari 2026: De Stationsweg is afgesloten."
+- KVK en KVK-nummer in hoofdletters, btw en btw-nummer in kleine letters; mkb'er en zzp'er met kleine letters.
+- KVK-nummer zonder punten of spaties, btw-nummer aaneen met landcode (NL00012345678), telefoon met spaties (06 12 34 56 78), bedragen met euroteken en punt (€385.000).
+- Afkortingen: bij de eerste keer (op een pagina) de volledige term met de afkorting tussen haakjes.
+- Komma eerst; puntkomma als de zin al komma's heeft of om twee nauw samenhangende zinnen te verbinden; gedachtestreep alleen als uiterste middel.
+- Typografische aanhalingstekens in zichtbare tekst: “dubbel”, ‘enkel’ en ook in mkb’er en komma’s. Rechte quotes alleen in code en attributen.
+- Kopteksten zijn zelfstandige naamwoorden zonder punt aan het einde. Uitzonderingen: een H1 mag een begroeting zijn, een FAQ-kop is een vraag.
+- Geen punt na items in een opsomming, tenzij het volledige zinnen zijn.
+
+### Microcopy
+
+- Knoppen kort en met een werkwoord: "Opslaan", "Versturen", "Annuleren", "Opnieuw proberen".
+- Lege staat: zeg wat er nog niet is én wat de gebruiker kan doen.
+- Foutmelding: zeg wat nodig is om de fout te herstellen.
+- Linkteksten beschrijvend: zeg waar de link heen gaat of wat die doet. Nooit "klik hier", "meer info", "lees meer" of een kale URL. Dezelfde tekst gaat naar dezelfde plek. De zichtbare tekst staat vooraan in de toegankelijke naam (WCAG 2.4.4, 2.5.3).
+- Gebruik dezelfde termen in navigatie, kruimelpad, pagina's en formulieren.
 
 ## Werkwijze
 
@@ -70,7 +113,7 @@ Moza Portaal is een Nederlands overheidsportaal gebouwd met Next.js, React en Ty
 - Wijzig geen gegenereerde bestanden handmatig tenzij dat expliciet nodig is.
 - Laat bestaande wijzigingen van de gebruiker staan.
 - Voeg geen dependency of abstraction toe zonder duidelijke reden.
-- Gebruik ASCII waar mogelijk en voeg alleen noodzakelijke codecommentaren toe.
+- Gebruik ASCII waar mogelijk en voeg alleen strikt noodzakelijke codecommentaren toe die verduidelijken wat de code zelf niet expliciet maakt.
 
 ## Validatie
 
