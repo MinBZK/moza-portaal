@@ -130,7 +130,7 @@ const RecenteBerichten = ({
       {recent.length === 0 ? (
         <Paragraph>Er staan geen berichten in uw inbox.</Paragraph>
       ) : (
-        <div className="mox-table-container">
+        <div className="rhc-mox-table-container">
           <Table>
             <TableHeader>
               <TableRow>

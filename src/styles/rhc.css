@@ -1094,6 +1094,29 @@ body {
   }
 }
 
+/* Navigatielijst in kolommen: één lijst, op een breed scherm twee kolommen
+  naast elkaar. De volgorde loopt per rij. */
+.rhc-theme.mox-theme {
+  .rhc-navigation-list.rhc-mox-navigation-grid {
+    column-gap: var(--rhc-space-xl);
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @media (width >= 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Items in een rij even hoog, zodat de lijnen gelijk lopen. */
+    > li {
+      display: flex;
+    }
+
+    .rhc-navigation-list__item {
+      flex: 1;
+    }
+  }
+}
+
 /* --- Schuifregelaar --- */
 .rhc-theme.mox-theme {
   .rhc-mox-range-slider__header {
@@ -1296,6 +1319,29 @@ body {
 .rhc-theme.mox-theme {
   .utrecht-table__header-cell {
     vertical-align: bottom;
+  }
+}
+
+/* Tabel die horizontaal scrolt als hij niet past. position: relative houdt
+  ook verborgen tekst (rhc-visually-hidden, absoluut gepositioneerd) binnen
+  de scrollcontainer; anders scrolt de hele pagina. */
+.rhc-theme.mox-theme {
+  .rhc-mox-table-container {
+    overflow-x: auto;
+    position: relative;
+
+    th {
+      white-space: nowrap;
+    }
+
+    .utrecht-alert {
+      padding-block: var(--rhc-space-sm);
+      padding-inline: var(--rhc-space-md);
+    }
+
+    .utrecht-alert__message {
+      font-size: var(--rhc-text-font-size-sm);
+    }
   }
 }
 
@@ -1891,13 +1937,8 @@ body {
 }
 
 .mox-landing-quicklinks {
-  display: flex;
-
-  div {
-    inline-size: 50%;
-    padding-block-end: var(--rhc-hero-message-padding-block-end);
-    padding-inline: var(--rhc-hero-message-padding-inline-start);
-  }
+  padding-block-end: var(--rhc-hero-message-padding-block-end);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
 }
 
 .mox-landing-quicklinks-heading {

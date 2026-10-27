@@ -404,3 +404,9 @@ code {
 .mox-current-brand .prototype-demo-brand-switch__box {
 	background-color: var(--rhc-color-cool-grey-100);
 }
+
+.rhc-mox-componenten-demo {
+	code {
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+	}
+}
