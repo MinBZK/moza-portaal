@@ -18,7 +18,7 @@ import type {
   DemoZaakStap,
 } from "@/demo";
 import InfoToggletip from "@/components/InfoToggletip";
-import StatusTrack from "../../_statusTrack";
+import StatusTrack from "@/components/StatusTrack";
 import ZakenTabs from "../../_zakenTabs";
 import {
   antwoordenVoorZaak,

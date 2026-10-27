@@ -12,6 +12,7 @@ import {
   Drawer,
   Heading,
 } from "@rijkshuisstijl-community/components-react";
+import { usePathname } from "next/navigation";
 
 const OPEN_EVENT = "prototype:open-side-overlay";
 
@@ -34,6 +35,13 @@ const SideOverlay = ({
   children: ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
+  // Close when the page changes, for example via a link in the panel.
+  const pathname = usePathname();
+  const [shownOn, setShownOn] = useState(pathname);
+  if (shownOn !== pathname) {
+    setShownOn(pathname);
+    if (open) setOpen(false);
+  }
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);

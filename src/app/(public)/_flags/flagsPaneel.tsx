@@ -1,6 +1,7 @@
 "use client";
 
 import { useOptimistic, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Button,
@@ -122,6 +123,11 @@ const FlagsPaneel = ({
           checked={zichtbareFlags.mox_nieuweHuisstijl}
           onChange={(nieuw) => zetFlag("mox_nieuweHuisstijl", nieuw)}
         />
+        <p className="nl-paragraph">
+          <Link className="utrecht-link utrecht-link--html-a" href="/demo">
+            Overzicht van componenten
+          </Link>
+        </p>
       </div>
       <div className="prototype-side-overlay__footer">
         <Button

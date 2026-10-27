@@ -10,6 +10,7 @@ import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
 import { useCookie } from "@/utils/useCookie";
 import { useKiesOrganisatie } from "./useKiesOrganisatie";
+import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import { useState, useRef, useEffect } from "react";
 
 // kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
@@ -37,10 +38,7 @@ const Header = ({
   const { set } = useCookie("loginMethod");
   const kies = useKiesOrganisatie(actieveOrganisatieId);
   const [openKeycloakLogin, setOpenKeycloakLogin] = useState(false);
-  const [openOrganisaties, setOpenOrganisaties] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const organisatiesRef = useRef<HTMLDivElement | null>(null);
-  const organisatieKnopRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     // Outside click handler for Keycloak login dropdown
@@ -66,35 +64,6 @@ const Header = ({
       document.removeEventListener("keydown", handleKey);
     };
   }, []);
-
-  useEffect(() => {
-    if (!openOrganisaties) return;
-
-    const sluitBijKlikBuiten = (event: MouseEvent) => {
-      if (
-        organisatiesRef.current &&
-        !organisatiesRef.current.contains(event.target as Node)
-      ) {
-        setOpenOrganisaties(false);
-      }
-    };
-    const sluitBijEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      setOpenOrganisaties(false);
-      organisatieKnopRef.current?.focus();
-    };
-
-    document.addEventListener("click", sluitBijKlikBuiten);
-    document.addEventListener("keydown", sluitBijEscape);
-    return () => {
-      document.removeEventListener("click", sluitBijKlikBuiten);
-      document.removeEventListener("keydown", sluitBijEscape);
-    };
-  }, [openOrganisaties]);
-
-  const kiesOrganisatie = (id: string) => {
-    if (!kies(id)) setOpenOrganisaties(false);
-  };
 
   const accountLabel = actieveOrganisatieNaam ? (
     <>
@@ -165,53 +134,30 @@ const Header = ({
                         </span>
                       </span>
                     ) : organisaties.length > 1 ? (
-                      <div
-                        ref={organisatiesRef}
-                        className="rhc-mox-header-organizations"
+                      <Dropdown
+                        align="end"
+                        triggerClassName="rhc-nav-bar__link rhc-mox-header-organizations__trigger"
+                        triggerLabel={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
+                        trigger={
+                          <>
+                            <Icon icon="user" />
+                            <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
+                              {accountLabel}
+                            </span>
+                            <Icon icon="chevron-down" />
+                          </>
+                        }
                       >
-                        <button
-                          ref={organisatieKnopRef}
-                          type="button"
-                          id="header-organisaties-knop"
-                          className="rhc-nav-bar__link rhc-mox-header-organizations__trigger"
-                          aria-expanded={openOrganisaties}
-                          aria-controls="header-organisaties"
-                          aria-label={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
-                          onClick={() => setOpenOrganisaties((open) => !open)}
-                        >
-                          <Icon icon="user" />
-                          <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
-                            {accountLabel}
-                          </span>
-                          <Icon icon="chevron-down" />
-                        </button>
-                        {openOrganisaties && (
-                          <ul
-                            id="header-organisaties"
-                            className="rhc-mox-menu"
-                            aria-labelledby="header-organisaties-knop"
+                        {organisaties.map((organisatie) => (
+                          <DropdownItem
+                            key={organisatie.id}
+                            selected={organisatie.id === actieveOrganisatieId}
+                            onSelect={() => kies(organisatie.id)}
                           >
-                            {organisaties.map((organisatie) => (
-                              <li key={organisatie.id}>
-                                <button
-                                  type="button"
-                                  className="rhc-mox-header-organizations__choice"
-                                  aria-pressed={
-                                    organisatie.id === actieveOrganisatieId
-                                  }
-                                  onClick={() =>
-                                    kiesOrganisatie(organisatie.id)
-                                  }
-                                >
-                                  {organisatie.handelsnaam}
-                                  {organisatie.id === actieveOrganisatieId &&
-                                    " (actief)"}
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
+                            {organisatie.handelsnaam}
+                          </DropdownItem>
+                        ))}
+                      </Dropdown>
                     ) : (
                       <Link
                         className="rhc-nav-bar__link rhc-mox-header-organizations__single"

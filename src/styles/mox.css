@@ -1,25 +1,21 @@
 /*
 
-Tijdelijke styling bovenop RHC componenten die de huidige huisstijl tonen
+Tijdelijke styling bovenop RHC componenten die de huidige MijnOverheid huisstijl tonen
 
-Indeling: 1. Tokens, 2. Typografie, 3. Formulieren, 4. Layout (pagina, header,
-navigatie, footer), 5. Componenten (alfabetisch), 6. Pagina's en functies
-(alfabetisch). @property en @keyframes staan onderaan, buiten het theme-blok.
-
-Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nieuwe MO huisstijl die in ontwikkeling (Q1/2027) is te overbruggen. Bij het verwijderen van dit CSS bestand zou de styling terugvallen op RHC (waar via rhc.css al enkele andere tweaks aan plaats hebben gevonden in de context van de richting die de nieuwe MO huisstijl op gaat.
+Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieuwe MO huisstijl die in ontwikkeling (Q1/2027) is te overbruggen. Bij het verwijderen van dit CSS bestand zou de styling terugvallen op RHC (waar via rhc.css al enkele andere tweaks aan plaats hebben gevonden in de context van de richting die de nieuwe MO huisstijl op gaat.
 
 */
 
-/* Alleen met de huidige huisstijl (Flags-paneel). :where() houdt de specificiteit gelijk. */
 .rhc-theme.mox-theme:where(.mox-current-brand) {
-	/* ==== 1. Tokens ============================================================= */
 
+	/* ==== Tokens ============================================================= */
+	--utrecht-page-body-padding-block-start: var(--rhc-space-xl);
 	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
-	--mox-font-weight-medium: 500;
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
+	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
 
-	/* ==== 2. Typografie ========================================================= */
+	/* ==== Typografie ========================================================= */
 
 	h1,
 	h2,
@@ -30,23 +26,17 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		font-weight: normal;
 	}
 
+	b,
 	strong {
-		font-weight: var(--rhc-text-font-weight-semi-bold) !important;
+		font-weight: var(--rhc-text-font-weight-semi-bold);
 	}
 
-
-
-	/* ==== 4. Layout ============================================================= */
+	/* ==== Layout ============================================================= */
 
 	/* --- Pagina --- */
 	.utrecht-page-body {
-		padding-block-end: 0;
-		padding-block-start: var(--rhc-space-2xl);
 
-		/* Lange woorden afbreken op een smal scherm. break-word en niet anywhere:
-		  anywhere maakt de minimale breedte van tekst één letter, en dan knijpen
-		  tabellen al hun kolommen samen in plaats van te scrollen. */
-		@media screen and (width <=768px) {
+		@media (width < 768px) {
 			hyphens: auto;
 			overflow-wrap: break-word;
 
@@ -66,8 +56,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	#hoofd-inhoud {
 		padding-block-end: var(--rhc-space-max-4xl);
 
-		/* De marge links en rechts komt van --mox-page-margin (rhc.css). */
-		@media screen and (width <=768px) {
+		@media (width < 768px) {
 			padding-block: var(--rhc-space-lg);
 		}
 	}
@@ -98,7 +87,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 
 	.utrecht-page-header {
 		border-block-end-color: var(--rhc-color-lintblauw-400);
-		border-block-end-width: var(--rhc-border-width-md);
+		border-block-end-width: var(--rhc-border-width-md)
 	}
 
 	.utrecht-page-header__content {
@@ -140,44 +129,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		align-items: center;
 		display: inline-flex;
 		gap: var(--rhc-space-sm);
-	}
-
-	.rhc-mox-menu {
-		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-400);
-		border-radius: var(--rhc-border-radius-md);
-		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-		margin-block-start: var(--rhc-space-2xs);
-
-		li+li {
-			margin-block-start: var(--rhc-space-2xs);
-		}
-
-		button[aria-pressed="true"] {
-			background: var(--rhc-color-cool-grey-200);
-			font-weight: var(--rhc-text-font-weight-semi-bold);
-		}
-	}
-
-	.rhc-mox-header-organizations__choice {
-		background: transparent;
-		border: 0;
-		color: var(--rhc-color-foreground-default);
-		cursor: pointer;
-		display: block;
-		font: inherit;
-		inline-size: 100%;
-		padding: var(--rhc-space-lg) var(--rhc-space-xl);
-		text-align: start;
-
-		&:hover,
-		&[aria-pressed="true"] {
-			background: var(--rhc-color-cool-grey-100);
-		}
-	}
-
-	.mox-header-organization {
-		font-weight: var(--rhc-text-font-weight-semi-bold);
-		margin-inline-start: var(--rhc-space-md);
 	}
 
 	.rhc-mox-menu-button {
@@ -229,12 +180,13 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			background-color: var(--rhc-color-cool-grey-200);
 		}
 
-		&[aria-current="page"] {
+		&[aria-current=page] {
 			background-color: var(--rhc-color-cool-grey-200);
 		}
+
 	}
 
-	[aria-labelledby="menu-organisaties"] {
+	[aria-labelledby=menu-organisaties] {
 		margin-block-end: var(--rhc-space-2xl);
 	}
 
@@ -259,7 +211,7 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		display: flex;
 	}
 
-	/* ==== 5. Componenten ======================================================== */
+	/* ==== Componenten ======================================================== */
 
 	/* --- Accordion --- */
 	.utrecht-accordion .utrecht-button {
@@ -282,21 +234,16 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	/* --- Badges --- */
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
-		font-size: 0.75rem;
+		font-size: .75rem;
 		min-inline-size: var(--rhc-space-md);
 		padding: 0 var(--rhc-space-md);
 	}
 
-	/* Geen onderstreping onder de badge als de link hover krijgt. In een flex-link
-	  erft elk flex-item de onderstreping van de link, ook met text-decoration: none.
-	  In een gewoon blok (de houder) is de badge inline-flex, en daar loopt de
-	  onderstreping niet in door. */
 	.mox-badge-holder {
 		display: block;
 		line-height: 0;
 	}
 
-	/* Label met een type, zoals bij actualiteiten */
 	.mox-badge {
 		background-color: var(--rhc-color-cool-grey-100);
 		border-radius: var(--rhc-border-radius-sm);
@@ -351,7 +298,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 		padding: var(--rhc-space-3xl);
 
-		/* Smal scherm: minder binnenruimte, meer plek voor de inhoud. */
 		@media (width < 768px) {
 			padding: var(--rhc-space-lg);
 		}
@@ -383,12 +329,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			}
 		}
 
-		/* Ruimte onder tekst en lijsten, behalve onder het laatste element: daar
-		  zorgt de padding van de kaart voor. */
-		p:not(:last-child),
-		ul:not(:last-child),
-		ol:not(.ams-pagination__list, :last-child) {
-			margin-block-end: var(--rhc-space-lg);
+		/* Space between consecutive text blocks only. Unlike :last-child, a close
+		  button, table or ActionGroup after the text does not count. */
+		:is(p, ul, ol:not(.ams-pagination__list)) {
+			margin-block-end: 0;
+		}
+
+		:is(p, ul, ol:not(.ams-pagination__list))+ :is(p, ul, ol:not(.ams-pagination__list)) {
+			margin-block-start: var(--rhc-space-lg);
 		}
 
 		.utrecht-table {
@@ -406,10 +354,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Meldingen --- */
-	/* .rhc-alert {
-		margin-block: var(--rhc-space-xl);
-	} */
-
 	.utrecht-alert {
 		border-color: var(--rhc-color-hemelblauw-100);
 		border-width: var(--rhc-border-width-sm);
@@ -458,7 +402,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Statusstip --- */
-	/* Statusstip, zoals bij contactmomenten. De status staat er ook als tekst. */
 	.mox-status {
 		background-color: var(--rhc-color-cool-grey-400);
 		block-size: calc(var(--rhc-size-icon-md)/2);
@@ -499,7 +442,6 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 	}
 
 	/* --- Tekst --- */
-	/* Tekst afkappen na twee regels */
 	.mox-line-clamp {
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
@@ -548,10 +490,9 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 		}
 	}
 
-	/* ==== 6. Pagina's en functies =============================================== */
+	/* ==== Pagina's en functies =============================================== */
 
 	/* --- Contactmomenten --- */
-	/* Tijdlijn met contactmomenten: een lijn door de statusstippen */
 	.mox-timeline {
 		display: grid;
 		gap: var(--rhc-space-2xl);
@@ -573,69 +514,14 @@ Dit bestand bevat tijdelijke styling, die de ‘huidige MO styling’ vs. de nie
 			gap: var(--rhc-space-lg);
 			position: relative;
 
-		.utrecht-link {
-			white-space: nowrap;
-		}
-		}
-	}
-}
-
-/* Menu */
-.rhc-mox-menu {
-	button {
-		color: var(--rhc-color-zwart);
-		inline-size: 100%;
-		padding-block: var(--rhc-space-xl);
-		padding-inline: var(--rhc-space-3xl);
-		text-align: start;
-
-		&[aria-pressed="true"] {
-			background-color: var(--rhc-color-cool-grey-200);
-			color: var(--rhc-color-zwart) !important;
-		}
-
-		&:hover {
-			background-color: var(--rhc-color-cool-grey-200) !important;
-			color: var(--rhc-color-zwart);
+			.utrecht-link {
+				white-space: nowrap;
+			}
 		}
 	}
 }
 
-/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm).
-  Geregistreerd, zodat de lengtes kunnen animeren. Buiten .rhc-theme, want
-  @property en @keyframes mogen niet genest staan. */
-@property --rhc-tabs-fade-start {
-	inherits: false;
-	initial-value: 0px;
-	syntax: "<length>";
-}
-
-@property --rhc-tabs-fade-end {
-	inherits: false;
-	initial-value: 0;
-	syntax: "<length>";
-}
-
-/* Aan het begin alleen rechts een verloop, aan het eind alleen links. */
-@keyframes rhc-mox-tabs-fade {
-	0% {
-		--rhc-tabs-fade-end: var(--rhc-tabs-fade);
-		--rhc-tabs-fade-start: 0;
-	}
-
-	10% {
-		--rhc-tabs-fade-start: var(--rhc-tabs-fade);
-	}
-
-	90% {
-		--rhc-tabs-fade-end: var(--rhc-tabs-fade);
-	}
-
-	100% {
-		--rhc-tabs-fade-end: 0;
-		--rhc-tabs-fade-start: var(--rhc-tabs-fade);
-	}
-}/* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
+/* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
 	 regelingkaarten en de tijdlijn van vastleggingen. */
 .mox-theme {
 	/* De gekozen waarde van een schuifregelaar ("32 uur") blijft op één regel. */

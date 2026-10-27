@@ -1,11 +1,6 @@
-/* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl
+/* Afwijkingen op Rijkshuisstijl t.b.v. nieuwe MOx/Overheid.nl huisstijl */
 
-  Indeling: 1. Lettertype, 2. Tokens, 3. Layout (pagina, header, navigatie),
-  4. Componenten (alfabetisch), 5. Pagina's en functies. Een @keyframes staat
-  bij de functie die hem gebruikt, buiten het theme-blok. Opmaak die alleen voor
-  het prototype is (Flags- en persona-paneel, PoC-banner), staat in utils.css. */
-
-/* ==== 1. Lettertype ========================================================= */
+/* ==== Lettertype ========================================================= */
 
 @font-face {
   font-display: swap;
@@ -23,19 +18,16 @@
   src: url("./fonts/RijksSansVF-Italic.ttf") format("truetype");
 }
 
-/* ==== 2. Tokens ============================================================= */
+/* ==== Tokens ============================================================= */
 .rhc-theme.mox-theme {
 
   /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
-    tokens voor beweging. */
+    tokens voor transities. */
   --mox-transition-duration: 150ms;
   --mox-transition-easing: ease-out;
 
   /* Pagina-layout */
-  --utrecht-page-body-padding-block-end: var(--rhc-space-max-2xl);
 
-  /* Paginagrid: marge links en rechts per viewport. Small 16, medium 24,
-    large 48. Vaste max-tokens, want de gewone space-tokens schalen mee. */
   --mox-page-margin: var(--rhc-space-max-xl);
 
   @media (width >=768px) {
@@ -46,7 +38,6 @@
     --mox-page-margin: var(--rhc-space-max-5xl);
   }
 
-  /* Gutter: medium 16 in plaats van 24 (RHC gebruikt daar de large-waarde). */
   --rhc-grid-vi-medium-column-gap: var(--rhc-space-max-xl);
 
   /* Typografische wijzigingen t.o.v. RHC */
@@ -66,6 +57,7 @@
   --nl-heading-level-1-color: var(--rhc-color-core-500);
   --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
   --utrecht-separator-color: var(--rhc-color-transparent);
+  --utrecht-form-control-invalid-background-color: red;
 
   --mox-landing-hero-background: var(--rhc-color-core-50);
   --mox-landing-info-background: var(--rhc-color-core-500);
@@ -91,7 +83,7 @@
   --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
 }
 
-/* ==== 3. Formulieren ======================================================== */
+/* ==== Formulieren ======================================================== */
 
 .utrecht-textbox {
   max-inline-size: 100%;
@@ -99,6 +91,17 @@
 
 .utrecht-form-label {
   font-weight: var(--mox-font-weight-medium);
+}
+
+.rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
+  --utrecht-form-field-description-margin-block-start: var(--rhc-space-sm);
+}
+
+.rhc-theme.mox-theme .rhc-form-field {
+  --rhc-mox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-select-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-textarea-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-textbox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
 }
 
 .utrecht-form-field--radio,
@@ -111,10 +114,9 @@
   background-color: var(--rhc-color-wit);
 }
 
-/* ==== 3. Layout ============================================================= */
+/* ==== Layout ============================================================= */
 
 /* --- Pagina --- */
-
 body {
   background: var(--mox-color-page-background, var(--rhc-color-wit));
   color: var(--rhc-color-foreground-default);
@@ -135,8 +137,6 @@ body {
   align-content: start;
   display: grid;
   gap: var(--rhc-space-xl);
-  /* minmax(0, 1fr): anders wordt de kolom zo breed als de breedste tabel en
-    ontstaat er op een smal scherm een horizontale scrollbalk. */
   grid-template-columns: minmax(0, 1fr);
 
   h1 {
@@ -146,15 +146,12 @@ body {
 
 .rhc-theme.mox-theme {
 
-  /* Paginamarge voor header en inhoud */
   .utrecht-page-header__content,
   .utrecht-page-body__content {
     margin-block-end: var(--rhc-space-xl);
     padding-inline: var(--mox-page-margin);
   }
 
-  /* Kaarten in een rhc-grid. RHC zet alleen een kolomafstand, zonder dit raken
-    rijen kaarten elkaar. */
   .rhc-grid:has(> .rhc-mox-card) {
     row-gap: var(--rhc-space-2xl);
   }
@@ -166,20 +163,12 @@ body {
   gap: var(--rhc-space-2xs);
 }
 
-/* Show the parts in DOM order. Utrecht gives them an order (label 1, error
-  message 3, input 5) for its grid fields; in this flex column a part without
-  an order, such as a select or an ActionGroup, would end up above the label. */
 .rhc-form-field.utrecht-form-field>* {
   order: 0;
 }
 
 /* --- Header --- */
-
 .rhc-theme.mox-theme {
-  .rhc-mox-header-organizations {
-    position: relative;
-  }
-
   .rhc-mox-header-organizations__trigger {
     background: transparent;
     border: 0;
@@ -189,43 +178,18 @@ body {
     gap: var(--rhc-space-sm);
   }
 
-  /* Eén organisatie: zelfde weergave als de knop, maar niets om te kiezen. */
+  .mox-header-organization {
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+    margin-inline-start: var(--rhc-space-md);
+  }
+
   .rhc-mox-header-organizations__trigger--static {
     cursor: default;
   }
 
-  .rhc-mox-menu {
-    background: var(--rhc-color-wit);
-    border-color: var(--rhc-color-cool-grey-400);
-    border-radius: var(--rhc-border-radius-md);
-    border-style: solid;
-    border-width: var(--rhc-border-width-sm);
-    inset-inline-end: 0;
-    list-style: none;
-    min-inline-size: max-content;
-    padding: var(--rhc-space-2xs);
-    position: absolute;
-    z-index: 10;
-
-    button {
-      color: var(--rhc-color-zwart);
-      inline-size: 100%;
-      padding-block: var(--rhc-space-xl);
-      padding-inline: var(--rhc-space-3xl);
-      text-align: start;
-
-      &[aria-pressed=true] {
-        background-color: var(--rhc-color-lintblauw-500);
-        color: var(--rhc-color-wit);
-      }
-
-      &:hover {
-        background-color: var(--rhc-color-lintblauw-100);
-        color: var(--rhc-color-zwart);
-      }
-
-
-    }
+  /* Name and organisation as two spans: space between them, in every theme. */
+  .rhc-mox-header-organizations__identity>*+* {
+    margin-inline-start: var(--rhc-space-sm);
   }
 
   #heading {
@@ -235,7 +199,6 @@ body {
   .rhc-nav-bar {
     gap: 0;
   }
-
 
   .rhc-nav-bar__link {
     align-items: center;
@@ -247,18 +210,10 @@ body {
     margin-inline-start: auto;
   }
 
-  /* De taalkeuze staat rechts, direct links naast de lijst met naam en
-    uitloggen. De NavBar verdeelt zijn onderdelen met space-between; de
-    automatische marge neemt alle vrije ruimte en duwt de taalkeuze naar
-    rechts. */
   .utrecht-page-header .rhc-nav-bar> :has(> .rhc-language-navigation) {
     margin-inline-start: auto;
   }
 
-  /* Taalkeuze in de header: de lijst klapt uit over de pagina in plaats van
-    mee te tellen in de breedte. Anders wordt de navigatie breder; omdat die
-    rechts staat, schuift de knop "Nederlands" dan naar links. In het menu op
-    een smal scherm blijft de lijst gewoon onder de knop in de flow. */
   :where(.utrecht-page-header) .rhc-language-navigation {
     /* Houvast voor de lijst. :where(), zodat mox.css hem nog absoluut kan
       zetten. */
@@ -268,31 +223,23 @@ body {
   .utrecht-page-header .rhc-language-navigation__list {
     inset-block-start: 100%;
     inset-inline-end: 0;
-    /* RHC begrenst de lijst op 100% van de navigatie, en die is zo smal als
-      de knop: dan gaat hij scrollen. Zonder grens krijgt hij zijn eigen
-      breedte van RHC terug (--utrecht-listbox-inline-size). */
     max-inline-size: none;
-    /* As wide as the longest language name, so names do not wrap. */
     min-inline-size: max-content;
     position: absolute;
   }
 
   @media (width < 768px) {
-
-    /* Taal, naam en uitloggen staan dan in het menu en niet in de header. */
     .rhc-mox-header-account {
       display: none;
     }
   }
 
-  /* De naam van het portaal: op een smal scherm onder het logo, op een breed
-    scherm als titel in de NavBar. Nooit allebei tegelijk. */
+  /* De productnaam MijnOverheid Zakelijk: op een smal scherm onder het logo, op een breed scherm als titel in de NavBar. */
   @media (width < 768px) {
     .utrecht-page-header .rhc-nav-bar__heading {
       display: none;
     }
 
-    /* Logo (vaantje) op halve grootte, via de RHC-tokens. */
     .utrecht-page-header .rhc-logo {
       --rhc-logo-image-block-size: calc(var(--rhc-size-2-lint) / 2);
       --rhc-logo-image-inline-size: calc(var(--rhc-size-lint) / 2);
@@ -309,7 +256,6 @@ body {
 }
 
 /* --- Navigatie --- */
-
 .rhc-theme.mox-theme {
   .rhc-side-nav__link {
     align-items: baseline;
@@ -333,8 +279,6 @@ body {
     margin-inline: var(--rhc-space-md);
   }
 
-  /* Hoofdmenu op een smal scherm: ingeklapt achter de knop "Menu", zoals in
-    moza-poc. Vanaf 768px staat het menu in de linkerkolom van rhc-grid. */
   .rhc-mox-menu-button {
     display: none;
   }
@@ -387,16 +331,13 @@ body {
   }
 }
 
-/* ==== 4. Componenten ======================================================== */
+/* ==== Componenten ======================================================== */
 
 /* --- Interactie --- */
 
 /* Eén rustige overgang voor alle interactieve elementen. Alles in :where(),
   ook de theme-classes, zodat de specificiteit 0 is en een eigen transition
-  van een component altijd wint. Niet op dialog: een RHC Drawer heeft
-  tabindex="0", en zijn in- en uitschuiven staat in globals.css.
-  Alleen kleuren, randen en schaduw: geen lay-out, en de focusrand verschijnt
-  meteen. Niet bij "minder beweging" in het systeem. */
+  van een component altijd wint. */
 @media (prefers-reduced-motion: no-preference) {
   :where(.rhc-theme.mox-theme) :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"], dialog)) {
     transition-duration: var(--mox-transition-duration);
@@ -405,7 +346,7 @@ body {
   }
 
   /* De knop van een schuifregelaar is een pseudo-element; :where() hierboven
-    raakt die niet. Per browser een eigen regel, anders vervalt de hele regel. */
+    raakt die niet. Per browser een eigen regel. */
   .rhc-theme.mox-theme .rhc-mox-range-slider__input::-webkit-slider-thumb {
     transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
   }
@@ -415,11 +356,27 @@ body {
   }
 }
 
+.utrecht-button.utrecht-button--secondary-action.utrecht-button--danger {
+  background-color: var(--rhc-color-rood-500);
+  border-color: var(--rhc-color-rood-500);
+  color: var(--rhc-color-wit);
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--rhc-color-rood-600);
+    border-color: var(--rhc-color-rood-600);
+    color: var(--rhc-color-wit);
+  }
+
+  &:focus-visible {
+    outline-color: var(--rhc-color-rood-600);
+  }
+}
+
 
 /* --- DataSummary --- */
-
 .rhc-theme.mox-theme {
-  @media (width > 768px) {
+  @media (width >=768px) {
     .rhc-data-summary--columns {
       column-gap: var(--rhc-space-lg);
       display: grid;
@@ -455,8 +412,26 @@ body {
   }
 }
 
-/* --- Dialog --- */
+.rhc-theme.mox-theme {
+  .rhc-mox-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+    margin-block-end: var(--rhc-space-xl);
+  }
 
+  .rhc-mox-card>.utrecht-action-group:last-child {
+    margin-block-start: auto;
+  }
+}
+
+.mox-card-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-3xl);
+}
+
+/* --- Dialog --- */
 .rhc-mox-dialog {
   background: var(--rhc-color-wit);
   border: 0;
@@ -491,55 +466,93 @@ body {
   }
 }
 
-/* --- Actiemenu --- */
-.rhc-mox-action-menu {
-  background-color: var(--rhc-color-wit);
-  border: 0;
+/* --- Dropdown --- */
+/* Dropdown (src/components/Dropdown.tsx): a button with a popover menu.
+  Without anchor positioning the browser shows the menu in the middle of the
+  screen, the default for a popover. */
+.rhc-mox-dropdown__trigger {
+  anchor-name: var(--rhc-mox-dropdown-anchor);
+}
+
+.rhc-mox-dropdown__menu {
+  background-color: var(--rhc-mox-dropdown-background, var(--rhc-color-wit));
+  border: var(--rhc-border-width-sm) solid var(--rhc-mox-dropdown-border-color, var(--rhc-color-cool-grey-300));
   border-radius: var(--rhc-border-radius-md);
   box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-  inset: auto;
-  inset-block-start: anchor(end);
-  inset-inline-end: anchor(end);
-  margin: 0;
-  margin-block-start: var(--rhc-space-2xs);
-  padding: var(--rhc-space-md);
-  position-anchor: var(--mox-menu-anker);
-  position-try-fallbacks: flip-block;
+  list-style: none;
+  min-inline-size: max-content;
+  padding: var(--rhc-space-2xs);
 
-  /* Knoppen over de hele breedte van het menu, tekst links uitgelijnd. */
-  --utrecht-button-inline-size: 100%;
-  --utrecht-button-max-inline-size: none;
+  &:popover-open {
+    display: grid;
+    gap: var(--rhc-space-2xs);
+  }
 
-  .utrecht-button {
-    justify-content: flex-start;
+  @supports (anchor-name: --a) {
+    inset: auto;
+    inset-block-start: anchor(end);
+    margin: 0;
+    margin-block-start: var(--rhc-space-2xs);
+    position-anchor: var(--rhc-mox-dropdown-anchor);
+    position-try-fallbacks: flip-block;
   }
 }
 
-.mox-menu-trigger {
-  anchor-name: var(--mox-menu-anker);
-}
-
-/* --- Kaarten --- */
-
-.rhc-theme.mox-theme {
-  .rhc-mox-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-lg);
-    margin-block-end: var(--rhc-space-xl);
+@supports (anchor-name: --a) {
+  .rhc-mox-dropdown__menu--start {
+    inset-inline-start: anchor(start);
   }
 
-  /* Cards in a row are equally tall: the buttons at the bottom line up,
-    however long the text above them is. */
-  .rhc-mox-card>.utrecht-action-group:last-child {
-    margin-block-start: auto;
+  .rhc-mox-dropdown__menu--end {
+    inset-inline-end: anchor(end);
   }
 }
 
-.mox-card-topic-list {
+.rhc-mox-dropdown__item {
+  --utrecht-icon-size: var(--utrecht-button-icon-size, 1em);
+
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--rhc-border-radius-sm);
+  color: var(--rhc-color-foreground-default);
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  gap: var(--rhc-space-3xl);
+  font: inherit;
+  gap: var(--rhc-space-md);
+  inline-size: 100%;
+  min-block-size: var(--nl-button-min-block-size);
+  padding-block: var(--rhc-space-sm);
+  padding-inline: var(--rhc-space-xl);
+  text-align: start;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--rhc-mox-dropdown-item-hover-background, var(--rhc-color-cool-grey-100));
+  }
+
+  &:focus-visible {
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: calc(-1 * var(--utrecht-focus-outline-width));
+  }
+
+  /* Own icons (src/components/icons) have no size of their own. */
+  .utrecht-icon svg {
+    block-size: 100%;
+    inline-size: 100%;
+  }
+
+  /* The chosen option: check mark (DropdownItem), bold, white. */
+  &[aria-current="true"] {
+    background-color: var(--rhc-mox-dropdown-item-selected-background, var(--rhc-color-wit));
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+/* Space of the check mark for the options that are not chosen. */
+.rhc-mox-dropdown__icon-space {
+  flex-shrink: 0;
+  inline-size: var(--utrecht-icon-size, 1em);
 }
 
 /* --- Accordeon --- */
@@ -606,8 +619,40 @@ body {
   }
 }
 
+/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm). */
+@property --rhc-tabs-fade-start {
+  inherits: false;
+  initial-value: 0px;
+  syntax: "<length>";
+}
+
+@property --rhc-tabs-fade-end {
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
+}
+
+@keyframes rhc-mox-tabs-fade {
+  0% {
+    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+    --rhc-tabs-fade-start: 0;
+  }
+
+  10% {
+    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+  }
+
+  90% {
+    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+  }
+
+  100% {
+    --rhc-tabs-fade-end: 0;
+    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+  }
+}
+
 /* --- Digitale assistent --- */
-/* Digitale assistent: chat met ballonnen, zoals in moza-poc */
 .rhc-mox-chat {
   display: grid;
   gap: var(--rhc-space-lg);
@@ -688,17 +733,6 @@ body {
 
   .nl-paragraph {
     color: inherit;
-  }
-}
-
-.rhc-mox-chat-message--error {
-  align-self: flex-start;
-  background-color: var(--rhc-color-rood-50);
-  display: flex;
-  gap: var(--rhc-space-md);
-
-  >.utrecht-icon {
-    color: var(--rhc-color-rood-600);
   }
 }
 
@@ -804,7 +838,6 @@ body {
   background-color: var(--rhc-color-groen-600);
 }
 
-/* Wachtindicatie: drie stippen die een voor een verschijnen */
 .rhc-mox-chat-thinking {
   align-items: center;
   align-self: flex-start;
@@ -862,8 +895,7 @@ body {
     gap: var(--rhc-space-md);
     position: relative;
 
-    /* Cirkel met het stapnummer, of een vinkje als de stap klaar is
-      (StatusTrack). */
+    /* Cirkel met stapnummer, of vinkje als stap klaar is. */
     >.rhc-mox-status-marker {
       background-color: var(--rhc-color-groen-600);
       block-size: var(--rhc-stap-maat);
@@ -876,8 +908,8 @@ body {
       place-items: center;
 
       .utrecht-icon {
-        block-size: 40%;
-        inline-size: 40%;
+        block-size: var(--utrecht-icon-size);
+        inline-size: var(--utrecht-icon-size);
       }
 
       svg {
@@ -962,17 +994,741 @@ body {
   gap: var(--rhc-space-sm);
 }
 
-.rhc-mox-action-required {
-  align-items: center;
-  display: inline-flex;
-  gap: var(--rhc-space-sm);
+/* --- LinkButton --- */
+/* Destructieve actie als LinkButton, zoals Verwijderen in Berichtenbox.
+  LinkButton kent geen hint="danger", daarom deze class. */
+.rhc-theme.mox-theme {
+  .rhc-mox-link-button--danger {
+    --utrecht-link-button-color: var(--rhc-color-rood-500);
+    --utrecht-link-button-hover-color: var(--rhc-color-rood-600);
+    --utrecht-link-button-active-color: var(--rhc-color-rood-600);
 
-  .utrecht-icon {
-    color: var(--rhc-color-oranje-500);
+    color: var(--rhc-color-rood-500);
+
+    &:hover {
+      color: var(--rhc-color-rood-600);
+    }
   }
 }
 
+/* --- Bewaren --- */
+.rhc-mox-icon-saved svg {
+  fill: var(--rhc-color-robijnrood-400);
+  stroke: var(--rhc-color-robijnrood-400);
+}
+
+/* --- Iconen en links --- */
+.utrecht-icon {
+  block-size: var(--rhc-size-icon-md);
+  flex-shrink: 0;
+  inline-size: var(--rhc-size-icon-md)
+}
+
+.utrecht-link .utrecht-icon {
+  vertical-align: middle;
+}
+
+.rhc-link-list__item .utrecht-link-list__link {
+  align-items: flex-start;
+
+  .utrecht-icon {
+    block-size: 1lh;
+    /* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
+    inset-block-start: 0;
+  }
+}
+
+/* --- Melding --- */
+/* Een lege live region (role="status", role="alert", aria-live) neemt geen
+  ruimte in, ook niet als gap in een flex- of grid-container. Hij blijft wel
+  in de DOM en in de toegankelijkheidsboom. */
+:where(.rhc-theme.mox-theme) :where([role="status"], [role="alert"], [aria-live]):empty {
+  position: absolute;
+}
+
+/* Een melding die na een tijd uitfadet (BerichtDetail). */
+.rhc-theme.mox-theme {
+  .rhc-mox-fade-out {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 500ms ease-out;
+    }
+  }
+
+  .rhc-mox-fade-out--hidden {
+    opacity: 0;
+  }
+}
+
+.rhc-mox-alert-closable {
+  position: relative;
+}
+
+.rhc-mox-alert-closable-content {
+  padding-inline-end: var(--rhc-space-5xl);
+}
+
+.rhc-mox-alert-close-button {
+  inset-block-start: var(--utrecht-alert-padding-block-start);
+  inset-inline-end: var(--utrecht-alert-padding-inline-end);
+  position: absolute;
+
+  span {
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+
+  &:hover {
+    background: transparent !important;
+  }
+}
+
+/* --- NavigationList --- */
+.rhc-theme.mox-theme {
+  .rhc-navigation-list__item-content {
+    align-items: flex-start;
+  }
+
+  .rhc-navigation-list__item__start-icon {
+    display: none;
+  }
+}
+
+/* --- Schuifregelaar --- */
+.rhc-theme.mox-theme {
+  .rhc-mox-range-slider__header {
+    align-items: baseline;
+    display: flex;
+    gap: var(--rhc-space-md);
+    justify-content: space-between;
+  }
+
+  .rhc-mox-range-slider__value {
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+
+  .rhc-mox-range-slider__input {
+    accent-color: var(--rhc-color-lintblauw-500);
+    appearance: none;
+    background: transparent;
+    block-size: var(--rhc-space-2xl);
+    inline-size: 100%;
+    margin: 0;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      margin-block-start: -.5rem;
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+    }
+
+    &::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-500);
+      block-size: var(--rhc-size-icon-lg);
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
+      border-radius: var(--rhc-border-radius-round);
+      inline-size: var(--rhc-size-icon-lg);
+      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      outline: var(--rhc-border-width-lg) solid transparent;
+    }
+
+    &:hover {
+      &::-webkit-slider-runnable-track {
+        border-color: color-mix(in srgb, var(--rhc-color-lintblauw-100) 60%, transparent);
+      }
+
+      &::-moz-range-track {
+        border-color: color-mix(in srgb, var(--rhc-color-lintblauw-100) 60%, transparent);
+      }
+    }
+
+    /* Hover on the thumb, or keyboard focus on the slider: darker thumb with
+      a ring. A pseudo-element cannot have :focus itself, so the focus sits
+      on the input. One rule per browser: an unknown pseudo-element would
+      drop the whole list. */
+    &::-webkit-slider-thumb:hover,
+    &:focus-visible::-webkit-slider-thumb {
+      background: var(--rhc-color-lintblauw-600);
+      border-color: var(--rhc-color-lintblauw-600);
+      outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
+    }
+
+    &::-webkit-slider-thumb:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+
+    &::-moz-range-thumb:hover,
+    &:focus-visible::-moz-range-thumb {
+      background: var(--rhc-color-lintblauw-600);
+      border-color: var(--rhc-color-lintblauw-600);
+      outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
+    }
+
+    &::-moz-range-thumb:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &::-moz-range-track {
+      background: var(--rhc-color-cool-grey-100);
+      block-size: 0.75rem;
+      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
+      border-radius: var(--rhc-border-radius-round);
+    }
+
+    &:focus-visible {
+      border-radius: var(--rhc-border-radius-round);
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: calc(var(--utrecht-focus-outline-offset)*3);
+    }
+  }
+
+  /* RangeSlider met gevulde baan tot aan de knop (thumb). */
+  .rhc-mox-range-slider__input--filled {
+    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
+    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
+    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
+
+    &::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
+    }
+
+    /* Firefox kent een eigen element voor het gevulde deel. */
+    &::-moz-range-progress {
+      background: var(--rhc-range-slider-fill-color);
+      block-size: 0.75rem;
+      border-radius: var(--rhc-border-radius-round);
+    }
+  }
+
+  .rhc-mox-range-slider__limits {
+    color: var(--rhc-color-foreground-subtle);
+    display: flex;
+    font-size: var(--rhc-text-font-size-sm);
+    justify-content: space-between;
+  }
+}
+
+/* --- Voortgangsbalk --- */
+/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
+.rhc-mox-progressbar,
+.rhc-mox-bar-graph__track {
+  background-color: var(--rhc-color-cool-grey-50);
+  block-size: var(--rhc-space-xl);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-round);
+  border-width: var(--rhc-border-width-sm);
+  inline-size: 100%;
+  overflow: hidden;
+}
+
+.rhc-mox-progressbar-track {
+  background-color: var(--rhc-color-hemelblauw-500);
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+}
+
+/* In een info-melding de kleur van die melding (het info-icoon), zoals
+  bij "De pdf wordt geladen". */
+.utrecht-alert--info .rhc-mox-progressbar-track {
+  background-color: var(--utrecht-alert-icon-info-color);
+}
+
+/* Laadduur onbekend, zoals bij de pdf. */
+.rhc-mox-progressbar--indeterminate .rhc-mox-progressbar-track {
+  inline-size: 40%;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rhc-mox-progressbar-indeterminate 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes rhc-mox-progressbar-indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* --- Meter --- */
+.rhc-mox-graph-meter {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+
+  .rhc-mox-progressbar {
+    flex: 1;
+    max-inline-size: 20rem;
+  }
+}
+
+/* --- Paginering --- */
+.rhc-theme.mox-theme {
+  .ams-icon {
+    align-self: center;
+  }
+
+  @media (width < 768px) {
+
+    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
+      toegankelijke naam ("Vorige pagina") blijft. */
+    .ams-pagination__link[rel]>span[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}
+
+/* --- Tabel --- */
+.rhc-theme.mox-theme {
+  .utrecht-table__header-cell {
+    vertical-align: bottom;
+  }
+}
+
+/* Een melding die in zijn geheel een link is, zoals de status van een zaak
+  die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
+.rhc-theme.mox-theme {
+  .rhc-mox-alert-link {
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--utrecht-link-color);
+    display: block;
+    text-decoration-line: none;
+
+    .utrecht-alert {
+      margin: 0;
+    }
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+
+    &:focus-visible {
+      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+      outline-offset: var(--utrecht-focus-outline-offset);
+    }
+  }
+
+}
+
+/* --- Action group --- */
+.utrecht-action-group {
+  margin-block-start: var(--rhc-space-2xl);
+}
+
+.utrecht-button--primary-action {
+  margin-block-start: var(--rhc-space-lg);
+}
+
+.rhc-mox-action-group-dense {
+  margin-block-start: 0 !important;
+
+  :is(button, a) {
+    padding-block: var(--rhc-space-sm);
+    padding-inline: var(--rhc-space-md);
+    text-align: start;
+    text-decoration: none;
+  }
+}
+
+/* --- Bar graph --- */
+.rhc-mox-bar-graph {
+  display: grid;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__title {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+.rhc-mox-bar-graph__list {
+  display: grid;
+  gap: var(--rhc-space-sm);
+  grid-template-columns: minmax(auto, 12rem) 1fr;
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__item {
+  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
+
+  align-items: baseline;
+  display: grid;
+  gap: var(--rhc-space-md);
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+.rhc-mox-bar-graph__value {
+  align-items: center;
+  display: flex;
+  gap: var(--rhc-space-md);
+  margin: 0;
+}
+
+.rhc-mox-bar-graph__bar {
+  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
+  background-image: var(--rhc-bar-graph-pattern, none);
+  block-size: var(--rhc-space-xl);
+  border: var(--rhc-border-width-sm) solid var(--rhc-bar-graph-border-color, var(--rhc-color-cool-grey-500));
+  border-radius: var(--rhc-border-radius-round);
+  /* At least a sliver, so a value of 0 still shows where the bar starts. */
+  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+}
+
+.rhc-mox-bar-graph__track {
+  --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
+
+  background-color: var(--rhc-color-cool-grey-50);
+  border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
+  border-radius: var(--rhc-border-radius-round);
+  display: flex;
+  inline-size: calc(100% - 5rem);
+
+  >.rhc-mox-bar-graph__bar {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% + 2 * var(--rhc-bar-graph-track-border-width))));
+    margin-block: calc(-1 * var(--rhc-bar-graph-track-border-width));
+    margin-inline-start: calc(-1 * var(--rhc-bar-graph-track-border-width));
+  }
+}
+
+.rhc-mox-bar-graph__item--positive {
+  --rhc-bar-graph-color: var(--rhc-color-groen-400);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-bar-graph-border-color: var(--rhc-color-groen-400);
+}
+
+.rhc-mox-bar-graph__item--negative {
+  --rhc-bar-graph-color: var(--rhc-color-rood-500);
+  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-bar-graph-border-color: var(--rhc-color-rood-400);
+}
+
+/* --- Step indicator --- */
+.rhc-mox-step-indicator {
+  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
+
+  display: grid;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-step-indicator__count {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  margin: 0;
+}
+
+.rhc-mox-step-indicator__list {
+  display: flex;
+  gap: var(--rhc-space-xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rhc-mox-step-indicator__step {
+  align-items: center;
+  color: var(--rhc-color-foreground-subtle);
+  display: flex;
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-step-indicator__marker {
+  block-size: var(--rhc-step-indicator-size);
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
+  border-radius: var(--rhc-border-radius-round);
+  display: grid;
+  flex-shrink: 0;
+  font-weight: var(--rhc-text-font-weight-bold);
+  inline-size: var(--rhc-step-indicator-size);
+  line-height: 1;
+  place-items: center;
+}
+
+.rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
+  background-color: var(--rhc-color-groen-600);
+  border-color: var(--rhc-color-groen-600);
+  color: var(--rhc-color-wit);
+}
+
+.rhc-mox-step-indicator__step--current {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+
+  .rhc-mox-step-indicator__marker {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-color: var(--rhc-color-lintblauw-500);
+    color: var(--rhc-color-wit);
+  }
+}
+
+/* Small scherm: alleen "Stap 2 van 4" en huidige stap. */
+@media (width < 768px) {
+  .rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
+    display: none;
+  }
+}
+
+/* --- Sticky info box --- */
+/* StickyInfoBox blijft getoond worden bij pagina-scroll op een vaste plek; op een smal scherm blijft deze mee-scrollen. */
+.rhc-mox-sticky-info-box {
+  align-self: start;
+  background-color: var(--rhc-color-hemelblauw-50);
+  display: grid;
+  gap: var(--rhc-space-md);
+  inset-block-start: var(--rhc-space-xl);
+  padding: var(--rhc-space-xl);
+  position: sticky;
+
+  @media (width < 768px) {
+    position: static;
+  }
+}
+
+/* --- Switch --- */
+.rhc-mox-switch {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rhc-space-2xs);
+}
+
+.utrecht-form-label.rhc-mox-switch__label {
+  display: block;
+}
+
+.rhc-mox-switch__button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: var(--rhc-space-md);
+  padding: 0;
+
+  &:not(:disabled):hover .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-lintblauw-600);
+
+    &:hover {
+      outline: var(--rhc-border-width-md) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
+    }
+
+    &:active {
+      outline-color: color-mix(in srgb, var(--rhc-color-lintblauw-500) 45%, transparent);
+    }
+  }
+
+  &:focus-visible {
+    border-radius: var(--rhc-border-radius-sm);
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: var(--utrecht-focus-outline-offset);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  block-size: 1.5rem;
+  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-500);
+  border-radius: var(--rhc-border-radius-round);
+  box-sizing: border-box;
+  display: inline-flex;
+  inline-size: 2.75rem;
+  padding: var(--rhc-space-2xs);
+}
+
+.rhc-mox-switch__thumb {
+  aspect-ratio: 1;
+  background-color: var(--rhc-color-cool-grey-500);
+  block-size: 100%;
+  border-radius: var(--rhc-border-radius-round);
+  /* Transparent ring at rest, so its colour can fade in on hover. */
+  outline: var(--rhc-border-width-md) solid transparent;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition-duration: var(--mox-transition-duration);
+    transition-property: transform, background-color, outline-color;
+    transition-timing-function: var(--mox-transition-easing);
+  }
+}
+
+.rhc-mox-switch__button[aria-checked="true"] {
+  .rhc-mox-switch__track {
+    background-color: var(--rhc-color-wit);
+    border-color: var(--rhc-color-lintblauw-500);
+
+    &:hover .rhc-mox-switch__thumb {
+      background-color: var(--rhc-color-lintblauw-600);
+    }
+  }
+
+  .rhc-mox-switch__thumb {
+    background-color: var(--rhc-color-lintblauw-500);
+    transform: translateX(1.25rem);
+
+    &:hover {
+      background-color: var(--rhc-color-lintblauw-600);
+    }
+  }
+}
+
+.rhc-mox-switch__state {
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  min-inline-size: 2rem;
+}
+
+/* Two-way: a choice between two options, not on/off. The track has the
+  same colour in both positions; the chosen option is in bold. */
+.rhc-mox-switch__button--two-way .rhc-mox-switch__track,
+.rhc-mox-switch__button--two-way[aria-checked="true"] .rhc-mox-switch__track {
+  background-color: var(--rhc-color-wit);
+  border-color: var(--rhc-color-lintblauw-500);
+}
+
+.rhc-mox-switch__button--two-way .rhc-mox-switch__thumb {
+  background-color: var(--rhc-color-lintblauw-500);
+
+  &:hover {
+    background-color: var(--rhc-color-lintblauw-600);
+  }
+}
+
+.rhc-mox-switch__option {
+  color: var(--rhc-color-foreground-subtle);
+}
+
+.rhc-mox-switch__option--chosen {
+  color: var(--rhc-color-foreground-default);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+/* --- Text badge --- */
+.rhc-mox-text-badge {
+  --utrecht-icon-size: 1em;
+
+  align-items: center;
+  background-color: var(--rhc-color-cool-grey-100);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-foreground-default);
+  border-radius: var(--rhc-border-radius-round);
+  color: var(--rhc-color-foreground-default);
+  display: inline-flex;
+  font-size: var(--rhc-text-font-size-sm);
+  font-weight: var(--rhc-text-font-weight-semi-bold);
+  gap: var(--rhc-space-sm);
+  line-height: var(--rhc-text-line-height-md);
+  padding-block: var(--rhc-space-sm);
+  padding-inline: var(--rhc-space-lg);
+  vertical-align: middle;
+}
+
+.rhc-mox-text-badge--info {
+  --utrecht-icon-color: var(--utrecht-alert-icon-info-color);
+  background-color: var(--rhc-color-hemelblauw-50);
+  border-color: var(--rhc-color-hemelblauw-500);
+}
+
+.rhc-mox-text-badge--ok {
+  --utrecht-icon-color: var(--utrecht-alert-icon-ok-color);
+  background-color: var(--rhc-color-groen-50);
+  border-color: var(--rhc-color-groen-500);
+}
+
+.rhc-mox-text-badge--warning {
+  --utrecht-icon-color: var(--utrecht-alert-icon-warning-color);
+  background-color: var(--rhc-color-oranje-50);
+  border-color: var(--rhc-color-oranje-500);
+}
+
+.rhc-mox-text-badge--error {
+  --utrecht-icon-color: var(--utrecht-alert-icon-error-color);
+  background-color: var(--rhc-color-rood-50);
+  border-color: var(--rhc-color-rood-500);
+}
+
+/* ==== Pagina's en functies =============================================== */
+
 /* --- Berichtenbox --- */
+.rhc-theme.mox-theme {
+
+  /* Berichtenbox A/B/C-test, variant C: uitleg en directe acties. */
+  .rhc-mox-message-actions {
+    background-color: var(--rhc-color-cool-grey-50);
+    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-lg);
+    margin-block: var(--rhc-space-lg);
+    padding: var(--rhc-space-lg);
+
+    >* {
+      margin-block: 0;
+    }
+  }
+
+  /* Variant B: het bericht als pdf in de pagina. */
+  .rhc-mox-pdf-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rhc-space-3xl);
+  }
+
+  .rhc-mox-pdf-preview__viewer {
+    block-size: 72rem;
+    border-block-end: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-200);
+    border-radius: var(--rhc-border-radius-md);
+    inline-size: 100%;
+    max-block-size: 80vh;
+  }
+
+  /* Een tabelrij waarvan de hele rij naar het bericht linkt. */
+  .rhc-mox-row-linked {
+    position: relative;
+
+    &:hover {
+      background-color: var(--rhc-color-cool-grey-50);
+    }
+
+    :is(button, .rhc-mox-dropdown__trigger) {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .rhc-mox-row-linked__link::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+
+  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rhc-mox-row-new {
+      animation: rhc-mox-row-new 2s ease-out;
+    }
+  }
+}
+
 [aria-label=Berichtenbox] {
   a {
     text-decoration: none;
@@ -986,6 +1742,7 @@ body {
 .rhc-mox-notice-amount-inbox {
   color: var(--rhc-color-cool-grey-500);
   font-size: var(--rhc-text-font-size-sm);
+  margin-block-end: var(--rhc-space-xl) !important;
 }
 
 .rhc-mox-inbox-filter {
@@ -1056,802 +1813,7 @@ body {
 }
 
 .rhc-mox-unread {
-  /* 500 komt uit mox.css (huidige huisstijl); de nieuwe huisstijl valt
-    terug op semi-bold. */
-  font-weight: var(--mox-font-weight-medium, var(--rhc-text-font-weight-semi-bold));
-}
-
-/* --- LinkButton --- */
-
-/* Destructieve actie als LinkButton, zoals Verwijderen in de Berichtenbox.
-  LinkButton kent geen hint="danger" (Button wel), daarom deze class. */
-.rhc-theme.mox-theme {
-  .rhc-mox-link-button--danger {
-    --utrecht-link-button-color: var(--rhc-color-rood-500);
-    --utrecht-link-button-hover-color: var(--rhc-color-rood-600);
-    --utrecht-link-button-active-color: var(--rhc-color-rood-600);
-
-    color: var(--rhc-color-rood-500);
-
-    &:hover {
-      color: var(--rhc-color-rood-600);
-    }
-  }
-}
-
-/* --- Bewaren --- */
-.rhc-mox-icon-saved svg {
-  fill: var(--rhc-color-robijnrood-400);
-  stroke: var(--rhc-color-robijnrood-400);
-}
-
-/* --- Iconen en links --- */
-.utrecht-icon {
-  block-size: var(--rhc-size-icon-md);
-  flex-shrink: 0;
-  inline-size: var(--rhc-size-icon-md)
-}
-
-.utrecht-link .utrecht-icon {
-  vertical-align: middle;
-}
-
-.rhc-link-list__item .utrecht-link-list__link {
-  align-items: flex-start;
-
-  .utrecht-icon {
-    block-size: 1lh;
-    /* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
-    inset-block-start: 0;
-  }
-}
-
-/* --- Melding --- */
-
-/* Een lege live region (role="status", role="alert", aria-live) neemt geen
-  ruimte in, ook niet als gap in een flex- of grid-container. Hij blijft wel
-  in de DOM en in de toegankelijkheidsboom: verdwijnt hij met display: none,
-  dan melden schermlezers de tekst die er later in komt soms niet. */
-:where(.rhc-theme.mox-theme) :where([role="status"], [role="alert"], [aria-live]):empty {
-  position: absolute;
-}
-
-/* Een melding die na een tijd uitfadet (BerichtDetail). Het component haalt
-  hem daarna weg; bij "minder beweging" verdwijnt hij zonder fade. */
-.rhc-theme.mox-theme {
-  .rhc-mox-fade-out {
-    @media (prefers-reduced-motion: no-preference) {
-      transition: opacity 500ms ease-out;
-    }
-  }
-
-  .rhc-mox-fade-out--hidden {
-    opacity: 0;
-  }
-}
-
-/* Alert with a close button (closable) in the top right corner. */
-.rhc-mox-alert-closable {
-  position: relative;
-}
-
-.rhc-mox-alert-closable-content {
-  padding-inline-end: var(--rhc-space-5xl);
-}
-
-.rhc-mox-alert-close-button {
-  inset-block-start: var(--utrecht-alert-padding-block-start);
-  inset-inline-end: var(--utrecht-alert-padding-inline-end);
-  position: absolute;
-
-  span {
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    position: absolute;
-  }
-
-  &:hover {
-    background: transparent !important;
-  }
-}
-
-/* --- NavigationList --- */
-
-.rhc-theme.mox-theme {
-  .rhc-navigation-list__item-content {
-    align-items: flex-start;
-  }
-
-  .rhc-navigation-list__item__start-icon {
-    display: none;
-  }
-}
-
-/* --- Getalveld --- */
-
-/* NumberInput: knoppen - en + voor en na het invoerveld. */
-.rhc-theme.mox-theme {
-  .rhc-number-input {
-    align-items: stretch;
-    display: flex;
-    gap: var(--rhc-space-sm);
-
-    .utrecht-textbox {
-      /* Firefox: geen pijltjes in het veld; de knoppen - en + doen dat. */
-      appearance: textfield;
-      flex: 1;
-      min-inline-size: 0;
-      text-align: center;
-
-      /* Chrome, Edge en Safari: idem. */
-      &::-webkit-inner-spin-button,
-      &::-webkit-outer-spin-button {
-        appearance: none;
-        margin: 0;
-      }
-    }
-
-    .utrecht-button {
-      flex-shrink: 0;
-      justify-content: center;
-      margin: 0;
-      min-inline-size: var(--utrecht-button-min-block-size, 3rem);
-    }
-  }
-}
-
-/* --- Schuifregelaar --- */
-
-/* RangeSlider: label en gekozen waarde op één regel, grenzen eronder. */
-.rhc-theme.mox-theme {
-  .rhc-mox-range-slider__header {
-    align-items: baseline;
-    display: flex;
-    gap: var(--rhc-space-md);
-    justify-content: space-between;
-  }
-
-  .rhc-mox-range-slider__value {
-    font-weight: var(--rhc-text-font-weight-semi-bold);
-  }
-
-  .rhc-mox-range-slider__input {
-    accent-color: var(--rhc-color-lintblauw-500);
-    appearance: none;
-    background: transparent;
-    block-size: var(--rhc-space-2xl);
-    inline-size: 100%;
-    margin: 0;
-
-    &::-webkit-slider-thumb {
-      appearance: none;
-      background: var(--rhc-color-lintblauw-500);
-      block-size: var(--rhc-size-icon-lg);
-      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
-      border-radius: var(--rhc-border-radius-round);
-      inline-size: var(--rhc-size-icon-lg);
-      margin-block-start: -.5rem;
-      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
-      outline: var(--rhc-border-width-lg) solid transparent;
-
-      &:hover {
-        background: var(--rhc-color-lintblauw-600);
-        border-color: var(--rhc-color-lintblauw-600);
-        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
-      }
-    }
-
-    &::-moz-range-thumb {
-      background: var(--rhc-color-lintblauw-500);
-      block-size: var(--rhc-size-icon-lg);
-      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
-      border-radius: var(--rhc-border-radius-round);
-      inline-size: var(--rhc-size-icon-lg);
-      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
-      outline: var(--rhc-border-width-lg) solid transparent;
-
-      &:hover {
-        background: var(--rhc-color-lintblauw-600);
-        border-color: var(--rhc-color-lintblauw-600);
-        outline: var(--rhc-border-width-lg) solid color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
-      }
-    }
-
-    &::-webkit-slider-runnable-track {
-      background: var(--rhc-color-cool-grey-100);
-      block-size: 0.75rem;
-      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
-      border-radius: var(--rhc-border-radius-round);
-    }
-
-    &::-moz-range-track {
-      background: var(--rhc-color-cool-grey-100);
-      block-size: 0.75rem;
-      border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
-      border-radius: var(--rhc-border-radius-round);
-    }
-
-    &:focus-visible {
-      border-radius: var(--rhc-border-radius-round);
-      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
-      outline-offset: calc(var(--utrecht-focus-outline-offset)*3);
-    }
-  }
-
-  /* RangeSlider met gevulde baan tot aan de knop (thumb). */
-  .rhc-mox-range-slider__input--filled {
-    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
-    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
-    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
-
-    &::-webkit-slider-runnable-track {
-      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
-    }
-
-    /* Firefox kent een eigen element voor het gevulde deel. */
-    &::-moz-range-progress {
-      background: var(--rhc-range-slider-fill-color);
-      block-size: 0.75rem;
-      border-radius: var(--rhc-border-radius-round);
-    }
-  }
-
-  .rhc-mox-range-slider__limits {
-    color: var(--rhc-color-foreground-subtle);
-    display: flex;
-    font-size: var(--rhc-text-font-size-sm);
-    justify-content: space-between;
-  }
-}
-
-/* --- Voortgangsbalk --- */
-/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
-
-.rhc-mox-progressbar {
-  background-color: var(--rhc-color-wit);
-  block-size: var(--rhc-space-lg);
-  border-color: var(--rhc-color-cool-grey-400);
-  border-radius: var(--rhc-border-radius-round);
-  border-width: var(--rhc-border-width-sm);
-  inline-size: 100%;
-  overflow: hidden;
-}
-
-.rhc-mox-progressbar-track {
-  background-color: var(--rhc-color-groen-500) !important;
-  block-size: 100%;
-  border-radius: var(--rhc-border-radius-round);
-}
-
-/* In een info-melding de kleur van die melding (het info-icoon), zoals
-  bij "De pdf wordt geladen". !important, want de basis heeft het ook. */
-.utrecht-alert--info .rhc-mox-progressbar-track {
-  background-color: var(--utrecht-alert-icon-info-color) !important;
-}
-
-/* Laadduur onbekend, zoals bij de pdf: een stuk balk loopt heen en weer.
-  Bij "minder beweging" een stilstaande, halfvolle balk. */
-.rhc-mox-progressbar--indeterminate .rhc-mox-progressbar-track {
-  inline-size: 40%;
-
-  @media (prefers-reduced-motion: no-preference) {
-    animation: rhc-mox-progressbar-indeterminate 1.4s ease-in-out infinite;
-  }
-}
-
-@keyframes rhc-mox-progressbar-indeterminate {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(250%);
-  }
-}
-
-/* --- Aftelbalk --- */
-/* Aftelbalk met pauzeknop (contactmomenten) */
-
-.rhc-mox-countdown {
-  align-items: center;
-  display: flex;
-  gap: var(--rhc-space-lg);
-
-  .rhc-mox-progressbar {
-    background-color: var(--rhc-color-cool-grey-200);
-    flex: 1;
-  }
-}
-
-/* --- Meter --- */
-/* Gemeten stand binnen een bereik, zoals budget vergeven: balk met de waarde ernaast */
-
-.rhc-mox-graph-meter {
-  align-items: center;
-  display: flex;
-  gap: var(--rhc-space-md);
-
-  .rhc-mox-progressbar {
-    background-color: var(--rhc-color-cool-grey-200);
-    flex: 1;
-    max-inline-size: 20rem;
-  }
-}
-
-/* --- Paginering --- */
-
-.rhc-theme.mox-theme {
-  .ams-icon {
-    align-self: center;
-    /* verticaal centreren van pictogrammen binnen icoon component, o.a. pagination */
-  }
-
-  @media (width < 768px) {
-
-    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
-      toegankelijke naam ("Vorige pagina") blijft, die staat verborgen. */
-    .ams-pagination__link[rel]>span[aria-hidden="true"] {
-      display: none;
-    }
-  }
-}
-
-/* --- Tabel --- */
-
-.rhc-theme.mox-theme {
-  .utrecht-table__header-cell {
-    vertical-align: bottom;
-  }
-}
-
-
-/* Een melding die in zijn geheel een link is, zoals de status van een zaak
-  die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
-.rhc-theme.mox-theme {
-  .rhc-mox-alert-link {
-    border-radius: var(--rhc-border-radius-md);
-    color: var(--utrecht-link-color);
-    display: block;
-    text-decoration-line: none;
-
-    .utrecht-alert {
-      margin: 0;
-    }
-
-    &:hover {
-      text-decoration-line: underline;
-    }
-
-    &:focus-visible {
-      outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
-      outline-offset: var(--utrecht-focus-outline-offset);
-    }
-  }
-
-}
-
-/* --- Action group --- */
-.utrecht-action-group {
-  margin-block-start: var(--rhc-space-2xl);
-}
-
-.utrecht-button--primary-action {
-  margin-block-start: var(--rhc-space-lg);
-}
-
-.rhc-mox-action-group-dense {
-  margin-block-start: 0 !important;
-
-  /* Knoppen en links in de balk zien er hetzelfde uit: geen onderstreping. */
-  :is(button, a) {
-    padding-block: var(--rhc-space-sm);
-    padding-inline: var(--rhc-space-md);
-    text-align: start;
-    text-decoration: none;
-  }
-}
-
-/* --- Bar graph --- */
-/* BarGraph: label, bar and value per row. The bar is only visual; the
-  value is always there as text. */
-.rhc-mox-bar-graph {
-  display: grid;
-  gap: var(--rhc-space-md);
-  margin: 0;
-}
-
-.rhc-mox-bar-graph__title {
   font-weight: var(--rhc-text-font-weight-semi-bold);
-}
-
-.rhc-mox-bar-graph__list {
-  display: grid;
-  gap: var(--rhc-space-sm);
-  grid-template-columns: minmax(auto, 12rem) 1fr;
-  margin: 0;
-}
-
-.rhc-mox-bar-graph__item {
-  /* Here and not on the bar: the patterns of the variants use it. */
-  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
-
-  align-items: baseline;
-  display: grid;
-  gap: var(--rhc-space-md);
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-}
-
-.rhc-mox-bar-graph__value {
-  align-items: center;
-  display: flex;
-  gap: var(--rhc-space-md);
-  margin: 0;
-}
-
-.rhc-mox-bar-graph__bar {
-  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
-  background-image: var(--rhc-bar-graph-pattern, none);
-  block-size: var(--rhc-space-xl);
-  border: var(--rhc-border-width-sm) solid var(--rhc-bar-graph-border-color, var(--rhc-color-cool-grey-500));
-  border-radius: var(--rhc-border-radius-round);
-  /* At least a sliver, so a value of 0 still shows where the bar starts. */
-  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
-}
-
-/* Option track: a grey track as wide as the longest bar; the bar fills it
-  in proportion to its value. */
-.rhc-mox-bar-graph__track {
-  --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
-
-  background-color: var(--rhc-color-cool-grey-100);
-  border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
-  border-radius: var(--rhc-border-radius-round);
-  display: flex;
-  inline-size: calc(100% - 5rem);
-
-  /* The bar lies over the border of the track: negative margins the width
-    of that border, and a full bar spans the track including both borders.
-    So the track's border only shows where the bar does not reach. */
-  >.rhc-mox-bar-graph__bar {
-    box-sizing: border-box;
-    flex-shrink: 0;
-    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% + 2 * var(--rhc-bar-graph-track-border-width))));
-    margin-block: calc(-1 * var(--rhc-bar-graph-track-border-width));
-    margin-inline-start: calc(-1 * var(--rhc-bar-graph-track-border-width));
-  }
-}
-
-/* Variants: neutral (blue, plain), positive (green, diagonal stripes) and
-  negative (red, cross-hatched). The pattern tells them apart without colour,
-  for example for colour blindness or in grayscale. */
-.rhc-mox-bar-graph__item--positive {
-  --rhc-bar-graph-color: var(--rhc-color-groen-400);
-  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  --rhc-bar-graph-border-color: var(--rhc-color-groen-400);
-}
-
-.rhc-mox-bar-graph__item--negative {
-  --rhc-bar-graph-color: var(--rhc-color-rood-500);
-  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  --rhc-bar-graph-border-color: var(--rhc-color-rood-400);
-}
-
-/* --- Step indicator --- */
-/* StepIndicator: numbered steps in a row; done, current and still to do. */
-.rhc-mox-step-indicator {
-  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
-
-  display: grid;
-  gap: var(--rhc-space-md);
-}
-
-.rhc-mox-step-indicator__count {
-  font-weight: var(--rhc-text-font-weight-semi-bold);
-  margin: 0;
-}
-
-.rhc-mox-step-indicator__list {
-  display: flex;
-  gap: var(--rhc-space-lg);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.rhc-mox-step-indicator__step {
-  align-items: center;
-  color: var(--rhc-color-foreground-subtle);
-  display: flex;
-  gap: var(--rhc-space-sm);
-}
-
-.rhc-mox-step-indicator__marker {
-  block-size: var(--rhc-step-indicator-size);
-  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
-  border-radius: var(--rhc-border-radius-round);
-  display: grid;
-  flex-shrink: 0;
-  font-weight: var(--rhc-text-font-weight-bold);
-  inline-size: var(--rhc-step-indicator-size);
-  line-height: 1;
-  place-items: center;
-
-  .utrecht-icon {
-    block-size: 60%;
-    inline-size: 60%;
-  }
-}
-
-.rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
-  background-color: var(--rhc-color-groen-600);
-  border-color: var(--rhc-color-groen-600);
-  color: var(--rhc-color-wit);
-}
-
-.rhc-mox-step-indicator__step--current {
-  color: var(--rhc-color-foreground-default);
-  font-weight: var(--rhc-text-font-weight-semi-bold);
-
-  .rhc-mox-step-indicator__marker {
-    background-color: var(--rhc-color-lintblauw-500);
-    border-color: var(--rhc-color-lintblauw-500);
-    color: var(--rhc-color-wit);
-  }
-}
-
-/* Narrow screen: only "Stap 2 van 4" and the current step. */
-@media (width < 768px) {
-  .rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
-    display: none;
-  }
-}
-
-/* --- Sticky info box --- */
-/* StickyInfoBox: stays in view while the page scrolls; on a narrow screen
-  it scrolls along. */
-.rhc-mox-sticky-info-box {
-  align-self: start;
-  background-color: var(--rhc-color-hemelblauw-50);
-  display: grid;
-  gap: var(--rhc-space-md);
-  inset-block-start: var(--rhc-space-xl);
-  padding: var(--rhc-space-xl);
-  position: sticky;
-
-  @media (width < 768px) {
-    position: static;
-  }
-}
-
-/* --- Switch --- */
-/* Switch: role="switch". The knob moves and the text "Aan"/"Uit" changes,
-  so the state is not shown by colour alone. */
-/* Label above, the switch below it on its own line, like a form field. */
-.rhc-mox-switch {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: var(--rhc-space-2xs);
-}
-
-.utrecht-form-label.rhc-mox-switch__label {
-  display: block;
-}
-
-.rhc-mox-switch__button {
-  align-items: center;
-  background: none;
-  border: 0;
-  color: inherit;
-  cursor: pointer;
-  display: inline-flex;
-  font: inherit;
-  gap: var(--rhc-space-md);
-  min-block-size: 44px;
-  padding: 0;
-
-  &:hover .rhc-mox-switch__thumb {
-    background-color: var(--rhc-color-lintblauw-600);
-  }
-
-  &:focus-visible {
-    border-radius: var(--rhc-border-radius-sm);
-    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
-    outline-offset: var(--utrecht-focus-outline-offset);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-}
-
-.rhc-mox-switch__track {
-  background-color: var(--rhc-color-wit);
-  block-size: 1.5rem;
-  border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-500);
-  border-radius: var(--rhc-border-radius-round);
-  box-sizing: border-box;
-  display: inline-flex;
-  inline-size: 2.75rem;
-  padding: var(--rhc-space-2xs);
-}
-
-.rhc-mox-switch__thumb {
-  aspect-ratio: 1;
-  background-color: var(--rhc-color-cool-grey-500);
-  block-size: 100%;
-  border-radius: var(--rhc-border-radius-round);
-
-  @media (prefers-reduced-motion: no-preference) {
-    transition: transform var(--mox-transition-duration) var(--mox-transition-easing);
-  }
-}
-
-.rhc-mox-switch__button[aria-checked="true"] {
-  .rhc-mox-switch__track {
-    background-color: var(--rhc-color-wit);
-    border-color: var(--rhc-color-lintblauw-500);
-
-    &:hover .rhc-mox-switch__thumb {
-      background-color: var(--rhc-color-lintblauw-600);
-    }
-  }
-
-  .rhc-mox-switch__thumb {
-    background-color: var(--rhc-color-lintblauw-500);
-    transform: translateX(1.25rem);
-
-    &:hover {
-      background-color: var(--rhc-color-lintblauw-600);
-    }
-  }
-}
-
-.rhc-mox-switch__state {
-  font-weight: var(--rhc-text-font-weight-semi-bold);
-  min-inline-size: 2rem;
-}
-
-/* Two-way: a choice between two options, not on/off. The track has the
-  same colour in both positions; the chosen option is in bold. */
-.rhc-mox-switch__button--two-way .rhc-mox-switch__track,
-.rhc-mox-switch__button--two-way[aria-checked="true"] .rhc-mox-switch__track {
-  background-color: var(--rhc-color-wit);
-  border-color: var(--rhc-color-lintblauw-500);
-}
-
-.rhc-mox-switch__button--two-way .rhc-mox-switch__thumb {
-  background-color: var(--rhc-color-lintblauw-500);
-
-  &:hover {
-    background-color: var(--rhc-color-lintblauw-600);
-  }
-}
-
-.rhc-mox-switch__option {
-  color: var(--rhc-color-foreground-subtle);
-}
-
-.rhc-mox-switch__option--chosen {
-  color: var(--rhc-color-foreground-default);
-  font-weight: var(--rhc-text-font-weight-semi-bold);
-}
-
-/* --- Text badge --- */
-/* TextBadge: short label with text and, per type, the icon of the RHC Alert
-  in the colour of that alert. */
-.rhc-mox-text-badge {
-  --utrecht-icon-size: 1em;
-
-  align-items: center;
-  background-color: var(--rhc-color-cool-grey-100);
-  border: var(--rhc-border-width-sm) solid var(--rhc-color-foreground-default);
-  border-radius: var(--rhc-border-radius-round);
-  color: var(--rhc-color-foreground-default);
-  display: inline-flex;
-  font-size: var(--rhc-text-font-size-sm);
-  font-weight: var(--rhc-text-font-weight-semi-bold);
-  gap: var(--rhc-space-sm);
-  line-height: var(--rhc-text-line-height-md);
-  padding-block: var(--rhc-space-sm);
-  padding-inline: var(--rhc-space-lg);
-  vertical-align: middle;
-}
-
-.rhc-mox-text-badge--info {
-  --utrecht-icon-color: var(--utrecht-alert-icon-info-color);
-  background-color: var(--rhc-color-hemelblauw-50);
-  border-color: var(--rhc-color-hemelblauw-500);
-}
-
-.rhc-mox-text-badge--ok {
-  --utrecht-icon-color: var(--utrecht-alert-icon-ok-color);
-  background-color: var(--rhc-color-groen-50);
-  border-color: var(--rhc-color-groen-500);
-}
-
-.rhc-mox-text-badge--warning {
-  --utrecht-icon-color: var(--utrecht-alert-icon-warning-color);
-  background-color: var(--rhc-color-oranje-50);
-  border-color: var(--rhc-color-oranje-500);
-}
-
-.rhc-mox-text-badge--error {
-  --utrecht-icon-color: var(--utrecht-alert-icon-error-color);
-  background-color: var(--rhc-color-rood-50);
-  border-color: var(--rhc-color-rood-500);
-}
-
-/* ==== 5. Pagina's en functies =============================================== */
-
-/* --- Berichtenbox --- */
-
-.rhc-theme.mox-theme {
-
-  /* Berichtenbox A/B/C-test, variant C: uitleg en directe acties. */
-  .rhc-mox-message-actions {
-    background-color: var(--rhc-color-cool-grey-50);
-    border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
-    border-radius: var(--rhc-border-radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-lg);
-    margin-block: var(--rhc-space-lg);
-    padding: var(--rhc-space-lg);
-
-    /* De ruimte komt van gap; anders tellen de marges van kop, alinea en
-      ActionGroup erbij op. */
-    >* {
-      margin-block: 0;
-    }
-  }
-
-  /* Variant B: het bericht als pdf in de pagina. */
-  .rhc-mox-pdf-preview {
-    display: flex;
-    flex-direction: column;
-    gap: var(--rhc-space-3xl);
-  }
-
-  .rhc-mox-pdf-preview__viewer {
-    block-size: 72rem;
-    border-block-end: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-200);
-    border-radius: var(--rhc-border-radius-md);
-    inline-size: 100%;
-    max-block-size: 80vh;
-  }
-
-  /* Een tabelrij waarvan de hele rij naar het bericht linkt. De link van het
-    onderwerp krijgt een ::after over de hele rij; knoppen in de rij (markeren,
-    acties) liggen erboven en blijven werken. Eén link per rij, dus geen
-    dubbele links voor toetsenbord en schermlezer. */
-  .rhc-mox-row-linked {
-    position: relative;
-
-    &:hover {
-      background-color: var(--rhc-color-cool-grey-50);
-    }
-
-    :is(button, .mox-menu) {
-      position: relative;
-      z-index: 1;
-    }
-  }
-
-  .rhc-mox-row-linked__link::after {
-    content: "";
-    inset: 0;
-    position: absolute;
-  }
-
-  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
-  @media (prefers-reduced-motion: no-preference) {
-    .rhc-mox-row-new {
-      animation: rhc-mox-row-new 2s ease-out;
-    }
-  }
 }
 
 /* Buiten .rhc-theme: @keyframes mag niet genest staan. */
@@ -1862,7 +1824,6 @@ body {
 }
 
 /* --- Landingspagina --- */
-
 .rhc-theme.mox-theme {
   .header-landing .rhc-nav-bar__container {
     border-block-end: none;
@@ -1895,8 +1856,6 @@ body {
     }
   }
 }
-
-/* --- Landingspagina --- */
 
 .mox-login-digid,
 .mox-login-eherkenning {
@@ -1944,4 +1903,37 @@ body {
 .mox-landing-quicklinks-heading {
   padding-block: var(--rhc-hero-message-padding-block-start);
   padding-inline: var(--rhc-hero-message-padding-inline-start);
+}
+
+/* --- Getalveld --- */
+
+/* NumberInput: knoppen - en + voor en na het invoerveld. */
+.rhc-theme.mox-theme {
+  .rhc-number-input {
+    align-items: stretch;
+    display: flex;
+    gap: var(--rhc-space-sm);
+
+    .utrecht-textbox {
+      /* Firefox: geen pijltjes in het veld; de knoppen - en + doen dat. */
+      appearance: textfield;
+      flex: 1;
+      min-inline-size: 0;
+      text-align: center;
+
+      /* Chrome, Edge en Safari: idem. */
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+    }
+
+    .utrecht-button {
+      flex-shrink: 0;
+      justify-content: center;
+      margin: 0;
+      min-inline-size: var(--utrecht-button-min-block-size, 3rem);
+    }
+  }
 }

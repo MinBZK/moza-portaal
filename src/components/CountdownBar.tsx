@@ -1,109 +1,75 @@
 "use client";
 
-import { useEffect, useState, useImperativeHandle, forwardRef } from "react";
-import { Button, VisuallyHidden } from "@/components/rhc";
+import {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from "react";
+import ProgressBar from "@/components/ProgressBar";
 
-const CountdownBar = forwardRef(function CountdownBar(
-  { onComplete }: { onComplete: () => void },
+export type CountdownBarHandle = { reset: () => void };
+
+/** How often the bar updates. */
+const TICK_MS = 100;
+
+/**
+ * Countdown as a ProgressBar that runs from full to empty, by default in 60
+ * seconds. When the time is up it calls onComplete; the parent can start
+ * again with ref.current.reset(), as on the page Contactmomenten.
+ */
+const CountdownBar = ({
+  onComplete,
+  seconds = 60,
+  label = "Tijd tot de volgende update",
   ref,
-) {
-  const [progress, setProgress] = useState(100);
-  const [completed, setCompleted] = useState(false);
-  const [resetKey, setResetKey] = useState(0); // to reset useEffect
-  const [paused, setPaused] = useState(false);
+}: {
+  onComplete: () => void;
+  /** Duration of one round. */
+  seconds?: number;
+  /** Accessible name of the bar. */
+  label?: string;
+  ref?: Ref<CountdownBarHandle>;
+}) => {
+  const [remainingMs, setRemainingMs] = useState(seconds * 1000);
+  const [round, setRound] = useState(0);
+  // The latest onComplete, without restarting the timer when it changes.
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
-  // Allow parent to trigger a reset
   useImperativeHandle(ref, () => ({
     reset: () => {
-      setProgress(100);
-      setCompleted(false);
-      setResetKey((prev) => prev + 1);
+      setRemainingMs(seconds * 1000);
+      setRound((n) => n + 1);
     },
   }));
 
   useEffect(() => {
-    const totalDuration = 60000;
-    const interval = 100;
-    const decrement = (100 * interval) / totalDuration;
-
+    const end = Date.now() + seconds * 1000;
     const timer = setInterval(() => {
-      if (paused) return;
-      setProgress((prev) => {
-        const next = prev - decrement;
-        if (next <= 0) {
-          clearInterval(timer);
-          setCompleted(true);
-          return 0;
-        }
-        return next;
-      });
-    }, interval);
-
+      const left = Math.max(0, end - Date.now());
+      setRemainingMs(left);
+      if (left === 0) {
+        clearInterval(timer);
+        onCompleteRef.current();
+      }
+    }, TICK_MS);
     return () => clearInterval(timer);
-  }, [paused, resetKey]); // runs every time resetKey changes
+  }, [seconds, round]);
 
-  useEffect(() => {
-    if (completed && onComplete) {
-      onComplete();
-    }
-  }, [completed, onComplete]);
+  const remaining = Math.ceil(remainingMs / 1000);
 
   return (
-    <div className="rhc-mox-countdown">
-      <div className="rhc-mox-progressbar" aria-hidden="true">
-        <div
-          className="rhc-mox-progressbar-track"
-          style={{ inlineSize: `${progress}%` }}
-        />
-      </div>
-      <Button
-        appearance="primary-action-button"
-        onClick={() => setPaused((prev) => !prev)}
-      >
-        <VisuallyHidden>{paused ? "Doorgaan" : "Pauzeren"}</VisuallyHidden>
-        {paused ? (
-          <svg fill="#ffffff" height="15px" width="15px" viewBox="0 0 16 16">
-            <path d="M5 16L7 16L15 8L7 -2.7818e-08L5 0L5 16Z" />
-          </svg>
-        ) : (
-          <svg
-            fill="#ffffff"
-            height="15px"
-            width="15px"
-            version="1.1"
-            id="Capa_1"
-            viewBox="0 0 512 512"
-          >
-            <g>
-              <g>
-                <path
-                  d="M256,0C114.842,0,0,114.842,0,256s114.842,256,256,256s256-114.842,256-256S397.158,0,256,0z M256,465.455
-                    c-115.493,0-209.455-93.961-209.455-209.455S140.507,46.545,256,46.545S465.455,140.507,465.455,256S371.493,465.455,256,465.455z
-                    "
-                />
-              </g>
-            </g>
-            <g>
-              <g>
-                <path
-                  d="M318.061,139.636c-12.853,0-23.273,10.42-23.273,23.273v186.182c0,12.853,10.42,23.273,23.273,23.273
-                    c12.853,0,23.273-10.42,23.273-23.273V162.909C341.333,150.056,330.913,139.636,318.061,139.636z"
-                />
-              </g>
-            </g>
-            <g>
-              <g>
-                <path
-                  d="M193.939,139.636c-12.853,0-23.273,10.42-23.273,23.273v186.182c0,12.853,10.42,23.273,23.273,23.273
-                    c12.853,0,23.273-10.42,23.273-23.273V162.909C217.212,150.056,206.792,139.636,193.939,139.636z"
-                />
-              </g>
-            </g>
-          </svg>
-        )}
-      </Button>
-    </div>
+    <ProgressBar
+      label={label}
+      value={remainingMs / 1000}
+      max={seconds}
+      valueText={`Nog ${remaining} ${remaining === 1 ? "seconde" : "seconden"}`}
+    />
   );
-});
+};
 
 export default CountdownBar;

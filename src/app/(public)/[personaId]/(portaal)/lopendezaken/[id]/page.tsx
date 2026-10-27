@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import { getDemoZaakById } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
-import StatusTrack from "../_statusTrack";
+import StatusTrack from "@/components/StatusTrack";
 import ZakenTabs from "../_zakenTabs";
 
 const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {

@@ -9,7 +9,7 @@ import {
   BewaarKnop,
   NietRelevantKnop,
   RelevantItem,
-} from "../bewaard/_bewaarActies";
+} from "@/components/save/saveActions";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ShareButton from "@/components/ShareButton";
 import { getDemoBuurtberichten } from "@/demo";

@@ -3,8 +3,8 @@ import { ActionGroup } from "@/components/rhc";
 import ShareButton from "@/components/ShareButton";
 import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 import type { DemoWet } from "@/demo";
-import { BewaarKnop, NietRelevantKnop } from "../bewaard/_bewaarActies";
-import type { BewaarItem } from "../bewaard/_useBewaard";
+import { BewaarKnop, NietRelevantKnop } from "@/components/save/saveActions";
+import type { BewaarItem } from "@/components/save/useSaved";
 
 /** Het item zoals Bewaard en "niet relevant" het opslaan. */
 export const bewaarItemVan = (wet: DemoWet): BewaarItem => ({

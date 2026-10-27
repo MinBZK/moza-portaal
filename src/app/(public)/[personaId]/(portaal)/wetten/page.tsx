@@ -4,7 +4,7 @@ import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoWetten } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
-import { RelevantItem } from "../bewaard/_bewaarActies";
+import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { bewaarItemVan } from "./_wetActies";
 import WetGegevens from "./_wetGegevens";
 

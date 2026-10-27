@@ -1,32 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ActionGroup, Heading, Icon, Paragraph } from "@/components/rhc";
+import { Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoWetById } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
-import {
-  getActieveOrganisatie,
-  getActievePersona,
-} from "@/app/(public)/_persona";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
-import { RelevantItem } from "../../bewaard/_bewaarActies";
+import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
 import WetGegevens from "../_wetGegevens";
 
-const KVK_KOFFIEZAAK = "85234567";
-
 const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const [wet, flags, persona] = await Promise.all([
+  const [wet, flags] = await Promise.all([
     getDemoWetById(id),
     getFlagsFromServerCookie(),
-    getActievePersona(),
   ]);
   if (!wet) notFound();
-
-  // In moza-poc alleen voor de koffiezaak: hulp bij de informatieplicht.
-  const toonAssistentStart =
-    !!wet.assistentVraag &&
-    (await getActieveOrganisatie(persona))?.kvkNummer === KVK_KOFFIEZAAK;
 
   return (
     <>
@@ -47,23 +35,6 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           {wet.alinea.map((tekst) => (
             <Paragraph key={tekst}>{tekst}</Paragraph>
           ))}
-
-          {toonAssistentStart && (
-            <>
-              <Paragraph>
-                De digitale assistent helpt u de melding in één keer goed in te
-                dienen.
-              </Paragraph>
-              <ActionGroup>
-                <Link
-                  href={assistentLink(wet)}
-                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-                >
-                  Digitale assistent starten
-                </Link>
-              </ActionGroup>
-            </>
-          )}
 
           <Heading level={2}>Vragen over deze regeling?</Heading>
           <Paragraph>
