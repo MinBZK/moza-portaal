@@ -13,8 +13,8 @@ const BewaardPage = async () => {
         leeg={
           <Alert type="info" closable>
             <Paragraph>
-              U heeft nog niets bewaard. Gebruik de knop{" "}
-              <strong>Bewaren</strong> bij{" "}
+              U hebt nog niets bewaard. Gebruik de knop <strong>Bewaren</strong>{" "}
+              bij{" "}
               <Link inline href="/subsidies">
                 Subsidies en financiering
               </Link>

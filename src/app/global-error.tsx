@@ -7,12 +7,12 @@ export default function GlobalError(props: ErrorBoundaryProps) {
   return (
     <html lang="nl">
       <head>
-        <title>MijnOverheid Zakelijk - global error</title>
+        <title>Er ging iets mis - MijnOverheid Zakelijk</title>
       </head>
       <body>
         <main>
           <div className="rhc-mox-card">
-            <Heading level={1}>Er is iets misgegaan...</Heading>
+            <Heading level={1}>Er is iets misgegaan…</Heading>
             <ErrorBoundary {...props} />
           </div>
         </main>

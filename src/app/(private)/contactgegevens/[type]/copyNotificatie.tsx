@@ -2,7 +2,7 @@
 
 import { getProfielInformation } from "@/network/profiel/hooks/getProfielInformation/action";
 import { useUpdateOndernemengContactvoorkeur } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
-import { Alert, Button, Heading } from "@/components/rhc";
+import { Alert, Button, Heading, Paragraph } from "@/components/rhc";
 import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
@@ -74,9 +74,10 @@ const CopyNotificatie = ({ kvkNummer }: { kvkNummer: string }) => {
 
   return (
     <Alert type="info">
-      <Heading level={2}>
+      <Heading level={2}>Privécontactgegevens gebruiken</Heading>
+      <Paragraph>
         Wilt u uw privécontactgegevens gebruiken als zakelijke contactgegevens?
-      </Heading>
+      </Paragraph>
       <Button
         appearance="secondary-action-button"
         onClick={updateZakelijkFromPrive}

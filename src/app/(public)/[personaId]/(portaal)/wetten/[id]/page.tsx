@@ -36,13 +36,13 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
             <Paragraph key={tekst}>{tekst}</Paragraph>
           ))}
 
-          <Heading level={2}>Vragen over deze regeling?</Heading>
+          <Heading level={2}>Vragen over deze regel</Heading>
           <Paragraph>
             <Link
               href={assistentLink(wet)}
               className="utrecht-link utrecht-link--html-a"
             >
-              Aan digitale assistent vragen
+              Vraag aan de digitale assistent
             </Link>
             . Bijvoorbeeld: geldt deze regeling voor uw bedrijf, en wat moet u
             dan doen?

@@ -65,7 +65,7 @@ const AanvraagPage = async ({
 
       <div className="rhc-mox-card rhc-mox-row-gap">
         <Alert type="info">
-          U heeft deze aanvraag opgeslagen, maar nog niet ingediend.
+          U hebt deze aanvraag opgeslagen, maar nog niet verstuurd.
           {aanvraag.indienenVoor &&
             ` Dien de aanvraag in voor ${aanvraag.indienenVoor}.`}
         </Alert>

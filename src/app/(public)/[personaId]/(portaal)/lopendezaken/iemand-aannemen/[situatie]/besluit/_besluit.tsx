@@ -149,8 +149,8 @@ const Besluit = ({
       {!bekend ? (
         <Paragraph role="status">
           {fout
-            ? "De bedragen konden niet worden berekend. Laad de pagina opnieuw."
-            : "De bedragen worden berekend…"}
+            ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
+            : "Wij berekenen de bedragen…"}
         </Paragraph>
       ) : !heeftRegel ? (
         <Alert type="warning">

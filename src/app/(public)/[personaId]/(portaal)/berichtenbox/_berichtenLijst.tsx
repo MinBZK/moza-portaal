@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Alert } from "@/components/rhc";
 import {
@@ -58,11 +58,17 @@ type Sortering = { sleutel: SorteerSleutel; oplopend: boolean };
 const meervoud = (aantal: number, enkelvoud: string, meer: string) =>
   `${aantal} ${aantal === 1 ? enkelvoud : meer}`;
 
-const legeTekst: Record<Weergave, string> = {
+const legeTekst: Record<Weergave, ReactNode> = {
   inbox:
-    "Er staan geen berichten in uw inbox. Een nieuw bericht verschijnt hier zodra een organisatie u schrijft.",
-  archief: "U heeft nog geen berichten gearchiveerd.",
-  prullenbak: "Er staan geen berichten in de prullenbak.",
+    "Er staan geen berichten in uw berichtenbox. Een nieuw bericht verschijnt hier zodra een organisatie u schrijft.",
+  archief: (
+    <>
+      U hebt nog geen berichten gearchiveerd. Kies bij een bericht{" "}
+      <strong>Archiveren</strong> om het naar het archief te verplaatsen.
+    </>
+  ),
+  prullenbak:
+    "Er staan geen berichten in de prullenbak. Berichten die u verwijdert, komen hier te staan.",
 };
 
 const SorteerKop = ({
@@ -261,7 +267,7 @@ const BerichtenLijst = ({
     setMeldingTijdelijk(false);
     setMelding(
       naam
-        ? `De berichten van ${naam} staan weer in uw inbox.`
+        ? `De berichten van ${naam} staan weer in uw berichtenbox.`
         : "Uw berichten zijn opgehaald.",
     );
   };
@@ -270,7 +276,7 @@ const BerichtenLijst = ({
   const voortgang = stelsel ? stelsel.voortgang : nagebootst.voortgang;
 
   if (!staat || (stelsel?.bezig && !stelsel.voortgang)) {
-    return <Paragraph role="status">Uw berichten worden geladen.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw berichten op.</Paragraph>;
   }
 
   const naarEerstePagina = () => {
@@ -355,8 +361,8 @@ const BerichtenLijst = ({
     setMeldingTijdelijk(false);
     setMelding(
       actie === "archiveren"
-        ? `Het bericht "${bericht.onderwerp}" staat nu in het archief.`
-        : `Het bericht "${bericht.onderwerp}" staat nu in de prullenbak.`,
+        ? `Het bericht “${bericht.onderwerp}” staat nu in het archief.`
+        : `Het bericht “${bericht.onderwerp}” staat nu in de prullenbak.`,
     );
   };
 
@@ -368,8 +374,8 @@ const BerichtenLijst = ({
     setMeldingNummer((n) => n + 1);
     setMelding(
       wordtOngelezen
-        ? `Het bericht "${bericht.onderwerp}" is gemarkeerd als ongelezen.`
-        : `Het bericht "${bericht.onderwerp}" is gemarkeerd als gelezen.`,
+        ? `U hebt het bericht “${bericht.onderwerp}” gemarkeerd als ongelezen.`
+        : `U hebt het bericht “${bericht.onderwerp}” gemarkeerd als gelezen.`,
     );
   };
 
@@ -387,8 +393,8 @@ const BerichtenLijst = ({
     setMeldingNummer((n) => n + 1);
     setMelding(
       naar
-        ? `Het bericht "${bericht.onderwerp}" staat nu in de map ${naar}.`
-        : `Het bericht "${bericht.onderwerp}" is uit de map ${van} gehaald.`,
+        ? `Het bericht “${bericht.onderwerp}” staat nu in de map ${naar}.`
+        : `U hebt het bericht “${bericht.onderwerp}” uit de map ${van} gehaald.`,
     );
     return null;
   };
@@ -438,7 +444,7 @@ const BerichtenLijst = ({
         <Alert type="warning">
           <Paragraph>
             De <b>{storing.bron.naam}</b> is nu niet bereikbaar. Berichten van
-            andere organisaties staan hieronder.
+            andere organisaties staan hieronder. Probeer het later opnieuw.
           </Paragraph>
           <Button appearance="secondary-action-button" onClick={herstel}>
             {storing.bron.naam} opnieuw proberen
@@ -525,7 +531,7 @@ const BerichtenLijst = ({
         {nieuwBericht && !bezig
           ? `Nieuw bericht van ${nieuwBericht?.afzender}.`
           : bezig
-            ? "We halen uw berichten op bij de organisaties."
+            ? "Wij halen uw berichten op bij de organisaties."
             : zoekterm
               ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
               : voortgang
@@ -537,13 +543,18 @@ const BerichtenLijst = ({
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : gesorteerd.length === 0 ? (
         <Paragraph>
-          {zoekterm
-            ? `Er zijn geen berichten gevonden met "${zoek.trim()}". Probeer een ander woord.`
-            : afzender
-              ? "Er zijn geen berichten van deze afzender. Kies bij Afzender voor Alle afzenders."
-              : map
-                ? "In deze map staan nu geen berichten. Een bericht dat u archiveerde of verwijderde, staat in het archief of in de prullenbak."
-                : legeTekst[weergave]}
+          {zoekterm ? (
+            `Er zijn geen berichten gevonden met “${zoek.trim()}”. Probeer een ander woord.`
+          ) : afzender ? (
+            <>
+              Er zijn geen berichten van deze afzender. Kies bij{" "}
+              <strong>Afzender</strong> voor <strong>Alle afzenders</strong>.
+            </>
+          ) : map ? (
+            "In deze map staan nu geen berichten. Een bericht dat u archiveerde of verwijderde, staat in het archief of in de prullenbak."
+          ) : (
+            legeTekst[weergave]
+          )}
         </Paragraph>
       ) : (
         <>

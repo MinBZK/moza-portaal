@@ -63,19 +63,19 @@ type Props = {
   werkgever: Werkgever;
 };
 
-const Indienen = (props: Props) => {
+const Versturen = (props: Props) => {
   const { staat } = useAannemen();
   // De inhoud rekent met de engine; dat mag pas als de opslag gelezen is.
   if (!staat) return null;
-  return <IndienenInhoud {...props} staat={staat} />;
+  return <VersturenInhoud {...props} staat={staat} />;
 };
 
 /**
  * Per organisatie wat erheen gaat (de panelen van de route), daaronder de
  * taken voor de werknemer, wat vanzelf of via de loonaangifte gaat en wat
- * niet wordt aangevraagd; dan de bevestiging en Indienen.
+ * niet wordt aangevraagd; dan de bevestiging en Versturen.
  */
-const IndienenInhoud = ({
+const VersturenInhoud = ({
   perSituatie,
   werkgever,
   staat,
@@ -97,8 +97,8 @@ const IndienenInhoud = ({
     return (
       <Paragraph role="status">
         {engineFout
-          ? "De aanvraag kan nu niet worden berekend. Laad de pagina opnieuw."
-          : "De aanvraag wordt berekend…"}
+          ? "Wij kunnen de aanvraag nu niet berekenen. Laad de pagina opnieuw."
+          : "Wij berekenen de aanvraag…"}
       </Paragraph>
     );
 
@@ -107,7 +107,7 @@ const IndienenInhoud = ({
       <>
         <Alert type="info">
           <Paragraph>
-            Bij deze antwoorden is er niets in te dienen. Kijk bij de aanvraag
+            Bij deze antwoorden is er niets te versturen. Kijk bij de aanvraag
             wat er verder geldt.
           </Paragraph>
         </Alert>
@@ -135,7 +135,7 @@ const IndienenInhoud = ({
       <>
         <Alert type="info">
           <Paragraph>
-            Deze aanvraag is al ingediend
+            U heeft deze aanvraag al verstuurd op
             {bestaand.verstuurdOp ? ` op ${datumNL(bestaand.verstuurdOp)}` : ""}
             . U volgt de aanvraag in Lopende zaken.
           </Paragraph>
@@ -219,7 +219,7 @@ const IndienenInhoud = ({
       <>
         <Alert type="info">
           <Paragraph>
-            U heeft niets gekozen om in te dienen. Kies bij de aanvraag wat u
+            U hebt niets gekozen om te versturen. Kies bij de aanvraag wat u
             wilt aanvragen, of bekijk wat er zonder aanvraag geldt.
           </Paragraph>
         </Alert>
@@ -263,13 +263,13 @@ const IndienenInhoud = ({
           </Paragraph>
         </Alert>
       )}
-      <Heading level={2}>Wordt ingediend</Heading>
+      <Heading level={2}>Wat u verstuurt</Heading>
       <Loket titel={organisatie} label="Aanvraag" items={ingediend} />
       {taken}
       {vanzelf.length > 0 && (
         <>
           <Heading level={2}>Gaat vanzelf of via de loonaangifte</Heading>
-          <Loket titel="Hoeft u niet in te dienen" items={vanzelf} />
+          <Loket titel="Hoeft u niet te versturen" items={vanzelf} />
         </>
       )}
       {niet.length > 0 && (
@@ -292,14 +292,15 @@ const IndienenInhoud = ({
         aria-labelledby="wat-gebeurt"
       >
         <Heading level={2} id="wat-gebeurt">
-          Wat er gebeurt als u indient
+          Wat er gebeurt als u de aanvraag verstuurt
         </Heading>
         <Paragraph>
           Tot nu toe heeft {uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`}{" "}
-          deze aanvraag niet gezien. Als u indient, stuurt MijnOverheid Zakelijk
-          de aanvraag naar {uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`},
-          die erover beslist. U krijgt een ontvangstbevestiging met zaaknummer
-          in uw Berichtenbox, en u volgt de zaak bij Lopende zaken.
+          deze aanvraag niet gezien. Als u de aanvraag verstuurt, stuurt
+          MijnOverheid Zakelijk de aanvraag naar{" "}
+          {uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`}, die erover
+          beslist. U krijgt een ontvangstbevestiging met zaaknummer in uw
+          berichtenbox, en u volgt de zaak bij Lopende zaken.
         </Paragraph>
         <FormFieldCheckboxOption
           label={`Ik heb alles naar waarheid ingevuld${staat.rol === "namens" ? `, namens ${werkgever.onderneming}` : ""}.`}
@@ -309,13 +310,13 @@ const IndienenInhoud = ({
         />
         <ActionGroup>
           <Button appearance="primary-action-button" onClick={indienen}>
-            Indienen bij {uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}
+            Versturen naar {uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}
           </Button>
           <Link
             href="/personeel/iemand-aannemen/concept-aanvraag"
             className="utrecht-link utrecht-link--html-a"
           >
-            Annuleer
+            Annuleren
           </Link>
         </ActionGroup>
       </section>
@@ -323,4 +324,4 @@ const IndienenInhoud = ({
   );
 };
 
-export default Indienen;
+export default Versturen;

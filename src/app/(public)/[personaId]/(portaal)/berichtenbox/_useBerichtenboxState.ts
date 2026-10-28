@@ -165,11 +165,11 @@ export const telOngelezen = (
   ).length;
 
 export const bewaarFoutTekst: Record<BewaarFout, string> = {
-  vol: "Uw wijziging is niet bewaard. Uw browser heeft geen ruimte meer. Maak ruimte vrij en probeer het opnieuw.",
+  vol: "Uw wijziging is niet opgeslagen. Uw browser heeft geen ruimte meer. Maak ruimte vrij en probeer het opnieuw.",
   geweigerd:
-    "Uw wijziging is niet bewaard. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit of sta opslag toe. Probeer het daarna opnieuw.",
+    "Uw wijziging is niet opgeslagen. Uw browser kan nu niets opslaan voor deze website. Zet privénavigatie uit of sta opslag toe. Probeer het daarna opnieuw.",
   onleesbaar:
-    "Uw wijziging is niet bewaard. Wat u eerder in uw Berichtenbox heeft gedaan, is niet te lezen. Daarom schrijven wij er niets overheen.",
+    "Uw wijziging is niet opgeslagen. Wat u eerder in uw berichtenbox heeft gedaan, is niet te lezen. Wis de gegevens van deze website in uw browser en probeer het opnieuw.",
 };
 
 export const useBerichtenboxState = () => {

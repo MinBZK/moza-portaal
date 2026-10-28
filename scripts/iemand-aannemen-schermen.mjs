@@ -77,8 +77,8 @@ const PAGINAS = [
     },
   ],
   [
-    "05-indienen",
-    "/personeel/iemand-aannemen/indienen",
+    "05-versturen",
+    "/personeel/iemand-aannemen/versturen",
     {
       antwoorden: ANTWOORDEN.gemeente,
       bronnen: alle,

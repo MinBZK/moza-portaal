@@ -26,7 +26,7 @@ const BerichtenOverzicht = ({
           href="/berichteninuwbuurt"
           className="utrecht-link utrecht-link--html-a"
         >
-          Berichten in uw buurt
+          Berichten over uw buurt
         </Link>{" "}
         om hier lokale berichten te zien.
       </Paragraph>
@@ -39,7 +39,7 @@ const BerichtenOverzicht = ({
         items={berichten}
         status={status}
         pageSize={5}
-        emptyMessage="Geen berichten gevonden."
+        emptyMessage="Er zijn geen berichten voor uw postcodes. Voeg eventueel een andere postcode toe."
         getKey={(p) => p.id}
         renderItem={(p) => <PublicatieRow publicatie={p} />}
       />
@@ -70,7 +70,7 @@ function PublicatieRow({ publicatie }: { publicatie: SruPublicatie }) {
       {(date || description) && (
         <Paragraph className="mox-line-clamp">
           {date}
-          {date && description ? " — " : ""}
+          {date && description ? ": " : ""}
           {description}
         </Paragraph>
       )}

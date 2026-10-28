@@ -69,7 +69,7 @@ const ContactvoorkeurenPagina = async ({
       </div>
 
       <div className="rhc-mox-card">
-        <Heading level={2}>Hoe nemen organisaties contact op?</Heading>
+        <Heading level={2}>Hoe organisaties contact opnemen</Heading>
         <Paragraph>
           Hoe wilt u dat overheidsorganisaties standaard contact met u opnemen
           als dat nodig is?

@@ -94,7 +94,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
       {/* Volgens de engine is er wel iets aan te vragen: verwijs naar de aanvraag. */}
       {bekend && !route.overzicht ? (
         <Paragraph>
-          Bij deze antwoorden kunt u een aanvraag indienen.{" "}
+          Bij deze antwoorden kunt u een aanvraag versturen.{" "}
           <Link
             href="/personeel/iemand-aannemen/gegevens"
             className="utrecht-link utrecht-link--html-a"

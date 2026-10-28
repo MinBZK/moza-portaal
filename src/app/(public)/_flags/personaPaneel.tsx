@@ -109,10 +109,10 @@ const PersonaPaneel = ({
     if (/intermediair|gemachtigd/i.test(functies))
       return { rol: "Intermediair", kleur: "oranje" };
     if (!/eigenaar|directeur|vennoot|maat/i.test(functies))
-      return { rol: "Werknemer MKB", kleur: "paars" };
+      return { rol: "Werknemer mkb", kleur: "paars" };
     if (andere.length === 0 && (eerste?.werkzamePersonen ?? 1) <= 1)
-      return { rol: "Zelfstandige (ZZP)", kleur: "hemelblauw" };
-    return { rol: "Directeur MKB", kleur: "rood" };
+      return { rol: "Zzp’er", kleur: "hemelblauw" };
+    return { rol: "Directeur mkb", kleur: "rood" };
   };
 
   const AANTAL = ["geen", "één", "twee", "drie", "vier", "vijf"];
@@ -219,7 +219,7 @@ const PersonaPaneel = ({
                       <a
                         href={`https://cx-moza.rijksapp.dev/personas/persona-${persona.id}.html`}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="external noopener "
                         className="utrecht-link utrecht-link--html-a prototype-persona-card__more"
                       >
                         Meer over {persona.label}

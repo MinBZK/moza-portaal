@@ -23,14 +23,14 @@ const Lijst = ({
 
   if (status === "pending")
     return (
-      <Paragraph role="status">Uw contactgegevens worden geladen.</Paragraph>
+      <Paragraph role="status">Wij halen uw contactgegevens op.</Paragraph>
     );
 
   if (status === "error" || (data.status >= 500 && data.status !== 404))
     return (
       <Alert type="error">
         <Paragraph>
-          Uw contactgegevens kunnen nu niet worden opgehaald. Probeer het later
+          Wij kunnen uw contactgegevens nu niet ophalen. Probeer het later
           opnieuw.
         </Paragraph>
       </Alert>

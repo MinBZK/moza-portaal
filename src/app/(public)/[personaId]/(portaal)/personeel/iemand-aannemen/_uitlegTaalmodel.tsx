@@ -59,9 +59,9 @@ const foutTekst = (status: number, json: unknown) => {
       ? String((json as Record<string, unknown>)[naam])
       : "";
   if (status === 503 || status === 502)
-    return `${veld("fout") || "De Digitale assistent is niet bereikbaar."} Vraag de beheerder van de proeftuin om de Digitale assistent aan te zetten.`;
+    return `${veld("fout") || "De digitale assistent is niet bereikbaar."} Vraag de beheerder van de proeftuin om de digitale assistent aan te zetten.`;
   if (status === 404)
-    return "Deze versie van de Digitale assistent kent de uitleg-dienst nog niet.";
+    return "Uitleg in gewone taal is nu niet beschikbaar. Gebruik de uitleg stap voor stap hierboven.";
   // De catalogusfout van de backend: wat er misging en wat u kunt doen.
   const bericht = veld("message") || veld("fout") || veld("detail");
   return (
@@ -116,7 +116,8 @@ const UitlegTaalmodel = ({
     } catch {
       setStand({
         status: "fout",
-        tekst: "De Digitale assistent is niet bereikbaar.",
+        tekst:
+          "De digitale assistent is niet bereikbaar. Probeer het later opnieuw.",
       });
     }
   };
@@ -137,7 +138,7 @@ const UitlegTaalmodel = ({
       {stand.status !== "klaar" && (
         <Paragraph className="mox-hiring-note">
           Drukt u op deze knop? Dan gaan de gegevens van deze uitkomst en uw
-          KVK-nummer naar de Digitale assistent. Het taalmodel van de Digitale
+          KVK-nummer naar de digitale assistent. Het taalmodel van de digitale
           assistent schrijft daarmee de uitleg.
         </Paragraph>
       )}
@@ -157,7 +158,7 @@ const UitlegTaalmodel = ({
             </Paragraph>
           )}
           <Paragraph className="mox-hiring-note">
-            Geschreven door het taalmodel van de Digitale assistent (
+            Geschreven door het taalmodel van de digitale assistent (
             {stand.mode === "vlam" ? "VLAM" : "Claude"}), alleen uit de
             beslisgraaf van de engine
             {stand.toets.geslaagd &&

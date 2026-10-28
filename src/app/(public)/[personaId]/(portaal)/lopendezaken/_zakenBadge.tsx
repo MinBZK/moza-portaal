@@ -17,10 +17,10 @@ const ZakenBadge = ({ nogInTeDienen = 0 }: { nogInTeDienen?: number }) => {
   // Het getal staat al in de badge; zeg alleen nog waar het over gaat.
   const uitleg =
     nieuw > 0 && nogInTeDienen > 0
-      ? `: ${nieuw} nieuw, ${nogInTeDienen} nog in te dienen`
+      ? `: ${nieuw} nieuw, ${nogInTeDienen} nog te versturen`
       : nieuw > 0
         ? " nieuw"
-        : " nog in te dienen";
+        : " nog te versturen";
   return (
     <span className="mox-badge-holder">
       <NumberBadge>{aantal}</NumberBadge>

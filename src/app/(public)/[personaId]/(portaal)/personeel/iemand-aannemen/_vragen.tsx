@@ -147,7 +147,7 @@ const VragenMetStaat = ({
 
   return (
     <>
-      <Heading level={2}>Wat betekent dit voor {onderneming}?</Heading>
+      <Heading level={2}>Gevolgen voor {onderneming}</Heading>
       <Paragraph className="mox-hiring-note">
         Deze berekening blijft op uw scherm. Er gaat niets naar een
         overheidsorganisatie.
@@ -299,12 +299,12 @@ const VragenMetStaat = ({
         aria-labelledby="aanvragen"
       >
         <Heading level={2} id="aanvragen">
-          Wilt u deze regelingen aanvragen?
+          Regelingen aanvragen
         </Heading>
         <Paragraph>
           Wij vullen de aanvragen voor u in met gegevens die al bij de overheid
           bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
-          beslist zelf of u indient. Tussendoor opslaan kan.
+          beslist zelf of u de aanvraag verstuurt. Tussendoor opslaan kan.
         </Paragraph>
         <ActionGroup>
           {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}

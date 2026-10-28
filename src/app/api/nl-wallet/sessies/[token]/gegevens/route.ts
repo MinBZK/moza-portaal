@@ -22,7 +22,7 @@ export const GET = async (
     );
     if (!inlog)
       return Response.json(
-        { fout: "Geen naam ontvangen uit de NL Wallet" },
+        { fout: "NL Wallet heeft uw naam niet gedeeld. Probeer het opnieuw." },
         { status: 422 },
       );
     await logInMetWallet(inlog);
@@ -30,7 +30,9 @@ export const GET = async (
   } catch (fout) {
     console.error("[nl-wallet]", fout);
     return Response.json(
-      { fout: "De gegevens uit de NL Wallet zijn niet op te halen" },
+      {
+        fout: "Wij kunnen uw gegevens uit NL Wallet niet ophalen. Probeer het opnieuw.",
+      },
       { status: 502 },
     );
   }

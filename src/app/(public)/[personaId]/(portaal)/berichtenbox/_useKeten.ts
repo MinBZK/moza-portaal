@@ -463,7 +463,7 @@ export const verwijderKetenBerichtVoorgoed = async (
 };
 
 const WAT_PER_PLEK: Record<Weergave, string> = {
-  inbox: "terug te zetten in uw inbox",
+  inbox: "terug te zetten naar Ontvangen",
   archief: "te archiveren",
   prullenbak: "naar de prullenbak te verplaatsen",
 };

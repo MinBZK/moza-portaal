@@ -18,7 +18,7 @@ const ArtikelenOverzicht = ({
   <PaginatedList
     items={articles}
     status={status}
-    emptyMessage="Geen resultaten gevonden."
+    emptyMessage="Er zijn geen artikelen bij uw onderwerpen. Kies andere onderwerpen."
     getKey={(a) => a.identifier}
     renderItem={(a) => <ArticleRow article={a} />}
   />

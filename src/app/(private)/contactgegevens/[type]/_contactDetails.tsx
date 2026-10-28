@@ -15,6 +15,7 @@ import {
   FormFieldTextInput,
   Icon,
   LinkButton,
+  VisuallyHidden,
 } from "@/components/rhc";
 import {
   FormFieldSelect,
@@ -56,7 +57,7 @@ const languageName = (value: string) => {
   return language ? languageLabel(language) : value;
 };
 
-const NOT_SAVED = "Dit is niet opgeslagen. Probeer het opnieuw.";
+const NOT_SAVED = "Wij kunnen dit nu niet opslaan. Probeer het opnieuw.";
 
 /**
  * Salutation, website language, e-mail address and phone number as one set:
@@ -208,7 +209,7 @@ export const ContactDetails = ({
           <Alert type="ok" closable onClose={() => setNotice(null)}>
             {notice === "saved"
               ? "Uw gegevens zijn opgeslagen."
-              : "Uw e-mailadres is geverifieerd."}
+              : "Uw e-mailadres is bevestigd."}
           </Alert>
         )}
       </div>
@@ -218,7 +219,7 @@ export const ContactDetails = ({
           <FormFieldTextInput
             label="Aanhef"
             inputRef={salutationRef}
-            placeholder="bv: Dhr. Jansen"
+            placeholder="bv: Geachte R. Vogel"
             value={values.salutation}
             invalid={!!errors.salutation}
             errorMessage={errors.salutation}
@@ -282,13 +283,9 @@ export const ContactDetails = ({
       ) : (
         <>
           <div ref={editButtonRef}>
-            <LinkButton
-              inline
-              aria-label="Contactgegevens aanpassen"
-              onClick={startEditing}
-            >
+            <LinkButton inline onClick={startEditing}>
               <Icon icon="bewerken" />
-              Aanpassen
+              Aanpassen <VisuallyHidden>contactgegevens</VisuallyHidden>
             </LinkButton>
           </div>
           <DataSummary appearance="row">

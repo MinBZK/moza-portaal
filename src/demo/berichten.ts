@@ -112,7 +112,7 @@ const actiesVoor = (
       "Betaal het bedrag op tijd. Bent u het niet eens met de aanslag? Dien dan bezwaar in.",
       [
         { label: "Direct betalen", primair: true },
-        { label: "Bezwaar indienen" },
+        { label: "Bezwaar maken" },
         { label: "Uitstel van betaling aanvragen" },
       ],
     );
@@ -160,12 +160,12 @@ const actiesVoor = (
     );
   if (heeft("wwft", "cliëntenonderzoek"))
     return res("Lees wat het verscherpte cliëntenonderzoek voor u betekent.", [
-      { label: "Meer informatie", primair: true },
+      { label: "Lees wat het cliëntenonderzoek betekent", primair: true },
     ]);
   if (heeft("avg", "cliëntgegevens", "persoonsgegevens", "datalek"))
     return res(
       "Lees hoe u persoonsgegevens veilig verwerkt en wat u moet doen.",
-      [{ label: "Meer informatie", primair: true }],
+      [{ label: "Lees hoe u persoonsgegevens beschermt", primair: true }],
     );
   if (heeft("subsidie", "wbso", "mit", "slim", "voucher", "s&o"))
     return res(
@@ -180,7 +180,7 @@ const actiesVoor = (
       "Bekijk het besluit. Bent u het er niet mee eens? Dien dan bezwaar in.",
       [
         { label: "Besluit bekijken", primair: true },
-        { label: "Bezwaar indienen" },
+        { label: "Bezwaar maken" },
       ],
     );
   if (heeft("aanvraag", "verwerkt", "behandeling"))
@@ -252,7 +252,7 @@ const belastingdienst: DemoBericht[] = [
   {
     onderwerp: "Aangifte vennootschapsbelasting 2025 beschikbaar",
     actiesUitleg:
-      "Doe de aangifte online. U heeft hiervoor de jaarcijfers van uw onderneming nodig.",
+      "Doe de aangifte online. U hebt hiervoor de jaarcijfers van uw onderneming nodig.",
     acties: [
       { label: "Aangifte doen", primair: true },
       { label: "Uitstel aanvragen" },
@@ -279,7 +279,7 @@ const belastingdienst: DemoBericht[] = [
     isOngelezen: true,
     heeftBijlage: true,
     variantCInhoud: [
-      "U heeft over het eerste kwartaal van 2026 te weinig btw betaald. Daarom legt de Belastingdienst een naheffingsaanslag op van € 1.284,00.",
+      "U hebt over het eerste kwartaal van 2026 te weinig btw betaald. Daarom legt de Belastingdienst een naheffingsaanslag op van € 1.284,00.",
       "Betaal dit bedrag voor 15 mei 2026. Betaalt u niet op tijd? Dan komt er rente bij en kunt u een boete krijgen.",
       "Bent u het niet eens met deze aanslag? Dan kunt u binnen 6 weken na de datum van dit bericht bezwaar maken.",
     ],
@@ -310,7 +310,7 @@ const belastingdienst: DemoBericht[] = [
     isOngelezen: false,
     heeftBijlage: true,
     variantCInhoud: [
-      "U heeft de aangifte loonheffingen over de laatste periode nog niet gedaan. Doe deze aangifte zo snel mogelijk.",
+      "U hebt de aangifte loonheffingen over de laatste periode nog niet gedaan. Doe deze aangifte zo snel mogelijk.",
       "Doe de aangifte voor 30 april 2026. Doet u dit niet op tijd? Dan kunt u een boete krijgen.",
     ],
   },

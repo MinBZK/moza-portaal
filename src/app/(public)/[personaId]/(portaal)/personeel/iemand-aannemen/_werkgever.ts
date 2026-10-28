@@ -54,12 +54,12 @@ export const datumNL = (iso: string) => {
   return `${Number(m[3])} ${MAANDEN[Number(m[2]) - 1]} ${Number(m[1])}`;
 };
 
-/** Eurocenten uit de engine als bedrag: 89740.8 wordt "€ 897,41". */
+/** Eurocenten uit de engine als bedrag: 89740.8 wordt "€897,41". */
 export const euro = (eurocent: unknown) => {
   const n = Math.round(Number(eurocent)) / 100;
   return Number.isNaN(n)
     ? ""
-    : `€ ${n.toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    : `€${n.toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 /** Een engine-waarde leesbaar: bedragen, ja/nee, of de tekst. */

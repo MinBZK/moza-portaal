@@ -16,11 +16,11 @@ const WERKGEVERSLASTEN = 0.3;
 const LKV_PER_UUR = 3.05;
 const LKV_PER_JAAR = 6100;
 
-const euro = new Intl.NumberFormat("nl-NL", {
-  style: "currency",
-  currency: "EUR",
-  maximumFractionDigits: 0,
-});
+/** Bedrag zoals de schrijfwijzer het wil: euroteken direct voor het getal, €1.234. */
+const euro = {
+  format: (n: number) =>
+    `€${n.toLocaleString("nl-NL", { maximumFractionDigits: 0 })}`,
+};
 
 /** "Wat kost het?": rekent mee als de gebruiker de uren aanpast. */
 const KostenBerekening = ({
@@ -64,7 +64,7 @@ const KostenBerekening = ({
           />
           <DataSummaryItem
             itemKey="Loonkostenvoordeel"
-            itemValue={`− ${euro.format(voordeel)}`}
+            itemValue={`−${euro.format(voordeel)}`}
           />
           <DataSummaryItem
             itemKey="Kosten per maand"

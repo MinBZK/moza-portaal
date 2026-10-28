@@ -16,7 +16,8 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
       })
     : "";
 
-  const externalUrl = isReadableUrl(publicatie.preferredUrl ?? "")
+  const hasPreferredLink = isReadableUrl(publicatie.preferredUrl ?? "");
+  const externalUrl = hasPreferredLink
     ? (publicatie.preferredUrl ?? "")
     : publicatie.bronUrl || "";
   const hasExternalLink = !!externalUrl;
@@ -33,7 +34,7 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
       {(date || description) && (
         <Paragraph>
           {date}
-          {date && description ? " — " : ""}
+          {date && description ? ": " : ""}
           {description}
         </Paragraph>
       )}
@@ -42,11 +43,13 @@ const PublicatieCard = ({ publicatie }: { publicatie: SruPublicatie }) => {
           <a
             href={externalUrl}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="external noopener noreferrer"
             className="utrecht-link utrecht-link--html-a"
           >
             <Icon icon="externe-link" />
-            Op officielebekendmakingen.nl openen
+            {hasPreferredLink
+              ? "Op officielebekendmakingen.nl bekijken"
+              : "Op de website van de gemeente bekijken"}
             <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
           </a>
         </Paragraph>

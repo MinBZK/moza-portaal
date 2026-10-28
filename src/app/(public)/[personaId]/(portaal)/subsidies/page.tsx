@@ -46,21 +46,25 @@ const SubsidiesPage = async ({
       <Alert type="info" closable>
         <Paragraph>
           Subsidies en financiering waar u mogelijk voor in aanmerking komt,
-          geselecteerd op basis van uw bedrijfsprofiel. Door items te bewaren of
-          als niet relevant te markeren helpt u ons de aanbevelingen te
+          geselecteerd op basis van uw bedrijfsgegevens. Door items te bewaren
+          of als niet relevant te markeren helpt u ons de aanbevelingen te
           verbeteren.
         </Paragraph>
       </Alert>
 
       {subsidies.length === 0 && (
         <Paragraph>
-          Er zijn nu geen subsidies of financieringen voor uw bedrijf.
+          Er zijn nu geen subsidies of financieringen voor uw bedrijf. Vraag de
+          digitale assistent welke regelingen bij uw bedrijf passen.
         </Paragraph>
       )}
 
       {opPagina.map((subsidie) => (
         <RelevantItem key={subsidie.id} item={bewaarItemVan(subsidie)}>
-          <article className="rhc-mox-card" aria-labelledby={`kop-${subsidie.id}`}>
+          <article
+            className="rhc-mox-card"
+            aria-labelledby={`kop-${subsidie.id}`}
+          >
             <Heading level={2} id={`kop-${subsidie.id}`}>
               <Link
                 href={`/subsidies/${subsidie.id}`}

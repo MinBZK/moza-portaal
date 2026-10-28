@@ -22,7 +22,7 @@ const TICK_MS = 100;
 const CountdownBar = ({
   onComplete,
   seconds = 60,
-  label = "Tijd tot de volgende update",
+  label = "Tijd tot de lijst opnieuw laadt",
   ref,
 }: {
   onComplete: () => void;

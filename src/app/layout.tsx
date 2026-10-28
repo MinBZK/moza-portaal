@@ -16,8 +16,8 @@ import { SkipLink } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
 
 export const metadata: Metadata = {
-  title: "Mijn overheid zakelijk",
-  description: "mijn overheid zakelijk",
+  title: "MijnOverheid Zakelijk",
+  description: "MijnOverheid Zakelijk",
 };
 
 export default async function RootLayout({
@@ -30,7 +30,7 @@ export default async function RootLayout({
   const huisstijl = flags.mox_nieuweHuisstijl ? "" : " mox-current-brand";
 
   return (
-    <html lang="en">
+    <html lang="nl">
       <body className={`rhc-theme mox-theme${huisstijl}`}>
         <SkipLink href="#hoofd-inhoud">Naar de hoofdinhoud</SkipLink>
         {children}

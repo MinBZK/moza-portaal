@@ -36,9 +36,7 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
 
   return (
     <>
-      <Heading level={1}>
-        Opmerking aan zwangerschapsverlofaanvraag toevoegen
-      </Heading>
+      <Heading level={1}>Opmerking bij melding zwangerschapsverlof</Heading>
       <div className="rhc-mox-card">
         <form
           onSubmit={(e) => {
@@ -54,7 +52,7 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
             <Button type="submit" appearance="primary-action-button">
-              Opslaan
+              Versturen
             </Button>
           </form.Subscribe>
         </form>

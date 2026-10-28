@@ -17,12 +17,12 @@ const BewaardeAanvragen = ({
       <Alert key={aanvraag.id} type="info">
         <Paragraph>
           Uw antwoorden van {aanvraag.bewaardVan} voor de aanvraag{" "}
-          <strong>{aanvraag.titel}</strong> zijn bewaard.{" "}
+          <strong>{aanvraag.titel}</strong> zijn opgeslagen.{" "}
           <Link
             href={`/lopendezaken/aanvragen/${aanvraag.id}`}
             className="utrecht-link utrecht-link--html-a"
           >
-            U kunt hier verder gaan met het invullen van de aanvraag
+            Ga verder met uw aanvraag
           </Link>
           .
         </Paragraph>

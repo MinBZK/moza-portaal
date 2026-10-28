@@ -71,7 +71,7 @@ const OphaalVoortgang = ({ voortgang }: { voortgang: Voortgang | null }) => {
 
   return (
     <Alert type="info">
-      <Paragraph>We halen uw berichten op bij de organisaties.</Paragraph>
+      <Paragraph>Wij halen uw berichten op bij de organisaties.</Paragraph>
       <Paragraph>
         <b>{klaar}</b> van <b>{bronnen}</b>{" "}
         {bronnen === 1 ? "organisatie" : "organisaties"}, <b>{gevonden}</b>{" "}

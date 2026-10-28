@@ -115,8 +115,8 @@ const Bronnen = ({
         </Fieldset>
         {staat?.rol === "namens" && (
           <Paragraph className="mox-hiring-note">
-            U kunt de aanvraag invullen. De eigenaar moet hem ondertekenen
-            voordat hij wordt ingediend.
+            U kunt de aanvraag invullen. De eigenaar ondertekent de aanvraag
+            voordat u die verstuurt.
           </Paragraph>
         )}
       </section>
@@ -207,7 +207,7 @@ const Bronnen = ({
       <Heading level={2}>Wat de overheid al weet</Heading>
       {wachtend ? (
         <Paragraph>
-          We hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
+          Wij hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
           toestemming gevraagd. Zodra die er is, halen we op wat de overheid al
           weet en ziet u het hier. In dit prototype komt die toestemming niet.
         </Paragraph>
@@ -287,7 +287,7 @@ const Bronnen = ({
             : !gekozen
               ? "Nog geen kandidaat gekozen."
               : klaar
-                ? "Alle bronnen bevestigd. We kunnen de aanvraag voor u invullen."
+                ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
                 : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
         <ActionGroup>

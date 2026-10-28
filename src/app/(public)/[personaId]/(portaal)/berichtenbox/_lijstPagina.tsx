@@ -14,7 +14,7 @@ export type LijstPaginaProps = {
 /** Geen storing maar een antwoord: hier valt niets op te halen. */
 export const stelselTekst = {
   nietBekend:
-    "Dit testaccount is niet bekend bij het Federatief Berichtenstelsel. Daarom zijn er geen berichten op te halen. Kies een ander testaccount om de Berichtenbox met voorbeeldberichten te bekijken.",
+    "Dit testaccount is niet bekend bij het Federatief Berichtenstelsel. Daarom zijn er geen berichten op te halen. Kies een ander testaccount om de berichtenbox met voorbeeldberichten te bekijken.",
   onbereikbaar:
     "Dit testaccount haalt zijn berichten uit het Federatief Berichtenstelsel. Dat stelsel is nu niet bereikbaar. Ververs de pagina om het opnieuw te proberen, of kies een ander testaccount.",
 };

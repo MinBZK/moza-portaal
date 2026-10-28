@@ -46,13 +46,13 @@ const SubsidiePage = async ({
             <Paragraph key={tekst}>{tekst}</Paragraph>
           ))}
 
-          <Heading level={2}>Vragen over deze regeling?</Heading>
+          <Heading level={2}>Vragen over deze subsidie</Heading>
           <Paragraph>
             <Link
               href={assistentLink(subsidie)}
               className="utrecht-link utrecht-link--html-a"
             >
-              Aan digitale assistent vragen
+              Vraag aan de digitale assistent
             </Link>
             . Bijvoorbeeld: komt u in aanmerking voor deze subsidie, en wat moet
             u doen vóór de aanvraagperiode sluit?

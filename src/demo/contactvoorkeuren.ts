@@ -31,7 +31,7 @@ export const getDemoProfielIdentiteit = async (
 
 const contactgegevens: DemoGegeven[] = [
   { label: "E-mailadres", waarde: "info@bloombv.nl" },
-  { label: "Telefoonnummer", waarde: "(+31) (0)6 12 34 56 78" },
+  { label: "Telefoonnummer", waarde: "06 12 34 56 78" },
 ];
 
 const organisaties: DemoOrganisatie[] = [
