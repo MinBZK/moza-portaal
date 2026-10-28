@@ -97,7 +97,7 @@ const Dashboard = async () => {
       <Heading level={1}>Welkom gemachtigde voor KVK-nummer {kvk}</Heading>
       <div className="rhc-mox-card">
         <Heading level={2}>Recente berichten in uw Berichtenbox</Heading>
-        <div className="mox-table-container">
+        <div className="rhc-mox-table-container">
           <Table>
             <TableBody>
               <BerichtenboxTableRow index={0} />

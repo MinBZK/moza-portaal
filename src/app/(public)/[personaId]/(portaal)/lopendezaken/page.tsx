@@ -51,7 +51,7 @@ const LopendeZakenPage = async () => {
             {concepten.some((aanvraag) => aanvraag.indienenVoor) &&
               " Dien ze in voor de uiterste datum."}
           </Paragraph>
-          <div className="mox-table-container">
+          <div className="rhc-mox-table-container">
             <Table>
               <TableHeader>
                 <TableRow>

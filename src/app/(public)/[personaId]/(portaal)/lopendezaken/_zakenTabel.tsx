@@ -46,7 +46,7 @@ const ZakenTabel = ({
   zaken: DemoZaak[];
   soort: DemoZaak["soort"];
 }) => (
-  <div className="mox-table-container">
+  <div className="rhc-mox-table-container">
     <Table>
       <TableHeader>
         <TableRow>

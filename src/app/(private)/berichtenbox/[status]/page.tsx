@@ -99,7 +99,7 @@ const BerichtenboxPage = async ({
                 ))}
               </ul>
             </nav>
-            <div className="mox-table-container">
+            <div className="rhc-mox-table-container">
               <Table>
                 <TableHeader>
                   <TableRow>

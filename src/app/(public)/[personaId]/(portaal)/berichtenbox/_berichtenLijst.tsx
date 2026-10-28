@@ -547,7 +547,7 @@ const BerichtenLijst = ({
         </Paragraph>
       ) : (
         <>
-          <div className="mox-table-container">
+          <div className="rhc-mox-table-container">
             <Table>
               <caption className="rhc-visually-hidden">
                 Berichten, pagina {huidigePagina} van {totaalPaginas}

@@ -51,4 +51,7 @@ output
 .claude/settings.local.json
 
 # Design token docs
-/docs
+/docs/*
+
+# Behalve de schrijfwijzer, waar CLAUDE.md naar verwijst
+!/docs/schrijfwijzer.md

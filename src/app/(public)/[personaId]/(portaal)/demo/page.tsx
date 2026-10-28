@@ -4,6 +4,7 @@
 // their options and a live example. Prototype page: delete the folder
 // (demo) when it is no longer needed; nothing else links to it.
 import {
+  useEffect,
   useOptimistic,
   useRef,
   useState,
@@ -17,10 +18,14 @@ import {
   AccordionProvider,
   ActionGroup,
   Alert,
+  BreadcrumbNav,
+  BreadcrumbNavLink,
+  BreadcrumbNavSeparator,
   Button,
   DataSummary,
   DataSummaryItem,
   Fieldset,
+  Footer,
   FormFieldCheckboxOption,
   FormFieldRadio,
   FormFieldTextInput,
@@ -30,11 +35,19 @@ import {
   LinkButton,
   LinkList,
   LinkListLink,
+  Logo,
+  NavBar,
+  NavigationList,
+  NavigationListItem,
   NumberBadge,
   OrderedList,
   OrderedListItem,
   Paragraph,
   Separator,
+  SideNav,
+  SideNavItem,
+  SideNavLink,
+  SideNavList,
   Table,
   TableBody,
   TableCell,
@@ -54,6 +67,7 @@ import {
 import BarGraph from "@/components/BarGraph";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import CountdownBar from "@/components/CountdownBar";
+import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
 import ShareButton from "@/components/ShareButton";
@@ -63,6 +77,7 @@ import StickyInfoBox from "@/components/StickyInfoBox";
 import { BewaarKnop, NietRelevantKnop } from "@/components/save/saveActions";
 import type { BewaarItem } from "@/components/save/useSaved";
 import NextLink from "next/link";
+import Image from "next/image";
 import Switch from "@/components/Switch";
 import TextBadge from "@/components/TextBadge";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
@@ -92,13 +107,17 @@ type Option = [
 type Entry = {
   name: string;
   file: string;
-  description: string;
+  /**
+   * Text, or JSX to mark words up, such as <code>. An array gives one
+   * paragraph per item.
+   */
+  description: ReactNode | ReactNode[];
   options: Option[];
   example?: ReactNode;
 };
 
 const Options = ({ options }: { options: Option[] }) => (
-  <div className="mox-table-container">
+  <div className="rhc-mox-table-container">
     <Table>
       <TableHeader>
         <TableRow>
@@ -236,7 +255,7 @@ const DemoTable = () => {
   });
 
   return (
-    <div className="mox-table-container">
+    <div className="rhc-mox-table-container">
       <Table>
         <TableHeader>
           <TableRow>
@@ -414,8 +433,13 @@ const card = ({ name, file, description, options, example }: Entry) => (
   <section key={name} className="rhc-mox-card" aria-label={name}>
     <Heading level={3}>{name}</Heading>
     <Paragraph>
-      {description} <code>{file}</code>
+      <code>{file}</code>
     </Paragraph>
+    {(Array.isArray(description) ? description : [description]).map(
+      (text, index) => (
+        <Paragraph key={index}>{text}</Paragraph>
+      ),
+    )}
     <Options options={options} />
     {example && (
       <>
@@ -427,7 +451,7 @@ const card = ({ name, file, description, options, example }: Entry) => (
 );
 
 const SimpleTable = ({ rows }: { rows: [string, string][] }) => (
-  <div className="mox-table-container">
+  <div className="rhc-mox-table-container">
     <Table>
       <TableHeader>
         <TableRow>
@@ -486,7 +510,7 @@ const DEMO_INBOX: DemoBericht[] = [
 const DemoMessageRows = () => {
   const [flagged, setFlagged] = useState<string[]>(["demo-2"]);
   return (
-    <div className="mox-table-container">
+    <div className="rhc-mox-table-container">
       <Table>
         <TableHeader>
           <TableRow>
@@ -563,17 +587,17 @@ const berichtenboxEntries: Entry[] = [
     description:
       "Een bericht als tabelrij: markeren, afzender, onderwerp, datum en bijlage. De link van het onderwerp beslaat de hele rij (rhc-mox-row-linked). Ongelezen: vet met een stip (rhc-mox-unread, rhc-mox-status-unread).",
     options: [
-      ["bericht", "DemoBericht", "", "Het bericht."],
-      ["ongelezen", "boolean", "", "Vet, met een stip en de tekst Ongelezen."],
+      ["bericht", "DemoBericht", "", "Het bericht"],
+      ["ongelezen", "boolean", "", "Vet, met een stip en de tekst Ongelezen"],
       [
         "gemarkeerd",
         "boolean",
         "",
-        "Gevulde vlag; de knop krijgt aria-pressed.",
+        "Gevulde vlag; de knop krijgt aria-pressed",
       ],
-      ["nieuw", "boolean", "false", "Net binnengekomen: licht kort op."],
-      ["onMarkeer", "() => void", "", "Klik op de vlag (rhc-mox-button-mark)."],
-      ["children", "ReactNode", "", "Extra cellen achteraan, zoals acties."],
+      ["nieuw", "boolean", "false", "Net binnengekomen: licht kort op"],
+      ["onMarkeer", "() => void", "", "Klik op de vlag (rhc-mox-button-mark)"],
+      ["children", "ReactNode", "", "Extra cellen achteraan, zoals acties"],
     ],
     example: <DemoMessageRows />,
   },
@@ -583,12 +607,12 @@ const berichtenboxEntries: Entry[] = [
     description:
       "Zoekveld en keuzelijst naast elkaar boven de inbox. Daaronder het aantal berichten (rhc-mox-notice-amount-inbox).",
     options: [
-      ["rhc-mox-inbox-filters", "class", "", "Zet de velden naast elkaar."],
+      ["rhc-mox-inbox-filters", "class", "", "Zet de velden naast elkaar"],
       [
         "rhc-mox-notice-amount-inbox",
         "class",
         "",
-        "Regel met het aantal berichten en organisaties.",
+        "Regel met het aantal berichten en organisaties",
       ],
     ],
     example: (
@@ -617,7 +641,7 @@ const berichtenboxEntries: Entry[] = [
         "voortgang",
         "{ bronnen, klaar, gevonden } | null",
         "",
-        "Aantal organisaties, hoeveel er klaar zijn en hoeveel berichten er gevonden zijn.",
+        "Aantal organisaties, hoeveel er klaar zijn en hoeveel berichten er gevonden zijn",
       ],
     ],
     example: (
@@ -634,7 +658,7 @@ const berichtenboxEntries: Entry[] = [
         "rhc-mox-message-actions",
         "class",
         "",
-        "Kader om kop, uitleg en knoppen.",
+        "Kader om kop, uitleg en knoppen",
       ],
     ],
     example: (
@@ -659,19 +683,19 @@ const berichtenboxEntries: Entry[] = [
     name: "MapDialog",
     file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_mapDialog.tsx",
     description:
-      "Modale dialog om een map te kiezen of een nieuwe map te maken. Na sluiten gaat de focus terug naar de knop.",
+      "Modale dialog om een map te kiezen of een nieuwe map te maken. Na het sluiten gaat de focus terug naar de knop.",
     options: [
-      ["open", "boolean", "", "Toon de dialog."],
-      ["mappen", "string[]", "", "Bestaande mappen."],
-      ["huidige", "string | null", "", "De map waarin het bericht nu staat."],
-      ["opener", "HTMLElement | null", "", "Krijgt de focus na sluiten."],
+      ["open", "boolean", "", "Toon de dialog"],
+      ["mappen", "string[]", "", "Bestaande mappen"],
+      ["huidige", "string | null", "", "De map waarin het bericht nu staat"],
+      ["opener", "HTMLElement | null", "", "Krijgt de focus na het sluiten"],
       [
         "onKies",
         "(map) => string | null | Promise",
         "",
-        "Geeft null als het lukte, anders een foutmelding.",
+        "Geeft null als het lukte, anders een foutmelding",
       ],
-      ["onSluit", "() => void", "", "Na sluiten."],
+      ["onSluit", "() => void", "", "Na het sluiten"],
     ],
     example: <DemoFolderDialog />,
   },
@@ -681,7 +705,7 @@ const berichtenboxEntries: Entry[] = [
     description:
       "Het bericht als pdf in de pagina, met links om het te downloaden of als tekst te lezen (variant B).",
     options: [
-      ["pdf", "string", "", "Adres van de pdf."],
+      ["pdf", "string", "", "Adres van de pdf"],
       [
         "tekst",
         "string",
@@ -802,10 +826,10 @@ const assistantEntries: Entry[] = [
         "item",
         "Item",
         "",
-        "{ opnieuw }: met opnieuw ook de knop 'Uitleg opnieuw tonen'.",
+        "{ opnieuw }: met opnieuw ook de knop 'Uitleg opnieuw tonen'",
       ],
-      ["onVraag", "(vraag) => void", "", "Klik op een voorbeeldvraag."],
-      ["onUitleg", "() => void", "", "Klik op 'Uitleg opnieuw tonen'."],
+      ["onVraag", "(vraag) => void", "", "Klik op een voorbeeldvraag"],
+      ["onUitleg", "() => void", "", "Klik op 'Uitleg opnieuw tonen'"],
     ],
     example: (
       <ChatRule>
@@ -833,10 +857,10 @@ const assistantEntries: Entry[] = [
         "drempel",
         "{ kwh, gas } | null",
         "",
-        "Grens voor het energieverbruik na delen.",
+        "Grens voor het energieverbruik na delen",
       ],
-      ["onDelen", "() => void", "", "Klik op Delen."],
-      ["onNietDelen", "() => void", "", "Klik op Niet delen."],
+      ["onDelen", "() => void", "", "Klik op Delen"],
+      ["onNietDelen", "() => void", "", "Klik op Niet delen"],
     ],
     example: (
       <Deelverzoek
@@ -861,21 +885,21 @@ const assistantEntries: Entry[] = [
     description:
       "Het geheel: berichten in een log (role=log, aria-live) dat scrolt, het invoerveld met knoppen en de uitleg over AI eronder.",
     options: [
-      ["rhc-mox-chat", "class", "", "Kaart om het hele gesprek."],
+      ["rhc-mox-chat", "class", "", "Kaart om het hele gesprek"],
       [
         "rhc-mox-chat-messages",
         "class",
         "",
-        "Lijst met berichten; scrolt bij een lang gesprek.",
+        "Lijst met berichten; scrolt bij een lang gesprek",
       ],
       [
         "rhc-mox-chat-rule",
         "class",
         "",
-        "Eén bericht; zet een vraag rechts en een antwoord links.",
+        "Eén bericht; zet een vraag rechts en een antwoord links",
       ],
-      ["rhc-mox-chat-input", "class", "", "Invoerveld met knoppen."],
-      ["rhc-mox-chat-disclaimer", "class", "", "Uitleg over AI, met icoon."],
+      ["rhc-mox-chat-input", "class", "", "Invoerveld met knoppen"],
+      ["rhc-mox-chat-disclaimer", "class", "", "Uitleg over AI, met icoon"],
     ],
     example: (
       <div className="rhc-mox-chat">
@@ -940,6 +964,380 @@ const assistantEntries: Entry[] = [
   },
 ];
 
+/**
+ * Examples of the layout parts. Not the components from src/layouts
+ * themselves: those log out, switch organisation and use fixed ids, and
+ * would then exist twice on this page.
+ */
+const layoutEntries: Entry[] = [
+  {
+    name: "Header",
+    file: "src/layouts/header/index.tsx",
+    description: [
+      "Kop van elke pagina met het logo, de naam van het portaal, de taalkeuze, de ingelogde persoon en optie om uit te loggen (in ingelogde staat).",
+      "Is iemand onderdeel van meer organisaties, dan opent de naam een Dropdown om te wisselen. Op een smal scherm staan taal, naam en Uitloggen in het menu.",
+    ],
+    options: [
+      [
+        "signedIn",
+        "boolean",
+        "true",
+        "Ingelogd: naam en Uitloggen, anders de inlogknop",
+      ],
+      ["naam", "string", "Robin Vogel", "Naam van de ingelogde persoon"],
+      [
+        "organisaties",
+        "{ id, handelsnaam }[]",
+        "[]",
+        "Meer dan één: een keuzemenu om te wisselen",
+      ],
+      [
+        "actieveOrganisatieId / actieveOrganisatieNaam",
+        "string",
+        "–",
+        "De gekozen organisatie, naast de naam",
+      ],
+      ["metMenu", "boolean", "false", "Toont de knop Menu op een smal scherm"],
+    ],
+    example: (
+      <header className="utrecht-page-header">
+        <div className="utrecht-page-header__content">
+          <Logo organisation="MijnOverheid Zakelijk" subtitle="">
+            <Image
+              src="/beeldmerk-rijksoverheid.svg"
+              alt=""
+              width={50}
+              height={100}
+              unoptimized
+            />
+          </Logo>
+          <NavBar
+            headingItem={{
+              href: "/",
+              id: "demo-header-heading",
+              label: "MijnOverheid Zakelijk",
+            }}
+            items={[]}
+          >
+            <ul className="rhc-nav-bar__list">
+              <li className="rhc-nav-bar__item">
+                <Dropdown
+                  align="end"
+                  triggerClassName="rhc-nav-bar__link rhc-mox-header-organizations__trigger"
+                  triggerLabel="Bloemenkwekerij, organisatie kiezen"
+                  trigger={
+                    <>
+                      <Icon icon="user" />
+                      <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
+                        <span>Robin Vogel</span>
+                        <span className="mox-header-organization">
+                          Bloemenkwekerij
+                        </span>
+                      </span>
+                      <Icon icon="chevron-down" />
+                    </>
+                  }
+                >
+                  <DropdownItem selected>Bloemenkwekerij</DropdownItem>
+                  <DropdownItem selected={false}>Tuincentrum</DropdownItem>
+                </Dropdown>
+              </li>
+              <li className="rhc-nav-bar__item">
+                <NextLink
+                  href="/demo"
+                  className="rhc-nav-bar__link mox-logout-button"
+                >
+                  <Icon icon="uitloggen" />
+                  <span className="rhc-nav-bar__label">Uitloggen</span>
+                </NextLink>
+              </li>
+            </ul>
+          </NavBar>
+        </div>
+      </header>
+    ),
+  },
+  {
+    name: "Navigatie",
+    file: "src/layouts/navigation/index.tsx",
+    description: [
+      'Het menu aan de linkerkant. Groepen links staan in een eigen <SideNavList>, met een <Separator> ertussen. De link van de huidige pagina wordt voorzien van aria-current="page".',
+      "Op een smal scherm is het menu dicht en opent de knop Menu in de header het.",
+    ],
+    options: [
+      [
+        "flags",
+        "FeatureFlags",
+        "alles aan",
+        "Pagina's die in het Flags-paneel uit staan, verdwijnen uit het menu",
+      ],
+      [
+        "berichtenboxBadge / lopendeZakenBadge",
+        "ReactNode",
+        "–",
+        "Teller achter de link, zoals het aantal ongelezen berichten",
+      ],
+      [
+        "SideNavLink current",
+        "boolean",
+        "false",
+        "De huidige pagina, of een pagina eronder",
+      ],
+      [
+        "SideNavLink icon",
+        "RHC-icoon",
+        "–",
+        "Icoon voor de tekst; een eigen icoon zet je als kind",
+      ],
+    ],
+    example: (
+      <SideNav aria-label="Voorbeeld van het menu">
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/" icon="home">
+              Home
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+        <Separator />
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/bedrijfsgegevens" icon="briefcase">
+              Bedrijfsgegevens
+            </SideNavLink>
+          </SideNavItem>
+          <SideNavItem>
+            <SideNavLink href="/berichtenbox" icon="inbox" current>
+              Berichtenbox
+              <span className="mox-badge-holder">
+                <NumberBadge>3</NumberBadge>
+                <VisuallyHidden>ongelezen</VisuallyHidden>
+              </span>
+            </SideNavLink>
+          </SideNavItem>
+          <SideNavItem>
+            <SideNavLink href="/lopendezaken" icon="activiteit">
+              Lopende zaken
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+        <Separator />
+        <SideNavList>
+          <SideNavItem>
+            <SideNavLink href="/contactvoorkeuren" icon="instellingen">
+              Contactvoorkeuren
+            </SideNavLink>
+          </SideNavItem>
+        </SideNavList>
+      </SideNav>
+    ),
+  },
+  {
+    name: "Breadcrumb",
+    file: "src/layouts/breadcrumb/index.tsx",
+    description: [
+      "Kruimelpad boven de inhoud. Het maakt de ‘kruimels’ uit het pad van de pagina; de namen staan in <breadcrumbLabels>. Op de homepage is geen kruimelpad aanwezig.",
+      <>
+        Een pagina met een eigen naam, zoals een bericht, zet die met{" "}
+        <code>HuidigeKruimel</code> uit{" "}
+        <code>src/layouts/breadcrumb/huidigeKruimel.tsx</code>.
+      </>,
+    ],
+    options: [
+      [
+        "breadcrumbLabels",
+        "Record<string, string>",
+        "–",
+        "Naam per deel van het pad, zoals berichtenbox: Berichtenbox",
+      ],
+      [
+        "HuidigeKruimel pad / label",
+        "string",
+        "–",
+        "Naam van de huidige pagina, als die niet uit het pad volgt",
+      ],
+      [
+        "BreadcrumbNavLink current",
+        "boolean",
+        "false",
+        "De huidige pagina: geen link, met aria-current",
+      ],
+    ],
+    example: (
+      <BreadcrumbNav label="Voorbeeld van een kruimelpad">
+        <BreadcrumbNavLink href="/" index={0} rel="home">
+          Home
+        </BreadcrumbNavLink>
+        <BreadcrumbNavSeparator>
+          <Icon icon="chevron-right" />
+        </BreadcrumbNavSeparator>
+        <BreadcrumbNavLink href="/berichtenbox" index={1}>
+          Eerste niveau
+        </BreadcrumbNavLink>
+        <BreadcrumbNavSeparator>
+          <Icon icon="chevron-right" />
+        </BreadcrumbNavSeparator>
+        <BreadcrumbNavLink
+          href="/berichtenbox/demo-1"
+          index={2}
+          current
+          disabled
+        >
+          Huidige pagina
+        </BreadcrumbNavLink>
+      </BreadcrumbNav>
+    ),
+  },
+  {
+    name: "Footer",
+    file: "src/layouts/footer/index.tsx",
+    description:
+      "Voettekst met groepen links. Elke groep is een <nav>-element met een eigen koptekst. Een externe link krijgt een ander icoon en de verborgen tekst ‘opent in nieuw tabblad’.",
+    options: [
+      [
+        "groepen",
+        "{ id, kop, links }[]",
+        "–",
+        "De groepen links; vier naast elkaar op een breed scherm",
+      ],
+      [
+        "links extern",
+        "boolean",
+        "false",
+        "Opent in een nieuw tabblad, met het icoon externe-link",
+      ],
+    ],
+    example: (
+      <Footer
+        slot1={
+          <div className="rhc-grid">
+            {(
+              [
+                {
+                  id: "demo-footer-site",
+                  heading: "Over deze site",
+                  links: [
+                    { href: "/toegankelijkheid", label: "Toegankelijkheid" },
+                    { href: "/sitemap", label: "Sitemap" },
+                  ],
+                },
+                {
+                  id: "demo-footer-partners",
+                  heading: "Partners",
+                  links: [
+                    {
+                      href: "https://www.overheid.nl/",
+                      label: "Overheid.nl",
+                      external: true,
+                    },
+                  ],
+                },
+              ] as {
+                id: string;
+                heading: string;
+                links: { href: string; label: string; external?: boolean }[];
+              }[]
+            ).map(({ id, heading, links }) => (
+              <nav
+                key={id}
+                className="rhc-grid__cell rhc-grid__cell-12 rhc-grid__cell-t-6"
+                aria-labelledby={id}
+              >
+                <h5 id={id}>{heading}</h5>
+                <LinkList>
+                  {links.map(({ href, label, external }) => (
+                    <LinkListLink
+                      key={href}
+                      href={href}
+                      icon={
+                        <Icon
+                          key="icon"
+                          icon={external ? "externe-link" : "chevron-right"}
+                        />
+                      }
+                      {...(external && { target: "_blank", rel: "noreferrer" })}
+                    >
+                      {label}
+                      {external && (
+                        <VisuallyHidden>
+                          {" "}
+                          (opent in nieuw tabblad)
+                        </VisuallyHidden>
+                      )}
+                    </LinkListLink>
+                  ))}
+                </LinkList>
+              </nav>
+            ))}
+          </div>
+        }
+        slot2={null}
+      />
+    ),
+  },
+  {
+    name: "NavigationList en NavigationListItem",
+    file: "@/components/rhc",
+    description: [
+      "Lijst met navigatietegels: elk item is één link met een label, een korte uitleg en een pijl. Gebruikt bij ‘Snel naar …’ op de landingspagina.",
+      <>
+        Met de class <code>rhc-mox-navigation-grid</code> staan de items op een
+        breed scherm in twee kolommen, en op een smal scherm onder elkaar.
+      </>,
+    ],
+    options: [
+      ["NavigationListItem label", "string", "–", "Naam van de link"],
+      [
+        "NavigationListItem description",
+        "string",
+        "–",
+        "Korte uitleg onder of naast het label",
+      ],
+      ["NavigationListItem href", "string", "–", "Adres"],
+      [
+        "NavigationListItem icon",
+        "string",
+        "–",
+        "Icoon voor het label; leeg in MOx",
+      ],
+      [
+        "rhc-mox-navigation-grid",
+        "class op NavigationList",
+        "–",
+        "Twee kolommen vanaf 768 pixels breed",
+      ],
+    ],
+    example: (
+      <NavigationList className="rhc-mox-navigation-grid">
+        <NavigationListItem
+          label="Berichtenbox"
+          description="Berichten van organisaties aan uw bedrijf"
+          href="/berichtenbox"
+          icon=""
+        />
+        <NavigationListItem
+          label="Lopende zaken"
+          description="Aanvragen en meldingen die nog lopen"
+          href="/lopendezaken"
+          icon=""
+        />
+        <NavigationListItem
+          label="Subsidies en financiering"
+          description="Regelingen die bij uw bedrijf passen"
+          href="/subsidies"
+          icon=""
+        />
+        <NavigationListItem
+          label="Contactvoorkeuren"
+          description="Hoe organisaties u bereiken"
+          href="/contactvoorkeuren"
+          icon=""
+        />
+      </NavigationList>
+    ),
+  },
+];
+
 const ComponentsDemoPage = () => {
   const [organisation, setOrganisation] = useState("Bloemenkwekerij");
   const [slider, setSlider] = useState(32);
@@ -948,42 +1346,56 @@ const ComponentsDemoPage = () => {
   const [autoHideShown, setAutoHideShown] = useState(true);
   const [autoHideRound, setAutoHideRound] = useState(0);
 
+  // <body> sits in the root layout; mark it only while this page is shown.
+  useEffect(() => {
+    document.body.classList.add("rhc-mox-componenten-demo");
+    return () => document.body.classList.remove("rhc-mox-componenten-demo");
+  }, []);
+
   const entries: Entry[] = [
     {
       name: "Alert",
       file: "src/components/Alert.tsx",
-      description:
-        "RHC Alert met een sluitknop en vanzelf verdwijnen als extra opties. Importeer via @/components/rhc.",
+      description: (
+        <>
+          Uitbereiding op{" "}
+          <a href="https://rijkshuisstijl-community.vercel.app/?path=/docs/rhc-alert--docs">
+            de RHC Alert
+          </a>{" "}
+          met een sluitknop en de mogelijkheid om vanzelf te verdwijnen als
+          extra opties. Importeer via <code>@/components/rhc</code>.
+        </>
+      ),
       options: [
         [
           "type",
           '"info" | "ok" | "warning" | "error"',
           "info",
-          "Soort melding, met het bijbehorende icoon.",
+          "Soort melding, met het bijbehorende icoon",
         ],
         [
           "closable",
           "boolean",
           "false",
-          "Sluitknop rechtsboven. Niet bij een fout.",
+          "Sluitknop. Niet beschikbaar voor een foutmelding (de fout moet eerst opgelost worden).",
         ],
         [
           "closeLabel",
           "string",
           "Melding sluiten",
-          "Naam van de sluitknop voor schermlezers.",
+          "Naam van de sluitknop, zoals een schermlezer die voorleest",
         ],
         [
           "onClose",
           "() => void",
           "–",
-          "Na het sluiten, bijvoorbeeld om de melding leeg te maken.",
+          "Actie (een functie die je meegeeft) die wordt uitgevoerd na het sluiten, of als de melding vanzelf verdwenen is. Bijvoorbeeld om de focus op een bepaald element te zetten, of om te onthouden dat iemand de melding heeft weggeklikt, zodat die niet terugkomt.",
         ],
         [
           "autoHide",
           "boolean | number",
           "false",
-          "Vanzelf weg: true = leestijd van de tekst (3 tot 15 s), een getal = zoveel ms. Niet bij een fout.",
+          "Vanzelf weg: true = leestijd naar de lengte van de tekst (3 tot 15 seconden), een getal = het aantal milliseconden. Niet beschikbaar voor een foutmelding (de fout moet eerst opgelost worden).",
         ],
       ],
       example: (
@@ -993,16 +1405,21 @@ const ComponentsDemoPage = () => {
             <Paragraph>Informatie.</Paragraph>
           </Alert>
           <Alert type="ok">
-            <Paragraph>Gelukt: uw gegevens zijn opgeslagen.</Paragraph>
+            <Paragraph>
+              Success: een actie van de gebruiker of het systeem is succesvol
+              afgerond.
+            </Paragraph>
           </Alert>
           <Alert type="warning">
             <Paragraph>
-              Let op: uw e-mailadres is nog niet geverifieerd.
+              Waarschuwing: de gebruiker moet gewezen worden op iets dat
+              misschien problemen geeft.
             </Paragraph>
           </Alert>
           <Alert type="error">
             <Paragraph>
-              Fout: uw gegevens zijn niet opgeslagen. Probeer het opnieuw.
+              Fout: er is iets fout gegaan dat hersteld of opnieuw geprobeerd
+              moet worden.
             </Paragraph>
           </Alert>
           <Alert type="warning">
@@ -1017,12 +1434,21 @@ const ComponentsDemoPage = () => {
 
           <Heading level={5}>Met sluitknop</Heading>
           <Alert type="info" closable>
-            <Paragraph>Info-melding met sluitknop.</Paragraph>
+            <Paragraph>
+              <strong>Info-melding met sluitknop</strong>
+            </Paragraph>
+            <Paragraph>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim,
+              perferendis quis. Labore dicta voluptates numquam dolorum, totam
+              odio laudantium dolorem beatae magnam. Laborum voluptatum sequi
+              fuga iusto rerum distinctio odit.
+            </Paragraph>
+            <Paragraph>Een tweede paragraaf.</Paragraph>
           </Alert>
           <Alert type="error" closable>
             <Paragraph>
-              Een foutmelding kan geen sluitknop krijgen, de betreffende fout
-              dient eerst actief hersteld te worden.
+              Een foutmelding kan geen sluitknop krijgen. De fout moet eerst
+              hersteld worden.
             </Paragraph>
           </Alert>
 
@@ -1057,33 +1483,33 @@ const ComponentsDemoPage = () => {
       name: "BarGraph",
       file: "src/components/BarGraph.tsx",
       description:
-        "Liggende staafgrafiek. Label en waarde staan als tekst bij elke staaf.",
+        "Liggende staafgrafiek. Het label staat aan het begin van de staaf en de waarde aan het einde. Naast kleur maken patronen het verschil tussen de varianten duidelijk, bijvoorbeeld voor gebruikers met kleurenblindheid.",
       options: [
-        ["title", "string", "–", "Bijschrift van de grafiek."],
+        ["title", "string", "–", "Bijschrift van de grafiek"],
         [
           "items",
           "{ label, value, variant? }[]",
           "–",
-          "De staven; variant per staaf mag.",
+          "De staven; variant per staaf mag",
         ],
-        ["max", "number", "grootste waarde", "Waarde van een volle staaf."],
+        ["max", "number", "grootste waarde", "Waarde van een volle staaf"],
         [
           "formatValue",
           "(value) => string",
           "String",
-          "Hoe een waarde wordt getoond, zoals 32%.",
+          "Hoe de waarde wordt getoond, zoals 32%",
         ],
         [
           "variant",
           '"neutral" | "positive" | "negative"',
           "neutral",
-          "Blauw (effen), groen (strepen) of rood (ruitjes).",
+          "Blauw (effen), groen (strepen) of rood (ruitjes)",
         ],
         [
           "track",
           "boolean",
           "false",
-          "Grijze baan zo breed als de langste staaf.",
+          "Grijze baan zo breed als de langste staaf",
         ],
       ],
       example: (
@@ -1148,47 +1574,52 @@ const ComponentsDemoPage = () => {
       name: "Dropdown en DropdownItem",
       file: "src/components/Dropdown.tsx",
       description:
-        "Knop met een menu dat eronder opent (popover). Klik buiten het menu of Escape sluit het. Zoals de organisatiekeuze in de header en de acties in de Berichtenbox.",
+        "Knop met een menu dat bij de trigger opent (popover). Een klik buiten het menu of de Escape-toets sluit het menu. Zoals de organisatiekeuze in de header en de acties in de Berichtenbox.",
       options: [
-        ["trigger", "ReactNode", "–", "Inhoud van de knop."],
+        ["trigger", "ReactNode", "–", "Inhoud van de knop"],
         [
           "triggerClassName",
           "string",
           "subtiele RHC-knop",
-          "Uiterlijk van de knop.",
+          "Uiterlijk van de knop",
         ],
         [
           "triggerLabel",
           "string",
           "–",
-          "Toegankelijke naam als de inhoud niet genoeg zegt.",
+          "Toegankelijke naam als de inhoud niet genoeg zegt",
         ],
         [
           "triggerRef",
           "Ref<HTMLButtonElement>",
           "–",
-          "Om de focus later terug te zetten.",
+          "Om de focus later terug te zetten",
         ],
         [
           "align",
           '"start" | "end"',
           "end",
-          "Menu links of rechts tegen de knop.",
+          "Menu aan het begin (links) of het einde (rechts) van de trigger",
         ],
-        ["DropdownItem icon", "ReactNode", "–", "Icoon voor de tekst."],
+        ["DropdownItem icon", "ReactNode", "–", "Icoon voor de tekst"],
         [
           "DropdownItem selected",
           "boolean",
           "–",
-          "Keuze uit meerdere: vinkje en aria-current bij de gekozen optie.",
+          "Keuze uit meerdere: vinkje en aria-current bij de gekozen optie",
         ],
         [
           "DropdownItem keepOpen",
           "boolean",
           "false",
-          "Menu blijft open na de klik.",
+          "Menu blijft open na de keuze",
         ],
-        ["DropdownItem onSelect", "() => void", "–", "Wat de keuze doet."],
+        [
+          "DropdownItem onSelect",
+          "() => void",
+          "–",
+          "Actie die wordt uitgevoerd als de gebruiker kiest",
+        ],
       ],
       example: (
         <div className="rhc-mox-row-gap">
@@ -1234,17 +1665,22 @@ const ComponentsDemoPage = () => {
       name: "CountdownBar",
       file: "src/components/CountdownBar.tsx",
       description:
-        "Aftelbalk: een ProgressBar die van vol naar leeg loopt, standaard in 60 seconden. Na afloop roept hij onComplete aan; via een ref begint de ouder opnieuw. Gebruikt op de pagina Contactmomenten.",
+        "Aftelbalk: een ProgressBar die van vol naar leeg loopt, standaard in 60 seconden. Na afloop roept deze onComplete aan; via een ref begint de ouder opnieuw. Gebruikt op de pagina Contactmomenten.",
       options: [
-        ["onComplete", "() => void", "–", "Als de tijd om is."],
-        ["seconds", "number", "60", "Duur van één ronde."],
+        [
+          "onComplete",
+          "() => void",
+          "–",
+          "Actie die wordt uitgevoerd als de tijd om is",
+        ],
+        ["seconds", "number", "60", "Duur van één ronde"],
         [
           "label",
           "string",
           "Tijd tot de volgende update",
-          "Toegankelijke naam van de balk.",
+          "Toegankelijke naam van de balk",
         ],
-        ["ref.reset()", "() => void", "–", "Begint opnieuw met de volle tijd."],
+        ["ref.reset()", "() => void", "–", "Begint opnieuw met de volle tijd"],
       ],
       example: (
         <div className="rhc-mox-row-gap">
@@ -1252,37 +1688,82 @@ const ComponentsDemoPage = () => {
             ref={countdownRef}
             onComplete={() => setCountdownDone((n) => n + 1)}
           />
-          <Paragraph>
-            Klaar: {countdownDone} keer.
-            <Button
-              appearance="secondary-action-button"
-              onClick={() => countdownRef.current?.reset()}
-            >
-              Opnieuw beginnen
-            </Button>
-          </Paragraph>
+          <Paragraph>Klaar: {countdownDone} keer.</Paragraph>
+          <Button
+            appearance="secondary-action-button"
+            onClick={() => countdownRef.current?.reset()}
+          >
+            Opnieuw beginnen
+          </Button>
         </div>
+      ),
+    },
+    {
+      name: "PageNumberNavigation",
+      file: "src/components/pageNumberNavigation.tsx",
+      description: (
+        <>
+          Paginering met next/link, gebouwd op{" "}
+          <a href="https://rijkshuisstijl-community.vercel.app/?path=/docs/react-components-page-number-navigation--docs">
+            RHC PageNumberNavigation
+          </a>
+          . Elk paginanummer is een link met de pagina in de query, zoals{" "}
+          <code>?pagina=2</code>. Op een smal scherm staan er minder links, ,
+          zodat de paginering op één regel past.
+        </>
+      ),
+      options: [
+        [
+          "page",
+          "number",
+          "",
+          'De huidige pagina; voorzien van aria-current="page"',
+        ],
+        ["totalPages", "number", "", "Het aantal pagina's"],
+        [
+          "maxVisiblePages",
+          "number",
+          "",
+          "Hoeveel nummers er maximaal staan; de rest wordt een beletselteken (…). Op een smal scherm altijd vijf.",
+        ],
+        ["queryParam", "string", "pagina", "Naam van de parameter in de link"],
+        [
+          "query",
+          "Record<string, string>",
+          "",
+          "Andere parameters die in de link blijven, zoals een filter",
+        ],
+      ],
+      example: (
+        <>
+          <Paragraph>Pagina 1 van 5:</Paragraph>
+          <PageNumberNavigation page={1} totalPages={5} />
+          <Paragraph>Pagina 6 van 20, met hooguit zeven nummers:</Paragraph>
+          <PageNumberNavigation page={6} totalPages={20} maxVisiblePages={7} />
+          <Paragraph>Laatste pagina:</Paragraph>
+          <PageNumberNavigation
+            page={12}
+            totalPages={12}
+            maxVisiblePages={7}
+            query={{ map: "Belastingen" }}
+          />
+        </>
       ),
     },
     {
       name: "ProgressBar",
       file: "src/components/ProgressBar.tsx",
       description:
-        "Voortgangsbalk. Zonder value is de duur onbekend en loopt er een stuk balk heen en weer.",
+        "Voortgangsbalk. Zonder value is de duur onbekend en loopt de balk heen en weer.",
       options: [
-        [
-          "label",
-          "string",
-          "–",
-          "Toegankelijke naam, zoals Berichten ophalen.",
-        ],
-        ["value", "number", "–", "Huidige waarde; leeg = duur onbekend."],
-        ["max", "number", "100", "Waarde van een volle balk."],
+        ["label", "string", "–", "Toegankelijke naam, zoals Berichten ophalen"],
+        ["value", "number", "–", "Huidige waarde; leeg = duur onbekend"],
+        ["max", "number", "100", "Waarde van een volle balk"],
         [
           "valueText",
           "string",
           "–",
-          "Wat een schermlezer voorleest, zoals 3 van 14 organisaties.",
+          "Wat een schermlezer voorleest, zoals “3 van 14 organisaties”",
         ],
       ],
       example: (
@@ -1298,27 +1779,32 @@ const ComponentsDemoPage = () => {
       description:
         "Schuifregelaar met label, de gekozen waarde en de grenzen eronder.",
       options: [
-        ["label", "string", "–", "Zichtbare naam."],
-        ["min / max", "number", "–", "Grenzen."],
+        ["label", "string", "–", "Zichtbare naam"],
+        ["min / max", "number", "–", "Minimale en maximale grens"],
         [
           "value / onChange",
           "number / (value) => void",
           "–",
-          "Door de ouder bijgehouden waarde.",
+          "Door de ouder bijgehouden waarde",
         ],
         [
           "defaultValue",
           "number",
           "min",
-          "Beginwaarde als de ouder niets bijhoudt.",
+          "Beginwaarde als de ouder niets bijhoudt",
         ],
         [
           "formatValue",
           "(value) => string",
           "String",
-          "Hoe de waarde wordt getoond, zoals 32 uur.",
+          "Hoe de waarde wordt getoond, zoals ‘32 uur’",
         ],
-        ["filled", "boolean", "false", "Baan gekleurd tot aan de knop."],
+        [
+          "filled",
+          "boolean",
+          "false",
+          "Baan gekleurd vanaf het begin tot aan de knop",
+        ],
       ],
       example: (
         <RangeSlider
@@ -1336,18 +1822,23 @@ const ComponentsDemoPage = () => {
       name: "ShareButton",
       file: "src/components/ShareButton.tsx",
       description:
-        "Opent het deelvenster van het systeem; zonder Web Share API wordt de link gekopieerd.",
+        "Opent het deelvenster van het besturingssysteem. Zonder Web Share API wordt de link gekopieerd.",
       options: [
-        ["title", "string", "paginatitel", "Titel om te delen."],
-        ["text", "string", "–", "Korte tekst om te delen."],
-        ["url", "string", "huidige pagina", "Pad of volledige link."],
+        ["title", "string", "paginatitel", "Titel om te delen"],
+        ["text", "string", "–", "Korte tekst om te delen"],
+        ["url", "string", "huidige pagina", "Pad of volledige link"],
         [
           "variant",
           '"link" | "menu"',
           "link",
-          "Linkknop, of een item in een Dropdown.",
+          "Linkknop, of een item in een Dropdown",
         ],
-        ["onShared", "() => void", "–", "Na het sluiten van het deelvenster."],
+        [
+          "onShared",
+          "() => void",
+          "–",
+          "Actie die uitgevoerd wordt na sluiten van het deelvenster",
+        ],
       ],
       example: <ShareButton title="Componenten" />,
     },
@@ -1355,11 +1846,11 @@ const ComponentsDemoPage = () => {
       name: "StepIndicator",
       file: "src/components/StepIndicator.tsx",
       description:
-        "Stap X van Y met de stappen op een rij. Op een smal scherm alleen de tekst en de huidige stap.",
+        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step".',
       options: [
-        ["steps", "string[]", "–", "Namen van de stappen."],
-        ["current", "number", "–", "Huidige stap, vanaf 0."],
-        ["label", "string", "Voortgang", "Naam van de navigatie."],
+        ["steps", "string[]", "–", "Namen van de stappen"],
+        ["current", "number", "–", "Huidige stap, vanaf 0"],
+        ["label", "string", "Voortgang", "Naam van de navigatie"],
       ],
       example: (
         <StepIndicator
@@ -1379,9 +1870,14 @@ const ComponentsDemoPage = () => {
       description:
         "Kader met aanvullende informatie dat bij het scrollen in beeld blijft. Op een smal scherm scrolt het mee.",
       options: [
-        ["title", "string", "–", "Kop van het kader."],
-        ["headingLevel", "2 | 3 | 4", "2", "Niveau van de kop."],
-        ["children", "ReactNode", "–", "Inhoud."],
+        ["title", "string", "–", "Koptekst"],
+        ["headingLevel", "2 | 3 | 4", "2", "Niveau van de koptekst"],
+        [
+          "children",
+          "ReactNode",
+          "–",
+          "Inhoud; kan alle HTML en React-componenten bevatten",
+        ],
       ],
       example: (
         // Text on the left, the box on the right: the box sticks while the
@@ -1396,9 +1892,9 @@ const ComponentsDemoPage = () => {
               </Paragraph>
             ))}
           </div>
-          <StickyInfoBox title="StickyInfoBox koptekst" headingLevel={4}>
+          <StickyInfoBox title="Koptekst" headingLevel={4}>
             <Paragraph>
-              Inhoud van de StickyInfoBox. Blijft in beeld bij scrollen.
+              Container met inhoud. Blijft in beeld bij het scrollen.
             </Paragraph>
           </StickyInfoBox>
         </div>
@@ -1407,23 +1903,23 @@ const ComponentsDemoPage = () => {
     {
       name: "Switch",
       file: "src/components/Switch.tsx",
-      description: "Schakelaar voor een instelling die direct toegepast wordt.",
+      description: "Schakelaar voor een instelling die direct wordt toegepast.",
       options: [
-        ["label", "string", "–", "Zichtbaar label; klikken schakelt ook."],
+        ["label", "string", "–", "Zichtbaar label; klikken schakelt ook"],
         [
           "checked / onChange",
           "boolean / (checked) => void",
           "–",
-          "Door de ouder bijgehouden stand.",
+          "Door de ouder bijgehouden stand",
         ],
-        ["defaultChecked", "boolean", "false", "Beginstand."],
-        ["disabled", "boolean", "false", "Niet te bedienen."],
-        ["onText / offText", "string", "Aan / Uit", "Tekst bij de stand."],
+        ["defaultChecked", "boolean", "false", "Beginstand"],
+        ["disabled", "boolean", "false", "Niet te bedienen/inactief"],
+        ["onText / offText", "string", "Aan / Uit", "Tekst bij de stand"],
         [
           "twoWay",
           "boolean",
           "false",
-          "Keuze tussen twee opties: offText links, onText rechts.",
+          "Keuze tussen twee opties: offText aan het begin (links), onText aan het einde (rechts)",
         ],
       ],
       example: (
@@ -1449,9 +1945,9 @@ const ComponentsDemoPage = () => {
           "variant",
           '"neutral" | "info" | "ok" | "warning" | "error"',
           "neutral",
-          "Soort, met icoon en kleur.",
+          "Soort, met icoon en kleur",
         ],
-        ["children", "ReactNode", "–", "De tekst."],
+        ["children", "ReactNode", "–", "Tekst in de badge"],
       ],
       example: (
         <Paragraph>
@@ -1478,10 +1974,6 @@ const ComponentsDemoPage = () => {
       "LanguageSelect",
       "Taalmenu (languages, selectedLanguage, label, withIcon). Bouwt verder op de RHC Language Navigation.",
     ],
-    [
-      "PageNumberNavigation",
-      "Paginering met next/link (page, totalPages, maxVisiblePages, queryParam, query).",
-    ],
     ["ErrorBoundary", "Foutmelding met Opnieuw proberen (error, reset)."],
     ["ContactMoment", "Eén contactmoment in de private route (notification)."],
     [
@@ -1499,21 +1991,26 @@ const ComponentsDemoPage = () => {
       name: "Heading en Paragraph",
       file: "@/components/rhc",
       description:
-        "Koppen en alinea's. Kies het kopniveau naar de structuur van de pagina, niet naar de grootte.",
+        "Koppen en alinea's. Kies het kopniveau naar de structuur van de pagina, niet naar het uiterlijk (zoals de grootte).",
       options: [
         [
           "Heading level",
           "1 – 5",
           "–",
-          "Kopniveau (h1 – h5, h6 ontbreekt in RHC).",
+          "Kopniveau (h1 – h5, h6 ontbreekt in RHC)",
         ],
         [
           "Heading appearanceLevel",
           "1 – 5",
           "level",
-          "(Optioneel) Kopniveau met styling van een ander niveau.",
+          "(Optioneel) Kopniveau met de styling van een ander kopniveau",
         ],
-        ["Paragraph purpose", '"lead"', "–", "Inleidende alinea, groter."],
+        [
+          "Paragraph purpose",
+          '"lead"',
+          "–",
+          "Inleidende alinea, grotere lettergrootte",
+        ],
       ],
       example: (
         <>
@@ -1536,19 +2033,19 @@ const ComponentsDemoPage = () => {
       description:
         "Link naar een andere pagina; LinkButton is een knop met de opmaak van een link, voor een actie op de pagina.",
       options: [
-        ["Link href", "string", "–", "Adres."],
-        ["Link inline", "boolean", "false", "Link in lopende tekst."],
+        ["Link href", "string", "–", "Adres"],
+        ["Link inline", "boolean", "false", "Link in lopende tekst"],
         [
           "LinkButton pressed",
           "boolean",
           "false",
-          "Ingedrukt (aria-pressed), voor een aan/uit-actie.",
+          "Ingedrukt (aria-pressed), voor een aan/uit-actie",
         ],
         [
           "LinkButton inline",
           "boolean",
           "false",
-          "Zonder padding en minimale maat, in lopende tekst.",
+          "Zonder padding en minimale maat, in lopende tekst",
         ],
       ],
       example: (
@@ -1576,38 +2073,38 @@ const ComponentsDemoPage = () => {
     {
       name: "Button, IconButton en ActionGroup",
       file: "@/components/rhc",
-      description: "Knoppen voor een actie, gegroepeerd in een ActionGroup.",
+      description: "Knoppen voor een actie, gegroepeerd in een <ActionGroup>.",
       options: [
         [
           "Button appearance",
           '"primary-action-button" | "secondary-action-button" | "subtle-button"',
           "–",
-          "Soort knop.",
+          "Soort knop",
         ],
         [
           "Button hint",
           '"danger" | "warning" | "ready"',
           "–",
-          "Waarschuwende variant, zoals voor verwijderen.",
+          "Waarschuwende variant, zoals voor verwijderen",
         ],
         [
           "Button disabled / busy",
           "boolean",
           "false",
-          "Niet te bedienen / bezig.",
+          "Niet te bedienen / bezig",
         ],
-        ["Button pressed", "boolean", "–", "Ingedrukt (aria-pressed)."],
+        ["Button pressed", "boolean", "–", "Ingedrukt (aria-pressed)"],
         [
           "IconButton icon / label",
           "RHC-icoon / string",
           "–",
-          "Knop met alleen een icoon; label is de naam voor schermlezers.",
+          "Knop met alleen een icoon; label is de tekst die een schermlezer voorleest",
         ],
         [
           "ActionGroup direction",
           '"row" | "column"',
           "row",
-          "Knoppen naast of onder elkaar.",
+          "Knoppen naast of onder elkaar",
         ],
       ],
       example: (
@@ -1626,13 +2123,13 @@ const ComponentsDemoPage = () => {
       name: "Icon",
       file: "@/components/rhc",
       description:
-        "Iconen uit RHC-set; ontbrekende iconen staan in src/components/icons.",
+        "Iconen uit de RHC-set; ontbrekende iconen staan in src/components/icons.",
       options: [
         [
           "icon",
           "RHC-icoonnaam",
           "–",
-          "Welk icoon, zoals home, favoriet of kruis.",
+          "Welk icoon, zoals home, favoriet of kruis",
         ],
       ],
       example: (
@@ -1652,15 +2149,15 @@ const ComponentsDemoPage = () => {
           "DataSummary appearance",
           '"row" | "column"',
           "row",
-          "Naam en waarde naast of onder elkaar.",
+          "Naam en waarde naast of onder elkaar",
         ],
         [
           "DataSummaryItem itemKey / itemValue",
           "string",
           "–",
-          "Naam en waarde.",
+          "Naam en waarde",
         ],
-        ["DataSummaryItem href", "string", "–", "Waarde als link."],
+        ["DataSummaryItem href", "string", "–", "Waarde als link"],
       ],
       example: (
         <DataSummary appearance="row">
@@ -1673,44 +2170,44 @@ const ComponentsDemoPage = () => {
       name: "Table",
       file: "@/components/rhc",
       description:
-        "Tabel met TableHeader, TableBody, TableRow, TableHeaderCell en TableCell. Zet hem in .mox-table-container om op een smal scherm te scrollen.",
+        "Tabel met <TableHeader>, <TableBody>, <TableRow>, <TableHeaderCell> en <TableCell>. Zet hem in .rhc-mox-table-container om op een smal scherm te scrollen.",
       options: [
-        ["children", "Table-onderdelen", "–", "Zoals een gewone HTML-tabel."],
+        ["children", "Table-onderdelen", "–", "Zoals een gewone HTML-tabel"],
         [
           "Sorteren",
           "<th aria-sort> + Button",
           "–",
-          "Kolomkop met knop en pijl; aria-sort op de cel (ascending, descending, none).",
+          "Kolomkop met knop en pijl; aria-sort op de cel (ascending, descending, none)",
         ],
         [
           ".rhc-mox-row-linked",
           "class op TableRow",
           "–",
-          "Hele rij klikbaar via de link met .rhc-mox-row-linked__link.",
+          "Hele rij klikbaar via de link met .rhc-mox-row-linked__link",
         ],
         [
           ".rhc-mox-unread",
           "class op de link",
           "–",
-          "Ongelezen vet; zet Ongelezen erbij met VisuallyHidden.",
+          "Ongelezen vet; zet 'Ongelezen' erbij voor schermlezers met VisuallyHidden",
         ],
         [
-          ".mox-table-container",
+          ".rhc-mox-table-container",
           "wrapper",
           "–",
-          "Scrollt de tabel op een smal scherm.",
+          "Scrollt de tabel op een smal scherm",
         ],
         [
           "Acties per rij",
           "Dropdown",
           "–",
-          "Knop met een menu in de laatste kolom.",
+          "Knop met een menu in de laatste kolom",
         ],
       ],
       example: (
         <div className="rhc-mox-row-gap">
           <Heading level={5}>Eenvoudige tabel</Heading>
-          <div className="mox-table-container">
+          <div className="rhc-mox-table-container">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -1742,7 +2239,7 @@ const ComponentsDemoPage = () => {
       file: "@/components/rhc",
       description: "Opsomming en genummerde lijst.",
       options: [
-        ["UnorderedList nested", "boolean", "false", "Lijst binnen een lijst."],
+        ["UnorderedList nested", "boolean", "false", "Lijst binnen een lijst"],
       ],
       example: (
         <>
@@ -1754,19 +2251,43 @@ const ComponentsDemoPage = () => {
             <OrderedListItem>Stap één</OrderedListItem>
             <OrderedListItem>Stap twee</OrderedListItem>
           </OrderedList>
+          <Paragraph>Genummerde lijst in een opsomming:</Paragraph>
+          <UnorderedList>
+            <UnorderedListItem>
+              Een vergunning aanvragen
+              <OrderedList>
+                <OrderedListItem>Log in met eHerkenning</OrderedListItem>
+                <OrderedListItem>Vul het formulier in</OrderedListItem>
+                <OrderedListItem>Verstuur uw aanvraag</OrderedListItem>
+              </OrderedList>
+            </UnorderedListItem>
+            <UnorderedListItem>Een melding doen</UnorderedListItem>
+          </UnorderedList>
+          <Paragraph>Opsomming in een genummerde lijst:</Paragraph>
+          <OrderedList>
+            <OrderedListItem>
+              Verzamel uw gegevens
+              <UnorderedList nested>
+                <UnorderedListItem>KVK-nummer</UnorderedListItem>
+                <UnorderedListItem>Btw-nummer</UnorderedListItem>
+              </UnorderedList>
+            </OrderedListItem>
+            <OrderedListItem>Vul de aangifte in</OrderedListItem>
+          </OrderedList>
         </>
       ),
     },
     {
       name: "LinkList en LinkListLink",
       file: "@/components/rhc",
-      description: "Lijst met links, elk met een icoon, zoals in de footer.",
+      description:
+        "Lijst met links, elk met een icoon, onder andere gebruikt voor de links in de footer.",
       options: [
         [
           "LinkListLink icon",
           "ReactNode",
           "–",
-          "Icoon voor de link, zoals chevron-right.",
+          "Icoon voor de link, zoals chevron-right",
         ],
       ],
       example: (
@@ -1785,12 +2306,12 @@ const ComponentsDemoPage = () => {
       file: "@/components/rhc",
       description: "Uitklapbare onderdelen, zoals veelgestelde vragen.",
       options: [
-        ["sections", "{ label, body, expanded? }[]", "–", "De onderdelen."],
+        ["sections", "{ label, body, expanded? }[]", "–", "De onderdelen"],
         [
           "headingLevel",
           "number",
           "1 (!)",
-          "Kopniveau van de labels; zet dit altijd, anders worden het h1's.",
+          "Kopniveau van de labels; zet dit altijd, anders worden het h1's",
         ],
       ],
       example: (
@@ -1812,21 +2333,21 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
-      name: "Formuliervelden",
+      name: "Invoervelden",
       file: "@/components/rhc",
       description:
-        "FormFieldTextInput en FormFieldTextarea: velden om tekst in te typen. Voor kiezen, zie Keuze-elementen.",
+        "<FormFieldTextInput> en <FormFieldTextarea>: velden om tekst in te vullen. Optionele hulp-tekst staat onder het invoerveld, foutmeldingen verschijnen tussen het label en het invoerveld zelf.",
       options: [
-        ["label", "ReactNode", "–", "Label van het veld."],
-        ["description", "ReactNode", "–", "Uitleg onder het label."],
+        ["label", "ReactNode", "–", "Label van het veld"],
+        ["description", "ReactNode", "–", "Uitleg onder het label"],
         [
           "invalid / errorMessage",
           "boolean / string",
           "–",
-          "Fout tonen bij het veld.",
+          "Fout tonen bij het veld",
         ],
-        ["status", "ReactNode", "–", "Extra informatie onder het veld."],
-        ["inputRef", "Ref", "–", "Om de focus te zetten."],
+        ["status", "ReactNode", "–", "Extra informatie onder het veld"],
+        ["inputRef", "Ref", "–", "Om de focus te zetten"],
       ],
       example: (
         <div className="rhc-mox-row-gap">
@@ -1850,41 +2371,41 @@ const ComponentsDemoPage = () => {
       name: "Keuze-elementen",
       file: "@/components/rhc",
       description:
-        "FormFieldSelect (keuzelijst), FormFieldRadio (één keuze uit enkele opties) en FormFieldCheckboxOption (aan- of uitvinken), gegroepeerd met Fieldset.",
+        "<FormFieldSelect> (keuzelijst), <FormFieldRadio> (één keuze uit enkele opties) en <FormFieldCheckboxOption> (aan- of uitvinken), gegroepeerd met <Fieldset>.",
       options: [
-        ["label", "ReactNode", "–", "Label van de keuze."],
-        ["description", "ReactNode", "–", "Uitleg bij de keuze."],
+        ["label", "ReactNode", "–", "Label van de keuze"],
+        ["description", "ReactNode", "–", "Uitleg bij de keuze"],
         [
           "invalid / errorMessage",
           "boolean / string",
           "–",
-          "Fout tonen bij de keuze.",
+          "Fout tonen bij de keuze",
         ],
         [
           "FormFieldSelect selectRef",
           "Ref<HTMLSelectElement>",
           "–",
-          "Om de focus te zetten.",
+          "Om de toetsenbordfocus te zetten",
         ],
         [
           "SelectOption value",
           "string",
           "–",
-          "Waarde van een optie in de keuzelijst.",
+          "Waarde van een optie in de keuzelijst",
         ],
         [
           "FormFieldRadio name / value",
           "string",
           "–",
-          "Radio's met dezelfde name horen bij elkaar.",
+          "Radiobuttons met hetzelfde name-attribuut horen bij elkaar",
         ],
         [
           "checked / defaultChecked",
           "boolean",
           "false",
-          "Gekozen of aangevinkt.",
+          "Gekozen of aangevinkt",
         ],
-        ["Fieldset legend", "ReactNode", "–", "Kop van een groep keuzes."],
+        ["Fieldset legend", "ReactNode", "–", "Koptekst van een groep keuzes"],
       ],
       example: (
         <div className="rhc-mox-row-gap">
@@ -1916,8 +2437,8 @@ const ComponentsDemoPage = () => {
       name: "NumberBadge",
       file: "@/components/rhc",
       description:
-        "Teller, zoals het aantal ongelezen berichten in het menu. Zet de betekenis erbij met VisuallyHidden, anders hoort een schermlezer alleen een getal.",
-      options: [["children", "number", "–", "Het getal."]],
+        "Teller, zoals het aantal ongelezen berichten in het navigatiemenu. Zet de betekenis erbij met <VisuallyHidden>, anders hoort een schermlezer alleen een getal zonder context.",
+      options: [["children", "number", "–", "Het getal"]],
       example: (
         <Paragraph>
           Berichtenbox <NumberBadge>16</NumberBadge>
@@ -1928,15 +2449,15 @@ const ComponentsDemoPage = () => {
     {
       name: "Separator",
       file: "@/components/rhc",
-      description: "Scheidingslijn tussen groepen, zoals in het menu.",
+      description: "Scheidingslijn tussen groepen, zoals in het navigatiemenu.",
       options: [
-        ["invisible", "boolean", "false", "Ruimte zonder zichtbare lijn."],
+        ["invisible", "boolean", "false", "Ruimte zonder zichtbare lijn"],
       ],
       example: (
         <>
-          <Paragraph>Boven de lijn.</Paragraph>
+          <Paragraph>Content boven de scheidingslijn.</Paragraph>
           <Separator />
-          <Paragraph>Onder de lijn.</Paragraph>
+          <Paragraph>Content onder de scheidingslijn.</Paragraph>
         </>
       ),
     },
@@ -1944,14 +2465,18 @@ const ComponentsDemoPage = () => {
       name: "VisuallyHidden",
       file: "@/components/rhc",
       description:
-        "Tekst die niet te zien is, maar wel wordt voorgelezen. Bijvoorbeeld om een knop met alleen een icoon of een korte linktekst aan te vullen.",
+        "Tekst die niet te zien is, maar wel wordt voorgelezen door schermlezers. Bijvoorbeeld om een knop met alleen een icoon of een korte linktekst aan te vullen.",
       options: [
-        ["children", "ReactNode", "–", "Tekst alleen voor schermlezers."],
+        [
+          "children",
+          "ReactNode",
+          "–",
+          "Tekst die alleen schermlezers voorlezen",
+        ],
       ],
       example: (
         <div className="rhc-mox-row-gap">
           <ActionGroup>
-            {/* Only an icon is visible; a screen reader reads the text. */}
             <Button appearance="subtle-button">
               <Icon icon="meer" />
               <VisuallyHidden>Acties voor dit bericht</VisuallyHidden>
@@ -1971,54 +2496,39 @@ const ComponentsDemoPage = () => {
   ];
 
   const rhcLayout: [string, string][] = [
-    ["NavBar, Logo", "Header (src/layouts/header): logo en navigatiebalk."],
     [
-      "SideNav, SideNavList, SideNavItem, SideNavLink",
-      "Menu links (src/layouts/navigation); SideNavLink current en icon.",
+      "SkipLink",
+      "Link Naar de hoofdinhoud (src/app/layout.tsx). Krijg als eerste (toetsenbord-)focus.",
     ],
-    [
-      "BreadcrumbNav, BreadcrumbNavLink, BreadcrumbNavSeparator",
-      "Kruimelpad (src/layouts/breadcrumb).",
-    ],
-    ["Footer", "Voettekst met links (src/layouts/footer)."],
-    ["SkipLink", "Link Naar de hoofdinhoud (src/app/layout.tsx)."],
     [
       "LanguageNavigation",
-      "Taalmenu, via LanguageSelect (src/components/languageSelect.tsx).",
-    ],
-    [
-      "PageNumberNavigation",
-      "Paginering, via src/components/pageNumberNavigation.tsx.",
+      "Taalmenu, via LanguageSelect (src/components/languageSelect.tsx)",
     ],
     [
       "Drawer",
-      "Paneel dat inschuift, via SideOverlay (Flags- en persona-paneel).",
-    ],
-    [
-      "NavigationList, NavigationListItem",
-      "Lijst met navigatietegels, zoals op de landingspagina.",
+      "Paneel dat inschuift, via SideOverlay (Flags- en persona-paneel)",
     ],
   ];
 
   const cssEntries: Entry[] = [
     {
       name: "Card",
-      file: "rhc-mox-card (rhc.css, mox.css)",
+      file: "rhc-mox-card",
       description:
         "Witte kaart met rand en schaduw, voor een blok inhoud. Kop, tekst en knoppen erin krijgen ruimte; een ActionGroup als laatste zakt naar de onderkant, zodat knoppen in kaarten naast elkaar gelijk staan.",
       options: [
-        ["rhc-mox-card", "class", "–", "Op een section of div."],
+        ["rhc-mox-card", "class", "–", "Op <section> of <div>"],
         [
           "rhc-grid__cell-…",
           "class erbij",
           "–",
-          "Kaarten naast elkaar in een rhc-grid.",
+          "Kaarten naast elkaar in een rhc-grid",
         ],
         [
           "aria-labelledby",
           "id van de kop",
           "–",
-          "Geef de section een naam via zijn kop.",
+          "Geef de sectie een toegankelijke naam via de koptekst",
         ],
       ],
       example: (
@@ -2044,14 +2554,14 @@ const ComponentsDemoPage = () => {
       name: "FAQ-kaart",
       file: "mox-faq-card (mox.css)",
       description:
-        "Kaart met veelgestelde vragen in een AccordionProvider, onder een kop Veelgestelde vragen.",
+        "Kaart met veelgestelde vragen, onder de koptekst ‘Veelgestelde vragen’.",
       options: [
-        ["mox-faq-card", "class", "–", "Om de AccordionProvider heen."],
+        ["mox-faq-card", "class", "–", "Om <AccordionProvider> heen"],
         [
           "headingLevel",
           "number",
           "–",
-          "Eén niveau onder de kop erboven, meestal 3.",
+          "Eén niveau onder de kop erboven, meestal niveau 3",
         ],
       ],
       example: (
@@ -2076,19 +2586,19 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Tabs",
-      file: "rhc-mox-tabs, rhc-mox-tab (rhc.css)",
+      file: "rhc-mox-tabs, rhc-mox-tab",
       description:
-        "Tabbladen als navigatie tussen pagina's, zoals in de Berichtenbox en bij Lopende zaken. Op een smal scherm scrollen ze, met een verloop aan de randen.",
+        "Tabbladen als navigatie tussen pagina's, zoals in de Berichtenbox en bij Lopende zaken. Op een smal scherm of bij veel tabbladen scrollen ze, met een verloop aan de uiteinden.",
       options: [
-        ["nav aria-label", "string", "–", "Naam van de tabbladen."],
-        ["ul.rhc-mox-tabs", "class", "–", "De lijst."],
-        ["a.rhc-mox-tab", "class", "–", "Elk tabblad, met icoon en tekst."],
-        ['aria-current="page"', "attribuut", "–", "Het actieve tabblad."],
+        ["nav aria-label", "string", "–", "Naam van de tabbladen"],
+        ["ul.rhc-mox-tabs", "class", "–", "De lijst"],
+        ["a.rhc-mox-tab", "class", "–", "Elk tabblad, met icoon en tekst"],
+        ['aria-current="page"', "attribuut", "–", "Het actieve tabblad"],
         [
           "li.rhc-mox-tabs-separator",
           "class",
           "–",
-          "Scheiding tussen groepen, zoals voor de mappen.",
+          "Scheiding tussen groepen, zoals voor de mappen",
         ],
       ],
       example: (
@@ -2158,7 +2668,7 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Actiebalk (compact)",
-      file: "rhc-mox-action-group-dense (rhc.css)",
+      file: "rhc-mox-action-group-dense",
       description:
         "Grijze balk met kleine acties als LinkButtons, zoals bij een wet of subsidie. Bewaren en Niet relevant komen uit src/components/save.",
       options: [
@@ -2166,19 +2676,19 @@ const ComponentsDemoPage = () => {
           "rhc-mox-action-group-dense",
           "class op ActionGroup",
           "–",
-          'Samen met role="group" en direction="row".',
+          'Samen met role="group" en direction="row"',
         ],
         [
           "BewaarKnop / NietRelevantKnop alsLink",
           "boolean",
           "false",
-          "Als LinkButton in deze balk; anders een secundaire knop.",
+          "Als LinkButton in de actiebalk; anders een secundaire knop",
         ],
         [
           "BewaarKnop item",
           "BewaarItem",
           "–",
-          "Wat er bewaard wordt (sleutel, categorie, titel, samenvatting, href).",
+          "Wat er bewaard wordt (sleutel, categorie, titel, samenvatting, href)",
         ],
       ],
       example: (
@@ -2196,14 +2706,15 @@ const ComponentsDemoPage = () => {
             <NietRelevantKnop item={DEMO_SAVE_ITEM} alsLink />
           </ActionGroup>
           <Paragraph>
-            Bewaren werkt echt: het voorbeeld komt bij Bewaarde items te staan.
+            ℹ️ Bewaren werkt echt: het voorbeeld komt bij Bewaarde items te
+            staan.
           </Paragraph>
         </>
       ),
     },
     {
       name: "Meter",
-      file: "rhc-mox-graph-meter (rhc.css)",
+      file: "rhc-mox-graph-meter",
       description:
         "Eén waarde binnen een bereik, zoals het vergeven budget van een subsidie: een ProgressBar met de waarde ernaast.",
       options: [
@@ -2211,13 +2722,13 @@ const ComponentsDemoPage = () => {
           "rhc-mox-graph-meter",
           "class",
           "–",
-          "Om de ProgressBar en de waarde heen.",
+          "Om de ProgressBar en de waarde heen",
         ],
         [
           "ProgressBar value / valueText",
           "number / string",
           "–",
-          "Stand en voorgelezen tekst.",
+          "Stand en de tekst die een schermlezer voorleest",
         ],
       ],
       example: (
@@ -2233,18 +2744,18 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Dialoog",
-      file: "rhc-mox-dialog (rhc.css)",
+      file: "rhc-mox-dialog",
       description:
-        "Modaal venster op een gewoon dialog-element, geopend met showModal(). Escape sluit het.",
+        "Modaal venster op een gewoon dialog-element, geopend met showModal(). De Escape-toets sluit de dialoog.",
       options: [
         [
           "rhc-mox-dialog",
           "class op <dialog>",
           "–",
-          "Opmaak van het venster en de achtergrond.",
+          "Opmaak van het venster en de achtergrond",
         ],
-        ["aria-labelledby", "id van de kop", "–", "Naam van de dialoog."],
-        ["showModal() / close()", "methode", "–", "Openen en sluiten."],
+        ["aria-labelledby", "id van de kop", "–", "Naam van de dialoog"],
+        ["showModal() / close()", "methode", "–", "Openen en sluiten"],
       ],
       example: <DemoDialog />,
     },
@@ -2258,34 +2769,142 @@ const ComponentsDemoPage = () => {
           "stappen",
           "DemoZaakStap[]",
           "–",
-          "titel, soort, datum, open, tekst, waarschuwing, aanleveren.",
+          "titel, soort, datum, open, tekst, waarschuwing, aanleveren",
         ],
         [
           "soort",
           '"voltooid" | "huidig" | "volgende" | "later" | "afgerond"',
           "–",
-          'Vinkje, huidige stap (aria-current="step") of nog te doen.',
+          'Vinkje, huidige stap (aria-current="step") of nog te doen',
         ],
       ],
       example: <StatusTrack stappen={DEMO_STEPS} />,
     },
     {
+      name: "Paginagrid",
+      file: "src/styles/page-grid.css",
+      description: [
+        "Elke pagina staat in een raster van kolommen: 4 op een smal scherm (tot 768 pixels), 8 op een middelbreed scherm (768 tot 1024 pixels) en 12 op een breed scherm (vanaf 1024 pixels).",
+        <>
+          Het grid rekent altijd in twaalfden: <code>rhc-grid__cell-N</code>,
+          met <code>-t-N</code> vanaf 768 en <code>-d-N</code> vanaf 1024
+          pixels. <code>page-grid.css</code> rekent die om naar het aantal
+          kolommen van het scherm, afgerond naar boven. Zo werkt gewone markup
+          zonder aanpassingen.
+        </>,
+        <>
+          De layout van het portaal (<code>src/app/(public)/_layout.tsx</code>)
+          zet het menu in <code>rhc-grid__cell-t-3</code> en de inhoud in{" "}
+          <code>rhc-grid__cell-t-9 rhc-mox-main-container</code>. Op een breed
+          scherm is dat 3 en 9 kolommen, op een middelbreed scherm 2 en 6. Op
+          een smal scherm is de inhoud vol breed en zit het menu achter de knop
+          Menu.
+        </>,
+        <>
+          Bekijk alle kolommen en breekpunten op de testpagina{" "}
+          <NextLink href="/page-grid" className="utrecht-link">
+            Pagina-grid
+          </NextLink>
+          .
+        </>,
+      ],
+      options: [
+        ["rhc-grid", "class", "–", "Het raster: 4, 8 of 12 kolommen"],
+        [
+          "rhc-grid__cell",
+          "class",
+          "–",
+          "Een cel; zonder breedte vult die de hele rij",
+        ],
+        [
+          "rhc-grid__cell-N",
+          "class, N = 1 tot 12",
+          "–",
+          "Breedte in twaalfden, op elk scherm",
+        ],
+        [
+          "rhc-grid__cell-t-N / -d-N",
+          "class, N = 1 tot 12",
+          "–",
+          "Breedte vanaf 768 (t) of 1024 (d) pixels",
+        ],
+        [
+          "--mox-page-margin",
+          "token",
+          "space-max-xl / -2xl / -5xl",
+          "Marge links en rechts van de pagina, per breekpunt",
+        ],
+        [
+          "--rhc-grid-vi-medium-column-gap",
+          "token",
+          "space-max-xl",
+          "Ruimte tussen de kolommen",
+        ],
+        [
+          "rhc-grid met rhc-mox-card",
+          "selector",
+          "space-2xl",
+          "Grotere ruimte tussen rijen met kaarten",
+        ],
+      ],
+      example: (
+        <>
+          <Paragraph>Twaalf cellen van één kolom (rhc-grid__cell-1):</Paragraph>
+          <div className="rhc-grid prototype-demo-grid">
+            {Array.from({ length: 12 }, (_, index) => (
+              <div
+                key={index}
+                className="rhc-grid__cell rhc-grid__cell-1 prototype-demo-grid-cell"
+              >
+                {index + 1}
+              </div>
+            ))}
+          </div>
+          <Paragraph>
+            Menu en inhoud, zoals op elke pagina (t-3 en t-9):
+          </Paragraph>
+          <div className="rhc-grid prototype-demo-grid">
+            <div className="rhc-grid__cell rhc-grid__cell-t-3 prototype-demo-grid-cell">
+              Menu
+            </div>
+            <div className="rhc-grid__cell rhc-grid__cell-t-9 prototype-demo-grid-cell">
+              Inhoud
+            </div>
+          </div>
+          <Paragraph>
+            Drie kaarten: vol op smal, de helft vanaf 768 en een derde vanaf
+            1024 pixels (t-6 en d-4):
+          </Paragraph>
+          <div className="rhc-grid prototype-demo-grid">
+            {["Kaart 1", "Kaart 2", "Kaart 3"].map((label) => (
+              <div
+                key={label}
+                className="rhc-grid__cell rhc-grid__cell-t-6 rhc-grid__cell-d-4 prototype-demo-grid-cell"
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+        </>
+      ),
+    },
+    {
       name: "Lay-outhulpen",
-      file: "rhc-mox-main-container, rhc-mox-row-gap (rhc.css)",
+      file: "rhc-mox-main-container, rhc-mox-row-gap",
       description:
-        "Ruimte tussen blokken. Deze pagina gebruikt rhc-mox-main-container tussen de kaarten.",
+        "Ruimte tussen blokken. Deze demopagina gebruikt rhc-mox-main-container tussen de kaarten.",
       options: [
         [
           "rhc-mox-main-container",
           "class",
           "–",
-          "Grid met ruimte (xl) tussen de kinderen; de hoofdinhoud van elke pagina.",
+          "Grid met ruimte (space-xl) tussen de kinderen; de hoofdinhoud van elke pagina",
         ],
         [
           "rhc-mox-row-gap",
           "class",
           "–",
-          "Grid met ruimte tussen de kinderen, binnen een kaart of formulier.",
+          "Grid met ruimte tussen de kinderen, binnen een kaart of formulier",
         ],
       ],
     },
@@ -2341,6 +2960,9 @@ const ComponentsDemoPage = () => {
           </Paragraph>
           <SimpleTable rows={rhcLayout} />
         </section>
+
+        <Heading level={2}>Layout</Heading>
+        {layoutEntries.map(card)}
 
         <Heading level={2}>Berichtenbox</Heading>
         {berichtenboxEntries.map(card)}
