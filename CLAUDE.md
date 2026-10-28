@@ -30,6 +30,9 @@ Het MijnOverheid Zakelijk portaal is een overheidsportaal gebouwd met Next.js, R
   - `src/styles/mox.css` is het MOx-thema daarbovenop. Classes daar krijgen het voorvoegsel `mox-` en bouwen voort op de `rhc-mox-`-basis.
   - `src/styles/utils.css` is alleen voor het prototype: hulpmiddelen voor testen en demonstreren, zoals het Flags- en persona-paneel en de PoC-banner. Classes daar krijgen het voorvoegsel `prototype-`. Zet daar niets wat bij het product of de huisstijl hoort.
 - Geef eigen classes een Engelse naam, ook als de rest van de code Nederlands is: `mox-sender`, niet `mox-afzender`. Varianten noem je naar hun betekenis, niet naar hun kleur: `mox-badge--article`, niet `mox-badge--blauw`.
+- Verticale ruimte regel je met `gap` op de container (grid of flexbox), niet met margins op de kinderen. Een component neemt geen eigen ruimte eromheen mee; de container waarin het staat, bepaalt de afstand.
+  - Gebruik het flow-patroon `> * + *` met een margin alleen voor lopende tekst waarvan we de HTML niet zelf maken, zoals `mox-rich-text` en inhoud uit een API.
+  - Gebruik nooit `gap` en zo'n margin samen op één container.
 - Volg de Rijkshuisstijl, het NL Design System en de bestaande design tokens.
 - Gebruik NLDS/Rijkshuisstijl Community-componenten wanneer die passen.
 - Gebruik tokens voor de uitzonderingen van MOx (MOBu en MOZa) in `src/styles/rhc.css` in plaats van nieuwe hardcoded ontwerp-waarden.
