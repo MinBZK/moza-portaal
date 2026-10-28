@@ -19,6 +19,8 @@ Inhoud uit andere bronnen valt hier niet onder. Die schrijven we niet zelf en ku
 - Bij een persoonlijke begroeting mogen we de **voornaam** gebruiken: “Welkom Robin Vogel”.
 - We vermijden het benoemen van geslacht. We gebruiken **“de ondernemer”** of **“u”** in plaats van “hij”, “zij” of “hij/zij”.
 - Waar een verwijswoord nodig is, gebruiken we **“die”** of **“diegene”**.
+- We schrijven **“u hebt”**, niet “u heeft”: “U hebt nog geen items bewaard.”
+- Spreekt de organisatie over zichzelf, dan schrijven we **“wij”**, niet “we”: “Wij halen uw berichten op.”
 
 ## Schrijfstijl
 
@@ -53,20 +55,20 @@ We gebruiken overal dezelfde termen voor dezelfde begrippen.
 | ------------------------------------- | ----------------------- | -------------------------------------------------------------------- |
 | Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer                                        |
 | Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen                                   |
-| Item doorsturen                       | Delen                   | Doorsturen, Verzend                                                  |
+| Item doorsturen                       | Delen                   | Doorsturen, Verzenden                                                |
 | Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox (behalve als naam van de tab in de Berichtenbox) |
 | Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel                                       |
 | Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers                                           |
 | Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed                                                |
-| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaar, Verstuur, Bevestig                                           |
-| Formulier naar een organisatie sturen | Vesturen                | Bewaar, Opslaan, Bevestig, Deel                                      |
+| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen                                       |
+| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen                                  |
 | Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen                                              |
 
-**Bewaren, Opslaan of Vesturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
+**Bewaren, Opslaan of Versturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
 
 - **Bewaren**: de gebruiker zet een item in de eigen verzameling om het later terug te zien. Het komt bij Bewaarde items. Bijvoorbeeld een subsidie, een regeling of een gesprek met de digitale assistent.
 - **Opslaan**: de gebruiker legt gewijzigde gegevens vast. Er gaat niets naar een organisatie. Bijvoorbeeld contactvoorkeuren.
-- **Vesturen**: de gebruiker stuurt iets naar een organisatie, die er iets mee gaat doen. Bijvoorbeeld een aanvraag, een melding of een rapportage.
+- **Versturen**: de gebruiker stuurt iets naar een organisatie, die er iets mee gaat doen. Bijvoorbeeld een aanvraag, een melding of een rapportage.
 
 Veel apps gebruiken “Opslaan” ook voor bewaren, en in het Engels is het allebei “Save”. Het onderscheid is dus een afspraak van ons, geen algemene conventie. Het helpt de gebruiker alleen als we het overal zo gebruiken.
 
@@ -75,6 +77,8 @@ Veel apps gebruiken “Opslaan” ook voor bewaren, en in het Engels is het alle
 **Persoonsvormen van afkortingen** schrijven we met kleine letters en een typografische apostrof: mkb’er, zzp’er, mkb’ers, zzp’ers. Ook samenstellingen: mkb-ondernemer, het mkb. Eigennamen van regelingen houden hun officiële schrijfwijze, zoals Borgstelling MKB-kredieten (BMKB).
 
 **KVK en btw** schrijven we zoals de organisaties dat zelf doen: KVK en KVK-nummer in hoofdletters, btw en btw-nummer in kleine letters (met een hoofdletter aan het begin van een zin of label: Btw-nummer).
+
+**De digitale assistent** schrijven we in lopende tekst met kleine letters: “Vraag het de digitale assistent.” Alleen aan het begin van een zin, in een kop, een knop of een menu-item krijgt het eerste woord een hoofdletter: “Digitale assistent (AI)”.
 
 ## Datums en tijden
 

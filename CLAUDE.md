@@ -66,6 +66,7 @@ Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Geldt voor de 
 
 - Spreek de gebruiker aan met "u" en "uw", nooit "je" of "jij". Bij een begroeting mag de voornaam ("Welkom Robin Vogel").
 - Genderneutraal: "de ondernemer" of "u", en "die" of "diegene" als verwijswoord.
+- Schrijf "u hebt", niet "u heeft". Spreekt de organisatie over zichzelf, dan "wij", niet "we": "Wij halen uw berichten op."
 - Formeel maar toegankelijk, B1-niveau, geen jargon zonder uitleg en geen onnodige Engelse termen.
 - Actief boven passief en noem wie iets doet: "De RVO heeft uw aanvraag ontvangen", niet "Uw aanvraag is ontvangen".
 - Zeg wat de gebruiker kan doen, niet wat het systeem doet.
@@ -79,14 +80,16 @@ Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Geldt voor de 
 | ------------------------------------- | ----------------------- | -------------------------------------------- |
 | Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer                |
 | Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen           |
-| Item doorsturen                       | Delen                   | Doorsturen, Verzend                          |
+| Item doorsturen                       | Delen                   | Doorsturen, Verzenden                        |
 | Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox (behalve de tab "Inbox") |
 | Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel               |
 | Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers                   |
 | Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed                        |
-| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaar, Verstuur, Bevestig                   |
-| Formulier naar een organisatie sturen | Versturen               | Bewaar, Opslaan, Bevestig, Deel              |
+| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen               |
+| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen          |
 | Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen                      |
+
+De digitale assistent schrijf je in lopende tekst met kleine letters ("Vraag het de digitale assistent"). Alleen aan het begin van een zin, in een kop, knop of menu-item een hoofdletter ("Digitale assistent (AI)").
 
 ### Notatie en leestekens
 
