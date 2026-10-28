@@ -5,7 +5,7 @@ import { ActionGroup, Alert, Button, Paragraph } from "@/components/rhc";
 
 export type QueryStatus = "pending" | "error" | "success";
 
-const LOADING_MESSAGE = "Laden...";
+const LOADING_MESSAGE = "Laden…";
 const ERROR_MESSAGE =
   "Er ging iets mis bij het laden. Probeer het later opnieuw.";
 
@@ -13,7 +13,7 @@ const PaginatedList = <T,>({
   items,
   status,
   pageSize = 10,
-  emptyMessage = "Geen resultaten gevonden.",
+  emptyMessage = "Er zijn geen artikelen bij uw onderwerpen. Kies andere onderwerpen.",
   getKey,
   renderItem,
 }: {

@@ -30,7 +30,9 @@ const stuurDoor = async (
   const basis = process.env.ASSISTENT_BACKEND_URL?.replace(/\/$/, "");
   if (!basis)
     return Response.json(
-      { fout: "ASSISTENT_BACKEND_URL is niet ingesteld." },
+      {
+        fout: "De digitale assistent is niet ingesteld. Vraag de beheerder om de assistent aan te zetten.",
+      },
       { status: 503 },
     );
 
@@ -62,7 +64,9 @@ const stuurDoor = async (
     });
   } catch {
     return Response.json(
-      { fout: "De backend van de assistent is niet bereikbaar." },
+      {
+        fout: "De digitale assistent werkt nu niet. Probeer het later opnieuw.",
+      },
       { status: 502 },
     );
   }

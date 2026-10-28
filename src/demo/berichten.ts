@@ -112,7 +112,7 @@ const actiesVoor = (
       "Betaal het bedrag op tijd. Bent u het niet eens met de aanslag? Dien dan bezwaar in.",
       [
         { label: "Direct betalen", primair: true },
-        { label: "Bezwaar indienen" },
+        { label: "Bezwaar maken" },
         { label: "Uitstel van betaling aanvragen" },
       ],
     );
@@ -160,12 +160,12 @@ const actiesVoor = (
     );
   if (heeft("wwft", "cliëntenonderzoek"))
     return res("Lees wat het verscherpte cliëntenonderzoek voor u betekent.", [
-      { label: "Meer informatie", primair: true },
+      { label: "Lees wat het cliëntenonderzoek betekent", primair: true },
     ]);
   if (heeft("avg", "cliëntgegevens", "persoonsgegevens", "datalek"))
     return res(
       "Lees hoe u persoonsgegevens veilig verwerkt en wat u moet doen.",
-      [{ label: "Meer informatie", primair: true }],
+      [{ label: "Lees hoe u persoonsgegevens beschermt", primair: true }],
     );
   if (heeft("subsidie", "wbso", "mit", "slim", "voucher", "s&o"))
     return res(
@@ -180,7 +180,7 @@ const actiesVoor = (
       "Bekijk het besluit. Bent u het er niet mee eens? Dien dan bezwaar in.",
       [
         { label: "Besluit bekijken", primair: true },
-        { label: "Bezwaar indienen" },
+        { label: "Bezwaar maken" },
       ],
     );
   if (heeft("aanvraag", "verwerkt", "behandeling"))

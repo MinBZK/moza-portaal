@@ -54,7 +54,7 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
               <>
                 <FormFieldSelect
                   name={field.name}
-                  label="Subsidie type"
+                  label="Soort subsidie"
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
@@ -69,7 +69,7 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
             )}
           </form.Field>
           <form.Field name="aanvragerEmail">
-            {(field) => <FormField label={"E-mail"} field={field} />}
+            {(field) => <FormField label="E-mailadres" field={field} />}
           </form.Field>
           <form.Field name="motivatie">
             {(field) => (
@@ -90,7 +90,7 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
             <Button type="submit" appearance="primary-action-button">
-              Opslaan
+              Versturen
             </Button>
           </form.Subscribe>
         </form>

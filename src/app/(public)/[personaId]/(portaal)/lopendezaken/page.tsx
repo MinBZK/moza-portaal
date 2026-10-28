@@ -43,13 +43,13 @@ const LopendeZakenPage = async () => {
       {concepten.length > 0 && (
         <section className="rhc-mox-card" aria-labelledby="nog-in-te-dienen">
           <Heading level={2} id="nog-in-te-dienen">
-            Nog in te dienen aanvragen
+            Aanvragen die u nog moet versturen
           </Heading>
           <Paragraph>
-            Deze aanvragen heeft u opgeslagen, maar nog niet ingediend.
+            Deze aanvragen heeft u opgeslagen, maar nog niet verstuurd.
             {/* Alleen een uiterste datum noemen als een aanvraag er een heeft. */}
             {concepten.some((aanvraag) => aanvraag.indienenVoor) &&
-              " Dien ze in voor de uiterste datum."}
+              " Verstuur ze voor de uiterste datum."}
           </Paragraph>
           <div className="rhc-mox-table-container">
             <Table>

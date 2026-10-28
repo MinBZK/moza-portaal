@@ -69,7 +69,7 @@ const PublicPage = () => {
                 d="M13.237 28.83v5.059h12.626l2.331-5.059z"
               />
             </svg>
-            <span>Inloggen met E-Herkenning</span>
+            <span>Inloggen met eHerkenning</span>
           </Link>
           <Link href="/inloggen/zakelijk" className="utrecht-link-button">
             Alle inlogmogelijkheden bekijken
@@ -80,7 +80,7 @@ const PublicPage = () => {
           width={1114}
           height={796}
           loading="eager"
-          alt="Entrepreneur working on a tablet"
+          alt=""
           src="/bg-full-zakelijk-cropped.webp"
         />
       </div>
@@ -88,8 +88,8 @@ const PublicPage = () => {
         <div>
           <Heading level={2}>Berichtenbox</Heading>
           <Paragraph>
-            De Berichtenbox is uw zakelijke digitale brievenbus voor post van de
-            overheid. Bijvoorbeeld post over:
+            De berichtenbox is uw zakelijke digitale brievenbus voor berichten
+            van de overheid. Bijvoorbeeld berichten over:
           </Paragraph>
           <UnorderedList>
             <UnorderedListItem>Belastingaangifte</UnorderedListItem>
@@ -157,7 +157,7 @@ const PublicPage = () => {
 
       <div className="prototype-landing-demo-info">
         <Heading level={2}>
-          Dit is een demo-prototypevan MijnOverheid Zakelijk
+          Dit is een prototype van het MijnOverheid Zakelijk portaal
         </Heading>
         <section>
           <Paragraph>
@@ -167,7 +167,7 @@ const PublicPage = () => {
           </Paragraph>
           <Paragraph>
             Let op: dit prototype bevat <strong>géén</strong> echte DigiD en
-            E-Herkenning koppeling. Vul hier geen persoonlijke gegevens in.
+            eHerkenning koppeling. Vul hier geen persoonlijke gegevens in.
           </Paragraph>
         </section>
         <Heading level={3}>UX-onderzoek uitvoeren</Heading>
@@ -176,14 +176,14 @@ const PublicPage = () => {
           <Paragraph>Gebruik de shortcuttoetsen:</Paragraph>
           <UnorderedList>
             <UnorderedListItem>
-              <code>p</code> - selecteer een persona
+              <code>p</code>: selecteer een persona
             </UnorderedListItem>
             <UnorderedListItem>
-              <code>f</code> - schakel flags in/uit
+              <code>f</code>: schakel flags in/uit
             </UnorderedListItem>
           </UnorderedList>
           <Paragraph>
-            Kies vervolgens links boven een inlog optie (DigiD of E-Herkenning).
+            Kies vervolgens links boven een inlogoptie (DigiD of eHerkenning).
           </Paragraph>
           <Paragraph>
             Het is ook mogelijk om een persona te selecteren via de URL.
@@ -196,9 +196,9 @@ const PublicPage = () => {
         <Heading level={3}>Functionaliteiten testen</Heading>
         <section>
           <Paragraph>
-            Voor de beveiligde omgeving kunt U inloggen door linksboven via de
+            Voor de beveiligde omgeving kunt u inloggen door linksboven via de
             knop <code>keycloak login</code> een keuze te maken voor DigiD of
-            E-Herkenning en deze testgegevens te gebruiken:
+            eHerkenning en deze testgegevens te gebruiken:
           </Paragraph>
           <DataSummary>
             <DataSummaryItem
@@ -214,7 +214,7 @@ const PublicPage = () => {
             Gebruiker 2 heeft twee ondernemingen met bsn 000000024.
           </Paragraph>
           <Paragraph>
-            Gebruiker 3 heeft drie onderneming met bsn 000000012.
+            Gebruiker 3 heeft drie ondernemingen met bsn 000000012.
           </Paragraph>
           <Paragraph>
             Bedrijf is een mock van eHerkenning voor een enkele onderneming.
@@ -227,7 +227,7 @@ const PublicPage = () => {
           <Paragraph>
             Ga naar{" "}
             <a href="https://www.mijnoverheidzakelijk.nl/">
-              mijnoverheidzakelijk.nl
+              de website van MijnOverheid Zakelijk
             </a>{" "}
             voor meer informatie.
           </Paragraph>

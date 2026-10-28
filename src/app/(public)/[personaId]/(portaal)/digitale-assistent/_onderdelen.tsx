@@ -208,7 +208,7 @@ export const EnergieKaart = ({
       {data.toestemming?.met_toestemming_ondernemer && (
         <Paragraph className="rhc-mox-chat-badge">
           <Icon icon="circle-check" />
-          Geverifieerd, met toestemming gedeeld
+          Gecontroleerd, met toestemming gedeeld
         </Paragraph>
       )}
       <dl className="rhc-mox-energy-figures">
@@ -438,7 +438,7 @@ export const VraagKaart = ({
                   .map((groep) => (
                     <Fieldset
                       key={groep.onderdeel}
-                      legend={`${groep.onderdeel} — wat is hiervan aanwezig?`}
+                      legend={`Wat is er aanwezig bij ${groep.onderdeel}?`}
                     >
                       {(groep.opties ?? []).map((categorie) => (
                         <FormFieldCheckboxOption

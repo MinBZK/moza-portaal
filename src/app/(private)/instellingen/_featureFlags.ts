@@ -80,7 +80,7 @@ export const MOX_FLAGS = [
   },
   {
     key: "mox_berichtenboxUnhappyFlow",
-    label: "Berichtenbox unhappy flow",
+    label: "Berichtenbox met foutmeldingen",
     groep: "functionaliteit",
     standaard: false,
     werkt: true,

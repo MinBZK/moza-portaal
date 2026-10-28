@@ -14,7 +14,7 @@ const TABS: { tab: SavedTab; href: string; label: string }[] = [
   {
     tab: "notRelevant",
     href: "/bewaard/niet-relevant",
-    label: "Niet relevant gemarkeerd",
+    label: "Niet relevant voor mij",
   },
 ];
 

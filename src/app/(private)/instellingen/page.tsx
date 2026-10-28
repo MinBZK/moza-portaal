@@ -9,9 +9,9 @@ const Page = async () => {
     <>
       <Heading level={1}>Instellingen</Heading>
       <div className="rhc-mox-card">
-        <Heading level={2}>Beta instellingen</Heading>
+        <Heading level={2}>Functies in ontwikkeling</Heading>
         <Paragraph>
-          Hieronder kun je experimentele functionaliteiten in- en uitschakelen.
+          Hieronder kunt u experimentele functionaliteiten in- en uitschakelen.
           Deze beta-functies zijn nog in ontwikkeling en kunnen nog veranderen.
           Door ze te activeren help je ons deze nieuwe mogelijkheden te testen
           en te verbeteren. Je kunt de functies op elk moment weer uitschakelen.

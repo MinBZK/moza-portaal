@@ -48,7 +48,7 @@ const WetActies = ({
       {/* Een echte link (naar de assistent), met dezelfde opmaak. */}
       <Link href={assistentLink(wet)} className="utrecht-link-button">
         <DigitalAssistantIcon />
-        Aan digitale assistent vragen
+        Vraag aan de digitale assistent
       </Link>
       <NietRelevantKnop item={item} alsLink />
     </ActionGroup>

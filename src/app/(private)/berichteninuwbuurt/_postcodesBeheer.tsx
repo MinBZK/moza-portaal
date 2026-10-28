@@ -56,7 +56,7 @@ const PostcodesBeheer = () => {
     }
 
     if (postcodeVoorkeuren.some((v) => v.postcode === normalized)) {
-      toonFout("Deze postcode is al toegevoegd.");
+      toonFout("U hebt deze postcode al toegevoegd.");
       return;
     }
 

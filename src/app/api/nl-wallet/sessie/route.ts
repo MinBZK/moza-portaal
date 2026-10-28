@@ -33,7 +33,9 @@ export const GET = async () => {
   } catch (fout) {
     console.error("[nl-wallet]", fout);
     return Response.json(
-      { fout: "De status van de NL Wallet-sessie is niet op te halen" },
+      {
+        fout: "Wij weten niet of het inloggen gelukt is. Probeer het opnieuw.",
+      },
       { status: 502 },
     );
   }

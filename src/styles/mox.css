@@ -26,6 +26,11 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		font-weight: normal;
 	}
 
+	/* Kop op de donkere balk van de Hero: de tekstkleur van de balk. */
+	.rhc-hero .rhc-hero__heading {
+		color: currentColor;
+	}
+
 	b,
 	strong {
 		font-weight: var(--rhc-text-font-weight-semi-bold);

@@ -42,13 +42,16 @@ const PublicatiesOverzicht = () => {
   return postcodes.length === 0 ? (
     <Paragraph>Voeg een postcode toe om publicaties te zien.</Paragraph>
   ) : pubStatus === "pending" ? (
-    <Paragraph>Publicaties laden...</Paragraph>
+    <Paragraph>Publicaties laden…</Paragraph>
   ) : pubStatus === "error" ? (
     <Alert type="error">
-      Er is een fout opgetreden bij het ophalen van publicaties.
+      Wij kunnen de berichten nu niet ophalen. Probeer het later opnieuw.
     </Alert>
   ) : publicaties.length === 0 ? (
-    <Paragraph>Geen publicaties gevonden voor uw postcodes.</Paragraph>
+    <Paragraph>
+      Er zijn geen berichten voor uw postcodes. Voeg eventueel een andere
+      postcode toe.
+    </Paragraph>
   ) : (
     <>
       {visible.map((pub, index) => (

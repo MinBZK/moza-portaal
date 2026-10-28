@@ -10,6 +10,7 @@ import {
   Paragraph,
   UnorderedList,
   UnorderedListItem,
+  VisuallyHidden,
 } from "@/components/rhc";
 import dopOpenDataClient from "@/network/dop/opendata";
 import { getKvkFromCookie } from "@/utils/kvknummer";
@@ -41,8 +42,8 @@ const ArtikelDetailPage = async ({
         <div className="rhc-mox-card">
           <Paragraph>
             {error
-              ? "Er is een fout opgetreden bij het ophalen van dit artikel. Probeer het later opnieuw."
-              : "Dit artikel kon niet worden gevonden."}
+              ? "Wij kunnen dit artikel nu niet ophalen. Probeer het later opnieuw."
+              : "Wij konden dit artikel niet vinden. Bekijk de andere actualiteiten."}
           </Paragraph>
           <Paragraph>
             <Link
@@ -69,6 +70,11 @@ const ArtikelDetailPage = async ({
   const typeLabel =
     TYPE_LABELS[article.additionalType ?? ""] ?? article.additionalType;
   const authors = article.author?.map((a) => a.name).filter(Boolean) ?? [];
+  // Only related articles with an address; without one there is nothing to link to.
+  const related =
+    article.hasPart?.flatMap((part) =>
+      part.url ? [{ url: part.url, headLine: part.headLine }] : [],
+    ) ?? [];
 
   return (
     <>
@@ -111,18 +117,23 @@ const ArtikelDetailPage = async ({
           />
         )}
 
-        {article.hasPart && article.hasPart.length > 0 && (
+        {related.length > 0 && (
           <>
             <Heading level={2}>Gerelateerde artikelen</Heading>
             <UnorderedList>
-              {article.hasPart.map((part) => (
+              {related.map((part) => (
                 <UnorderedListItem key={part.url}>
                   <RhcLink
-                    href={part.url ?? "#"}
+                    href={part.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="external noopener noreferrer"
                   >
-                    {part.headLine ?? part.url}
+                    {part.headLine ??
+                      "Gerelateerd artikel op ondernemersplein.nl"}
+                    <VisuallyHidden>
+                      {" "}
+                      (opent in een nieuw tabblad)
+                    </VisuallyHidden>
                   </RhcLink>
                 </UnorderedListItem>
               ))}
@@ -135,10 +146,11 @@ const ArtikelDetailPage = async ({
             <a
               href={article.url}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Op ondernemersplein.nl bekijken
+              Op ondernemersplein.nl bekijken{" "}
+              <VisuallyHidden>(opent in een nieuw tabblad)</VisuallyHidden>
               <Icon icon="externe-link" />
             </a>
           </ActionGroup>

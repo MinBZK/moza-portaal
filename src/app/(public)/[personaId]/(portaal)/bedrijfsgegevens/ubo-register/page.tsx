@@ -18,9 +18,9 @@ const UboRegisterPage = (props: OnderdeelPaginaProps) => (
         <Alert type="info">
           <Paragraph>
             {!gegevensCompleet
-              ? "We hebben nog geen UBO-gegevens voor deze organisatie."
+              ? "Wij hebben nog geen gegevens van uiteindelijk belanghebbenden (UBO’s) voor deze organisatie. Bekijk ze bij de KVK."
               : uboPlichtig
-                ? "Er staan geen uiteindelijk belanghebbenden (UBO's) van uw organisatie in het UBO-register. Klopt dat niet? Geef het door aan de KVK."
+                ? "Er staan geen uiteindelijk belanghebbenden (UBO’s) van uw organisatie in het UBO-register. Klopt dat niet? Geef het door aan de KVK."
                 : "Voor uw rechtsvorm is geen UBO-registratie verplicht. De UBO-registratie geldt voor besloten vennootschappen, naamloze vennootschappen, stichtingen, verenigingen en personenvennootschappen, niet voor eenmanszaken."}
           </Paragraph>
         </Alert>

@@ -19,11 +19,11 @@ const tekst = {
   bewaard: {
     knop: "Uit bewaarde items verwijderen",
     melding: (titel: string) =>
-      `"${titel}" staat niet meer bij uw bewaarde items.`,
+      `“${titel}” staat niet meer bij uw bewaarde items.`,
   },
   nietRelevant: {
-    knop: "Toch relevant",
-    melding: (titel: string) => `U ziet "${titel}" weer in het overzicht.`,
+    knop: "Zet terug in overzicht",
+    melding: (titel: string) => `U ziet “${titel}” weer in het overzicht.`,
   },
 };
 
@@ -62,7 +62,7 @@ const BewaardeItems = ({
   }, [focusOp]);
 
   if (!staat)
-    return <Paragraph role="status">Uw items worden geladen.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw items op.</Paragraph>;
 
   const items = Object.values(staat[soort]).filter(
     (item) =>

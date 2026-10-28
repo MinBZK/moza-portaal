@@ -14,7 +14,7 @@ const binnenkort: Record<string, DemoBinnenkort> = {
     samenvatting:
       "Straks vindt u hier uw belastingzaken overzichtelijk bij elkaar.",
     verwachtingen: [
-      "Zien welke aangiften u heeft ingediend en wanneer",
+      "Zien welke aangiften u hebt gedaan en wanneer",
       "Ontvangen aanslagen en beschikkingen bekijken",
       "Bijhouden of er nog iets openstaat",
     ],

@@ -83,6 +83,23 @@
   --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
 }
 
+/* ==== Typografie ======================================================== */
+
+.rhc-paragraph {
+  a {
+    color: var(--rhc-color-lintblauw-500);
+    text-decoration: underline;
+    text-decoration-color: var(--rhc-color-lintblauw-200);
+    text-decoration-skip-ink: all;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: var(--rhc-color-light-lintblauw-700);
+      text-decoration-color: var(--rhc-color-lintblauw-700);
+    }
+  }
+}
+
 /* ==== Formulieren ======================================================== */
 
 .utrecht-textbox {
@@ -1159,12 +1176,12 @@ body {
     display: grid;
     grid-template-columns: 1fr;
 
-    @media (width >= 768px) {
+    @media (width >=768px) {
       grid-template-columns: repeat(2, 1fr);
     }
 
     /* Items in een rij even hoog, zodat de lijnen gelijk lopen. */
-    > li {
+    >li {
       display: flex;
     }
 
@@ -1766,6 +1783,24 @@ body {
   --utrecht-icon-color: var(--utrecht-alert-icon-error-color);
   background-color: var(--rhc-color-rood-50);
   border-color: var(--rhc-color-rood-500);
+}
+
+/* Badge als link: onderstreept, zodat het niet alleen aan de kleur te zien
+  is. Bij hover en focus wordt de onderstreping dikker. */
+.rhc-mox-text-badge--link {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--rhc-border-width-sm);
+  text-underline-offset: 0.2em;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration-thickness: var(--rhc-border-width-md);
+  }
+
+  &:focus-visible {
+    outline: var(--utrecht-focus-outline-width) var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+    outline-offset: var(--utrecht-focus-outline-offset, 2px);
+  }
 }
 
 /* ==== Pagina's en functies =============================================== */

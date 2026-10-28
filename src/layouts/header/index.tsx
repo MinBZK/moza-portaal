@@ -220,7 +220,7 @@ const Header = ({
                             className="utrecht-button utrecht-button--secondary-action rhc-button"
                             role="menuitem"
                           >
-                            E-Herkenning
+                            eHerkenning
                           </button>
                         </div>
                       </div>

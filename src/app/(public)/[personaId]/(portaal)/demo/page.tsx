@@ -18,18 +18,25 @@ import {
   AccordionProvider,
   ActionGroup,
   Alert,
+  Article,
   BreadcrumbNav,
   BreadcrumbNavLink,
   BreadcrumbNavSeparator,
   Button,
   DataSummary,
   DataSummaryItem,
+  DotBadge,
+  ExpandableCheckboxGroup,
   Fieldset,
+  FileInput,
   Footer,
+  FormFieldCheckboxGroup,
   FormFieldCheckboxOption,
   FormFieldRadio,
+  FormFieldRadioGroup,
   FormFieldTextInput,
   Heading,
+  Hero,
   Icon,
   Link,
   LinkButton,
@@ -43,6 +50,7 @@ import {
   OrderedList,
   OrderedListItem,
   Paragraph,
+  PreHeading,
   Separator,
   SideNav,
   SideNavItem,
@@ -54,6 +62,7 @@ import {
   TableHeader,
   TableHeaderCell,
   TableRow,
+  Toggletip,
   UnorderedList,
   UnorderedListItem,
   VisuallyHidden,
@@ -605,7 +614,7 @@ const berichtenboxEntries: Entry[] = [
     name: "Filterbalk",
     file: "rhc-mox-inbox-filters in src/styles/rhc.css",
     description:
-      "Zoekveld en keuzelijst naast elkaar boven de inbox. Daaronder het aantal berichten (rhc-mox-notice-amount-inbox).",
+      "Zoekveld en keuzelijst naast elkaar boven de lijst Ontvangen. Daaronder het aantal berichten (rhc-mox-notice-amount-inbox).",
     options: [
       ["rhc-mox-inbox-filters", "class", "", "Zet de velden naast elkaar"],
       [
@@ -635,7 +644,7 @@ const berichtenboxEntries: Entry[] = [
     name: "OphaalVoortgang",
     file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_ophaalVoortgang.tsx",
     description:
-      "Melding met voortgang terwijl de inbox berichten ophaalt bij de organisaties. Met useNagebootstOphalen uit hetzelfde bestand.",
+      "Melding met voortgang terwijl de berichtenbox berichten ophaalt bij de organisaties. Met useNagebootstOphalen uit hetzelfde bestand.",
     options: [
       [
         "voortgang",
@@ -869,7 +878,7 @@ const assistantEntries: Entry[] = [
           soort: "deelverzoek",
           bron: "uw EU Business Wallet",
           omschrijving:
-            "De assistent wil uw energieverbruik van 2025 gebruiken. Daarmee kan hij nagaan of de informatieplicht voor u geldt.",
+            "De assistent wil uw energieverbruik van 2025 gebruiken. Daarmee kan de assistent nagaan of de informatieplicht voor u geldt.",
           vanBackend: false,
           staat: "open",
         }}
@@ -1069,7 +1078,7 @@ const layoutEntries: Entry[] = [
         "flags",
         "FeatureFlags",
         "alles aan",
-        "Pagina's die in het Flags-paneel uit staan, verdwijnen uit het menu",
+        "Pagina’s die in het Flags-paneel uit staan, verdwijnen uit het menu",
       ],
       [
         "berichtenboxBadge / lopendeZakenBadge",
@@ -1255,7 +1264,10 @@ const layoutEntries: Entry[] = [
                           icon={external ? "externe-link" : "chevron-right"}
                         />
                       }
-                      {...(external && { target: "_blank", rel: "noreferrer" })}
+                      {...(external && {
+                        target: "_blank",
+                        rel: "external noopener noreferrer",
+                      })}
                     >
                       {label}
                       {external && (
@@ -1345,6 +1357,7 @@ const ComponentsDemoPage = () => {
   const [countdownDone, setCountdownDone] = useState(0);
   const [autoHideShown, setAutoHideShown] = useState(true);
   const [autoHideRound, setAutoHideRound] = useState(0);
+  const [senders, setSenders] = useState<string[]>(["kvk"]);
 
   // <body> sits in the root layout; mark it only while this page is shown.
   useEffect(() => {
@@ -1406,7 +1419,7 @@ const ComponentsDemoPage = () => {
           </Alert>
           <Alert type="ok">
             <Paragraph>
-              Success: een actie van de gebruiker of het systeem is succesvol
+              Gelukt: een actie van de gebruiker of het systeem is succesvol
               afgerond.
             </Paragraph>
           </Alert>
@@ -1427,8 +1440,8 @@ const ComponentsDemoPage = () => {
               <strong>Met een vetgedrukte eerste regel</strong>
             </Paragraph>
             <Paragraph>
-              Een melding kan meerdere alinea&apos;s hebben. Gebruik een Heading
-              als de melding een echte kop nodig heeft.
+              Een melding kan meerdere alinea’s hebben. Gebruik een Heading als
+              de melding een echte kop nodig heeft.
             </Paragraph>
           </Alert>
 
@@ -1574,7 +1587,7 @@ const ComponentsDemoPage = () => {
       name: "Dropdown en DropdownItem",
       file: "src/components/Dropdown.tsx",
       description:
-        "Knop met een menu dat bij de trigger opent (popover). Een klik buiten het menu of de Escape-toets sluit het menu. Zoals de organisatiekeuze in de header en de acties in de Berichtenbox.",
+        "Knop met een menu dat bij de trigger opent (popover). Een klik buiten het menu of de Escape-toets sluit het menu. Zoals de organisatiekeuze in de header en de acties in de berichtenbox.",
       options: [
         ["trigger", "ReactNode", "–", "Inhoud van de knop"],
         [
@@ -1677,7 +1690,7 @@ const ComponentsDemoPage = () => {
         [
           "label",
           "string",
-          "Tijd tot de volgende update",
+          "Tijd tot de lijst opnieuw laadt",
           "Toegankelijke naam van de balk",
         ],
         ["ref.reset()", "() => void", "–", "Begint opnieuw met de volle tijd"],
@@ -1719,7 +1732,7 @@ const ComponentsDemoPage = () => {
           "",
           'De huidige pagina; voorzien van aria-current="page"',
         ],
-        ["totalPages", "number", "", "Het aantal pagina's"],
+        ["totalPages", "number", "", "Het aantal pagina’s"],
         [
           "maxVisiblePages",
           "number",
@@ -1947,16 +1960,30 @@ const ComponentsDemoPage = () => {
           "neutral",
           "Soort, met icoon en kleur",
         ],
+        [
+          "href",
+          "string",
+          "–",
+          "Maakt de badge een link, bijvoorbeeld naar de plek waar de gebruiker iets moet doen",
+        ],
         ["children", "ReactNode", "–", "Tekst in de badge"],
       ],
       example: (
-        <Paragraph>
-          <TextBadge>Neutraal</TextBadge>{" "}
-          <TextBadge variant="info">Informatie</TextBadge>{" "}
-          <TextBadge variant="ok">Success</TextBadge>{" "}
-          <TextBadge variant="warning">Waarschuwing</TextBadge>{" "}
-          <TextBadge variant="error">Fout</TextBadge>
-        </Paragraph>
+        <>
+          <Paragraph>
+            <TextBadge>Neutraal</TextBadge>{" "}
+            <TextBadge variant="info">Informatie</TextBadge>{" "}
+            <TextBadge variant="ok">Gelukt</TextBadge>{" "}
+            <TextBadge variant="warning">Waarschuwing</TextBadge>{" "}
+            <TextBadge variant="error">Fout</TextBadge>
+          </Paragraph>
+          <Paragraph>
+            Als link:{" "}
+            <TextBadge variant="warning" href="/lopendezaken">
+              Actie nodig
+            </TextBadge>
+          </Paragraph>
+        </>
       ),
     },
   ];
@@ -1991,7 +2018,7 @@ const ComponentsDemoPage = () => {
       name: "Heading en Paragraph",
       file: "@/components/rhc",
       description:
-        "Koppen en alinea's. Kies het kopniveau naar de structuur van de pagina, niet naar het uiterlijk (zoals de grootte).",
+        "Koppen en alinea’s. Kies het kopniveau naar de structuur van de pagina, niet naar het uiterlijk (zoals de grootte).",
       options: [
         [
           "Heading level",
@@ -2025,6 +2052,90 @@ const ComponentsDemoPage = () => {
           <Paragraph purpose="lead">Een inleidende alinea.</Paragraph>
           <Paragraph>Een gewone alinea.</Paragraph>
         </>
+      ),
+    },
+    {
+      name: "PreHeading",
+      file: "@/components/rhc",
+      description:
+        "Korte tekst boven een kop, bijvoorbeeld de soort pagina of de organisatie. Hoort bij de kop: de kop staat in heading.",
+      options: [
+        ["heading", "ReactElement<Heading>", "–", "De kop eronder"],
+        ["children", "ReactNode", "–", "De tekst boven de kop"],
+      ],
+      example: (
+        <PreHeading
+          heading={<Heading level={5}>Energiebesparingsplicht</Heading>}
+        >
+          Wet en regelgeving
+        </PreHeading>
+      ),
+    },
+    {
+      name: "Article",
+      file: "@/components/rhc",
+      description:
+        "Een article-element met de leesbreedte en afstanden van RHC, voor een lange tekst die op zichzelf staat, zoals een nieuwsbericht of uitleg over een regeling.",
+      options: [
+        ["children", "ReactNode", "–", "Koppen, alinea’s en lijsten"],
+        ["className", "string", "–", "Extra class"],
+      ],
+      example: (
+        <Article>
+          <Heading level={5}>Wat verandert er per 1 januari?</Heading>
+          <Paragraph>
+            Vanaf 1 januari gelden nieuwe regels voor de energielabels van
+            bedrijfspanden. Kantoren moeten minimaal label C hebben.
+          </Paragraph>
+          <Paragraph>
+            Heeft uw kantoor een lager label? Dan mag u het niet meer als
+            kantoor gebruiken.
+          </Paragraph>
+        </Article>
+      ),
+    },
+    {
+      name: "Hero",
+      file: "@/components/rhc",
+      description:
+        "Grote afbeelding met een kop en een subtekst erop, bovenaan een pagina. De afbeelding is decoratief en dient daarom niet voorzien te worden van een tekst-alternatief (alt-attribuut)",
+      options: [
+        ["imageSrc", "string", "–", "Adres van de afbeelding"],
+        [
+          "imageAlt / imagePresentation",
+          "string / boolean",
+          "– / false",
+          "Beschrijving van de afbeelding, of decoratief zonder beschrijving",
+        ],
+        ["heading / subHeading", "ReactNode", "–", "Kop en subtekst"],
+        [
+          "headingLevel / headingAppearanceLevel",
+          "1 – 5",
+          "1",
+          "Niveau en uiterlijk van de kop",
+        ],
+        [
+          "aspectRatio",
+          '"16 / 9" | "4 / 3" | "1 / 1"',
+          "–",
+          "Verhouding van de afbeelding",
+        ],
+        [
+          "textAlign / borderRadiusCorner",
+          '"start" | "end" / hoek',
+          "start / –",
+          "Plaats van de tekst en welke hoek rond is",
+        ],
+      ],
+      example: (
+        <Hero
+          imageSrc="/bg-full-zakelijk.webp"
+          imagePresentation
+          heading="Zaken doen met de overheid"
+          headingLevel={5}
+          subHeading="Alles voor uw bedrijf op één plek"
+          aspectRatio="16 / 9"
+        />
       ),
     },
     {
@@ -2434,6 +2545,170 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
+      name: "FormFieldRadioGroup en FormFieldCheckboxGroup",
+      file: "@/components/rhc",
+      description: [
+        "Een groep keuzes met één label, uitleg en foutmelding voor de hele groep. Een alternatief voor Fieldset met losse FormFieldRadio’s of FormFieldCheckboxOptions.",
+        "Gebruik een groep als de uitleg of de foutmelding over alle keuzes samen gaat, zoals ‘Kies minimaal één onderwerp’.",
+      ],
+      options: [
+        ["label", "ReactNode", "–", "Vraag of naam van de groep"],
+        ["description", "ReactNode", "–", "Uitleg onder het label"],
+        [
+          "invalid / errorMessage",
+          "boolean / string",
+          "false / –",
+          "Foutmelding voor de hele groep",
+        ],
+        ["status", "ReactNode", "–", "Extra informatie onder de groep"],
+        [
+          "children",
+          "FormFieldRadio / FormFieldCheckboxOption",
+          "–",
+          "De keuzes; radiobuttons met hetzelfde name horen bij elkaar",
+        ],
+      ],
+      example: (
+        <div className="rhc-mox-row-gap">
+          <FormFieldRadioGroup
+            label="Hoe wilt u bericht krijgen?"
+            description="U kunt dit later aanpassen bij Contactvoorkeuren."
+          >
+            <FormFieldRadio
+              name="demo-groep-kanaal"
+              value="mail"
+              label="E-mail"
+              defaultChecked
+            />
+            <FormFieldRadio
+              name="demo-groep-kanaal"
+              value="post"
+              label="Post"
+            />
+          </FormFieldRadioGroup>
+          <FormFieldCheckboxGroup
+            label="Over welke onderwerpen wilt u berichten?"
+            invalid
+            errorMessage="Kies minimaal één onderwerp."
+          >
+            <FormFieldCheckboxOption label="Belastingen" />
+            <FormFieldCheckboxOption label="Subsidies en financiering" />
+          </FormFieldCheckboxGroup>
+        </div>
+      ),
+    },
+    {
+      name: "ExpandableCheckboxGroup",
+      file: "@/components/rhc",
+      description:
+        "Groep checkboxen die eerst een paar opties toont, met een knop om de rest te tonen. Handig voor filters met veel keuzes.",
+      options: [
+        ["legend", "ReactNode", "–", "Naam van de groep"],
+        ["options", "{ value, label }[]", "–", "Alle opties"],
+        [
+          "selectedOptions / onOptionChange",
+          "string[] / (value) => void",
+          "–",
+          "Gekozen waarden, bijgehouden door de ouder",
+        ],
+        ["maxVisible", "number", "–", "Hoeveel opties eerst zichtbaar zijn"],
+        [
+          "expandText / closeText / extraOptionsText",
+          "string",
+          "Engelse standaardtekst",
+          "Teksten van de knop; geef altijd een Nederlandse tekst mee",
+        ],
+      ],
+      example: (
+        <ExpandableCheckboxGroup
+          legend="Afzender"
+          maxVisible={3}
+          expandText="Toon meer"
+          closeText="Toon minder"
+          extraOptionsText="meer opties"
+          options={[
+            { value: "belastingdienst", label: "Belastingdienst" },
+            { value: "kvk", label: "KVK" },
+            { value: "rvo", label: "RVO" },
+            { value: "uwv", label: "UWV" },
+            { value: "gemeente", label: "Gemeente" },
+          ]}
+          selectedOptions={senders}
+          onOptionChange={(value) =>
+            setSenders((current) =>
+              current.includes(value)
+                ? current.filter((item) => item !== value)
+                : [...current, value],
+            )
+          }
+        />
+      ),
+    },
+    {
+      name: "FileInput",
+      file: "@/components/rhc",
+      description:
+        "Knop om bestanden te kiezen, met een lijst van de gekozen bestanden. Controleert de grootte en het type van elk bestand en toont anders een foutmelding.",
+      options: [
+        ["buttonText", "string", "–", "Tekst op de knop"],
+        [
+          "allowedFileTypes",
+          "string",
+          "–",
+          "Toegestane typen, zoals .pdf,.jpg,.png",
+        ],
+        ["maxFileSizeInBytes", "number", "–", "Grootste bestand in bytes"],
+        [
+          "fileSizeErrorMessage / fileTypeErrorMessage",
+          "string",
+          "–",
+          "Foutmeldingen; zeg wat de gebruiker moet kiezen",
+        ],
+        [
+          "onValueChange",
+          "(files: File[]) => void",
+          "–",
+          "Na het kiezen of verwijderen van een bestand",
+        ],
+        [
+          "buttonAppearance",
+          "Button appearance",
+          "secondary-action-button",
+          "Uiterlijk van de knop",
+        ],
+      ],
+      example: (
+        <FileInput
+          buttonText="Bestanden kiezen"
+          allowedFileTypes=".pdf,.jpg,.png"
+          maxFileSizeInBytes={10485760}
+          fileSizeErrorMessage="Kies een bestand van maximaal 10 MB."
+          fileTypeErrorMessage="Kies een bestand van het type pdf, jpg of png."
+        />
+      ),
+    },
+    {
+      name: "Toggletip",
+      file: "@/components/rhc",
+      description: [
+        "Een knop met een i-icoon die korte uitleg opent, bijvoorbeeld naast een veld. Gebouwd op details en summary, dus het werkt met het toetsenbord zonder JavaScript.",
+        "Let op: de knop heeft in RHC de vaste Engelse naam ‘tooltip-content’. Een schermlezer noemt dus niet waar de uitleg over gaat. Zet de uitleg daarom liever direct in de description van het veld.",
+      ],
+      options: [
+        ["children", "ReactNode", "–", "De uitleg, in een info-melding"],
+        ["open", "boolean", "false", "Begint open"],
+      ],
+      example: (
+        <div>
+          <span className="utrecht-form-label">KVK-nummer</span>{" "}
+          <Toggletip>
+            Het KVK-nummer bestaat uit 8 cijfers. U vindt het op uw uittreksel
+            uit het Handelsregister.
+          </Toggletip>
+        </div>
+      ),
+    },
+    {
       name: "NumberBadge",
       file: "@/components/rhc",
       description:
@@ -2443,6 +2718,27 @@ const ComponentsDemoPage = () => {
         <Paragraph>
           Berichtenbox <NumberBadge>16</NumberBadge>
           <VisuallyHidden> ongelezen</VisuallyHidden>
+        </Paragraph>
+      ),
+    },
+    {
+      name: "DotBadge",
+      file: "@/components/rhc",
+      description:
+        "Een stip als teken dat er iets nieuw is, zonder aantal. De tekst in label hoort alleen een schermlezer; de stip heeft standaard role=status.",
+      options: [
+        ["label", "ReactNode", "–", "Wat de stip betekent, voor schermlezers"],
+        [
+          "role",
+          "AriaRole",
+          "status",
+          "Rol; een status wordt voorgelezen als die verschijnt",
+        ],
+        ["children", "ReactNode", "–", "Zichtbare tekst naast de stip"],
+      ],
+      example: (
+        <Paragraph>
+          Berichtenbox <DotBadge label="Er zijn nieuwe berichten" />
         </Paragraph>
       ),
     },
@@ -2488,11 +2784,23 @@ const ComponentsDemoPage = () => {
           </Paragraph>
           <Paragraph>
             Een schermlezer leest hier “Acties voor dit bericht, knop” en “Heeft
-            bijlage(n)”, zoals in de Berichtenbox.
+            bijlage(n)”, zoals in de berichtenbox.
           </Paragraph>
         </div>
       ),
     },
+  ];
+
+  const rhcUnused: [string, string][] = [
+    ["Card", "Kaart van RHC; wij gebruiken het patroon rhc-mox-card."],
+    ["LinkListCard", "Kaart met een kop en een LinkList."],
+    [
+      "rhc-card-as-link",
+      "Een hele kaart als link. Geef de link een beschrijvende naam.",
+    ],
+    ["Listbox, ListboxOption", "Lijst om uit te kiezen, altijd open."],
+    ["MessageList, MessageListItem", "Lijst met berichten en een badge."],
+    ["DataBadgeButton", "Label als knop, bijvoorbeeld een actief filter."],
   ];
 
   const rhcLayout: [string, string][] = [
@@ -2588,7 +2896,7 @@ const ComponentsDemoPage = () => {
       name: "Tabs",
       file: "rhc-mox-tabs, rhc-mox-tab",
       description:
-        "Tabbladen als navigatie tussen pagina's, zoals in de Berichtenbox en bij Lopende zaken. Op een smal scherm of bij veel tabbladen scrollen ze, met een verloop aan de uiteinden.",
+        "Tabbladen als navigatie tussen pagina’s, zoals in de berichtenbox en bij Lopende zaken. Op een smal scherm of bij veel tabbladen scrollen ze, met een verloop aan de uiteinden.",
       options: [
         ["nav aria-label", "string", "–", "Naam van de tabbladen"],
         ["ul.rhc-mox-tabs", "class", "–", "De lijst"],
@@ -2611,7 +2919,7 @@ const ComponentsDemoPage = () => {
                 className="rhc-mox-tab utrecht-link utrecht-link--html-a"
               >
                 <Icon icon="inbox" />
-                Inbox
+                Ontvangen
               </NextLink>
             </li>
             <li>
@@ -2734,7 +3042,7 @@ const ComponentsDemoPage = () => {
       example: (
         <div className="rhc-mox-graph-meter">
           <ProgressBar
-            label="Budget vergeven"
+            label="Budget al verdeeld"
             value={64}
             valueText="64% vergeven"
           />
@@ -2927,7 +3235,7 @@ const ComponentsDemoPage = () => {
             href="https://rijkshuisstijl-community.vercel.app/?path=/docs/react-components-readme--docs"
             rel="extrenal"
           >
-            RHC componenten
+            RHC-componenten
           </a>
           , met hun opties en een voorbeeld.
         </Paragraph>
@@ -2959,6 +3267,15 @@ const ComponentsDemoPage = () => {
             Gebruikt in header, menu en footer; zonder voorbeeld.
           </Paragraph>
           <SimpleTable rows={rhcLayout} />
+        </section>
+        <section className="rhc-mox-card" aria-labelledby="rhc-unused">
+          <Heading level={3} id="rhc-unused">
+            RHC-componenten die we nog niet gebruiken
+          </Heading>
+          <Paragraph>
+            Wel beschikbaar via <code>@/components/rhc</code>; zonder voorbeeld.
+          </Paragraph>
+          <SimpleTable rows={rhcUnused} />
         </section>
 
         <Heading level={2}>Layout</Heading>

@@ -76,20 +76,21 @@ Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Geldt voor de 
 
 ### Terminologie
 
-| Handeling of begrip                   | Gebruik                 | Niet                                         |
-| ------------------------------------- | ----------------------- | -------------------------------------------- |
-| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer                |
-| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen           |
-| Item doorsturen                       | Delen                   | Doorsturen, Verzenden                        |
-| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox (behalve de tab "Inbox") |
-| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel               |
-| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers                   |
-| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed                        |
-| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen               |
-| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen          |
-| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen                      |
+| Handeling of begrip                   | Gebruik                 | Niet                                |
+| ------------------------------------- | ----------------------- | ----------------------------------- |
+| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer       |
+| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen  |
+| Item doorsturen                       | Delen                   | Doorsturen, Verzenden               |
+| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox                 |
+| Tab met ontvangen berichten           | Ontvangen               | Inbox, Postvak IN                   |
+| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel      |
+| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers          |
+| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed               |
+| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
+| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
+| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
 
-De digitale assistent schrijf je in lopende tekst met kleine letters ("Vraag het de digitale assistent"). Alleen aan het begin van een zin, in een kop, knop of menu-item een hoofdletter ("Digitale assistent (AI)").
+De digitale assistent en de berichtenbox schrijf je in lopende tekst met kleine letters ("Vraag het de digitale assistent", "Het bericht staat in uw berichtenbox"). Alleen aan het begin van een zin, in een kop, knop of menu-item een hoofdletter ("Digitale assistent (AI)", "Berichtenbox").
 
 ### Notatie en leestekens
 
@@ -99,12 +100,14 @@ De digitale assistent schrijf je in lopende tekst met kleine letters ("Vraag het
 - Afkortingen: bij de eerste keer (op een pagina) de volledige term met de afkorting tussen haakjes.
 - Komma eerst; puntkomma als de zin al komma's heeft of om twee nauw samenhangende zinnen te verbinden; gedachtestreep alleen als uiterste middel.
 - Typografische aanhalingstekens in zichtbare tekst: “dubbel”, ‘enkel’ en ook in mkb’er en komma’s. Rechte quotes alleen in code en attributen.
+- Beletselteken als één teken (…), niet als drie punten (...).
 - Kopteksten zijn zelfstandige naamwoorden zonder punt aan het einde. Uitzonderingen: een H1 mag een begroeting zijn, een FAQ-kop is een vraag.
 - Geen punt na items in een opsomming, tenzij het volledige zinnen zijn.
 
 ### Microcopy
 
 - Knoppen kort en met een werkwoord: "Opslaan", "Versturen", "Annuleren", "Opnieuw proberen".
+- Noem je een knop, tab of optie in een tekst, zet de naam dan in `<strong>`, zonder aanhalingstekens: "Kies bij een bericht <strong>Archiveren</strong>."
 - Lege staat: zeg wat er nog niet is én wat de gebruiker kan doen.
 - Foutmelding: zeg wat nodig is om de fout te herstellen.
 - Linkteksten beschrijvend: zeg waar de link heen gaat of wat die doet. Nooit "klik hier", "meer info", "lees meer" of een kale URL. Dezelfde tekst gaat naar dezelfde plek. De zichtbare tekst staat vooraan in de toegankelijke naam (WCAG 2.4.4, 2.5.3).

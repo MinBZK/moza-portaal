@@ -18,7 +18,7 @@ const PrototypeOpties = () => (
       aria-keyshortcuts="p"
       onClick={() => openSideOverlay("persona-paneel")}
     >
-      Persona&apos;s
+      Persona’s
     </Button>
   </div>
 );

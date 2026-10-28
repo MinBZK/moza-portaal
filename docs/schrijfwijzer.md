@@ -11,7 +11,7 @@ Het gaat om teksten zoals:
 - **Bevestigingen en statusmeldingen**: “Het gesprek staat nu bij uw bewaarde items.”
 - **Lege staten**: “Er zijn geen berichten om te tonen. Controleer of er nog een filter aanstaat.”
 
-Inhoud uit andere bronnen valt hier niet onder. Die schrijven we niet zelf en kunnen we niet aanpassen. Denk aan berichten van organisaties in de Berichtenbox, teksten over subsidies en regelgeving, en de antwoorden die de digitale assistent met AI maakt.
+Inhoud uit andere bronnen valt hier niet onder. Die schrijven we niet zelf en kunnen we niet aanpassen. Denk aan berichten van organisaties in de berichtenbox, teksten over subsidies en regelgeving, en de antwoorden die de digitale assistent met AI maakt.
 
 ## Aanspreking
 
@@ -51,18 +51,19 @@ Inhoud uit andere bronnen valt hier niet onder. Die schrijven we niet zelf en ku
 
 We gebruiken overal dezelfde termen voor dezelfde begrippen.
 
-| Begrip                                | Gebruik                 | Niet                                                                 |
-| ------------------------------------- | ----------------------- | -------------------------------------------------------------------- |
-| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer                                        |
-| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen                                   |
-| Item doorsturen                       | Delen                   | Doorsturen, Verzenden                                                |
-| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox (behalve als naam van de tab in de Berichtenbox) |
-| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel                                       |
-| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers                                           |
-| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed                                                |
-| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen                                       |
-| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen                                  |
-| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen                                              |
+| Begrip                                | Gebruik                 | Niet                                |
+| ------------------------------------- | ----------------------- | ----------------------------------- |
+| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer       |
+| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen  |
+| Item doorsturen                       | Delen                   | Doorsturen, Verzenden               |
+| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox                 |
+| Tab met ontvangen berichten           | Ontvangen               | Inbox, Postvak IN                   |
+| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel      |
+| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers          |
+| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed               |
+| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
+| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
+| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
 
 **Bewaren, Opslaan of Versturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
 
@@ -78,7 +79,7 @@ Veel apps gebruiken “Opslaan” ook voor bewaren, en in het Engels is het alle
 
 **KVK en btw** schrijven we zoals de organisaties dat zelf doen: KVK en KVK-nummer in hoofdletters, btw en btw-nummer in kleine letters (met een hoofdletter aan het begin van een zin of label: Btw-nummer).
 
-**De digitale assistent** schrijven we in lopende tekst met kleine letters: “Vraag het de digitale assistent.” Alleen aan het begin van een zin, in een kop, een knop of een menu-item krijgt het eerste woord een hoofdletter: “Digitale assistent (AI)”.
+**De digitale assistent en de berichtenbox** schrijven we in lopende tekst met kleine letters: “Vraag het de digitale assistent.”, “Het bericht staat in uw berichtenbox.” Alleen aan het begin van een zin, in een kop, een knop of een menu-item krijgt het eerste woord een hoofdletter: “Digitale assistent (AI)”, “Berichtenbox”.
 
 ## Datums en tijden
 
@@ -112,9 +113,13 @@ Kopteksten bestaan uit een enkele zin en hebben **geen punt** aan het einde.
 - **Acties bij inhoud**: “Bewaren”, “Delen”, “Niet relevant voor mij”.
 - **Navigatie**: “Volgende”, “Vorige”, “Meer Subsidies en financiering”.
 
+### Verwijzen naar een knop of optie
+
+Noemen we in een tekst een knop, tab of optie, dan zetten we de naam **vet**, zonder aanhalingstekens: “Kies bij een bericht **Archiveren**.” Zo herkent de gebruiker de naam op het scherm.
+
 ### Lege staten
 
-We zeggen wat er nog niet is en geven een suggestie: “U hebt nog geen items bewaard. Gebruik ‘Bewaren’ bij Subsidies en financiering, Wetten en regelgeving, en Berichten over uw buurt om items hier te verzamelen.”
+We zeggen wat er nog niet is en geven een suggestie: “U hebt nog geen items bewaard. Gebruik **Bewaren** bij Subsidies en financiering, Wetten en regelgeving, en Berichten over uw buurt om items hier te verzamelen.”
 
 ### Foutmeldingen
 
@@ -159,6 +164,7 @@ Informatief, niet alarmerend: “Contactgegevens die u hier aanpast, worden auto
 - **Gedachtestreep (—)**: alleen als uiterste middel, om een ingevoegd zinsdeel of een slotwoord extra nadruk te geven. We kiezen eerst een komma of puntkomma.
 - **Geen punt** na items in een opsomming, tenzij het volledige zinnen zijn.
 - **Geen spatie** voor een komma, dubbele punt of puntkomma.
+- **Beletselteken (…)**: één teken, geen drie losse punten (...). Bijvoorbeeld bij een tekst die nog laadt: “Laden…”. Zet geen beletselteken achter een kop of foutmelding.
 - **Aanhalingstekens**: typografische, geen rechte.
   - Dubbel: “ en ”
   - Enkel: ‘ en ’, ook in samentrekkingen zoals mkb’er en komma’s

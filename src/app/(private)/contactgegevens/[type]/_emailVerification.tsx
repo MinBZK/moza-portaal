@@ -90,8 +90,8 @@ export const EmailVerification = ({
         onError: (resendFailure: Error) =>
           setResendError(
             resendFailure.message === "SERVICE_UNAVAILABLE"
-              ? "De verificatieservice is momenteel niet beschikbaar. Probeer het later opnieuw."
-              : "Er is een fout opgetreden bij het aanvragen van de verificatiecode. Probeer het later opnieuw.",
+              ? "Wij kunnen nu geen code sturen. Probeer het later opnieuw."
+              : "Wij kunnen nu geen nieuwe code sturen. Probeer het later opnieuw.",
           ),
       },
     );
@@ -101,12 +101,12 @@ export const EmailVerification = ({
     <form className="rhc-mox-row-gap" noValidate onSubmit={submit}>
       {resendSuccess && (
         <Alert type="ok">
-          {`Er is een nieuwe verificatiecode verzonden naar ${email}.`}
+          {`Wij hebben een nieuwe code gestuurd naar ${email}.`}
         </Alert>
       )}
       {resendError && <Alert type="error">{resendError}</Alert>}
       <Alert type="warning">
-        {`Uw e-mailadres is nog niet geverifieerd. U ontvangt nog geen notificaties. Er is een verificatiecode gestuurd naar ${email}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
+        {`Uw e-mailadres is nog niet bevestigd. U ontvangt nog geen meldingen. Er is een verificatiecode gestuurd naar ${email}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
       </Alert>
       <FormFieldTextInput
         label="Verificatiecode"
@@ -119,7 +119,7 @@ export const EmailVerification = ({
       >
         <ActionGroup direction="row">
           <Button appearance="primary-action-button" type="submit">
-            Verifiëren
+            Code bevestigen
           </Button>
           <Button
             appearance="secondary-action-button"

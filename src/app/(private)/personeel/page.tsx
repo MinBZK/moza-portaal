@@ -7,10 +7,12 @@ import {
   TableHeader,
   TableHeaderCell,
   TableRow,
+  VisuallyHidden,
 } from "@/components/rhc";
 import zakenClient from "@/network/mock";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { format } from "date-fns";
+import { nl } from "date-fns/locale";
 import Link from "next/link";
 
 const Personeel = async () => {
@@ -21,7 +23,7 @@ const Personeel = async () => {
 
   return (
     <>
-      <Heading level={1}>Personeel</Heading>
+      <Heading level={1}>Personeel en rollen</Heading>
       <section className="rhc-mox-card" aria-labelledby="nieuwe-meldingen">
         <Heading level={2} id="nieuwe-meldingen">
           Nieuwe meldingen
@@ -55,14 +57,19 @@ const Personeel = async () => {
                   <TableCell>{item.referentie}</TableCell>
                   <TableCell>{item.status}</TableCell>
                   <TableCell>
-                    {format(new Date(item.ontvangenOp!), "dd/MM/yyyy")}
+                    {format(new Date(item.ontvangenOp!), "d MMMM yyyy", {
+                      locale: nl,
+                    })}
                   </TableCell>
                   <TableCell>
                     <Link
                       href={`/personeel/zwangerschapsverlof/${item.referentie}`}
                       className="utrecht-link utrecht-link--html-a"
                     >
-                      Opmerking toevoegen
+                      Opmerking toevoegen{" "}
+                      <VisuallyHidden>
+                        bij melding{item.referentie}
+                      </VisuallyHidden>
                     </Link>
                   </TableCell>
                 </TableRow>

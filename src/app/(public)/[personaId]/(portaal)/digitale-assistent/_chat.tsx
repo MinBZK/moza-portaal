@@ -77,7 +77,7 @@ const WACHT_PAGINALAAD = 1600;
 const WALLET_WET = "omgevingswet/energiebesparing/informatieplicht";
 
 const ONBOARDING = [
-  "Hallo, ik ben de digitale assistent van MijnOverheid Zakelijk. Voor hulp bij vragen of ondersteuning van taken raadpleeg ik een aantal betrouwbare overheidsbronnen.",
+  "Hallo, ik ben de digitale assistent van MijnOverheid Zakelijk. Ik help u met vragen en taken. Daarvoor gebruik ik betrouwbare bronnen van de overheid.",
   "Ik kan bijvoorbeeld:\n- uw bedrijfsgegevens opzoeken\n- uitzoeken welke regels voor u gelden\n- uw belastingaangifte voorbereiden",
   "Ik gebruik uw gegevens pas **als u daar toestemming voor geeft**. Bij elk antwoord ziet u welke bron ik heb geraadpleegd.",
 ];
@@ -292,7 +292,7 @@ const Chat = ({
             { focus: true },
           );
         } else if (zichtbaar) {
-          toonDenken(`${leesbareStap(String(payload.message ?? ""))}...`);
+          toonDenken(`${leesbareStap(String(payload.message ?? ""))}…`);
         }
       } else if (event === "case") {
         voegZaakToe((payload.data as Payload) ?? payload);
@@ -454,7 +454,7 @@ const Chat = ({
           : status === 401
             ? "Er is nog geen toegangssleutel ingevuld, of de sleutel klopt niet. Controleer de sleutel in het Flags-paneel."
             : status === 403
-              ? "Deze toegangssleutel geeft geen toegang tot de assistent."
+              ? "Vul een andere sleutel in via het Flags-paneel."
               : status === 503
                 ? "De assistent is in deze omgeving niet aangesloten. Zet de demo-modus aan in het Flags-paneel, of probeer het later opnieuw."
                 : status && status >= 500
@@ -485,7 +485,7 @@ const Chat = ({
     setInvoer("");
     setItems((huidig) => huidig.filter((item) => item.soort !== "suggesties"));
     voegToe({ id: nieuwId(), soort: "gebruiker", tekst: bericht });
-    toonDenken("Vraag analyseren…");
+    toonDenken("De assistent leest uw vraag…");
 
     const beurt: Beurt = {
       combo: comboRef.current,
@@ -929,14 +929,14 @@ const Chat = ({
             }
             onClick={bewaarGesprek}
           >
-            {bewaard === "ja" ? "Gesprek bewaard" : "Bewaar gesprek"}
+            {bewaard === "ja" ? "Gesprek bewaard" : "Gesprek bewaren"}
           </Button>
         </ActionGroup>
         <p className="rhc-visually-hidden" role="status">
           {bewaard === "ja"
             ? "Het gesprek staat nu bij uw bewaarde items."
             : bewaard === "fout"
-              ? "Het gesprek kon niet worden bewaard."
+              ? "Het bewaren van het gesprek is niet gelukt. Probeer het opnieuw."
               : ""}
         </p>
       </form>

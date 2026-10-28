@@ -92,7 +92,7 @@ export const leesBewaardItem = (sleutel: string) =>
   getSnapshot().staat.bewaard[sleutel] ?? null;
 
 export const bewaarFoutTekst =
-  "Uw keuze is niet bewaard. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit of sta opslag toe. Probeer het daarna opnieuw.";
+  "Uw keuze is niet bewaard. Uw browser kan nu niets opslaan voor deze website. Zet privénavigatie uit of sta opslag toe. Probeer het daarna opnieuw.";
 
 export const useBewaard = () => {
   const momentopname = useSyncExternalStore(

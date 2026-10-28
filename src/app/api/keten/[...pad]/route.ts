@@ -35,7 +35,7 @@ const stuurDoor = async (
   const ontvanger = ketenOntvanger(await getKetenAccount());
   if (!ontvanger)
     return Response.json(
-      { fout: "Deze persona is niet aangesloten op het stelsel." },
+      { fout: "Deze persona heeft geen berichten. Kies een andere persona." },
       { status: 403 },
     );
 
@@ -74,7 +74,9 @@ const stuurDoor = async (
     });
   } catch {
     return Response.json(
-      { fout: "Het stelsel is niet bereikbaar." },
+      {
+        fout: "Wij kunnen uw berichten nu niet ophalen. Probeer het later opnieuw.",
+      },
       { status: 502 },
     );
   }

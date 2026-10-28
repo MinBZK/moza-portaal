@@ -327,23 +327,24 @@ const Zaak = ({
         {!geldt && (
           <Alert type="warning">
             <Paragraph>
-              Bij de antwoorden in de aanvraag geeft de berekening geen{" "}
+              Met uw antwoorden krijgt u geen{" "}
               {situatie === "gemeente"
                 ? "loonkostensubsidie"
                 : "loondispensatie"}
-              . Daarom is er geen besluit.
+              . Daarom is er geen besluit. Denkt u dat dit niet klopt? Stel uw
+              vraag bij het besluit.
             </Paragraph>
           </Alert>
         )}
         {fout && (
           <Alert type="warning">
             <Paragraph>
-              De bedragen konden niet worden berekend. Laad de pagina opnieuw.
+              Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw.
             </Paragraph>
           </Alert>
         )}
         {!bekend && !fout ? (
-          <Paragraph role="status">De bedragen worden berekend…</Paragraph>
+          <Paragraph role="status">Wij berekenen de bedragen…</Paragraph>
         ) : (
           <>
             <section aria-labelledby="zaak-voortgang">
@@ -380,10 +381,11 @@ const Zaak = ({
                 Alles wat is vastgelegd
               </Heading>
               <Paragraph>
-                Nieuwste bovenaan. Elke regel is een vastlegging: regelgeving,
-                een besluit of een stap in de uitvoering, met wie het vastlegde
-                en wanneer. Een correctie vervangt niets; de oude regel blijft
-                staan met de nieuwe erboven.
+                Nieuwste bovenaan. Elke regel is een stap die iemand heeft
+                vastgelegd: regelgeving, een besluit of een stap in de
+                uitvoering, met wie het vastlegde en wanneer. Een correctie
+                vervangt niets; de oude regel blijft staan met de nieuwe
+                erboven.
               </Paragraph>
               <ol className="mox-hiring-timeline">
                 {[...zichtbaar].reverse().map((g) => (

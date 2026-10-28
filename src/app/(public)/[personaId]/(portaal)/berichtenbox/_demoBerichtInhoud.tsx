@@ -90,7 +90,7 @@ const DemoBerichtInhoud = ({
             <a
               href={PDF}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
               className="utrecht-link utrecht-link--html-a"
             >
               Origineel bericht openen

@@ -12,7 +12,7 @@ const WetGegevens = ({
   <DataSummary appearance="column">
     <DataSummaryItem itemKey="Bron" itemValue={wet.bron} />
     <DataSummaryItem
-      itemKey={detail ? "Inwerkingtreding" : "In werking"}
+      itemKey={detail ? "Geldt vanaf" : "In werking"}
       itemValue={wet.ingangsdatum}
     />
     <DataSummaryItem itemKey="Geldt voor" itemValue={wet.voorWie} />
