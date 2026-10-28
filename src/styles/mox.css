@@ -40,7 +40,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			hyphens: auto;
 			overflow-wrap: break-word;
 
-			/* Tabellen scrollen (mox-table-container); cellen breken niet midden in een woord. */
+			/* Tabellen scrollen (rhc-mox-table-container); cellen breken niet midden in een woord. */
 			.utrecht-table {
 				hyphens: manual;
 				overflow-wrap: normal;
@@ -194,7 +194,8 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
 
-		h2 {
+		/* Elk kopniveau, ook een lager niveau zoals in het voorbeeld op /demo. */
+		:is(h2, h3, h4, h5, h6) {
 			color: var(--rhc-color-wit);
 			font-size: var(--rhc-text-font-size-lg);
 			margin-block-end: var(--rhc-space-lg);
@@ -417,28 +418,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	.mox-status--permanent-failure {
 		background-color: var(--rhc-color-rood-500);
-	}
-
-	/* --- Tabel --- */
-	/* position: relative houdt ook verborgen tekst (rhc-visually-hidden, absoluut
-	  gepositioneerd) binnen de scrollcontainer; anders scrolt de hele pagina. */
-	.mox-table-container {
-		overflow-x: auto;
-		position: relative;
-
-		th {
-			white-space: nowrap;
-		}
-
-		.utrecht-alert {
-			padding-block: var(--rhc-space-sm);
-			padding-inline: var(--rhc-space-md);
-
-		}
-
-		.utrecht-alert__message {
-			font-size: var(--rhc-text-font-size-sm);
-		}
 	}
 
 	/* --- Tekst --- */

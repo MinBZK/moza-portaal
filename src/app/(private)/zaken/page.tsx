@@ -49,7 +49,7 @@ const Zaken = async () => {
         <Heading level={2} id="lopende-aanvragen">
           Lopende aanvragen
         </Heading>
-        <div className="mox-table-container">
+        <div className="rhc-mox-table-container">
           <Table>
             <TableHeader>
               <TableRow>

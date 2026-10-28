@@ -562,6 +562,45 @@ body {
   }
 }
 
+/* Het paneel uit- en inklappen. Het wisselt met [hidden], dus display loopt
+  mee via allow-discrete; interpolate-size maakt de hoogte auto animeerbaar.
+  Zonder interpolate-size (Safari, Firefox) alleen de fade. Binnen
+  .rhc-theme.mox-theme, zodat padding-block: 0 voorgaat op de padding uit
+  mox.css. */
+@media (prefers-reduced-motion: no-preference) {
+  .rhc-theme.mox-theme .utrecht-accordion {
+    interpolate-size: allow-keywords;
+
+    /* Hetzelfde pijltje, open 180 graden gedraaid: laat het meedraaien. */
+    .utrecht-accordion__button-icon {
+      transition: transform 250ms ease;
+    }
+
+    .utrecht-accordion__panel {
+      block-size: auto;
+      overflow: clip;
+      transition:
+        block-size 250ms ease,
+        opacity 250ms ease,
+        padding-block 250ms ease,
+        display 250ms allow-discrete;
+
+      /* Ook de padding, anders begint en eindigt de hoogte niet bij 0. */
+      @starting-style {
+        block-size: 0;
+        opacity: 0;
+        padding-block: 0;
+      }
+
+      &[hidden] {
+        block-size: 0;
+        opacity: 0;
+        padding-block: 0;
+      }
+    }
+  }
+}
+
 /* --- Tabs --- */
 .rhc-mox-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
@@ -973,6 +1012,24 @@ body {
   details[open]>summary .utrecht-icon {
     transform: rotate(90deg);
   }
+
+  /* Openen en sluiten animeren. Zonder interpolate-size (Safari, Firefox)
+    klapt de stap direct open. */
+  @media (prefers-reduced-motion: no-preference) {
+    interpolate-size: allow-keywords;
+
+    details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 250ms ease,
+        content-visibility 250ms allow-discrete;
+    }
+
+    details[open]::details-content {
+      block-size: auto;
+    }
+  }
 }
 
 .rhc-mox-status-details {
@@ -1091,6 +1148,29 @@ body {
 
   .rhc-navigation-list__item__start-icon {
     display: none;
+  }
+}
+
+/* Navigatielijst in kolommen: één lijst, op een breed scherm twee kolommen
+  naast elkaar. De volgorde loopt per rij. */
+.rhc-theme.mox-theme {
+  .rhc-navigation-list.rhc-mox-navigation-grid {
+    column-gap: var(--rhc-space-xl);
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @media (width >= 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Items in een rij even hoog, zodat de lijnen gelijk lopen. */
+    > li {
+      display: flex;
+    }
+
+    .rhc-navigation-list__item {
+      flex: 1;
+    }
   }
 }
 
@@ -1296,6 +1376,29 @@ body {
 .rhc-theme.mox-theme {
   .utrecht-table__header-cell {
     vertical-align: bottom;
+  }
+}
+
+/* Tabel die horizontaal scrolt als hij niet past. position: relative houdt
+  ook verborgen tekst (rhc-visually-hidden, absoluut gepositioneerd) binnen
+  de scrollcontainer; anders scrolt de hele pagina. */
+.rhc-theme.mox-theme {
+  .rhc-mox-table-container {
+    overflow-x: auto;
+    position: relative;
+
+    th {
+      white-space: nowrap;
+    }
+
+    .utrecht-alert {
+      padding-block: var(--rhc-space-sm);
+      padding-inline: var(--rhc-space-md);
+    }
+
+    .utrecht-alert__message {
+      font-size: var(--rhc-text-font-size-sm);
+    }
   }
 }
 
@@ -1891,13 +1994,8 @@ body {
 }
 
 .mox-landing-quicklinks {
-  display: flex;
-
-  div {
-    inline-size: 50%;
-    padding-block-end: var(--rhc-hero-message-padding-block-end);
-    padding-inline: var(--rhc-hero-message-padding-inline-start);
-  }
+  padding-block-end: var(--rhc-hero-message-padding-block-end);
+  padding-inline: var(--rhc-hero-message-padding-inline-start);
 }
 
 .mox-landing-quicklinks-heading {

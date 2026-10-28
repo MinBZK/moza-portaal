@@ -39,7 +39,7 @@ const Personeel = async () => {
         <Heading level={2} id="lopende-meldingen">
           Lopende meldingen
         </Heading>
-        <div className="mox-table-container">
+        <div className="rhc-mox-table-container">
           <Table>
             <TableHeader>
               <TableRow>
