@@ -215,7 +215,7 @@ const BerichtDetail = ({
           <>
             <Heading level={1}>Bericht verwijderd</Heading>
             <Paragraph>
-              U heeft dit bericht voorgoed verwijderd. Het staat niet meer in uw
+              U hebt dit bericht voorgoed verwijderd. Het staat niet meer in uw
               Berichtenbox.
             </Paragraph>
             <Paragraph>

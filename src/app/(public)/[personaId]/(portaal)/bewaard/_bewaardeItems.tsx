@@ -9,7 +9,11 @@ import {
   Paragraph,
   VisuallyHidden,
 } from "@/components/rhc";
-import { bewaarFoutTekst, useBewaard, type BewaarItem } from "@/components/save/useSaved";
+import {
+  bewaarFoutTekst,
+  useBewaard,
+  type BewaarItem,
+} from "@/components/save/useSaved";
 
 const tekst = {
   bewaard: {
@@ -33,7 +37,7 @@ const BewaardeItems = ({
   soort: "bewaard" | "nietRelevant";
   /** Wat er staat als er nog niets is. */
   leeg: ReactNode;
-  /** Alleen deze categorie, zoals de gesprekken met de Digitale assistent. */
+  /** Alleen deze categorie, zoals de gesprekken met de digitale assistent. */
   alleenCategorie?: string;
   /** Alles behalve deze categorie. */
   zonderCategorie?: string;

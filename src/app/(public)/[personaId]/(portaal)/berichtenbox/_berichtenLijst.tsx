@@ -61,7 +61,7 @@ const meervoud = (aantal: number, enkelvoud: string, meer: string) =>
 const legeTekst: Record<Weergave, string> = {
   inbox:
     "Er staan geen berichten in uw inbox. Een nieuw bericht verschijnt hier zodra een organisatie u schrijft.",
-  archief: "U heeft nog geen berichten gearchiveerd.",
+  archief: "U hebt nog geen berichten gearchiveerd.",
   prullenbak: "Er staan geen berichten in de prullenbak.",
 };
 

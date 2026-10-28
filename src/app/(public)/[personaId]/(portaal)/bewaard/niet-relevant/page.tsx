@@ -18,8 +18,8 @@ const NotRelevantPage = async () => {
         leeg={
           <Alert type="info">
             <Paragraph>
-              U heeft nog niets als niet relevant gemarkeerd. Gebruik daarvoor
-              de knop <strong>Niet relevant voor mij</strong> bij een item.
+              U hebt nog niets als niet relevant gemarkeerd. Gebruik daarvoor de
+              knop <strong>Niet relevant voor mij</strong> bij een item.
             </Paragraph>
           </Alert>
         }

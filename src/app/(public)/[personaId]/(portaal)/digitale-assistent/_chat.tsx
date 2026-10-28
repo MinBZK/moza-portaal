@@ -55,7 +55,7 @@ import type {
 } from "./_types";
 
 /**
- * De Digitale assistent, overgenomen uit moza-poc
+ * De digitale assistent, overgenomen uit moza-poc
  * (assets/javascript/digitale-assistent.js). De backend praat via
  * Server-Sent Events (status, tool, case, answer, error); de demo-modus speelt
  * dezelfde events af uit een draaiboek. Beide lopen door `verwerk`, dus wat in
@@ -691,7 +691,7 @@ const Chat = ({
     };
   }, [demo]);
 
-  // Status van de bronnen (flag "Status van bronnen in de Digitale assistent").
+  // Status van de bronnen (flag "Status van bronnen in de digitale assistent").
   useEffect(() => {
     if (!toonBronstatus) return;
     if (demo) {

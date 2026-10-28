@@ -219,7 +219,7 @@ const IndienenInhoud = ({
       <>
         <Alert type="info">
           <Paragraph>
-            U heeft niets gekozen om in te dienen. Kies bij de aanvraag wat u
+            U hebt niets gekozen om in te dienen. Kies bij de aanvraag wat u
             wilt aanvragen, of bekijk wat er zonder aanvraag geldt.
           </Paragraph>
         </Alert>

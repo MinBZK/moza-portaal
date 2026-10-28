@@ -86,7 +86,7 @@ const Dashboard = async () => {
         <Alert type="warning">
           <Heading level={2}>E-mailadres nog niet gekoppeld</Heading>
           <Paragraph>
-            U heeft nog geen zakelijk e-mailadres opgenomen in uw
+            U hebt nog geen zakelijk e-mailadres opgenomen in uw
             contactgegevens. Ga naar het tabblad contactgegevens en vul hier uw
             zakelijke e-mailadres in, zo weten wij hoe we uw organisatie kunnen
             bereiken met belangrijke berichten en updates.

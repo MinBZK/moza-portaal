@@ -1,4 +1,4 @@
-/** Typen van de Digitale assistent. De vorm volgt de events van de backend. */
+/** Typen van de digitale assistent. De vorm volgt de events van de backend. */
 
 export type Bron = {
   label: string;

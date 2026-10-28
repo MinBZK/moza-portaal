@@ -12,7 +12,7 @@ const ComponentsExamplePage = async () => (
     <Heading level={1}>Voorbeeld componenten</Heading>
     <Alert type="info">
       <Paragraph>
-        Testpagina voor de nieuwe componenten van Digitale assistent 2.0.
+        Testpagina voor de nieuwe componenten van digitale assistent 2.0.
       </Paragraph>
     </Alert>
 

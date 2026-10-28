@@ -990,7 +990,7 @@ const ComponentsDemoPage = () => {
         <div className="rhc-mox-row-gap">
           <Heading level={5}>Alle soorten</Heading>
           <Alert type="info">
-            <Paragraph>Informatie: iets om te weten.</Paragraph>
+            <Paragraph>Informatie.</Paragraph>
           </Alert>
           <Alert type="ok">
             <Paragraph>Gelukt: uw gegevens zijn opgeslagen.</Paragraph>
