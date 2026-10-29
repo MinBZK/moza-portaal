@@ -110,6 +110,7 @@ export const EmailVerification = ({
       </Alert>
       <FormFieldTextInput
         label="Verificatiecode"
+        autoComplete="one-time-code"
         placeholder="bv: 123456"
         maxLength={6}
         value={code}

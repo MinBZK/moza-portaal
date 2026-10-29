@@ -648,10 +648,9 @@ body {
 /* --- Tabs --- */
 .rhc-mox-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
-  background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 100% var(--rhc-border-width-md);
+  /* The grey line under the tabs as an inset shadow, not as a background
+    image: then a contrast check sees a plain background behind the text. */
+  box-shadow: inset 0 calc(-1 * var(--rhc-border-width-md)) 0 var(--rhc-color-cool-grey-400);
   display: flex;
   gap: var(--rhc-space-xl);
   margin-block-end: var(--rhc-space-lg);

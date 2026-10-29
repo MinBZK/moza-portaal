@@ -12,10 +12,13 @@ function FormField({
   field,
   label,
   readOnly = false,
+  autoComplete,
 }: {
   field: AnyFieldApi;
   label: string;
   readOnly?: boolean;
+  /** Token for personal data of the user, such as "email" (WCAG 1.3.5). */
+  autoComplete?: string;
 }) {
   const error = errorOf(field);
   return (
@@ -24,6 +27,7 @@ function FormField({
       name={field.name}
       label={label}
       readOnly={readOnly}
+      autoComplete={autoComplete}
       value={field.state.value ?? ""}
       invalid={!!error}
       errorMessage={error}

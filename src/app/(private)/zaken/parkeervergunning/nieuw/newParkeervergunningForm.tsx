@@ -52,7 +52,13 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
             {(field) => <FormField label={"Motivatie"} field={field} />}
           </form.Field>
           <form.Field name="aanvragerEmail">
-            {(field) => <FormField label="E-mailadres" field={field} />}
+            {(field) => (
+              <FormField
+                label="E-mailadres"
+                field={field}
+                autoComplete="email"
+              />
+            )}
           </form.Field>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}

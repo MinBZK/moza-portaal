@@ -64,10 +64,14 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
           }}
         >
           <form.Field name="bsn">
-            {(field) => <FormField label={"BSN"} field={field} />}
+            {(field) => (
+              <FormField label={"BSN"} field={field} autoComplete="off" />
+            )}
           </form.Field>
           <form.Field name="naam">
-            {(field) => <FormField label={"Naam"} field={field} />}
+            {(field) => (
+              <FormField label={"Naam"} field={field} autoComplete="off" />
+            )}
           </form.Field>
           <form.Field name="startDatum">
             {(field) => (
