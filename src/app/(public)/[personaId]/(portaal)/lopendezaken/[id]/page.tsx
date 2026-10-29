@@ -1,9 +1,19 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import { getDemoZaakById } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import StatusTrack from "@/components/StatusTrack";
 import ZakenTabs from "../_zakenTabs";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const zaak = await getDemoZaakById((await params).id);
+  return { title: `${zaak?.titel ?? "Zaak"} - Lopende zaken` };
+};
 
 const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const zaak = await getDemoZaakById((await params).id);

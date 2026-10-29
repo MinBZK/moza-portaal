@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Heading,
   Paragraph,
@@ -16,6 +17,8 @@ import {
   getDemoVerwerkingVragen,
 } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
+
+export const metadata: Metadata = { title: "Gegevensdeling en dataverwerking" };
 
 // Tijden in Nederlandse tijd, ook als de server in UTC draait.
 const datumTijd = new Intl.DateTimeFormat("nl-NL", {

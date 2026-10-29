@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { Heading, Paragraph, Alert } from "@/components/rhc";
 import BewaardeItems from "../_bewaardeItems";
 import SavedTabs from "../_savedTabs";
+
+export const metadata: Metadata = { title: "Niet relevant - Bewaarde items" };
 
 const NotRelevantPage = async () => {
   return (

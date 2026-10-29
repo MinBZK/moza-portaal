@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Alert,
   DataSummary,
@@ -8,6 +9,8 @@ import {
 import OnderdeelPagina, {
   type OnderdeelPaginaProps,
 } from "../_onderdeelPagina";
+
+export const metadata: Metadata = { title: "UBO-register - Bedrijfsgegevens" };
 
 const UboRegisterPage = (props: OnderdeelPaginaProps) => (
   <OnderdeelPagina

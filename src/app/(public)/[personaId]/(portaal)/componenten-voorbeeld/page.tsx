@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 // Example page for the new components. Temporary: delete this folder
 // (componenten-voorbeeld) when it is no longer needed; nothing else uses it.
 import { Alert, Heading, Paragraph } from "@/components/rhc";
@@ -6,6 +7,8 @@ import StepIndicator from "@/components/StepIndicator";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Switch from "@/components/Switch";
 import TextBadge from "@/components/TextBadge";
+
+export const metadata: Metadata = { title: "Voorbeeld componenten" };
 
 const ComponentsExamplePage = async () => (
   <>

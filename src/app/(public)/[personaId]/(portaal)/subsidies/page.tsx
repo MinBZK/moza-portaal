@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
@@ -7,6 +8,8 @@ import { getActievePersona } from "@/app/(public)/_persona";
 import { RelevantItem } from "@/components/save/saveActions";
 import SubsidieActies, { bewaarItemVan } from "./_subsidieActies";
 import SubsidieGegevens from "./_subsidieGegevens";
+
+export const metadata: Metadata = { title: "Subsidies en financiering" };
 
 const PER_PAGINA = 5;
 

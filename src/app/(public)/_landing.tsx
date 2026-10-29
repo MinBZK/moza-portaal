@@ -173,13 +173,17 @@ const PublicPage = () => {
         <Heading level={3}>UX-onderzoek uitvoeren</Heading>
         <section>
           {/* Een lijst mag niet in een alinea staan (hydration-fout). */}
-          <Paragraph>Gebruik de shortcuttoetsen:</Paragraph>
+          <Paragraph>
+            Gebruik de sneltoetsen (op een Mac is Alt de Option-toets):
+          </Paragraph>
           <UnorderedList>
             <UnorderedListItem>
-              <code>p</code>: selecteer een persona
+              <code>Alt</code> + <code>Shift</code> + <code>P</code>: selecteer
+              een persona
             </UnorderedListItem>
             <UnorderedListItem>
-              <code>f</code>: schakel flags in/uit
+              <code>Alt</code> + <code>Shift</code> + <code>F</code>: schakel
+              flags in/uit
             </UnorderedListItem>
           </UnorderedList>
           <Paragraph>

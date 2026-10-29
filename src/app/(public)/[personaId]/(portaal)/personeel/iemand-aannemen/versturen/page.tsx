@@ -1,9 +1,14 @@
+import type { Metadata } from "next";
 import { Heading, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Versturen from "./_versturen";
 import Stappen from "../_stappen";
 import { werkgeverVan } from "../_werkgever";
+
+export const metadata: Metadata = {
+  title: "Controleren en versturen - Personeel en rollen",
+};
 
 /** Scherm 4: wat wordt verstuurd, bij wie, en de bevestiging. */
 const VersturenPage = async () => {

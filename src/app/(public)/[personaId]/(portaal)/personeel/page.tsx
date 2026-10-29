@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   AccordionProvider,
@@ -9,6 +10,8 @@ import {
 } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
+
+export const metadata: Metadata = { title: "Personeel en rollen" };
 
 const vragen = [
   {

@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Heading, Paragraph, Icon } from "@/components/rhc";
+
+const titelVan = (slug: string) =>
+  slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> => ({ title: titelVan((await params).slug) });
 
 export default async function FooterPage({
   params,
@@ -8,11 +21,7 @@ export default async function FooterPage({
 }) {
   const { slug } = await params;
 
-  // Format slug to a readable title (optional, but nice)
-  const title = slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  const title = titelVan(slug);
 
   return (
     <>

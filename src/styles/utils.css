@@ -264,23 +264,25 @@ dialog.prototype-side-overlay[open] {
 /* --- PoC-banner --- */
 
 .prototype-temp-poc-banner {
-	background: var(--rhc-color-groen-500);
+	/* Bottom right, so the ribbon covers no control in the header (WCAG
+	  2.5.8) and stays small over the content. Full colour for contrast. */
+	background: var(--rhc-color-groen-700);
 	color: var(--rhc-color-wit);
 	font-weight: var(--rhc-text-font-weight-bold);
 	inline-size: 256px;
-	inset-block-start: 3rem;
+	inset-block-end: 3rem;
 	inset-inline-end: -4rem;
-	opacity: .8;
 	padding-block: var(--rhc-space-sm);
 	position: fixed;
 	text-align: center;
 	text-decoration: none;
-	transform: rotate(45deg);
+	transform: rotate(-45deg);
 	transform-origin: center;
 	z-index: 9;
 
-	&:hover {
-		opacity: 1;
+	&:hover,
+	&:focus-visible {
+		text-decoration-line: underline;
 	}
 }
 
