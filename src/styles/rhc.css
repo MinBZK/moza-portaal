@@ -273,6 +273,32 @@ body {
 }
 
 /* --- Navigatie --- */
+/* Pijltje tussen de kruimels, met CSS. Een apart <li> als scheidingsteken
+  (BreadcrumbNavSeparator) telt als leeg lijstitem; zo bevat de lijst alleen
+  echte stappen. Dezelfde maat en kleur als het RHC-icoon chevron-right. */
+.utrecht-breadcrumb-nav__item+.utrecht-breadcrumb-nav__item {
+  align-items: center;
+  display: inline-flex;
+
+  &::before {
+    background-color: var(--utrecht-breadcrumb-nav-separator-color, currentColor);
+    block-size: var(--utrecht-breadcrumb-nav-separator-icon-size, 18px);
+    content: "";
+    flex-shrink: 0;
+    inline-size: var(--utrecht-breadcrumb-nav-separator-icon-size, 18px);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6l-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+}
+
+/* Huidige pagina in het kruimelpad: gewone tekst, geen link. */
+.rhc-mox-breadcrumb-current {
+  /* Same colour and spacing as the current link of RHC used to have. */
+  color: var(--rhc-breadcrumb-nav-link-current-color);
+  display: inline-block;
+  padding-block: var(--utrecht-breadcrumb-nav-item-padding-block-start, 8px) var(--utrecht-breadcrumb-nav-item-padding-block-end, 8px);
+  padding-inline-start: var(--utrecht-breadcrumb-nav-item-padding-inline-start, 8px);
+}
+
 .rhc-theme.mox-theme {
   .rhc-side-nav__link {
     align-items: baseline;

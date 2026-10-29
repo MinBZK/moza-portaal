@@ -264,19 +264,20 @@ dialog.prototype-side-overlay[open] {
 /* --- PoC-banner --- */
 
 .prototype-temp-poc-banner {
-	/* Bottom right, so the ribbon covers no control in the header (WCAG
-	  2.5.8) and stays small over the content. Full colour for contrast. */
+	/* Top right, over the header. Note: it covers part of the language
+	  choice and Uitloggen (WCAG 2.5.8); accepted for the prototype. Full
+	  colour for contrast. */
 	background: var(--rhc-color-groen-700);
 	color: var(--rhc-color-wit);
 	font-weight: var(--rhc-text-font-weight-bold);
 	inline-size: 256px;
-	inset-block-end: 3rem;
+	inset-block-start: 3rem;
 	inset-inline-end: -4rem;
 	padding-block: var(--rhc-space-sm);
 	position: fixed;
 	text-align: center;
 	text-decoration: none;
-	transform: rotate(-45deg);
+	transform: rotate(45deg);
 	transform-origin: center;
 	z-index: 9;
 
