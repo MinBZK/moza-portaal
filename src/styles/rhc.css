@@ -1553,6 +1553,11 @@ small,
 
 /* In een info-melding de kleur van die melding (het info-icoon), zoals
   bij "De pdf wordt geladen". */
+.utrecht-alert--info .rhc-mox-progressbar {
+  border-color: var(--rhc-color-hemelblauw-100);
+
+}
+
 .utrecht-alert--info .rhc-mox-progressbar-track {
   background-color: var(--utrecht-alert-icon-info-color);
 }
