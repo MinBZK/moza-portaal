@@ -88,6 +88,24 @@ const OVERIG: Record<
   },
 };
 
+/** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
+const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
+  <ActionGroup>
+    {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+    <Link
+      href="/personeel/iemand-aannemen/gegevens"
+      className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action mox-hiring-button-link"
+      aria-disabled={bekend ? undefined : true}
+      aria-describedby={bekend ? undefined : "aanvragen-bezig"}
+      onClick={(event) => {
+        if (!bekend) event.preventDefault();
+      }}
+    >
+      Aanvraag laten invullen
+    </Link>
+  </ActionGroup>
+);
+
 /**
  * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
@@ -158,14 +176,10 @@ const VragenMetStaat = ({
   return (
     <>
       <Heading level={2}>Gevolgen voor {onderneming}</Heading>
-      <Paragraph className="mox-hiring-note">
-        Deze berekening blijft op uw scherm. Er gaat niets naar een
-        overheidsorganisatie.
-      </Paragraph>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
           <Fieldset
-            legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past."
+            legend="1. Wie wilt u aannemen? Kies wat past."
             className="mox-hiring-choices"
           >
             {DOELGROEPEN.map(([waarde, label]) => (
@@ -194,7 +208,7 @@ const VragenMetStaat = ({
             ))}
           </Fieldset>
           <RangeSlider
-            label="2. Hoeveel uur per week gaat de kandidaat werken? (arbeidsduur)"
+            label="2. Hoeveel uur per week gaat de kandidaat werken?"
             min={8}
             max={40}
             step={1}
@@ -205,7 +219,7 @@ const VragenMetStaat = ({
           />
           <div>
             <RangeSlider
-              label="3. Heeft de kandidaat naar verwachting een verminderde loonwaarde? Zo ja, hoeveel? (loonwaarde)"
+              label="3. Welke verminderde loonwaarde verwacht u?"
               min={30}
               max={100}
               step={5}
@@ -225,7 +239,7 @@ const VragenMetStaat = ({
             </Paragraph>
           </div>
           <Fieldset
-            legend="4. Wat wordt het bruto uurloon? (loon)"
+            legend="4. Wat wordt het bruto uurloon?"
             className="mox-hiring-choices"
           >
             <FormFieldRadio
@@ -264,14 +278,11 @@ const VragenMetStaat = ({
               />
             )}
           </Fieldset>
-          <Paragraph className="mox-hiring-note">
-            Een hoger uurloon geeft geen hogere subsidie, alleen hogere
-            loonkosten.
-          </Paragraph>
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
           <StickyInfoBox title="Wat het kost en oplevert">
             <Balans antwoorden={a} resultaat={resultaat} />
+            <AanvraagKnop bekend={resultaat.bekend} />
           </StickyInfoBox>
         </div>
       </div>
@@ -309,20 +320,7 @@ const VragenMetStaat = ({
           bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
           beslist zelf of u de aanvraag verstuurt. Tussendoor opslaan kan.
         </Paragraph>
-        <ActionGroup>
-          {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
-          <Link
-            href="/personeel/iemand-aannemen/gegevens"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action mox-hiring-button-link"
-            aria-disabled={resultaat.bekend ? undefined : true}
-            aria-describedby={resultaat.bekend ? undefined : "aanvragen-bezig"}
-            onClick={(event) => {
-              if (!resultaat.bekend) event.preventDefault();
-            }}
-          >
-            Aanvraag laten invullen
-          </Link>
-        </ActionGroup>
+        <AanvraagKnop bekend={resultaat.bekend} />
         <Paragraph role="status" id="aanvragen-bezig">
           {resultaat.bekend
             ? ""

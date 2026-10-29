@@ -12,7 +12,6 @@ import {
   type VoorbehoudId,
 } from "./_uitkomsten";
 import type { Resultaat } from "./_useUitkomsten";
-import { useManifest } from "./_useRegelrecht";
 import { euro } from "./_werkgever";
 
 /** Wat bij een aanname in de (i) staat (ontwerp-orientatie-alle-uitkomsten-v1.md). */
@@ -163,7 +162,6 @@ const Balans = ({
   resultaat: Resultaat;
   kort?: boolean;
 }) => {
-  const manifest = useManifest();
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   const kosten = loonkostenPerJaar(antwoorden);
   const regels = balansRegels(uitkomsten, kosten);
@@ -185,6 +183,9 @@ const Balans = ({
         : r.status === "niet_meegeteld"
           ? "niet meegeteld"
           : "geldt niet";
+  // Tijdens het rekenen staan alle regelingen er; daarna alleen die meetellen.
+  const telt = (r: BalansRegel) =>
+    !bekend || Boolean(fout) || r.status !== "geldt_niet";
   const klasse = (r: BalansRegel) =>
     bekend && !fout && r.status !== "bedrag" ? "mox-hiring-none" : undefined;
   // Wat bij een regel in de (i) staat: de aanname, en bij een bedrag de
@@ -208,12 +209,8 @@ const Balans = ({
       {bezig && !fout && "Wij rekenen uit…"}
       {fout
         ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. `
-        : "Berekend in uw browser door de regelrecht-engine"}
-      {!fout &&
-        manifest.status === "klaar" &&
-        ` (engine ${manifest.waarde.regelrecht.slice(0, 8)}, corpus ${manifest.waarde.corpus.revisie.slice(0, 8)})`}
-      {!fout && ". "}
-      Een schatting vooraf: na uw aanvraag beslist de organisatie die de
+        : "Berekend in uw browser: er gaat niets naar een overheidsorganisatie. "}
+      Een schatting vooraf. Na uw aanvraag beslist de organisatie die de
       regeling uitvoert.
     </Paragraph>
   );
@@ -262,7 +259,7 @@ const Balans = ({
           <dt>Loonkosten</dt>
           <dd>{euro(kosten)}</dd>
         </div>
-        {regels.map((r) => (
+        {regels.filter(telt).map((r) => (
           <div key={r.id}>
             <dt>
               {naam(r)}
@@ -282,6 +279,16 @@ const Balans = ({
           </div>
         ))}
       </dl>
+      {bekend && !fout && regels.some((r) => !telt(r)) && (
+        <Paragraph>
+          Geldt niet bij deze keuze:{" "}
+          {regels
+            .filter((r) => !telt(r))
+            .map((r) => naam(r).toLowerCase())
+            .join(", ")}
+          .
+        </Paragraph>
+      )}
       {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
       {bekend &&
         !fout &&
