@@ -12,7 +12,7 @@ const ComponentsExamplePage = async () => (
     <Heading level={1}>Voorbeeld componenten</Heading>
     <Alert type="info">
       <Paragraph>
-        Testpagina voor de nieuwe componenten van Digitale assistent 2.0.
+        Testpagina voor de nieuwe componenten van digitale assistent 2.0.
       </Paragraph>
     </Alert>
 
@@ -25,7 +25,7 @@ const ComponentsExamplePage = async () => (
             <Paragraph>
               <TextBadge>Neutraal</TextBadge>{" "}
               <TextBadge variant="info">Informatie</TextBadge>{" "}
-              <TextBadge variant="ok">Success</TextBadge>{" "}
+              <TextBadge variant="ok">Gelukt</TextBadge>{" "}
               <TextBadge variant="warning">Waarschuwing</TextBadge>{" "}
               <TextBadge variant="error">Fout</TextBadge>
             </Paragraph>
@@ -108,7 +108,7 @@ const ComponentsExamplePage = async () => (
       <div className="rhc-grid__cell rhc-grid__cell-t-4">
         <StickyInfoBox title="Sticky infobox">
           <Paragraph>
-            Deze infobox blijft staan wanneer je naar beneden scrolled.
+            Deze infobox blijft staan wanneer naar beneden gescrolled wordt.
           </Paragraph>
         </StickyInfoBox>
       </div>

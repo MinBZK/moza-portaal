@@ -66,7 +66,7 @@ const FlagsPaneel = ({
     startTransition(async () => {
       if (
         !window.confirm(
-          "Alles wissen? Uw bewaarde items, de Berichtenbox en de flags gaan terug naar de beginstand. De persona blijft.",
+          "Alles wissen? Uw bewaarde items, de berichtenbox en de flags gaan terug naar de beginstand. De persona blijft.",
         )
       ) {
         return;
@@ -136,7 +136,7 @@ const FlagsPaneel = ({
           disabled={bezig}
           onClick={hardReset}
         >
-          Hard reset (alles wissen)
+          Alles wissen
         </Button>
       </div>
     </SideOverlay>

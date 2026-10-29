@@ -23,10 +23,10 @@ const JaarrekeningenPage = (props: OnderdeelPaginaProps) => (
         <Alert type="info">
           <Paragraph>
             {!gegevensCompleet
-              ? "We hebben nog geen gegevens over jaarrekeningen van deze organisatie."
+              ? "Wij hebben nog geen gegevens over jaarrekeningen van deze organisatie. Bekijk uw jaarrekeningen bij de KVK."
               : deponeerPlichtig
-                ? "Er zijn nog geen jaarrekeningen van uw onderneming gedeponeerd bij de KVK."
-                : "Voor uw rechtsvorm hoeft geen jaarrekening te worden gedeponeerd bij de Kamer van Koophandel. De deponeerplicht geldt voor besloten vennootschappen, naamloze vennootschappen en bepaalde stichtingen en verenigingen."}
+                ? "U hebt nog geen jaarrekening bij de KVK gedeponeerd. Dat doet u via de website van de KVK."
+                : "Voor uw rechtsvorm hoeft u geen jaarrekening bij de KVK te deponeren. De deponeerplicht geldt voor besloten vennootschappen, naamloze vennootschappen en bepaalde stichtingen en verenigingen."}
           </Paragraph>
         </Alert>
       ) : (
@@ -44,9 +44,10 @@ const JaarrekeningenPage = (props: OnderdeelPaginaProps) => (
                   rel="external noopener"
                   target="_blank"
                 >
-                  <VisuallyHidden>Jaarrekening {jaar}: </VisuallyHidden>
                   Bij KVK inzien
-                  <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
+                  <VisuallyHidden>
+                    van jaarrekening {jaar}(opent in een nieuw tabblad)
+                  </VisuallyHidden>
                 </Link>
               </dd>
             </div>

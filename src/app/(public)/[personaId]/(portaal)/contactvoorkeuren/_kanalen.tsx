@@ -84,7 +84,7 @@ const Formulier = ({
   }, [melding]);
 
   if (status === "pending")
-    return <Paragraph role="status">Uw voorkeuren worden geladen.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw voorkeuren op.</Paragraph>;
 
   const gekozenKanaal = kanaal ?? opgeslagenKanaal;
   const gekozenBellen = bellen ?? opgeslagenBellen;
@@ -144,7 +144,7 @@ const Formulier = ({
               {melding === "opgeslagen"
                 ? "Uw voorkeuren zijn opgeslagen."
                 : melding === "fout-opslag"
-                  ? "Uw voorkeuren zijn niet opgeslagen. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit en probeer het opnieuw."
+                  ? "Uw voorkeuren zijn niet opgeslagen. Uw browser kan nu niets opslaan voor deze website. Zet privénavigatie uit en probeer het opnieuw."
                   : "Uw keuze voor bellen is niet opgeslagen. De dienst met uw voorkeuren is nu niet bereikbaar. Probeer het later opnieuw."}
             </Paragraph>
           </Alert>
@@ -184,7 +184,7 @@ const Formulier = ({
         ))}
         {!serviceWerkt && (
           <Paragraph>
-            Uw keuze voor bellen kan nu niet worden opgehaald. Probeer het later
+            Wij kunnen uw keuze voor bellen nu niet ophalen. Probeer het later
             opnieuw.
           </Paragraph>
         )}

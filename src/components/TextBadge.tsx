@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Icon } from "@/components/rhc";
 
 export type TextBadgeVariant = "neutral" | "info" | "ok" | "warning" | "error";
@@ -13,19 +14,34 @@ const ICONS = {
 
 /**
  * Short label with text, such as "Nieuw" or "Concept". The text carries the
- * meaning; the icon and colour only support it.
+ * meaning; the icon and colour only support it. With `href` the badge is a
+ * link, for example to the page where the user can act on the status.
  */
 const TextBadge = ({
   variant = "neutral",
+  href,
   children,
 }: {
   variant?: TextBadgeVariant;
+  /** Makes the badge a link to this address. */
+  href?: string;
   children: ReactNode;
-}) => (
-  <span className={`rhc-mox-text-badge rhc-mox-text-badge--${variant}`}>
-    {variant !== "neutral" && <Icon icon={ICONS[variant]} />}
-    {children}
-  </span>
-);
+}) => {
+  const className = `rhc-mox-text-badge rhc-mox-text-badge--${variant}`;
+  const content = (
+    <>
+      {variant !== "neutral" && <Icon icon={ICONS[variant]} />}
+      {children}
+    </>
+  );
+
+  return href ? (
+    <Link href={href} className={`${className} rhc-mox-text-badge--link`}>
+      {content}
+    </Link>
+  ) : (
+    <span className={className}>{content}</span>
+  );
+};
 
 export default TextBadge;

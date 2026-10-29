@@ -9,7 +9,11 @@ import {
   VisuallyHidden,
 } from "@rijkshuisstijl-community/components-react";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
-import { bewaarFoutTekst, useBewaard, type BewaarItem } from "@/components/save/useSaved";
+import {
+  bewaarFoutTekst,
+  useBewaard,
+  type BewaarItem,
+} from "@/components/save/useSaved";
 
 // Een span: de knoppen staan in een ActionGroup, en dat is een <p>.
 const FoutMelding = () => <span role="alert">{bewaarFoutTekst}</span>;
@@ -127,9 +131,9 @@ export const RelevantItem = ({
   return (
     <div ref={meldingRef} tabIndex={-1} className="rhc-mox-card">
       <Paragraph>
-        U ziet &quot;{item.titel}&quot; niet meer. U vindt het terug bij{" "}
+        U ziet “{item.titel}” niet meer. U vindt het terug bij{" "}
         <Link inline href="/bewaard/niet-relevant">
-          Niet relevant gemarkeerd
+          Niet relevant voor mij
         </Link>
         .
       </Paragraph>

@@ -2,6 +2,7 @@ import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
+import { nl } from "date-fns/locale";
 
 const ParkeervergunningDetail = async ({
   params,
@@ -16,14 +17,16 @@ const ParkeervergunningDetail = async ({
 
   const gegevens = [
     { label: "Referentie", waarde: aanvraag.referentie },
-    { label: "BedrijfsKvk", waarde: aanvraag.bedrijfsKvk },
+    { label: "KVK-nummer", waarde: aanvraag.bedrijfsKvk },
     { label: "Kenteken", waarde: aanvraag.kenteken },
     { label: "Motivatie", waarde: aanvraag.motivatie },
     { label: "Status", waarde: aanvraag.status },
     { label: "Type", waarde: aanvraag.type },
     {
-      label: "Timestamp",
-      waarde: format(new Date(aanvraag.timestamp!), "dd/MM/yyyy"),
+      label: "Datum aanvraag",
+      waarde: format(new Date(aanvraag.timestamp!), "d MMMM yyyy", {
+        locale: nl,
+      }),
     },
   ];
 

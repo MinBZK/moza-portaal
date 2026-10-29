@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // Oude naam van de stap Controleren en versturen.
+        source: "/personeel/iemand-aannemen/indienen",
+        destination: "/personeel/iemand-aannemen/versturen",
+        permanent: true,
+      },
+      {
         source: "/contactgegevens",
         destination: "/contactgegevens/prive",
         permanent: true,

@@ -47,7 +47,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   geen: {
     kort: "Geen regeling met een bedrag.",
     uitleg:
-      "Is de kandidaat gekeurd voor de WIA, heeft de kandidaat een WAO- of een WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
+      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
   },
 };
 
@@ -205,9 +205,9 @@ const Balans = ({
 
   const bron = (
     <Paragraph className="mox-hiring-note" role={bezig ? "status" : undefined}>
-      {bezig && !fout && "De regelrecht-engine rekent… "}
+      {bezig && !fout && "Wij rekenen uit…"}
       {fout
-        ? `De engine in de browser kan nu niet rekenen (${fout}). Probeer de pagina opnieuw te laden. `
+        ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. `
         : "Berekend in uw browser door de regelrecht-engine"}
       {!fout &&
         manifest.status === "klaar" &&

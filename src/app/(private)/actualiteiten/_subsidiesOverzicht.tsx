@@ -1,6 +1,6 @@
 "use client";
 
-import { Heading, Link } from "@/components/rhc";
+import { Heading, Link, VisuallyHidden } from "@/components/rhc";
 import PaginatedList, { type QueryStatus } from "./_paginatedList";
 import type { components } from "@/network/actualiteiten/generated";
 
@@ -16,7 +16,7 @@ const SubsidiesOverzicht = ({
   <PaginatedList
     items={subsidies}
     status={status}
-    emptyMessage="Geen subsidies gevonden."
+    emptyMessage="Er zijn geen subsidies bij uw onderwerpen. Kies andere onderwerpen."
     getKey={(s) => s.identifier}
     renderItem={(s) => <SubsidieRow subsidie={s} />}
   />
@@ -28,8 +28,13 @@ function SubsidieRow({ subsidie }: { subsidie: SubsidieSummary }) {
     <>
       <Heading level={3}>
         {subsidie.url ? (
-          <Link href={subsidie.url} target="_blank" rel="noopener noreferrer">
+          <Link
+            href={subsidie.url}
+            target="_blank"
+            rel="external noopener noreferrer"
+          >
             {title}
+            <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
           </Link>
         ) : (
           title

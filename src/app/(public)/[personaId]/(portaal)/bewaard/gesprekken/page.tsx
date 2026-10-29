@@ -13,9 +13,9 @@ const ConversationsPage = async () => {
         leeg={
           <Alert type="info" closable>
             <Paragraph>
-              U heeft nog geen gesprekken bewaard. Start een gesprek bij{" "}
+              U hebt nog geen gesprekken bewaard. Start een gesprek bij{" "}
               <Link inline href="/digitale-assistent">
-                Digitale assistent
+                digitale assistent
               </Link>
               .
             </Paragraph>

@@ -14,7 +14,7 @@ const ContactMoment = ({
   const date = new Date(notification.createdAt!);
   const sendAt = date.toLocaleString("nl-NL", {
     timeZone: "Europe/Amsterdam",
-    dateStyle: "short",
+    dateStyle: "long",
     timeStyle: "short",
   });
 

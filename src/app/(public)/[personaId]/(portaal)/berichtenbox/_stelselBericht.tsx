@@ -60,7 +60,7 @@ const StelselBericht = ({
         if (!actueel) return;
         setInhoudFout(
           fout instanceof KetenFout && fout.reden === "weg"
-            ? "Wij konden dit bericht niet ophalen bij de organisatie die het stuurde. Ververs de pagina om het opnieuw te proberen, of ga terug naar uw Berichtenbox."
+            ? "Dit bericht konden we niet ophalen bij de organisatie die het stuurde. Ververs de pagina om het opnieuw te proberen, of ga terug naar uw berichtenbox."
             : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
         );
       });
@@ -71,18 +71,18 @@ const StelselBericht = ({
 
   if (fout) return <Alert type="error">{ketenFoutTekst[fout]}</Alert>;
   if (!klaar)
-    return <Paragraph role="status">Uw bericht wordt geladen.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw bericht op.</Paragraph>;
   if (!bericht) {
     return (
       <>
         <Heading level={1}>Bericht niet gevonden</Heading>
-        <Paragraph>Dit bericht staat niet (meer) in uw Berichtenbox.</Paragraph>
+        <Paragraph>Dit bericht staat niet (meer) in uw berichtenbox.</Paragraph>
         <Paragraph>
           <Link
             href="/berichtenbox"
             className="utrecht-link utrecht-link--html-a"
           >
-            Naar uw inbox
+            Naar uw berichtenbox
           </Link>
         </Paragraph>
       </>
@@ -126,7 +126,7 @@ const StelselBericht = ({
         {inhoudFout ? (
           <Alert type="error">{inhoudFout}</Alert>
         ) : !inhoud ? (
-          <Paragraph role="status">De inhoud wordt opgehaald.</Paragraph>
+          <Paragraph role="status">Wij halen de inhoud op.</Paragraph>
         ) : (
           <>
             {inhoud.inhoud

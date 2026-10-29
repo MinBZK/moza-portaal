@@ -464,7 +464,7 @@ test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vrag
   const register = R.routeVoor(["register"], reken(["register"], 100));
   assert.equal(
     R.overzichtTekst(register),
-    "Voor deze situatie dient u niets in. Dit is wat er wel geldt.",
+    "Voor deze situatie verstuurt u niets. Dit is wat er wel geldt.",
   );
 });
 
@@ -490,12 +490,12 @@ test("sjabloon: waarden uit de engine", () => {
       reken(d, lw, uren),
     );
   const g = w(["register", "bijstand"], 60);
-  assert.equal(g.lksPerMaand, "€ 897,41");
-  assert.equal(g.lksTweeMaanden, "€ 1.794,82");
+  assert.equal(g.lksPerMaand, "€897,41");
+  assert.equal(g.lksTweeMaanden, "€1.794,82");
   assert.equal(g.uren, "32");
   assert.equal(g.loonwaarde, "60 procent");
-  assert.equal(w(["register", "wajong"], 70).aanspraakPerUur, "€ 10,49");
-  assert.equal(w(["register", "wia"], 100).lkvPerJaar, "€ 5.075,20");
+  assert.equal(w(["register", "wajong"], 70).aanspraakPerUur, "€10,49");
+  assert.equal(w(["register", "wia"], 100).lkvPerJaar, "€5.075,20");
   // Geen regel: leeg, geen oud bedrag.
   assert.equal(w(["register", "bijstand"], 100).lksPerMaand, "—");
 });

@@ -153,9 +153,9 @@ export const vulSjabloon = (tekst: string, w: Record<string, string>): string =>
     Object.hasOwn(w, naam) ? w[naam] : heel,
   );
 
-/** Eurocenten als bedrag ("€ 897,41"); zelfde weergave als euro() in _werkgever.ts, dat Node niet direct laadt. */
+/** Eurocenten als bedrag ("€897,41"); zelfde weergave als euro() in _werkgever.ts, dat Node niet direct laadt. */
 const bedrag = (eurocent: number) =>
-  `€ ${(Math.round(eurocent) / 100).toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  `€${(Math.round(eurocent) / 100).toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 /**
  * De waarden voor de plaatshouders in de demo-teksten, uit de antwoorden en de
@@ -208,7 +208,7 @@ export const besluitGeldt = (situatie: Situatie, u: Uitkomsten): boolean => {
  */
 export const overzichtTekst = (route: Route): string =>
   route.taken.length > 0
-    ? "U hoeft niets in te dienen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+    ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
     : ["gemeente", "wajong", "wia"].includes(route.situatie)
       ? "Bij deze antwoorden is er niets aan te vragen."
-      : "Voor deze situatie dient u niets in. Dit is wat er wel geldt.";
+      : "Voor deze situatie verstuurt u niets. Dit is wat er wel geldt.";

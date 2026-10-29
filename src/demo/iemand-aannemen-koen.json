@@ -15,7 +15,7 @@
     "urenPerWeek": 32,
     "aanvang": "2026-10-01",
     "uurloonEurocent": 1499,
-    "uurloonLabel": "wettelijk minimumloon, € 14,99 per uur",
+    "uurloonLabel": "wettelijk minimumloon, €14,99 per uur",
     "verloondeUrenPerJaar": 1664,
     "soort": "Onbepaalde tijd"
   },
@@ -160,7 +160,7 @@
           "vraag": "Wat gaat Koen verdienen?",
           "wetsvraag": "Wat is het overeengekomen loon?",
           "parameter": "uurloon",
-          "waarde": "Wettelijk minimumloon, € 14,99 per uur",
+          "waarde": "Wettelijk minimumloon, €14,99 per uur",
           "grond": "WMM 8 en 15"
         }
       ]
@@ -174,7 +174,7 @@
       "soort": "concept-aanvraag",
       "soortLabel": "Concept-aanvraag staat klaar",
       "uitkomst": "Kan gelden",
-      "bedragLabel": "€ 897,41 per maand",
+      "bedragLabel": "€897,41 per maand",
       "bedragToelichting": "Bij een loonwaarde van 60 procent en 32 uur per week. De gemeente stelt de loonwaarde vast na een meting op de werkplek; het bedrag volgt daaruit.",
       "bedragEurocent": 89740.8,
       "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen zes maanden na de eerste werkdag.",
@@ -189,8 +189,8 @@
       "soort": "loonaangifte",
       "soortLabel": "Via uw loonaangifte",
       "uitkomst": "Kan gelden",
-      "bedragLabel": "€ 1.680,64 per jaar",
-      "bedragToelichting": "€ 1,01 per verloond uur, bij 1.664 uur per jaar; ten hoogste € 2.000 per jaar. De Belastingdienst berekent het na afloop van het kalenderjaar.",
+      "bedragLabel": "€1.680,64 per jaar",
+      "bedragToelichting": "€1,01 per verloond uur, bij 1.664 uur per jaar; ten hoogste €2.000 per jaar. De Belastingdienst berekent het na afloop van het kalenderjaar.",
       "bedragEurocent": 168064,
       "tekst": "Een tegemoetkoming in de loonkosten voor een werknemer uit het doelgroepregister banenafspraak. U vraagt het aan door in de loonaangifte het vakje loonkostenvoordeel aan te zetten; een aparte verklaring is niet nodig.",
       "grond": "Wet tegemoetkomingen loondomein 2.10 en 2.13; Wfsv 38b",
@@ -267,43 +267,43 @@
     "stappen": [
       {
         "label": "Minimumloon per maand met 8 procent vakantiebijslag",
-        "waarde": "€ 2.523,96",
+        "waarde": "€2.523,96",
         "grond": "Wet minimumloon 8 lid 1 b en 15",
         "parameter": "minimumloon_plus_vakantiebijslag_eurocent_per_maand"
       },
       {
         "label": "Loonwaarde: 60 procent daarvan",
-        "waarde": "€ 1.514,38",
+        "waarde": "€1.514,38",
         "grond": "Pwet 10d lid 4; vaststelling door het college",
         "parameter": "loonwaarde_eurocent_per_maand"
       },
       {
         "label": "Verschil (subsidie bij voltijd, vóór het maximum)",
-        "waarde": "€ 1.009,58",
+        "waarde": "€1.009,58",
         "grond": "Pwet 10d lid 4",
         "parameter": "bruto_subsidie_eurocent_per_maand"
       },
       {
         "label": "Grondslag van het maximum: minimumloon met vakantiebijslag plus 25 procent vergoeding werkgeverslasten",
-        "waarde": "€ 3.154,95",
+        "waarde": "€3.154,95",
         "grond": "Pwet 10d lid 4; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
         "parameter": "grondslag_maximum_eurocent_per_maand"
       },
       {
         "label": "Maximum: 70 procent van de grondslag",
-        "waarde": "€ 2.208,47",
+        "waarde": "€2.208,47",
         "grond": "Pwet 10d lid 4",
         "parameter": "maximum_subsidie_eurocent_per_maand"
       },
       {
         "label": "Subsidie bij voltijd (36 uur): het verschil, want dat blijft onder het maximum",
-        "waarde": "€ 1.009,58",
+        "waarde": "€1.009,58",
         "grond": "Pwet 10d lid 4",
         "parameter": "hoogte_lks_voltijd_eurocent_per_maand"
       },
       {
         "label": "Naar rato van 32 uur op 36",
-        "waarde": "€ 897,41",
+        "waarde": "€897,41",
         "grond": "Pwet 10d lid 4, tweede zin",
         "parameter": "hoogte_lks_eurocent_per_maand"
       }
@@ -354,7 +354,7 @@
       "actor": "Wetgever",
       "soort": "regelgeving",
       "titel": "Wetsversie van 1 juli 2026 geldt",
-      "tekst": "Participatiewet, Wet financiering sociale verzekeringen, Ziektewet, Wet tegemoetkomingen loondomein en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "tekst": "Participatiewet, Wet financiering sociale verzekeringen, Ziektewet, Wet tegemoetkomingen loondomein en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon €2.337,00 per maand, €14,99 per uur. Met deze versie is gerekend.",
       "grond": "Regeling indexatie wettelijk minimumloon",
       "stap": "vooraf"
     },

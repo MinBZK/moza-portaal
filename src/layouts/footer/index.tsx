@@ -82,7 +82,10 @@ const FooterLinks = () => (
                   icon={extern ? "externe-link" : "chevron-right"}
                 />
               }
-              {...(extern && { target: "_blank", rel: "noreferrer" })}
+              {...(extern && {
+                target: "_blank",
+                rel: "external noopener noreferrer",
+              })}
             >
               {label}
               {extern && (

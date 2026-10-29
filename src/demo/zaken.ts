@@ -43,7 +43,7 @@ const vragen: DemoVraag[] = [
   {
     vraag: "Wat zijn lopende zaken?",
     antwoord:
-      "Aanvragen, vergunningen en meldingen die u indiende bij de overheid en die nog in behandeling zijn. Per zaak ziet u hoe ver het staat.",
+      "Aanvragen, vergunningen en meldingen die u naar de overheid verstuurde en die nog in behandeling zijn. Per zaak ziet u hoe ver het staat.",
   },
   {
     vraag: "Hoe lang duurt de behandeling van mijn zaak?",
@@ -68,7 +68,7 @@ export const getDemoZaakById = async (
 
 export const getDemoZakenVragen = async (): Promise<DemoVraag[]> => vragen;
 
-/** Een aanvraag die is opgeslagen maar nog niet ingediend. */
+/** Een aanvraag die is opgeslagen maar nog niet verstuurd. */
 export type DemoConceptAanvraag = {
   id: string;
   titel: string;
@@ -92,7 +92,7 @@ export type DemoConceptAanvraag = {
 };
 
 /**
- * De fictieve, nog niet ingediende aanvraag "Iemand aannemen". Elke persona
+ * De fictieve, nog niet verstuurde aanvraag "Iemand aannemen". Elke persona
  * heeft hem, voor de onderneming die op dat moment actief is; daarom noemt de
  * tekst geen onderneming.
  */

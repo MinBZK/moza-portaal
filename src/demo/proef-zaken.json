@@ -12,7 +12,7 @@
         "waarde": "Z-2026-014872"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "14 mei 2026"
       },
       {
@@ -22,7 +22,7 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "14 mei 2026",
         "tekst": [
@@ -58,7 +58,7 @@
         "waarde": "SUB-2026-008431"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "3 maart 2026"
       },
       {
@@ -68,11 +68,11 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "3 maart 2026",
         "tekst": [
-          "U hebt uw subsidieaanvraag ingediend. Wij hebben deze in goede orde ontvangen."
+          "U hebt uw subsidieaanvraag verstuurd. Wij hebben deze in goede orde ontvangen."
         ]
       },
       {
@@ -80,7 +80,7 @@
         "soort": "voltooid",
         "datum": "5 maart 2026",
         "tekst": [
-          "U hebt een ontvangstbevestiging met het zaaknummer van uw aanvraag in uw Berichtenbox ontvangen."
+          "U hebt een ontvangstbevestiging met het zaaknummer van uw aanvraag in uw berichtenbox ontvangen."
         ]
       },
       {
@@ -105,7 +105,7 @@
         "soort": "volgende",
         "datum": "verwacht voor 30 juni 2026",
         "tekst": [
-          "Na de beoordeling ontvangt u ons besluit over de subsidie in uw Berichtenbox."
+          "Na de beoordeling ontvangt u ons besluit over de subsidie in uw berichtenbox."
         ]
       },
       {
@@ -138,7 +138,7 @@
         "waarde": "Z-2026-013094"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "28 april 2026"
       },
       {
@@ -148,10 +148,10 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "28 april 2026",
-        "tekst": ["We hebben uw melding ontvangen."]
+        "tekst": ["Wij hebben uw melding ontvangen."]
       },
       {
         "titel": "In behandeling",
@@ -202,7 +202,7 @@
         "waarde": "IPE-2026-014729"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "18 juni 2026"
       },
       {
@@ -216,11 +216,11 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "18 juni 2026",
         "tekst": [
-          "U hebt uw rapportage voor de informatieplicht energiebesparing ingediend via het eLoket. Wij hebben deze in goede orde ontvangen."
+          "U hebt uw rapportage voor de informatieplicht energiebesparing verstuurd via het eLoket. Wij hebben deze in goede orde ontvangen."
         ]
       },
       {
@@ -229,7 +229,7 @@
         "datum": "18 juni 2026",
         "open": true,
         "tekst": [
-          "U hebt een ontvangstbevestiging met het zaaknummer van uw rapportage in uw Berichtenbox ontvangen."
+          "U hebt een ontvangstbevestiging met het zaaknummer van uw rapportage in uw berichtenbox ontvangen."
         ]
       },
       {
@@ -250,7 +250,7 @@
         "titel": "Afgerond",
         "soort": "later",
         "tekst": [
-          "Uw rapportage is verwerkt en u hebt aan de informatieplicht voldaan. Heeft het bevoegd gezag vragen of een controle? Dan ontvangt u hierover bericht in uw Berichtenbox."
+          "Uw rapportage is verwerkt en u hebt aan de informatieplicht voldaan. Heeft het bevoegd gezag vragen of een controle? Dan ontvangt u hierover bericht in uw berichtenbox."
         ]
       }
     ],
@@ -268,7 +268,7 @@
         "waarde": "Z-2026-007654"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "3 februari 2026"
       },
       {
@@ -278,7 +278,7 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "3 februari 2026",
         "open": true,
@@ -299,7 +299,7 @@
         "datum": "18 maart 2026",
         "open": true,
         "tekst": [
-          "De vergunning is verleend. U vindt het besluit in uw Berichtenbox."
+          "De vergunning is verleend. U vindt het besluit in uw berichtenbox."
         ]
       }
     ]
@@ -316,7 +316,7 @@
         "waarde": "SUB-2025-019204"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "12 november 2025"
       },
       {
@@ -326,7 +326,7 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "12 november 2025",
         "open": true,
@@ -364,7 +364,7 @@
         "waarde": "BD-2026-004410"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "9 januari 2026"
       },
       {
@@ -374,13 +374,11 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "9 januari 2026",
         "open": true,
-        "tekst": [
-          "U hebt uitstel aangevraagd voor het indienen van uw btw-aangifte."
-        ]
+        "tekst": ["U hebt uitstel aangevraagd voor uw btw-aangifte."]
       },
       {
         "titel": "In behandeling genomen",
@@ -395,7 +393,7 @@
         "datum": "20 januari 2026",
         "open": true,
         "tekst": [
-          "Het uitstel is toegekend. U vindt de bevestiging met de nieuwe uiterste datum in uw Berichtenbox."
+          "Het uitstel is toegekend. U vindt de bevestiging met de nieuwe uiterste datum in uw berichtenbox."
         ]
       }
     ]
@@ -412,7 +410,7 @@
         "waarde": "KVK-2025-218043"
       },
       {
-        "label": "Ingediend",
+        "label": "Verstuurd",
         "waarde": "18 december 2025"
       },
       {
@@ -422,7 +420,7 @@
     ],
     "stappen": [
       {
-        "titel": "Ingediend",
+        "titel": "Verstuurd",
         "soort": "voltooid",
         "datum": "18 december 2025",
         "open": true,
@@ -435,14 +433,14 @@
         "soort": "voltooid",
         "datum": "18 december 2025",
         "open": true,
-        "tekst": ["De betaling van € 16,60 is ontvangen."]
+        "tekst": ["De betaling van €16,60 is ontvangen."]
       },
       {
         "titel": "Verstrekt",
         "soort": "afgerond",
         "datum": "18 december 2025",
         "open": true,
-        "tekst": ["Het uittreksel staat klaar in uw Berichtenbox."]
+        "tekst": ["Het uittreksel staat klaar in uw berichtenbox."]
       }
     ]
   }

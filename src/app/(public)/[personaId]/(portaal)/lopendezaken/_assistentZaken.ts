@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * Zaken die de Digitale assistent aanmaakte (het case-event van de backend),
+ * Zaken die de digitale assistent aanmaakte (het case-event van de backend),
  * zoals in moza-poc (assets/javascript/lopende-zaken.js). Ze staan in
  * localStorage, dus alleen in deze browser, en komen bovenaan Lopende zaken.
  */

@@ -80,7 +80,7 @@ export const MOX_FLAGS = [
   },
   {
     key: "mox_berichtenboxUnhappyFlow",
-    label: "Berichtenbox unhappy flow",
+    label: "Berichtenbox met foutmeldingen",
     groep: "functionaliteit",
     standaard: false,
     werkt: true,
@@ -94,7 +94,7 @@ export const MOX_FLAGS = [
   },
   {
     key: "mox_statusBronnenAssistent",
-    label: "Status van bronnen in de Digitale assistent",
+    label: "Status van bronnen in de digitale assistent",
     groep: "functionaliteit",
     standaard: false,
     werkt: true,

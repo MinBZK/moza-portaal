@@ -43,8 +43,8 @@ const Verstuurd = ({
       <>
         <Heading level={1}>Nog niets verstuurd</Heading>
         <Paragraph>
-          Er is nog geen aanvraag verstuurd. Controleer de aanvraag en dien hem
-          in.
+          U heeft nog geen aanvraag verstuurd. Controleer de aanvraag en
+          verstuur die.
         </Paragraph>
         <Paragraph>
           <Link
@@ -94,7 +94,7 @@ const Verstuurd = ({
               href="/berichtenbox"
               className="utrecht-link utrecht-link--html-a"
             >
-              Berichtenbox
+              berichtenbox
             </Link>
             .
           </UnorderedListItem>

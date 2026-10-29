@@ -28,7 +28,7 @@ const tabs: {
 }[] = [
   {
     weergave: "inbox",
-    label: "Inbox",
+    label: "Ontvangen",
     href: "/berichtenbox",
     icon: <Icon icon="inbox" />,
   },

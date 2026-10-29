@@ -54,7 +54,7 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
 
   return (
     <>
-      <Heading level={1}>Nieuw zwangerschapsverlof melden</Heading>
+      <Heading level={1}>Melding zwangerschapsverlof</Heading>
       <div className="rhc-mox-card">
         <form
           onSubmit={(e) => {
@@ -116,7 +116,7 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
             <Button type="submit" appearance="primary-action-button">
-              Opslaan
+              Versturen
             </Button>
           </form.Subscribe>
         </form>

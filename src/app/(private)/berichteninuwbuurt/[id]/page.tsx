@@ -26,14 +26,16 @@ const PublicatieDetailPage = async ({
       <>
         <Heading level={1}>Publicatie niet gevonden</Heading>
         <div className="rhc-mox-card">
-          <Paragraph>Deze publicatie kon niet worden opgehaald.</Paragraph>
+          <Paragraph>
+            Wij kunnen dit bericht nu niet ophalen. Probeer het later opnieuw.
+          </Paragraph>
           <Paragraph>
             <Link
               href="/berichteninuwbuurt"
               className="utrecht-link utrecht-link--html-a"
             >
               <Icon icon="chevron-left" />
-              Terug naar overzicht
+              Terug naar berichten over uw buurt
             </Link>
           </Paragraph>
         </div>
@@ -65,7 +67,7 @@ const PublicatieDetailPage = async ({
           className="utrecht-link utrecht-link--html-a"
         >
           <Icon icon="chevron-left" />
-          Terug naar overzicht
+          Terug naar berichten over uw buurt
         </Link>
       </Paragraph>
 
@@ -122,7 +124,7 @@ const PublicatieDetailPage = async ({
             <a
               href={externalUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
               {hasPreferredLink

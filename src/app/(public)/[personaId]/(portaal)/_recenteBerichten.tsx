@@ -34,7 +34,7 @@ import { ketenFoutTekst, useKeten } from "./berichtenbox/_useKeten";
 const AANTAL = 5;
 
 /**
- * De vijf nieuwste berichten uit de inbox. Net als in de Berichtenbox worden
+ * De vijf nieuwste berichten uit de berichtenbox. Net als in de berichtenbox worden
  * ze eerst opgehaald bij de organisaties, met de voortgang erbij: nagebootst
  * voor demo-berichten, echt voor een persona op het Federatief Berichtenstelsel.
  *
@@ -85,7 +85,7 @@ const RecenteBerichten = ({
   const voortgang = stelsel ? keten.voortgang : nagebootst.voortgang;
 
   if (!staat || !inbox || (stelsel && bezig && !voortgang)) {
-    return <Paragraph role="status">Uw berichten worden geladen.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw berichten op.</Paragraph>;
   }
 
   if (bezig) return <OphaalVoortgang voortgang={voortgang} />;
@@ -123,14 +123,18 @@ const RecenteBerichten = ({
         <Alert type="warning">
           <Paragraph>
             <b>{storing.bron.naam}</b> is nu niet bereikbaar. Berichten van deze
-            organisatie staan daarom niet in de lijst.
+            organisatie staan daarom niet in de lijst. Probeer het later
+            opnieuw.
           </Paragraph>
         </Alert>
       )}
       {recent.length === 0 ? (
-        <Paragraph>Er staan geen berichten in uw inbox.</Paragraph>
+        <Paragraph>
+          Er staan geen berichten in uw berichtenbox Oudere berichten vindt u in
+          uw berichtenbox.
+        </Paragraph>
       ) : (
-        <div className="mox-table-container">
+        <div className="rhc-mox-table-container">
           <Table>
             <TableHeader>
               <TableRow>

@@ -20,12 +20,12 @@ const SubsidieGegevens = ({ subsidie }: { subsidie: DemoSubsidie }) => (
     {subsidie.budgetVergeven !== undefined && (
       // DataSummaryItem toont alleen tekst; de balk vraagt om eigen markup.
       <div className="rhc-data-summary__item">
-        <dt className="rhc-data-summary__item-key">Budget vergeven</dt>
+        <dt className="rhc-data-summary__item-key">Budget al verdeeld</dt>
         <dd className="rhc-data-summary__item-value rhc-mox-graph-meter">
           <ProgressBar
-            label="Budget vergeven"
+            label="Budget verdeeld"
             value={subsidie.budgetVergeven}
-            valueText={`${subsidie.budgetVergeven}% vergeven`}
+            valueText={`${subsidie.budgetVergeven}% verdeeld`}
           />
           <span aria-hidden="true">{subsidie.budgetVergeven}%</span>
         </dd>

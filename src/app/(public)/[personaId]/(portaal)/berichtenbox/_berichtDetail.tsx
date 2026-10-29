@@ -126,8 +126,8 @@ const BerichtDetail = ({
     setMeldingNummer((n) => n + 1);
     setMelding(
       ongelezen
-        ? "Het bericht is gemarkeerd als gelezen."
-        : "Het bericht is gemarkeerd als ongelezen.",
+        ? "U hebt het bericht gemarkeerd als gelezen."
+        : "U hebt het bericht gemarkeerd als ongelezen.",
     );
   };
 
@@ -146,7 +146,7 @@ const BerichtDetail = ({
     setMelding(
       naar
         ? `Het bericht staat nu in de map ${naar}.`
-        : `Het bericht is uit de map ${van} gehaald.`,
+        : `U hebt het bericht uit de map ${van} gehaald.`,
     );
     return null;
   };
@@ -215,7 +215,7 @@ const BerichtDetail = ({
           <>
             <Heading level={1}>Bericht verwijderd</Heading>
             <Paragraph>
-              U heeft dit bericht voorgoed verwijderd. Het staat niet meer in uw
+              U hebt dit bericht voorgoed verwijderd. Het staat niet meer in uw
               Berichtenbox.
             </Paragraph>
             <Paragraph>
@@ -223,7 +223,7 @@ const BerichtDetail = ({
                 href="/berichtenbox"
                 className="utrecht-link utrecht-link--html-a"
               >
-                Naar uw inbox
+                Naar uw berichtenbox
               </Link>
             </Paragraph>
           </>
@@ -314,7 +314,7 @@ const BerichtDetail = ({
                 {status !== "inbox" && (
                   <LinkButton onClick={() => void verplaats("inbox")}>
                     <Icon icon="inbox" />
-                    In inbox terugzetten
+                    Terugzetten naar Ontvangen
                   </LinkButton>
                 )}
 

@@ -39,7 +39,7 @@ const PdfVoorbeeld = ({
       <div role="status">
         {!geladen && (
           <Alert type="info">
-            <Paragraph>De pdf wordt geladen.</Paragraph>
+            <Paragraph>Wij halen de pdf op.</Paragraph>
             {/* Hoe lang het duurt is niet bekend: zonder value. */}
             <ProgressBar label="De pdf laden" />
           </Alert>
@@ -65,10 +65,10 @@ const PdfVoorbeeld = ({
           <LinkListLink
             href={tekst}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="external noopener noreferrer"
             icon={<TextDocumentIcon />}
           >
-            Tekst-versie lezen
+            Tekstversie lezen
             <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
           </LinkListLink>
         )}

@@ -38,8 +38,8 @@ const GegevensPage = async () => {
       </Paragraph>
       <Alert type="info">
         <Paragraph>
-          Er wordt nog niets ingediend. De ingevulde aanvraag staat alleen in uw
-          omgeving, tot u zelf besluit om in te dienen.
+          Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
+          omgeving, tot u die zelf verstuurt.
         </Paragraph>
       </Alert>
       <Bronnen perSituatie={perSituatie} werkgever={werkgever} />

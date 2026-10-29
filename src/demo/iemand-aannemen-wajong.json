@@ -15,7 +15,7 @@
     "urenPerWeek": 24,
     "aanvang": "2026-10-01",
     "uurloonEurocent": 1499,
-    "uurloonLabel": "wettelijk minimumloon, € 14,99 per uur",
+    "uurloonLabel": "wettelijk minimumloon, €14,99 per uur",
     "verloondeUrenPerJaar": 1248,
     "soort": "Onbepaalde tijd"
   },
@@ -131,7 +131,7 @@
           "vraag": "Wat gaat Noor verdienen?",
           "wetsvraag": "Wat is het overeengekomen loon?",
           "parameter": "uurloon",
-          "waarde": "Wettelijk minimumloon, € 14,99 per uur",
+          "waarde": "Wettelijk minimumloon, €14,99 per uur",
           "grond": "WMM 8 en 15"
         }
       ]
@@ -167,7 +167,7 @@
       "actor": "Wetgever",
       "soort": "regelgeving",
       "titel": "Wetsversie van 1 juli 2026 geldt",
-      "tekst": "Wajong, Besluit loondispensatie Wajong, Wet financiering sociale verzekeringen, Wet tegemoetkomingen loondomein en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon € 2.337,00 per maand, € 14,99 per uur. Met deze versie is gerekend.",
+      "tekst": "Wajong, Besluit loondispensatie Wajong, Wet financiering sociale verzekeringen, Wet tegemoetkomingen loondomein en Wet minimumloon zoals die gelden op 1 juli 2026. Minimumloon €2.337,00 per maand, €14,99 per uur. Met deze versie is gerekend.",
       "grond": "Regeling indexatie wettelijk minimumloon",
       "stap": "vooraf"
     },

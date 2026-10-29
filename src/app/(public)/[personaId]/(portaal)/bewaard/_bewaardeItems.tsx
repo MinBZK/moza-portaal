@@ -9,17 +9,21 @@ import {
   Paragraph,
   VisuallyHidden,
 } from "@/components/rhc";
-import { bewaarFoutTekst, useBewaard, type BewaarItem } from "@/components/save/useSaved";
+import {
+  bewaarFoutTekst,
+  useBewaard,
+  type BewaarItem,
+} from "@/components/save/useSaved";
 
 const tekst = {
   bewaard: {
     knop: "Uit bewaarde items verwijderen",
     melding: (titel: string) =>
-      `"${titel}" staat niet meer bij uw bewaarde items.`,
+      `“${titel}” staat niet meer bij uw bewaarde items.`,
   },
   nietRelevant: {
-    knop: "Toch relevant",
-    melding: (titel: string) => `U ziet "${titel}" weer in het overzicht.`,
+    knop: "Zet terug in overzicht",
+    melding: (titel: string) => `U ziet “${titel}” weer in het overzicht.`,
   },
 };
 
@@ -33,7 +37,7 @@ const BewaardeItems = ({
   soort: "bewaard" | "nietRelevant";
   /** Wat er staat als er nog niets is. */
   leeg: ReactNode;
-  /** Alleen deze categorie, zoals de gesprekken met de Digitale assistent. */
+  /** Alleen deze categorie, zoals de gesprekken met de digitale assistent. */
   alleenCategorie?: string;
   /** Alles behalve deze categorie. */
   zonderCategorie?: string;
@@ -58,7 +62,7 @@ const BewaardeItems = ({
   }, [focusOp]);
 
   if (!staat)
-    return <Paragraph role="status">Uw items worden geladen.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw items op.</Paragraph>;
 
   const items = Object.values(staat[soort]).filter(
     (item) =>

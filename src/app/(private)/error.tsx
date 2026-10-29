@@ -6,9 +6,7 @@ import { ErrorBoundary, ErrorBoundaryProps } from "@/components/ErrorBoundary";
 export default function PrivateError(props: ErrorBoundaryProps) {
   return (
     <>
-      <Heading level={1}>
-        Er is iets misgegaan in het private gedeelte...
-      </Heading>
+      <Heading level={1}>Deze pagina doet het nu niet</Heading>
       <ErrorBoundary {...props} />
     </>
   );

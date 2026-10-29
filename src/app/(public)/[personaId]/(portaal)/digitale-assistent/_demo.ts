@@ -410,7 +410,7 @@ const foutmelding = () => [
 const nietIngelogd = () => [
   antwoord(
     900,
-    "Ik kan uw gegevens nog niet ophalen, omdat u niet bent ingelogd. Log eerst in met eHerkenning. Daarna kan ik uw bedrijfsgegevens en uw verbruik voor u opzoeken.",
+    "Uw gegevens kunnen niet opgehaald worden, omdat u niet bent ingelogd. Log eerst in met eHerkenning. Daarna kan ik uw bedrijfsgegevens en uw verbruik voor u opzoeken.",
   ),
 ];
 
@@ -426,7 +426,7 @@ const geweigerd = () => [
 const uitleg = () => [
   antwoord(
     1100,
-    "In gewone woorden: de vragen hierboven komen uit de erkende maatregelenlijst. Op die lijst staan maatregelen waarvan de overheid al heeft vastgesteld dat ze zich binnen vijf jaar terugverdienen.\n\nPer maatregel geeft u aan of u die al heeft uitgevoerd. Twijfelt u? Kies dan “Niet uitgevoerd”. U mag later melden dat u de maatregel alsnog heeft genomen.\n\nHet formulier blijft staan, dus u kunt het nu invullen.",
+    "In gewone woorden: de vragen hierboven komen uit de erkende maatregelenlijst. Op die lijst staan maatregelen waarvan de overheid al heeft vastgesteld dat ze zich binnen vijf jaar terugverdienen.\n\nPer maatregel geeft u aan of u die al heeft uitgevoerd. Twijfelt u? Kies dan **Niet uitgevoerd**. U mag later melden dat u de maatregel alsnog heeft genomen.\n\nHet formulier blijft staan, dus u kunt het nu invullen.",
   ),
 ];
 

@@ -111,7 +111,7 @@ const Organisaties = ({
           >
             <Paragraph>
               {melding === "fout"
-                ? "Uw keuze is niet opgeslagen. Uw browser bewaart nu niets voor deze website. Zet privénavigatie uit en probeer het opnieuw."
+                ? "Uw keuze is niet opgeslagen. Uw browser kan nu niets opslaan voor deze website. Zet privénavigatie uit en probeer het opnieuw."
                 : `Uw keuze is opgeslagen. ${aantal} organisaties gebruiken nu uw centrale contactgegevens.`}
             </Paragraph>
           </Alert>

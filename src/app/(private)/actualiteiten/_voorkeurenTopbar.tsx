@@ -63,7 +63,7 @@ const VoorkeurenTopbar = () => {
             if (e.target.value) handleAdd(e.target.value);
           }}
         >
-          <SelectOption value="">Kies een onderwerp...</SelectOption>
+          <SelectOption value="">Kies een onderwerp…</SelectOption>
           {SUBJECT_GROUPS.map((group) => {
             const available = group.subjects.filter((s) =>
               availableSubjects.includes(s),

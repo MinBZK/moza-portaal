@@ -29,7 +29,9 @@ export const POST = async (request: NextRequest) => {
   } catch (fout) {
     console.error("[nl-wallet]", fout);
     return Response.json(
-      { fout: "De NL Wallet-koppeling is niet bereikbaar" },
+      {
+        fout: "Inloggen met NL Wallet lukt nu niet. Probeer het later opnieuw.",
+      },
       { status: 502 },
     );
   }

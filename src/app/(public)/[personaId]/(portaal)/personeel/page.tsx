@@ -13,13 +13,40 @@ import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
 const vragen = [
   {
     vraag: "Welke gegevens van de kandidaat worden gebruikt?",
-    antwoord:
-      "Alleen wat de wet nodig heeft om te bepalen of een regeling geldt: of de kandidaat in het doelgroepregister staat (UWV), of de gemeente de kandidaat ondersteunt en wat de loonwaarde is (gemeente), en uw eigen opgave over uren, startdatum en loon. De kandidaat geeft daarvoor toestemming. U ziet per gegeven de bron en de datum waarop het is opgehaald.",
+    antwoord: (
+      <>
+        <Paragraph>
+          Alleen wat de wet nodig heeft om te bepalen of een regeling geldt:
+        </Paragraph>
+        <UnorderedList>
+          <UnorderedListItem>
+            van UWV: of de kandidaat in het doelgroepregister staat
+          </UnorderedListItem>
+          <UnorderedListItem>
+            van de gemeente: of die de kandidaat ondersteunt en wat de
+            loonwaarde is
+          </UnorderedListItem>
+          <UnorderedListItem>
+            van u: de uren, de startdatum en het loon
+          </UnorderedListItem>
+        </UnorderedList>
+        <Paragraph>
+          De kandidaat geeft daarvoor toestemming. U ziet per gegeven de bron en
+          de datum waarop het is opgehaald.
+        </Paragraph>
+      </>
+    ),
   },
   {
     vraag: "Is de uitkomst een besluit?",
-    antwoord:
-      "Nee. Wat u vooraf ziet is een berekening met dezelfde regels als de organisatie later gebruikt. Het besluit neemt de gemeente, UWV of de Belastingdienst nadat u een aanvraag heeft verstuurd. Bij het besluit ziet u dezelfde berekening terug.",
+    antwoord: (
+      <Paragraph>
+        Nee. Wat u vooraf ziet is een berekening met dezelfde regels als de
+        organisatie later gebruikt. Het besluit neemt de gemeente, UWV of de
+        Belastingdienst nadat u een aanvraag heeft verstuurd. Bij het besluit
+        ziet u dezelfde berekening terug.
+      </Paragraph>
+    ),
   },
 ];
 
@@ -35,10 +62,10 @@ const PersoneelPage = async () => {
           Iemand aannemen met een afstand tot de arbeidsmarkt
         </Heading>
         <Paragraph>
-          Neemt u iemand aan die in het doelgroepregister staat, een uitkering
-          heeft of om een andere reden niet zelfstandig het minimumloon kan
-          verdienen? Dan ziet u hier vooraf welke regelingen voor u kunnen
-          gelden en wat ze opleveren, op basis van wat de overheid al van u en
+          Neemt u iemand aan die niet zelfstandig het minimumloon kan verdienen?
+          Bijvoorbeeld omdat die in het doelgroepregister staat of een uitkering
+          heeft. Dan ziet u hier vooraf welke regelingen voor u kunnen gelden en
+          wat ze opleveren. Wij gebruiken daarvoor wat de overheid al van u en
           van de kandidaat weet.
         </Paragraph>
         <UnorderedList>
@@ -77,7 +104,7 @@ const PersoneelPage = async () => {
         <AccordionProvider
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
-            body: <Paragraph>{antwoord}</Paragraph>,
+            body: antwoord,
           }))}
         />
       </div>

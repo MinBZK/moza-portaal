@@ -84,7 +84,7 @@ type Props = {
  * "Waarom deze uitkomst?" en een vinkje "gecontroleerd"), daaronder de taken
  * voor de werknemer en wat vanzelf of via de loonaangifte gaat. Rechts wat
  * het oplevert, live uit de engine. Indienen kan pas als alle panelen
- * gecontroleerd zijn; zonder panelen is er niets in te dienen.
+ * gecontroleerd zijn; zonder panelen is er niets te versturen.
  */
 const Aanvraag = (props: Props) => {
   const { staat } = useAannemen();
@@ -408,7 +408,7 @@ const AanvraagInhoud = ({
           <FormFieldRadio
             name="wpa"
             value="later"
-            label="Weet ik nog niet; later aanvragen"
+            label="Weet ik nog niet, ik vraag het later aan"
             checked={k.wpa === "later"}
             onChange={() => kies({ wpa: "later" })}
           />
@@ -555,7 +555,7 @@ const AanvraagInhoud = ({
       </section>
     );
 
-  // Zonder panelen is er niets in te dienen. Bij WIA maakt "Klaar" de zaak
+  // Zonder panelen is er niets te versturen. Bij WIA maakt "Klaar" de zaak
   // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
   const klaar = () => {
     if (route.zaak === "wia") {
@@ -588,7 +588,7 @@ const AanvraagInhoud = ({
       return;
     }
     setFout(false);
-    router.push("/personeel/iemand-aannemen/indienen");
+    router.push("/personeel/iemand-aannemen/versturen");
   };
 
   return (
@@ -606,7 +606,7 @@ const AanvraagInhoud = ({
             : regelingen === 0
               ? "Bij deze antwoorden is er niets aan te vragen."
               : paneelIds.length === 0
-                ? "U hoeft niets in te dienen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+                ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
                 : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
       </Paragraph>
 
@@ -625,8 +625,8 @@ const AanvraagInhoud = ({
           <Tag
             tekst={
               staat.zaken[situatie]?.ingediend
-                ? "Ingediend"
-                : "Nog niet ingediend"
+                ? "Verstuurd"
+                : "Nog niet verstuurd"
             }
           />
         )}
@@ -645,7 +645,7 @@ const AanvraagInhoud = ({
       {fout && aantal < paneelIds.length && (
         <Alert type="error">
           <Paragraph>
-            Nog niet klaar om in te dienen. Controleer eerst:
+            Nog niet klaar om te versturen. Controleer eerst:
           </Paragraph>
           <UnorderedList>
             {paneelIds
@@ -708,7 +708,7 @@ const AanvraagInhoud = ({
                 appearance="primary-action-button"
                 onClick={paneelIds.length > 0 ? indienen : klaar}
               >
-                {paneelIds.length > 0 ? "Controleren en indienen" : "Klaar"}
+                {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
               </Button>
               <Link
                 href="/personeel"
@@ -723,14 +723,14 @@ const AanvraagInhoud = ({
         <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
           <section className="rhc-mox-card" aria-labelledby="wie-ziet">
             <Heading level={2} id="wie-ziet">
-              Wie ziet deze aanvraag?
+              Wie deze aanvraag ziet
             </Heading>
             <Paragraph>
               Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
             </Paragraph>
             <Paragraph>
               Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
-              gegevens van die uitkomst naar de Digitale assistent.
+              gegevens van die uitkomst naar de digitale assistent.
             </Paragraph>
             <Paragraph className="mox-hiring-note">
               Uw aanvraag is opgeslagen in deze browser. U kunt later verder.

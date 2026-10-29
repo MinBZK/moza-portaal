@@ -2,6 +2,7 @@ import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
+import { nl } from "date-fns/locale";
 
 const SubsidieDetail = async ({
   params,
@@ -16,20 +17,22 @@ const SubsidieDetail = async ({
 
   const gegevens = [
     { label: "Referentie", waarde: aanvraag.referentie },
-    { label: "BedrijfsKvk", waarde: aanvraag.bedrijfsKvk },
-    { label: "Subtype", waarde: aanvraag.subtype },
+    { label: "KVK-nummer", waarde: aanvraag.bedrijfsKvk },
+    { label: "Soort subsidie", waarde: aanvraag.subtype },
     { label: "Motivatie", waarde: aanvraag.motivatie },
     { label: "Status", waarde: aanvraag.status },
     { label: "Type", waarde: aanvraag.type },
     {
-      label: "Timestamp",
-      waarde: format(new Date(aanvraag.timestamp!), "dd/MM/yyyy"),
+      label: "Datum aanvraag",
+      waarde: format(new Date(aanvraag.timestamp!), "d MMMM yyyy", {
+        locale: nl,
+      }),
     },
   ];
 
   return (
     <>
-      <Heading level={1}>Subsidie details</Heading>
+      <Heading level={1}>Uw aanvraag</Heading>
       <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {gegevens.map(({ label, waarde }) => (

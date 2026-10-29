@@ -42,6 +42,7 @@ next-env.d.ts
 
 # pa11y reports
 output
+/toegankelijkheid
 
 .vscode/*
 !.vscode/settings.json
@@ -51,4 +52,7 @@ output
 .claude/settings.local.json
 
 # Design token docs
-/docs
+/docs/*
+
+# Behalve de schrijfwijzer, waar CLAUDE.md naar verwijst
+!/docs/schrijfwijzer.md

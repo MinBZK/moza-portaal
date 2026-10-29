@@ -60,7 +60,7 @@ const HomePage = async ({
         href="/berichtenbox"
         className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
       >
-        Naar uw zakelijke berichtenbox
+        Naar uw berichtenbox
       </Link>
     </ActionGroup>
   );

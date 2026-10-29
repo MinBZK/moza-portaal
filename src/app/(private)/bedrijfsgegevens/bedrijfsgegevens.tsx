@@ -9,11 +9,14 @@ import {
 } from "@/components/rhc";
 import { GetBasisprofielByKvkNummer } from "@/network/kvk/basisprofiel/fetchers/getBasisprofielByKvkNummer";
 import { format, isValid, parse } from "date-fns";
+import { nl } from "date-fns/locale";
 
 const formatDateString = (dateString: string | null | undefined): string => {
   if (!dateString) return "-";
   const date = parse(dateString, "yyyyMMdd", new Date());
-  return isValid(date) ? format(date, "dd-MM-yyyy") : dateString;
+  return isValid(date)
+    ? format(date, "d MMMM yyyy", { locale: nl })
+    : dateString;
 };
 
 const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
@@ -25,16 +28,14 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
   if (isFetching) {
     return (
       <>
-        <Heading level={1}>Mijn bedrijfsgegevens</Heading>
+        <Heading level={1}>Bedrijfsgegevens</Heading>
         <div className="rhc-mox-card">
           <Heading level={2}>Algemeen</Heading>
           <Paragraph>
-            Dit zijn de gegevens die bij de overheid bekend zijn over jouw
+            Dit zijn de gegevens die bij de overheid bekend zijn over uw
             organisatie.
           </Paragraph>
-          <Paragraph role="status">
-            Uw bedrijfsgegevens worden geladen.
-          </Paragraph>
+          <Paragraph role="status">Wij halen uw bedrijfsgegevens op.</Paragraph>
         </div>
       </>
     );
@@ -51,7 +52,7 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
       label: "RSIN-nummer",
       waarde: profiel._embedded?.eigenaar?.rsin ?? "-",
     },
-    { label: "BTW-nummer", waarde: "-" },
+    { label: "Btw-nummer", waarde: "-" },
     {
       label: "Startdatum",
       waarde: formatDateString(profiel.formeleRegistratiedatum),
@@ -68,11 +69,11 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
 
   return (
     <>
-      <Heading level={1}>Mijn bedrijfsgegevens</Heading>
+      <Heading level={1}>Bedrijfsgegevens</Heading>
       <div className="rhc-mox-card">
         <Heading level={2}>Algemene gegevens</Heading>
         <Paragraph>
-          Dit zijn de gegevens die bij de overheid bekend zijn over jouw
+          Dit zijn de gegevens die bij de overheid bekend zijn over uw
           organisatie.
         </Paragraph>
         <DataSummary appearance="column" className="rhc-data-summary--columns">

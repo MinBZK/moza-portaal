@@ -46,14 +46,17 @@ const WettenPage = async ({
       <Alert type="info" closable>
         <Paragraph>
           Wetten en regelgeving die mogelijk betrekking hebben op uw bedrijf of
-          branche, geselecteerd op basis van uw bedrijfsprofiel. Door items te
+          branche, geselecteerd op basis van uw bedrijfsgegevens. Door items te
           bewaren of als niet relevant te markeren helpt u ons de aanbevelingen
           te verbeteren.
         </Paragraph>
       </Alert>
 
       {wetten.length === 0 && (
-        <Paragraph>Er zijn nu geen wetten of regels voor uw bedrijf.</Paragraph>
+        <Paragraph>
+          Er zijn nu geen wetten of regels voor uw bedrijf. Vraag de digitale
+          assistent welke regels voor uw bedrijf gelden.
+        </Paragraph>
       )}
 
       {opPagina.map((wet) => (

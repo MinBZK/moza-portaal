@@ -22,12 +22,13 @@ import Link from "next/link";
 
 export const BerichtenboxTableRow = ({ index }: { index: number }) => {
   const ongelezen = index === 0;
+  const onderwerp = "Aanslag belastingen 2025";
   return (
     <TableRow>
       <TableCell>
         <input
           type="checkbox"
-          aria-label="Bericht selecteren"
+          aria-label={`Bericht selecteren: ${onderwerp}`}
           className="utrecht-checkbox utrecht-checkbox--html-input utrecht-checkbox--custom"
         />
       </TableCell>
@@ -48,10 +49,10 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
       </TableCell>
       <TableCell>
         <span className={ongelezen ? "rhc-mox-unread" : undefined}>
-          Aanslag belastingen 2025
+          {onderwerp}
         </span>
       </TableCell>
-      <TableCell>21/02/2025</TableCell>
+      <TableCell>21 februari 2025</TableCell>
       <TableCell>
         <Icon icon="paperclip" />
         <VisuallyHidden>Heeft bijlage</VisuallyHidden>
@@ -61,7 +62,7 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
 };
 
 const tabs = [
-  { status: "inbox", label: "Inbox", href: "/berichtenbox" },
+  { status: "inbox", label: "Ontvangen", href: "/berichtenbox" },
   { status: "archief", label: "Archief", href: "/berichtenbox/archief" },
   {
     status: "prullenbak",
@@ -99,7 +100,7 @@ const BerichtenboxPage = async ({
                 ))}
               </ul>
             </nav>
-            <div className="mox-table-container">
+            <div className="rhc-mox-table-container">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -125,7 +126,7 @@ const BerichtenboxPage = async ({
             <ActionGroup direction="row">
               <Button appearance="subtle-button" disabled>
                 <Icon icon="inbox" />
-                Naar inbox verplaatsen
+                Naar Ontvangen verplaatsen
               </Button>
               <Button appearance="subtle-button" disabled>
                 <ArchiveIcon />
@@ -145,22 +146,22 @@ const BerichtenboxPage = async ({
           <div className="rhc-mox-card">
             <Heading level={2}>Uw e-mailadres(sen) aanpassen</Heading>
             <Paragraph>
-              Wilt u de e-mailadres(sen) waarop u meldingen ontvangt aanpassen
-              of aanpassen welke organisaties u digitaal berichten mogen sturen?
-              Dit staat onder Bedrijfsprofiel.
+              Wilt u uw e-mailadressen voor meldingen aanpassen? Of kiezen welke
+              organisaties u digitaal berichten mogen sturen? Dit regelt u bij
+              Contactgegevens.
             </Paragraph>
             <LinkList>
               <LinkListLink
                 href="/bedrijfsprofiel"
                 icon={<Icon key="icoon" icon="chevron-right" />}
               >
-                Naar bedrijfsprofiel
+                Naar uw contactgegevens
               </LinkListLink>
             </LinkList>
           </div>
         </div>
         <div className="rhc-mox-card rhc-grid__cell rhc-grid__cell-d-4">
-          <Heading level={2}>Bent u gemachtigd voor iemand anders?</Heading>
+          <Heading level={2}>Machtigingen</Heading>
           <Paragraph>U kunt hier uw machtiging ophalen en gebruiken.</Paragraph>
           <LinkList>
             <LinkListLink
@@ -173,8 +174,8 @@ const BerichtenboxPage = async ({
 
           <Alert type="info">
             <Paragraph>
-              Ontdek hoe u gemachtigd kunt worden om digitale post van iemand
-              anders te lezen.
+              Ontdek hoe u gemachtigd kunt worden om berichten van iemand anders
+              te lezen.
             </Paragraph>
           </Alert>
         </div>
