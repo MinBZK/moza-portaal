@@ -518,43 +518,6 @@ small,
   padding: var(--rhc-space-xl);
 }
 
-/* --- Disclosure: <details> that opens extra content --- */
-.rhc-mox-disclosure {
-  >summary {
-    color: var(--utrecht-link-color);
-    cursor: pointer;
-    font-weight: var(--rhc-text-font-weight-semi-bold);
-  }
-}
-
-.rhc-mox-disclosure__content {
-  display: grid;
-  gap: var(--rhc-space-lg);
-  padding-block-start: var(--rhc-space-md);
-}
-
-/* In a box, with a heading and status in the summary. */
-.rhc-mox-disclosure--boxed {
-  background-color: var(--rhc-color-wit);
-  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
-  border-radius: var(--rhc-border-radius-md);
-
-  >summary {
-    align-items: center;
-    color: inherit;
-    display: flex;
-    font-weight: inherit;
-    gap: var(--rhc-space-lg);
-    justify-content: space-between;
-    padding: var(--rhc-space-lg);
-  }
-
-  >.rhc-mox-disclosure__content {
-    border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
-    padding: var(--rhc-space-lg);
-  }
-}
-
 /* --- Timeline: events on a vertical line, newest first --- */
 .rhc-mox-timeline {
   --rhc-mox-timeline-dot: var(--rhc-space-lg);

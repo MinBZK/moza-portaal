@@ -13,6 +13,7 @@ import {
   type Zaken,
 } from "./_route";
 import { euro } from "./_werkgever";
+import { heropenAanvraag } from "../../lopendezaken/_afgerondeAanvragen";
 
 /**
  * Stand van het scenario "Iemand aannemen" in deze browser: welke bronnen zijn
@@ -208,6 +209,8 @@ const schrijf = (staat: AannemenStaat) => {
 };
 
 export const wisAannemen = () => {
+  // Opnieuw beginnen: de bewaarde aanvraag staat weer open.
+  heropenAanvraag("iemand-aannemen-met-afstand-tot-de-arbeidsmarkt");
   try {
     window.localStorage.removeItem(SLEUTEL);
   } catch {

@@ -2001,16 +2001,24 @@ const ComponentsDemoPage = () => {
       name: "StepIndicator",
       file: "src/components/StepIndicator.tsx",
       description:
-        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step".',
+        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step". Een voltooide stap met een href is een link terug naar die stap.',
       options: [
-        ["steps", "string[]", "–", "Namen van de stappen"],
+        [
+          "steps",
+          "(string | { name, href })[]",
+          "–",
+          "Namen van de stappen, eventueel met het adres van de stap",
+        ],
         ["current", "number", "–", "Huidige stap, vanaf 0"],
         ["label", "string", "Voortgang", "Naam van de navigatie"],
       ],
       example: (
         <StepIndicator
           steps={[
-            "Stap 1 (voltooid)",
+            {
+              name: "Stap 1 (voltooid, link naar betreffende stap)",
+              href: "/demo",
+            },
             "Stap 2 (huidige stap)",
             "Stap 3",
             "Stap 4",
