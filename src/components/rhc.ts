@@ -31,6 +31,7 @@ export {
   Heading,
   Hero,
   Icon,
+  IconButton,
   LanguageNavigation,
   Link,
   LinkButton,

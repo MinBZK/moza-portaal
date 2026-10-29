@@ -79,6 +79,8 @@ import CountdownBar from "@/components/CountdownBar";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
+import InfoToggletip from "@/components/InfoToggletip";
+import FieldLabel from "@/components/FieldLabel";
 import ShareButton from "@/components/ShareButton";
 import StepIndicator from "@/components/StepIndicator";
 import StatusTrack, { type StatusStep } from "@/components/StatusTrack";
@@ -1712,6 +1714,78 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
+      name: "InfoToggletip en FieldLabel",
+      file: "src/components/InfoToggletip.tsx, src/components/FieldLabel.tsx",
+      description: [
+        <>
+          Een knop met een i-icoon die korte uitleg opent, als laag onder de
+          knop. Zelfde opmaak als de <code>Toggletip</code> van RHC, maar met
+          een eigen toegankelijke naam, een sluitknop en sluiten met{" "}
+          <code>Esc</code> of door ernaast te klikken. De focus gaat dan terug
+          naar de i-knop.
+        </>,
+        <>
+          Zet de knop naast een label met <code>FieldLabel</code> of de prop{" "}
+          <code>info</code> van <code>RangeSlider</code>,{" "}
+          <code>NumberInput</code> en <code>Switch</code>. De knop staat dan
+          buiten het <code>&lt;label&gt;</code>: een knop in een label zou ook
+          het veld activeren.
+        </>,
+        <>
+          Een schermlezer leest de knop voor als uitklapknop met de naam uit{" "}
+          <code>label</code>, en daarna de uitleg. Geen live-regio: de gebruiker
+          opent de uitleg zelf.
+        </>,
+      ],
+      options: [
+        [
+          "label",
+          "string",
+          "–",
+          "Toegankelijke naam van de i-knop, zoals ‘Toelichting bij het KVK-nummer’",
+        ],
+        [
+          "children",
+          "ReactNode",
+          "–",
+          "De uitleg: tekst, of meer alinea’s met ruimte ertussen",
+        ],
+        [
+          "FieldLabel: htmlFor, info, children",
+          "string, ReactNode, ReactNode",
+          "–",
+          "Label van het veld, met de InfoToggletip in info",
+        ],
+      ],
+      example: (
+        <div className="utrecht-form-field utrecht-form-field--text rhc-form-field">
+          <div className="utrecht-form-field__label">
+            <FieldLabel
+              htmlFor="demo-kvk"
+              info={
+                <InfoToggletip label="Toelichting bij het KVK-nummer">
+                  <Paragraph>Het KVK-nummer bestaat uit 8 cijfers.</Paragraph>
+                  <Paragraph>
+                    U vindt het op uw uittreksel uit het Handelsregister.
+                  </Paragraph>
+                </InfoToggletip>
+              }
+            >
+              KVK-nummer
+            </FieldLabel>
+          </div>
+          <div className="utrecht-form-field__input">
+            <input
+              id="demo-kvk"
+              className="utrecht-textbox utrecht-textbox--html-input"
+              inputMode="numeric"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
       name: "PageNumberNavigation",
       file: "src/components/pageNumberNavigation.tsx",
       description: (
@@ -1793,6 +1867,7 @@ const ComponentsDemoPage = () => {
         "Schuifregelaar met label, de gekozen waarde en de grenzen eronder.",
       options: [
         ["label", "string", "–", "Zichtbare naam"],
+        ["info", "ReactNode", "–", "Naast het label, zoals een InfoToggletip"],
         ["min / max", "number", "–", "Minimale en maximale grens"],
         [
           "value / onChange",
@@ -2692,7 +2767,7 @@ const ComponentsDemoPage = () => {
       file: "@/components/rhc",
       description: [
         "Een knop met een i-icoon die korte uitleg opent, bijvoorbeeld naast een veld. Gebouwd op details en summary, dus het werkt met het toetsenbord zonder JavaScript.",
-        "Let op: de knop heeft in RHC de vaste Engelse naam ‘tooltip-content’. Een schermlezer noemt dus niet waar de uitleg over gaat. Zet de uitleg daarom liever direct in de description van het veld.",
+        "Let op: de knop heeft in RHC de vaste Engelse naam ‘tooltip-content’. Een schermlezer noemt dus niet waar de uitleg over gaat. Gebruik daarom InfoToggletip (hierboven), of zet de uitleg direct in de description van het veld.",
       ],
       options: [
         ["children", "ReactNode", "–", "De uitleg, in een info-melding"],

@@ -1622,6 +1622,18 @@ small,
   aside. With anchor positioning it moves to the other side when there is
   no room on the right. */
 .rhc-toggletip {
+  --rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
+  --rhc-toggletip-hover-background-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-focus-background-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-active-background-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-border-color: var(--rhc-color-lintblauw-500);
+  --rhc-toggletip-hover-border-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-focus-border-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-active-border-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-color: var(--rhc-color-wit);
+  --rhc-toggletip-hover-color: var(--rhc-color-wit);
+  --rhc-toggletip-focus-color: var(--rhc-color-wit);
+  --rhc-toggletip-active-color: var(--rhc-color-wit);
   anchor-scope: --rhc-toggletip;
   position: relative;
 }
@@ -1629,6 +1641,7 @@ small,
 .rhc-toggletip__summary {
   anchor-name: --rhc-toggletip;
   margin-block-end: 0;
+  vertical-align: text-top;
 }
 
 /* No room on either side, as on a narrow screen: the width of the window. */
@@ -1654,6 +1667,21 @@ small,
     position: fixed;
     position-anchor: --rhc-toggletip;
     position-try-fallbacks: flip-inline, --rhc-toggletip-full;
+  }
+}
+
+.rhc-toggletip__alert {
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+
+  .utrecht-alert__icon {
+    inline-size: var(--rhc-space-2xl);
+    margin-block-start: 0;
+  }
+
+  .utrecht-icon {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--rhc-color-wit);
   }
 }
 
