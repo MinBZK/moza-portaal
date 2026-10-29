@@ -53,6 +53,7 @@
   --rhc-text-font-size-max-md: 1.125rem;
 
   /* Kleurwijzigingen t.o.v. RHC */
+  --rhc-color-foreground-link: var(--rhc-color-lintblauw-600);
   --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
   --nl-heading-level-1-color: var(--rhc-color-core-500);
   --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
@@ -677,6 +678,7 @@ body {
 
 .rhc-mox-tab {
   align-items: center;
+  background-color: var(--rhc-color-wit);
   display: flex;
   gap: var(--rhc-space-md);
   padding: var(--rhc-space-md);

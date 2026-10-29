@@ -500,6 +500,9 @@ const BerichtenLijst = ({
           <FormFieldTextInput
             label="Filter berichten"
             type="search"
+            // No personal data, so no autocomplete token (WCAG 1.3.5 does
+            // not apply); "off" says so explicitly.
+            autoComplete="off"
             value={zoek}
             onChange={(event) => {
               // Het event komt van het tekstveld, maar is getypt als dat van de wrapper.
@@ -509,6 +512,9 @@ const BerichtenLijst = ({
           />
           <FormFieldSelect
             label="Afzender"
+            // FormFieldSelect does not pass autoComplete on; set it on the
+            // select itself (no personal data, WCAG 1.3.5 does not apply).
+            selectRef={(select) => select?.setAttribute("autocomplete", "off")}
             value={afzender}
             onChange={(event) => {
               setAfzender(event.target.value);
