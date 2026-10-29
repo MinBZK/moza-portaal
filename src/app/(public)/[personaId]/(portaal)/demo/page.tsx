@@ -62,7 +62,6 @@ import {
   TableHeader,
   TableHeaderCell,
   TableRow,
-  Toggletip,
   UnorderedList,
   UnorderedListItem,
   VisuallyHidden,
@@ -79,6 +78,8 @@ import CountdownBar from "@/components/CountdownBar";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
+import InfoToggletip from "@/components/InfoToggletip";
+import FieldLabel from "@/components/FieldLabel";
 import ShareButton from "@/components/ShareButton";
 import StepIndicator from "@/components/StepIndicator";
 import StatusTrack, { type StatusStep } from "@/components/StatusTrack";
@@ -1712,6 +1713,105 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
+      name: "InfoToggletip, FieldLabel en Fieldset",
+      file: "src/components/InfoToggletip.tsx, FieldLabel.tsx en Fieldset.tsx",
+      description: [
+        <>
+          Een knop met een i-icoon die korte uitleg opent, als laag onder de
+          knop. Zelfde opmaak als de <code>Toggletip</code> van RHC, maar met
+          een eigen toegankelijke naam, een sluitknop en sluiten met{" "}
+          <code>Esc</code> of door ernaast te klikken. De focus gaat dan terug
+          naar de i-knop.
+        </>,
+        <>
+          Gebruik de <code>Toggletip</code> van RHC niet: die heeft een ander
+          icoon en geeft de knop altijd de Engelse naam ‘tooltip-content’.
+          Daarom staat die ook niet meer in <code>@/components/rhc</code>.
+        </>,
+        <>
+          Zet de knop naast een label met <code>FieldLabel</code> of de prop{" "}
+          <code>info</code> van <code>RangeSlider</code>,{" "}
+          <code>NumberInput</code> en <code>Switch</code>. Bij een groep vragen
+          gebruik je de prop <code>info</code> van <code>Fieldset</code> (uit{" "}
+          <code>@/components/rhc</code>). De knop staat dan buiten het{" "}
+          <code>&lt;label&gt;</code> of de <code>&lt;legend&gt;</code>: een knop
+          in een label zou ook het veld activeren, en een legend mag geen
+          details bevatten.
+        </>,
+        <>
+          Een schermlezer leest de knop voor als uitklapknop met de naam uit{" "}
+          <code>label</code>, en daarna de uitleg. Geen live-regio: de gebruiker
+          opent de uitleg zelf.
+        </>,
+      ],
+      options: [
+        [
+          "label",
+          "string",
+          "–",
+          "Toegankelijke naam van de i-knop, zoals ‘Toelichting bij het KVK-nummer’",
+        ],
+        [
+          "children",
+          "ReactNode",
+          "–",
+          "De uitleg: tekst, of meer alinea’s met ruimte ertussen",
+        ],
+        [
+          "FieldLabel: htmlFor, info, children",
+          "string, ReactNode, ReactNode",
+          "–",
+          "Label van het veld, met de InfoToggletip in info",
+        ],
+        [
+          "Fieldset: info",
+          "ReactNode",
+          "–",
+          "Naast de legend van een groep, zoals een InfoToggletip",
+        ],
+      ],
+      example: (
+        <div className="rhc-mox-stack rhc-mox-stack--2xl">
+          <div className="utrecht-form-field utrecht-form-field--text rhc-form-field">
+            <div className="utrecht-form-field__label">
+              <FieldLabel
+                htmlFor="demo-kvk"
+                info={
+                  <InfoToggletip label="Toelichting bij het KVK-nummer">
+                    <Paragraph>Het KVK-nummer bestaat uit 8 cijfers.</Paragraph>
+                    <Paragraph>
+                      U vindt het op uw uittreksel uit het Handelsregister.
+                    </Paragraph>
+                  </InfoToggletip>
+                }
+              >
+                KVK-nummer
+              </FieldLabel>
+            </div>
+            <div className="utrecht-form-field__input">
+              <input
+                id="demo-kvk"
+                className="utrecht-textbox utrecht-textbox--html-input"
+                inputMode="numeric"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+          <Fieldset
+            legend="Hoe wilt u bericht krijgen?"
+            info={
+              <InfoToggletip label="Toelichting bij bericht krijgen">
+                Wij sturen u alleen bericht over uw eigen aanvragen.
+              </InfoToggletip>
+            }
+          >
+            <FormFieldRadio name="demo-bericht" value="email" label="E-mail" />
+            <FormFieldRadio name="demo-bericht" value="post" label="Post" />
+          </Fieldset>
+        </div>
+      ),
+    },
+    {
       name: "PageNumberNavigation",
       file: "src/components/pageNumberNavigation.tsx",
       description: (
@@ -1793,6 +1893,7 @@ const ComponentsDemoPage = () => {
         "Schuifregelaar met label, de gekozen waarde en de grenzen eronder.",
       options: [
         ["label", "string", "–", "Zichtbare naam"],
+        ["info", "ReactNode", "–", "Naast het label, zoals een InfoToggletip"],
         ["min / max", "number", "–", "Minimale en maximale grens"],
         [
           "value / onChange",
@@ -1811,6 +1912,12 @@ const ComponentsDemoPage = () => {
           "(value) => string",
           "String",
           "Hoe de waarde wordt getoond, zoals ‘32 uur’",
+        ],
+        [
+          "formatValueText",
+          "(value) => string",
+          "formatValue",
+          "Wat een schermlezer voorleest, als dat meer moet zijn dan de getoonde tekst",
         ],
         [
           "filled",
@@ -1966,6 +2073,12 @@ const ComponentsDemoPage = () => {
           "–",
           "Maakt de badge een link, bijvoorbeeld naar de plek waar de gebruiker iets moet doen",
         ],
+        [
+          "icon",
+          "boolean",
+          "true",
+          "Toon het icoon van de variant; een neutrale badge heeft geen icoon",
+        ],
         ["children", "ReactNode", "–", "Tekst in de badge"],
       ],
       example: (
@@ -1976,6 +2089,15 @@ const ComponentsDemoPage = () => {
             <TextBadge variant="ok">Gelukt</TextBadge>{" "}
             <TextBadge variant="warning">Waarschuwing</TextBadge>{" "}
             <TextBadge variant="error">Fout</TextBadge>
+          </Paragraph>
+          <Paragraph>
+            Zonder icoon:{" "}
+            <TextBadge variant="info" icon={false}>
+              Informatie
+            </TextBadge>{" "}
+            <TextBadge variant="ok" icon={false}>
+              Gelukt
+            </TextBadge>
           </Paragraph>
           <Paragraph>
             Als link:{" "}
@@ -2052,6 +2174,96 @@ const ComponentsDemoPage = () => {
           <Paragraph purpose="lead">Een inleidende alinea.</Paragraph>
           <Paragraph>Een gewone alinea.</Paragraph>
         </>
+      ),
+    },
+    {
+      name: "Kleine tekst",
+      file: "rhc-mox-small-text en --rhc-text-font-size-xs in src/styles/rhc.css",
+      description: [
+        <>
+          <code>rhc-mox-small-text</code> is kleine, rustige tekst onder of
+          naast andere inhoud, zoals een notitie of de eenheid bij een bedrag
+          (‘per jaar’). Op een <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>{" "}
+          of <code>&lt;small&gt;</code>. Grootte{" "}
+          <code>--rhc-text-font-size-sm</code> (16px).
+        </>,
+        <>
+          <code>--rhc-text-font-size-xs</code> (14px) is geen gewone
+          tekstgrootte: die is niet goed toegankelijk. Gebruik hem nooit voor
+          lopende tekst, alleen voor uitzonderingen zoals een tekstbadge, en
+          altijd samen met <code>--rhc-text-font-weight-semi-bold</code> of{" "}
+          <code>--rhc-text-font-weight-bold</code>.
+        </>,
+      ],
+      options: [
+        [
+          "rhc-mox-small-text",
+          "class",
+          "–",
+          "Kleine, subtiele tekst (16px, kleur foreground-subtle)",
+        ],
+        [
+          "--rhc-text-font-size-xs",
+          "token",
+          "0.875rem (14px)",
+          "Alleen voor uitzonderingen, altijd (semi)bold",
+        ],
+      ],
+      example: (
+        <>
+          <Paragraph>
+            €1.680,64 <small className="rhc-mox-small-text">per jaar</small>
+          </Paragraph>
+          <Paragraph className="rhc-mox-small-text">
+            Dit is een berekening vooraf. De organisatie beslist over het
+            bedrag.
+          </Paragraph>
+          <Paragraph>
+            In een tekstbadge: <TextBadge>Loonaangifte</TextBadge>
+          </Paragraph>
+        </>
+      ),
+    },
+    {
+      name: "Highlight",
+      file: "rhc-mox-highlight in src/styles/rhc.css",
+      description: [
+        "Een lichtblauw blok dat een uitkomst laat opvallen, zoals een totaal. De inhoud staat onder elkaar met ruimte ertussen (gap).",
+        <>
+          Zet een toelichting rechtsboven met{" "}
+          <code>rhc-mox-with-info rhc-mox-with-info--end</code> om de kop en een{" "}
+          <code>InfoToggletip</code>. Een groot bedrag is een{" "}
+          <code>Paragraph purpose=&quot;lead&quot;</code> met{" "}
+          <code>&lt;strong&gt;</code>.
+        </>,
+      ],
+      options: [
+        ["rhc-mox-highlight", "class", "–", "Het blok"],
+        [
+          "rhc-mox-with-info--end",
+          "class",
+          "–",
+          "Kop met de i-knop rechtsboven",
+        ],
+      ],
+      example: (
+        <div className="rhc-mox-highlight">
+          <div className="rhc-mox-with-info rhc-mox-with-info--end">
+            <Heading level={4} appearanceLevel={5}>
+              Uw loonkosten met deze regelingen, ongeveer per jaar
+            </Heading>
+            <InfoToggletip label="Toelichting bij de berekening">
+              Dit is een berekening vooraf. De organisatie beslist over het
+              bedrag.
+            </InfoToggletip>
+          </div>
+          <Paragraph purpose="lead">
+            <strong>€30.645,95</strong>
+          </Paragraph>
+          <Paragraph>
+            Dat is ongeveer €1.680,64 per jaar minder dan zonder regelingen.
+          </Paragraph>
+        </div>
       ),
     },
     {
@@ -2688,27 +2900,6 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
-      name: "Toggletip",
-      file: "@/components/rhc",
-      description: [
-        "Een knop met een i-icoon die korte uitleg opent, bijvoorbeeld naast een veld. Gebouwd op details en summary, dus het werkt met het toetsenbord zonder JavaScript.",
-        "Let op: de knop heeft in RHC de vaste Engelse naam ‘tooltip-content’. Een schermlezer noemt dus niet waar de uitleg over gaat. Zet de uitleg daarom liever direct in de description van het veld.",
-      ],
-      options: [
-        ["children", "ReactNode", "–", "De uitleg, in een info-melding"],
-        ["open", "boolean", "false", "Begint open"],
-      ],
-      example: (
-        <div>
-          <span className="utrecht-form-label">KVK-nummer</span>{" "}
-          <Toggletip>
-            Het KVK-nummer bestaat uit 8 cijfers. U vindt het op uw uittreksel
-            uit het Handelsregister.
-          </Toggletip>
-        </div>
-      ),
-    },
-    {
       name: "NumberBadge",
       file: "@/components/rhc",
       description:
@@ -3271,21 +3462,9 @@ const ComponentsDemoPage = () => {
         </div>
       </div>
       <Heading level={1}>Componenten</Heading>
-      <Alert type="info">
-        <Paragraph>
-          Overzicht van maatwerkcomponenten in src/components en aangepaste{" "}
-          <a
-            href="https://rijkshuisstijl-community.vercel.app/?path=/docs/react-components-readme--docs"
-            rel="extrenal"
-          >
-            RHC-componenten
-          </a>
-          , met hun opties en een voorbeeld.
-        </Paragraph>
-      </Alert>
 
       <div className="rhc-mox-main-container">
-        <Heading level={2}>Maatwerkcomponenten</Heading>
+        <Heading level={2}>MOx componenten</Heading>
         {entries.map(card)}
         <section className="rhc-mox-card" aria-labelledby="overige">
           <Heading level={3} id="overige">

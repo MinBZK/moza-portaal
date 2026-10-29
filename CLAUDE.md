@@ -29,7 +29,10 @@ Het MijnOverheid Zakelijk portaal is een overheidsportaal gebouwd met Next.js, R
   - `src/styles/rhc.css` is de basis die in elke huisstijl geldt. Eigen classes daar krijgen het voorvoegsel `rhc-mox-`, zoals `rhc-mox-main-container`. Zo zijn ze te onderscheiden van de classes van RHC zelf (`rhc-grid`, `rhc-form-field`). Hier horen layout en functionele opmaak.
   - `src/styles/mox.css` is het MOx-thema daarbovenop. Classes daar krijgen het voorvoegsel `mox-` en bouwen voort op de `rhc-mox-`-basis.
   - `src/styles/utils.css` is alleen voor het prototype: hulpmiddelen voor testen en demonstreren, zoals het Flags- en persona-paneel en de PoC-banner. Classes daar krijgen het voorvoegsel `prototype-`. Zet daar niets wat bij het product of de huisstijl hoort.
-- Geef eigen classes een Engelse naam, ook als de rest van de code Nederlands is: `mox-sender`, niet `mox-afzender`. Varianten noem je naar hun betekenis, niet naar hun kleur: `mox-badge--article`, niet `mox-badge--blauw`.
+- Geef eigen classes een Engelse naam, ook als de rest van de code Nederlands is: `mox-sender`, niet `mox-afzender`. Varianten noem je naar hun betekenis, niet naar hun kleur: `rhc-mox-text-badge--warning`, niet `rhc-mox-text-badge--oranje`.
+- Gebruik eerst wat er al is: HTML-elementen, RHC-componenten, bestaande componenten in `src/components/` en bestaande classes en patronen in `rhc.css` en `mox.css`. Maak pas iets nieuws als dat niet volstaat.
+  - Maak iets nieuws dan generiek, zodat het ook in andere contexten bruikbaar is. Geef het een naam naar wat het is, niet naar de pagina of flow waar het het eerst nodig is.
+  - Voorbeeld: voor kleine subtekst geen `mox-hiring-note` (alleen voor Iemand aannemen), maar de algemene class `rhc-mox-small-text`, op een `<p>` of op `<small>`.
 - Verticale ruimte regel je met `gap` op de container (grid of flexbox), niet met margins op de kinderen. Een component neemt geen eigen ruimte eromheen mee; de container waarin het staat, bepaalt de afstand.
   - Gebruik het flow-patroon `> * + *` met een margin alleen voor lopende tekst waarvan we de HTML niet zelf maken, zoals `mox-rich-text` en inhoud uit een API.
   - Gebruik nooit `gap` en zo'n margin samen op één container.
@@ -45,6 +48,7 @@ Het MijnOverheid Zakelijk portaal is een overheidsportaal gebouwd met Next.js, R
 
 - Gebruik Rijks Sans en bestaande Rijksoverheid-kleuren en tokens.
 - Gebruik design tokens voor kleur, spacing, typografie, radius en focus.
+- `--rhc-text-font-size-xs` (14px) is geen gewone tekstgrootte: die is niet goed toegankelijk. Gebruik hem nooit voor lopende tekst, alleen voor uitzonderingen zoals een tekstbadge, en altijd samen met `--rhc-text-font-weight-semi-bold` of `--rhc-text-font-weight-bold`.
 - Gebruik NLDS/Rijkshuisstijl Community-componenten wanneer die passen bij de taak.
 - Importeer NLDS-design tokens en component-CSS één keer in `src/app/layout.tsx`.
 - Laat NLDS-componenten binnen de `.rhc-theme`-scope renderen.

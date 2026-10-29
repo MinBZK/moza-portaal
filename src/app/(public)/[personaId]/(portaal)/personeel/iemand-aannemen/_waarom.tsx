@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { DataSummary, DataSummaryItem, Paragraph } from "@/components/rhc";
+import {
+  DataSummary,
+  DataSummaryItem,
+  Paragraph,
+  UnorderedList,
+  UnorderedListItem,
+} from "@/components/rhc";
 import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
@@ -61,7 +67,7 @@ const Waarom = ({
 
   const vooraf = trace ? (
     <>
-      <Paragraph className="mox-hiring-note">
+      <Paragraph className="rhc-mox-small-text">
         Vooraf berekend door de regelrecht-engine op peildatum{" "}
         {datumNL(trace.peildatum)}, wetsversie 1 juli 2026
         {stand.status === "fout" &&
@@ -79,7 +85,7 @@ const Waarom = ({
       </DataSummary>
     </>
   ) : (
-    <Paragraph className="mox-hiring-note">
+    <Paragraph className="rhc-mox-small-text">
       De engine in de browser is niet beschikbaar
       {stand.status === "fout" && `: ${stand.fout}`}. Probeer de pagina opnieuw
       te laden.
@@ -88,11 +94,11 @@ const Waarom = ({
 
   return (
     <details
-      className="mox-hiring-why"
+      className="rhc-mox-disclosure"
       onToggle={(e) => e.currentTarget.open && setGeopend(true)}
     >
       <summary>Waarom deze uitkomst?</summary>
-      <div>
+      <div className="rhc-mox-disclosure__content">
         {stand.status === "laden" && (
           <Paragraph role="status">De regelrecht-engine rekent…</Paragraph>
         )}
@@ -111,19 +117,23 @@ const Waarom = ({
                 </div>
               );
             })}
-            <details>
+            <details className="rhc-mox-disclosure">
               <summary>Motivering per artikel</summary>
-              <ul className="mox-hiring-reasoning">
+              <UnorderedList className="rhc-mox-disclosure__content">
                 {outputs.flatMap((o) =>
                   (stand.waarde.afleidingen[o]?.tekst.motivering ?? [])
                     .filter((r) => !r.technisch)
-                    .map((r) => <li key={`${o}-${r.tekst}`}>{r.tekst}</li>),
+                    .map((r) => (
+                      <UnorderedListItem key={`${o}-${r.tekst}`}>
+                        {r.tekst}
+                      </UnorderedListItem>
+                    )),
                 )}
-              </ul>
+              </UnorderedList>
             </details>
-            <details>
+            <details className="rhc-mox-disclosure">
               <summary>Volledige afleiding, stap voor stap</summary>
-              <ol className="mox-hiring-derivation">
+              <ol className="rhc-mox-disclosure__content rhc-mox-small-text">
                 {outputs.flatMap((o) =>
                   (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
                     .filter((r) => !r.technisch)
@@ -134,14 +144,17 @@ const Waarom = ({
                       >
                         {r.tekst}
                         {r.bron && (
-                          <span className="mox-hiring-note"> · {r.bron}</span>
+                          <small className="rhc-mox-small-text">
+                            {" "}
+                            · {r.bron}
+                          </small>
                         )}
                       </li>
                     )),
                 )}
               </ol>
             </details>
-            <Paragraph className="mox-hiring-note">
+            <Paragraph className="rhc-mox-small-text">
               Afgeleid uit de uitvoering door de regelrecht-engine in uw
               browser, wetsversie 1 juli 2026. De tekst hierboven komt niet van
               een taalmodel: elke zin komt uit een stap van de wet.

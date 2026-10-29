@@ -16,7 +16,6 @@ export {
   DotBadge,
   Drawer,
   ExpandableCheckboxGroup,
-  Fieldset,
   FileInput,
   Footer,
   FormField,
@@ -25,10 +24,13 @@ export {
   FormFieldErrorMessage,
   FormFieldRadio,
   FormFieldRadioGroup,
+  FormFieldSelect,
+  FormFieldTextarea,
   FormFieldTextInput,
   Heading,
   Hero,
   Icon,
+  IconButton,
   LanguageNavigation,
   Link,
   LinkButton,
@@ -49,6 +51,7 @@ export {
   PageHeader,
   Paragraph,
   PreHeading,
+  SelectOption,
   Separator,
   SideNav,
   SideNavItem,
@@ -63,7 +66,6 @@ export {
   TableRow,
   TextInput,
   Textarea,
-  Toggletip,
   UnorderedList,
   UnorderedListItem,
   VisuallyHidden,
@@ -71,5 +73,7 @@ export {
 
 // RHC Alert with an optional close button.
 export { Alert } from "./Alert";
+// RHC Fieldset with optional info (such as an InfoToggletip) next to the legend.
+export { Fieldset } from "./Fieldset";
 // RHC AccordionProvider with a decorative chevron without ids.
 export { AccordionProvider } from "./AccordionProvider";

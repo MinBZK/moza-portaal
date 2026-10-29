@@ -196,7 +196,7 @@ Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ruim t
   besluitGeldt, migreerZaken), `_useAannemen.ts` (opslag per situatie).
 - Engine: `public/regelrecht/**`, `_useRegelrecht.ts`, `_engine.ts`,
   `_balans.tsx`, `_waarom.tsx`, `_uitlegTaalmodel.tsx`.
-- Stijl: classes `mox-hiring-*` in `src/styles/mox.css`.
+- Stijl: algemene classes uit `src/styles/rhc.css` (`rhc-mox-disclosure`, `rhc-mox-timeline`, `rhc-mox-highlight`, `rhc-mox-cluster`) en het component `TextBadge`. Geen eigen `mox-hiring-*`-classes.
 - Aangepast: `_assistentZaken.ts` (route naar de zaak), `personaPaneel.tsx`
   (scenario wissen bij persona-wissel), `breadcrumb/index.tsx` (labels).
 

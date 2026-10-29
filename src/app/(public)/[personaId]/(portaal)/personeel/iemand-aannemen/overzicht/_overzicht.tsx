@@ -146,10 +146,10 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
           {route.vanzelf.includes("lkv") && (
             <Kaart id="vanzelf-lkv" kop="Loonkostenvoordeel">
               {lkv && (
-                <p className="mox-hiring-amount">
-                  {euro(lkv.bedragPerJaar)}{" "}
-                  <span className="mox-hiring-note">per jaar</span>
-                </p>
+                <Paragraph purpose="lead">
+                  <strong>{euro(lkv.bedragPerJaar)}</strong>{" "}
+                  <small className="rhc-mox-small-text">per jaar</small>
+                </Paragraph>
               )}
               {lkv?.aanname && <Aanname id={lkv.aanname} />}
               <LkvVoorbehoud categorie={lkv?.categorie} />
@@ -162,7 +162,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
                 De Belastingdienst rekent het na afloop van het jaar uit.
               </Paragraph>
               {situatie === "register" && (
-                <div className="mox-hiring-note">
+                <div className="rhc-mox-small-text">
                   Via de gemeente kan ook loonkostensubsidie gelden.{" "}
                   <InfoToggletip label="Toelichting bij loonkostensubsidie">
                     Of de gemeente loonkostensubsidie geeft, hangt af van de

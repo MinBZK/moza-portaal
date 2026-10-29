@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
+import TextBadge from "@/components/TextBadge";
 import {
   ActionGroup,
   Alert,
@@ -36,10 +37,10 @@ const Loket = ({
   items: ReactNode[];
 }) => (
   <section className="rhc-mox-card rhc-mox-row-gap" aria-label={titel}>
-    <Heading level={3}>
-      {titel}
-      {label && <span className="mox-hiring-label">{label}</span>}
-    </Heading>
+    <div className="rhc-mox-cluster">
+      <Heading level={3}>{titel}</Heading>
+      {label && <TextBadge variant="info">{label}</TextBadge>}
+    </div>
     <UnorderedList>
       {items.map((i, n) => (
         <UnorderedListItem key={n}>{i}</UnorderedListItem>

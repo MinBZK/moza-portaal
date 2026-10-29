@@ -12,7 +12,9 @@ import {
   Paragraph,
   UnorderedList,
   UnorderedListItem,
+  Separator,
 } from "@/components/rhc";
+import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
@@ -147,133 +149,155 @@ const VragenMetStaat = ({
 
   return (
     <>
-      <Heading level={2}>Gevolgen voor {onderneming}</Heading>
-      <Paragraph className="mox-hiring-note">
-        Deze berekening blijft op uw scherm. Er gaat niets naar een
-        overheidsorganisatie.
-      </Paragraph>
-      <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
-          <Fieldset
-            legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past."
-            className="mox-hiring-choices"
-          >
-            {DOELGROEPEN.map(([waarde, label]) => (
-              <FormFieldCheckboxOption
-                key={waarde}
-                name="doelgroepen"
-                value={waarde}
-                label={label}
-                checked={a.doelgroepen.includes(waarde)}
-                disabled={waarde === "register" && vast}
-                description={
-                  waarde === "register" && vast
-                    ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
-                    : undefined
-                }
-                onChange={(event) =>
-                  zet({
-                    doelgroepen: kiesDoelgroep(
-                      a.doelgroepen,
-                      waarde,
-                      event.target.checked,
-                    ),
-                  })
-                }
-              />
-            ))}
-          </Fieldset>
-          <RangeSlider
-            label="2. Hoeveel uur per week gaat de kandidaat werken? (arbeidsduur)"
-            min={8}
-            max={40}
-            step={1}
-            value={a.uren}
-            onChange={(uren) => zet({ uren })}
-            formatValue={(uren) => `${uren} uur`}
-            filled
-          />
-          <div className="rhc-mox-stack rhc-mox-stack--sm">
+      <Separator></Separator>
+
+      <section className="rhc-mox-stack" aria-labelledby="gevolgen">
+        <Heading level={2} id="gevolgen">
+          Gevolgen voor {onderneming}
+        </Heading>
+        <Paragraph className="rhc-mox-small-text">
+          Deze berekening blijft op uw scherm. Er gaat niets naar een
+          overheidsorganisatie.
+        </Paragraph>
+        <div className="rhc-grid">
+          <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
+            <Fieldset legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past.">
+              {DOELGROEPEN.map(([waarde, label]) => (
+                <FormFieldCheckboxOption
+                  key={waarde}
+                  name="doelgroepen"
+                  value={waarde}
+                  label={label}
+                  checked={a.doelgroepen.includes(waarde)}
+                  disabled={waarde === "register" && vast}
+                  description={
+                    waarde === "register" && vast
+                      ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
+                      : undefined
+                  }
+                  onChange={(event) =>
+                    zet({
+                      doelgroepen: kiesDoelgroep(
+                        a.doelgroepen,
+                        waarde,
+                        event.target.checked,
+                      ),
+                    })
+                  }
+                />
+              ))}
+            </Fieldset>
             <RangeSlider
-              label="3. Heeft de kandidaat naar verwachting een verminderde loonwaarde? Zo ja, hoeveel? (loonwaarde)"
-              min={30}
-              max={100}
-              step={5}
-              value={a.loonwaarde}
-              onChange={(loonwaarde) => zet({ loonwaarde })}
-              formatValue={(loonwaarde) =>
-                loonwaarde === 100
-                  ? "100 procent: geen verminderde loonwaarde"
-                  : `${loonwaarde} procent`
-              }
+              label="2. Hoeveel uur per week gaat de kandidaat werken? (arbeidsduur)"
+              min={8}
+              max={40}
+              step={1}
+              value={a.uren}
+              onChange={(uren) => zet({ uren })}
+              formatValue={(uren) => `${uren} uur`}
               filled
             />
-            <Paragraph className="mox-hiring-note">
-              {wajong
-                ? "Bij een Wajong-uitkering: het percentage van het minimumloon dat de kandidaat aankan. UWV stelt dit vast voor de loondispensatie."
-                : "De loonwaarde is wat de kandidaat in het werk presteert, in vergelijking met een collega zonder beperking in dezelfde functie. Onder 100 procent is de loonwaarde verminderd. Bij 100 procent is er geen loonkostensubsidie. Ook dan kan de kandidaat begeleiding nodig hebben, zoals een jobcoach. De gemeente meet de loonwaarde later op de werkplek."}
-            </Paragraph>
-          </div>
-          <Fieldset
-            legend="4. Wat wordt het bruto uurloon? (loon)"
-            className="mox-hiring-choices"
-          >
-            <FormFieldRadio
-              name="uurloon"
-              value="wml"
-              label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
-              description="Voor iemand van 21 jaar of ouder. Voor jongere werknemers geldt een lager minimumloon; daarmee rekent deze berekening niet."
-              checked={!anders}
-              onChange={() => {
-                setAnders(false);
-                zet({ uurloon: WML_UUR_EUROCENT });
-              }}
-            />
-            <FormFieldRadio
-              name="uurloon"
-              value="anders"
-              label="Anders, namelijk:"
-              checked={anders}
-              onChange={() => {
-                setAnders(true);
-                zetLoon(loonTekst);
-              }}
-            />
-            {anders && (
-              <FormFieldTextInput
-                name="uurloon-anders"
-                label="Bruto uurloon in euro"
-                inputMode="decimal"
-                autoComplete="off"
-                description="Bijvoorbeeld 16,50"
-                value={loonTekst}
-                invalid={loonFout !== undefined}
-                errorMessage={loonFout}
-                // Het event komt van de input, maar is getypt op de wrapper-div.
-                onChange={(e) => zetLoon((e.target as HTMLInputElement).value)}
+            <div className="rhc-mox-stack rhc-mox-stack--sm">
+              <RangeSlider
+                label="3. Heeft de kandidaat naar verwachting een verminderde loonwaarde? Zo ja, hoeveel? (loonwaarde)"
+                min={30}
+                max={100}
+                step={5}
+                value={a.loonwaarde}
+                onChange={(loonwaarde) => zet({ loonwaarde })}
+                formatValue={(loonwaarde) => `${loonwaarde} procent`}
+                formatValueText={(loonwaarde) =>
+                  loonwaarde === 100
+                    ? "100 procent: geen verminderde loonwaarde"
+                    : `${loonwaarde} procent`
+                }
+                filled
+                info={
+                  <InfoToggletip label="Toelichting bij de loonwaarde">
+                    <Paragraph>
+                      De loonwaarde is wat de kandidaat in het werk presteert,
+                      in vergelijking met een collega zonder beperking in
+                      dezelfde functie.
+                    </Paragraph>
+                    <Paragraph>
+                      Onder 100 procent is de loonwaarde verminderd. Bij 100
+                      procent is er geen loonkostensubsidie. Ook dan kan de
+                      kandidaat begeleiding nodig hebben, zoals een jobcoach.
+                    </Paragraph>
+                    <Paragraph>
+                      De gemeente meet de loonwaarde later op de werkplek.
+                    </Paragraph>
+                    <Paragraph>
+                      Volgens de wet is de loonkostensubsidie altijd het
+                      verschil tussen het minimumloon en de loonwaarde. Betaalt
+                      u meer dan het minimumloon, dan krijgt u dus niet meer
+                      subsidie. Het loonkostenvoordeel is een vast bedrag per
+                      verloond uur. Een hoger uurloon maakt alleen uw loonkosten
+                      hoger.
+                    </Paragraph>
+                  </InfoToggletip>
+                }
               />
-            )}
-          </Fieldset>
-          <Paragraph className="mox-hiring-note">
-            Volgens de wet is de loonkostensubsidie altijd het verschil tussen
-            het minimumloon en de loonwaarde. Betaalt u meer dan het
-            minimumloon, dan krijgt u dus niet meer subsidie. Het
-            loonkostenvoordeel is een vast bedrag per verloond uur. Een hoger
-            uurloon maakt alleen uw loonkosten hoger.
-          </Paragraph>
+              {wajong && (
+                <Paragraph className="rhc-mox-small-text">
+                  Bij een Wajong-uitkering: het percentage van het minimumloon
+                  dat de kandidaat aankan. UWV stelt dit vast voor de
+                  loondispensatie.
+                </Paragraph>
+              )}
+            </div>
+            <Fieldset legend="4. Wat wordt het bruto uurloon? (loon)">
+              <FormFieldRadio
+                name="uurloon"
+                value="wml"
+                label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
+                description="Voor iemand van 21 jaar of ouder. Voor jongere werknemers geldt een lager minimumloon; daarmee rekent deze berekening niet."
+                checked={!anders}
+                onChange={() => {
+                  setAnders(false);
+                  zet({ uurloon: WML_UUR_EUROCENT });
+                }}
+              />
+              <FormFieldRadio
+                name="uurloon"
+                value="anders"
+                label="Anders, namelijk:"
+                checked={anders}
+                onChange={() => {
+                  setAnders(true);
+                  zetLoon(loonTekst);
+                }}
+              />
+              {anders && (
+                <FormFieldTextInput
+                  name="uurloon-anders"
+                  label="Bruto uurloon in euro"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  description="Bijvoorbeeld 16,50"
+                  value={loonTekst}
+                  invalid={loonFout !== undefined}
+                  errorMessage={loonFout}
+                  // Het event komt van de input, maar is getypt op de wrapper-div.
+                  onChange={(e) =>
+                    zetLoon((e.target as HTMLInputElement).value)
+                  }
+                />
+              )}
+            </Fieldset>
+          </div>
+          <div className="rhc-grid__cell rhc-grid__cell-t-5">
+            <StickyInfoBox title="Wat het kost en oplevert">
+              <Balans antwoorden={a} resultaat={resultaat} />
+            </StickyInfoBox>
+          </div>
         </div>
-        <div className="rhc-grid__cell rhc-grid__cell-t-5">
-          <StickyInfoBox title="Wat het kost en oplevert">
-            <Balans antwoorden={a} resultaat={resultaat} />
-          </StickyInfoBox>
-        </div>
-      </div>
+      </section>
+
+      <Separator></Separator>
 
       {overige.length > 0 && (
-        <section
-          className="rhc-mox-card rhc-mox-row-gap"
-          aria-labelledby="overige"
-        >
+        <section className="rhc-mox-stack" aria-labelledby="overige">
           <Heading level={2} id="overige">
             Regelingen die verder kunnen gelden
           </Heading>
@@ -281,23 +305,24 @@ const VragenMetStaat = ({
             {overige.map((o) => (
               <UnorderedListItem key={o.id}>
                 <strong>{OVERIG[o.id].naam}</strong>{" "}
+                <InfoToggletip
+                  label={`Toelichting bij ${OVERIG[o.id].naam.toLowerCase()}`}
+                >
+                  Uitkomst van de regelrecht-engine bij uw antwoorden. Of de
+                  regeling geldt, beslist de organisatie die haar uitvoert.
+                </InfoToggletip>{" "}
                 <Uitvoerder id={OVERIG[o.id].uitvoerder} />
                 <br />
                 {OVERIG[o.id].tekst(o)}
               </UnorderedListItem>
             ))}
           </UnorderedList>
-          <Paragraph className="mox-hiring-note">
-            Uitkomsten van de regelrecht-engine bij uw antwoorden. Of een
-            regeling geldt, beslist de organisatie die haar uitvoert.
-          </Paragraph>
         </section>
       )}
 
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="aanvragen"
-      >
+      <Separator></Separator>
+
+      <section className="rhc-mox-stack" aria-labelledby="aanvragen">
         <Heading level={2} id="aanvragen">
           Regelingen aanvragen
         </Heading>
@@ -310,7 +335,7 @@ const VragenMetStaat = ({
           {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
           <Link
             href="/personeel/iemand-aannemen/gegevens"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action mox-hiring-button-link"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             aria-disabled={resultaat.bekend ? undefined : true}
             aria-describedby={resultaat.bekend ? undefined : "aanvragen-bezig"}
             onClick={(event) => {

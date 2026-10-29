@@ -41,12 +41,16 @@
   --rhc-grid-vi-medium-column-gap: var(--rhc-space-max-xl);
 
   /* Typografische wijzigingen t.o.v. RHC */
+  /* Extra small text, 14px. Not well accessible: never for running text,
+    only for exceptions such as a text badge. Always combine it with
+    --rhc-text-font-weight-semi-bold or --rhc-text-font-weight-bold. */
+  --rhc-text-font-size-xs: 0.875rem;
   --nl-heading-level-1-font-size: 2rem;
   --nl-heading-level-2-font-size: 1.75rem;
   --nl-heading-level-3-font-size: 1.5rem;
   --nl-paragraph-font-size: 1.125rem;
   --nl-number-badge-font-size: var(--rhc-text-font-size-sm);
-  --nl-data-badge-font-size: 0.875rem;
+  --nl-data-badge-font-size: var(--rhc-text-font-size-xs);
   --rhc-data-summary-item-key-font-weight: var(--rhc-text-font-weight-semi-bold);
   --rhc-navigation-list-item-label-font-weight: var(--rhc-text-font-weight-semi-bold);
   --rhc-text-font-size-min-md: 1rem;
@@ -113,6 +117,8 @@
 
 .rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
   --utrecht-form-field-description-margin-block-start: var(--rhc-space-sm);
+  color: var(--rhc-color-cool-grey-700);
+  font-size: var(--rhc-text-font-size-sm);
 }
 
 .rhc-theme.mox-theme .rhc-form-field {
@@ -212,6 +218,10 @@ body {
 
 .rhc-mox-stack--3xl {
   gap: var(--rhc-space-3xl);
+}
+
+.rhc-separator.utrecht-separator {
+  margin: 0;
 }
 
 .rhc-theme.mox-theme {
@@ -447,6 +457,131 @@ body {
   }
 }
 
+/* --- Tekst --- */
+/* Small, subtle text under or next to other content, such as a note or the
+  unit of an amount. On a <p>, <div> or <small>. */
+small,
+.rhc-theme .rhc-mox-small-text {
+  color: var(--rhc-color-foreground-subtle);
+  font-size: var(--rhc-text-font-size-sm);
+}
+
+/* --- DataSummary: a badge in the value always sits on the right --- */
+.rhc-data-summary__item-value:has(> .rhc-mox-text-badge) {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-xs) var(--rhc-space-md);
+
+  >.rhc-mox-text-badge {
+    margin-inline-start: auto;
+  }
+}
+
+/* --- Cluster: short items in a row that wrap, such as badges --- */
+.rhc-mox-cluster {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-md);
+}
+
+/* --- Highlight: a light blue block that sets a result apart, such as a total --- */
+.rhc-mox-highlight {
+  background-color: color-mix(in srgb, var(--rhc-color-hemelblauw-50) 60%, transparent);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-hemelblauw-100);
+  border-radius: var(--rhc-border-radius-md);
+  display: grid;
+  gap: var(--rhc-space-lg);
+  padding: var(--rhc-space-xl);
+}
+
+/* --- Disclosure: <details> that opens extra content --- */
+.rhc-mox-disclosure {
+  >summary {
+    color: var(--utrecht-link-color);
+    cursor: pointer;
+    font-weight: var(--rhc-text-font-weight-semi-bold);
+  }
+}
+
+.rhc-mox-disclosure__content {
+  display: grid;
+  gap: var(--rhc-space-lg);
+  padding-block-start: var(--rhc-space-md);
+}
+
+/* In a box, with a heading and status in the summary. */
+.rhc-mox-disclosure--boxed {
+  background-color: var(--rhc-color-wit);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+  border-radius: var(--rhc-border-radius-md);
+
+  >summary {
+    align-items: center;
+    color: inherit;
+    display: flex;
+    font-weight: inherit;
+    gap: var(--rhc-space-lg);
+    justify-content: space-between;
+    padding: var(--rhc-space-lg);
+  }
+
+  >.rhc-mox-disclosure__content {
+    border-block-start: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-300);
+    padding: var(--rhc-space-lg);
+  }
+}
+
+/* --- Timeline: events on a vertical line, newest first --- */
+.rhc-mox-timeline {
+  --rhc-mox-timeline-dot: var(--rhc-space-lg);
+
+  border-inline-start: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-300);
+  display: grid;
+}
+
+.rhc-mox-timeline__item {
+  display: grid;
+  gap: var(--rhc-space-sm);
+  padding-block: var(--rhc-space-lg);
+  padding-inline-start: var(--rhc-space-2xl);
+  position: relative;
+
+  &::before {
+    background-color: var(--rhc-color-lintblauw-500);
+    block-size: var(--rhc-mox-timeline-dot);
+    border-radius: 50%;
+    content: "";
+    inline-size: var(--rhc-mox-timeline-dot);
+    inset-block-start: calc(var(--rhc-space-lg) + 0.35em);
+    inset-inline-start: calc(-0.5 * var(--rhc-mox-timeline-dot) - 0.5 * var(--rhc-border-width-md));
+    position: absolute;
+  }
+}
+
+.rhc-mox-timeline__item--ok::before {
+  background-color: var(--rhc-color-groen-600);
+}
+
+.rhc-mox-timeline__item--neutral::before {
+  background-color: var(--rhc-color-cool-grey-500);
+}
+
+/* Replaced by a later event: the heading is struck through. */
+.rhc-mox-timeline__item--replaced :is(h2, h3, h4) {
+  text-decoration-line: line-through;
+  text-decoration-thickness: var(--rhc-border-width-sm);
+}
+
+/* A button link that does not work yet, such as during a calculation. */
+.utrecht-button-link[aria-disabled="true"] {
+  background-color: var(--utrecht-button-disabled-background-color);
+  border-color: var(--utrecht-button-disabled-border-color);
+  color: var(--utrecht-button-disabled-color);
+  cursor: not-allowed;
+}
+
 /* ==== Componenten ======================================================== */
 
 /* --- Interactie --- */
@@ -491,6 +626,17 @@ body {
 
 
 /* --- DataSummary --- */
+.rhc-data-summary__item-key {
+  display: flex;
+
+  /* Its own height, also when the name wraps over several lines: a flex item
+    stretches to the full height of the row by default. */
+  .rhc-mox-text-badge {
+    align-self: start;
+    margin-inline-start: auto;
+  }
+}
+
 .rhc-theme.mox-theme {
   @media (width >=768px) {
     .rhc-data-summary--columns {
@@ -1457,6 +1603,86 @@ body {
   }
 }
 
+/* --- Tooltip --- */
+/* The content opens as a layer under the (i) button and pushes nothing
+  aside. With anchor positioning it moves to the other side when there is
+  no room on the right. */
+/* The (i) button sits on the baseline, so it stood a little above the middle
+  of the text next to it; -0.15em centres it on the text. */
+.rhc-toggletip {
+  anchor-scope: --rhc-toggletip;
+  position: relative;
+  vertical-align: -0.15em;
+  --rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
+  --rhc-toggletip-hover-background-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-focus-background-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-active-background-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-border-color: var(--rhc-color-lintblauw-500);
+  --rhc-toggletip-hover-border-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-focus-border-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-active-border-color: var(--rhc-color-lintblauw-700);
+  --rhc-toggletip-color: var(--rhc-color-wit);
+  --rhc-toggletip-hover-color: var(--rhc-color-wit);
+  --rhc-toggletip-focus-color: var(--rhc-color-wit);
+  --rhc-toggletip-active-color: var(--rhc-color-wit);
+}
+
+.rhc-toggletip__summary {
+  anchor-name: --rhc-toggletip;
+  margin-block-end: 0;
+}
+
+/* No room on either side, as on a narrow screen: the width of the window. */
+@position-try --rhc-toggletip-full {
+  inline-size: auto;
+  inset-inline-end: var(--rhc-space-lg);
+  inset-inline-start: var(--rhc-space-lg);
+}
+
+.rhc-toggletip__content {
+  inline-size: max-content;
+  inset-block-start: calc(100% + var(--rhc-space-sm));
+  inset-inline-start: 0;
+  max-inline-size: min(24rem, calc(100vw - 2 * var(--rhc-space-lg)));
+  position: absolute;
+  z-index: 10;
+
+  /* Fixed against the window, so the fallback checks the room in the window
+    and not in the small button. */
+  @supports (position-anchor: --a) {
+    inset-block-start: calc(anchor(bottom) + var(--rhc-space-sm));
+    inset-inline-start: anchor(start);
+    position: fixed;
+    position-anchor: --rhc-toggletip;
+    position-try-fallbacks: flip-inline, --rhc-toggletip-full;
+  }
+}
+
+.rhc-toggletip__alert {
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
+
+  .utrecht-alert__icon {
+    --utrecht-icon-inset-block-start: 0;
+    inline-size: var(--rhc-space-2xl);
+  }
+
+  .utrecht-icon {
+    background-color: var(--rhc-color-lintblauw-500);
+    border-radius: var(--rhc-border-radius-md);
+    color: var(--rhc-color-wit);
+  }
+}
+
+.rhc-toggletip__content {
+  .utrecht-alert__message {
+    gap: var(--rhc-space-lg);
+  }
+
+  .rhc-paragraph {
+    font-size: var(--rhc-text-font-size-sm);
+  }
+}
+
 /* --- Paginering --- */
 .rhc-theme.mox-theme {
   .ams-icon {
@@ -1549,6 +1775,66 @@ body {
     text-align: start;
     text-decoration: none;
   }
+}
+
+/* A fieldset with extra information next to the legend
+  (src/components/Fieldset.tsx). A floated legend is an ordinary child, so it
+  becomes a grid item: legend and info share the first row, the fields span
+  the full width below. The legend still names the group. */
+.utrecht-form-fieldset.rhc-mox-fieldset--info {
+  .utrecht-form-fieldset__fieldset {
+    align-items: center;
+    grid-template-columns: minmax(0, max-content) 1fr;
+  }
+
+  .utrecht-form-fieldset__legend {
+    float: inline-start;
+    margin-block-end: 0;
+  }
+
+  .utrecht-form-fieldset__fieldset> :not(legend, .rhc-mox-fieldset__info) {
+    grid-column: 1 / -1;
+  }
+
+  .rhc-mox-fieldset__info {
+    justify-self: start;
+  }
+}
+
+/* A label or heading with extra information right after it, such as an
+  InfoToggletip (src/components/FieldLabel.tsx). The information follows the
+  last word, also when the text wraps over several lines. */
+.rhc-mox-with-info {
+  >:first-child {
+    display: inline;
+  }
+
+  >:not(:first-child) {
+    display: inline;
+    margin-inline-start: var(--rhc-space-sm);
+  }
+}
+
+/* Variant: the information in the top right corner, with the text next to
+  it. For a heading at the top of a block, such as a highlight. */
+.rhc-mox-with-info--end {
+  align-items: start;
+  display: flex;
+  gap: var(--rhc-space-md);
+  justify-content: space-between;
+
+  >:first-child {
+    display: block;
+  }
+
+  >:not(:first-child) {
+    margin-inline-start: 0;
+  }
+}
+
+/* The chosen value of a range slider ("32 uur") stays on one line. */
+.rhc-mox-range-slider__value {
+  white-space: nowrap;
 }
 
 /* --- Bar graph --- */
@@ -1839,13 +2125,22 @@ body {
   border-radius: var(--rhc-border-radius-round);
   color: var(--rhc-color-foreground-default);
   display: inline-flex;
-  font-size: var(--rhc-text-font-size-sm);
+  font-size: var(--rhc-text-font-size-xs);
   font-weight: var(--rhc-text-font-weight-semi-bold);
   gap: var(--rhc-space-sm);
-  line-height: var(--rhc-text-line-height-md);
-  padding-block: var(--rhc-space-sm);
+  /* About as high as a line of text, so it does not stick out above or
+    below the text next to it; the text in the badge on its baseline. */
+  line-height: var(--rhc-text-line-height-sm);
+  padding-block: var(--rhc-space-xs);
   padding-inline: var(--rhc-space-lg);
-  vertical-align: middle;
+  vertical-align: baseline;
+}
+
+/* Room between a badge and the element before it. Not in a flex container
+  with gap (cluster, the key of a DataSummary, the summary of a disclosure):
+  there the gap already sets the room. */
+:not(.rhc-mox-cluster, .rhc-data-summary__item-key, summary)>*+.rhc-mox-text-badge {
+  margin-inline-start: var(--rhc-space-md);
 }
 
 .rhc-mox-text-badge--info {

@@ -6,7 +6,9 @@ import {
   type ChangeEvent,
   type ComponentProps,
   type CSSProperties,
+  type ReactNode,
 } from "react";
+import FieldLabel from "./FieldLabel";
 
 type RangeSliderProps = Omit<
   ComponentProps<"input">,
@@ -14,6 +16,8 @@ type RangeSliderProps = Omit<
 > & {
   /** Visible name of the slider. */
   label: string;
+  /** Next to the label, for example an InfoToggletip. */
+  info?: ReactNode;
   min: number;
   max: number;
   /** With value and onChange the parent keeps track of the value. */
@@ -22,6 +26,12 @@ type RangeSliderProps = Omit<
   onChange?: (value: number, event: ChangeEvent<HTMLInputElement>) => void;
   /** How the value is shown, for example "32 uur". */
   formatValue?: (value: number) => string;
+  /**
+   * What a screen reader reads out for a value, when that needs more than
+   * the shown text, for example "100 procent: geen verminderde loonwaarde".
+   * Defaults to formatValue.
+   */
+  formatValueText?: (value: number) => string;
   /** Colour the track from the start up to the thumb. */
   filled?: boolean;
 };
@@ -32,6 +42,7 @@ type RangeSliderProps = Omit<
  */
 const RangeSlider = ({
   label,
+  info,
   id,
   min,
   max,
@@ -39,6 +50,7 @@ const RangeSlider = ({
   defaultValue,
   onChange,
   formatValue = String,
+  formatValueText = formatValue,
   filled = false,
   className,
   style,
@@ -54,9 +66,9 @@ const RangeSlider = ({
   return (
     <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-mox-range-slider">
       <div className="utrecht-form-field__label rhc-mox-range-slider__header">
-        <label htmlFor={fieldId} className="utrecht-form-label">
+        <FieldLabel htmlFor={fieldId} info={info}>
           {label}
-        </label>
+        </FieldLabel>
         <output htmlFor={fieldId} className="rhc-mox-range-slider__value">
           {formatValue(current)}
         </output>
@@ -69,7 +81,7 @@ const RangeSlider = ({
           max={max}
           value={current}
           // Screen readers read out the shown value, not just the number.
-          aria-valuetext={formatValue(current)}
+          aria-valuetext={formatValueText(current)}
           onChange={(event) => {
             const next = Number(event.target.value);
             if (value === undefined) setOwnValue(next);
