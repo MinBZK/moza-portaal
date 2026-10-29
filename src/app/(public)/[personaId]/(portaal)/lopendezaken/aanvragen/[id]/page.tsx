@@ -64,11 +64,11 @@ const AanvraagPage = async ({
       </Paragraph>
 
       <div className="rhc-mox-card rhc-mox-row-gap">
-        <Alert type="info">
-          U hebt deze aanvraag opgeslagen, maar nog niet verstuurd.
-          {aanvraag.indienenVoor &&
-            ` Dien de aanvraag in voor ${aanvraag.indienenVoor}.`}
-        </Alert>
+        {aanvraag.indienenVoor && (
+          <Alert type="info">
+            Verstuur de aanvraag voor {aanvraag.indienenVoor}.
+          </Alert>
+        )}
 
         <section>
           <DataSummary appearance="column">
@@ -81,16 +81,6 @@ const AanvraagPage = async ({
               itemValue={aanvraag.tijdsduur}
             />
           </DataSummary>
-          {aanvraag.bewaardVan && aanvraag.overgenomen && (
-            <Alert type="ok">
-              <Paragraph>
-                <strong>
-                  Uw antwoorden van {aanvraag.bewaardVan} zijn overgenomen.
-                </strong>
-              </Paragraph>
-              <Paragraph>{aanvraag.overgenomen}</Paragraph>
-            </Alert>
-          )}
           {!flow &&
             aanvraag.toelichting?.map((alinea) => (
               <Paragraph key={alinea}>{alinea}</Paragraph>
