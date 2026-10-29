@@ -592,7 +592,7 @@ const BerichtenLijst = ({
                       onMarkeer={() => zetGemarkeerd(bericht.id, !gemarkeerd)}
                     >
                       {weergave === "inbox" && (
-                        <TableCell>
+                        <TableCell className="rhc-mox-table-cell-actions">
                           <RijActies
                             onderwerp={bericht.onderwerp}
                             href={`/berichtenbox/${bericht.id}`}

@@ -56,7 +56,7 @@ const Personeel = async () => {
                 <TableRow key={item.referentie}>
                   <TableCell>{item.referentie}</TableCell>
                   <TableCell>{item.status}</TableCell>
-                  <TableCell>
+                  <TableCell className="rhc-mox-table-cell-date">
                     {format(new Date(item.ontvangenOp!), "d MMMM yyyy", {
                       locale: nl,
                     })}

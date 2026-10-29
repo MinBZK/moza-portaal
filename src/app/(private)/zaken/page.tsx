@@ -77,7 +77,7 @@ const Zaken = async () => {
                       <TableCell>{item.type}</TableCell>
                       <TableCell>{item.kenteken ?? item.subtype}</TableCell>
                       <TableCell>{item.status}</TableCell>
-                      <TableCell>
+                      <TableCell className="rhc-mox-table-cell-date">
                         {format(new Date(item.timestamp!), "d MMMM yyyy", {
                           locale: nl,
                         })}

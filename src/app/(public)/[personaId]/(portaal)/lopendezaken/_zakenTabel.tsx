@@ -73,7 +73,9 @@ const ZakenTabel = ({
                 {zaak.titel}
               </Link>
             </TableCell>
-            <TableCell>{zaak.datum}</TableCell>
+            <TableCell className="rhc-mox-table-cell-date">
+              {zaak.datum}
+            </TableCell>
             {soort === "lopend" && (
               <TableCell>
                 <StatusLink zaak={zaak} />
