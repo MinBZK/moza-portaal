@@ -82,7 +82,14 @@ const Besluit = ({
   const [melding, setMelding] = useState("");
   const [tekst, setTekst] = useState("");
   const { zaak, kandidaat, besluit, fasen, dienstverband } = demo;
-  if (!staat || !besluit) return null;
+  const kop = (
+    <Heading level={1}>
+      Besluit: {REGELING[situatie].naam.toLowerCase()} voor {kandidaat.voornaam}{" "}
+      {kandidaat.achternaam}
+    </Heading>
+  );
+  // Ook voordat de opgeslagen staat er is, heeft de pagina een kop.
+  if (!staat || !besluit) return kop;
 
   const regeling = REGELING[situatie];
   const zaakStand = zaakVan(staat, situatie);
@@ -95,15 +102,18 @@ const Besluit = ({
     faseIndex(zaakStand.fase, fasen) < faseIndex("besluit", fasen)
   )
     return (
-      <Alert type="info">
-        <Paragraph>
-          Er is nog geen besluit op deze aanvraag.{" "}
-          <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
-            Bekijk de voortgang van de zaak
-          </Link>
-          .
-        </Paragraph>
-      </Alert>
+      <>
+        {kop}
+        <Alert type="info">
+          <Paragraph>
+            Er is nog geen besluit op deze aanvraag.{" "}
+            <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
+              Bekijk de voortgang van de zaak
+            </Link>
+            .
+          </Paragraph>
+        </Alert>
+      </>
     );
 
   const verstuurVraag = (event: FormEvent<HTMLFormElement>) => {
@@ -127,10 +137,7 @@ const Besluit = ({
       <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
         Terug naar de zaak
       </Link>
-      <Heading level={1}>
-        Besluit: {regeling.naam.toLowerCase()} voor {kandidaat.voornaam}{" "}
-        {kandidaat.achternaam}
-      </Heading>
+      {kop}
 
       <DataSummary appearance="column">
         <DataSummaryItem

@@ -105,6 +105,7 @@ const PersoneelPage = async () => {
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
+          headingLevel={3}
           sections={vragen.map(({ vraag, antwoord }) => ({
             label: vraag,
             body: antwoord,

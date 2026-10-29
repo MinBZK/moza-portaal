@@ -92,7 +92,8 @@ const Zaak = ({
     ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
     : STANDAARD_ANTWOORDEN;
   const { uitkomsten, bekend, fout } = useUitkomsten(antwoorden);
-  if (!staat) return null;
+  // Ook voordat de opgeslagen staat er is, heeft de pagina een kop.
+  if (!staat) return <Heading level={1}>{demo.zaak.onderwerp}</Heading>;
 
   const { zaak, kandidaat, fasen, gebeurtenissen, komtHierna, besluit } = demo;
   const zaakStand = zaakVan(staat, situatie);
@@ -181,6 +182,7 @@ const Zaak = ({
   if (!zaakStand.ingediend)
     return (
       <>
+        <Heading level={1}>{onderwerp}</Heading>
         <Alert type="info">
           <Paragraph>
             Deze zaak bestaat nog niet: de aanvraag is nog niet verstuurd.{" "}
