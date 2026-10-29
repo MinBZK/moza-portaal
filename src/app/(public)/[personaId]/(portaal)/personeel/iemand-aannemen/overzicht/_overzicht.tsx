@@ -295,14 +295,18 @@ const OverzichtInhoud = ({
       )}
 
       <ActionGroup>
+        {/* Er valt niets te versturen; de ondernemer rondt hier af. */}
+        <Link
+          href="/lopendezaken"
+          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+        >
+          Klaar
+        </Link>
         <Link
           href="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
           Antwoorden wijzigen
-        </Link>
-        <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-          Terug naar Personeel
         </Link>
       </ActionGroup>
     </>

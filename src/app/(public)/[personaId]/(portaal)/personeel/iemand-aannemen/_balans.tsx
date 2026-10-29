@@ -90,7 +90,7 @@ export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) => (
 export const UITVOERDER = {
   gemeente: { tekst: "Gemeente", klasse: "mox-badge--municipality" },
   uwv: { tekst: "UWV", klasse: "mox-badge--uwv" },
-  loonaangifte: { tekst: "Loonaangifte", klasse: "mox-badge--payroll" },
+  loonaangifte: { tekst: "Belastingdienst", klasse: "mox-badge--payroll" },
 } as const;
 
 export type UitvoerderId = keyof typeof UITVOERDER;

@@ -112,16 +112,6 @@ const Waarom = ({
               );
             })}
             <details>
-              <summary>Motivering per artikel</summary>
-              <ul className="mox-hiring-reasoning">
-                {outputs.flatMap((o) =>
-                  (stand.waarde.afleidingen[o]?.tekst.motivering ?? [])
-                    .filter((r) => !r.technisch)
-                    .map((r) => <li key={`${o}-${r.tekst}`}>{r.tekst}</li>),
-                )}
-              </ul>
-            </details>
-            <details>
               <summary>Volledige afleiding, stap voor stap</summary>
               <ol className="mox-hiring-derivation">
                 {outputs.flatMap((o) =>
