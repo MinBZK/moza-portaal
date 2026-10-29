@@ -19,6 +19,8 @@ import {
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import StickyInfoBox from "@/components/StickyInfoBox";
+import ProgressBar from "@/components/ProgressBar";
+import TextBadge from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
@@ -40,9 +42,7 @@ import { datumNL, euro, type Werkgever } from "../_werkgever";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
-const Tag = ({ tekst }: { tekst: string }) => (
-  <span className="mox-hiring-tag">{tekst}</span>
-);
+const Tag = ({ tekst }: { tekst: string }) => <TextBadge>{tekst}</TextBadge>;
 
 const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
   <DataSummary appearance="column">
@@ -145,13 +145,11 @@ const AanvraagInhoud = ({
 
   const status = (id: PaneelId) =>
     g[id] ? (
-      <span className="mox-hiring-label mox-hiring-label--done">
-        Gecontroleerd
-      </span>
+      <TextBadge variant="ok">Gecontroleerd</TextBadge>
     ) : (
-      <span className="mox-hiring-label mox-hiring-label--todo">
+      <TextBadge variant="warning">
         {mist(id) ? "Aanvullen" : "Controleren"}
-      </span>
+      </TextBadge>
     );
 
   // Een gewone functie, geen component: een component in de render zou bij
@@ -239,7 +237,7 @@ const AanvraagInhoud = ({
   const paneel = (id: PaneelId): ReactNode => {
     const kop = (note: string, kind: ReactNode) => (
       <details
-        className="mox-hiring-panel"
+        className="rhc-mox-disclosure rhc-mox-disclosure--boxed"
         id={`paneel-${id}`}
         open={id === paneelIds[0]}
         key={id}
@@ -247,11 +245,11 @@ const AanvraagInhoud = ({
         <summary>
           <span>
             <Heading level={3}>{NAAM[id]}</Heading>
-            <span className="mox-hiring-note">{note}</span>
+            <small className="rhc-mox-small-text">{note}</small>
           </span>
           {status(id)}
         </summary>
-        <div className="rhc-mox-row-gap">
+        <div className="rhc-mox-disclosure__content">
           {kind}
           {vinkje(id)}
         </div>
@@ -334,7 +332,7 @@ const AanvraagInhoud = ({
                 : []),
             ]}
           />
-          <div className="mox-hiring-note">
+          <div className="rhc-mox-small-text">
             Het percentage is een schatting.{" "}
             <InfoToggletip label="Toelichting bij het percentage">
               UWV stelt het percentage vast na een onderzoek op de werkplek. Dat
@@ -500,9 +498,9 @@ const AanvraagInhoud = ({
           Loonkostenvoordeel
         </Heading>
         {lkv && (
-          <p className="mox-hiring-amount">
+          <p className="rhc-mox-amount">
             {euro(lkv.bedragPerJaar)}{" "}
-            <span className="mox-hiring-note">per jaar</span>
+            <small className="rhc-mox-small-text">per jaar</small>
           </p>
         )}
         {lkv?.aanname && <Aanname id={lkv.aanname} />}
@@ -610,8 +608,8 @@ const AanvraagInhoud = ({
                 : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
       </Paragraph>
 
-      <p className="mox-hiring-meta">
-        <span className="mox-hiring-label">Vooringevuld</span>
+      <p className="rhc-mox-cluster">
+        <TextBadge variant="info">Vooringevuld</TextBadge>
         <Tag tekst={werkgever.onderneming} />
         <Tag
           tekst={
@@ -633,12 +631,16 @@ const AanvraagInhoud = ({
       </p>
 
       {paneelIds.length > 0 && (
-        <div className="mox-hiring-progress">
-          <label htmlFor="voortgang">Gecontroleerd</label>
-          <progress id="voortgang" value={aantal} max={paneelIds.length} />
-          <span>
-            {aantal} van {paneelIds.length}
-          </span>
+        <div className="rhc-mox-stack rhc-mox-stack--sm">
+          <Paragraph>
+            Gecontroleerd: {aantal} van {paneelIds.length}
+          </Paragraph>
+          <ProgressBar
+            label="Gecontroleerd"
+            value={aantal}
+            max={paneelIds.length}
+            valueText={`${aantal} van ${paneelIds.length}`}
+          />
         </div>
       )}
 
@@ -732,7 +734,7 @@ const AanvraagInhoud = ({
               Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
               gegevens van die uitkomst naar de digitale assistent.
             </Paragraph>
-            <Paragraph className="mox-hiring-note">
+            <Paragraph className="rhc-mox-small-text">
               Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
             </Paragraph>
           </section>

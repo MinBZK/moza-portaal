@@ -2,6 +2,7 @@
 
 import { Alert, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
+import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
 import {
@@ -75,12 +76,12 @@ export const lkvDuurTekst = (categorie: string | undefined) =>
 export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) => (
   <>
     {categorie && (
-      <Paragraph className="mox-hiring-note">
+      <Paragraph className="rhc-mox-small-text">
         {lkvDuurTekst(categorie)}
       </Paragraph>
     )}
     {lkvVoorbehoud(categorie).map((id) => (
-      <Paragraph key={id} className="mox-hiring-note">
+      <Paragraph key={id} className="rhc-mox-small-text">
         {VOORBEHOUD[id]}
       </Paragraph>
     ))}
@@ -89,10 +90,13 @@ export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) => (
 
 /** Wie een regeling uitvoert; het label heeft tekst, niet alleen een kleur. */
 export const UITVOERDER = {
-  gemeente: { tekst: "Gemeente", klasse: "mox-badge--municipality" },
-  uwv: { tekst: "UWV", klasse: "mox-badge--uwv" },
-  loonaangifte: { tekst: "Loonaangifte", klasse: "mox-badge--payroll" },
-} as const;
+  gemeente: { tekst: "Gemeente", variant: "info" },
+  uwv: { tekst: "UWV", variant: "info" },
+  loonaangifte: { tekst: "Loonaangifte", variant: "neutral" },
+} as const satisfies Record<
+  string,
+  { tekst: string; variant: TextBadgeVariant }
+>;
 
 export type UitvoerderId = keyof typeof UITVOERDER;
 
@@ -103,9 +107,7 @@ const UITVOERDER_VAN: Record<BalansRegel["id"], UitvoerderId> = {
 };
 
 export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
-  <span className={`mox-badge mox-hiring-org ${UITVOERDER[id].klasse}`}>
-    {UITVOERDER[id].tekst}
-  </span>
+  <TextBadge variant={UITVOERDER[id].variant}>{UITVOERDER[id].tekst}</TextBadge>
 );
 
 const naam = (r: BalansRegel) =>
@@ -129,7 +131,7 @@ export const duurTekst = (jaren: number | undefined) =>
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
 const LdNotitie = ({ kort }: { kort?: boolean }) => (
-  <Paragraph className="mox-hiring-note">
+  <Paragraph className="rhc-mox-small-text">
     Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt
     hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting
     van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.
@@ -140,7 +142,7 @@ const LdNotitie = ({ kort }: { kort?: boolean }) => (
 /** Een korte zin met de uitleg achter een (i). */
 export const Aanname = ({ id }: { id: AannameId }) => (
   // Een div: de Toggletip is een <details> en mag niet in een <p>.
-  <div className="mox-hiring-note">
+  <div className="rhc-mox-small-text">
     {AANNAMES[id].kort}{" "}
     <InfoToggletip label={`Toelichting: ${AANNAMES[id].kort}`}>
       {AANNAMES[id].uitleg}
@@ -185,10 +187,15 @@ const Balans = ({
           ? "niet meegeteld"
           : "geldt niet";
   const klasse = (r: BalansRegel) =>
-    bekend && !fout && r.status !== "bedrag" ? "mox-hiring-none" : undefined;
+    bekend && !fout && r.status !== "bedrag"
+      ? "rhc-mox-amount-list__text"
+      : undefined;
 
   const bron = (
-    <Paragraph className="mox-hiring-note" role={bezig ? "status" : undefined}>
+    <Paragraph
+      className="rhc-mox-small-text"
+      role={bezig ? "status" : undefined}
+    >
       {bezig && !fout && "Wij rekenen uit…"}
       {fout
         ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. `
@@ -205,7 +212,7 @@ const Balans = ({
   if (kort)
     return (
       <>
-        <dl className="mox-hiring-balance">
+        <dl className="rhc-mox-amount-list">
           {regels.map((r) => (
             <div key={r.id}>
               <dt>
@@ -216,19 +223,19 @@ const Balans = ({
             </div>
           ))}
         </dl>
-        <div className="mox-hiring-net">
+        <div className="rhc-mox-highlight">
           <Paragraph>
             <strong>Samen ongeveer per jaar</strong>
           </Paragraph>
-          <p className="mox-hiring-amount">{bedrag(terug)}</p>
+          <p className="rhc-mox-amount">{bedrag(terug)}</p>
         </div>
         {ldBedrag && <LdNotitie kort />}
         {lkvBedrag && (
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             {lkvDuurTekst(lkvBedrag.regel?.categorie)}
           </Paragraph>
         )}
-        <Paragraph className="mox-hiring-note">
+        <Paragraph className="rhc-mox-small-text">
           Bij {antwoorden.uren} uur per week en {euro(antwoorden.uurloon)} per
           uur. De loonkosten zijn dan {euro(kosten)} per jaar.
         </Paragraph>
@@ -241,7 +248,7 @@ const Balans = ({
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
-      <dl className="mox-hiring-balance">
+      <dl className="rhc-mox-amount-list">
         <div>
           <dt>Loonkosten</dt>
           <dd>{euro(kosten)}</dd>
@@ -277,7 +284,7 @@ const Balans = ({
         !fout &&
         antwoorden.doelgroepen.includes("wia") &&
         !antwoorden.doelgroepen.includes("wajong") && (
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             Bij een WIA-uitkering zijn loonkostensubsidie en loondispensatie
             niet mogelijk.
           </Paragraph>
@@ -290,11 +297,11 @@ const Balans = ({
         </Alert>
       )}
       {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
-      <div className="mox-hiring-net">
+      <div className="rhc-mox-highlight">
         <Paragraph>
           <strong>Uw loonkosten met deze regelingen, ongeveer per jaar</strong>
         </Paragraph>
-        <p className="mox-hiring-amount">{bedrag(netto)}</p>
+        <p className="rhc-mox-amount">{bedrag(netto)}</p>
         {bekend && !fout && terug > 0 && (
           <Paragraph>
             Dat is ongeveer {euro(terug)} per jaar minder dan zonder regelingen.

@@ -93,7 +93,7 @@ const AanvraagPage = async ({
             />
           </DataSummary>
           {aanvraag.bewaardVan && aanvraag.overgenomen && (
-            <Alert type="ok">
+            <Alert type="ok" closable>
               <Paragraph>
                 <strong>
                   Uw antwoorden van {aanvraag.bewaardVan} zijn overgenomen.

@@ -424,3 +424,9 @@ code {
 	padding: var(--rhc-space-md);
 	text-align: center;
 }
+
+/* Card with tools for the researcher, such as starting a scenario again. The
+  orange edge sets it apart from the content of the product. */
+.rhc-theme .prototype-research-card.prototype-research-card {
+  border-inline-start: var(--rhc-border-width-lg, 4px) solid var(--rhc-color-oranje-500);
+}

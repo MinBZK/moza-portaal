@@ -12,7 +12,9 @@ import {
   Paragraph,
   UnorderedList,
   UnorderedListItem,
+  Separator,
 } from "@/components/rhc";
+import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
@@ -147,20 +149,19 @@ const VragenMetStaat = ({
 
   return (
     <>
+      <Separator></Separator>
+
       <section className="rhc-mox-stack" aria-labelledby="gevolgen">
         <Heading level={2} id="gevolgen">
           Gevolgen voor {onderneming}
         </Heading>
-        <Paragraph className="mox-hiring-note">
+        <Paragraph className="rhc-mox-small-text">
           Deze berekening blijft op uw scherm. Er gaat niets naar een
           overheidsorganisatie.
         </Paragraph>
         <div className="rhc-grid">
-          <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
-            <Fieldset
-              legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past."
-              className="mox-hiring-choices"
-            >
+          <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
+            <Fieldset legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past.">
               {DOELGROEPEN.map(([waarde, label]) => (
                 <FormFieldCheckboxOption
                   key={waarde}
@@ -210,17 +211,33 @@ const VragenMetStaat = ({
                     : `${loonwaarde} procent`
                 }
                 filled
+                info={
+                  <InfoToggletip label="Toelichting bij de loonwaarde">
+                    <Paragraph>
+                      De loonwaarde is wat de kandidaat in het werk presteert,
+                      in vergelijking met een collega zonder beperking in
+                      dezelfde functie.
+                    </Paragraph>
+                    <Paragraph>
+                      Onder 100 procent is de loonwaarde verminderd. Bij 100
+                      procent is er geen loonkostensubsidie. Ook dan kan de
+                      kandidaat begeleiding nodig hebben, zoals een jobcoach.
+                    </Paragraph>
+                    <Paragraph>
+                      De gemeente meet de loonwaarde later op de werkplek.
+                    </Paragraph>
+                  </InfoToggletip>
+                }
               />
-              <Paragraph className="mox-hiring-note">
-                {wajong
-                  ? "Bij een Wajong-uitkering: het percentage van het minimumloon dat de kandidaat aankan. UWV stelt dit vast voor de loondispensatie."
-                  : "De loonwaarde is wat de kandidaat in het werk presteert, in vergelijking met een collega zonder beperking in dezelfde functie. Onder 100 procent is de loonwaarde verminderd. Bij 100 procent is er geen loonkostensubsidie. Ook dan kan de kandidaat begeleiding nodig hebben, zoals een jobcoach. De gemeente meet de loonwaarde later op de werkplek."}
-              </Paragraph>
+              {wajong && (
+                <Paragraph className="rhc-mox-small-text">
+                  Bij een Wajong-uitkering: het percentage van het minimumloon
+                  dat de kandidaat aankan. UWV stelt dit vast voor de
+                  loondispensatie.
+                </Paragraph>
+              )}
             </div>
-            <Fieldset
-              legend="4. Wat wordt het bruto uurloon? (loon)"
-              className="mox-hiring-choices"
-            >
+            <Fieldset legend="4. Wat wordt het bruto uurloon? (loon)">
               <FormFieldRadio
                 name="uurloon"
                 value="wml"
@@ -259,7 +276,7 @@ const VragenMetStaat = ({
                 />
               )}
             </Fieldset>
-            <Paragraph className="mox-hiring-note">
+            <Paragraph className="rhc-mox-small-text">
               Volgens de wet is de loonkostensubsidie altijd het verschil tussen
               het minimumloon en de loonwaarde. Betaalt u meer dan het
               minimumloon, dan krijgt u dus niet meer subsidie. Het
@@ -274,6 +291,8 @@ const VragenMetStaat = ({
           </div>
         </div>
       </section>
+
+      <Separator></Separator>
 
       {overige.length > 0 && (
         <section className="rhc-mox-stack" aria-labelledby="overige">
@@ -290,12 +309,14 @@ const VragenMetStaat = ({
               </UnorderedListItem>
             ))}
           </UnorderedList>
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             Uitkomsten van de regelrecht-engine bij uw antwoorden. Of een
             regeling geldt, beslist de organisatie die haar uitvoert.
           </Paragraph>
         </section>
       )}
+
+      <Separator></Separator>
 
       <section className="rhc-mox-stack" aria-labelledby="aanvragen">
         <Heading level={2} id="aanvragen">
@@ -310,7 +331,7 @@ const VragenMetStaat = ({
           {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
           <Link
             href="/personeel/iemand-aannemen/gegevens"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action mox-hiring-button-link"
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             aria-disabled={resultaat.bekend ? undefined : true}
             aria-describedby={resultaat.bekend ? undefined : "aanvragen-bezig"}
             onClick={(event) => {

@@ -6,7 +6,9 @@ import {
   type ChangeEvent,
   type ComponentProps,
   type CSSProperties,
+  type ReactNode,
 } from "react";
+import FieldLabel from "./FieldLabel";
 
 type RangeSliderProps = Omit<
   ComponentProps<"input">,
@@ -14,6 +16,8 @@ type RangeSliderProps = Omit<
 > & {
   /** Visible name of the slider. */
   label: string;
+  /** Next to the label, for example an InfoToggletip. */
+  info?: ReactNode;
   min: number;
   max: number;
   /** With value and onChange the parent keeps track of the value. */
@@ -32,6 +36,7 @@ type RangeSliderProps = Omit<
  */
 const RangeSlider = ({
   label,
+  info,
   id,
   min,
   max,
@@ -54,9 +59,9 @@ const RangeSlider = ({
   return (
     <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-mox-range-slider">
       <div className="utrecht-form-field__label rhc-mox-range-slider__header">
-        <label htmlFor={fieldId} className="utrecht-form-label">
+        <FieldLabel htmlFor={fieldId} info={info}>
           {label}
-        </label>
+        </FieldLabel>
         <output htmlFor={fieldId} className="rhc-mox-range-slider__value">
           {formatValue(current)}
         </output>

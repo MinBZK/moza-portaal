@@ -114,7 +114,7 @@ const Bronnen = ({
           />
         </Fieldset>
         {staat?.rol === "namens" && (
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             U kunt de aanvraag invullen. De eigenaar ondertekent de aanvraag
             voordat u die verstuurt.
           </Paragraph>
@@ -184,7 +184,7 @@ const Bronnen = ({
                 })
               }
             />
-            <Paragraph className="mox-hiring-note">
+            <Paragraph className="rhc-mox-small-text">
               De kandidaat krijgt een verzoek om toestemming in MijnOverheid.
               Zodra die er is, halen we de gegevens op. Het BSN vragen we niet
               aan u; dat komt mee met de toestemming.
@@ -201,7 +201,7 @@ const Bronnen = ({
           </div>
         )}
         {gekozen && (
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             BSN {kandidaat.bsnMasker} gaat mee met de aanvraag en staat niet op
             het scherm.
           </Paragraph>
@@ -249,20 +249,32 @@ const Bronnen = ({
                   }
                 >
                   <div className="rhc-mox-row-gap">
-                    <Paragraph className="mox-hiring-note">
+                    <Paragraph className="rhc-mox-small-text">
                       {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
                     </Paragraph>
-                    <dl className="mox-hiring-facts">
+                    {/* The markup of the RHC DataSummary: its component only
+                        takes text as value, and the law question belongs
+                        in the value. */}
+                    <dl className="rhc-data-summary rhc-data-summary--column">
                       {bron.gegevens.map((g) => (
-                        <div key={g.parameter}>
-                          <dt>{g.vraag}</dt>
-                          <dd>{g.waarde}</dd>
-                          <details className="mox-hiring-legal-question">
-                            <summary>Zo vraagt de wet het</summary>
-                            <Paragraph>
-                              “{g.wetsvraag}” ({g.grond})
-                            </Paragraph>
-                          </details>
+                        <div
+                          key={g.parameter}
+                          className="rhc-data-summary__item"
+                        >
+                          <dt className="rhc-data-summary__item-key">
+                            {g.vraag}
+                          </dt>
+                          <dd className="rhc-data-summary__item-value">
+                            {g.waarde}
+                            <details className="rhc-mox-disclosure rhc-mox-small-text">
+                              <summary>Zo vraagt de wet het</summary>
+                              <div className="rhc-mox-disclosure__content">
+                                <Paragraph className="rhc-mox-small-text">
+                                  “{g.wetsvraag}” ({g.grond})
+                                </Paragraph>
+                              </div>
+                            </details>
+                          </dd>
                         </div>
                       ))}
                     </dl>

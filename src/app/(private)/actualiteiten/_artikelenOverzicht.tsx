@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Heading, Paragraph } from "@/components/rhc";
-import { TYPE_LABELS, TYPE_BADGES } from "./_articleTypes";
+import TextBadge from "@/components/TextBadge";
+import { TYPE_LABELS } from "./_articleTypes";
 import PaginatedList, { type QueryStatus } from "./_paginatedList";
 import type { components } from "@/network/actualiteiten/generated";
 
@@ -35,7 +36,6 @@ function ArticleRow({ article }: { article: ArticleSummary }) {
 
   const type = article.additionalType ?? "";
   const typeLabel = TYPE_LABELS[type] ?? type;
-  const typeBadge = TYPE_BADGES[type] ?? "";
 
   return (
     <>
@@ -49,10 +49,7 @@ function ArticleRow({ article }: { article: ArticleSummary }) {
       </Heading>
       {(typeLabel || date) && (
         <Paragraph>
-          {typeLabel && (
-            <span className={`mox-badge ${typeBadge}`}>{typeLabel}</span>
-          )}{" "}
-          {date}
+          {typeLabel && <TextBadge>{typeLabel}</TextBadge>} {date}
         </Paragraph>
       )}
     </>

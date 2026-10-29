@@ -6,8 +6,10 @@ import {
   Button,
   DataSummary,
   DataSummaryItem,
+  FormFieldSelect,
   Heading,
   Paragraph,
+  SelectOption,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
@@ -19,6 +21,7 @@ import type {
 } from "@/demo";
 import InfoToggletip from "@/components/InfoToggletip";
 import StatusTrack from "@/components/StatusTrack";
+import TextBadge from "@/components/TextBadge";
 import ZakenTabs from "../../_zakenTabs";
 import {
   antwoordenVoorZaak,
@@ -41,10 +44,11 @@ import {
 import { useUitkomsten } from "../../../personeel/iemand-aannemen/_useUitkomsten";
 import { datumNL } from "../../../personeel/iemand-aannemen/_werkgever";
 
+/** Colour of the dot on the timeline per kind of event. */
 const EVENT_KIND: Record<DemoAannemenGebeurtenis["soort"], string> = {
-  regelgeving: "regulation",
-  besluit: "decision",
-  uitvoering: "execution",
+  regelgeving: " rhc-mox-timeline__item--neutral",
+  besluit: " rhc-mox-timeline__item--ok",
+  uitvoering: "",
 };
 
 const SOORT: Record<DemoAannemenGebeurtenis["soort"], string> = {
@@ -129,49 +133,41 @@ const Zaak = ({
 
   const onderzoeker = (
     <section
-      className="rhc-mox-card mox-hiring-research rhc-mox-row-gap"
+      className="rhc-mox-card rhc-mox-row-gap prototype-research-card"
       aria-labelledby="onderzoeker"
     >
       <Heading level={2} id="onderzoeker">
         Voor de onderzoeker
       </Heading>
-      <label className="utrecht-form-label" htmlFor="da-fase">
-        Toon de zaak op het moment
-      </label>
-      <select
+      <FormFieldSelect
         id="da-fase"
-        className="utrecht-select utrecht-select--html-select mox-hiring-control"
+        label="Toon de zaak op het moment"
         value={fasen[i].id}
         onChange={(event) => zetFase(event.target.value)}
       >
         {fasen
           .filter((f) => f.id !== "indicatie")
           .map((f) => (
-            <option key={f.id} value={f.id}>
+            <SelectOption key={f.id} value={f.id}>
               {f.label}
-            </option>
+            </SelectOption>
           ))}
-      </select>
+      </FormFieldSelect>
       {situatie === "wia" && (
-        <>
-          <label className="utrecht-form-label" htmlFor="da-taak">
-            Taak van de werknemer: doelgroepverklaring
-          </label>
-          <select
-            id="da-taak"
-            className="utrecht-select utrecht-select--html-select mox-hiring-control"
-            value={taak}
-            onChange={(event) =>
-              zetFase(FASE_BIJ_TAAK[event.target.value as TaakStand])
-            }
-          >
-            {(Object.keys(TAAK_LABEL) as TaakStand[]).map((t) => (
-              <option key={t} value={t}>
-                {TAAK_LABEL[t]}
-              </option>
-            ))}
-          </select>
-        </>
+        <FormFieldSelect
+          id="da-taak"
+          label="Taak van de werknemer: doelgroepverklaring"
+          value={taak}
+          onChange={(event) =>
+            zetFase(FASE_BIJ_TAAK[event.target.value as TaakStand])
+          }
+        >
+          {(Object.keys(TAAK_LABEL) as TaakStand[]).map((t) => (
+            <SelectOption key={t} value={t}>
+              {TAAK_LABEL[t]}
+            </SelectOption>
+          ))}
+        </FormFieldSelect>
       )}
       <Button appearance="secondary-action-button" onClick={wisAannemen}>
         Begin het scenario opnieuw
@@ -356,7 +352,7 @@ const Zaak = ({
               <StatusTrack stappen={stappen} />
               {fasen.some((f) => f.label.includes("aanname")) && (
                 // Een div: de Toggletip is een <details> en mag niet in een <p>.
-                <div className="mox-hiring-note">
+                <div className="rhc-mox-small-text">
                   Een deel van de momenten is een aanname.{" "}
                   <InfoToggletip label="Toelichting bij de aanname over de termijn">
                     UWV beslist binnen een redelijke termijn. Die termijn is ten
@@ -389,23 +385,19 @@ const Zaak = ({
                 vervangt niets; de oude regel blijft staan met de nieuwe
                 erboven.
               </Paragraph>
-              <ol className="mox-hiring-timeline">
+              <ol className="rhc-mox-timeline">
                 {[...zichtbaar].reverse().map((g) => (
                   <li
                     key={g.id}
-                    className={`mox-hiring-event mox-hiring-event--${EVENT_KIND[g.soort]}${g.gecorrigeerdDoor ? " mox-hiring-event--corrected" : ""}`}
+                    className={`rhc-mox-timeline__item${EVENT_KIND[g.soort]}${g.gecorrigeerdDoor ? " rhc-mox-timeline__item--replaced" : ""}`}
                   >
-                    <p className="mox-hiring-event-kind">
+                    <p className="rhc-mox-cluster rhc-mox-small-text">
                       {SOORT[g.soort]}
                       {g.herstelt && (
-                        <span className="mox-hiring-label mox-hiring-label--correction">
-                          Correctie
-                        </span>
+                        <TextBadge variant="warning">Correctie</TextBadge>
                       )}
                       {g.gecorrigeerdDoor && (
-                        <span className="mox-hiring-label mox-hiring-label--not-applicable">
-                          Gecorrigeerd
-                        </span>
+                        <TextBadge>Gecorrigeerd</TextBadge>
                       )}
                     </p>
                     <Heading level={3}>
@@ -428,7 +420,7 @@ const Zaak = ({
                           : vulIn(g.tekst)}
                       </Paragraph>
                     )}
-                    <p className="mox-hiring-event-meta">
+                    <p className="rhc-mox-small-text">
                       Vastgelegd door {g.actor}
                       {g.datum && ` op ${datumNL(g.datum)} om ${g.tijd}`}
                       {g.grond && ` · ${g.grond}`}

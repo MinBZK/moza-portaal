@@ -9,6 +9,7 @@ import {
   Button,
   DataSummary,
   DataSummaryItem,
+  FormFieldTextarea,
   Heading,
   Paragraph,
 } from "@/components/rhc";
@@ -193,7 +194,7 @@ const Besluit = ({
                 {kandidaat.voornaam} heeft recht op ten minste{" "}
                 <strong>{w.aanspraakPerUur} per uur</strong>.
               </Paragraph>
-              <div className="mox-hiring-note">
+              <div className="rhc-mox-small-text">
                 {/* Besluit loondispensatie Wajong 4: eerste dag van de maand van de aanvraag. */}
                 De loondispensatie geldt vanaf {ingangLd}. Dat is de eerste dag
                 van de maand van de aanvraag. Ze geldt voor de periode die naar
@@ -255,12 +256,9 @@ const Besluit = ({
           onSubmit={verstuurVraag}
           className="rhc-mox-stack rhc-mox-stack--2xl"
         >
-          <label className="utrecht-form-label" htmlFor="da-vraag">
-            Klopt dit niet? Stel uw vraag
-          </label>
-          <textarea
+          <FormFieldTextarea
             id="da-vraag"
-            className="utrecht-textarea utrecht-textarea--html-textarea mox-hiring-control"
+            label="Klopt dit niet? Stel uw vraag"
             rows={3}
             placeholder={regeling.vraagVoorbeeld}
             defaultValue={zaakStand.vraag ?? ""}
