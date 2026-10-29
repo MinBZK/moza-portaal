@@ -20,6 +20,7 @@ import {
 } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_vragen";
+import Stappen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_stappen";
 import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
 import KostenBerekening from "./_kostenBerekening";
 
@@ -75,6 +76,7 @@ const AanvraagPage = async ({
       </Paragraph>
 
       <div className="rhc-mox-card rhc-mox-row-gap">
+        {flow && <Stappen huidige={1} />}
         <Alert type="info">
           U hebt deze aanvraag opgeslagen, maar nog niet verstuurd.
           {aanvraag.indienenVoor &&

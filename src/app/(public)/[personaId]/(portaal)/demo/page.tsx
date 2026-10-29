@@ -78,6 +78,7 @@ import CountdownBar from "@/components/CountdownBar";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
+import Spinner from "@/components/Spinner";
 import InfoToggletip from "@/components/InfoToggletip";
 import FieldLabel from "@/components/FieldLabel";
 import ShareButton from "@/components/ShareButton";
@@ -1887,6 +1888,40 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
+      name: "Spinner",
+      file: "src/components/Spinner.tsx",
+      description: [
+        "Een draaiend rondje voor een waarde die nog wordt berekend of geladen, zoals een bedrag. Het rondje is zo groot als de tekst en heeft de tekstkleur.",
+        <>
+          Het rondje is decoratief; een schermlezer hoort het label. Meld het
+          wachten zelf daarnaast in een <code>role=&quot;status&quot;</code>,
+          zoals ‘Wij rekenen uit…’. Voor iets dat langer duurt of een voortgang
+          heeft, gebruik je <code>ProgressBar</code>. Bij{" "}
+          <code>prefers-reduced-motion</code> draait het langzamer.
+        </>,
+      ],
+      options: [
+        [
+          "label",
+          "string",
+          "Wordt berekend",
+          "Wat een schermlezer voorleest op de plek van de waarde",
+        ],
+      ],
+      example: (
+        <>
+          <Paragraph>
+            Loonkosten per jaar: <Spinner />
+          </Paragraph>
+          <Paragraph purpose="lead">
+            <strong>
+              <Spinner label="Totaal wordt berekend" />
+            </strong>
+          </Paragraph>
+        </>
+      ),
+    },
+    {
       name: "RangeSlider",
       file: "src/components/RangeSlider.tsx",
       description:
@@ -1966,16 +2001,24 @@ const ComponentsDemoPage = () => {
       name: "StepIndicator",
       file: "src/components/StepIndicator.tsx",
       description:
-        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step".',
+        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step". Een voltooide stap met een href is een link terug naar die stap.',
       options: [
-        ["steps", "string[]", "–", "Namen van de stappen"],
+        [
+          "steps",
+          "(string | { name, href })[]",
+          "–",
+          "Namen van de stappen, eventueel met het adres van de stap",
+        ],
         ["current", "number", "–", "Huidige stap, vanaf 0"],
         ["label", "string", "Voortgang", "Naam van de navigatie"],
       ],
       example: (
         <StepIndicator
           steps={[
-            "Stap 1 (voltooid)",
+            {
+              name: "Stap 1 (voltooid, link naar betreffende stap)",
+              href: "/demo",
+            },
             "Stap 2 (huidige stap)",
             "Stap 3",
             "Stap 4",

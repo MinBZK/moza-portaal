@@ -2,6 +2,7 @@
 
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
+import Spinner from "@/components/Spinner";
 import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import { loonkostenPerJaar } from "./_engine";
 import type { Antwoorden } from "./_useAannemen";
@@ -179,11 +180,13 @@ const Balans = ({
     bekend && !fout
       ? regels.find((r) => r.id === "lkv" && r.bedrag > 0)
       : undefined;
-  const bedrag = (cent: number) => (bekend && !fout ? euro(cent) : "…");
-  // Tijdens het rekenen staan alle drie de regelingen er al, met "…".
+  // Tijdens het rekenen staan alle regelingen er al, met een spinner; na een
+  // fout met "…".
+  const bezigOfFout = fout ? "…" : <Spinner />;
+  const bedrag = (cent: number) => (bekend && !fout ? euro(cent) : bezigOfFout);
   const waarde = (r: BalansRegel, min = "") =>
     !bekend || fout
-      ? "…"
+      ? bezigOfFout
       : r.status === "bedrag"
         ? `${min}${euro(r.bedrag)}`
         : r.status === "niet_meegeteld"

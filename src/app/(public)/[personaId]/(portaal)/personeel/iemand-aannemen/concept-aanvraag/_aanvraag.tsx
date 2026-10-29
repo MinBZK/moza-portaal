@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 import {
+  Accordion,
+  AccordionSection,
   ActionGroup,
   Alert,
   Button,
@@ -144,12 +146,16 @@ const AanvraagInhoud = ({
     (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
 
   const status = (id: PaneelId) =>
-    g[id] ? (
-      <TextBadge variant="ok">Gecontroleerd</TextBadge>
-    ) : (
-      <TextBadge variant="warning">
-        {mist(id) ? "Aanvullen" : "Controleren"}
-      </TextBadge>
+    g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
+
+  // Het eerste paneel staat open; `omgezet` houdt bij welke de gebruiker
+  // open- of dichtklapte.
+  const [omgezet, setOmgezet] = useState<PaneelId[]>([]);
+  const isOpen = (id: PaneelId) =>
+    (id === paneelIds[0]) !== omgezet.includes(id);
+  const wissel = (id: PaneelId) =>
+    setOmgezet((nu) =>
+      nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
     );
 
   // Een gewone functie, geen component: een component in de render zou bij
@@ -236,24 +242,22 @@ const AanvraagInhoud = ({
 
   const paneel = (id: PaneelId): ReactNode => {
     const kop = (note: string, kind: ReactNode) => (
-      <details
-        className="rhc-mox-disclosure rhc-mox-disclosure--boxed"
-        id={`paneel-${id}`}
-        open={id === paneelIds[0]}
+      <AccordionSection
         key={id}
+        id={`paneel-${id}`}
+        headingLevel={3}
+        label={`${NAAM[id]} · ${status(id)}`}
+        // Het type eist `body`, de component rendert alleen `children`.
+        body={null}
+        expanded={isOpen(id)}
+        onActivate={() => wissel(id)}
       >
-        <summary>
-          <span>
-            <Heading level={3}>{NAAM[id]}</Heading>
-            <small className="rhc-mox-small-text">{note}</small>
-          </span>
-          {status(id)}
-        </summary>
-        <div className="rhc-mox-disclosure__content">
+        <div className="rhc-mox-stack">
+          <Paragraph className="rhc-mox-small-text">{note}</Paragraph>
           {kind}
           {vinkje(id)}
         </div>
-      </details>
+      </AccordionSection>
     );
     const gemeente = "Gemeente waar de kandidaat woont";
 
@@ -679,7 +683,7 @@ const AanvraagInhoud = ({
                 <Heading level={2} id={`naar-${groep.organisatie}`}>
                   {ORGANISATIE[groep.organisatie]}
                 </Heading>
-                {groep.ids.map(paneel)}
+                <Accordion>{groep.ids.map(paneel)}</Accordion>
               </section>
             ))}
 

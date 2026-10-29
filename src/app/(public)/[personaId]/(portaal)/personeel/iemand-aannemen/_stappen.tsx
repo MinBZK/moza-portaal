@@ -1,9 +1,18 @@
 import StepIndicator from "@/components/StepIndicator";
 
 const STAPPEN = [
-  "U ziet wat dit voor u betekent",
-  "Wij vullen de aanvraag voor u in",
-  "U controleert en verstuurt zelf",
+  {
+    name: "U ziet wat dit voor u betekent",
+    href: "/personeel/iemand-aannemen",
+  },
+  {
+    name: "Wij vullen de aanvraag voor u in",
+    href: "/personeel/iemand-aannemen/gegevens",
+  },
+  {
+    name: "U controleert en verstuurt zelf",
+    href: "/personeel/iemand-aannemen/concept-aanvraag",
+  },
 ];
 
 /** Waar de ondernemer is in Iemand aannemen (1 tot 3). */

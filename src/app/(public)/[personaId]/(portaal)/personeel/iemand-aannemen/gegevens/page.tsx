@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Alert, Heading, Paragraph } from "@/components/rhc";
+import Link from "next/link";
+import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
@@ -36,18 +37,29 @@ const GegevensPage = async () => {
   return (
     <>
       <Heading level={1}>Aanvraag laten invullen</Heading>
-      <Stappen huidige={2} />
       <Paragraph>
-        Om de aanvragen in te vullen, halen we gegevens op bij de organisaties
-        die ze al hebben. U hoeft ze dan niet zelf op te zoeken.
+        <Link
+          href="/personeel/iemand-aannemen"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          <Icon icon="chevron-left" />
+          Terug naar de vragen
+        </Link>
       </Paragraph>
-      <Alert type="info">
+      <div className="rhc-mox-card">
+        <Stappen huidige={2} />
         <Paragraph>
-          Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
-          omgeving, tot u die zelf verstuurt.
+          Om de aanvragen in te vullen, halen we gegevens op bij de organisaties
+          die ze al hebben. U hoeft ze dan niet zelf op te zoeken.
         </Paragraph>
-      </Alert>
-      <Bronnen perSituatie={perSituatie} werkgever={werkgever} />
+        <Alert type="info">
+          <Paragraph>
+            Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
+            omgeving, tot u die zelf verstuurt.
+          </Paragraph>
+        </Alert>
+        <Bronnen perSituatie={perSituatie} werkgever={werkgever} />
+      </div>
     </>
   );
 };

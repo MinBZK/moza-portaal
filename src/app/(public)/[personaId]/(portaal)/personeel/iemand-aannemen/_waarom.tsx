@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import {
+  Accordion,
+  AccordionSection,
   DataSummary,
   DataSummaryItem,
   Paragraph,
@@ -36,6 +38,7 @@ const Waarom = ({
   bedragOutput,
   regeling,
   kvk,
+  headingLevel = 4,
 }: {
   trace?: DemoAannemenTrace;
   /** Nodig bij `trace`, voor de overschrijvingen. */
@@ -49,6 +52,8 @@ const Waarom = ({
   regeling: string;
   /** KVK-nummer van de werkgever: de sessie van de Digitale assistent. */
   kvk: string;
+  /** Kopniveau van "Waarom deze uitkomst?"; de lagen eronder een niveau dieper. */
+  headingLevel?: number;
 }) => {
   const outputs = invoer
     ? [invoer.output, ...(invoer.uitleggen ?? [])]
@@ -57,6 +62,13 @@ const Waarom = ({
       : [];
   // Rekenen pas na het openklappen; daarna blijft de uitkomst staan.
   const [geopend, setGeopend] = useState(false);
+  const [open, setOpen] = useState<string[]>([]);
+  const wissel = (id: string) => {
+    setOpen((nu) =>
+      nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
+    );
+    if (id === "waarom") setGeopend(true);
+  };
   const stand = useBerekening(
     !geopend
       ? null
@@ -93,82 +105,101 @@ const Waarom = ({
   );
 
   return (
-    <details
-      className="rhc-mox-disclosure"
-      onToggle={(e) => e.currentTarget.open && setGeopend(true)}
-    >
-      <summary>Waarom deze uitkomst?</summary>
-      <div className="rhc-mox-disclosure__content">
-        {stand.status === "laden" && (
-          <Paragraph role="status">De regelrecht-engine rekent…</Paragraph>
-        )}
-        {stand.status === "fout" && vooraf}
-        {stand.status === "klaar" && (
-          <>
-            {outputs.map((o) => {
-              const a = stand.waarde.afleidingen[o];
-              if (!a) return null;
-              const kort = a.tekst.kort.filter((r) => !r.technisch);
-              return (
-                <div key={o} className="rhc-mox-row-gap">
-                  {kort.map((r) => (
-                    <Paragraph key={r.tekst}>{r.tekst}</Paragraph>
-                  ))}
-                </div>
-              );
-            })}
-            <details className="rhc-mox-disclosure">
-              <summary>Motivering per artikel</summary>
-              <UnorderedList className="rhc-mox-disclosure__content">
-                {outputs.flatMap((o) =>
-                  (stand.waarde.afleidingen[o]?.tekst.motivering ?? [])
-                    .filter((r) => !r.technisch)
-                    .map((r) => (
-                      <UnorderedListItem key={`${o}-${r.tekst}`}>
-                        {r.tekst}
-                      </UnorderedListItem>
-                    )),
-                )}
-              </UnorderedList>
-            </details>
-            <details className="rhc-mox-disclosure">
-              <summary>Volledige afleiding, stap voor stap</summary>
-              <ol className="rhc-mox-disclosure__content rhc-mox-small-text">
-                {outputs.flatMap((o) =>
-                  (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                    .filter((r) => !r.technisch)
-                    .map((r, n) => (
-                      <li
-                        key={`${o}-${n}`}
-                        style={{ paddingInlineStart: `${r.diepte * 1.25}rem` }}
-                      >
-                        {r.tekst}
-                        {r.bron && (
-                          <small className="rhc-mox-small-text">
-                            {" "}
-                            · {r.bron}
-                          </small>
-                        )}
-                      </li>
-                    )),
-                )}
-              </ol>
-            </details>
-            <Paragraph className="rhc-mox-small-text">
-              Afgeleid uit de uitvoering door de regelrecht-engine in uw
-              browser, wetsversie 1 juli 2026. De tekst hierboven komt niet van
-              een taalmodel: elke zin komt uit een stap van de wet.
-            </Paragraph>
-            <UitlegTaalmodel
-              berekening={stand.waarde}
-              outputs={outputs}
-              regeling={regeling}
-              kvk={kvk}
-            />
-          </>
-        )}
-      </div>
-    </details>
+    <Accordion>
+      <AccordionSection
+        headingLevel={headingLevel}
+        label="Waarom deze uitkomst?"
+        // Het type eist `body`, de component rendert alleen `children`.
+        body={null}
+        expanded={open.includes("waarom")}
+        onActivate={() => wissel("waarom")}
+      >
+        <div className="rhc-mox-stack">
+          {stand.status === "laden" && (
+            <Paragraph role="status">De regelrecht-engine rekent…</Paragraph>
+          )}
+          {stand.status === "fout" && vooraf}
+          {stand.status === "klaar" && (
+            <>
+              {outputs.map((o) => {
+                const a = stand.waarde.afleidingen[o];
+                if (!a) return null;
+                const kort = a.tekst.kort.filter((r) => !r.technisch);
+                return (
+                  <div key={o} className="rhc-mox-row-gap">
+                    {kort.map((r) => (
+                      <Paragraph key={r.tekst}>{r.tekst}</Paragraph>
+                    ))}
+                  </div>
+                );
+              })}
+              <Accordion>
+                <AccordionSection
+                  headingLevel={headingLevel + 1}
+                  label="Motivering per artikel"
+                  body={null}
+                  expanded={open.includes("motivering")}
+                  onActivate={() => wissel("motivering")}
+                >
+                  <UnorderedList>
+                    {outputs.flatMap((o) =>
+                      (stand.waarde.afleidingen[o]?.tekst.motivering ?? [])
+                        .filter((r) => !r.technisch)
+                        .map((r) => (
+                          <UnorderedListItem key={`${o}-${r.tekst}`}>
+                            {r.tekst}
+                          </UnorderedListItem>
+                        )),
+                    )}
+                  </UnorderedList>
+                </AccordionSection>
+                <AccordionSection
+                  headingLevel={headingLevel + 1}
+                  label="Volledige afleiding, stap voor stap"
+                  body={null}
+                  expanded={open.includes("afleiding")}
+                  onActivate={() => wissel("afleiding")}
+                >
+                  <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                    {outputs.flatMap((o) =>
+                      (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                        .filter((r) => !r.technisch)
+                        .map((r, n) => (
+                          <li
+                            key={`${o}-${n}`}
+                            style={{
+                              paddingInlineStart: `${r.diepte * 1.25}rem`,
+                            }}
+                          >
+                            {r.tekst}
+                            {r.bron && (
+                              <small className="rhc-mox-small-text">
+                                {" "}
+                                · {r.bron}
+                              </small>
+                            )}
+                          </li>
+                        )),
+                    )}
+                  </ol>
+                </AccordionSection>
+              </Accordion>
+              <Paragraph className="rhc-mox-small-text">
+                Afgeleid uit de uitvoering door de regelrecht-engine in uw
+                browser, wetsversie 1 juli 2026. De tekst hierboven komt niet
+                van een taalmodel: elke zin komt uit een stap van de wet.
+              </Paragraph>
+              <UitlegTaalmodel
+                berekening={stand.waarde}
+                outputs={outputs}
+                regeling={regeling}
+                kvk={kvk}
+              />
+            </>
+          )}
+        </div>
+      </AccordionSection>
+    </Accordion>
   );
 };
 

@@ -2,12 +2,23 @@
 
 import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
-import { ActionGroup, Heading, Paragraph } from "@/components/rhc";
+import { useRouter } from "next/navigation";
+import { ActionGroup, Button, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { AANNAMES, Aanname, duurTekst, LkvVoorbehoud } from "../_balans";
 import { overzichtTekst, routeVoor, type TaakId } from "../_route";
 import type { Doelgroep } from "../_uitkomsten";
 import { useAannemen, type AannemenStaat } from "../_useAannemen";
+import { INGEDIEND_OP } from "../_zaakStart";
+import { voegZaakToe } from "../../../lopendezaken/_assistentZaken";
+import { rondAanvraagAf } from "../../../lopendezaken/_afgerondeAanvragen";
+
+/** De bewaarde aanvraag uit Lopende zaken waar dit overzicht bij hoort. */
+const AANVRAAG = {
+  id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+  titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+  organisatie: "UWV, Belastingdienst en gemeente",
+};
 import { useUitkomsten } from "../_useUitkomsten";
 import { euro } from "../_werkgever";
 
@@ -53,7 +64,7 @@ const Kaart = ({
   kop: string;
   children: ReactNode;
 }) => (
-  <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby={id}>
+  <section className="rhc-mox-stack" aria-labelledby={id}>
     <Heading level={3} id={id}>
       {kop}
     </Heading>
@@ -74,6 +85,7 @@ const Overzicht = () => {
  * antwoorden waarbij de engine niets meer laat aanvragen.
  */
 const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
+  const router = useRouter();
   const a = staat.antwoorden;
   const resultaat = useUitkomsten(a);
   const { uitkomsten, bekend } = resultaat;
@@ -82,6 +94,19 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
     [a.doelgroepen, uitkomsten],
   );
   const { situatie } = route;
+  const afronden = () => {
+    voegZaakToe({
+      referentienummer: `AANNEMEN-${route.situatie}`,
+      onderwerp: AANVRAAG.titel,
+      organisatie: AANVRAAG.organisatie,
+      status: "Afgerond: u hoeft niets te versturen",
+      ingediend_op: INGEDIEND_OP,
+      flow: "iemand-aannemen",
+      situatie: route.situatie,
+    });
+    rondAanvraagAf(AANVRAAG.id);
+    router.push("/lopendezaken");
+  };
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
   const uitleg = a.doelgroepen.flatMap((d) => {
@@ -113,7 +138,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
       )}
 
       {bekend && uitleg.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="uitleg">
+        <section className="rhc-mox-stack" aria-labelledby="uitleg">
           <Heading level={2} id="uitleg">
             Wat voor deze situatie geldt
           </Heading>
@@ -126,7 +151,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
       )}
 
       {bekend && route.taken.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="taken-werknemer">
+        <section className="rhc-mox-stack" aria-labelledby="taken-werknemer">
           <Heading level={2} id="taken-werknemer">
             Taken voor de werknemer
           </Heading>
@@ -139,7 +164,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
       )}
 
       {bekend && route.vanzelf.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
+        <section className="rhc-mox-stack" aria-labelledby="vanzelf">
           <Heading level={2} id="vanzelf">
             Gaat vanzelf of via de loonaangifte
           </Heading>
@@ -190,14 +215,16 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
       )}
 
       <ActionGroup>
+        {/* Er is niets te versturen: afronden zet de aanvraag als zaak in
+            Lopende zaken en gaat daarheen. */}
+        <Button appearance="primary-action-button" onClick={afronden}>
+          Afronden
+        </Button>
         <Link
           href="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
           Antwoorden wijzigen
-        </Link>
-        <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-          Terug naar Personeel
         </Link>
       </ActionGroup>
     </>

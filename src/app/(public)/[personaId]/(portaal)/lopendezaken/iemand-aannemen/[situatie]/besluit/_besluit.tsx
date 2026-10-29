@@ -229,6 +229,7 @@ const Besluit = ({
           regeling={regeling.naam}
           kvk={kvk}
           labels={demo.labels}
+          headingLevel={3}
         />
       </section>
 
