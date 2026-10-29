@@ -1719,6 +1719,16 @@ small,
   }
 }
 
+.rhc-mox-table-cell-date {
+  font-size: var(--rhc-text-font-size-sm);
+  white-space: nowrap;
+}
+
+.rhc-mox-table-cell-actions {
+  --utrecht-table-cell-padding-block-end: 0;
+  --utrecht-table-cell-padding-block-start: var(--rhc-space-sm)
+}
+
 /* --- Meldingen --- */
 /* The text of an alert as a stack: space between paragraphs, heading and
   button comes from the gap. */

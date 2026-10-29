@@ -97,7 +97,7 @@ const ActivityLog = ({
             {visible.map(({ id, organisatie, tijdstip, gegevens }) => (
               <TableRow key={id}>
                 <TableCell>{organisatie}</TableCell>
-                <TableCell>
+                <TableCell className="rhc-mox-table-cell-date">
                   <time dateTime={tijdstip}>
                     {dateTime.format(new Date(tijdstip))}
                   </time>

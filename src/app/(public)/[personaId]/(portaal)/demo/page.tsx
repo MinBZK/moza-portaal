@@ -302,7 +302,7 @@ const DemoTable = () => {
                   {message.subject}
                 </Link>
               </TableCell>
-              <TableCell>
+              <TableCell className="rhc-mox-table-cell-date">
                 {new Date(message.date).toLocaleDateString("nl-NL", {
                   day: "numeric",
                   month: "long",
@@ -322,7 +322,7 @@ const DemoTable = () => {
                   </>
                 )}
               </TableCell>
-              <TableCell>
+              <TableCell className="rhc-mox-table-cell-actions">
                 <Dropdown
                   trigger={
                     <>
