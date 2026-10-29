@@ -9,22 +9,24 @@ const ConversationsPage = async () => {
   return (
     <>
       <Heading level={1}>Bewaarde items</Heading>
-      <SavedTabs active="conversations" />
-      <BewaardeItems
-        soort="bewaard"
-        alleenCategorie="Digitale assistent"
-        leeg={
-          <Alert type="info" closable>
-            <Paragraph>
-              U hebt nog geen gesprekken bewaard. Start een gesprek bij{" "}
-              <Link inline href="/digitale-assistent">
-                digitale assistent
-              </Link>
-              .
-            </Paragraph>
-          </Alert>
-        }
-      />
+      <div className="rhc-mox-card">
+        <SavedTabs active="conversations" />
+        <BewaardeItems
+          soort="bewaard"
+          alleenCategorie="Digitale assistent"
+          leeg={
+            <Alert type="info" closable>
+              <Paragraph>
+                U hebt nog geen gesprekken bewaard. Start een gesprek bij{" "}
+                <Link inline href="/digitale-assistent">
+                  digitale assistent
+                </Link>
+                .
+              </Paragraph>
+            </Alert>
+          }
+        />
+      </div>
     </>
   );
 };
