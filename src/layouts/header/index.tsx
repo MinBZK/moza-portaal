@@ -112,7 +112,6 @@ const Header = ({
               />
             </div>
             <ul className="rhc-nav-bar__list">
-              <li className="rhc-nav-bar__item"></li>
               {signedIn ? (
                 <>
                   <li

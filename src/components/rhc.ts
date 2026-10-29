@@ -3,7 +3,6 @@
 export {
   ActionGroup,
   Accordion,
-  AccordionProvider,
   AccordionSection,
   Article,
   BreadcrumbNav,
@@ -72,3 +71,5 @@ export {
 
 // RHC Alert with an optional close button.
 export { Alert } from "./Alert";
+// RHC AccordionProvider with a decorative chevron without ids.
+export { AccordionProvider } from "./AccordionProvider";
