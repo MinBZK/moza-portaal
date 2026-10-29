@@ -181,10 +181,7 @@ const Balans = ({
         ? `${min}${euro(r.bedrag)}`
         : r.status === "niet_meegeteld"
           ? "niet meegeteld"
-          : "geldt niet";
-  // Tijdens het rekenen staan alle regelingen er; daarna alleen die meetellen.
-  const telt = (r: BalansRegel) =>
-    !bekend || Boolean(fout) || r.status !== "geldt_niet";
+          : euro(0);
   const klasse = (r: BalansRegel) =>
     bekend && !fout && r.status !== "bedrag" ? "mox-hiring-none" : undefined;
   // Wat bij een regel in de (i) staat: de aanname, en bij een bedrag de
@@ -258,7 +255,7 @@ const Balans = ({
           <dt>Loonkosten</dt>
           <dd>{euro(kosten)}</dd>
         </div>
-        {regels.filter(telt).map((r) => (
+        {regels.map((r) => (
           <div key={r.id}>
             <dt>
               {naam(r)}
@@ -278,16 +275,6 @@ const Balans = ({
           </div>
         ))}
       </dl>
-      {bekend && !fout && regels.some((r) => !telt(r)) && (
-        <Paragraph>
-          Geldt niet bij deze keuze:{" "}
-          {regels
-            .filter((r) => !telt(r))
-            .map((r) => naam(r).toLowerCase())
-            .join(", ")}
-          .
-        </Paragraph>
-      )}
       {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
       {bekend &&
         !fout &&
