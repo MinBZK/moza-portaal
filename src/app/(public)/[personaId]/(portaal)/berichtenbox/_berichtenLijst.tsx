@@ -21,6 +21,10 @@ import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
+import SortableHeaderCell, {
+  nextSorting,
+  type Sorting,
+} from "@/components/SortableHeaderCell";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import ShareButton from "@/components/ShareButton";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
@@ -53,7 +57,6 @@ import {
 const PAGINA_GROOTTE = 10;
 
 type SorteerSleutel = "afzender" | "onderwerp" | "datum";
-type Sortering = { sleutel: SorteerSleutel; oplopend: boolean };
 
 const meervoud = (aantal: number, enkelvoud: string, meer: string) =>
   `${aantal} ${aantal === 1 ? enkelvoud : meer}`;
@@ -69,38 +72,6 @@ const legeTekst: Record<Weergave, ReactNode> = {
   ),
   prullenbak:
     "Er staan geen berichten in de prullenbak. Berichten die u verwijdert, komen hier te staan.",
-};
-
-const SorteerKop = ({
-  sleutel,
-  sortering,
-  onSorteer,
-  children,
-}: {
-  sleutel: SorteerSleutel;
-  sortering: Sortering | null;
-  onSorteer: (sleutel: SorteerSleutel) => void;
-  children: string;
-}) => {
-  const richting =
-    sortering?.sleutel === sleutel
-      ? sortering.oplopend
-        ? "ascending"
-        : "descending"
-      : "none";
-  // Eigen <th>: TableHeaderCell van RHC geeft aria-sort niet door aan de cel.
-  return (
-    <th scope="col" aria-sort={richting} className="utrecht-table__header-cell">
-      <Button
-        appearance="subtle-button"
-        className="utrecht-table__header-cell-button"
-        onClick={() => onSorteer(sleutel)}
-      >
-        {children}
-        <Icon icon={richting === "none" ? "arrows-sort" : `sort-${richting}`} />
-      </Button>
-    </th>
-  );
 };
 
 const RijActies = ({
@@ -216,7 +187,9 @@ const BerichtenLijst = ({
     opener: HTMLElement | null;
   } | null>(null);
   const [zoek, setZoek] = useState("");
-  const [sortering, setSortering] = useState<Sortering | null>(null);
+  const [sortering, setSortering] = useState<Sorting<SorteerSleutel> | null>(
+    null,
+  );
   const [melding, setMelding] = useState<string | null>(null);
   // Een map kiezen is een kleine wissel: die melding fadet na 3 seconden uit.
   // De nummer-key toont dezelfde tekst opnieuw.
@@ -313,8 +286,8 @@ const BerichtenLijst = ({
   const gesorteerd = sortering
     ? [...gevonden].sort(
         (a, b) =>
-          (sortering.oplopend ? 1 : -1) *
-          a[sortering.sleutel].localeCompare(b[sortering.sleutel], "nl", {
+          (sortering.ascending ? 1 : -1) *
+          a[sortering.key].localeCompare(b[sortering.key], "nl", {
             numeric: true,
           }),
       )
@@ -331,10 +304,7 @@ const BerichtenLijst = ({
   );
 
   const sorteer = (sleutel: SorteerSleutel) => {
-    setSortering((huidig) => ({
-      sleutel,
-      oplopend: huidig?.sleutel === sleutel ? !huidig.oplopend : true,
-    }));
+    setSortering((huidig) => nextSorting(huidig, sleutel));
     naarEerstePagina();
   };
 
@@ -574,27 +544,27 @@ const BerichtenLijst = ({
                   <TableHeaderCell scope="col">
                     <VisuallyHidden>Gemarkeerd</VisuallyHidden>
                   </TableHeaderCell>
-                  <SorteerKop
-                    sleutel="afzender"
-                    sortering={sortering}
-                    onSorteer={sorteer}
+                  <SortableHeaderCell
+                    sortKey="afzender"
+                    sorting={sortering}
+                    onSort={sorteer}
                   >
                     Afzender
-                  </SorteerKop>
-                  <SorteerKop
-                    sleutel="onderwerp"
-                    sortering={sortering}
-                    onSorteer={sorteer}
+                  </SortableHeaderCell>
+                  <SortableHeaderCell
+                    sortKey="onderwerp"
+                    sorting={sortering}
+                    onSort={sorteer}
                   >
                     Onderwerp
-                  </SorteerKop>
-                  <SorteerKop
-                    sleutel="datum"
-                    sortering={sortering}
-                    onSorteer={sorteer}
+                  </SortableHeaderCell>
+                  <SortableHeaderCell
+                    sortKey="datum"
+                    sorting={sortering}
+                    onSort={sorteer}
                   >
                     Datum
-                  </SorteerKop>
+                  </SortableHeaderCell>
                   <TableHeaderCell scope="col">
                     <VisuallyHidden>Bijlage</VisuallyHidden>
                   </TableHeaderCell>
