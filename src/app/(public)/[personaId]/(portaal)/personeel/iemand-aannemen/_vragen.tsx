@@ -93,12 +93,20 @@ const OVERIG: Record<
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
-const Vragen = ({ onderneming }: { onderneming: string }) => {
+const Vragen = ({
+  onderneming,
+  toelichting,
+}: {
+  onderneming: string;
+  /** Alinea's onder de knop: wie de regelingen uitvoert, en de termijnen. */
+  toelichting?: string[];
+}) => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
   return (
     <VragenMetStaat
       onderneming={onderneming}
+      toelichting={toelichting}
       a={staat.antwoorden}
       zet={(deel) => werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })}
     />
@@ -107,10 +115,12 @@ const Vragen = ({ onderneming }: { onderneming: string }) => {
 
 const VragenMetStaat = ({
   onderneming,
+  toelichting,
   a,
   zet,
 }: {
   onderneming: string;
+  toelichting?: string[];
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
@@ -210,8 +220,8 @@ const VragenMetStaat = ({
             />
             <Paragraph className="mox-hiring-note">
               {wajong
-                ? "Bij een Wajong-uitkering: het percentage van het minimumloon dat de kandidaat aankan. UWV stelt dit vast voor de loondispensatie."
-                : "De loonwaarde is wat de kandidaat in het werk presteert, in vergelijking met een collega zonder beperking in dezelfde functie. Onder 100 procent is de loonwaarde verminderd. Bij 100 procent is er geen loonkostensubsidie. Ook dan kan de kandidaat begeleiding nodig hebben, zoals een jobcoach. De gemeente meet de loonwaarde later op de werkplek."}
+                ? "Het percentage van het minimumloon dat de kandidaat aankan. UWV stelt dit vast."
+                : "Wat de kandidaat presteert, vergeleken met een collega zonder beperking. De gemeente meet dit later op de werkplek."}
             </Paragraph>
           </div>
           <Fieldset
@@ -222,7 +232,7 @@ const VragenMetStaat = ({
               name="uurloon"
               value="wml"
               label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
-              description="Voor iemand van 21 jaar of ouder. Voor jongere werknemers geldt een lager minimumloon; daarmee rekent deze berekening niet."
+              description="Voor iemand van 21 jaar of ouder."
               checked={!anders}
               onChange={() => {
                 setAnders(false);
@@ -255,11 +265,8 @@ const VragenMetStaat = ({
             )}
           </Fieldset>
           <Paragraph className="mox-hiring-note">
-            Volgens de wet is de loonkostensubsidie altijd het verschil tussen
-            het minimumloon en de loonwaarde. Betaalt u meer dan het
-            minimumloon, dan krijgt u dus niet meer subsidie. Het
-            loonkostenvoordeel is een vast bedrag per verloond uur. Een hoger
-            uurloon maakt alleen uw loonkosten hoger.
+            Een hoger uurloon geeft geen hogere subsidie, alleen hogere
+            loonkosten.
           </Paragraph>
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
@@ -287,10 +294,6 @@ const VragenMetStaat = ({
               </UnorderedListItem>
             ))}
           </UnorderedList>
-          <Paragraph className="mox-hiring-note">
-            Uitkomsten van de regelrecht-engine bij uw antwoorden. Of een
-            regeling geldt, beslist de organisatie die haar uitvoert.
-          </Paragraph>
         </section>
       )}
 
@@ -327,6 +330,9 @@ const VragenMetStaat = ({
               ? "De berekening is niet gelukt. Laad de pagina opnieuw."
               : "De berekening is nog bezig."}
         </Paragraph>
+        {toelichting?.map((alinea) => (
+          <Paragraph key={alinea}>{alinea}</Paragraph>
+        ))}
       </section>
     </>
   );

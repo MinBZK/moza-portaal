@@ -91,9 +91,10 @@ const AanvraagPage = async ({
               <Paragraph>{aanvraag.overgenomen}</Paragraph>
             </Alert>
           )}
-          {aanvraag.toelichting?.map((alinea) => (
-            <Paragraph key={alinea}>{alinea}</Paragraph>
-          ))}
+          {!flow &&
+            aanvraag.toelichting?.map((alinea) => (
+              <Paragraph key={alinea}>{alinea}</Paragraph>
+            ))}
         </section>
 
         {!flow && (
@@ -111,7 +112,12 @@ const AanvraagPage = async ({
           </section>
         )}
       </div>
-      {flow && <Vragen onderneming={flow.werkgever.onderneming} />}
+      {flow && (
+        <Vragen
+          onderneming={flow.werkgever.onderneming}
+          toelichting={aanvraag.toelichting}
+        />
+      )}
     </>
   );
 };
