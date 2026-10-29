@@ -193,7 +193,7 @@ const VragenMetStaat = ({
             formatValue={(uren) => `${uren} uur`}
             filled
           />
-          <div>
+          <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
               label="3. Heeft de kandidaat naar verwachting een verminderde loonwaarde? Zo ja, hoeveel? (loonwaarde)"
               min={30}

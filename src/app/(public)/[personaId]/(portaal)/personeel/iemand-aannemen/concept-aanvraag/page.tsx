@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import type { DemoAannemen } from "@/demo";
 import {
@@ -6,6 +7,10 @@ import {
 } from "@/app/(public)/_persona";
 import Aanvraag from "./_aanvraag";
 import { vul, werkgeverVan } from "../_werkgever";
+
+export const metadata: Metadata = {
+  title: "Regelingen voor het aannemen - Personeel en rollen",
+};
 
 /** Scherm 3: de vooringevulde aanvraag, per organisatie de panelen van de situatie. */
 const ConceptAanvraagPage = async () => {

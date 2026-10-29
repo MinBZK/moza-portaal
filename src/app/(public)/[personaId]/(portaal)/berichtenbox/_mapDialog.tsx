@@ -109,7 +109,11 @@ const MapDialog = ({
           </ul>
         </>
       )}
-      <form onSubmit={maakNieuwe} noValidate>
+      <form
+        className="rhc-mox-stack rhc-mox-stack--2xl"
+        onSubmit={maakNieuwe}
+        noValidate
+      >
         <FormFieldTextInput
           label={andere.length > 0 ? "Of maak een nieuwe map" : "Nieuwe map"}
           value={naam}

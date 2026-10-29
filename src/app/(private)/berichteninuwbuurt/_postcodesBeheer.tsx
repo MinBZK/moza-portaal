@@ -97,6 +97,7 @@ const PostcodesBeheer = () => {
         </UnorderedList>
       )}
       <form
+        className="rhc-mox-stack rhc-mox-stack--2xl"
         noValidate
         onSubmit={(e) => {
           e.preventDefault();

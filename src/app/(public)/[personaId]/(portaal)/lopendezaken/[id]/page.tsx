@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import { getDemoZaakById } from "@/demo";
@@ -5,12 +6,21 @@ import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import StatusTrack from "@/components/StatusTrack";
 import ZakenTabs from "../_zakenTabs";
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const zaak = await getDemoZaakById((await params).id);
+  return { title: `${zaak?.titel ?? "Zaak"} - Lopende zaken` };
+};
+
 const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const zaak = await getDemoZaakById((await params).id);
   if (!zaak) notFound();
 
   const voortgang = (
-    <section aria-labelledby="zaak-voortgang">
+    <section className="rhc-mox-stack" aria-labelledby="zaak-voortgang">
       <Heading level={2} id="zaak-voortgang">
         Voortgang
       </Heading>
@@ -18,7 +28,7 @@ const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     </section>
   );
   const gegevens = (
-    <section aria-labelledby="zaak-gegevens">
+    <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
       <Heading level={2} id="zaak-gegevens">
         Over deze zaak
       </Heading>

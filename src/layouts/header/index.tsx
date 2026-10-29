@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { components } from "@/network/kvk/organisatieregister/generated";
 import Image from "next/image";
 import Link from "next/link";
-import { Logo, NavBar, Icon } from "@/components/rhc";
+import { Logo, NavBar, Icon, VisuallyHidden } from "@/components/rhc";
 import MenuKnop from "@/layouts/navigation/menuKnop";
 import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
@@ -67,7 +67,7 @@ const Header = ({
 
   const accountLabel = actieveOrganisatieNaam ? (
     <>
-      <span>{naam}</span>
+      <span>{naam}</span>{" "}
       <span className="mox-header-organization">{actieveOrganisatieNaam}</span>
     </>
   ) : (
@@ -97,6 +97,7 @@ const Header = ({
             />
           </Logo>
           <NavBar
+            aria-label="Account"
             headingItem={{
               href: "/",
               id: "heading",
@@ -112,7 +113,6 @@ const Header = ({
               />
             </div>
             <ul className="rhc-nav-bar__list">
-              <li className="rhc-nav-bar__item"></li>
               {signedIn ? (
                 <>
                   <li
@@ -137,13 +137,16 @@ const Header = ({
                       <Dropdown
                         align="end"
                         triggerClassName="rhc-nav-bar__link rhc-mox-header-organizations__trigger"
-                        triggerLabel={`${actieveOrganisatieNaam ?? naam}, organisatie kiezen`}
                         trigger={
                           <>
                             <Icon icon="user" />
                             <span className="rhc-nav-bar__label rhc-mox-header-organizations__identity">
                               {accountLabel}
                             </span>
+                            {/* Accessible name starts with the visible text (WCAG 2.5.3). */}
+                            <VisuallyHidden>
+                              , organisatie kiezen
+                            </VisuallyHidden>
                             <Icon icon="chevron-down" />
                           </>
                         }

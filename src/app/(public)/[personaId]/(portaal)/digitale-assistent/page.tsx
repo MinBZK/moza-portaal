@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Heading } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import {
@@ -6,6 +7,8 @@ import {
 } from "@/app/(public)/_persona";
 import Chat from "./_chat";
 import type { AssistentPersona } from "./_types";
+
+export const metadata: Metadata = { title: "Digitale assistent (AI)" };
 
 const DigitaleAssistentPage = async () => {
   const [persona, flags] = await Promise.all([

@@ -162,6 +162,9 @@ const Bronnen = ({
           <div className="rhc-mox-row-gap">
             <FormFieldTextInput
               label="Naam van de kandidaat"
+              // Not the user's own data: the browser must not fill in the
+              // user's name or date of birth here (WCAG 1.3.5).
+              autoComplete="off"
               value={nieuw.naam}
               onChange={(event) =>
                 setNieuw({
@@ -172,6 +175,7 @@ const Bronnen = ({
             />
             <FormFieldTextInput
               label="Geboortedatum (dag-maand-jaar)"
+              autoComplete="off"
               value={nieuw.geboortedatum}
               onChange={(event) =>
                 setNieuw({

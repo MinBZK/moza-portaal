@@ -42,7 +42,6 @@ next-env.d.ts
 
 # pa11y reports
 output
-/toegankelijkheid
 
 .vscode/*
 !.vscode/settings.json

@@ -626,7 +626,7 @@ const berichtenboxEntries: Entry[] = [
     ],
     example: (
       <>
-        <div className="rhc-mox-inbox-filter rhc-mox-inbox-filters">
+        <div className="rhc-mox-inbox-filters">
           <FormFieldTextInput label="Filter berichten" type="search" />
           <FormFieldSelect label="Afzender" defaultValue="">
             <SelectOption value="">Alle afzenders</SelectOption>
@@ -3198,23 +3198,66 @@ const ComponentsDemoPage = () => {
     },
     {
       name: "Lay-outhulpen",
-      file: "rhc-mox-main-container, rhc-mox-row-gap",
-      description:
-        "Ruimte tussen blokken. Deze demopagina gebruikt rhc-mox-main-container tussen de kaarten.",
+      file: "rhc-mox-stack, rhc-mox-main-container in src/styles/rhc.css",
+      description: [
+        <>
+          Verticale ruimte komt van <code>gap</code> op de container, niet van
+          margins op de kinderen. Een component neemt geen ruimte eromheen mee:
+          de container bepaalt de afstand. Ook een kaart (
+          <code>rhc-mox-card</code>) en een melding zetten hun inhoud zo onder
+          elkaar.
+        </>,
+        <>
+          Wil je binnen een blok verschillende afstanden, zoals een kop dicht
+          bij de tekst en meer ruimte voor de volgende sectie? Zet de kop en de
+          tekst dan samen in een eigen stack, bijvoorbeeld een{" "}
+          <code>&lt;section className=&quot;rhc-mox-stack&quot;&gt;</code>.
+        </>,
+        <>
+          Een leeg element in een stack of kaart, zoals een live-regio die nog
+          op een melding wacht, krijgt geen ruimte. Een knop direct in een stack
+          houdt zijn eigen breedte. Alleen lopende tekst uit een API (
+          <code>mox-rich-text</code>) gebruikt nog margins.
+        </>,
+      ],
       options: [
         [
-          "rhc-mox-main-container",
+          "rhc-mox-stack",
           "class",
           "–",
-          "Grid met ruimte (space-xl) tussen de kinderen; de hoofdinhoud van elke pagina",
+          "Grid met ruimte (space-xl) tussen de kinderen",
+        ],
+        [
+          "rhc-mox-stack--sm, --md, --lg, --2xl, --3xl",
+          "class",
+          "–",
+          "Andere ruimte tussen de kinderen; formulieren gebruiken --2xl",
         ],
         [
           "rhc-mox-row-gap",
           "class",
           "–",
-          "Grid met ruimte tussen de kinderen, binnen een kaart of formulier",
+          "Hetzelfde als rhc-mox-stack; oudere naam",
+        ],
+        [
+          "rhc-mox-main-container",
+          "class",
+          "–",
+          "De hoofdinhoud van elke pagina; ruimte space-2xl, in MOx space-xl",
         ],
       ],
+      example: (
+        <div className="rhc-mox-stack rhc-mox-stack--2xl">
+          <section className="rhc-mox-stack">
+            <Heading level={4}>Eerste sectie</Heading>
+            <Paragraph>Kop en tekst staan dicht bij elkaar.</Paragraph>
+          </section>
+          <section className="rhc-mox-stack">
+            <Heading level={4}>Tweede sectie</Heading>
+            <Paragraph>Tussen de secties zit meer ruimte.</Paragraph>
+          </section>
+        </div>
+      ),
     },
   ];
 

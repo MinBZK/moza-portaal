@@ -264,13 +264,15 @@ dialog.prototype-side-overlay[open] {
 /* --- PoC-banner --- */
 
 .prototype-temp-poc-banner {
-	background: var(--rhc-color-groen-500);
+	/* Top right, over the header. Note: it covers part of the language
+	  choice and Uitloggen (WCAG 2.5.8); accepted for the prototype. Full
+	  colour for contrast. */
+	background: var(--rhc-color-groen-700);
 	color: var(--rhc-color-wit);
 	font-weight: var(--rhc-text-font-weight-bold);
 	inline-size: 256px;
 	inset-block-start: 3rem;
 	inset-inline-end: -4rem;
-	opacity: .8;
 	padding-block: var(--rhc-space-sm);
 	position: fixed;
 	text-align: center;
@@ -279,8 +281,9 @@ dialog.prototype-side-overlay[open] {
 	transform-origin: center;
 	z-index: 9;
 
-	&:hover {
-		opacity: 1;
+	&:hover,
+	&:focus-visible {
+		text-decoration-line: underline;
 	}
 }
 

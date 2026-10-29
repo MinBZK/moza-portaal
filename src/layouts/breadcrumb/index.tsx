@@ -6,8 +6,6 @@ import Link from "next/link";
 import {
   BreadcrumbNav,
   BreadcrumbNavLink,
-  BreadcrumbNavSeparator,
-  Icon,
 } from "@rijkshuisstijl-community/components-react";
 import { useHuidigeKruimel } from "./huidigeKruimel";
 
@@ -82,7 +80,7 @@ const Breadcrumb = () => {
 
   return (
     <>
-      <BreadcrumbNav>
+      <BreadcrumbNav aria-label="Kruimelpad">
         <BreadcrumbNavLink Link={NldsNextLink} href="/" index={0} rel="home">
           Home
         </BreadcrumbNavLink>
@@ -90,19 +88,26 @@ const Breadcrumb = () => {
           const isCurrent = crumb.href === paths;
           return (
             <Fragment key={crumb.href}>
-              <BreadcrumbNavSeparator>
-                <Icon icon="chevron-right" />
-              </BreadcrumbNavSeparator>
-              <BreadcrumbNavLink
-                // De huidige pagina krijgt geen href, dus geen next/link
-                Link={isCurrent ? undefined : NldsNextLink}
-                href={crumb.href}
-                index={index + 1}
-                current={isCurrent}
-                disabled={isCurrent}
-              >
-                {crumb.label}
-              </BreadcrumbNavLink>
+              {isCurrent ? (
+                // The current page is not a link: plain text with
+                // aria-current, instead of an <a> without href.
+                <li className="utrecht-breadcrumb-nav__item">
+                  <span
+                    className="utrecht-breadcrumb-nav__text rhc-mox-breadcrumb-current"
+                    aria-current="page"
+                  >
+                    {crumb.label}
+                  </span>
+                </li>
+              ) : (
+                <BreadcrumbNavLink
+                  Link={NldsNextLink}
+                  href={crumb.href}
+                  index={index + 1}
+                >
+                  {crumb.label}
+                </BreadcrumbNavLink>
+              )}
             </Fragment>
           );
         })}

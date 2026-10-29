@@ -53,6 +53,7 @@
   --rhc-text-font-size-max-md: 1.125rem;
 
   /* Kleurwijzigingen t.o.v. RHC */
+  --rhc-color-foreground-link: var(--rhc-color-lintblauw-600);
   --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
   --nl-heading-level-1-color: var(--rhc-color-core-500);
   --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
@@ -124,7 +125,20 @@
 .utrecht-form-field--radio,
 .utrecht-form-field--checkbox {
   gap: var(--rhc-space-xs);
-  margin-block-start: var(--rhc-space-md);
+}
+
+/* The options of a group sit apart with gap. The legend is not a grid item of
+  the fieldset, so it needs its own margin. Two classes: RHC resets the
+  fieldset with all: revert. */
+.utrecht-form-fieldset {
+  .utrecht-form-fieldset__fieldset {
+    display: grid;
+    gap: var(--rhc-space-md);
+  }
+
+  .utrecht-form-fieldset__legend {
+    margin-block-end: var(--rhc-space-md);
+  }
 }
 
 .utrecht-checkbox {
@@ -153,20 +167,78 @@ body {
 .rhc-mox-main-container {
   align-content: start;
   display: grid;
+  gap: var(--rhc-space-2xl);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* --- Stacks ---
+  Vertical space between the children comes from gap on the container, never
+  from margins on the children. rhc-mox-row-gap is the default stack. */
+.rhc-mox-stack,
+.rhc-mox-row-gap {
+  align-content: start;
+  display: grid;
   gap: var(--rhc-space-xl);
   grid-template-columns: minmax(0, 1fr);
 
-  h1 {
-    margin-block-end: var(--rhc-space-xl);
+  /* A button keeps its own width, as in normal flow. */
+  >:is(button, .utrecht-button, .utrecht-button-link, .utrecht-link-button) {
+    justify-self: start;
   }
 }
 
+/* An empty child, such as a live region that waits for a message, takes no
+  row and so no gap. It stays in the page, so a screen reader still hears
+  what appears in it. */
+:is(.rhc-mox-stack, .rhc-mox-row-gap, .rhc-mox-card)>:is(div, p, span):empty {
+  position: absolute;
+}
+
+.rhc-mox-stack--sm {
+  gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-stack--md {
+  gap: var(--rhc-space-md);
+}
+
+.rhc-mox-stack--lg {
+  gap: var(--rhc-space-lg);
+}
+
+.rhc-mox-stack--2xl {
+  gap: var(--rhc-space-2xl);
+}
+
+.rhc-mox-stack--3xl {
+  gap: var(--rhc-space-3xl);
+}
+
 .rhc-theme.mox-theme {
+  /* Lists bring no space of their own; the container decides. */
+  --utrecht-ordered-list-margin-block-end: 0;
+  --utrecht-ordered-list-margin-block-start: 0;
+  --utrecht-unordered-list-margin-block-end: 0;
+  --utrecht-unordered-list-margin-block-start: 0;
+  /* The same for form fields and alerts. */
+  --utrecht-alert-margin-block-end: 0;
+  --utrecht-alert-margin-block-start: 0;
+  --utrecht-form-field-margin-block-end: 0;
+  --utrecht-form-field-margin-block-start: 0;
 
   .utrecht-page-header__content,
   .utrecht-page-body__content {
-    margin-block-end: var(--rhc-space-xl);
     padding-inline: var(--mox-page-margin);
+  }
+
+  /* Extra space at the bottom as padding on top of the RHC padding, instead
+    of a margin. */
+  .utrecht-page-header__content {
+    padding-block-end: calc(var(--utrecht-page-header-content-padding-block-end, 0px) + var(--rhc-space-xl));
+  }
+
+  .utrecht-page-body__content {
+    padding-block-end: calc(var(--utrecht-page-body-content-padding-block-end, 0px) + var(--rhc-space-xl));
   }
 
   .rhc-grid:has(> .rhc-mox-card) {
@@ -273,6 +345,32 @@ body {
 }
 
 /* --- Navigatie --- */
+/* Pijltje tussen de kruimels, met CSS. Een apart <li> als scheidingsteken
+  (BreadcrumbNavSeparator) telt als leeg lijstitem; zo bevat de lijst alleen
+  echte stappen. Dezelfde maat en kleur als het RHC-icoon chevron-right. */
+.utrecht-breadcrumb-nav__item+.utrecht-breadcrumb-nav__item {
+  align-items: center;
+  display: inline-flex;
+
+  &::before {
+    background-color: var(--utrecht-breadcrumb-nav-separator-color, currentColor);
+    block-size: var(--utrecht-breadcrumb-nav-separator-icon-size, 18px);
+    content: "";
+    flex-shrink: 0;
+    inline-size: var(--utrecht-breadcrumb-nav-separator-icon-size, 18px);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6l-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+}
+
+/* Huidige pagina in het kruimelpad: gewone tekst, geen link. */
+.rhc-mox-breadcrumb-current {
+  /* Same colour and spacing as the current link of RHC used to have. */
+  color: var(--rhc-breadcrumb-nav-link-current-color);
+  display: inline-block;
+  padding-block: var(--utrecht-breadcrumb-nav-item-padding-block-start, 8px) var(--utrecht-breadcrumb-nav-item-padding-block-end, 8px);
+  padding-inline-start: var(--utrecht-breadcrumb-nav-item-padding-inline-start, 8px);
+}
+
 .rhc-theme.mox-theme {
   .rhc-side-nav__link {
     align-items: baseline;
@@ -286,10 +384,6 @@ body {
         inline-size: var(--rhc-size-icon-md);
       }
     }
-  }
-
-  .rhc-side-nav {
-    margin-block-end: var(--rhc-space-2xl);
   }
 
   .rhc-side-nav__list {
@@ -332,8 +426,13 @@ body {
   .rhc-mox-menu-heading {
     color: var(--rhc-color-foreground-subtle);
     font-size: var(--rhc-text-font-size-sm);
-    margin-block: var(--rhc-space-md) 0;
     padding-inline: var(--rhc-sidenav-link-padding-inline-start, 0);
+  }
+
+  /* Organisation choice in the narrow menu: space around the group is part
+    of the group, so its children need no margins. */
+  .rhc-mox-menu-organizations {
+    padding-block: var(--rhc-space-md) var(--rhc-space-2xl);
   }
 
   /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
@@ -374,19 +473,19 @@ body {
 }
 
 .utrecht-button.utrecht-button--secondary-action.utrecht-button--danger {
-  background-color: var(--rhc-color-rood-500);
-  border-color: var(--rhc-color-rood-500);
+  background-color: var(--rhc-color-rood-600);
+  border-color: var(--rhc-color-rood-600);
   color: var(--rhc-color-wit);
 
   &:hover,
   &:focus-visible {
-    background-color: var(--rhc-color-rood-600);
-    border-color: var(--rhc-color-rood-600);
+    background-color: var(--rhc-color-rood-700);
+    border-color: var(--rhc-color-rood-700);
     color: var(--rhc-color-wit);
   }
 
   &:focus-visible {
-    outline-color: var(--rhc-color-rood-600);
+    outline-color: var(--rhc-color-rood-700);
   }
 }
 
@@ -407,36 +506,14 @@ body {
 }
 
 /* --- Kaarten --- */
-.rhc-mox-card {
-  .rhc-mox-row-gap {
-    align-content: start;
-    display: grid;
-    gap: var(--rhc-space-xl);
-
-    .utrecht-action-group {
-      margin-block-start: 0;
-    }
-  }
-
-  .utrecht-form-fieldset__legend,
-  .utrecht-form-field--checkbox,
-  .utrecht-form-field--radio {
-    margin-block-end: var(--rhc-space-md)
-  }
-
-  .ams-pagination {
-    margin-block-start: var(--rhc-space-2xl);
-  }
-}
-
 .rhc-theme.mox-theme {
   .rhc-mox-card {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
-    margin-block-end: var(--rhc-space-xl);
   }
 
+  /* In cards of equal height, the buttons line up at the bottom. */
   .rhc-mox-card>.utrecht-action-group:last-child {
     margin-block-start: auto;
   }
@@ -446,6 +523,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--rhc-space-3xl);
+
+  /* Title, summary and button of one item. */
+  >li {
+    display: grid;
+    gap: var(--rhc-space-md);
+    justify-items: start;
+  }
 }
 
 /* --- Dialog --- */
@@ -579,6 +663,13 @@ body {
   }
 }
 
+/* Space between the blocks in an open panel. Not on [hidden], or the panel
+  would stay visible. */
+.utrecht-accordion__panel:not([hidden]) {
+  display: grid;
+  gap: var(--rhc-space-lg);
+}
+
 /* Het paneel uit- en inklappen. Het wisselt met [hidden], dus display loopt
   mee via allow-discrete; interpolate-size maakt de hoogte auto animeerbaar.
   Zonder interpolate-size (Safari, Firefox) alleen de fade. Binnen
@@ -621,13 +712,11 @@ body {
 /* --- Tabs --- */
 .rhc-mox-tabs {
   --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
-  background-image: linear-gradient(var(--rhc-color-cool-grey-400), var(--rhc-color-cool-grey-400));
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 100% var(--rhc-border-width-md);
+  /* The grey line under the tabs as an inset shadow, not as a background
+    image: then a contrast check sees a plain background behind the text. */
+  box-shadow: inset 0 calc(-1 * var(--rhc-border-width-md)) 0 var(--rhc-color-cool-grey-400);
   display: flex;
   gap: var(--rhc-space-xl);
-  margin-block-end: var(--rhc-space-lg);
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scroll-padding-inline: var(--rhc-space-md);
@@ -651,6 +740,7 @@ body {
 
 .rhc-mox-tab {
   align-items: center;
+  background-color: var(--rhc-color-wit);
   display: flex;
   gap: var(--rhc-space-md);
   padding: var(--rhc-space-md);
@@ -740,6 +830,8 @@ body {
   padding: var(--rhc-space-md) var(--rhc-space-lg);
 }
 
+/* The margin makes room for the tail of the speech bubble (::before), which
+  hangs below the box. */
 .rhc-mox-chat-message,
 .rhc-mox-chat-suggestions {
   margin-block-end: var(--rhc-space-2xl);
@@ -754,10 +846,6 @@ body {
     inset-block-end: calc(-1 * var(--rhc-size-icon-md));
     inset-inline-start: var(--rhc-size-icon-md);
     position: absolute;
-  }
-
-  p:last-of-type {
-    margin-block-end: 0;
   }
 }
 
@@ -944,7 +1032,6 @@ body {
 
   display: grid;
   gap: var(--rhc-stap-gap);
-  margin-block: var(--rhc-space-3xl);
 
   >li {
     display: flex;
@@ -1053,11 +1140,6 @@ body {
   display: grid;
   gap: var(--rhc-space-md);
   margin-block-start: var(--rhc-space-sm);
-
-  .utrecht-action-group {
-    margin-block-end: var(--rhc-space-xl);
-    margin-block-start: 0;
-  }
 }
 
 .rhc-mox-status-date {
@@ -1138,6 +1220,8 @@ body {
 }
 
 .rhc-mox-alert-closable-content {
+  display: grid;
+  gap: var(--utrecht-alert-message-row-gap);
   padding-inline-end: var(--rhc-space-5xl);
 }
 
@@ -1419,6 +1503,19 @@ body {
   }
 }
 
+/* --- Meldingen --- */
+/* The text of an alert as a stack: space between paragraphs, heading and
+  button comes from the gap. */
+.utrecht-alert__message {
+  --utrecht-alert-message-row-gap: var(--rhc-space-md);
+
+  display: grid;
+
+  >.utrecht-button {
+    justify-self: start;
+  }
+}
+
 /* Een melding die in zijn geheel een link is, zoals de status van een zaak
   die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
 .rhc-theme.mox-theme {
@@ -1445,17 +1542,7 @@ body {
 }
 
 /* --- Action group --- */
-.utrecht-action-group {
-  margin-block-start: var(--rhc-space-2xl);
-}
-
-.utrecht-button--primary-action {
-  margin-block-start: var(--rhc-space-lg);
-}
-
 .rhc-mox-action-group-dense {
-  margin-block-start: 0 !important;
-
   :is(button, a) {
     padding-block: var(--rhc-space-sm);
     padding-inline: var(--rhc-space-md);
@@ -1816,12 +1903,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--rhc-space-lg);
-    margin-block: var(--rhc-space-lg);
     padding: var(--rhc-space-lg);
-
-    >* {
-      margin-block: 0;
-    }
   }
 
   /* Variant B: het bericht als pdf in de pagina. */
@@ -1880,11 +1962,6 @@ body {
 .rhc-mox-notice-amount-inbox {
   color: var(--rhc-color-cool-grey-500);
   font-size: var(--rhc-text-font-size-sm);
-  margin-block-end: var(--rhc-space-xl) !important;
-}
-
-.rhc-mox-inbox-filter {
-  margin-block: var(--rhc-space-3xl);
 }
 
 .rhc-mox-tabs-separator {
@@ -1905,10 +1982,6 @@ body {
 
   > :last-child {
     flex: 1 1 12rem;
-  }
-
-  .utrecht-form-field {
-    margin-block: 0;
   }
 
   .utrecht-textbox {

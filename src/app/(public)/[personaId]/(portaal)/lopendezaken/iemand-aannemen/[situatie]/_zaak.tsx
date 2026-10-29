@@ -92,7 +92,8 @@ const Zaak = ({
     ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
     : STANDAARD_ANTWOORDEN;
   const { uitkomsten, bekend, fout } = useUitkomsten(antwoorden);
-  if (!staat) return null;
+  // Ook voordat de opgeslagen staat er is, heeft de pagina een kop.
+  if (!staat) return <Heading level={1}>{demo.zaak.onderwerp}</Heading>;
 
   const { zaak, kandidaat, fasen, gebeurtenissen, komtHierna, besluit } = demo;
   const zaakStand = zaakVan(staat, situatie);
@@ -181,6 +182,7 @@ const Zaak = ({
   if (!zaakStand.ingediend)
     return (
       <>
+        <Heading level={1}>{onderwerp}</Heading>
         <Alert type="info">
           <Paragraph>
             Deze zaak bestaat nog niet: de aanvraag is nog niet verstuurd.{" "}
@@ -287,7 +289,7 @@ const Zaak = ({
         <ZakenTabs actief="lopend" />
         <Heading level={1}>{onderwerp}</Heading>
 
-        <section aria-labelledby="zaak-gegevens">
+        <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
           <Heading level={2} id="zaak-gegevens">
             Over deze zaak
           </Heading>
@@ -347,7 +349,7 @@ const Zaak = ({
           <Paragraph role="status">Wij berekenen de bedragen…</Paragraph>
         ) : (
           <>
-            <section aria-labelledby="zaak-voortgang">
+            <section className="rhc-mox-stack" aria-labelledby="zaak-voortgang">
               <Heading level={2} id="zaak-voortgang">
                 Voortgang
               </Heading>
@@ -376,7 +378,7 @@ const Zaak = ({
               )}
             </section>
 
-            <section aria-labelledby="zaak-tijdlijn">
+            <section className="rhc-mox-stack" aria-labelledby="zaak-tijdlijn">
               <Heading level={2} id="zaak-tijdlijn">
                 Alles wat is vastgelegd
               </Heading>
@@ -439,7 +441,7 @@ const Zaak = ({
             </section>
 
             {hierna.length > 0 && (
-              <section aria-labelledby="zaak-hierna">
+              <section className="rhc-mox-stack" aria-labelledby="zaak-hierna">
                 <Heading level={2} id="zaak-hierna">
                   Komt hierna
                 </Heading>

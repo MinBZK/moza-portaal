@@ -42,7 +42,7 @@
     />
     <style>
       .temp-moza-poc-banner {
-        background: #6aa549;
+        background: oklch(38.71% 0.1016 137.1);
         color: #fff;
         font-weight: 600;
         inline-size: 256px;
@@ -55,28 +55,44 @@
         text-decoration: none;
         transform: rotate(45deg);
         transform-origin: center;
-        z-index: 1;
+        z-index: 9;
       }
-      .temp-moza-poc-banner:hover {
-        background: #39870c;
-        color: #fff;
+      /* The illustration as a pseudo-element instead of a background of
+        <main>, so a contrast checker sees a plain background behind the text. */
+      .main.background-koppelcode {
+        background-image: none;
+        isolation: isolate;
+        position: relative;
+      }
+      .main.background-koppelcode::before {
+        background: url(/inloggen/assets/images/koppelcode.svg) no-repeat 50%
+          100% / 90%;
+        content: "";
+        inset: 0;
+        pointer-events: none;
+        position: absolute;
+        z-index: -1;
+      }
+      .temp-moza-poc-banner:hover,
+      .temp-moza-poc-banner:focus-visible {
+        text-decoration-line: underline;
       }
     </style>
   </head>
   <body>
-    <a class="temp-moza-poc-banner" href="https://www.mijnoverheidzakelijk.nl/"
-      >Proof of Concept</a
-    >
     <div class="message-dialog" tabindex="-1"></div>
     <nav id="skiplink">
       <ul>
         <li>
-          <a href="#main_content" tabindex="1" title="Direct naar de inhoud">
+          <a href="#main_content">
             Ga direct naar: inhoud
           </a>
         </li>
       </ul>
     </nav>
+    <a class="temp-moza-poc-banner" href="https://www.mijnoverheidzakelijk.nl/"
+      >Proof of Concept</a
+    >
     <div class="window small">
       <div class="content">
         <header class="header">
@@ -85,18 +101,16 @@
               ><img
                 alt="Logo Rijksoverheid - Ga naar www.digid.nl"
                 class="rijksoverheid-logo"
-                title="Logo Rijksoverheid - Ga naar www.digid.nl"
                 src="/inloggen/assets/images/ro-logo.svg"
             /></a>
             <nav class="header-navigation"></nav>
           </div>
           <div class="margin-top-15px"></div>
         </header>
-        <div class="main background background-koppelcode">
+        <main class="main background background-koppelcode">
           <img
             alt="DigiD"
             class="mydigid-logo"
-            title="DigiD"
             src="/inloggen/assets/images/digid_eo_rgb.svg"
           />
           <section
@@ -156,21 +170,21 @@
                   pointer-events: none;
                 "
               />
-              <fieldset class="form__item code_field">
-                <label
-                  class="form__item__label"
-                  for="app_verification_code_verification_code"
-                  >Vul daarna de koppelcode in die u in de DigiD app
-                  ziet.</label
-                >
-                <div class="form__item__text">
+              <fieldset
+                class="form__item code_field"
+                aria-describedby="koppelcode-uitleg"
+              >
+                <legend class="form__item__label">
+                  Vul daarna de koppelcode in die u in de DigiD app ziet.
+                </legend>
+                <div class="form__item__text" id="koppelcode-uitleg">
                   De DigiD app laat de koppelcode zien. Deze bestaat uit 4
                   letters. Vul de code in de 4 invoervelden hieronder in.
+                  <span class="form__item__legend__visually__hidden">
+                    Wanneer u een letter invult, dan verplaatst de cursor
+                    automatisch naar het volgende invoerveld.
+                  </span>
                 </div>
-                <legend class="form__item__legend__visually__hidden">
-                  Wanneer u een letter invult, dan verplaatst de cursor
-                  automatisch naar het volgende invoerveld.
-                </legend>
                 <input
                   hide_required_indicator="true"
                   data-minimum-length="4"
@@ -224,7 +238,7 @@
               </li>
             </ul>
           </section>
-        </div>
+        </main>
       </div>
       <footer class="footer">
         <div class="footer-questions">
@@ -243,12 +257,24 @@
       </footer>
     </div>
     <script>
-      // Prototype: zet focus op het laatste koppelcode-veld na opbouw door code_box
-      window.addEventListener("load", function () {
-        var laatste = document.getElementById(
-          "app_verification_code_verification_code_field_3",
-        );
-        if (laatste) laatste.focus();
+      // Prototype: na de opbouw van de vakjes door application.js (jQuery ready).
+      document.addEventListener("DOMContentLoaded", function () {
+        jQuery(function () {
+          var laatste = document.getElementById(
+            "app_verification_code_verification_code_field_3",
+          );
+          if (!laatste) return;
+          // application.js zet de 4 vakjes in een eigen fieldset zonder legend;
+          // de buitenste fieldset is de groep, dus deze wordt een div.
+          var vakjes = laatste.parentElement;
+          if (vakjes.tagName === "FIELDSET") {
+            var div = document.createElement("div");
+            div.append(...vakjes.childNodes);
+            vakjes.replaceWith(div);
+          }
+          // Zet focus op het laatste koppelcode-veld.
+          laatste.focus();
+        });
       });
     </script>
   </body>

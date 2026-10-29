@@ -82,7 +82,14 @@ const Besluit = ({
   const [melding, setMelding] = useState("");
   const [tekst, setTekst] = useState("");
   const { zaak, kandidaat, besluit, fasen, dienstverband } = demo;
-  if (!staat || !besluit) return null;
+  const kop = (
+    <Heading level={1}>
+      Besluit: {REGELING[situatie].naam.toLowerCase()} voor {kandidaat.voornaam}{" "}
+      {kandidaat.achternaam}
+    </Heading>
+  );
+  // Ook voordat de opgeslagen staat er is, heeft de pagina een kop.
+  if (!staat || !besluit) return kop;
 
   const regeling = REGELING[situatie];
   const zaakStand = zaakVan(staat, situatie);
@@ -95,15 +102,18 @@ const Besluit = ({
     faseIndex(zaakStand.fase, fasen) < faseIndex("besluit", fasen)
   )
     return (
-      <Alert type="info">
-        <Paragraph>
-          Er is nog geen besluit op deze aanvraag.{" "}
-          <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
-            Bekijk de voortgang van de zaak
-          </Link>
-          .
-        </Paragraph>
-      </Alert>
+      <>
+        {kop}
+        <Alert type="info">
+          <Paragraph>
+            Er is nog geen besluit op deze aanvraag.{" "}
+            <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
+              Bekijk de voortgang van de zaak
+            </Link>
+            .
+          </Paragraph>
+        </Alert>
+      </>
     );
 
   const verstuurVraag = (event: FormEvent<HTMLFormElement>) => {
@@ -127,10 +137,7 @@ const Besluit = ({
       <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
         Terug naar de zaak
       </Link>
-      <Heading level={1}>
-        Besluit: {regeling.naam.toLowerCase()} voor {kandidaat.voornaam}{" "}
-        {kandidaat.achternaam}
-      </Heading>
+      {kop}
 
       <DataSummary appearance="column">
         <DataSummaryItem
@@ -161,7 +168,7 @@ const Besluit = ({
           </Paragraph>
         </Alert>
       ) : (
-        <section aria-labelledby="besluit-tekst">
+        <section className="rhc-mox-stack" aria-labelledby="besluit-tekst">
           <Heading level={2} id="besluit-tekst">
             Besluit
           </Heading>
@@ -204,7 +211,7 @@ const Besluit = ({
         </section>
       )}
 
-      <section aria-labelledby="besluit-berekening">
+      <section className="rhc-mox-stack" aria-labelledby="besluit-berekening">
         <Heading level={2} id="besluit-berekening">
           Berekening
         </Heading>
@@ -224,7 +231,7 @@ const Besluit = ({
         />
       </section>
 
-      <section aria-labelledby="besluit-bezwaar">
+      <section className="rhc-mox-stack" aria-labelledby="besluit-bezwaar">
         {/* Bezwaar kan alleen tegen een besluit; zonder besluit blijft de vraag.
             Tijdens het rekenen blijft de kop staan, zoals de zaak (geldt). */}
         {!bekend || heeftRegel ? (
@@ -244,7 +251,10 @@ const Besluit = ({
             Een vraag over deze aanvraag?
           </Heading>
         )}
-        <form onSubmit={verstuurVraag} className="rhc-mox-row-gap">
+        <form
+          onSubmit={verstuurVraag}
+          className="rhc-mox-stack rhc-mox-stack--2xl"
+        >
           <label className="utrecht-form-label" htmlFor="da-vraag">
             Klopt dit niet? Stel uw vraag
           </label>

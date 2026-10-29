@@ -897,6 +897,7 @@ const Chat = ({
           ref={invoerRef}
           className="utrecht-textarea utrecht-textarea--html-textarea rhc-textarea"
           id="chat-invoer"
+          autoComplete="off"
           placeholder="Waarmee kan ik u helpen?"
           value={invoer}
           onChange={(event) => setInvoer(event.target.value)}

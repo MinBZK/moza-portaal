@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // De componentenvoorbeelden staan nu op /demo.
+        source: "/componenten-voorbeeld",
+        destination: "/demo",
+        permanent: true,
+      },
+      {
         // Oude naam van de stap Controleren en versturen.
         source: "/personeel/iemand-aannemen/indienen",
         destination: "/personeel/iemand-aannemen/versturen",

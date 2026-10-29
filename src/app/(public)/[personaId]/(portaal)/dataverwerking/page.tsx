@@ -1,14 +1,11 @@
+import type { Metadata } from "next";
 import {
   Heading,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
-  DataSummary,
-  DataSummaryItem,
   AccordionProvider,
 } from "@/components/rhc";
-import { formatDistanceToNowStrict } from "date-fns";
-import { nl } from "date-fns/locale";
 import {
   getDemoPersona,
   getDemoVerwerkingen,
@@ -16,22 +13,18 @@ import {
   getDemoVerwerkingVragen,
 } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
+import ActivityLog from "./_activityLog";
 
-// Tijden in Nederlandse tijd, ook als de server in UTC draait.
-const datumTijd = new Intl.DateTimeFormat("nl-NL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-  timeZone: "Europe/Amsterdam",
-});
+export const metadata: Metadata = { title: "Gegevensdeling en dataverwerking" };
 
 const DataverwerkingPage = async ({
   params,
+  searchParams,
 }: {
   params: Promise<{ personaId: string }>;
+  searchParams: Promise<{ pagina?: string }>;
 }) => {
+  const { pagina } = await searchParams;
   const persona = await getDemoPersona((await params).personaId);
   const organisatie = await getActieveOrganisatie(persona);
   const [verwerkingen, verwachtingen, vragen] = await Promise.all([
@@ -49,38 +42,12 @@ const DataverwerkingPage = async ({
       </Paragraph>
 
       <div className="rhc-mox-card">
-        <Heading level={2}>Activiteitenlogboek</Heading>
+        <Heading level={2}>Geschiedenis</Heading>
         <Paragraph>
           Dit is een overzicht van hoe uw bedrijfsgegevens worden gedeeld en
           verwerkt door overheidsorganisaties.
         </Paragraph>
-        <AccordionProvider
-          headingLevel={3}
-          sections={verwerkingen.map(
-            ({ id, organisatie, tijdstip, gegevens }) => ({
-              id,
-              label: `${organisatie} (${formatDistanceToNowStrict(new Date(tijdstip), { addSuffix: true, locale: nl })})`,
-              body: (
-                <>
-                  <Paragraph>
-                    <time dateTime={tijdstip}>
-                      {datumTijd.format(new Date(tijdstip))}
-                    </time>
-                  </Paragraph>
-                  <DataSummary appearance="column">
-                    {gegevens.map(({ soort, waarde }) => (
-                      <DataSummaryItem
-                        key={soort}
-                        itemKey={soort}
-                        itemValue={waarde}
-                      />
-                    ))}
-                  </DataSummary>
-                </>
-              ),
-            }),
-          )}
-        />
+        <ActivityLog entries={verwerkingen} page={Number(pagina) || 1} />
       </div>
 
       <div className="rhc-mox-card">

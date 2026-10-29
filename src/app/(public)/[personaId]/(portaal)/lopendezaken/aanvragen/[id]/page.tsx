@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -21,6 +22,16 @@ import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_vragen";
 import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
 import KostenBerekening from "./_kostenBerekening";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const [{ id }, persona] = await Promise.all([params, getActievePersona()]);
+  const aanvraag = await getDemoConceptAanvraagById(persona?.id, id);
+  return { title: `${aanvraag?.titel ?? "Aanvraag"} - Lopende zaken` };
+};
 
 /** Een aanvraag die nog niet is ingediend, om verder in te vullen. */
 const AanvraagPage = async ({
@@ -70,7 +81,7 @@ const AanvraagPage = async ({
             ` Dien de aanvraag in voor ${aanvraag.indienenVoor}.`}
         </Alert>
 
-        <section>
+        <section className="rhc-mox-stack">
           <DataSummary appearance="column">
             <DataSummaryItem
               itemKey="Organisatie"
@@ -97,7 +108,7 @@ const AanvraagPage = async ({
         </section>
 
         {!flow && (
-          <section aria-labelledby="aanvraag-kosten">
+          <section className="rhc-mox-stack" aria-labelledby="aanvraag-kosten">
             <Heading level={2} id="aanvraag-kosten">
               Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
             </Heading>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   AccordionProvider,
@@ -22,6 +23,8 @@ import {
 import BewaardeAanvragen from "./_bewaardeAanvragen";
 import ZakenTabel from "./_zakenTabel";
 import ZakenTabs from "./_zakenTabs";
+
+export const metadata: Metadata = { title: "Lopende zaken" };
 
 const LopendeZakenPage = async () => {
   const persona = await getActievePersona();

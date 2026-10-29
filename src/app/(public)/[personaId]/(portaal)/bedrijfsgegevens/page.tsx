@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Heading,
   Paragraph,
@@ -17,6 +18,8 @@ import {
   getActievePersona,
 } from "@/app/(public)/_persona";
 import NextLink from "next/link";
+
+export const metadata: Metadata = { title: "Bedrijfsgegevens" };
 
 const OndernemingsgegevensPage = async () => {
   const [gegevens, onderdelen, vragen] = await Promise.all([

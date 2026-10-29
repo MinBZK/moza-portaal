@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
@@ -5,6 +6,10 @@ import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
 import Stappen from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
+
+export const metadata: Metadata = {
+  title: "Aanvraag laten invullen - Personeel en rollen",
+};
 
 /** Scherm 2: aanvraag laten invullen. Namens wie, de kandidaat, en per bron bevestigen. */
 const GegevensPage = async () => {
