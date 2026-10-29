@@ -48,11 +48,12 @@ const GegevensPage = async () => {
       </Paragraph>
       <div className="rhc-mox-card">
         <Stappen huidige={2} />
-        <Paragraph>
-          Om de aanvragen in te vullen, halen we gegevens op bij de organisaties
-          die ze al hebben. U hoeft ze dan niet zelf op te zoeken.
-        </Paragraph>
-        <Alert type="info">
+        <Alert type="info" closable>
+          <Paragraph>
+            Om de aanvragen in te vullen, halen wij gegevens op bij de
+            organisaties die ze al hebben. U hoeft ze dan niet zelf op te
+            zoeken.
+          </Paragraph>
           <Paragraph>
             Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
             omgeving, tot u die zelf verstuurt.
