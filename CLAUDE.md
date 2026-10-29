@@ -48,6 +48,7 @@ Het MijnOverheid Zakelijk portaal is een overheidsportaal gebouwd met Next.js, R
 
 - Gebruik Rijks Sans en bestaande Rijksoverheid-kleuren en tokens.
 - Gebruik design tokens voor kleur, spacing, typografie, radius en focus.
+- `--rhc-text-font-size-xs` (14px) is geen gewone tekstgrootte: die is niet goed toegankelijk. Gebruik hem nooit voor lopende tekst, alleen voor uitzonderingen zoals een tekstbadge, en altijd samen met `--rhc-text-font-weight-semi-bold` of `--rhc-text-font-weight-bold`.
 - Gebruik NLDS/Rijkshuisstijl Community-componenten wanneer die passen bij de taak.
 - Importeer NLDS-design tokens en component-CSS één keer in `src/app/layout.tsx`.
 - Laat NLDS-componenten binnen de `.rhc-theme`-scope renderen.

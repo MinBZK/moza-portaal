@@ -31,7 +31,7 @@ const FieldLabel = ({
   );
 
   return info ? (
-    <span className="rhc-mox-field-label">
+    <span className="rhc-mox-with-info">
       {label}
       {info}
     </span>

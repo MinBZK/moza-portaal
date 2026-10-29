@@ -41,12 +41,16 @@
   --rhc-grid-vi-medium-column-gap: var(--rhc-space-max-xl);
 
   /* Typografische wijzigingen t.o.v. RHC */
+  /* Extra small text, 14px. Not well accessible: never for running text,
+    only for exceptions such as a text badge. Always combine it with
+    --rhc-text-font-weight-semi-bold or --rhc-text-font-weight-bold. */
+  --rhc-text-font-size-xs: 0.875rem;
   --nl-heading-level-1-font-size: 2rem;
   --nl-heading-level-2-font-size: 1.75rem;
   --nl-heading-level-3-font-size: 1.5rem;
   --nl-paragraph-font-size: 1.125rem;
   --nl-number-badge-font-size: var(--rhc-text-font-size-sm);
-  --nl-data-badge-font-size: 0.875rem;
+  --nl-data-badge-font-size: var(--rhc-text-font-size-xs);
   --rhc-data-summary-item-key-font-weight: var(--rhc-text-font-weight-semi-bold);
   --rhc-navigation-list-item-label-font-weight: var(--rhc-text-font-weight-semi-bold);
   --rhc-text-font-size-min-md: 1rem;
@@ -113,6 +117,8 @@
 
 .rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
   --utrecht-form-field-description-margin-block-start: var(--rhc-space-sm);
+  color: var(--rhc-color-cool-grey-700);
+  font-size: var(--rhc-text-font-size-sm);
 }
 
 .rhc-theme.mox-theme .rhc-form-field {
@@ -460,11 +466,16 @@ small,
   font-size: var(--rhc-text-font-size-sm);
 }
 
-/* A large amount or number, such as a total. */
-.rhc-mox-amount {
-  font-size: var(--rhc-text-font-size-xl);
-  font-weight: var(--rhc-text-font-weight-bold);
-  line-height: var(--rhc-text-line-height-sm, 1.2);
+/* --- DataSummary: a badge in the value always sits on the right --- */
+.rhc-data-summary__item-value:has(> .rhc-mox-text-badge) {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rhc-space-xs) var(--rhc-space-md);
+
+  >.rhc-mox-text-badge {
+    margin-inline-start: auto;
+  }
 }
 
 /* --- Cluster: short items in a row that wrap, such as badges --- */
@@ -475,50 +486,14 @@ small,
   gap: var(--rhc-space-md);
 }
 
-/* --- Highlight: a grey block that sets a result apart, such as a total --- */
+/* --- Highlight: a light blue block that sets a result apart, such as a total --- */
 .rhc-mox-highlight {
-  background-color: var(--rhc-color-cool-grey-100);
+  background-color: color-mix(in srgb, var(--rhc-color-hemelblauw-50) 60%, transparent);
+  border: var(--rhc-border-width-sm) solid var(--rhc-color-hemelblauw-100);
   border-radius: var(--rhc-border-radius-md);
   display: grid;
-  gap: var(--rhc-space-sm);
-  padding: var(--rhc-space-lg);
-}
-
-/* --- Amount list: name and amount per row, the amount right-aligned --- */
-.rhc-mox-amount-list {
-  display: grid;
   gap: var(--rhc-space-lg);
-
-  >div {
-    align-items: baseline;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--rhc-space-xs) var(--rhc-space-lg);
-    justify-content: space-between;
-  }
-
-  /* The name gets room first; when the amount no longer fits next to it,
-    the amount moves to its own line. */
-  dt {
-    display: grid;
-    flex: 1 1 8rem;
-    font-size: var(--rhc-text-font-size-sm);
-    gap: var(--rhc-space-xs);
-    justify-items: start;
-    min-inline-size: 0;
-  }
-
-  /* The amount never breaks and is bold; plain text such as "geldt niet"
-    is not an amount. */
-  dd {
-    font-weight: var(--rhc-text-font-weight-bold);
-    margin-inline-start: auto;
-    white-space: nowrap;
-  }
-
-  .rhc-mox-amount-list__text {
-    font-weight: var(--rhc-text-font-weight-default);
-  }
+  padding: var(--rhc-space-xl);
 }
 
 /* --- Disclosure: <details> that opens extra content --- */
@@ -651,6 +626,17 @@ small,
 
 
 /* --- DataSummary --- */
+.rhc-data-summary__item-key {
+  display: flex;
+
+  /* Its own height, also when the name wraps over several lines: a flex item
+    stretches to the full height of the row by default. */
+  .rhc-mox-text-badge {
+    align-self: start;
+    margin-inline-start: auto;
+  }
+}
+
 .rhc-theme.mox-theme {
   @media (width >=768px) {
     .rhc-data-summary--columns {
@@ -1621,7 +1607,12 @@ small,
 /* The content opens as a layer under the (i) button and pushes nothing
   aside. With anchor positioning it moves to the other side when there is
   no room on the right. */
+/* The (i) button sits on the baseline, so it stood a little above the middle
+  of the text next to it; -0.15em centres it on the text. */
 .rhc-toggletip {
+  anchor-scope: --rhc-toggletip;
+  position: relative;
+  vertical-align: -0.15em;
   --rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
   --rhc-toggletip-hover-background-color: var(--rhc-color-lintblauw-700);
   --rhc-toggletip-focus-background-color: var(--rhc-color-lintblauw-700);
@@ -1634,14 +1625,11 @@ small,
   --rhc-toggletip-hover-color: var(--rhc-color-wit);
   --rhc-toggletip-focus-color: var(--rhc-color-wit);
   --rhc-toggletip-active-color: var(--rhc-color-wit);
-  anchor-scope: --rhc-toggletip;
-  position: relative;
 }
 
 .rhc-toggletip__summary {
   anchor-name: --rhc-toggletip;
   margin-block-end: 0;
-  vertical-align: text-top;
 }
 
 /* No room on either side, as on a narrow screen: the width of the window. */
@@ -1671,11 +1659,11 @@ small,
 }
 
 .rhc-toggletip__alert {
-  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+  box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
 
   .utrecht-alert__icon {
+    --utrecht-icon-inset-block-start: 0;
     inline-size: var(--rhc-space-2xl);
-    margin-block-start: 0;
   }
 
   .utrecht-icon {
@@ -1789,18 +1777,58 @@ small,
   }
 }
 
-/* A label with extra information next to it, such as an InfoToggletip
-  (src/components/FieldLabel.tsx). */
-/* The information follows the last word of the label, also when the label
-  wraps over several lines. */
-.rhc-mox-field-label {
-  >label {
+/* A fieldset with extra information next to the legend
+  (src/components/Fieldset.tsx). A floated legend is an ordinary child, so it
+  becomes a grid item: legend and info share the first row, the fields span
+  the full width below. The legend still names the group. */
+.utrecht-form-fieldset.rhc-mox-fieldset--info {
+  .utrecht-form-fieldset__fieldset {
+    align-items: center;
+    grid-template-columns: minmax(0, max-content) 1fr;
+  }
+
+  .utrecht-form-fieldset__legend {
+    float: inline-start;
+    margin-block-end: 0;
+  }
+
+  .utrecht-form-fieldset__fieldset> :not(legend, .rhc-mox-fieldset__info) {
+    grid-column: 1 / -1;
+  }
+
+  .rhc-mox-fieldset__info {
+    justify-self: start;
+  }
+}
+
+/* A label or heading with extra information right after it, such as an
+  InfoToggletip (src/components/FieldLabel.tsx). The information follows the
+  last word, also when the text wraps over several lines. */
+.rhc-mox-with-info {
+  >:first-child {
     display: inline;
   }
 
-  >:not(label) {
+  >:not(:first-child) {
     display: inline;
     margin-inline-start: var(--rhc-space-sm);
+  }
+}
+
+/* Variant: the information in the top right corner, with the text next to
+  it. For a heading at the top of a block, such as a highlight. */
+.rhc-mox-with-info--end {
+  align-items: start;
+  display: flex;
+  gap: var(--rhc-space-md);
+  justify-content: space-between;
+
+  >:first-child {
+    display: block;
+  }
+
+  >:not(:first-child) {
+    margin-inline-start: 0;
   }
 }
 
@@ -2097,13 +2125,22 @@ small,
   border-radius: var(--rhc-border-radius-round);
   color: var(--rhc-color-foreground-default);
   display: inline-flex;
-  font-size: var(--rhc-text-font-size-sm);
+  font-size: var(--rhc-text-font-size-xs);
   font-weight: var(--rhc-text-font-weight-semi-bold);
   gap: var(--rhc-space-sm);
-  line-height: var(--rhc-text-line-height-md);
-  padding-block: var(--rhc-space-sm);
+  /* About as high as a line of text, so it does not stick out above or
+    below the text next to it; the text in the badge on its baseline. */
+  line-height: var(--rhc-text-line-height-sm);
+  padding-block: var(--rhc-space-xs);
   padding-inline: var(--rhc-space-lg);
-  vertical-align: middle;
+  vertical-align: baseline;
+}
+
+/* Room between a badge and the element before it. Not in a flex container
+  with gap (cluster, the key of a DataSummary, the summary of a disclosure):
+  there the gap already sets the room. */
+:not(.rhc-mox-cluster, .rhc-data-summary__item-key, summary)>*+.rhc-mox-text-badge {
+  margin-inline-start: var(--rhc-space-md);
 }
 
 .rhc-mox-text-badge--info {

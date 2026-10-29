@@ -498,10 +498,10 @@ const AanvraagInhoud = ({
           Loonkostenvoordeel
         </Heading>
         {lkv && (
-          <p className="rhc-mox-amount">
-            {euro(lkv.bedragPerJaar)}{" "}
+          <Paragraph purpose="lead">
+            <strong>{euro(lkv.bedragPerJaar)}</strong>{" "}
             <small className="rhc-mox-small-text">per jaar</small>
-          </p>
+          </Paragraph>
         )}
         {lkv?.aanname && <Aanname id={lkv.aanname} />}
         <LkvVoorbehoud categorie={lkv?.categorie} />

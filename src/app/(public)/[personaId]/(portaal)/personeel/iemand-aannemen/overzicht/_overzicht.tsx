@@ -146,10 +146,10 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
           {route.vanzelf.includes("lkv") && (
             <Kaart id="vanzelf-lkv" kop="Loonkostenvoordeel">
               {lkv && (
-                <p className="rhc-mox-amount">
-                  {euro(lkv.bedragPerJaar)}{" "}
+                <Paragraph purpose="lead">
+                  <strong>{euro(lkv.bedragPerJaar)}</strong>{" "}
                   <small className="rhc-mox-small-text">per jaar</small>
-                </p>
+                </Paragraph>
               )}
               {lkv?.aanname && <Aanname id={lkv.aanname} />}
               <LkvVoorbehoud categorie={lkv?.categorie} />

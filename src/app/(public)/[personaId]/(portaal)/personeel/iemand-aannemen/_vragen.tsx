@@ -205,7 +205,8 @@ const VragenMetStaat = ({
                 step={5}
                 value={a.loonwaarde}
                 onChange={(loonwaarde) => zet({ loonwaarde })}
-                formatValue={(loonwaarde) =>
+                formatValue={(loonwaarde) => `${loonwaarde} procent`}
+                formatValueText={(loonwaarde) =>
                   loonwaarde === 100
                     ? "100 procent: geen verminderde loonwaarde"
                     : `${loonwaarde} procent`
@@ -225,6 +226,14 @@ const VragenMetStaat = ({
                     </Paragraph>
                     <Paragraph>
                       De gemeente meet de loonwaarde later op de werkplek.
+                    </Paragraph>
+                    <Paragraph>
+                      Volgens de wet is de loonkostensubsidie altijd het
+                      verschil tussen het minimumloon en de loonwaarde. Betaalt
+                      u meer dan het minimumloon, dan krijgt u dus niet meer
+                      subsidie. Het loonkostenvoordeel is een vast bedrag per
+                      verloond uur. Een hoger uurloon maakt alleen uw loonkosten
+                      hoger.
                     </Paragraph>
                   </InfoToggletip>
                 }
@@ -276,13 +285,6 @@ const VragenMetStaat = ({
                 />
               )}
             </Fieldset>
-            <Paragraph className="rhc-mox-small-text">
-              Volgens de wet is de loonkostensubsidie altijd het verschil tussen
-              het minimumloon en de loonwaarde. Betaalt u meer dan het
-              minimumloon, dan krijgt u dus niet meer subsidie. Het
-              loonkostenvoordeel is een vast bedrag per verloond uur. Een hoger
-              uurloon maakt alleen uw loonkosten hoger.
-            </Paragraph>
           </div>
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
             <StickyInfoBox title="Wat het kost en oplevert">
@@ -303,16 +305,18 @@ const VragenMetStaat = ({
             {overige.map((o) => (
               <UnorderedListItem key={o.id}>
                 <strong>{OVERIG[o.id].naam}</strong>{" "}
+                <InfoToggletip
+                  label={`Toelichting bij ${OVERIG[o.id].naam.toLowerCase()}`}
+                >
+                  Uitkomst van de regelrecht-engine bij uw antwoorden. Of de
+                  regeling geldt, beslist de organisatie die haar uitvoert.
+                </InfoToggletip>{" "}
                 <Uitvoerder id={OVERIG[o.id].uitvoerder} />
                 <br />
                 {OVERIG[o.id].tekst(o)}
               </UnorderedListItem>
             ))}
           </UnorderedList>
-          <Paragraph className="rhc-mox-small-text">
-            Uitkomsten van de regelrecht-engine bij uw antwoorden. Of een
-            regeling geldt, beslist de organisatie die haar uitvoert.
-          </Paragraph>
         </section>
       )}
 

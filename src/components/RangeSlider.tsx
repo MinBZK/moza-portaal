@@ -26,6 +26,12 @@ type RangeSliderProps = Omit<
   onChange?: (value: number, event: ChangeEvent<HTMLInputElement>) => void;
   /** How the value is shown, for example "32 uur". */
   formatValue?: (value: number) => string;
+  /**
+   * What a screen reader reads out for a value, when that needs more than
+   * the shown text, for example "100 procent: geen verminderde loonwaarde".
+   * Defaults to formatValue.
+   */
+  formatValueText?: (value: number) => string;
   /** Colour the track from the start up to the thumb. */
   filled?: boolean;
 };
@@ -44,6 +50,7 @@ const RangeSlider = ({
   defaultValue,
   onChange,
   formatValue = String,
+  formatValueText = formatValue,
   filled = false,
   className,
   style,
@@ -74,7 +81,7 @@ const RangeSlider = ({
           max={max}
           value={current}
           // Screen readers read out the shown value, not just the number.
-          aria-valuetext={formatValue(current)}
+          aria-valuetext={formatValueText(current)}
           onChange={(event) => {
             const next = Number(event.target.value);
             if (value === undefined) setOwnValue(next);

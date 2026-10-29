@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Paragraph } from "@/components/rhc";
+import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import { loonkostenPerJaar } from "./_engine";
@@ -72,17 +72,18 @@ export const lkvDuurTekst = (categorie: string | undefined) =>
       ? "Het loonkostenvoordeel geldt ten hoogste drie jaar vanaf de start."
       : "Het loonkostenvoordeel geldt zolang de werknemer bij u in dienst is en aan de voorwaarden voldoet.";
 
+/** De duur en het voorbehoud bij het loonkostenvoordeel, als losse zinnen. */
+const lkvToelichting = (categorie: string | undefined) => [
+  ...(categorie ? [lkvDuurTekst(categorie)] : []),
+  ...lkvVoorbehoud(categorie).map((id) => VOORBEHOUD[id]),
+];
+
 /** De duur en het voorbehoud bij het loonkostenvoordeel, als korte notities. */
 export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) => (
   <>
-    {categorie && (
-      <Paragraph className="rhc-mox-small-text">
-        {lkvDuurTekst(categorie)}
-      </Paragraph>
-    )}
-    {lkvVoorbehoud(categorie).map((id) => (
-      <Paragraph key={id} className="rhc-mox-small-text">
-        {VOORBEHOUD[id]}
+    {lkvToelichting(categorie).map((zin) => (
+      <Paragraph key={zin} className="rhc-mox-small-text">
+        {zin}
       </Paragraph>
     ))}
   </>
@@ -107,7 +108,9 @@ const UITVOERDER_VAN: Record<BalansRegel["id"], UitvoerderId> = {
 };
 
 export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
-  <TextBadge variant={UITVOERDER[id].variant}>{UITVOERDER[id].tekst}</TextBadge>
+  <TextBadge variant={UITVOERDER[id].variant} icon={false}>
+    {UITVOERDER[id].tekst}
+  </TextBadge>
 );
 
 const naam = (r: BalansRegel) =>
@@ -186,48 +189,69 @@ const Balans = ({
         : r.status === "niet_meegeteld"
           ? "niet meegeteld"
           : "geldt niet";
-  const klasse = (r: BalansRegel) =>
-    bekend && !fout && r.status !== "bedrag"
-      ? "rhc-mox-amount-list__text"
-      : undefined;
 
-  const bron = (
-    <Paragraph
-      className="rhc-mox-small-text"
-      role={bezig ? "status" : undefined}
-    >
-      {bezig && !fout && "Wij rekenen uit…"}
-      {fout
-        ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. `
-        : "Berekend in uw browser door de regelrecht-engine"}
-      {!fout &&
-        manifest.status === "klaar" &&
-        ` (engine ${manifest.waarde.regelrecht.slice(0, 8)}, corpus ${manifest.waarde.corpus.revisie.slice(0, 8)})`}
-      {!fout && ". "}
-      Dit is een berekening vooraf. Na uw aanvraag beslist de organisatie die de
-      regeling uitvoert over het bedrag. De loonkosten zijn een schatting.
-    </Paragraph>
+  // Rekenen en fouten blijven zichtbaar; de herkomst staat in de toggletip.
+  const bron =
+    bezig || fout ? (
+      <Paragraph
+        className="rhc-mox-small-text"
+        role={bezig ? "status" : undefined}
+      >
+        {fout
+          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. Dit is een berekening vooraf. Na uw aanvraag beslist de organisatie die de regeling uitvoert over het bedrag.`
+          : "Wij rekenen uit…"}
+      </Paragraph>
+    ) : null;
+
+  /**
+   * Kop van het totaal, met de herkomst van de berekening in een toggletip.
+   * De toggletip staat naast de kop, niet erin: een kop mag geen <details>
+   * bevatten, en de naam van de knop zou dan in de kop komen.
+   */
+  const totaalKop = (tekst: string) => (
+    <div className="rhc-mox-with-info rhc-mox-with-info--end">
+      <Heading level={3} appearanceLevel={5}>
+        {tekst}
+      </Heading>
+      {!fout && (
+        <>
+          <InfoToggletip label="Toelichting bij de berekening">
+            <Paragraph>
+              Berekend in uw browser door de regelrecht-engine
+              {manifest.status === "klaar" &&
+                ` (engine ${manifest.waarde.regelrecht.slice(0, 8)}, corpus ${manifest.waarde.corpus.revisie.slice(0, 8)})`}
+              .
+            </Paragraph>
+            <Paragraph>
+              Dit is een berekening vooraf. Na uw aanvraag beslist de
+              organisatie die de regeling uitvoert over het bedrag. De
+              loonkosten zijn een schatting.
+            </Paragraph>
+          </InfoToggletip>
+        </>
+      )}
+    </div>
   );
 
   if (kort)
     return (
       <>
-        <dl className="rhc-mox-amount-list">
+        <dl className="rhc-data-summary rhc-data-summary--row">
           {regels.map((r) => (
-            <div key={r.id}>
-              <dt>
-                {naam(r)}
+            <div key={r.id} className="rhc-data-summary__item">
+              <dt className="rhc-data-summary__item-key">
+                <span>{naam(r)}</span>
                 <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
-              <dd className={klasse(r)}>{waarde(r)}</dd>
+              <dd className="rhc-data-summary__item-value">{waarde(r)}</dd>
             </div>
           ))}
         </dl>
         <div className="rhc-mox-highlight">
-          <Paragraph>
-            <strong>Samen ongeveer per jaar</strong>
+          {totaalKop("Samen ongeveer per jaar")}
+          <Paragraph purpose="lead">
+            <strong>{bedrag(terug)}</strong>
           </Paragraph>
-          <p className="rhc-mox-amount">{bedrag(terug)}</p>
         </div>
         {ldBedrag && <LdNotitie kort />}
         {lkvBedrag && (
@@ -248,37 +272,47 @@ const Balans = ({
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
-      <dl className="rhc-mox-amount-list">
-        <div>
-          <dt>Loonkosten</dt>
-          <dd>{euro(kosten)}</dd>
+      <dl className="rhc-data-summary rhc-data-summary--column">
+        <div className="rhc-data-summary__item">
+          <dt className="rhc-data-summary__item-key">Loonkosten</dt>
+          <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
         </div>
-        {regels.map((r) => (
-          <div key={r.id}>
-            <dt>
-              {naam(r)}
-              {r.regel?.aanname && (
-                <>
-                  {" "}
-                  <InfoToggletip
-                    label={`Toelichting bij ${naam(r).toLowerCase()}`}
-                  >
-                    {AANNAMES[r.regel.aanname].uitleg}
-                  </InfoToggletip>
-                </>
-              )}
-              <Uitvoerder id={UITVOERDER_VAN[r.id]} />
-            </dt>
-            <dd className={klasse(r)}>{waarde(r, "− ")}</dd>
-          </div>
-        ))}
+        {regels.map((r) => {
+          // De aanname en, bij het loonkostenvoordeel, de duur en het voorbehoud.
+          const toelichting = [
+            ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
+            ...(r.id === "lkv" && bekend && !fout
+              ? lkvToelichting(r.regel?.categorie)
+              : []),
+          ];
+          return (
+            <div key={r.id} className="rhc-data-summary__item">
+              <dt className="rhc-data-summary__item-key">
+                <span>
+                  {naam(r)}
+                  {toelichting.length > 0 && (
+                    <>
+                      {" "}
+                      <InfoToggletip
+                        label={`Toelichting bij ${naam(r).toLowerCase()}`}
+                      >
+                        {toelichting.map((zin) => (
+                          <Paragraph key={zin}>{zin}</Paragraph>
+                        ))}
+                      </InfoToggletip>
+                    </>
+                  )}
+                </span>
+                <Uitvoerder id={UITVOERDER_VAN[r.id]} />
+              </dt>
+              <dd className="rhc-data-summary__item-value">
+                {waarde(r, "− ")}
+              </dd>
+            </div>
+          );
+        })}
       </dl>
       {ldBedrag && <LdNotitie />}
-      {bekend && !fout && (
-        <LkvVoorbehoud
-          categorie={regels.find((r) => r.id === "lkv")?.regel?.categorie}
-        />
-      )}
       {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
       {bekend &&
         !fout &&
@@ -298,10 +332,10 @@ const Balans = ({
       )}
       {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
       <div className="rhc-mox-highlight">
-        <Paragraph>
-          <strong>Uw loonkosten met deze regelingen, ongeveer per jaar</strong>
+        {totaalKop("Uw loonkosten met deze regelingen, ongeveer per jaar")}
+        <Paragraph purpose="lead">
+          <strong>{bedrag(netto)}</strong>
         </Paragraph>
-        <p className="rhc-mox-amount">{bedrag(netto)}</p>
         {bekend && !fout && terug > 0 && (
           <Paragraph>
             Dat is ongeveer {euro(terug)} per jaar minder dan zonder regelingen.
