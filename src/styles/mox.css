@@ -58,21 +58,15 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		background-color: var(--rhc-color-cool-grey-100);
 	}
 
+	.rhc-mox-main-container {
+		gap: var(--rhc-space-xl);
+	}
+
 	#hoofd-inhoud {
 		padding-block-end: var(--rhc-space-max-4xl);
 
 		@media (width < 768px) {
 			padding-block: var(--rhc-space-lg);
-		}
-	}
-
-	.rhc-mox-main-container {
-		.rhc-mox-card {
-			margin-block-end: 0;
-		}
-
-		h1 {
-			margin-block-end: 0;
 		}
 	}
 
@@ -95,8 +89,9 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		border-block-end-width: var(--rhc-border-width-md)
 	}
 
+	/* No extra space under the header, as in rhc.css. */
 	.utrecht-page-header__content {
-		margin-block-end: 0;
+		padding-block-end: var(--utrecht-page-header-content-padding-block-end, 0px);
 	}
 
 	.rhc-nav-bar__link,
@@ -191,10 +186,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	}
 
-	[aria-labelledby=menu-organisaties] {
-		margin-block-end: var(--rhc-space-2xl);
-	}
-
 	/* --- Footer --- */
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
@@ -203,7 +194,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		:is(h2, h3, h4, h5, h6) {
 			color: var(--rhc-color-wit);
 			font-size: var(--rhc-text-font-size-lg);
-			margin-block-end: var(--rhc-space-lg);
 		}
 
 		/* Iconen in de LinkList staan via 1lh al op de eerste regel (Iconen en
@@ -239,7 +229,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* --- Badges --- */
 	.rhc-number-badge {
-		--nl-number-badge-background-color: var(--rhc-color-light-rood-500);
+		--nl-number-badge-background-color: var(--rhc-color-light-rood-600);
 		font-size: .75rem;
 		min-inline-size: var(--rhc-space-md);
 		padding: 0 var(--rhc-space-md);
@@ -319,11 +309,11 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		border-color: var(--rhc-color-light-cool-grey-300);
 		border-radius: var(--rhc-border-radius-md);
 		border-width: var(--rhc-border-width-sm);
+		gap: var(--rhc-space-2xl);
 
 		h2,
+		h3,
 		h4 {
-			margin-block-end: var(--rhc-space-xl);
-
 			a {
 				color: var(--rhc-color-lintblauw-500);
 				font-weight: var(--rhc-text-font-weight-semi-bold);
@@ -335,27 +325,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			}
 		}
 
-		/* Space between consecutive text blocks only. Unlike :last-child, a close
-		  button, table or ActionGroup after the text does not count. */
-		:is(p, ul, ol:not(.ams-pagination__list)) {
-			margin-block-end: 0;
-		}
-
-		:is(p, ul, ol:not(.ams-pagination__list))+ :is(p, ul, ol:not(.ams-pagination__list)) {
-			margin-block-start: var(--rhc-space-lg);
-		}
-
 		.utrecht-table {
 			padding: 0;
 		}
 
 		.utrecht-accordion {
 			padding: 0;
-		}
-
-		/* Berichtenbox variant C: het paneel regelt de ruimte zelf met gap. */
-		.rhc-mox-message-actions> :is(h2, p) {
-			margin-block: 0;
 		}
 	}
 
@@ -508,17 +483,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 /* Iemand aannemen (Digitale assistent 2.0): stappenbalk, bronnen met vinkje,
 	 regelingkaarten en de tijdlijn van vastleggingen. */
 .mox-theme {
+
 	/* De gekozen waarde van een schuifregelaar ("32 uur") blijft op één regel. */
 	.rhc-mox-range-slider__value {
 		white-space: nowrap;
 	}
 
-	/* Ruimte tussen de opties van vraag 1; de algemene regel in rhc.css verliest
-	  het van de CSS van Utrecht. */
-	.mox-hiring-choices .utrecht-form-field--checkbox {
-		gap: var(--rhc-space-xs);
-		margin-block-start: var(--rhc-space-md);
-	}
 
 	.mox-hiring-label {
 		border: 1px solid currentcolor;
@@ -577,17 +547,15 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		cursor: pointer;
 	}
 
-	.mox-hiring-why {
-		margin-block-start: var(--rhc-space-block-md, 1rem);
-	}
-
-	.mox-hiring-why > summary {
+	.mox-hiring-why>summary {
 		cursor: pointer;
 		font-weight: 700;
 	}
 
-	.mox-hiring-why > div > * + * {
-		margin-block-start: var(--rhc-space-block-sm, 0.75rem);
+	.mox-hiring-why>div {
+		display: grid;
+		gap: var(--rhc-space-lg);
+		padding-block-start: var(--rhc-space-md);
 	}
 
 	.mox-hiring-trace {
@@ -675,7 +643,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* Naam en bedrag naast elkaar, de organisatie onder de naam. Zo staat het
 	  bedrag in elke rij op dezelfde plek. Het bedrag breekt nooit. */
-	.mox-hiring-balance > div {
+	.mox-hiring-balance>div {
 		align-items: baseline;
 		display: flex;
 		flex-wrap: wrap;
@@ -722,13 +690,13 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		overflow: hidden;
 	}
 
-	.mox-hiring-bar > span {
+	.mox-hiring-bar>span {
 		background: var(--rhc-color-blue-80, #01689b);
 		block-size: 100%;
 		display: block;
 	}
 
-	.mox-hiring-bar > .mox-hiring-bar--plus {
+	.mox-hiring-bar>.mox-hiring-bar--plus {
 		background: var(--rhc-color-groen-80, #1d7040);
 	}
 
@@ -779,7 +747,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		border-radius: 0.25rem;
 	}
 
-	.mox-hiring-panel > summary {
+	.mox-hiring-panel>summary {
 		align-items: center;
 		cursor: pointer;
 		display: flex;
@@ -788,12 +756,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		padding: 1rem;
 	}
 
-	.mox-hiring-panel > summary :is(h2, h3) {
+	.mox-hiring-panel>summary :is(h2, h3) {
 		font-size: var(--rhc-font-size-lg, 1.125rem);
 		margin: 0;
 	}
 
-	.mox-hiring-panel > div {
+	.mox-hiring-panel>div {
 		border-block-start: 1px solid var(--rhc-color-grey-40, #ccc);
 		padding: 1rem;
 	}

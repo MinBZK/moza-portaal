@@ -379,7 +379,7 @@ const BerichtenLijst = ({
     .size;
 
   return (
-    <div>
+    <div className="rhc-mox-stack rhc-mox-stack--2xl">
       {bezig ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
@@ -466,7 +466,7 @@ const BerichtenLijst = ({
       </div>
 
       {weergave === "inbox" && (
-        <div className="rhc-mox-inbox-filter rhc-mox-inbox-filters">
+        <div className="rhc-mox-inbox-filters">
           <FormFieldTextInput
             label="Filter berichten"
             type="search"

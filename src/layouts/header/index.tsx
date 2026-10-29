@@ -97,6 +97,7 @@ const Header = ({
             />
           </Logo>
           <NavBar
+            aria-label="Account"
             headingItem={{
               href: "/",
               id: "heading",

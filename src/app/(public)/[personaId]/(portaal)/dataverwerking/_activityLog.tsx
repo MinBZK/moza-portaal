@@ -72,7 +72,7 @@ const ActivityLog = ({
       <div className="rhc-mox-table-container">
         <Table>
           <caption className="rhc-visually-hidden">
-            Activiteitenlogboek, pagina {currentPage} van {totalPages}
+            Geschiedenis, pagina {currentPage} van {totalPages}
           </caption>
           <TableHeader>
             <TableRow>

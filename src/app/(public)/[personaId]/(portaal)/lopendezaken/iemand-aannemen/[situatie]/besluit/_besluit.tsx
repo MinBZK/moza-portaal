@@ -168,7 +168,7 @@ const Besluit = ({
           </Paragraph>
         </Alert>
       ) : (
-        <section aria-labelledby="besluit-tekst">
+        <section className="rhc-mox-stack" aria-labelledby="besluit-tekst">
           <Heading level={2} id="besluit-tekst">
             Besluit
           </Heading>
@@ -211,7 +211,7 @@ const Besluit = ({
         </section>
       )}
 
-      <section aria-labelledby="besluit-berekening">
+      <section className="rhc-mox-stack" aria-labelledby="besluit-berekening">
         <Heading level={2} id="besluit-berekening">
           Berekening
         </Heading>
@@ -231,7 +231,7 @@ const Besluit = ({
         />
       </section>
 
-      <section aria-labelledby="besluit-bezwaar">
+      <section className="rhc-mox-stack" aria-labelledby="besluit-bezwaar">
         {/* Bezwaar kan alleen tegen een besluit; zonder besluit blijft de vraag.
             Tijdens het rekenen blijft de kop staan, zoals de zaak (geldt). */}
         {!bekend || heeftRegel ? (
@@ -251,7 +251,10 @@ const Besluit = ({
             Een vraag over deze aanvraag?
           </Heading>
         )}
-        <form onSubmit={verstuurVraag} className="rhc-mox-row-gap">
+        <form
+          onSubmit={verstuurVraag}
+          className="rhc-mox-stack rhc-mox-stack--2xl"
+        >
           <label className="utrecht-form-label" htmlFor="da-vraag">
             Klopt dit niet? Stel uw vraag
           </label>

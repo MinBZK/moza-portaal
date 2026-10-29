@@ -80,7 +80,7 @@ const Breadcrumb = () => {
 
   return (
     <>
-      <BreadcrumbNav>
+      <BreadcrumbNav aria-label="Kruimelpad">
         <BreadcrumbNavLink Link={NldsNextLink} href="/" index={0} rel="home">
           Home
         </BreadcrumbNavLink>

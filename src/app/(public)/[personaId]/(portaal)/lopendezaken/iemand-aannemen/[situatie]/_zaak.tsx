@@ -289,7 +289,7 @@ const Zaak = ({
         <ZakenTabs actief="lopend" />
         <Heading level={1}>{onderwerp}</Heading>
 
-        <section aria-labelledby="zaak-gegevens">
+        <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
           <Heading level={2} id="zaak-gegevens">
             Over deze zaak
           </Heading>
@@ -349,7 +349,7 @@ const Zaak = ({
           <Paragraph role="status">Wij berekenen de bedragen…</Paragraph>
         ) : (
           <>
-            <section aria-labelledby="zaak-voortgang">
+            <section className="rhc-mox-stack" aria-labelledby="zaak-voortgang">
               <Heading level={2} id="zaak-voortgang">
                 Voortgang
               </Heading>
@@ -378,7 +378,7 @@ const Zaak = ({
               )}
             </section>
 
-            <section aria-labelledby="zaak-tijdlijn">
+            <section className="rhc-mox-stack" aria-labelledby="zaak-tijdlijn">
               <Heading level={2} id="zaak-tijdlijn">
                 Alles wat is vastgelegd
               </Heading>
@@ -441,7 +441,7 @@ const Zaak = ({
             </section>
 
             {hierna.length > 0 && (
-              <section aria-labelledby="zaak-hierna">
+              <section className="rhc-mox-stack" aria-labelledby="zaak-hierna">
                 <Heading level={2} id="zaak-hierna">
                   Komt hierna
                 </Heading>

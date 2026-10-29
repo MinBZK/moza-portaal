@@ -119,7 +119,7 @@ const BewaardeItems = ({
               <ul className="mox-card-topic-list">
                 {inCategorie.map((item) => (
                   <li key={item.sleutel}>
-                    <Heading level={4}>
+                    <Heading level={3} appearanceLevel={4}>
                       <Link href={item.href}>{item.titel}</Link>
                     </Heading>
                     <Paragraph>{item.samenvatting}</Paragraph>

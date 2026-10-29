@@ -42,7 +42,7 @@ const DataverwerkingPage = async ({
       </Paragraph>
 
       <div className="rhc-mox-card">
-        <Heading level={2}>Activiteitenlogboek</Heading>
+        <Heading level={2}>Geschiedenis</Heading>
         <Paragraph>
           Dit is een overzicht van hoe uw bedrijfsgegevens worden gedeeld en
           verwerkt door overheidsorganisaties.

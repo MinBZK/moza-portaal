@@ -98,7 +98,11 @@ export const EmailVerification = ({
   };
 
   return (
-    <form className="rhc-mox-row-gap" noValidate onSubmit={submit}>
+    <form
+      className="rhc-mox-stack rhc-mox-stack--2xl"
+      noValidate
+      onSubmit={submit}
+    >
       {resendSuccess && (
         <Alert type="ok">
           {`Wij hebben een nieuwe code gestuurd naar ${email}.`}

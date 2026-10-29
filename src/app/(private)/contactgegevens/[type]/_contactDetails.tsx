@@ -220,7 +220,11 @@ export const ContactDetails = ({
       </div>
 
       {editing ? (
-        <form className="rhc-mox-row-gap" noValidate onSubmit={save}>
+        <form
+          className="rhc-mox-stack rhc-mox-stack--2xl"
+          noValidate
+          onSubmit={save}
+        >
           <FormFieldTextInput
             label="Aanhef"
             inputRef={salutationRef}

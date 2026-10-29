@@ -12,7 +12,7 @@ const VestigingenPage = (props: OnderdeelPaginaProps) => (
     id="vestigingen"
     inhoud={({ vestigingen }) =>
       vestigingen.map(({ nummer, type, adres }) => (
-        <div key={nummer}>
+        <div key={nummer} className="rhc-mox-stack rhc-mox-stack--md">
           <Heading level={3}>{type}</Heading>
           <DataSummary appearance="column">
             <DataSummaryItem itemKey="Vestigingsnummer" itemValue={nummer} />

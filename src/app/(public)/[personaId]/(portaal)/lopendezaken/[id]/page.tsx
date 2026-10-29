@@ -20,7 +20,7 @@ const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   if (!zaak) notFound();
 
   const voortgang = (
-    <section aria-labelledby="zaak-voortgang">
+    <section className="rhc-mox-stack" aria-labelledby="zaak-voortgang">
       <Heading level={2} id="zaak-voortgang">
         Voortgang
       </Heading>
@@ -28,7 +28,7 @@ const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     </section>
   );
   const gegevens = (
-    <section aria-labelledby="zaak-gegevens">
+    <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
       <Heading level={2} id="zaak-gegevens">
         Over deze zaak
       </Heading>

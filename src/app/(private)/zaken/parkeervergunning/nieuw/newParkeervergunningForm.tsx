@@ -39,6 +39,7 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
       <Heading level={1}>Nieuwe parkeervergunning aanvragen</Heading>
       <div className="rhc-mox-card">
         <form
+          className="rhc-mox-stack rhc-mox-stack--2xl"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();

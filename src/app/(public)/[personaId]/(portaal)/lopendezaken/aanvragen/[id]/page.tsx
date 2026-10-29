@@ -81,7 +81,7 @@ const AanvraagPage = async ({
             ` Dien de aanvraag in voor ${aanvraag.indienenVoor}.`}
         </Alert>
 
-        <section>
+        <section className="rhc-mox-stack">
           <DataSummary appearance="column">
             <DataSummaryItem
               itemKey="Organisatie"
@@ -108,7 +108,7 @@ const AanvraagPage = async ({
         </section>
 
         {!flow && (
-          <section aria-labelledby="aanvraag-kosten">
+          <section className="rhc-mox-stack" aria-labelledby="aanvraag-kosten">
             <Heading level={2} id="aanvraag-kosten">
               Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
             </Heading>
