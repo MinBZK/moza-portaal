@@ -2,14 +2,51 @@
 
 import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
-import { ActionGroup, Heading, Paragraph } from "@/components/rhc";
+import {
+  ActionGroup,
+  DataSummary,
+  DataSummaryItem,
+  Heading,
+  Paragraph,
+} from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
-import { AANNAMES, Aanname, duurTekst, LkvVoorbehoud } from "../_balans";
+import basis from "../_basisfeiten.json";
+import {
+  AANNAMES,
+  Aanname,
+  duurTekst,
+  lkvDuurTekst,
+  Uitvoerder,
+  VOORBEHOUD,
+  type UitvoerderId,
+} from "../_balans";
 import { overzichtTekst, routeVoor, type TaakId } from "../_route";
-import type { Doelgroep } from "../_uitkomsten";
-import { useAannemen, type AannemenStaat } from "../_useAannemen";
+import {
+  DOELGROEPEN,
+  invoerVoor,
+  lkvVoorbehoud,
+  type Doelgroep,
+  type Feiten,
+} from "../_uitkomsten";
+import {
+  bronBevestigd,
+  BRONNEN,
+  useAannemen,
+  type AannemenStaat,
+  type BronId,
+} from "../_useAannemen";
 import { useUitkomsten } from "../_useUitkomsten";
+import Waarom from "../_waarom";
 import { euro } from "../_werkgever";
+
+/** Naam van de organisatie achter elke bron die de ondernemer kan delen. */
+const BRON_NAAM: Record<BronId, string> = {
+  uwv: "UWV",
+  gemeente: "Gemeente",
+  kvk: "KVK",
+  belastingdienst: "Belastingdienst",
+  eigen: "Uw eigen gegevens",
+};
 
 const TAAK: Record<TaakId, { kop: string; tekst: string }> = {
   doelgroepverklaring: {
@@ -47,25 +84,30 @@ const UITLEG: Partial<Record<Doelgroep, { kop: string; tekst: string }>> = {
 const Kaart = ({
   id,
   kop,
+  uitvoerder,
   children,
 }: {
   id: string;
   kop: string;
+  /** Wie de regeling uitvoert: het label naast de kop. */
+  uitvoerder?: UitvoerderId;
   children: ReactNode;
 }) => (
   <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby={id}>
     <Heading level={3} id={id}>
-      {kop}
+      {kop} {uitvoerder && <Uitvoerder id={uitvoerder} />}
     </Heading>
     {children}
   </section>
 );
 
-const Overzicht = () => {
+type Props = { labels: Record<string, string>; kvk: string };
+
+const Overzicht = (props: Props) => {
   const { staat } = useAannemen();
   // De inhoud rekent met de engine; dat mag pas als de opslag gelezen is.
   if (!staat) return null;
-  return <OverzichtInhoud staat={staat} />;
+  return <OverzichtInhoud staat={staat} {...props} />;
 };
 
 /**
@@ -73,8 +115,17 @@ const Overzicht = () => {
  * een uitleg (beschut werk, geen van deze of niets gekozen) of
  * antwoorden waarbij de engine niets meer laat aanvragen.
  */
-const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
+const OverzichtInhoud = ({
+  staat,
+  labels,
+  kvk,
+}: Props & { staat: AannemenStaat }) => {
   const a = staat.antwoorden;
+  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
+  const lkvInvoer = invoeren.find(
+    (i) => i.wet === "wet_tegemoetkomingen_loondomein",
+  );
+  const gedeeld = BRONNEN.filter((id) => bronBevestigd(staat, id));
   const resultaat = useUitkomsten(a);
   const { uitkomsten, bekend } = resultaat;
   const route = useMemo(
@@ -144,7 +195,11 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
             Gaat vanzelf of via de loonaangifte
           </Heading>
           {route.vanzelf.includes("lkv") && (
-            <Kaart id="vanzelf-lkv" kop="Loonkostenvoordeel">
+            <Kaart
+              id="vanzelf-lkv"
+              kop="Loonkostenvoordeel"
+              uitvoerder="loonaangifte"
+            >
               {lkv && (
                 <p className="mox-hiring-amount">
                   {euro(lkv.bedragPerJaar)}{" "}
@@ -152,7 +207,14 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
                 </p>
               )}
               {lkv?.aanname && <Aanname id={lkv.aanname} />}
-              <LkvVoorbehoud categorie={lkv?.categorie} />
+              <Paragraph>
+                {lkvDuurTekst(lkv?.categorie)}{" "}
+                <InfoToggletip label="Toelichting bij het loonkostenvoordeel">
+                  {lkvVoorbehoud(lkv?.categorie)
+                    .map((id) => VOORBEHOUD[id])
+                    .join(" ")}
+                </InfoToggletip>
+              </Paragraph>
               <Paragraph>
                 U vraagt het loonkostenvoordeel aan door in de loonaangifte het
                 vakje loonkostenvoordeel aan te zetten; een aparte aanvraag is
@@ -161,8 +223,17 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
                   " Dat kan zodra u de doelgroepverklaring van de werknemer hebt."}{" "}
                 De Belastingdienst rekent het na afloop van het jaar uit.
               </Paragraph>
+              {lkvInvoer && (
+                <Waarom
+                  invoer={lkvInvoer}
+                  antwoorden={a}
+                  regeling="Loonkostenvoordeel"
+                  kvk={kvk}
+                  labels={labels}
+                />
+              )}
               {situatie === "register" && (
-                <div className="mox-hiring-note">
+                <div>
                   Via de gemeente kan ook loonkostensubsidie gelden.{" "}
                   <InfoToggletip label="Toelichting bij loonkostensubsidie">
                     Of de gemeente loonkostensubsidie geeft, hangt af van de
@@ -174,7 +245,7 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
             </Kaart>
           )}
           {route.vanzelf.includes("nrp") && (
-            <Kaart id="vanzelf-nrp" kop="No-riskpolis">
+            <Kaart id="vanzelf-nrp" kop="No-riskpolis" uitvoerder="uwv">
               <Paragraph>
                 Wordt de werknemer ziek? Dan betaalt u het loon door. UWV
                 betaalt u ziekengeld voor de werknemer: 70 procent van het
@@ -189,15 +260,53 @@ const OverzichtInhoud = ({ staat }: { staat: AannemenStaat }) => {
         </section>
       )}
 
+      {bekend && (
+        <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="zo">
+          <Heading level={2} id="zo">
+            Zo is dit berekend
+          </Heading>
+          <DataSummary appearance="column">
+            <DataSummaryItem
+              itemKey="Uw antwoorden"
+              itemValue={`${
+                DOELGROEPEN.filter(([d]) => a.doelgroepen.includes(d))
+                  .map(([, label]) => label)
+                  .join(", ") || "Niets gekozen"
+              }; ${a.uren} uur per week; loonwaarde ${a.loonwaarde} procent; ${euro(a.uurloon)} per uur`}
+            />
+            <DataSummaryItem
+              itemKey="Gegevens die u deelde"
+              itemValue={
+                gedeeld.length
+                  ? gedeeld.map((id) => BRON_NAAM[id]).join(", ")
+                  : "Geen"
+              }
+            />
+            <DataSummaryItem
+              itemKey="Wat er is gebeurd"
+              itemValue="De regelrecht-engine heeft in uw browser berekend welke regelingen gelden, volgens de wetten die nu gelden. Er is niets naar een overheidsorganisatie verstuurd."
+            />
+            <DataSummaryItem
+              itemKey="Wat er nu gebeurt"
+              itemValue="U hoeft niets aan te vragen. Zet in de loonaangifte het vakje loonkostenvoordeel aan. Wordt de werknemer ziek, dan meldt u dat bij UWV."
+            />
+          </DataSummary>
+        </section>
+      )}
+
       <ActionGroup>
+        {/* Er valt niets te versturen; de ondernemer rondt hier af. */}
+        <Link
+          href="/lopendezaken"
+          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+        >
+          Klaar
+        </Link>
         <Link
           href="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
           Antwoorden wijzigen
-        </Link>
-        <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-          Terug naar Personeel
         </Link>
       </ActionGroup>
     </>

@@ -20,6 +20,7 @@ import {
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_vragen";
 import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
+import Stappen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_stappen";
 import KostenBerekening from "./_kostenBerekening";
 
 /** Een aanvraag die nog niet is ingediend, om verder in te vullen. */
@@ -63,55 +64,62 @@ const AanvraagPage = async ({
         </Link>
       </Paragraph>
 
-      <div className="rhc-mox-card rhc-mox-row-gap">
-        <Alert type="info">
-          U hebt deze aanvraag opgeslagen, maar nog niet verstuurd.
-          {aanvraag.indienenVoor &&
-            ` Dien de aanvraag in voor ${aanvraag.indienenVoor}.`}
-        </Alert>
-
-        <section>
-          <DataSummary appearance="column">
-            <DataSummaryItem
-              itemKey="Organisatie"
-              itemValue={aanvraag.organisatie}
-            />
-            <DataSummaryItem
-              itemKey="Tijdsduur"
-              itemValue={aanvraag.tijdsduur}
-            />
-          </DataSummary>
-          {aanvraag.bewaardVan && aanvraag.overgenomen && (
-            <Alert type="ok">
-              <Paragraph>
-                <strong>
-                  Uw antwoorden van {aanvraag.bewaardVan} zijn overgenomen.
-                </strong>
-              </Paragraph>
-              <Paragraph>{aanvraag.overgenomen}</Paragraph>
+      {flow && (
+        <>
+          <Stappen huidige={1} />
+          <Paragraph>
+            Beantwoord vier vragen. Rechts ziet u meteen wat het u kost en
+            oplevert. Daarna vullen wij de aanvraag voor u in.
+          </Paragraph>
+        </>
+      )}
+      {!flow && (
+        <div className="rhc-mox-card rhc-mox-row-gap">
+          {aanvraag.indienenVoor && (
+            <Alert type="info">
+              Verstuur de aanvraag voor {aanvraag.indienenVoor}.
             </Alert>
           )}
-          {aanvraag.toelichting?.map((alinea) => (
-            <Paragraph key={alinea}>{alinea}</Paragraph>
-          ))}
-        </section>
 
-        {!flow && (
-          <section aria-labelledby="aanvraag-kosten">
-            <Heading level={2} id="aanvraag-kosten">
-              Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
-            </Heading>
-            <Paragraph>
-              Deze berekening blijft op uw scherm. Er gaat niets naar een
-              overheidsorganisatie.
-            </Paragraph>
-            {aanvraag.berekening && (
-              <KostenBerekening {...aanvraag.berekening} />
-            )}
+          <section>
+            <DataSummary appearance="column">
+              <DataSummaryItem
+                itemKey="Organisatie"
+                itemValue={aanvraag.organisatie}
+              />
+              <DataSummaryItem
+                itemKey="Tijdsduur"
+                itemValue={aanvraag.tijdsduur}
+              />
+            </DataSummary>
+            {!flow &&
+              aanvraag.toelichting?.map((alinea) => (
+                <Paragraph key={alinea}>{alinea}</Paragraph>
+              ))}
           </section>
-        )}
-      </div>
-      {flow && <Vragen onderneming={flow.werkgever.onderneming} />}
+
+          {!flow && (
+            <section aria-labelledby="aanvraag-kosten">
+              <Heading level={2} id="aanvraag-kosten">
+                Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
+              </Heading>
+              <Paragraph>
+                Deze berekening blijft op uw scherm. Er gaat niets naar een
+                overheidsorganisatie.
+              </Paragraph>
+              {aanvraag.berekening && (
+                <KostenBerekening {...aanvraag.berekening} />
+              )}
+            </section>
+          )}
+        </div>
+      )}
+      {flow && (
+        <Vragen
+          onderneming={flow.werkgever.onderneming}
+          toelichting={aanvraag.toelichting}
+        />
+      )}
     </>
   );
 };

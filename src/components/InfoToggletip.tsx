@@ -14,7 +14,7 @@ const InfoToggletip = ({
   label: string;
   children: ReactNode;
 }) => (
-  <details className="rhc-toggletip">
+  <details className="rhc-toggletip mox-toggletip">
     <summary
       aria-label={label}
       className="rhc-toggletip__summary rhc-toggletip__button"
