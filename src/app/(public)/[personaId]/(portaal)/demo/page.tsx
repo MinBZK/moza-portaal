@@ -78,6 +78,7 @@ import CountdownBar from "@/components/CountdownBar";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
+import Spinner from "@/components/Spinner";
 import InfoToggletip from "@/components/InfoToggletip";
 import FieldLabel from "@/components/FieldLabel";
 import ShareButton from "@/components/ShareButton";
@@ -1884,6 +1885,40 @@ const ComponentsDemoPage = () => {
           <ProgressBar label="Voorbeeld" value={40} valueText="40%" />
           <ProgressBar label="Laden" />
         </div>
+      ),
+    },
+    {
+      name: "Spinner",
+      file: "src/components/Spinner.tsx",
+      description: [
+        "Een draaiend rondje voor een waarde die nog wordt berekend of geladen, zoals een bedrag. Het rondje is zo groot als de tekst en heeft de tekstkleur.",
+        <>
+          Het rondje is decoratief; een schermlezer hoort het label. Meld het
+          wachten zelf daarnaast in een <code>role=&quot;status&quot;</code>,
+          zoals ‘Wij rekenen uit…’. Voor iets dat langer duurt of een voortgang
+          heeft, gebruik je <code>ProgressBar</code>. Bij{" "}
+          <code>prefers-reduced-motion</code> draait het langzamer.
+        </>,
+      ],
+      options: [
+        [
+          "label",
+          "string",
+          "Wordt berekend",
+          "Wat een schermlezer voorleest op de plek van de waarde",
+        ],
+      ],
+      example: (
+        <>
+          <Paragraph>
+            Loonkosten per jaar: <Spinner />
+          </Paragraph>
+          <Paragraph purpose="lead">
+            <strong>
+              <Spinner label="Totaal wordt berekend" />
+            </strong>
+          </Paragraph>
+        </>
       ),
     },
     {

@@ -478,6 +478,28 @@ small,
   }
 }
 
+/* --- Spinner --- */
+.rhc-mox-spinner {
+  animation: rhc-mox-spin 1s linear infinite;
+  block-size: 1em;
+  border: 0.15em solid var(--rhc-color-cool-grey-500);
+  border-block-start-color: transparent;
+  border-radius: var(--rhc-border-radius-round);
+  display: inline-block;
+  inline-size: 1em;
+  vertical-align: -0.15em;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 3s;
+  }
+}
+
+@keyframes rhc-mox-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 /* --- Cluster: short items in a row that wrap, such as badges --- */
 .rhc-mox-cluster {
   align-items: center;
@@ -2140,7 +2162,7 @@ small,
   with gap (cluster, the key of a DataSummary, the summary of a disclosure):
   there the gap already sets the room. */
 :not(.rhc-mox-cluster, .rhc-data-summary__item-key, summary)>*+.rhc-mox-text-badge {
-  margin-inline-start: var(--rhc-space-md);
+  margin-inline-start: var(--rhc-space-sm);
 }
 
 .rhc-mox-text-badge--info {
