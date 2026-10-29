@@ -77,7 +77,7 @@ const AanvraagPage = async ({
 
       <div className="rhc-mox-card rhc-mox-row-gap">
         {flow && <Stappen huidige={1} />}
-        <Alert type="info">
+        <Alert type="info" closable>
           U hebt deze aanvraag opgeslagen, maar nog niet verstuurd.
           {aanvraag.indienenVoor &&
             ` Dien de aanvraag in voor ${aanvraag.indienenVoor}.`}
