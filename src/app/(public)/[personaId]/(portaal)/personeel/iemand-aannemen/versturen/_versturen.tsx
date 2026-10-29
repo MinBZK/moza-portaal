@@ -186,7 +186,7 @@ const VersturenInhoud = ({
   if (route.vanzelf.includes("lkv"))
     vanzelf.push(
       lkv?.categorie === "arbeidsgehandicapte_werknemer"
-        ? "Loonkostenvoordeel arbeidsgehandicapte: opgeven in uw loonaangifte, zodra u de doelgroepverklaring van de werknemer hebt"
+        ? "Loonkostenvoordeel: opgeven in uw loonaangifte, zodra u de doelgroepverklaring van de werknemer hebt"
         : "Loonkostenvoordeel: opgeven in uw loonaangifte, vanaf de eerste loonaangifte na de start",
     );
   if (route.vanzelf.includes("nrp"))

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { VisuallyHidden } from "@/components/rhc";
 import { CheckIcon } from "@/components/icons/checkIcon";
 
@@ -11,6 +12,8 @@ const StepIndicator = ({
   steps,
   current,
   label = "Voortgang",
+  hideCount = false,
+  hrefs,
 }: {
   /** Names of the steps, in order. */
   steps: string[];
@@ -18,11 +21,21 @@ const StepIndicator = ({
   current: number;
   /** Accessible name of the navigation. */
   label?: string;
+  /** Hide "Stap 2 van 4" visually; screen readers still read it. */
+  hideCount?: boolean;
+  /** Per step a link; a completed step with a link can be revisited. */
+  hrefs?: (string | undefined)[];
 }) => (
   <nav className="rhc-mox-step-indicator" aria-label={label}>
-    <p className="rhc-mox-step-indicator__count">
-      Stap {current + 1} van {steps.length}
-    </p>
+    {hideCount ? (
+      <VisuallyHidden>
+        Stap {current + 1} van {steps.length}
+      </VisuallyHidden>
+    ) : (
+      <p className="rhc-mox-step-indicator__count">
+        Stap {current + 1} van {steps.length}
+      </p>
+    )}
     <ol className="rhc-mox-step-indicator__list">
       {steps.map((step, index) => {
         const state =
@@ -38,7 +51,16 @@ const StepIndicator = ({
             </span>
             <span className="rhc-mox-step-indicator__name">
               {state === "done" && <VisuallyHidden>Klaar: </VisuallyHidden>}
-              {step}
+              {state === "done" && hrefs?.[index] ? (
+                <Link
+                  href={hrefs[index]}
+                  className="utrecht-link utrecht-link--html-a"
+                >
+                  {step}
+                </Link>
+              ) : (
+                step
+              )}
             </span>
           </li>
         );

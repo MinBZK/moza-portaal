@@ -107,14 +107,13 @@ export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
   </span>
 );
 
+/** De naam van de regeling, overal dezelfde. */
 const naam = (r: BalansRegel) =>
   r.id === "lks"
     ? "Loonkostensubsidie"
     : r.id === "ld"
-      ? "Lagere loonkosten door loondispensatie"
-      : r.regel?.categorie === "arbeidsgehandicapte_werknemer"
-        ? "Loonkostenvoordeel arbeidsgehandicapte"
-        : "Loonkostenvoordeel";
+      ? "Loondispensatie"
+      : "Loonkostenvoordeel";
 
 /** Hoe lang de no-riskpolis loopt (ZW 29b); negatief is zonder einddatum. */
 export const duurTekst = (jaren: number | undefined) =>
