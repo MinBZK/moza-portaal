@@ -71,14 +71,9 @@ const SideOverlay = ({
 
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
-      // Alt+Shift with a letter, not a letter alone: a single-key shortcut
-      // gets in the way of speech input and typing (WCAG 2.1.4). event.code,
-      // because on a Mac Alt (Option) changes event.key into another character.
-      const letter = event.code.replace(/^Key/, "").toLowerCase();
       if (
-        !["f", "p"].includes(letter) ||
-        !event.altKey ||
-        !event.shiftKey ||
+        !["f", "p"].includes(event.key.toLowerCase()) ||
+        event.altKey ||
         event.ctrlKey ||
         event.metaKey ||
         event.repeat ||
@@ -99,7 +94,7 @@ const SideOverlay = ({
         return;
       }
 
-      if (letter !== shortcut) return;
+      if (event.key.toLowerCase() !== shortcut) return;
 
       const target = event.target;
       if (
@@ -150,7 +145,7 @@ const SideOverlay = ({
           modal
           open
           aria-labelledby={titleId}
-          aria-keyshortcuts="Alt+Shift+F Alt+Shift+P"
+          aria-keyshortcuts="f p"
           onCancel={(event) => {
             event.preventDefault();
             close();
