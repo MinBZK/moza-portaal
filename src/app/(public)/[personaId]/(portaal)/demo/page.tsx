@@ -3371,7 +3371,7 @@ const ComponentsDemoPage = () => {
           "Breedte vanaf 768 (t) of 1024 (d) pixels",
         ],
         [
-          "--mox-page-margin",
+          "--rhc-mox-page-margin",
           "token",
           "space-max-xl / -2xl / -5xl",
           "Marge links en rechts van de pagina, per breekpunt",

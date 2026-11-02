@@ -14,6 +14,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
 	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
+	--rhc-mox-color-page-background: var(--rhc-color-cool-grey-100);
 
 	/* ==== Typografie ========================================================= */
 
@@ -26,7 +27,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		font-weight: normal;
 	}
 
-	/* Kop op de donkere balk van de Hero: de tekstkleur van de balk. */
 	.rhc-hero .rhc-hero__heading {
 		color: currentColor;
 	}
@@ -39,13 +39,16 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* ==== Layout ============================================================= */
 
 	/* --- Pagina --- */
+	& {
+		row-gap: 0;
+	}
+
 	.utrecht-page-body {
 
 		@media (width < 768px) {
 			hyphens: auto;
 			overflow-wrap: break-word;
 
-			/* Tabellen scrollen (rhc-mox-table-container); cellen breken niet midden in een woord. */
 			.utrecht-table {
 				hyphens: manual;
 				overflow-wrap: normal;
@@ -134,7 +137,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	.rhc-mox-menu-button {
 		font-size: var(--rhc-text-font-size-sm);
 		inset-block-start: var(--rhc-space-sm);
-		inset-inline-start: var(--mox-page-margin, 0);
+		inset-inline-start: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 1;
 	}
@@ -149,7 +152,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	.rhc-language-navigation {
 		inset-block-start: var(--rhc-space-2xl);
-		inset-inline-end: var(--mox-page-margin, 0);
+		inset-inline-end: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 2;
 
