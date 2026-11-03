@@ -194,7 +194,7 @@ const PublicPage = () => {
             Het is ook mogelijk om een persona te selecteren via de URL.
             Bijvoorbeeld:{" "}
             <code>
-              https://moza.mijnoverheidzakelijk.nl/?persona=gebruiker1
+              https://proef.mijnoverheidzakelijk.nl/?persona=gebruiker1
             </code>
           </Paragraph>
         </section>
