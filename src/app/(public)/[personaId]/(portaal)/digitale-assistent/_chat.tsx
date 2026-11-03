@@ -156,10 +156,14 @@ const Chat = ({
   const [denkt, setDenkt] = useState<string | null>(null);
   const [bezig, setBezig] = useState(false);
   const [invoer, setInvoer] = useState("");
-  const [status, setStatus] = useState<ServerStatus | null | undefined>();
-  const [drempel, setDrempel] = useState<{ kwh: number; gas: number } | null>(
-    null,
-  );
+  const [serverStatus, setStatus] = useState<ServerStatus | null | undefined>();
+  const [apiDrempel, setDrempel] = useState<{
+    kwh: number;
+    gas: number;
+  } | null>(null);
+  // In de demo-modus komen de status en de grenzen uit het draaiboek.
+  const status = demo ? DEMO_STATUS : serverStatus;
+  const drempel = demo ? DEMO_DREMPEL : apiDrempel;
   const [bewaard, setBewaard] = useState<"nee" | "ja" | "fout">("nee");
 
   const berichtenRef = useRef<HTMLDivElement>(null);
@@ -621,6 +625,8 @@ const Chat = ({
     if (bewaardItem && Array.isArray(bewaardItem.gesprek)) {
       // De sessie van toen bestaat niet meer; een vervolgvraag start een nieuwe.
       zetSessie(comboRef.current);
+      // sessionStorage en de URL zijn pas na de hydratie te lezen.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setItems(bewaardItem.gesprek as Item[]);
       setBewaard("ja");
     } else if (startvraag) {
@@ -647,6 +653,8 @@ const Chat = ({
     const historie = leesOpslag<Item[]>(OPSLAG_HISTORIE)[combo];
     setBewaard("nee");
     if (historie?.length) {
+      // Het gesprek voor de nieuwe combinatie staat in sessionStorage.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setItems(historie);
       return;
     }
@@ -665,10 +673,7 @@ const Chat = ({
 
   // Grenzen voor de energiekaart: uit RegelRecht, of uit het draaiboek.
   useEffect(() => {
-    if (demo) {
-      setDrempel(DEMO_DREMPEL);
-      return;
-    }
+    if (demo) return;
     let actief = true;
     fetch(
       `${API}/regelrecht/definities?law=${encodeURIComponent(WALLET_WET)}`,
@@ -694,10 +699,7 @@ const Chat = ({
   // Status van de bronnen (flag "Status van bronnen in de digitale assistent").
   useEffect(() => {
     if (!toonBronstatus) return;
-    if (demo) {
-      setStatus(DEMO_STATUS);
-      return;
-    }
+    if (demo) return;
     let actief = true;
     fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) })
       .then((r) => r.json())
