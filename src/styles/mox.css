@@ -7,7 +7,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 */
 
 .rhc-theme.mox-theme:where(.mox-current-brand) {
-
 	/* ==== Tokens ============================================================= */
 	--utrecht-page-body-padding-block-start: var(--rhc-space-xl);
 	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
@@ -82,7 +81,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	.utrecht-page-header {
 		border-block-end-color: var(--rhc-color-lintblauw-400);
-		border-block-end-width: var(--rhc-border-width-md)
+		border-block-end-width: var(--rhc-border-width-md);
 	}
 
 	.rhc-nav-bar__link,
@@ -171,10 +170,9 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			background-color: var(--rhc-color-cool-grey-200);
 		}
 
-		&[aria-current=page] {
+		&[aria-current="page"] {
 			background-color: var(--rhc-color-cool-grey-200);
 		}
-
 	}
 
 	/* --- Footer --- */
@@ -328,11 +326,11 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* --- Statusstip --- */
 	.mox-status {
 		background-color: var(--rhc-color-cool-grey-400);
-		block-size: calc(var(--rhc-size-icon-md)/2);
+		block-size: calc(var(--rhc-size-icon-md) / 2);
 		border-radius: var(--rhc-border-radius-round);
 		display: inline-block;
 		flex-shrink: 0;
-		inline-size: calc(var(--rhc-size-icon-md)/2);
+		inline-size: calc(var(--rhc-size-icon-md) / 2);
 	}
 
 	.mox-status--accepted {
@@ -353,7 +351,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* HTML uit een API, zoals de tekst van een artikel */
 	.mox-rich-text {
-		>*+* {
+		> * + * {
 			margin-block-start: var(--rhc-space-lg);
 		}
 
@@ -410,7 +408,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			position: absolute;
 		}
 
-		>* {
+		> * {
 			align-items: baseline;
 			display: flex;
 			gap: var(--rhc-space-lg);
@@ -420,5 +418,25 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 				white-space: nowrap;
 			}
 		}
+	}
+
+	/* --- Toggletip --- */
+	.mox-toggletip {
+		--rhc-toggletip-background-color: transparent;
+		--rhc-toggletip-hover-background-color: transparent;
+		--rhc-toggletip-focus-background-color: transparent;
+		--rhc-toggletip-active-background-color: transparent;
+		--rhc-toggletip-border-color: transparent;
+		--rhc-toggletip-hover-border-color: transparent;
+		--rhc-toggletip-focus-border-color: transparent;
+		--rhc-toggletip-active-border-color: transparent;
+		--rhc-toggletip-color: var(--utrecht-link-color);
+		--rhc-toggletip-hover-color: var(--utrecht-link-hover-color);
+		--rhc-toggletip-focus-color: var(--utrecht-link-hover-color);
+		--rhc-toggletip-active-color: var(--utrecht-link-hover-color);
+		--rhc-toggletip-icon-size: 1.125rem;
+		--rhc-toggletip-size: 1.125rem;
+
+		vertical-align: -0.2em;
 	}
 }

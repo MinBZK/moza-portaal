@@ -7,8 +7,6 @@ import {
   DataSummary,
   DataSummaryItem,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan } from "./_engine";
@@ -18,10 +16,9 @@ import { useBerekening, type Invoer } from "./_useRegelrecht";
 import { datumNL, waarde } from "./_werkgever";
 
 /**
- * "Waarom deze uitkomst?" live uit de kern van regelrecht-uitleg, in drie
+ * "Waarom deze uitkomst?" live uit de kern van regelrecht-uitleg, in twee
  * lagen: kort (de beslissende voorwaarden en de berekening in gewone
- * woorden), de motivering per artikel ("… want …") en de volledige afleiding
- * met per stap de bron. Deterministisch uit de trace, zonder taalmodel; zie
+ * woorden) en de volledige afleiding met per stap de bron. Deterministisch uit de trace, zonder taalmodel; zie
  * Bos, Schuth en Chen, "From Rules as Executed to Citizen Explanation"
  * (JURIX 2026): expliciete beslissende voorwaarden houden de uitleg trouw
  * aan de uitvoering. Met `invoer` (uit invoerVoor) rekent hij die invoer
@@ -134,25 +131,6 @@ const Waarom = ({
                 );
               })}
               <Accordion>
-                <AccordionSection
-                  headingLevel={headingLevel + 1}
-                  label="Motivering per artikel"
-                  body={null}
-                  expanded={open.includes("motivering")}
-                  onActivate={() => wissel("motivering")}
-                >
-                  <UnorderedList>
-                    {outputs.flatMap((o) =>
-                      (stand.waarde.afleidingen[o]?.tekst.motivering ?? [])
-                        .filter((r) => !r.technisch)
-                        .map((r) => (
-                          <UnorderedListItem key={`${o}-${r.tekst}`}>
-                            {r.tekst}
-                          </UnorderedListItem>
-                        )),
-                    )}
-                  </UnorderedList>
-                </AccordionSection>
                 <AccordionSection
                   headingLevel={headingLevel + 1}
                   label="Volledige afleiding, stap voor stap"
