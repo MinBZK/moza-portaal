@@ -10,7 +10,7 @@ const urls = [
   "/bedrijfsprofiel",
   "/contactmomenten",
 ];
-const baseUrl = "http://localhost:3000"; //"https://moza.mijnoverheidzakelijk.nl"; // Pas aan naar localhost als je dat wilt
+const baseUrl = "http://localhost:3000"; //"https://proef.mijnoverheidzakelijk.nl"; // Pas aan naar localhost als je dat wilt
 
 const outputDir = path.join(__dirname, "output");
 
