@@ -112,9 +112,9 @@
 
 .rhc-theme.mox-theme .rhc-form-field {
   --rhc-mox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
-  --utrecht-select-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
-  --utrecht-textarea-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
-  --utrecht-textbox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-select-invalid-background-color: var(--rhc-mox-invalid-background-color);
+  --utrecht-textarea-invalid-background-color: var(--rhc-mox-invalid-background-color);
+  --utrecht-textbox-invalid-background-color: var(--rhc-mox-invalid-background-color);
 }
 
 .utrecht-form-field--radio,
@@ -268,6 +268,7 @@ body {
 
   .rhc-nav-bar__link {
     align-items: center;
+    background: transparent;
     display: inline-flex;
     gap: var(--rhc-space-sm);
   }
@@ -382,7 +383,7 @@ body {
       }
 
       .utrecht-page-body {
-        min-block-size: calc(100dvh - var(--rhc-mox-header-hoogte, 0px));
+        min-block-size: calc(100dvh - var(--rhc-mox-header-height, 0px));
       }
     }
   }
@@ -765,7 +766,7 @@ zoals badges --- */
 
 /* --- Tabs --- */
 .rhc-mox-tabs {
-  --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
+  --rhc-mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
   box-shadow: inset 0 calc(-1 * var(--rhc-border-width-md)) 0 var(--rhc-color-cool-grey-400);
   display: flex;
   gap: var(--rhc-space-xl);
@@ -781,7 +782,7 @@ zoals badges --- */
   @supports (animation-timeline: scroll()) {
     animation: rhc-mox-tabs-fade linear both;
     animation-timeline: scroll(self inline);
-    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-tabs-fade-start), #000 calc(100% - var(--rhc-tabs-fade-end)), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-mox-tabs-fade-start), #000 calc(100% - var(--rhc-mox-tabs-fade-end)), transparent);
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -791,19 +792,17 @@ zoals badges --- */
 }
 
 .rhc-mox-tab {
+  --utrecht-link-text-decoration: none;
+  --utrecht-link-hover-text-decoration: none;
+  --utrecht-link-focus-text-decoration: none;
   align-items: center;
   background-color: var(--rhc-color-wit);
   display: flex;
   gap: var(--rhc-space-md);
   padding: var(--rhc-space-md);
-  scroll-margin-inline: var(--rhc-tabs-fade);
+  scroll-margin-inline: var(--rhc-mox-tabs-fade);
   text-decoration: none;
   white-space: nowrap;
-
-  &.utrecht-link,
-  &.utrecht-link--html-a {
-    text-decoration: none !important;
-  }
 
   &:focus-visible {
     outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
@@ -815,13 +814,13 @@ zoals badges --- */
   }
 }
 
-@property --rhc-tabs-fade-start {
+@property --rhc-mox-tabs-fade-start {
   inherits: false;
   initial-value: 0px;
   syntax: "<length>";
 }
 
-@property --rhc-tabs-fade-end {
+@property --rhc-mox-tabs-fade-end {
   inherits: false;
   initial-value: 0;
   syntax: "<length>";
@@ -829,21 +828,21 @@ zoals badges --- */
 
 @keyframes rhc-mox-tabs-fade {
   0% {
-    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
-    --rhc-tabs-fade-start: 0;
+    --rhc-mox-tabs-fade-end: var(--rhc-mox-tabs-fade);
+    --rhc-mox-tabs-fade-start: 0;
   }
 
   10% {
-    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+    --rhc-mox-tabs-fade-start: var(--rhc-mox-tabs-fade);
   }
 
   90% {
-    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+    --rhc-mox-tabs-fade-end: var(--rhc-mox-tabs-fade);
   }
 
   100% {
-    --rhc-tabs-fade-end: 0;
-    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+    --rhc-mox-tabs-fade-end: 0;
+    --rhc-mox-tabs-fade-start: var(--rhc-mox-tabs-fade);
   }
 }
 
@@ -859,9 +858,10 @@ zoals badges --- */
   border-radius: var(--rhc-border-radius-md);
   display: flex;
   flex-direction: column;
-  gap: var(--rhc-space-lg);
+  gap: var(--rhc-space-3xl);
   overflow-y: auto;
   padding: var(--rhc-space-lg);
+  padding-block-end: calc(var(--rhc-space-lg) + var(--rhc-size-icon-md));
 }
 
 .rhc-mox-chat-rule {
@@ -881,11 +881,10 @@ zoals badges --- */
 
 .rhc-mox-chat-message,
 .rhc-mox-chat-suggestions {
-  margin-block-end: var(--rhc-space-2xl);
   position: relative;
 
   &:before {
-    background-color: var(--rhc-color-cool-grey-100);
+    background-color: inherit;
     block-size: var(--rhc-size-icon-md);
     clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
     content: "";
@@ -899,11 +898,11 @@ zoals badges --- */
 .rhc-mox-chat-message--assistant,
 .rhc-mox-chat-card,
 .rhc-mox-chat-suggestions {
-  --rhc-chat-border-color: var(--rhc-color-cool-grey-300);
+  --rhc-mox-chat-border-color: var(--rhc-color-cool-grey-300);
 
   align-self: flex-start;
   background-color: var(--rhc-color-cool-grey-100);
-  filter: drop-shadow(1px 0 0 var(--rhc-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-chat-border-color));
+  filter: drop-shadow(1px 0 0 var(--rhc-mox-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-mox-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-mox-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-mox-chat-border-color));
 }
 
 .rhc-mox-chat-message--user {
@@ -912,14 +911,8 @@ zoals badges --- */
   color: var(--rhc-color-wit);
 
   &:before {
-    background-color: var(--rhc-color-lintblauw-700);
-    block-size: var(--rhc-size-icon-md);
     clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
-    content: "";
-    inline-size: var(--rhc-size-icon-md);
-    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
-    inset-inline-end: var(--rhc-size-icon-md);
-    position: absolute;
+    inset-inline: auto var(--rhc-size-icon-md);
   }
 
   .nl-paragraph {
@@ -1074,11 +1067,11 @@ zoals badges --- */
 
 /* --- Lopende zaken --- */
 .rhc-mox-status-track {
-  --rhc-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
-  --rhc-stap-gap: var(--rhc-space-lg);
+  --rhc-mox-step-size: calc(var(--rhc-size-icon-lg) * 1.25);
+  --rhc-mox-step-gap: var(--rhc-space-lg);
 
   display: grid;
-  gap: var(--rhc-stap-gap);
+  gap: var(--rhc-mox-step-gap);
 
   >li {
     display: flex;
@@ -1087,13 +1080,13 @@ zoals badges --- */
 
     >.rhc-mox-status-marker {
       background-color: var(--rhc-color-groen-600);
-      block-size: var(--rhc-stap-maat);
+      block-size: var(--rhc-mox-step-size);
       border-radius: var(--rhc-border-radius-round);
       color: var(--rhc-color-wit);
       display: grid;
       flex-shrink: 0;
       font-weight: var(--rhc-text-font-weight-bold);
-      inline-size: var(--rhc-stap-maat);
+      inline-size: var(--rhc-mox-step-size);
       place-items: center;
 
       .utrecht-icon {
@@ -1111,8 +1104,8 @@ zoals badges --- */
       background-color: var(--rhc-color-groen-600);
       content: "";
       inline-size: var(--rhc-border-width-md);
-      inset-block: var(--rhc-stap-maat) calc(-1 * var(--rhc-stap-gap));
-      inset-inline-start: calc(var(--rhc-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+      inset-block: var(--rhc-mox-step-size) calc(-1 * var(--rhc-mox-step-gap));
+      inset-inline-start: calc(var(--rhc-mox-step-size) / 2 - var(--rhc-border-width-md) / 2);
       position: absolute;
     }
 
@@ -1148,7 +1141,7 @@ zoals badges --- */
     font-weight: var(--rhc-text-font-weight-bold);
     gap: var(--rhc-space-sm);
     list-style: none;
-    min-block-size: var(--rhc-stap-maat);
+    min-block-size: var(--rhc-mox-step-size);
 
     &::-webkit-details-marker {
       display: none;
@@ -1274,7 +1267,7 @@ zoals badges --- */
   }
 
   &:hover {
-    background: transparent !important;
+    --utrecht-button-subtle-hover-background-color: transparent;
   }
 }
 
@@ -1323,6 +1316,9 @@ zoals badges --- */
   }
 
   .rhc-mox-range-slider__input {
+    --rhc-mox-range-slider-thumb: var(--rhc-size-icon-lg);
+    --rhc-mox-range-slider-track: 0.75rem;
+
     accent-color: var(--rhc-color-lintblauw-500);
     appearance: none;
     background: transparent;
@@ -1333,20 +1329,20 @@ zoals badges --- */
     &::-webkit-slider-thumb {
       appearance: none;
       background: var(--rhc-color-lintblauw-500);
-      block-size: var(--rhc-size-icon-lg);
+      block-size: var(--rhc-mox-range-slider-thumb);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
       border-radius: var(--rhc-border-radius-round);
-      inline-size: var(--rhc-size-icon-lg);
-      margin-block-start: -.5rem;
+      inline-size: var(--rhc-mox-range-slider-thumb);
+      margin-block-start: calc((var(--rhc-mox-range-slider-track) - var(--rhc-mox-range-slider-thumb)) / 2 - var(--rhc-border-width-md));
       outline: var(--rhc-border-width-lg) solid transparent;
     }
 
     &::-moz-range-thumb {
       background: var(--rhc-color-lintblauw-500);
-      block-size: var(--rhc-size-icon-lg);
+      block-size: var(--rhc-mox-range-slider-thumb);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
       border-radius: var(--rhc-border-radius-round);
-      inline-size: var(--rhc-size-icon-lg);
+      inline-size: var(--rhc-mox-range-slider-thumb);
       outline: var(--rhc-border-width-lg) solid transparent;
     }
 
@@ -1384,14 +1380,14 @@ zoals badges --- */
 
     &::-webkit-slider-runnable-track {
       background: var(--rhc-color-cool-grey-100);
-      block-size: 0.75rem;
+      block-size: var(--rhc-mox-range-slider-track);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
       border-radius: var(--rhc-border-radius-round);
     }
 
     &::-moz-range-track {
       background: var(--rhc-color-cool-grey-100);
-      block-size: 0.75rem;
+      block-size: var(--rhc-mox-range-slider-track);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
       border-radius: var(--rhc-border-radius-round);
     }
@@ -1405,18 +1401,17 @@ zoals badges --- */
 
   /* RangeSlider met gevulde baan tot aan thumb. */
   .rhc-mox-range-slider__input--filled {
-    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
-    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
-    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
+    --rhc-mox-range-slider-fill-color: var(--rhc-color-lintblauw-50);
+    --rhc-mox-range-slider-stop: calc(var(--rhc-mox-range-slider-thumb) / 2 + (100% - var(--rhc-mox-range-slider-thumb)) * var(--rhc-mox-range-slider-fill, 0));
 
     &::-webkit-slider-runnable-track {
-      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
+      background: linear-gradient(to right, var(--rhc-mox-range-slider-fill-color) var(--rhc-mox-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-mox-range-slider-stop));
     }
 
     /* Specifiek Firefox */
     &::-moz-range-progress {
-      background: var(--rhc-range-slider-fill-color);
-      block-size: 0.75rem;
+      background: var(--rhc-mox-range-slider-fill-color);
+      block-size: var(--rhc-mox-range-slider-track);
       border-radius: var(--rhc-border-radius-round);
     }
   }
@@ -1488,7 +1483,7 @@ zoals badges --- */
 
 /* --- Tooltip --- */
 .rhc-toggletip {
-  anchor-scope: --rhc-toggletip;
+  anchor-scope: --rhc-mox-toggletip;
   position: relative;
   vertical-align: -0.15em;
   --rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
@@ -1506,11 +1501,11 @@ zoals badges --- */
 }
 
 .rhc-toggletip__summary {
-  anchor-name: --rhc-toggletip;
+  anchor-name: --rhc-mox-toggletip;
   margin-block-end: 0;
 }
 
-@position-try --rhc-toggletip-full {
+@position-try --rhc-mox-toggletip-full {
   inline-size: auto;
   inset-inline-end: var(--rhc-space-lg);
   inset-inline-start: var(--rhc-space-lg);
@@ -1528,8 +1523,8 @@ zoals badges --- */
     inset-block-start: calc(anchor(bottom) + var(--rhc-space-sm));
     inset-inline-start: anchor(start);
     position: fixed;
-    position-anchor: --rhc-toggletip;
-    position-try-fallbacks: flip-inline, --rhc-toggletip-full;
+    position-anchor: --rhc-mox-toggletip;
+    position-try-fallbacks: flip-inline, --rhc-mox-toggletip-full;
   }
 }
 
@@ -1721,7 +1716,7 @@ zoals badges --- */
 }
 
 .rhc-mox-bar-graph__item {
-  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
+  --rhc-mox-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
 
   align-items: baseline;
   display: grid;
@@ -1738,19 +1733,19 @@ zoals badges --- */
 }
 
 .rhc-mox-bar-graph__bar {
-  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
-  background-image: var(--rhc-bar-graph-pattern, none);
+  background-color: var(--rhc-mox-bar-graph-color, var(--rhc-color-lintblauw-400));
+  background-image: var(--rhc-mox-bar-graph-pattern, none);
   block-size: var(--rhc-space-xl);
-  border: var(--rhc-border-width-sm) solid var(--rhc-bar-graph-border-color, var(--rhc-color-cool-grey-500));
+  border: var(--rhc-border-width-sm) solid var(--rhc-mox-bar-graph-border-color, var(--rhc-color-cool-grey-500));
   border-radius: var(--rhc-border-radius-round);
-  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-mox-bar-graph-fill, 0) * (100% - 5rem)));
 }
 
 .rhc-mox-bar-graph__track {
-  --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
+  --rhc-mox-bar-graph-track-border-width: var(--rhc-border-width-sm);
 
   background-color: var(--rhc-color-cool-grey-50);
-  border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
+  border: var(--rhc-mox-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
   border-radius: var(--rhc-border-radius-round);
   display: flex;
   inline-size: calc(100% - 5rem);
@@ -1758,27 +1753,27 @@ zoals badges --- */
   >.rhc-mox-bar-graph__bar {
     box-sizing: border-box;
     flex-shrink: 0;
-    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% + 2 * var(--rhc-bar-graph-track-border-width))));
-    margin-block: calc(-1 * var(--rhc-bar-graph-track-border-width));
-    margin-inline-start: calc(-1 * var(--rhc-bar-graph-track-border-width));
+    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-mox-bar-graph-fill, 0) * (100% + 2 * var(--rhc-mox-bar-graph-track-border-width))));
+    margin-block: calc(-1 * var(--rhc-mox-bar-graph-track-border-width));
+    margin-inline-start: calc(-1 * var(--rhc-mox-bar-graph-track-border-width));
   }
 }
 
 .rhc-mox-bar-graph__item--positive {
-  --rhc-bar-graph-color: var(--rhc-color-groen-400);
-  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  --rhc-bar-graph-border-color: var(--rhc-color-groen-400);
+  --rhc-mox-bar-graph-color: var(--rhc-color-groen-400);
+  --rhc-mox-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-mox-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-mox-bar-graph-border-color: var(--rhc-color-groen-400);
 }
 
 .rhc-mox-bar-graph__item--negative {
-  --rhc-bar-graph-color: var(--rhc-color-rood-500);
-  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  --rhc-bar-graph-border-color: var(--rhc-color-rood-400);
+  --rhc-mox-bar-graph-color: var(--rhc-color-rood-500);
+  --rhc-mox-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-mox-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-mox-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-mox-bar-graph-border-color: var(--rhc-color-rood-400);
 }
 
 /* --- Step indicator --- */
 .rhc-mox-step-indicator {
-  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
+  --rhc-mox-step-indicator-size: var(--rhc-size-icon-lg);
 
   display: grid;
   gap: var(--rhc-space-md);
@@ -1805,13 +1800,13 @@ zoals badges --- */
 }
 
 .rhc-mox-step-indicator__marker {
-  block-size: var(--rhc-step-indicator-size);
+  block-size: var(--rhc-mox-step-indicator-size);
   border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
   border-radius: var(--rhc-border-radius-round);
   display: grid;
   flex-shrink: 0;
   font-weight: var(--rhc-text-font-weight-bold);
-  inline-size: var(--rhc-step-indicator-size);
+  inline-size: var(--rhc-mox-step-indicator-size);
   line-height: 1;
   place-items: center;
 }

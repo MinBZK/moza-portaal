@@ -22,7 +22,7 @@ const Bar = ({ fill }: { fill: number }) => (
   <span
     className="rhc-mox-bar-graph__bar"
     aria-hidden="true"
-    style={{ "--rhc-bar-graph-fill": fill } as CSSProperties}
+    style={{ "--rhc-mox-bar-graph-fill": fill } as CSSProperties}
   />
 );
 

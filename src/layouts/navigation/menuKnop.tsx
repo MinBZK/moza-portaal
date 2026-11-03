@@ -45,7 +45,7 @@ const MenuKnop = () => {
     if (!header) return;
     const meet = () =>
       document.documentElement.style.setProperty(
-        "--rhc-mox-header-hoogte",
+        "--rhc-mox-header-height",
         `${header.offsetHeight}px`,
       );
     meet();

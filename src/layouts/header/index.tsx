@@ -107,7 +107,6 @@ const Header = ({
           >
             {/* Op een smal scherm staan taal, naam en uitloggen in het menu. */}
             <div className={metMenu ? "rhc-mox-header-account" : undefined}>
-              <input type="search" />
               <LanguageSelect
                 selectedLanguage="Nederlands"
                 languages={LANGUAGES}

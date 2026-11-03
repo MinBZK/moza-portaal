@@ -44,10 +44,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	}
 
 	.utrecht-page-body {
+		padding-block-end: var(--rhc-space-max-4xl);
 
 		@media (width < 768px) {
 			hyphens: auto;
 			overflow-wrap: break-word;
+			padding-block: var(--rhc-space-lg);
 
 			.utrecht-table {
 				hyphens: manual;
@@ -56,21 +58,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	.utrecht-page-body,
 	.utrecht-page-body__content {
 		background-color: var(--rhc-color-cool-grey-100);
 	}
 
 	.rhc-mox-main-container {
 		gap: var(--rhc-space-xl);
-	}
-
-	#hoofd-inhoud {
-		padding-block-end: var(--rhc-space-max-4xl);
-
-		@media (width < 768px) {
-			padding-block: var(--rhc-space-lg);
-		}
 	}
 
 	/* --- Header --- */
@@ -90,11 +83,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	.utrecht-page-header {
 		border-block-end-color: var(--rhc-color-lintblauw-400);
 		border-block-end-width: var(--rhc-border-width-md)
-	}
-
-	/* No extra space under the header, as in rhc.css. */
-	.utrecht-page-header__content {
-		padding-block-end: var(--utrecht-page-header-content-padding-block-end, 0px);
 	}
 
 	.rhc-nav-bar__link,
@@ -193,14 +181,11 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
 
-		/* Elk kopniveau, ook een lager niveau zoals in het voorbeeld op /demo. */
 		:is(h2, h3, h4, h5, h6) {
 			color: var(--rhc-color-wit);
 			font-size: var(--rhc-text-font-size-lg);
 		}
 
-		/* Iconen in de LinkList staan via 1lh al op de eerste regel (Iconen en
-		  links); een extra marge zou ze te laag zetten. */
 		.utrecht-link .utrecht-icon {
 			align-self: flex-start;
 		}
@@ -233,7 +218,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* --- Badges --- */
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-600);
-		font-size: .75rem;
+		font-size: var(--rhc-text-font-size-xs);
 		min-inline-size: var(--rhc-space-md);
 		padding: 0 var(--rhc-space-md);
 	}

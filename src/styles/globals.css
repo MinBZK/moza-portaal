@@ -10,6 +10,7 @@
 */
 
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -92,16 +93,6 @@
     inset-block-start: -0.5em;
   }
 
-  table {
-    border-collapse: collapse;
-    border-color: inherit;
-    text-indent: 0;
-  }
-
-  progress {
-    vertical-align: baseline;
-  }
-
   summary {
     display: list-item;
   }
@@ -110,76 +101,6 @@
   ul,
   menu {
     list-style: none;
-  }
-
-  img,
-  svg,
-  video,
-  canvas,
-  audio,
-  iframe,
-  embed,
-  object {
-    display: block;
-    vertical-align: middle;
-  }
-
-  img,
-  video {
-    block-size: auto;
-    max-inline-size: 100%;
-  }
-
-  button,
-  input,
-  select,
-  optgroup,
-  textarea,
-  ::file-selector-button {
-    background-color: transparent;
-    border-radius: 0;
-    color: inherit;
-    font: inherit;
-    font-feature-settings: inherit;
-    font-variation-settings: inherit;
-    letter-spacing: inherit;
-    opacity: 1;
-  }
-
-  ::placeholder {
-    color: color-mix(in oklab, currentcolor 50%, transparent);
-    opacity: 1;
-  }
-
-  textarea {
-    resize: vertical;
-  }
-
-  ::-webkit-date-and-time-value {
-    min-block-size: 1lh;
-    text-align: inherit;
-  }
-
-  ::-webkit-datetime-edit {
-    display: inline-flex;
-  }
-
-  ::-webkit-datetime-edit-fields-wrapper {
-    padding: 0;
-  }
-
-  :-moz-focusring {
-    outline: auto;
-  }
-
-  :-moz-ui-invalid {
-    box-shadow: none;
-  }
-
-  button,
-  input:where([type="button"], [type="reset"], [type="submit"]),
-  ::file-selector-button {
-    appearance: button;
   }
 
   /* Dialogen en lades (RHC Drawer) schuiven in en faden. */
