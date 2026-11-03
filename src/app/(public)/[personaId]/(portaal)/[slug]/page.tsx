@@ -1,40 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Heading, Paragraph, Icon } from "@/components/rhc";
-
-const titelVan = (slug: string) =>
-  slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+import Placeholder, { metadataOf } from "@/app/(footer)/_placeholder";
 
 export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}): Promise<Metadata> => ({ title: titelVan((await params).slug) });
+}): Promise<Metadata> => metadataOf((await params).slug);
 
-export default async function FooterPage({
+/** Pages without content yet, such as those from the footer, with a persona. */
+export default async function PlaceholderPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  const title = titelVan(slug);
-
-  return (
-    <>
-      <Heading level={1}>{title}</Heading>
-      <div className="rhc-mox-card">
-        <Paragraph>Hier wordt aan gewerkt.</Paragraph>
-        <Paragraph>
-          <Link href="/" className="utrecht-link utrecht-link--html-a">
-            <Icon icon="chevron-left" />
-            Terug naar de startpagina
-          </Link>
-        </Paragraph>
-      </div>
-    </>
-  );
+  return <Placeholder slug={slug} />;
 }

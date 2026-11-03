@@ -62,6 +62,11 @@ const groepen: { id: string; kop: string; links: FooterLink[] }[] = [
   },
 ];
 
+/** The footer links within the portal; each has a page, for now a placeholder. */
+export const footerPages = groepen
+  .flatMap(({ links }) => links)
+  .filter(({ extern }) => !extern);
+
 const gridCell =
   "rhc-grid__cell rhc-grid__cell-12 rhc-grid__cell-t-6 rhc-grid__cell-d-3";
 
