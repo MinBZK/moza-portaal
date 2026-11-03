@@ -3,10 +3,7 @@
 import { Fragment, type ComponentProps } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import {
-  BreadcrumbNav,
-  BreadcrumbNavLink,
-} from "@rijkshuisstijl-community/components-react";
+import { BreadcrumbNav, BreadcrumbNavLink } from "@/components/rhc";
 import { useHuidigeKruimel } from "./huidigeKruimel";
 
 const breadcrumbLabels: Record<string, string> = {

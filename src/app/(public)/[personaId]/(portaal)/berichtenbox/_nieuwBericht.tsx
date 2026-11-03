@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heading, Paragraph } from "@rijkshuisstijl-community/components-react";
+import { Heading, Paragraph } from "@/components/rhc";
 import type { BerichtenboxVariant } from "@/app/(private)/instellingen/_featureFlags";
 import type { DemoBericht } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";

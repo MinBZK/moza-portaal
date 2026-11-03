@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  NumberBadge,
-  VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+import { NumberBadge, VisuallyHidden } from "@/components/rhc";
 import { useNieuweBerichten, useUitval } from "./_demoSimulatie";
 import {
   telOngelezen,

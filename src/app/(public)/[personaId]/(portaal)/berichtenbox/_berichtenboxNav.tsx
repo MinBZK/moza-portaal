@@ -3,10 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import {
-  NumberBadge,
-  VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+import { NumberBadge, VisuallyHidden } from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";

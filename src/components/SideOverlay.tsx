@@ -7,11 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import {
-  Button,
-  Drawer,
-  Heading,
-} from "@rijkshuisstijl-community/components-react";
+import { Button, Drawer, Heading } from "@/components/rhc";
 import { usePathname } from "next/navigation";
 
 const OPEN_EVENT = "prototype:open-side-overlay";

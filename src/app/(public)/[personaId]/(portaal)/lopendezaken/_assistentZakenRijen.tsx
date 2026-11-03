@@ -1,10 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  TableCell,
-  TableRow,
-} from "@rijkshuisstijl-community/components-react";
+import { TableCell, TableRow } from "@/components/rhc";
 import {
   useAssistentZaken,
   veld,

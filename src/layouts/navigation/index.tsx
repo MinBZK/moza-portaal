@@ -12,7 +12,7 @@ import {
   SideNavLink,
   Separator,
   Icon,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
 import { useKiesOrganisatie } from "@/layouts/header/useKiesOrganisatie";
 import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";

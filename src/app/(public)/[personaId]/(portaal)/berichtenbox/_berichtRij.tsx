@@ -2,11 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import {
-  TableCell,
-  TableRow,
-  VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+import { TableCell, TableRow, VisuallyHidden } from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FlagIcon } from "@/components/icons/flagIcon";
 import type { DemoBericht } from "@/demo";

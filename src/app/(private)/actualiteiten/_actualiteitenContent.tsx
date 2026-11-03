@@ -2,6 +2,8 @@
 
 import { type ReactNode, useState } from "react";
 import {
+  Accordion,
+  AccordionSection,
   ActionGroup,
   Button,
   Fieldset,
@@ -9,10 +11,6 @@ import {
   Heading,
   Paragraph,
 } from "@/components/rhc";
-import {
-  Accordion,
-  AccordionSection,
-} from "@rijkshuisstijl-community/components-react";
 import VoorkeurenSidebar from "./_voorkeurenBeheer";
 import { type SectionKey, SECTION_LABELS } from "./_subjectGroups";
 import VoorkeurenTopbar from "./_voorkeurenTopbar";

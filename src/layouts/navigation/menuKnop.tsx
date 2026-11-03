@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-import { Button, Icon } from "@rijkshuisstijl-community/components-react";
+import { Button, Icon } from "@/components/rhc";
 
 /**
  * Het hoofdmenu op een smal scherm: de knop staat in de header, het menu in

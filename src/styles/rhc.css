@@ -26,6 +26,8 @@
   --mox-transition-duration: 150ms;
   --mox-transition-easing: ease-out;
 
+  --mox-font-weight-medium: 500;
+
   /* Pagina-layout */
 
   --mox-page-margin: var(--rhc-space-max-xl);
@@ -111,7 +113,7 @@
   max-inline-size: 100%;
 }
 
-.utrecht-form-label {
+.utrecht-form-label:not(:where(.utrecht-form-label--checkbox, .utrecht-form-label--radio)) {
   font-weight: var(--mox-font-weight-medium);
 }
 
@@ -130,7 +132,15 @@
 
 .utrecht-form-field--radio,
 .utrecht-form-field--checkbox {
-  gap: var(--rhc-space-xs);
+  row-gap: 0;
+}
+
+.utrecht-form-field--checkbox {
+  column-gap: var(--utrecht-checkbox-margin-inline-end);
+}
+
+.utrecht-form-field--radio {
+  column-gap: var(--utrecht-radio-button-margin-inline-end);
 }
 
 /* The options of a group sit apart with gap. The legend is not a grid item of
@@ -256,7 +266,7 @@ body {
   }
 }
 
-.rhc-form-field {
+.rhc-form-field:not(:where(.utrecht-form-field--checkbox, .utrecht-form-field--radio)) {
   display: flex;
   flex-direction: column;
   gap: var(--rhc-space-2xs);

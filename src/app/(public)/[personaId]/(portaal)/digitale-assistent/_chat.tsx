@@ -13,7 +13,7 @@ import {
   Button,
   Paragraph,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import {
   ASSISTENT_DEMO_EVENT,

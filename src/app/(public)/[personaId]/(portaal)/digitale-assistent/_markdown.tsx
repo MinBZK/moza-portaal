@@ -4,7 +4,7 @@ import {
   Paragraph,
   UnorderedList,
   UnorderedListItem,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 
 /**
  * De markdown van de assistent als RHC-componenten: alinea's, opsommingen,

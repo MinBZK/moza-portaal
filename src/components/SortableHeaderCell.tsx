@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@rijkshuisstijl-community/components-react";
+import { Button } from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 
 export type Sorting<Key extends string> = { key: Key; ascending: boolean };

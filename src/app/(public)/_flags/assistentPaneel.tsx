@@ -6,7 +6,7 @@ import {
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldTextInput,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import {
   ASSISTENT_DEMO_EVENT,
   useAssistentInstellingen,

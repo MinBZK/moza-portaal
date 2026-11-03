@@ -15,6 +15,10 @@ import { useRouter } from "next/navigation";
 import { setFeatureFlag } from "@/app/actions";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import {
+  FormFieldSelect,
+  FormFieldTextarea,
+  IconButton,
+  SelectOption,
   AccordionProvider,
   ActionGroup,
   Alert,
@@ -66,12 +70,6 @@ import {
   UnorderedListItem,
   VisuallyHidden,
 } from "@/components/rhc";
-import {
-  FormFieldSelect,
-  FormFieldTextarea,
-  IconButton,
-  SelectOption,
-} from "@rijkshuisstijl-community/components-react";
 import BarGraph from "@/components/BarGraph";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import CountdownBar from "@/components/CountdownBar";

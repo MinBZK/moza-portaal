@@ -7,6 +7,8 @@ import { components } from "@/network/profiel/generated";
 import { useUpdateVoorkeur } from "@/network/profiel/hooks/updateVoorkeur/useUpdateVoorkeur";
 import { useUpdateOndernemengContactvoorkeur } from "@/network/profiel/hooks/updateOndernemingEmail/useUpdateOndernemenEmail";
 import {
+  FormFieldSelect,
+  SelectOption,
   ActionGroup,
   Alert,
   Button,
@@ -17,10 +19,6 @@ import {
   LinkButton,
   VisuallyHidden,
 } from "@/components/rhc";
-import {
-  FormFieldSelect,
-  SelectOption,
-} from "@rijkshuisstijl-community/components-react";
 import { LANGUAGES, languageLabel } from "@/components/languageSelect";
 import { EmailVerification } from "@/app/(private)/contactgegevens/[type]/_emailVerification";
 
