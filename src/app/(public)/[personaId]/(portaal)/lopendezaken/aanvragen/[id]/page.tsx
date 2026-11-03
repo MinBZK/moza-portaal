@@ -76,7 +76,7 @@ const AanvraagPage = async ({
       </Paragraph>
 
       {flow && (
-        <>
+        <div className="rhc-mox-card rhc-mox-row-gap">
           <Stappen huidige={1} />
           <Paragraph>
             Beantwoord vier vragen. Rechts ziet u meteen wat het u kost en
@@ -86,7 +86,7 @@ const AanvraagPage = async ({
             onderneming={flow.werkgever.onderneming}
             toelichting={aanvraag.toelichting}
           />
-        </>
+        </div>
       )}
       {!flow && (
         <div className="rhc-mox-card rhc-mox-row-gap">
