@@ -4,6 +4,7 @@ import { Fragment, type ComponentProps } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { BreadcrumbNav, BreadcrumbNavLink } from "@/components/rhc";
+import { footerPages } from "@/layouts/footer";
 import { useHuidigeKruimel } from "./huidigeKruimel";
 
 const breadcrumbLabels: Record<string, string> = {
@@ -48,6 +49,12 @@ const breadcrumbLabels: Record<string, string> = {
   prive: "Privé",
 };
 
+/** Label of a segment: from the list, the footer, or the segment without dashes. */
+const labelOf = (segment: string) =>
+  breadcrumbLabels[segment] ??
+  footerPages.find(({ href }) => href === `/${segment}`)?.label ??
+  segment[0].toUpperCase() + segment.slice(1).replaceAll("-", " ");
+
 // next/link mist de classes die Utrecht's eigen Link-component zet, waardoor
 // de link-styling wegvalt. Hier zetten we ze er weer bij.
 const NldsNextLink = ({ className, ...props }: ComponentProps<typeof Link>) => (
@@ -71,8 +78,7 @@ const Breadcrumb = () => {
     label:
       huidigeKruimel?.pad === `/${pathNames.slice(0, index + 1).join("/")}`
         ? huidigeKruimel.label
-        : (breadcrumbLabels[segment] ??
-          segment[0].toUpperCase() + segment.slice(1)),
+        : labelOf(segment),
   }));
 
   return (

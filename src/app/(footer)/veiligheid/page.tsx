@@ -1,7 +1,8 @@
-import Placeholder, { metadataOf } from "../_placeholder";
+import FooterContent from "../_content";
+import { metadataOf } from "../_placeholder";
 
 export const metadata = metadataOf("veiligheid");
 
-const Page = () => <Placeholder slug="veiligheid" />;
+const Page = () => <FooterContent slug="veiligheid" />;
 
 export default Page;
