@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Alert } from "@/components/rhc";
 import {
   Button,
   FormFieldSelect,
@@ -16,7 +15,8 @@ import {
   TableRow,
   SelectOption,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+  Alert,
+} from "@/components/rhc";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import { FolderIcon } from "@/components/icons/folderIcon";
 import { MailOpenIcon } from "@/components/icons/mailOpenIcon";

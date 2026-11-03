@@ -8,7 +8,7 @@ import {
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import {
   resetFeatureFlags,
   setBerichtenboxVariant,

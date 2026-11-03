@@ -8,7 +8,7 @@ import {
   UnorderedList,
   UnorderedListItem,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
+} from "@/components/rhc";
 import type { BerichtenboxVariant } from "@/app/(private)/instellingen/_featureFlags";
 import type { DemoBericht } from "@/demo";
 import { formatDatum } from "./_formatDatum";

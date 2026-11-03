@@ -1,10 +1,13 @@
 "use client";
 
-import { ActionGroup, Button, Icon, VisuallyHidden } from "@/components/rhc";
 import {
   FormFieldSelect,
   SelectOption,
-} from "@rijkshuisstijl-community/components-react";
+  ActionGroup,
+  Button,
+  Icon,
+  VisuallyHidden,
+} from "@/components/rhc";
 import { useGetVoorkeuren } from "@/network/actualiteiten/hooks/getVoorkeuren/useGetVoorkeuren";
 import { useAddOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/addOnderwerpVoorkeur/useAddOnderwerpVoorkeur";
 import { useDeleteOnderwerpVoorkeur } from "@/network/actualiteiten/hooks/deleteOnderwerpVoorkeur/useDeleteOnderwerpVoorkeur";

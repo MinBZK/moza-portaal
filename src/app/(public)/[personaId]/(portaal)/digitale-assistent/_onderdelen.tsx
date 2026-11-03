@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { Icon } from "@rijkshuisstijl-community/icon-react";
 import {
   ActionGroup,
   Button,
@@ -13,9 +14,8 @@ import {
   Link,
   Paragraph,
   VisuallyHidden,
-} from "@rijkshuisstijl-community/components-react";
-import { Icon } from "@rijkshuisstijl-community/icon-react";
-import { Alert } from "@/components/rhc";
+  Alert,
+} from "@/components/rhc";
 import { Markdown } from "./_markdown";
 import {
   BRONNEN,
