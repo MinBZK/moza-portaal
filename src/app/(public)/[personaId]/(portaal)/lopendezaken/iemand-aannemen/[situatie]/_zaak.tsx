@@ -22,6 +22,7 @@ import type {
 import InfoToggletip from "@/components/InfoToggletip";
 import StatusTrack from "@/components/StatusTrack";
 import TextBadge from "@/components/TextBadge";
+import TimelineItem, { type TimelineStatus } from "@/components/TimelineItem";
 import ZakenTabs from "../../_zakenTabs";
 import {
   antwoordenVoorZaak,
@@ -44,11 +45,11 @@ import {
 import { useUitkomsten } from "../../../personeel/iemand-aannemen/_useUitkomsten";
 import { datumNL } from "../../../personeel/iemand-aannemen/_werkgever";
 
-/** Colour of the dot on the timeline per kind of event. */
-const EVENT_KIND: Record<DemoAannemenGebeurtenis["soort"], string> = {
-  regelgeving: " rhc-mox-timeline__item--neutral",
-  besluit: " rhc-mox-timeline__item--ok",
-  uitvoering: "",
+/** State on the timeline per kind of event; a correction is a warning. */
+const EVENT_KIND: Record<DemoAannemenGebeurtenis["soort"], TimelineStatus> = {
+  regelgeving: "neutral",
+  besluit: "ok",
+  uitvoering: "info",
 };
 
 const SOORT: Record<DemoAannemenGebeurtenis["soort"], string> = {
@@ -386,10 +387,16 @@ const Zaak = ({
                 erboven.
               </Paragraph>
               <ol className="rhc-mox-timeline">
-                {[...zichtbaar].reverse().map((g) => (
-                  <li
+                {[...zichtbaar].reverse().map((g, index) => (
+                  <TimelineItem
                     key={g.id}
-                    className={`rhc-mox-timeline__item${EVENT_KIND[g.soort]}${g.gecorrigeerdDoor ? " rhc-mox-timeline__item--replaced" : ""}`}
+                    title={vulIn(g.titel)}
+                    date={
+                      g.datum ? `${datumNL(g.datum)} om ${g.tijd}` : undefined
+                    }
+                    status={g.herstelt ? "warning" : EVENT_KIND[g.soort]}
+                    open={index === 0}
+                    replaced={Boolean(g.gecorrigeerdDoor)}
                   >
                     <p className="rhc-mox-cluster rhc-mox-small-text">
                       {SOORT[g.soort]}
@@ -400,18 +407,6 @@ const Zaak = ({
                         <TextBadge>Gecorrigeerd</TextBadge>
                       )}
                     </p>
-                    <Heading level={3}>
-                      {g.url ? (
-                        <Link
-                          href={g.url}
-                          className="utrecht-link utrecht-link--html-a"
-                        >
-                          {vulIn(g.titel)}
-                        </Link>
-                      ) : (
-                        vulIn(g.titel)
-                      )}
-                    </Heading>
                     {g.tekst && (
                       <Paragraph>
                         {/* De vraag bij het besluit staat in de zaak als de werkgever hem stelde. */}
@@ -420,14 +415,23 @@ const Zaak = ({
                           : vulIn(g.tekst)}
                       </Paragraph>
                     )}
+                    {g.url && (
+                      <Paragraph>
+                        <Link
+                          href={g.url}
+                          className="utrecht-link utrecht-link--html-a"
+                        >
+                          Bekijk het besluit
+                        </Link>
+                      </Paragraph>
+                    )}
                     <p className="rhc-mox-small-text">
                       Vastgelegd door {g.actor}
-                      {g.datum && ` op ${datumNL(g.datum)} om ${g.tijd}`}
                       {g.grond && ` · ${g.grond}`}
                       {g.herstelt && " · vervangt de afspraak hieronder"}
                       {g.gecorrigeerdDoor && " · gecorrigeerd, zie hierboven"}
                     </p>
-                  </li>
+                  </TimelineItem>
                 ))}
               </ol>
             </section>

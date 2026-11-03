@@ -35,13 +35,17 @@ const ContactmomentenPage = ({ kvk }: { kvk: string }) => {
       <Heading level={1}>Contactmomenten</Heading>
       <div className="rhc-mox-card">
         <CountdownBar onComplete={handleCountdownEnd} ref={countdownRef} />
-        <div className="mox-timeline">
-          {data?.Notificaties?.map((notificatie) => {
+        <ol className="rhc-mox-timeline">
+          {data?.Notificaties?.map((notificatie, index) => {
             return (
-              <ContactMoment notification={notificatie} key={notificatie.id} />
+              <ContactMoment
+                notification={notificatie}
+                open={index === 0}
+                key={notificatie.id}
+              />
             );
           })}
-        </div>
+        </ol>
       </div>
     </>
   );
