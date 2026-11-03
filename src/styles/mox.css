@@ -228,7 +228,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* --- Kaarten --- */
 	.rhc-mox-card,
-	.rhc-mox-sticky-info-box,
 	.mox-faq-card,
 	.rhc-table {
 		background-color: var(--rhc-color-wit);
@@ -273,6 +272,19 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		.utrecht-accordion {
 			padding: 0;
 		}
+	}
+
+	.rhc-mox-sticky-info-box {
+		background-color: color-mix(
+			in srgb,
+			var(--rhc-color-info-50) 10%,
+			transparent
+		);
+		border-color: color-mix(
+			in srgb,
+			var(--rhc-color-info-500) 25%,
+			transparent
+		);
 	}
 
 	/* --- Meldingen --- */
