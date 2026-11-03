@@ -107,6 +107,37 @@
 		max-inline-size: 100%;
 	}
 
+	button,
+	input,
+	select,
+	optgroup,
+	textarea,
+	::file-selector-button {
+		background-color: transparent;
+		border-radius: 0;
+		color: inherit;
+		font: inherit;
+		font-feature-settings: inherit;
+		font-variation-settings: inherit;
+		letter-spacing: inherit;
+		opacity: 1;
+	}
+
+	::placeholder {
+		color: color-mix(in oklab, currentcolor 50%, transparent);
+		opacity: 1;
+	}
+
+	textarea {
+		resize: vertical;
+	}
+
+	button,
+	input:where([type="button"], [type="reset"], [type="submit"]),
+	::file-selector-button {
+		appearance: button;
+	}
+
 	/* Dialogen en lades (RHC Drawer) schuiven in en faden. */
 	dialog,
 	dialog::backdrop {
