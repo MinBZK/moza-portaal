@@ -101,6 +101,16 @@
 	}
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+li {
+	max-inline-size: 75ch;
+}
+
 /* ==== Forms ============================================================== */
 
 .utrecht-textbox {
@@ -1302,6 +1312,12 @@ small,
 
 /* --- Link button --- */
 .rhc-theme.mox-theme {
+	.utrecht-button-link {
+		align-items: baseline;
+		.utrecht-icon {
+			inset-block-start: var(--rhc-space-xs);
+		}
+	}
 	.rhc-mox-link-button--danger {
 		--utrecht-link-button-color: var(--rhc-color-rood-500);
 		--utrecht-link-button-hover-color: var(--rhc-color-rood-600);
