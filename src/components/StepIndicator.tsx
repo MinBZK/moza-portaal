@@ -12,6 +12,7 @@ const StepIndicator = ({
   steps,
   current,
   label = "Voortgang",
+  hideCount = false,
 }: {
   /** The steps in order: a name, or a name with the address of the step. */
   steps: (string | { name: string; href?: string })[];
@@ -19,11 +20,19 @@ const StepIndicator = ({
   current: number;
   /** Accessible name of the navigation. */
   label?: string;
+  /** Hide "Stap 2 van 4" visually; screen readers still read it. */
+  hideCount?: boolean;
 }) => (
   <nav className="rhc-mox-step-indicator" aria-label={label}>
-    <p className="rhc-mox-step-indicator__count">
-      Stap {current + 1} van {steps.length}
-    </p>
+    {hideCount ? (
+      <VisuallyHidden>
+        Stap {current + 1} van {steps.length}
+      </VisuallyHidden>
+    ) : (
+      <p className="rhc-mox-step-indicator__count">
+        Stap {current + 1} van {steps.length}
+      </p>
+    )}
     <ol className="rhc-mox-step-indicator__list">
       {steps.map((step, index) => {
         const { name, href } =

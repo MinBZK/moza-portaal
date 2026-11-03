@@ -7,13 +7,13 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 */
 
 .rhc-theme.mox-theme:where(.mox-current-brand) {
-
 	/* ==== Tokens ============================================================= */
 	--utrecht-page-body-padding-block-start: var(--rhc-space-xl);
 	--rhc-text-font-weight-bold: var(--rhc-text-font-weight-semi-bold);
 	--rhc-text-font-weight-strong: var(--rhc-text-font-weight-semi-bold);
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
 	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
+	--rhc-mox-color-page-background: var(--rhc-color-cool-grey-100);
 
 	/* ==== Typografie ========================================================= */
 
@@ -26,7 +26,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		font-weight: normal;
 	}
 
-	/* Kop op de donkere balk van de Hero: de tekstkleur van de balk. */
 	.rhc-hero .rhc-hero__heading {
 		color: currentColor;
 	}
@@ -39,13 +38,18 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* ==== Layout ============================================================= */
 
 	/* --- Pagina --- */
+	& {
+		row-gap: 0;
+	}
+
 	.utrecht-page-body {
+		padding-block-end: var(--rhc-space-max-4xl);
 
 		@media (width < 768px) {
 			hyphens: auto;
 			overflow-wrap: break-word;
+			padding-block: var(--rhc-space-lg);
 
-			/* Tabellen scrollen (rhc-mox-table-container); cellen breken niet midden in een woord. */
 			.utrecht-table {
 				hyphens: manual;
 				overflow-wrap: normal;
@@ -53,21 +57,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	.utrecht-page-body,
 	.utrecht-page-body__content {
 		background-color: var(--rhc-color-cool-grey-100);
 	}
 
 	.rhc-mox-main-container {
 		gap: var(--rhc-space-xl);
-	}
-
-	#hoofd-inhoud {
-		padding-block-end: var(--rhc-space-max-4xl);
-
-		@media (width < 768px) {
-			padding-block: var(--rhc-space-lg);
-		}
 	}
 
 	/* --- Header --- */
@@ -86,12 +81,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	.utrecht-page-header {
 		border-block-end-color: var(--rhc-color-lintblauw-400);
-		border-block-end-width: var(--rhc-border-width-md)
-	}
-
-	/* No extra space under the header, as in rhc.css. */
-	.utrecht-page-header__content {
-		padding-block-end: var(--utrecht-page-header-content-padding-block-end, 0px);
+		border-block-end-width: var(--rhc-border-width-md);
 	}
 
 	.rhc-nav-bar__link,
@@ -134,7 +124,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	.rhc-mox-menu-button {
 		font-size: var(--rhc-text-font-size-sm);
 		inset-block-start: var(--rhc-space-sm);
-		inset-inline-start: var(--mox-page-margin, 0);
+		inset-inline-start: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 1;
 	}
@@ -149,7 +139,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	.rhc-language-navigation {
 		inset-block-start: var(--rhc-space-2xl);
-		inset-inline-end: var(--mox-page-margin, 0);
+		inset-inline-end: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 2;
 
@@ -180,24 +170,20 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			background-color: var(--rhc-color-cool-grey-200);
 		}
 
-		&[aria-current=page] {
+		&[aria-current="page"] {
 			background-color: var(--rhc-color-cool-grey-200);
 		}
-
 	}
 
 	/* --- Footer --- */
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
 
-		/* Elk kopniveau, ook een lager niveau zoals in het voorbeeld op /demo. */
 		:is(h2, h3, h4, h5, h6) {
 			color: var(--rhc-color-wit);
 			font-size: var(--rhc-text-font-size-lg);
 		}
 
-		/* Iconen in de LinkList staan via 1lh al op de eerste regel (Iconen en
-		  links); een extra marge zou ze te laag zetten. */
 		.utrecht-link .utrecht-icon {
 			align-self: flex-start;
 		}
@@ -230,7 +216,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* --- Badges --- */
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-600);
-		font-size: .75rem;
+		font-size: var(--rhc-text-font-size-xs);
 		min-inline-size: var(--rhc-space-md);
 		padding: 0 var(--rhc-space-md);
 	}
@@ -340,11 +326,11 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* --- Statusstip --- */
 	.mox-status {
 		background-color: var(--rhc-color-cool-grey-400);
-		block-size: calc(var(--rhc-size-icon-md)/2);
+		block-size: calc(var(--rhc-size-icon-md) / 2);
 		border-radius: var(--rhc-border-radius-round);
 		display: inline-block;
 		flex-shrink: 0;
-		inline-size: calc(var(--rhc-size-icon-md)/2);
+		inline-size: calc(var(--rhc-size-icon-md) / 2);
 	}
 
 	.mox-status--accepted {
@@ -365,7 +351,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* HTML uit een API, zoals de tekst van een artikel */
 	.mox-rich-text {
-		>*+* {
+		> * + * {
 			margin-block-start: var(--rhc-space-lg);
 		}
 
@@ -422,7 +408,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 			position: absolute;
 		}
 
-		>* {
+		> * {
 			align-items: baseline;
 			display: flex;
 			gap: var(--rhc-space-lg);
@@ -432,5 +418,25 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 				white-space: nowrap;
 			}
 		}
+	}
+
+	/* --- Toggletip --- */
+	.mox-toggletip {
+		--rhc-toggletip-background-color: transparent;
+		--rhc-toggletip-hover-background-color: transparent;
+		--rhc-toggletip-focus-background-color: transparent;
+		--rhc-toggletip-active-background-color: transparent;
+		--rhc-toggletip-border-color: transparent;
+		--rhc-toggletip-hover-border-color: transparent;
+		--rhc-toggletip-focus-border-color: transparent;
+		--rhc-toggletip-active-border-color: transparent;
+		--rhc-toggletip-color: var(--utrecht-link-color);
+		--rhc-toggletip-hover-color: var(--utrecht-link-hover-color);
+		--rhc-toggletip-focus-color: var(--utrecht-link-hover-color);
+		--rhc-toggletip-active-color: var(--utrecht-link-hover-color);
+		--rhc-toggletip-icon-size: 1.125rem;
+		--rhc-toggletip-size: 1.125rem;
+
+		vertical-align: -0.2em;
 	}
 }

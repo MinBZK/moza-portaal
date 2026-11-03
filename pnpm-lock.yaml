@@ -16,7 +16,7 @@ importers:
         version: 18.0.2(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1)
       '@rijkshuisstijl-community/components-react':
         specifier: ^17.0.1
-        version: 17.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 17.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/design-tokens':
         specifier: ^18.0.1
         version: 18.0.1
@@ -25,22 +25,22 @@ importers:
         version: 0.0.2
       '@rijkshuisstijl-community/icon-react':
         specifier: ^3.1.3
-        version: 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/language-navigation-react':
         specifier: ^2.0.1
-        version: 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/link-react':
         specifier: ^1.1.3
-        version: 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/page-number-navigation-react':
         specifier: ^1.0.3
-        version: 1.0.3(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 1.0.3(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@tanstack/react-form':
         specifier: ^1.11.1
-        version: 1.33.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 1.33.5(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@tanstack/react-query':
         specifier: ^5.90.20
-        version: 5.103.2(react@19.3.0)
+        version: 5.103.2(react@19.3.1)
       date-fns:
         specifier: ^4.1.0
         version: 4.4.0
@@ -49,40 +49,40 @@ importers:
         version: 5.11.1
       msw:
         specifier: ^3.0.3
-        version: 3.0.3(@types/node@20.19.43)(graphql@16.14.2)(supports-color@10.2.2)(typescript@5.9.3)
+        version: 3.0.3(@types/node@22.20.5)(graphql@16.14.2)(supports-color@10.2.2)(typescript@5.9.3)
       next:
         specifier: ^16.4.3
-        version: 16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       next-auth:
         specifier: ^5.0.0-beta.29
-        version: 5.0.0-beta.32(next@16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
+        version: 5.0.0-beta.32(next@16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.1))(react@19.3.1))(react@19.3.1)
       openapi-fetch:
         specifier: ^0.14.0
         version: 0.14.1
       openapi-react-query:
         specifier: ^0.5.0
-        version: 0.5.4(@tanstack/react-query@5.103.2(react@19.3.0))(openapi-fetch@0.14.1)
+        version: 0.5.4(@tanstack/react-query@5.103.2(react@19.3.1))(openapi-fetch@0.14.1)
       react:
-        specifier: ^19.0.0
-        version: 19.3.0
+        specifier: ^19.3.1
+        version: 19.3.1
       react-dom:
         specifier: ^19.2.3
-        version: 19.3.0(react@19.3.0)
+        version: 19.3.0(react@19.3.1)
       zod:
-        specifier: ^4.3.6
-        version: 4.6.5
+        specifier: ^4.6.7
+        version: 4.6.7
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.7(supports-color@10.2.2)
       '@tanstack/eslint-plugin-query':
-        specifier: ^5.73.3
-        version: 5.103.2(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
+        specifier: ^5.105.0
+        version: 5.105.0(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
       '@types/node':
-        specifier: ^20
-        version: 20.19.43
+        specifier: ^22.20.5
+        version: 22.20.5
       '@types/react':
-        specifier: ^19.2.8
+        specifier: ^19.3.0
         version: 19.3.0
       '@types/react-dom':
         specifier: ^19
@@ -91,8 +91,8 @@ importers:
         specifier: ^9
         version: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
       eslint-config-next:
-        specifier: 16.2.3
-        version: 16.2.3(@typescript-eslint/parser@8.70.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
+        specifier: 16.4.3
+        version: 16.4.3(@typescript-eslint/parser@8.70.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
       openapi-typescript:
         specifier: ^7.8.0
         version: 7.13.0(typescript@5.9.3)
@@ -298,6 +298,12 @@ packages:
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
 
+  '@eslint-community/eslint-utils@4.9.1':
+    resolution: {integrity: sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+
   '@eslint-community/regexpp@4.12.2':
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
@@ -389,105 +395,89 @@ packages:
     resolution: {integrity: sha512-Y3dgX/6lE2QhQb+Gxy0WZxfg9MEm/JBjamZpS2IklP7xIQoKN4hzAm7KcMVGtaVDt3neE9OKBC7vAfonA/Lr1A==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-libvips-linux-arm@1.3.4':
     resolution: {integrity: sha512-LmRtTsOHuvM2+wlO2Db37dx5MiZhB0FvSunciw48YjdOkZz9KAiRbm8ujeMOA1INqmei5NapFxYEK1D1ZSidmw==}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-libvips-linux-ppc64@1.3.4':
     resolution: {integrity: sha512-Le6boB8Tai0Nis+gIxIpKx68UDVVIqdR8Tin5Yf1z2LJJQLDJvCDRqRu+jC2qCoD+eIomonmOwB4smBRxfVpYQ==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-libvips-linux-riscv64@1.3.4':
     resolution: {integrity: sha512-aHkkIEHPRdQEegJN20MLmGtxYD9R2wQr3Cwpddnu5+YKMt6Uzax7S9h5gpZTo8wyrGuZSlfQ63OevL5mTyOC7Q==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-libvips-linux-s390x@1.3.4':
     resolution: {integrity: sha512-ra/mB6MikESDUO7Yg+Mi95bFBb9GsObURuhnOv3OqknjGe9sZrG8tCe9q0xSIGrtLgvgw0gKnFWcK4blSgQOuQ==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-libvips-linux-x64@1.3.4':
     resolution: {integrity: sha512-GJ//SSXbnwSDes02umB3nDJLFcQzw8a18V8fyhqr6tV515tOEMdImjjxj1AoafMRz56F3PHgftnj1QEKSU1zkw==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-libvips-linuxmusl-arm64@1.3.4':
     resolution: {integrity: sha512-hvulFwtjUcagsis6BBxHwGFwWoNZjgYmULGVrZcyfNbjA8hKILbRxGg15/7w5HDyXHXUos/j6baAWqnCyQ2DWA==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@img/sharp-libvips-linuxmusl-x64@1.3.4':
     resolution: {integrity: sha512-6zXKeE/p39I1AmA3cJG35eyBGNqNddLnUXjhwBnsGjFPWqf5VKkDBEqaEkPDoTEtkxwi2vv8Tcr2mDyP4So7Fg==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@img/sharp-linux-arm64@0.35.5':
     resolution: {integrity: sha512-LYVx5JTsOM2CBzmxreh+nl64/3H6Xb09iSLknqH47z2T2DFFxDeFLP5y4dJwe6H7uGQlHPyEEtIqyo3DYsRwdQ==}
     engines: {node: '>=20.9.0'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-linux-arm@0.35.5':
     resolution: {integrity: sha512-LEaXK2WdXVK5ykcw0buWyPMsmLLL2vpHLD6yrNSW+JGEL3BZPA4tpKN6iaMc4AxTTAoaX/sU1rOL51lcIz48ZQ==}
     engines: {node: '>=20.9.0'}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-linux-ppc64@0.35.5':
     resolution: {integrity: sha512-QVxAAq8evVRI9ia2vqgwrmWucn5Dfv+JdWzj75pD8omHLPSP7f8p20O8jxzjCcuCEQEOtYOZUmX1hkiZ0kdevA==}
     engines: {node: '>=20.9.0'}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-linux-riscv64@0.35.5':
     resolution: {integrity: sha512-LtdreXguaavKODPIfzJ4kffx7UNt1omwtK0rch4EBbbSTXPnxWmYSayXdLJw0fJzQ97kHt1gL/yh4tvU+nCyRQ==}
     engines: {node: '>=20.9.0'}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-linux-s390x@0.35.5':
     resolution: {integrity: sha512-UZasTOFiYzotTsGOCu42BfUzP6Tu6Do/947iRm1RsLKvlllxwGcn4RN27LibGWceix4Y+Pmw3jsnTcCQIgWjqA==}
     engines: {node: '>=20.9.0'}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-linux-x64@0.35.5':
     resolution: {integrity: sha512-SxFtLTeJInhAA9Q836kux2vZNeOBQEx658qvbboZScr0wIARym3IcGmW7KpVD5sbVg0Ojy+udFQdayYIZyoNog==}
     engines: {node: '>=20.9.0'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@img/sharp-linuxmusl-arm64@0.35.5':
     resolution: {integrity: sha512-9HbMclmI1zlNkFRs3z9/eBtDjfD0sGlrX1z6b1qwmiFY5ElDLh4BC0LPBdVp7z1DXFiKlIcznf+ZlsuZzLxQqg==}
     engines: {node: '>=20.9.0'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@img/sharp-linuxmusl-x64@0.35.5':
     resolution: {integrity: sha512-4KOphqB035HrVdqLZfCgMzzERrQkkzOwRhl4OAkRO1YCldbaFjySXMaK534Mo0V+LndnlJk+sbUyLeU0ULyD1A==}
     engines: {node: '>=20.9.0'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@img/sharp-wasm32@0.35.5':
     resolution: {integrity: sha512-Ptsga1su4tQx+LLF1ECS9U6nz5kmrXKo6XVbtR48Ke3ZRxxgaWBu7IDtEe1quo8hiupwm6WFqxVlXaSf7IINGQ==}
@@ -593,8 +583,8 @@ packages:
   '@next/env@16.4.3':
     resolution: {integrity: sha512-a7tz1QCcWWkwC/rPJcPMJk/UNRu9CFhDd3OHYE5hddbJrs8BqRTalxI6GlKCWEGzRLHN+S/B7a4PAHCtm25aBQ==}
 
-  '@next/eslint-plugin-next@16.2.3':
-    resolution: {integrity: sha512-nE/b9mht28XJxjTwKs/yk7w4XTaU3t40UHVAky6cjiijdP/SEy3hGsnQMPxmXPTpC7W4/97okm6fngKnvCqVaA==}
+  '@next/eslint-plugin-next@16.4.3':
+    resolution: {integrity: sha512-oxuC06wt/71h6ACYCV9GbKOfnf5a7VlRe/p80YHTut15TNgDEmynDnaq8t/xhy5rlvk7dhItIPs6H3rvIM4kyw==}
 
   '@next/swc-darwin-arm64@16.4.3':
     resolution: {integrity: sha512-4yq5EXBt+VDtAZwTyfijaFp5D2C5oz3Ikw5a2kiX2K9nw72vrZX2q5UuAlkPtUMO1tQz6JTKpaKWjS7OOefTDQ==}
@@ -613,28 +603,24 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@next/swc-linux-arm64-musl@16.4.3':
     resolution: {integrity: sha512-WwYbhWkhYBvBtib1K4W0kL8MW2snBD2A5b3SN4vPpqalZbZs5+bQ1yzAdepVoOqrFfEW3dmREy4Zs1MrWcrFbw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@next/swc-linux-x64-gnu@16.4.3':
     resolution: {integrity: sha512-QymWvfUwDEC5/lpJOsxX5VAbyoR2D13+2Jsjz4be7gT4LPqEgdpkeLIR/HFfCLgKzoMhpJbp6I/JnogyNZHcaA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@next/swc-linux-x64-musl@16.4.3':
     resolution: {integrity: sha512-Vmjd9D7DpA4Vv3cUlr82QWgJD/BQZmns801vtC5VWHg6jCIA4a5vMKpQnfrM2pyCrp2eV0ENdUg4PlN3bAc2Yw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@next/swc-win32-arm64-msvc@16.4.3':
     resolution: {integrity: sha512-lG1pPdPLk7gTyGb00n5JIMLdBJgjb+UEhSdZvFbhUMg0DyC6z4B7RnpSKF9VCd4imkLObVbXOFA0kFCpw7yFow==}
@@ -1319,8 +1305,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@tanstack/eslint-plugin-query@5.103.2':
-    resolution: {integrity: sha512-qycCzS4j5p7lLT6NUDcUURv3csrYS2VfnaxMDUn/bBi4MPjU0z+tAGoRPwPS3V86Z9yp6PG4p30MtbTOXo80NQ==}
+  '@tanstack/eslint-plugin-query@5.105.0':
+    resolution: {integrity: sha512-nQTKJa7RMzhHAl03fVchPDDgt341Onxj7MmZTNt754awyQzjCLKLM+Ki36Y6gwq8UBz8M/xDxEg8it/JOTWifQ==}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: ^5.6.0 || ^6.0.0 || ^7.0.0
@@ -1382,8 +1368,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@20.19.43':
-    resolution: {integrity: sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==}
+  '@types/node@22.20.5':
+    resolution: {integrity: sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==}
 
   '@types/react-dom@19.3.0':
     resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
@@ -1420,12 +1406,28 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4 <6.1.0'
 
+  '@typescript-eslint/project-service@8.72.1':
+    resolution: {integrity: sha512-fAuVMkwdO/huI8nyo/WKnNKf6Gag93S56Rh3Ts5mGcavwSdaN8tRg1gCeIGX8PF+nzp1BjGfO4gHhGzW1J6jTg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.1.0'
+
   '@typescript-eslint/scope-manager@8.70.1':
     resolution: {integrity: sha512-Pa0EeSeAusQc1WbjQMac+YfenewYTBu0KjgYvkUKwhXaHUKbFog23Dm/rp0DX/6tyYOQ3Xl1a+3EcFNZynGHCw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@typescript-eslint/scope-manager@8.72.1':
+    resolution: {integrity: sha512-lC/t6eMCZZQAAKZEYGL6RDVSuFehpdmMT6h+nJIjIa6oylN/PwDgDVtEIbB7O9xFfZYtZAYLoLlDNWKJhtF+uQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@typescript-eslint/tsconfig-utils@8.70.1':
     resolution: {integrity: sha512-jumze1fPI+sDOaM2TWGQdn39PDxTr7TZGeuyLkAbNyx2vtMT3uRnVKChN0hfht5V2TugphJzF6bYXvBcE09qqg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.1.0'
+
+  '@typescript-eslint/tsconfig-utils@8.72.1':
+    resolution: {integrity: sha512-e4D5R5vpeAEPBxT2BAzsFQL3sbwyeeeo5+aczgNSRK1V734jE7pTqaGFU+fXapWEQwnZbpFaTn32+Z8DwS6OTg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.1.0'
@@ -1441,8 +1443,18 @@ packages:
     resolution: {integrity: sha512-Dm1ypdhhrGCTyyehxElhgJ6kgk8MVCv5qXdoOVqPr1uqk42jX8KjrZqhROvdShczA8qrDoYiOWn1ykWlx2k81Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@typescript-eslint/types@8.72.1':
+    resolution: {integrity: sha512-LmE5IhQet1BWOWEXqBrVtBPsMAOQ6Nzk35d+WLh3mk4EUF33sqlfxjio1MdYeSvKSG5skactKKuixBIKXhL4Rw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@typescript-eslint/typescript-estree@8.70.1':
     resolution: {integrity: sha512-TU8PwyGN0PQJUcE96mw8eCQ44SmxGdQlJmlWakHaHQ15eIuuvye5yNtmh/i6oS88jzXVQB71xdNkbkB/fMwL0g==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.1.0'
+
+  '@typescript-eslint/typescript-estree@8.72.1':
+    resolution: {integrity: sha512-DAlUoUV93hIvrtIQLwCbmZQYVZwOMhiHJrOVUUIWicFZaIYjTRqlY3I/NZevfkLmSqkNHRu2qYDcq9lrn16oOQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.1.0'
@@ -1454,8 +1466,19 @@ packages:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
+  '@typescript-eslint/utils@8.72.1':
+    resolution: {integrity: sha512-5v5liypurJBFHCBNqh/RjsymAD+VWcE0djuGY/BUqp5fC3Qn+luWDEksjuTtWjPn6i5zQlUtkZCRG/CYG0yCkA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
+      typescript: '>=4.8.4 <6.1.0'
+
   '@typescript-eslint/visitor-keys@8.70.1':
     resolution: {integrity: sha512-Vwj9lUIW5Xq3wQ9w6gv3R86g1hMK8f2zNOdGTAgeXUMMXFK78G9ruCjjqutHMNJc0+CH7LYRnHeUB9IT8wFmcw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/visitor-keys@8.72.1':
+    resolution: {integrity: sha512-SB8xqipSzZHUePCCLNeYxqnxq83X61/qzNhjQGbTfjxGZIeOEP7tBgWYX05Tcd6CgE02WdTJnh5b8kMZJ/+bnQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@unrs/resolver-binding-android-arm-eabi@1.12.2':
@@ -2940,8 +2963,8 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-config-next@16.2.3:
-    resolution: {integrity: sha512-Dnkrylzjof/Az7iNoIQJqD18zTxQZcngir19KJaiRsMnnjpQSVoa6aEg/1Q4hQC+cW90uTlgQYadwL1CYNwFWA==}
+  eslint-config-next@16.4.3:
+    resolution: {integrity: sha512-j9IqBma6abp800frdUURaizYMgXOK+jNGyq6CsYcM9AxpSJs5D/TgMNGeAmRUilZvA7g9V1Tr71gNg9/SVTuMQ==}
     peerDependencies:
       eslint: '>=9.0.0'
       typescript: '>=3.3.1'
@@ -3977,8 +4000,8 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react@19.3.0:
-    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
     engines: {node: '>=0.10.0'}
 
   reflect.getprototypeof@1.0.10:
@@ -4480,8 +4503,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.6.5:
-    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
 snapshots:
 
@@ -4492,19 +4515,19 @@ snapshots:
       '@amsterdam/design-system-assets': 1.0.0
       '@amsterdam/design-system-tokens': 1.0.1
 
-  '@amsterdam/design-system-react-icons@1.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@amsterdam/design-system-react-icons@1.0.0(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
-  '@amsterdam/design-system-react@1.1.0(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@amsterdam/design-system-react@1.1.0(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@amsterdam/design-system-css': 1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1)
-      '@amsterdam/design-system-react-icons': 1.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@amsterdam/design-system-react-icons': 1.0.0(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@babel/runtime': 7.27.4
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@amsterdam/design-system-tokens@1.0.1': {}
 
@@ -4684,6 +4707,11 @@ snapshots:
       eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
       eslint-visitor-keys: 3.4.3
 
+  '@eslint-community/eslint-utils@4.9.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))':
+    dependencies:
+      eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
+      eslint-visitor-keys: 3.4.3
+
   '@eslint-community/regexpp@4.12.2': {}
 
   '@eslint/config-array@0.21.2(supports-color@10.2.2)':
@@ -4852,30 +4880,30 @@ snapshots:
 
   '@inquirer/ansi@2.0.8': {}
 
-  '@inquirer/confirm@6.3.2(@types/node@20.19.43)':
+  '@inquirer/confirm@6.3.2(@types/node@22.20.5)':
     dependencies:
-      '@inquirer/core': 12.0.3(@types/node@20.19.43)
-      '@inquirer/type': 4.1.1(@types/node@20.19.43)
+      '@inquirer/core': 12.0.3(@types/node@22.20.5)
+      '@inquirer/type': 4.1.1(@types/node@22.20.5)
     optionalDependencies:
-      '@types/node': 20.19.43
+      '@types/node': 22.20.5
 
-  '@inquirer/core@12.0.3(@types/node@20.19.43)':
+  '@inquirer/core@12.0.3(@types/node@22.20.5)':
     dependencies:
       '@inquirer/ansi': 2.0.8
       '@inquirer/figures': 2.0.9
-      '@inquirer/type': 4.1.1(@types/node@20.19.43)
+      '@inquirer/type': 4.1.1(@types/node@22.20.5)
       cli-width: 4.1.0
       fast-wrap-ansi: 0.2.2
       mute-stream: 3.0.0
       signal-exit: 4.1.0
     optionalDependencies:
-      '@types/node': 20.19.43
+      '@types/node': 22.20.5
 
   '@inquirer/figures@2.0.9': {}
 
-  '@inquirer/type@4.1.1(@types/node@20.19.43)':
+  '@inquirer/type@4.1.1(@types/node@22.20.5)':
     optionalDependencies:
-      '@types/node': 20.19.43
+      '@types/node': 22.20.5
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -4926,9 +4954,12 @@ snapshots:
 
   '@next/env@16.4.3': {}
 
-  '@next/eslint-plugin-next@16.2.3':
+  '@next/eslint-plugin-next@16.4.3(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))':
     dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))
       fast-glob: 3.3.1
+    transitivePeerDependencies:
+      - eslint
 
   '@next/swc-darwin-arm64@16.4.3':
     optional: true
@@ -4956,41 +4987,41 @@ snapshots:
 
   '@nl-design-system-candidate/heading-css@1.1.3': {}
 
-  '@nl-design-system-candidate/heading-react@1.1.7(@babel/runtime@7.27.4)(react@19.3.0)':
+  '@nl-design-system-candidate/heading-react@1.1.7(@babel/runtime@7.27.4)(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
-      react: 19.3.0
+      react: 19.3.1
 
   '@nl-design-system-candidate/link-css@2.0.3': {}
 
-  '@nl-design-system-candidate/link-react@1.1.8(@babel/runtime@7.27.4)(react@19.3.0)':
+  '@nl-design-system-candidate/link-react@1.1.8(@babel/runtime@7.27.4)(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       clsx: 2.1.1
-      react: 19.3.0
+      react: 19.3.1
 
   '@nl-design-system-candidate/number-badge-css@1.1.5': {}
 
-  '@nl-design-system-candidate/number-badge-react@1.3.2(@babel/runtime@7.27.4)(react@19.3.0)':
+  '@nl-design-system-candidate/number-badge-react@1.3.2(@babel/runtime@7.27.4)(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
-      react: 19.3.0
+      react: 19.3.1
 
   '@nl-design-system-candidate/paragraph-css@2.1.3': {}
 
-  '@nl-design-system-candidate/paragraph-react@2.2.2(@babel/runtime@7.27.4)(react@19.3.0)':
+  '@nl-design-system-candidate/paragraph-react@2.2.2(@babel/runtime@7.27.4)(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       clsx: 2.1.1
-      react: 19.3.0
+      react: 19.3.1
 
   '@nl-design-system-candidate/skip-link-css@1.0.5': {}
 
-  '@nl-design-system-candidate/skip-link-react@1.1.7(@babel/runtime@7.27.4)(react@19.3.0)':
+  '@nl-design-system-candidate/skip-link-react@1.1.7(@babel/runtime@7.27.4)(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       clsx: 2.1.1
-      react: 19.3.0
+      react: 19.3.1
 
   '@nodable/entities@3.0.0': {}
 
@@ -5057,12 +5088,12 @@ snapshots:
       '@utrecht/accordion-css': 3.0.1
       '@utrecht/button-css': 3.1.0
 
-  '@rijkshuisstijl-community/accordion-react@3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/accordion-react@3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/accordion-css': 2.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5072,12 +5103,12 @@ snapshots:
     dependencies:
       '@utrecht/action-group-css': 2.0.0
 
-  '@rijkshuisstijl-community/action-group-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/action-group-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/action-group-css': 1.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5088,13 +5119,13 @@ snapshots:
       '@utrecht/alert-css': 2.4.0
       '@utrecht/icon-css': 2.0.1
 
-  '@rijkshuisstijl-community/alert-react@3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/alert-react@3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/alert-css': 4.2.0
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5104,12 +5135,12 @@ snapshots:
     dependencies:
       '@utrecht/article-css': 1.5.1
 
-  '@rijkshuisstijl-community/article-react@2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/article-react@2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/article-css': 2.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5119,23 +5150,23 @@ snapshots:
     dependencies:
       '@utrecht/blockquote-css': 1.6.1
 
-  '@rijkshuisstijl-community/blockquote-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/blockquote-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/blockquote-css': 1.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/body-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/body-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/body-react': 0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/body-react': 0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5145,12 +5176,12 @@ snapshots:
     dependencies:
       '@utrecht/breadcrumb-nav-css': 1.5.1
 
-  '@rijkshuisstijl-community/breadcrumb-nav-react@0.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/breadcrumb-nav-react@0.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/breadcrumb-nav-css': 1.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5160,13 +5191,13 @@ snapshots:
     dependencies:
       '@utrecht/button-css': 3.1.0
 
-  '@rijkshuisstijl-community/button-react@1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/button-react@1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/button-css': 1.2.0
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5177,14 +5208,14 @@ snapshots:
       '@rijkshuisstijl-community/link-css': 1.2.0
       '@utrecht/img-css': 1.3.1
 
-  '@rijkshuisstijl-community/card-as-link-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/card-as-link-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/card-as-link-css': 1.2.0
-      '@rijkshuisstijl-community/image-react': 2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/image-react': 2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5195,13 +5226,13 @@ snapshots:
       '@rijkshuisstijl-community/link-css': 1.2.0
       '@utrecht/img-css': 1.3.1
 
-  '@rijkshuisstijl-community/card-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/card-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/card-css': 1.2.0
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5215,23 +5246,23 @@ snapshots:
     dependencies:
       '@rijkshuisstijl-community/checkbox-css': 1.1.0
 
-  '@rijkshuisstijl-community/checkbox-group-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/checkbox-group-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/checkbox-group-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/checkbox-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/checkbox-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/checkbox-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5241,36 +5272,36 @@ snapshots:
 
   '@rijkshuisstijl-community/code-input-group-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/code-input-group-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/code-input-group-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/code-input-group-css': 1.1.0
-      '@rijkshuisstijl-community/code-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/fieldset-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/code-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/fieldset-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/code-input-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/code-input-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/code-input-css': 1.1.0
-      '@rijkshuisstijl-community/text-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/text-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/column-layout-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/column-layout-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5385,87 +5416,87 @@ snapshots:
       - '@amsterdam/design-system-assets'
       - '@amsterdam/design-system-tokens'
 
-  '@rijkshuisstijl-community/components-react@17.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/components-react@17.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@amsterdam/design-system-react': 1.1.0(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@nl-design-system-candidate/link-react': 1.1.8(@babel/runtime@7.27.4)(react@19.3.0)
-      '@nl-design-system-candidate/skip-link-react': 1.1.7(@babel/runtime@7.27.4)(react@19.3.0)
-      '@rijkshuisstijl-community/accordion-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/action-group-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/alert-react': 3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/article-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/blockquote-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/body-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/breadcrumb-nav-react': 0.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/button-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/card-as-link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/card-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/checkbox-group-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/checkbox-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/code-input-group-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/code-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/column-layout-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/data-badge-button-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/data-summary-item-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/data-summary-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/dot-badge-react': 1.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/drawer-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/fieldset-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/figure-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/file-input-react': 2.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/file-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/footer-react': 0.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/heading-group-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/hero-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/image-react': 2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/language-navigation-react': 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-button-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-list-card-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-list-react': 1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/listbox-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/logo-react': 1.1.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/message-list-item-react': 0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/message-list-react': 1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/navigation-bar-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/navigation-list-item-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/navigation-list-react': 1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/number-badge-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/ordered-list-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/page-body-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/page-content-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/page-header-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/page-layout-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/page-number-navigation-react': 1.0.3(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/pre-heading-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/radio-group-react': 1.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/radio-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/root-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/rounded-corner-react': 1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/separator-react': 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/side-nav-item-react': 1.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/side-nav-link-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/side-nav-list-react': 1.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/side-nav-react': 1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/skip-link-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/text-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/textarea-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/toggletip-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/unordered-list-item-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/unordered-list-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/visually-hidden-react': 1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/body-react': 0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/page-body-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/page-footer-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/page-header-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/page-layout-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/root-react': 1.0.17(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@amsterdam/design-system-react': 1.1.0(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@nl-design-system-candidate/link-react': 1.1.8(@babel/runtime@7.27.4)(react@19.3.1)
+      '@nl-design-system-candidate/skip-link-react': 1.1.7(@babel/runtime@7.27.4)(react@19.3.1)
+      '@rijkshuisstijl-community/accordion-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/action-group-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/alert-react': 3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/article-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/blockquote-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/body-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/breadcrumb-nav-react': 0.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/button-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/card-as-link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/card-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/checkbox-group-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/checkbox-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/code-input-group-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/code-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/column-layout-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/data-badge-button-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/data-summary-item-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/data-summary-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/dot-badge-react': 1.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/drawer-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/fieldset-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/figure-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/file-input-react': 2.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/file-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/footer-react': 0.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/heading-group-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/hero-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/image-react': 2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/language-navigation-react': 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-button-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-list-card-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-list-react': 1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/listbox-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/logo-react': 1.1.1(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/message-list-item-react': 0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/message-list-react': 1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/navigation-bar-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/navigation-list-item-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/navigation-list-react': 1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/number-badge-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/ordered-list-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/page-body-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/page-content-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/page-header-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/page-layout-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/page-number-navigation-react': 1.0.3(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/pre-heading-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/radio-group-react': 1.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/radio-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/root-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/rounded-corner-react': 1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/separator-react': 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/side-nav-item-react': 1.0.0(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/side-nav-link-react': 1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/side-nav-list-react': 1.0.0(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/side-nav-react': 1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/skip-link-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/text-input-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/textarea-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/toggletip-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/unordered-list-item-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/unordered-list-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/visually-hidden-react': 1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/body-react': 0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/page-body-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/page-footer-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/page-header-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/page-layout-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/root-react': 1.0.17(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@amsterdam/design-system-assets'
       - '@amsterdam/design-system-css'
@@ -5479,12 +5510,12 @@ snapshots:
       '@utrecht/data-badge-css': 1.0.1
       '@utrecht/focus-ring-css': 2.3.1
 
-  '@rijkshuisstijl-community/data-badge-button-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/data-badge-button-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/data-badge-button-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5492,23 +5523,23 @@ snapshots:
 
   '@rijkshuisstijl-community/data-summary-css@1.0.0': {}
 
-  '@rijkshuisstijl-community/data-summary-item-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/data-summary-item-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/data-summary-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/data-summary-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/data-summary-css': 1.0.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5518,32 +5549,32 @@ snapshots:
 
   '@rijkshuisstijl-community/dot-badge-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/dot-badge-react@1.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/dot-badge-react@1.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/dot-badge-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/drawer-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/drawer-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/fieldset-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/fieldset-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5553,12 +5584,12 @@ snapshots:
     dependencies:
       '@utrecht/figure-css': 1.6.0
 
-  '@rijkshuisstijl-community/figure-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/figure-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/figure-css': 1.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5571,29 +5602,29 @@ snapshots:
       '@rijkshuisstijl-community/button-css': 1.2.0
       '@rijkshuisstijl-community/paragraph-css': 2.2.0
 
-  '@rijkshuisstijl-community/file-input-react@2.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/file-input-react@2.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/button-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/button-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/file-input-css': 1.1.0
-      '@rijkshuisstijl-community/file-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/file-react': 1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/file-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/file-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/alert-react': 3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/button-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/alert-react': 3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/button-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/file-css': 1.1.0
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5605,14 +5636,14 @@ snapshots:
       '@rijkshuisstijl-community/paragraph-css': 2.2.0
       '@utrecht/page-footer-css': 4.0.2
 
-  '@rijkshuisstijl-community/footer-react@0.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/footer-react@0.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/footer-css': 2.1.0
       '@rijkshuisstijl-community/grid-css': 0.0.2
       '@rijkshuisstijl-community/section-css': 0.0.2
-      '@rijkshuisstijl-community/separator-react': 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/separator-react': 2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5624,23 +5655,23 @@ snapshots:
     dependencies:
       '@nl-design-system-candidate/heading-css': 1.1.3
 
-  '@rijkshuisstijl-community/heading-group-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/heading-group-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/heading-group-css': 1.5.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/heading-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/heading-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@nl-design-system-candidate/heading-react': 1.1.7(@babel/runtime@7.27.4)(react@19.3.0)
+      '@nl-design-system-candidate/heading-react': 1.1.7(@babel/runtime@7.27.4)(react@19.3.1)
       '@rijkshuisstijl-community/heading-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
@@ -5650,37 +5681,37 @@ snapshots:
       '@utrecht/heading-group-css': 1.5.1
       '@utrecht/img-css': 1.3.1
 
-  '@rijkshuisstijl-community/hero-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/hero-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/heading-group-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/heading-group-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/hero-css': 1.1.0
-      '@rijkshuisstijl-community/image-react': 2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/image-react': 2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/icon-react@3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/icon-react@3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/icon-css': 2.0.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/image-react@2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/image-react@2.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/img-css': 1.3.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5693,14 +5724,14 @@ snapshots:
       '@utrecht/focus-ring-css': 2.3.1
       '@utrecht/listbox-css': 2.1.1
 
-  '@rijkshuisstijl-community/language-navigation-react@2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/language-navigation-react@2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/language-navigation-css': 1.1.0
-      '@rijkshuisstijl-community/link-button-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/link-button-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5710,12 +5741,12 @@ snapshots:
     dependencies:
       '@utrecht/link-button-css': 2.0.1
 
-  '@rijkshuisstijl-community/link-button-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/link-button-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/link-button-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5728,14 +5759,14 @@ snapshots:
 
   '@rijkshuisstijl-community/link-list-card-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/link-list-card-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/link-list-card-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/link-list-card-css': 1.1.0
-      '@rijkshuisstijl-community/link-list-react': 1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/link-list-react': 1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5747,23 +5778,23 @@ snapshots:
       '@utrecht/icon-css': 2.0.1
       '@utrecht/link-list-css': 2.3.1
 
-  '@rijkshuisstijl-community/link-list-react@1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/link-list-react@1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/link-list-css': 1.2.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/link-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/link-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@nl-design-system-candidate/link-react': 1.1.8(@babel/runtime@7.27.4)(react@19.3.0)
+      '@nl-design-system-candidate/link-react': 1.1.8(@babel/runtime@7.27.4)(react@19.3.1)
       '@rijkshuisstijl-community/link-css': 1.2.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
@@ -5771,12 +5802,12 @@ snapshots:
     dependencies:
       '@utrecht/listbox-css': 2.1.1
 
-  '@rijkshuisstijl-community/listbox-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/listbox-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/listbox-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5786,48 +5817,48 @@ snapshots:
     dependencies:
       '@utrecht/icon-css': 2.0.1
 
-  '@rijkshuisstijl-community/logo-react@1.1.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/logo-react@1.1.1(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/logo-css': 1.2.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@rijkshuisstijl-community/message-list-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/message-list-item-react@0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/message-list-item-react@0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/dot-badge-react': 1.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/dot-badge-react': 1.1.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/message-list-react@1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/message-list-react@1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/message-list-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@rijkshuisstijl-community/navigation-bar-css@1.1.0':
     dependencies:
       '@rijkshuisstijl-community/heading-css': 1.1.0
       '@rijkshuisstijl-community/link-css': 1.2.0
 
-  '@rijkshuisstijl-community/navigation-bar-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/navigation-bar-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/column-layout-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-list-react': 1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/column-layout-react': 1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-list-react': 1.1.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/link-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/navigation-bar-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5835,33 +5866,33 @@ snapshots:
 
   '@rijkshuisstijl-community/navigation-list-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/navigation-list-item-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/navigation-list-item-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/navigation-list-react@1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/navigation-list-react@1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/navigation-list-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@rijkshuisstijl-community/number-badge-css@1.1.0':
     dependencies:
       '@nl-design-system-candidate/number-badge-css': 1.1.5
 
-  '@rijkshuisstijl-community/number-badge-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/number-badge-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@nl-design-system-candidate/number-badge-react': 1.3.2(@babel/runtime@7.27.4)(react@19.3.0)
+      '@nl-design-system-candidate/number-badge-react': 1.3.2(@babel/runtime@7.27.4)(react@19.3.1)
       '@rijkshuisstijl-community/number-badge-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
@@ -5869,47 +5900,47 @@ snapshots:
     dependencies:
       '@utrecht/ordered-list-css': 2.0.0
 
-  '@rijkshuisstijl-community/ordered-list-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/ordered-list-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/page-body-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/page-body-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/page-body-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/page-body-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
-  '@rijkshuisstijl-community/page-content-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/page-content-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/page-header-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/page-header-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/page-header-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/page-header-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
-  '@rijkshuisstijl-community/page-layout-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/page-layout-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/page-layout-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/page-layout-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
@@ -5920,12 +5951,12 @@ snapshots:
       - '@amsterdam/design-system-assets'
       - '@amsterdam/design-system-tokens'
 
-  '@rijkshuisstijl-community/page-number-navigation-react@1.0.3(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/page-number-navigation-react@1.0.3(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(@amsterdam/design-system-tokens@1.0.1)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@amsterdam/design-system-react': 1.1.0(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@amsterdam/design-system-react': 1.1.0(@amsterdam/design-system-css@1.0.1(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1))(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/page-number-navigation-css': 1.1.0(@amsterdam/design-system-assets@1.0.0)(@amsterdam/design-system-tokens@1.0.1)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@amsterdam/design-system-assets'
       - '@amsterdam/design-system-css'
@@ -5935,12 +5966,12 @@ snapshots:
     dependencies:
       '@nl-design-system-candidate/paragraph-css': 2.1.3
 
-  '@rijkshuisstijl-community/paragraph-react@2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/paragraph-react@2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@nl-design-system-candidate/paragraph-react': 2.2.2(@babel/runtime@7.27.4)(react@19.3.0)
+      '@nl-design-system-candidate/paragraph-react': 2.2.2(@babel/runtime@7.27.4)(react@19.3.1)
       '@rijkshuisstijl-community/paragraph-css': 2.2.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
@@ -5948,13 +5979,13 @@ snapshots:
     dependencies:
       '@utrecht/pre-heading-css': 1.4.1
 
-  '@rijkshuisstijl-community/pre-heading-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/pre-heading-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/heading-react': 1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/pre-heading-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5969,23 +6000,23 @@ snapshots:
       '@utrecht/form-fieldset-css': 1.5.1
       '@utrecht/radio-button-css': 1.6.1
 
-  '@rijkshuisstijl-community/radio-group-react@1.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/radio-group-react@1.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/radio-group-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/radio-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/radio-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/radio-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -5996,21 +6027,21 @@ snapshots:
       '@utrecht/focus-ring-css': 2.3.1
       '@utrecht/root-css': 4.1.2
 
-  '@rijkshuisstijl-community/root-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/root-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/root-react': 1.0.17(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/root-react': 1.0.17(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
   '@rijkshuisstijl-community/rounded-corner-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/rounded-corner-react@1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/rounded-corner-react@1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/rounded-corner-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@rijkshuisstijl-community/section-css@0.0.2': {}
 
@@ -6018,12 +6049,12 @@ snapshots:
     dependencies:
       '@utrecht/separator-css': 1.5.1
 
-  '@rijkshuisstijl-community/separator-react@2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/separator-react@2.0.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/separator-css': 2.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -6031,42 +6062,42 @@ snapshots:
 
   '@rijkshuisstijl-community/side-nav-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/side-nav-item-react@1.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/side-nav-item-react@1.0.0(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
-  '@rijkshuisstijl-community/side-nav-link-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/side-nav-link-react@1.0.0(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/side-nav-list-react@1.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/side-nav-list-react@1.0.0(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
-  '@rijkshuisstijl-community/side-nav-react@1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/side-nav-react@1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/side-nav-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@rijkshuisstijl-community/skip-link-css@1.1.0':
     dependencies:
       '@nl-design-system-candidate/skip-link-css': 1.0.5
 
-  '@rijkshuisstijl-community/skip-link-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/skip-link-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@nl-design-system-candidate/skip-link-react': 1.1.7(@babel/runtime@7.27.4)(react@19.3.0)
+      '@nl-design-system-candidate/skip-link-react': 1.1.7(@babel/runtime@7.27.4)(react@19.3.1)
       '@rijkshuisstijl-community/skip-link-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
 
@@ -6074,12 +6105,12 @@ snapshots:
     dependencies:
       '@utrecht/textbox-css': 2.0.0
 
-  '@rijkshuisstijl-community/text-input-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/text-input-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/text-input-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -6089,12 +6120,12 @@ snapshots:
     dependencies:
       '@utrecht/textarea-css': 2.3.2
 
-  '@rijkshuisstijl-community/textarea-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/textarea-react@1.0.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/textarea-css': 1.1.0
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -6104,14 +6135,14 @@ snapshots:
     dependencies:
       '@utrecht/icon-css': 2.0.1
 
-  '@rijkshuisstijl-community/toggletip-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/toggletip-react@1.0.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@rijkshuisstijl-community/alert-react': 3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@rijkshuisstijl-community/alert-react': 3.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/icon-react': 3.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@rijkshuisstijl-community/paragraph-react': 2.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@rijkshuisstijl-community/toggletip-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -6121,21 +6152,21 @@ snapshots:
     dependencies:
       '@utrecht/unordered-list-css': 1.5.1
 
-  '@rijkshuisstijl-community/unordered-list-item-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/unordered-list-item-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
       - vega
 
-  '@rijkshuisstijl-community/unordered-list-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/unordered-list-react@1.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      '@utrecht/component-library-react': 13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/runtime'
       - react-vega
@@ -6143,11 +6174,11 @@ snapshots:
 
   '@rijkshuisstijl-community/visually-hidden-css@1.1.0': {}
 
-  '@rijkshuisstijl-community/visually-hidden-react@1.0.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@rijkshuisstijl-community/visually-hidden-react@1.0.3(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@rijkshuisstijl-community/visually-hidden-css': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@rtsao/scc@1.1.0': {}
 
@@ -6159,9 +6190,9 @@ snapshots:
 
   '@tanstack/devtools-event-client@0.4.4': {}
 
-  '@tanstack/eslint-plugin-query@5.103.2(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)':
+  '@tanstack/eslint-plugin-query@5.105.0(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/utils': 8.70.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.72.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
       eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
     optionalDependencies:
       typescript: 5.9.3
@@ -6178,25 +6209,25 @@ snapshots:
 
   '@tanstack/query-core@5.103.2': {}
 
-  '@tanstack/react-form@1.33.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@tanstack/react-form@1.33.5(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@tanstack/form-core': 1.33.5
-      '@tanstack/react-store': 0.11.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
+      '@tanstack/react-store': 0.11.1(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
     transitivePeerDependencies:
       - react-dom
 
-  '@tanstack/react-query@5.103.2(react@19.3.0)':
+  '@tanstack/react-query@5.103.2(react@19.3.1)':
     dependencies:
       '@tanstack/query-core': 5.103.2
-      react: 19.3.0
+      react: 19.3.1
 
-  '@tanstack/react-store@0.11.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@tanstack/react-store@0.11.1(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@tanstack/store': 0.11.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      use-sync-external-store: 1.7.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
+      use-sync-external-store: 1.7.0(react@19.3.1)
 
   '@tanstack/store@0.11.1': {}
 
@@ -6219,7 +6250,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@20.19.43':
+  '@types/node@22.20.5':
     dependencies:
       undici-types: 6.21.0
 
@@ -6233,11 +6264,11 @@ snapshots:
 
   '@types/set-cookie-parser@2.4.10':
     dependencies:
-      '@types/node': 20.19.43
+      '@types/node': 22.20.5
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 20.19.43
+      '@types/node': 22.20.5
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.70.1(@typescript-eslint/parser@8.70.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)':
@@ -6277,12 +6308,30 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/project-service@8.72.1(supports-color@10.2.2)(typescript@5.9.3)':
+    dependencies:
+      '@typescript-eslint/tsconfig-utils': 8.72.1(typescript@5.9.3)
+      '@typescript-eslint/types': 8.72.1
+      debug: 4.4.3(supports-color@10.2.2)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/scope-manager@8.70.1':
     dependencies:
       '@typescript-eslint/types': 8.70.1
       '@typescript-eslint/visitor-keys': 8.70.1
 
+  '@typescript-eslint/scope-manager@8.72.1':
+    dependencies:
+      '@typescript-eslint/types': 8.72.1
+      '@typescript-eslint/visitor-keys': 8.72.1
+
   '@typescript-eslint/tsconfig-utils@8.70.1(typescript@5.9.3)':
+    dependencies:
+      typescript: 5.9.3
+
+  '@typescript-eslint/tsconfig-utils@8.72.1(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
 
@@ -6300,12 +6349,29 @@ snapshots:
 
   '@typescript-eslint/types@8.70.1': {}
 
+  '@typescript-eslint/types@8.72.1': {}
+
   '@typescript-eslint/typescript-estree@8.70.1(supports-color@10.2.2)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/project-service': 8.70.1(supports-color@10.2.2)(typescript@5.9.3)
       '@typescript-eslint/tsconfig-utils': 8.70.1(typescript@5.9.3)
       '@typescript-eslint/types': 8.70.1
       '@typescript-eslint/visitor-keys': 8.70.1
+      debug: 4.4.3(supports-color@10.2.2)
+      minimatch: 10.2.6
+      semver: 7.8.5
+      tinyglobby: 0.2.17
+      ts-api-utils: 2.5.0(typescript@5.9.3)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript-eslint/typescript-estree@8.72.1(supports-color@10.2.2)(typescript@5.9.3)':
+    dependencies:
+      '@typescript-eslint/project-service': 8.72.1(supports-color@10.2.2)(typescript@5.9.3)
+      '@typescript-eslint/tsconfig-utils': 8.72.1(typescript@5.9.3)
+      '@typescript-eslint/types': 8.72.1
+      '@typescript-eslint/visitor-keys': 8.72.1
       debug: 4.4.3(supports-color@10.2.2)
       minimatch: 10.2.6
       semver: 7.8.5
@@ -6326,9 +6392,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/utils@8.72.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)':
+    dependencies:
+      '@eslint-community/eslint-utils': 4.10.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))
+      '@typescript-eslint/scope-manager': 8.72.1
+      '@typescript-eslint/types': 8.72.1
+      '@typescript-eslint/typescript-estree': 8.72.1(supports-color@10.2.2)(typescript@5.9.3)
+      eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/visitor-keys@8.70.1':
     dependencies:
       '@typescript-eslint/types': 8.70.1
+      eslint-visitor-keys: 5.0.1
+
+  '@typescript-eslint/visitor-keys@8.72.1':
+    dependencies:
+      '@typescript-eslint/types': 8.72.1
       eslint-visitor-keys: 5.0.1
 
   '@unrs/resolver-binding-android-arm-eabi@1.12.2':
@@ -6413,13 +6495,13 @@ snapshots:
 
   '@utrecht/action-group-css@4.0.1': {}
 
-  '@utrecht/action-group-react@1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/action-group-react@1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/action-group-css': 4.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/alert-css@2.4.0': {}
 
@@ -6463,13 +6545,13 @@ snapshots:
 
   '@utrecht/body-css@4.0.1': {}
 
-  '@utrecht/body-react@0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/body-react@0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/body-css': 4.0.1
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/breadcrumb-nav-css@1.5.1': {}
 
@@ -6487,13 +6569,13 @@ snapshots:
 
   '@utrecht/button-group-css@3.0.1': {}
 
-  '@utrecht/button-group-react@1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/button-group-react@1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/button-group-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/button-link-css@1.3.1': {}
 
@@ -6501,41 +6583,41 @@ snapshots:
 
   '@utrecht/button-link-css@3.0.1': {}
 
-  '@utrecht/button-react@3.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/button-react@3.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/button-css': 4.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/calendar-css@3.0.0': {}
 
   '@utrecht/calendar-css@3.0.1': {}
 
-  '@utrecht/calendar-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/calendar-react@1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
-      '@utrecht/button-react': 3.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/button-react': 3.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/calendar-css': 3.0.0
       clsx: 2.1.1
       date-fns: 4.1.0
       lodash-es: 4.18.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/card-css@2.0.0':
     dependencies:
       '@utrecht/img-css': 3.0.0
 
-  '@utrecht/card-react@0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/card-react@0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/card-css': 2.0.0
-      '@utrecht/link-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/link-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/checkbox-css@1.6.1': {}
 
@@ -6543,14 +6625,14 @@ snapshots:
 
   '@utrecht/checkbox-css@3.0.1': {}
 
-  '@utrecht/checkbox-react@1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/checkbox-react@1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/checkbox-css': 3.0.0
       '@utrecht/custom-checkbox-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/code-block-css@3.0.0': {}
 
@@ -6574,13 +6656,13 @@ snapshots:
 
   '@utrecht/combobox-css@3.0.1': {}
 
-  '@utrecht/combobox-react@0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/combobox-react@0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/combobox-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/component-library-css@9.0.12':
     dependencies:
@@ -6686,11 +6768,11 @@ snapshots:
       '@utrecht/url-data-css': 3.0.1
       '@utrecht/youtube-video-css': 3.0.1
 
-  '@utrecht/component-library-react@13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/component-library-react@13.3.1(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/accordion-css': 4.0.0
-      '@utrecht/action-group-react': 1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/action-group-react': 1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/alert-css': 4.0.1
       '@utrecht/alert-dialog-css': 3.0.0
       '@utrecht/alternate-lang-nav-css': 3.0.0
@@ -6700,36 +6782,36 @@ snapshots:
       '@utrecht/badge-list-css': 4.0.0
       '@utrecht/blockquote-css': 3.0.0
       '@utrecht/breadcrumb-nav-css': 3.0.0
-      '@utrecht/button-group-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/button-group-react': 1.1.4(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/button-link-css': 3.0.0
-      '@utrecht/button-react': 3.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/calendar-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/button-react': 3.0.2(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/calendar-react': 1.1.3(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/card-css': 2.0.0
-      '@utrecht/card-react': 0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/checkbox-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/card-react': 0.0.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/checkbox-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/code-block-css': 3.0.0
       '@utrecht/code-css': 3.0.0
       '@utrecht/color-sample-css': 3.0.0
       '@utrecht/column-layout-css': 3.0.0
-      '@utrecht/combobox-react': 0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/combobox-react': 0.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/currency-data-css': 3.0.0
       '@utrecht/custom-checkbox-css': 3.0.0
       '@utrecht/data-badge-css': 3.0.0
-      '@utrecht/data-badge-react': 1.0.8(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/data-badge-react': 1.0.8(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/data-list-css': 3.0.0
       '@utrecht/data-placeholder-css': 3.0.0
       '@utrecht/digid-button-css': 2.0.0
       '@utrecht/document-css': 3.0.0
       '@utrecht/drawer-css': 3.0.0
       '@utrecht/emphasis-css': 3.0.0
-      '@utrecht/fieldset-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/fieldset-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/figure-css': 3.0.0
       '@utrecht/focus-ring-css': 4.0.0
-      '@utrecht/form-field-checkbox-react': 1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-field-description-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-field-error-message-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-field-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-label-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/form-field-checkbox-react': 1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-field-description-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-field-error-message-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-field-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-label-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/form-toggle-css': 3.0.0
       '@utrecht/heading-1-css': 3.0.0
       '@utrecht/heading-2-css': 3.0.0
@@ -6745,10 +6827,10 @@ snapshots:
       '@utrecht/index-char-nav-css': 3.0.0
       '@utrecht/link-button-css': 3.0.0
       '@utrecht/link-list-css': 4.0.0
-      '@utrecht/link-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/link-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/link-social-css': 3.0.0
       '@utrecht/list-social-css': 3.0.0
-      '@utrecht/listbox-react': 1.0.16(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/listbox-react': 1.0.16(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/logo-button-css': 2.0.0
       '@utrecht/logo-css': 3.0.0
       '@utrecht/logo-image-css': 2.0.0
@@ -6761,7 +6843,7 @@ snapshots:
       '@utrecht/number-badge-css': 4.0.0
       '@utrecht/number-data-css': 3.0.0
       '@utrecht/open-forms-container-css': 3.0.0
-      '@utrecht/open-forms-container-react': 1.0.9(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/open-forms-container-react': 1.0.9(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/ordered-list-css': 4.0.0
       '@utrecht/page-content-css': 3.0.0
       '@utrecht/page-css': 3.0.0
@@ -6771,7 +6853,7 @@ snapshots:
       '@utrecht/paragraph-css': 4.0.0
       '@utrecht/pre-heading-css': 3.0.0
       '@utrecht/preserve-data-css': 3.0.0
-      '@utrecht/radio-button-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/radio-button-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/rich-text-css': 3.0.0
       '@utrecht/search-bar-css': 4.0.0
       '@utrecht/select-css': 3.0.0
@@ -6785,7 +6867,7 @@ snapshots:
       '@utrecht/table-css': 3.0.0
       '@utrecht/table-of-contents-css': 2.0.0
       '@utrecht/textarea-css': 4.0.0
-      '@utrecht/textbox-react': 1.0.15(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/textbox-react': 1.0.15(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       '@utrecht/top-task-link-css': 3.0.0
       '@utrecht/top-task-nav-css': 2.0.0
       '@utrecht/unordered-list-css': 3.1.0
@@ -6793,8 +6875,8 @@ snapshots:
       '@utrecht/vega-visualization-css': 2.0.0
       clsx: 2.1.1
       lodash.chunk: 4.2.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/currency-data-css@3.0.0': {}
 
@@ -6814,13 +6896,13 @@ snapshots:
 
   '@utrecht/data-badge-css@3.0.1': {}
 
-  '@utrecht/data-badge-react@1.0.8(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/data-badge-react@1.0.8(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/data-badge-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/data-list-css@1.4.1': {}
 
@@ -6852,13 +6934,13 @@ snapshots:
 
   '@utrecht/emphasis-css@3.0.1': {}
 
-  '@utrecht/fieldset-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/fieldset-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/form-fieldset-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/figure-css@1.6.0': {}
 
@@ -6872,17 +6954,17 @@ snapshots:
 
   '@utrecht/form-css@3.0.1': {}
 
-  '@utrecht/form-field-checkbox-react@1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/form-field-checkbox-react@1.1.5(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
-      '@utrecht/checkbox-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-field-description-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-field-error-message-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-field-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@utrecht/form-label-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@utrecht/checkbox-react': 1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-field-description-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-field-error-message-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-field-react': 1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      '@utrecht/form-label-react': 1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/form-field-css@1.5.1': {}
 
@@ -6896,13 +6978,13 @@ snapshots:
 
   '@utrecht/form-field-description-css@3.0.1': {}
 
-  '@utrecht/form-field-description-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/form-field-description-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/form-field-description-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/form-field-error-message-css@1.5.1': {}
 
@@ -6910,21 +6992,21 @@ snapshots:
 
   '@utrecht/form-field-error-message-css@3.0.1': {}
 
-  '@utrecht/form-field-error-message-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/form-field-error-message-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/form-field-error-message-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
-  '@utrecht/form-field-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/form-field-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/form-field-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/form-fieldset-css@1.5.1': {}
 
@@ -6938,13 +7020,13 @@ snapshots:
 
   '@utrecht/form-label-css@3.0.1': {}
 
-  '@utrecht/form-label-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/form-label-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/form-label-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/form-toggle-css@3.0.0': {}
 
@@ -7024,13 +7106,13 @@ snapshots:
 
   '@utrecht/link-list-css@4.0.1': {}
 
-  '@utrecht/link-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/link-react@1.0.11(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/link-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/link-social-css@3.0.0': {}
 
@@ -7046,13 +7128,13 @@ snapshots:
 
   '@utrecht/listbox-css@3.0.1': {}
 
-  '@utrecht/listbox-react@1.0.16(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/listbox-react@1.0.16(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/listbox-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/logo-button-css@2.0.0': {}
 
@@ -7103,13 +7185,13 @@ snapshots:
       '@utrecht/focus-ring-css': 4.0.0
       '@utrecht/textbox-css': 4.0.0
 
-  '@utrecht/open-forms-container-react@1.0.9(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/open-forms-container-react@1.0.9(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/open-forms-container-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/ordered-list-css@2.0.0': {}
 
@@ -7119,13 +7201,13 @@ snapshots:
 
   '@utrecht/page-body-css@2.1.1': {}
 
-  '@utrecht/page-body-react@1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/page-body-react@1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/page-body-css': 2.1.1
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/page-content-css@3.0.0': {}
 
@@ -7139,35 +7221,35 @@ snapshots:
 
   '@utrecht/page-footer-css@4.0.2': {}
 
-  '@utrecht/page-footer-react@1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/page-footer-react@1.0.13(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/page-footer-css': 4.0.2
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/page-header-css@3.0.0': {}
 
   '@utrecht/page-header-css@3.0.2': {}
 
-  '@utrecht/page-header-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/page-header-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/page-header-css': 3.0.2
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/page-layout-css@4.0.1': {}
 
-  '@utrecht/page-layout-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/page-layout-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/page-layout-css': 4.0.1
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/pagination-css@3.0.0': {}
 
@@ -7195,13 +7277,13 @@ snapshots:
 
   '@utrecht/radio-button-css@3.0.1': {}
 
-  '@utrecht/radio-button-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/radio-button-react@1.0.12(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/radio-button-css': 3.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/rich-text-css@3.0.0': {}
 
@@ -7209,13 +7291,13 @@ snapshots:
 
   '@utrecht/root-css@4.1.2': {}
 
-  '@utrecht/root-react@1.0.17(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/root-react@1.0.17(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/root-css': 4.1.2
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/search-bar-css@4.0.0': {}
 
@@ -7275,13 +7357,13 @@ snapshots:
 
   '@utrecht/textbox-css@4.0.1': {}
 
-  '@utrecht/textbox-react@1.0.15(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@utrecht/textbox-react@1.0.15(@babel/runtime@7.27.4)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.27.4
       '@utrecht/textbox-css': 4.0.0
       clsx: 2.1.1
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
 
   '@utrecht/tooltip-css@3.0.1': {}
 
@@ -7830,9 +7912,9 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-next@16.2.3(@typescript-eslint/parser@8.70.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3):
+  eslint-config-next@16.4.3(@typescript-eslint/parser@8.70.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3):
     dependencies:
-      '@next/eslint-plugin-next': 16.2.3
+      '@next/eslint-plugin-next': 16.4.3(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))
       eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
       eslint-import-resolver-node: 0.3.10(supports-color@10.2.2)
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
@@ -7938,8 +8020,8 @@ snapshots:
       '@babel/parser': 7.29.9
       eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
       hermes-parser: 0.25.1
-      zod: 4.6.5
-      zod-validation-error: 4.0.2(zod@4.6.5)
+      zod: 4.6.7
+      zod-validation-error: 4.0.2(zod@4.6.7)
     transitivePeerDependencies:
       - supports-color
 
@@ -8611,9 +8693,9 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@3.0.3(@types/node@20.19.43)(graphql@16.14.2)(supports-color@10.2.2)(typescript@5.9.3):
+  msw@3.0.3(@types/node@22.20.5)(graphql@16.14.2)(supports-color@10.2.2)(typescript@5.9.3):
     dependencies:
-      '@inquirer/confirm': 6.3.2(@types/node@20.19.43)
+      '@inquirer/confirm': 6.3.2(@types/node@22.20.5)
       '@msw/url': 0.1.2
       '@mswjs/interceptors': 0.45.9(supports-color@10.2.2)
       cookie: 2.0.1
@@ -8644,22 +8726,22 @@ snapshots:
 
   netmask@2.1.1: {}
 
-  next-auth@5.0.0-beta.32(next@16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0):
+  next-auth@5.0.0-beta.32(next@16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.1))(react@19.3.1))(react@19.3.1):
     dependencies:
       '@auth/core': 0.41.3
-      next: 16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
+      next: 16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.1))(react@19.3.1)
+      react: 19.3.1
 
-  next@16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  next@16.4.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.1))(react@19.3.1):
     dependencies:
       '@next/env': 16.4.3
       '@swc/helpers': 0.5.23
       baseline-browser-mapping: 2.11.25
       caniuse-lite: 1.0.30001810
       postcss: 8.5.23
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      styled-jsx: 5.1.6(@babel/core@7.29.7(supports-color@10.2.2))(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.0(react@19.3.1)
+      styled-jsx: 5.1.6(@babel/core@7.29.7(supports-color@10.2.2))(react@19.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 16.4.3
       '@next/swc-darwin-x64': 16.4.3
@@ -8669,7 +8751,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.4.3
       '@next/swc-win32-arm64-msvc': 16.4.3
       '@next/swc-win32-x64-msvc': 16.4.3
-      sharp: 0.35.5(@types/node@20.19.43)
+      sharp: 0.35.5(@types/node@22.20.5)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/node'
@@ -8747,9 +8829,9 @@ snapshots:
     dependencies:
       openapi-typescript-helpers: 0.0.15
 
-  openapi-react-query@0.5.4(@tanstack/react-query@5.103.2(react@19.3.0))(openapi-fetch@0.14.1):
+  openapi-react-query@0.5.4(@tanstack/react-query@5.103.2(react@19.3.1))(openapi-fetch@0.14.1):
     dependencies:
-      '@tanstack/react-query': 5.103.2(react@19.3.0)
+      '@tanstack/react-query': 5.103.2(react@19.3.1)
       openapi-fetch: 0.14.1
       openapi-typescript-helpers: 0.1.0
 
@@ -8980,14 +9062,14 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.3.0(react@19.3.0):
+  react-dom@19.3.0(react@19.3.1):
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
       scheduler: 0.28.0
 
   react-is@16.13.1: {}
 
-  react@19.3.0: {}
+  react@19.3.1: {}
 
   reflect.getprototypeof@1.0.10:
     dependencies:
@@ -9085,7 +9167,7 @@ snapshots:
       es-errors: 1.3.0
       es-object-atoms: 1.1.2
 
-  sharp@0.35.5(@types/node@20.19.43):
+  sharp@0.35.5(@types/node@22.20.5):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -9116,7 +9198,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.5
       '@img/sharp-win32-ia32': 0.35.5
       '@img/sharp-win32-x64': 0.35.5
-      '@types/node': 20.19.43
+      '@types/node': 22.20.5
     optional: true
 
   shebang-command@2.0.0:
@@ -9283,10 +9365,10 @@ snapshots:
     dependencies:
       anynum: 1.0.1
 
-  styled-jsx@5.1.6(@babel/core@7.29.7(supports-color@10.2.2))(react@19.3.0):
+  styled-jsx@5.1.6(@babel/core@7.29.7(supports-color@10.2.2))(react@19.3.1):
     dependencies:
       client-only: 0.0.1
-      react: 19.3.0
+      react: 19.3.1
     optionalDependencies:
       '@babel/core': 7.29.7(supports-color@10.2.2)
 
@@ -9545,9 +9627,9 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-sync-external-store@1.7.0(react@19.3.0):
+  use-sync-external-store@1.7.0(react@19.3.1):
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
 
   util-deprecate@1.0.2: {}
 
@@ -9662,10 +9744,10 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-validation-error@4.0.2(zod@4.6.5):
+  zod-validation-error@4.0.2(zod@4.6.7):
     dependencies:
-      zod: 4.6.5
+      zod: 4.6.7
 
   zod@3.25.76: {}
 
-  zod@4.6.5: {}
+  zod@4.6.7: {}

@@ -90,17 +90,43 @@ const OVERIG: Record<
   },
 };
 
+/** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
+const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
+  <ActionGroup>
+    {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+    <Link
+      href="/personeel/iemand-aannemen/gegevens"
+      className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+      aria-disabled={bekend ? undefined : true}
+      aria-describedby={bekend ? undefined : "aanvragen-bezig"}
+      onClick={(event) => {
+        if (!bekend) event.preventDefault();
+      }}
+    >
+      Aanvraag laten invullen
+    </Link>
+  </ActionGroup>
+);
+
 /**
  * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
-const Vragen = ({ onderneming }: { onderneming: string }) => {
+const Vragen = ({
+  onderneming,
+  toelichting,
+}: {
+  onderneming: string;
+  /** Alinea's onder de knop: wie de regelingen uitvoert, en de termijnen. */
+  toelichting?: string[];
+}) => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
   return (
     <VragenMetStaat
       onderneming={onderneming}
+      toelichting={toelichting}
       a={staat.antwoorden}
       zet={(deel) => werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })}
     />
@@ -109,10 +135,12 @@ const Vragen = ({ onderneming }: { onderneming: string }) => {
 
 const VragenMetStaat = ({
   onderneming,
+  toelichting,
   a,
   zet,
 }: {
   onderneming: string;
+  toelichting?: string[];
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
@@ -155,13 +183,9 @@ const VragenMetStaat = ({
         <Heading level={2} id="gevolgen">
           Gevolgen voor {onderneming}
         </Heading>
-        <Paragraph className="rhc-mox-small-text">
-          Deze berekening blijft op uw scherm. Er gaat niets naar een
-          overheidsorganisatie.
-        </Paragraph>
         <div className="rhc-grid">
           <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-            <Fieldset legend="1. Wie wilt u aannemen? (doelgroep) Kies wat past.">
+            <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
               {DOELGROEPEN.map(([waarde, label]) => (
                 <FormFieldCheckboxOption
                   key={waarde}
@@ -188,7 +212,7 @@ const VragenMetStaat = ({
               ))}
             </Fieldset>
             <RangeSlider
-              label="2. Hoeveel uur per week gaat de kandidaat werken? (arbeidsduur)"
+              label="2. Hoeveel uur per week gaat de kandidaat werken?"
               min={8}
               max={40}
               step={1}
@@ -199,7 +223,7 @@ const VragenMetStaat = ({
             />
             <div className="rhc-mox-stack rhc-mox-stack--sm">
               <RangeSlider
-                label="3. Heeft de kandidaat naar verwachting een verminderde loonwaarde? Zo ja, hoeveel? (loonwaarde)"
+                label="3. Welke verminderde loonwaarde verwacht u?"
                 min={30}
                 max={100}
                 step={5}
@@ -240,18 +264,17 @@ const VragenMetStaat = ({
               />
               {wajong && (
                 <Paragraph className="rhc-mox-small-text">
-                  Bij een Wajong-uitkering: het percentage van het minimumloon
-                  dat de kandidaat aankan. UWV stelt dit vast voor de
-                  loondispensatie.
+                  Het percentage van het minimumloon dat de kandidaat aankan.
+                  UWV stelt dit vast.
                 </Paragraph>
               )}
             </div>
-            <Fieldset legend="4. Wat wordt het bruto uurloon? (loon)">
+            <Fieldset legend="4. Wat wordt het bruto uurloon?">
               <FormFieldRadio
                 name="uurloon"
                 value="wml"
                 label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
-                description="Voor iemand van 21 jaar of ouder. Voor jongere werknemers geldt een lager minimumloon; daarmee rekent deze berekening niet."
+                description="Voor iemand van 21 jaar of ouder."
                 checked={!anders}
                 onChange={() => {
                   setAnders(false);
@@ -289,6 +312,7 @@ const VragenMetStaat = ({
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
             <StickyInfoBox title="Wat het kost en oplevert">
               <Balans antwoorden={a} resultaat={resultaat} />
+              <AanvraagKnop bekend={resultaat.bekend} />
             </StickyInfoBox>
           </div>
         </div>
@@ -331,20 +355,7 @@ const VragenMetStaat = ({
           bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
           beslist zelf of u de aanvraag verstuurt. Tussendoor opslaan kan.
         </Paragraph>
-        <ActionGroup>
-          {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
-          <Link
-            href="/personeel/iemand-aannemen/gegevens"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-            aria-disabled={resultaat.bekend ? undefined : true}
-            aria-describedby={resultaat.bekend ? undefined : "aanvragen-bezig"}
-            onClick={(event) => {
-              if (!resultaat.bekend) event.preventDefault();
-            }}
-          >
-            Aanvraag laten invullen
-          </Link>
-        </ActionGroup>
+        <AanvraagKnop bekend={resultaat.bekend} />
         <Paragraph role="status" id="aanvragen-bezig">
           {resultaat.bekend
             ? ""
@@ -352,6 +363,9 @@ const VragenMetStaat = ({
               ? "De berekening is niet gelukt. Laad de pagina opnieuw."
               : "De berekening is nog bezig."}
         </Paragraph>
+        {toelichting?.map((alinea) => (
+          <Paragraph key={alinea}>{alinea}</Paragraph>
+        ))}
       </section>
     </>
   );

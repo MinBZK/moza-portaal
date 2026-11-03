@@ -1,1 +1,10 @@
-{}
+{
+  "overrides": [
+    {
+      "files": "*.css",
+      "options": {
+        "useTabs": true
+      }
+    }
+  ]
+}

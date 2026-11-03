@@ -14,7 +14,6 @@ import {
   type VoorbehoudId,
 } from "./_uitkomsten";
 import type { Resultaat } from "./_useUitkomsten";
-import { useManifest } from "./_useRegelrecht";
 import { euro } from "./_werkgever";
 
 /** Wat bij een aanname in de (i) staat (ontwerp-orientatie-alle-uitkomsten-v1.md). */
@@ -94,7 +93,7 @@ export const LkvVoorbehoud = ({ categorie }: { categorie?: string }) => (
 export const UITVOERDER = {
   gemeente: { tekst: "Gemeente", variant: "info" },
   uwv: { tekst: "UWV", variant: "info" },
-  loonaangifte: { tekst: "Loonaangifte", variant: "neutral" },
+  loonaangifte: { tekst: "Belastingdienst", variant: "neutral" },
 } as const satisfies Record<
   string,
   { tekst: string; variant: TextBadgeVariant }
@@ -114,14 +113,13 @@ export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
   </TextBadge>
 );
 
+/** De naam van de regeling, overal dezelfde. */
 const naam = (r: BalansRegel) =>
   r.id === "lks"
     ? "Loonkostensubsidie"
     : r.id === "ld"
-      ? "Lagere loonkosten door loondispensatie"
-      : r.regel?.categorie === "arbeidsgehandicapte_werknemer"
-        ? "Loonkostenvoordeel arbeidsgehandicapte"
-        : "Loonkostenvoordeel";
+      ? "Loondispensatie"
+      : "Loonkostenvoordeel";
 
 /** Hoe lang de no-riskpolis loopt (ZW 29b); negatief is zonder einddatum. */
 export const duurTekst = (jaren: number | undefined) =>
@@ -134,11 +132,12 @@ export const duurTekst = (jaren: number | undefined) =>
         : `De no-riskpolis geldt bij ziekte die begint in de eerste ${jaren} jaar na de start van het dienstverband.`;
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
+const LD_UITLEG =
+  "Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.";
+
 const LdNotitie = ({ kort }: { kort?: boolean }) => (
   <Paragraph className="rhc-mox-small-text">
-    Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt
-    hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting
-    van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.
+    {LD_UITLEG}
     {kort && " Het bedrag samen bevat dus ook deze lagere loonkosten."}
   </Paragraph>
 );
@@ -168,7 +167,6 @@ const Balans = ({
   resultaat: Resultaat;
   kort?: boolean;
 }) => {
-  const manifest = useManifest();
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   const kosten = loonkostenPerJaar(antwoorden);
   const regels = balansRegels(uitkomsten, kosten);
@@ -191,7 +189,7 @@ const Balans = ({
         ? `${min}${euro(r.bedrag)}`
         : r.status === "niet_meegeteld"
           ? "niet meegeteld"
-          : "geldt niet";
+          : euro(0);
 
   // Rekenen en fouten blijven zichtbaar; de herkomst staat in de toggletip.
   const bron =
@@ -201,7 +199,7 @@ const Balans = ({
         role={bezig ? "status" : undefined}
       >
         {fout
-          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. Dit is een berekening vooraf. Na uw aanvraag beslist de organisatie die de regeling uitvoert over het bedrag.`
+          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. Een schatting vooraf. Na uw aanvraag beslist de organisatie die de regeling uitvoert.`
           : "Wij rekenen uit…"}
       </Paragraph>
     ) : null;
@@ -220,15 +218,12 @@ const Balans = ({
         <>
           <InfoToggletip label="Toelichting bij de berekening">
             <Paragraph>
-              Berekend in uw browser door de regelrecht-engine
-              {manifest.status === "klaar" &&
-                ` (engine ${manifest.waarde.regelrecht.slice(0, 8)}, corpus ${manifest.waarde.corpus.revisie.slice(0, 8)})`}
-              .
+              Berekend in uw browser: er gaat niets naar een
+              overheidsorganisatie.
             </Paragraph>
             <Paragraph>
-              Dit is een berekening vooraf. Na uw aanvraag beslist de
-              organisatie die de regeling uitvoert over het bedrag. De
-              loonkosten zijn een schatting.
+              Een schatting vooraf. Na uw aanvraag beslist de organisatie die de
+              regeling uitvoert.
             </Paragraph>
           </InfoToggletip>
         </>
@@ -281,10 +276,13 @@ const Balans = ({
           <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
         </div>
         {regels.map((r) => {
-          // De aanname en, bij het loonkostenvoordeel, de duur en het voorbehoud.
+          // De aanname, en bij een bedrag de uitleg bij loondispensatie of de
+          // duur en het voorbehoud bij het loonkostenvoordeel.
+          const metBedrag = bekend && !fout && r.bedrag > 0;
           const toelichting = [
             ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
-            ...(r.id === "lkv" && bekend && !fout
+            ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
+            ...(metBedrag && r.id === "lkv"
               ? lkvToelichting(r.regel?.categorie)
               : []),
           ];
@@ -315,7 +313,6 @@ const Balans = ({
           );
         })}
       </dl>
-      {ldBedrag && <LdNotitie />}
       {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
       {bekend &&
         !fout &&

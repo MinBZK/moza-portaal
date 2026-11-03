@@ -52,7 +52,7 @@ const InfoToggletip = ({
   return (
     <details
       ref={detailsRef}
-      className="rhc-toggletip"
+      className="rhc-toggletip mox-toggletip"
       onToggle={(event) => setOpen(event.currentTarget.open)}
     >
       <summary
