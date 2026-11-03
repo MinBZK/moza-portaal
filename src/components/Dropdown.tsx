@@ -30,6 +30,7 @@ export const Dropdown = ({
   triggerClassName = "utrecht-button utrecht-button--subtle rhc-button",
   triggerLabel,
   triggerRef,
+  triggerKeyShortcuts,
   align = "end",
   children,
 }: {
@@ -41,6 +42,8 @@ export const Dropdown = ({
   triggerLabel?: string;
   /** For example to put focus back on the button after a dialog. */
   triggerRef?: Ref<HTMLButtonElement>;
+  /** Keyboard shortcut that opens the menu (aria-keyshortcuts). */
+  triggerKeyShortcuts?: string;
   /** Align the menu with the start or the end of the button. */
   align?: "start" | "end";
   /** DropdownItems. */
@@ -61,6 +64,7 @@ export const Dropdown = ({
         type="button"
         popoverTarget={menuId}
         aria-label={triggerLabel}
+        aria-keyshortcuts={triggerKeyShortcuts}
         className={`${triggerClassName} rhc-mox-dropdown__trigger`}
         style={anchor}
       >

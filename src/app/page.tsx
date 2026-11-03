@@ -12,7 +12,7 @@ export default async function Page() {
   // gebruiker; dat telt niet als ingelogd.
   if (!session?.user) {
     return (
-      <PublicLayout withNavigation={false} signedIn={false}>
+      <PublicLayout withNavigation={false} signedIn={false} keycloakLogin>
         <PublicPage />
       </PublicLayout>
     );

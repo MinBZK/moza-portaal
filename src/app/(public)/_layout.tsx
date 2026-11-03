@@ -26,10 +26,13 @@ export default async function PublicLayout({
   children,
   withNavigation = true,
   signedIn = true,
+  keycloakLogin = false,
 }: {
   children: React.ReactNode;
   withNavigation?: boolean;
   signedIn?: boolean;
+  /** Show the Keycloak login among the prototype options (landing page). */
+  keycloakLogin?: boolean;
 }) {
   const [flags, persona, personas, berichtenboxVariant] = await Promise.all([
     getFlagsFromServerCookie(),
@@ -101,7 +104,7 @@ export default async function PublicLayout({
         </div>
       </main>
 
-      <PrototypeOpties />
+      <PrototypeOpties keycloakLogin={keycloakLogin} />
       <FlagsPaneel
         flags={flags}
         berichtenboxVariant={berichtenboxVariant}

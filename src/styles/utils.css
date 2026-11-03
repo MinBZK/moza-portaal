@@ -13,22 +13,22 @@
 	block-size: 5rem;
 	display: flex;
 	gap: var(--rhc-space-sm);
-	inline-size: 13rem;
+	inline-size: 20rem;
 	inset-block-end: var(--rhc-space-md);
 	inset-inline-end: var(--rhc-space-md);
 	justify-content: end;
 	position: fixed;
 
-	button {
+	> button {
 		background-color: var(--rhc-color-wit);
 		opacity: 0;
 		transition: opacity 0.2s ease-in-out;
 	}
 
 	/* De knoppen zijn onzichtbaar tot je over dit vlak beweegt, of er met Tab
-	  op komt. */
-	&:hover button,
-	&:focus-within button {
+	  op komt. Het menu van Keycloak telt mee: het is een kind van dit vlak. */
+	&:hover > button,
+	&:focus-within > button {
 		opacity: 1;
 	}
 }
@@ -288,30 +288,35 @@ dialog.prototype-side-overlay[open] {
 }
 
 .prototype-landing-demo-info {
+	padding-block: var(--rhc-hero-message-padding-block-start);
+	padding-inline: var(--rhc-hero-message-padding-inline-start);
+
+	summary {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		gap: var(--rhc-space-sm);
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		.utrecht-icon {
+			transition: transform 150ms;
+		}
+	}
+
+	&[open] > summary .utrecht-icon {
+		transform: rotate(90deg);
+	}
+}
+
+.prototype-landing-demo-info__content {
 	display: flex;
 	flex-direction: column;
 	gap: var(--rhc-card-column-gap);
-	padding-block: var(--rhc-hero-message-padding-block-start);
-	padding-inline: var(--rhc-hero-message-padding-inline-start);
-}
-
-.prototype-login-keycloak {
-	--utrecht-button-inline-size: 100%;
-	--utrecht-button-max-inline-size: none;
-	background: var(--rhc-color-wit);
-	border-radius: var(--rhc-border-radius-md);
-	border-width: var(--rhc-border-width-sm);
-	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
-	inset-inline-end: 0;
-	padding: var(--rhc-space-2xs);
-	position: absolute;
-
-	button {
-		border: 0;
-		display: block;
-		inline-size: 100%;
-		text-align: start;
-	}
+	padding-block-start: var(--rhc-card-column-gap);
 }
 
 /* Status van bronnen in de Digitale assistent */
