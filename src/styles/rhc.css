@@ -19,31 +19,25 @@
 }
 
 /* ==== Tokens ============================================================= */
+
 .rhc-theme.mox-theme {
 
-  /* Overgang bij hover en focus van interactieve elementen. RHC heeft geen
-    tokens voor transities. */
-  --mox-transition-duration: 150ms;
-  --mox-transition-easing: ease-out;
+  --rhc-mox-transition-duration: 150ms;
+  --rhc-mox-transition-easing: ease-out;
 
-  /* Pagina-layout */
-
-  --mox-page-margin: var(--rhc-space-max-xl);
+  --rhc-mox-page-margin: var(--rhc-space-max-xl);
 
   @media (width >=768px) {
-    --mox-page-margin: var(--rhc-space-max-2xl);
+    --rhc-mox-page-margin: var(--rhc-space-max-2xl);
   }
 
   @media (width >=1024px) {
-    --mox-page-margin: var(--rhc-space-max-5xl);
+    --rhc-mox-page-margin: var(--rhc-space-max-5xl);
   }
 
   --rhc-grid-vi-medium-column-gap: var(--rhc-space-max-xl);
 
-  /* Typografische wijzigingen t.o.v. RHC */
-  /* Extra small text, 14px. Not well accessible: never for running text,
-    only for exceptions such as a text badge. Always combine it with
-    --rhc-text-font-weight-semi-bold or --rhc-text-font-weight-bold. */
+  /* Vermijd het gebruik van --rhc-text-font-size-xs, zeker voor lopende. Uitzonderingen zijn bijv. een text badge. --rhc-text-font-size-xs dient altijd gecombineerd te worden met --rhc-text-font-weight-semi-bold of --rhc-text-font-weight-bold vanwege toegankelijkheidsredenen. */
   --rhc-text-font-size-xs: 0.875rem;
   --nl-heading-level-1-font-size: 2rem;
   --nl-heading-level-2-font-size: 1.75rem;
@@ -56,18 +50,15 @@
   --rhc-text-font-size-min-md: 1rem;
   --rhc-text-font-size-max-md: 1.125rem;
 
-  /* Kleurwijzigingen t.o.v. RHC */
   --rhc-color-foreground-link: var(--rhc-color-lintblauw-600);
   --rhc-nav-bar-border-color: var(--rhc-color-cool-grey-200);
   --nl-heading-level-1-color: var(--rhc-color-core-500);
   --rhc-sidenav-link-color: var(--rhc-color-foreground-default);
   --utrecht-separator-color: var(--rhc-color-transparent);
-  --utrecht-form-control-invalid-background-color: red;
 
-  --mox-landing-hero-background: var(--rhc-color-core-50);
-  --mox-landing-info-background: var(--rhc-color-core-500);
+  --rhc-mox-landing-hero-background: var(--rhc-color-core-50);
+  --rhc-mox-landing-info-background: var(--rhc-color-core-500);
 
-  /* Maatvoering en afstand wijzigingen t.o.v. RHC */
   --rhc-border-width-lg: 4px;
   --rhc-nav-bar-border-block-end-width: var(--rhc-border-width-lg);
   --rhc-sidenav-link-padding-block-end: var(--rhc-space-md);
@@ -81,17 +72,15 @@
   --rhc-hero-message-padding-inline-start: var(--rhc-space-4xl);
   --utrecht-button-icon-gap: var(--rhc-space-sm);
 
-  /* Kaders */
   --rhc-data-summary-item-border-width: 0;
 
-  /* NavigationList */
   --rhc-navigation-list-item-label-font-size: var(--rhc-text-font-size-max-md);
 }
 
 /* ==== Typografie ======================================================== */
 
 .rhc-paragraph {
-  a {
+  a:not(.utrecht-button-link) {
     color: var(--rhc-color-lintblauw-500);
     text-decoration: underline;
     text-decoration-color: var(--rhc-color-lintblauw-200);
@@ -112,7 +101,7 @@
 }
 
 .utrecht-form-label {
-  font-weight: var(--mox-font-weight-medium);
+  font-weight: var(--rhc-mox-font-weight-medium);
 }
 
 .rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
@@ -123,9 +112,9 @@
 
 .rhc-theme.mox-theme .rhc-form-field {
   --rhc-mox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
-  --utrecht-select-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
-  --utrecht-textarea-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
-  --utrecht-textbox-invalid-background-color: color-mix(in srgb, var(--rhc-color-rood-50) 40%, var(--rhc-color-wit));
+  --utrecht-select-invalid-background-color: var(--rhc-mox-invalid-background-color);
+  --utrecht-textarea-invalid-background-color: var(--rhc-mox-invalid-background-color);
+  --utrecht-textbox-invalid-background-color: var(--rhc-mox-invalid-background-color);
 }
 
 .utrecht-form-field--radio,
@@ -133,9 +122,6 @@
   gap: var(--rhc-space-xs);
 }
 
-/* The options of a group sit apart with gap. The legend is not a grid item of
-  the fieldset, so it needs its own margin. Two classes: RHC resets the
-  fieldset with all: revert. */
 .utrecht-form-fieldset {
   .utrecht-form-fieldset__fieldset {
     display: grid;
@@ -153,9 +139,8 @@
 
 /* ==== Layout ============================================================= */
 
-/* --- Pagina --- */
 body {
-  background: var(--mox-color-page-background, var(--rhc-color-wit));
+  background: var(--rhc-mox-color-page-background, var(--rhc-color-wit));
   color: var(--rhc-color-foreground-default);
   display: flex;
   flex-direction: column;
@@ -164,6 +149,7 @@ body {
   font-weight: var(--rhc-text-font-weight-default);
   line-height: var(--rhc-text-line-height-md);
   min-block-size: 100dvh;
+  row-gap: var(--rhc-space-lg);
 
   >.utrecht-page-body {
     flex: 1 0 auto;
@@ -177,9 +163,7 @@ body {
   grid-template-columns: minmax(0, 1fr);
 }
 
-/* --- Stacks ---
-  Vertical space between the children comes from gap on the container, never
-  from margins on the children. rhc-mox-row-gap is the default stack. */
+/* --- Stacks --- */
 .rhc-mox-stack,
 .rhc-mox-row-gap {
   align-content: start;
@@ -187,15 +171,11 @@ body {
   gap: var(--rhc-space-xl);
   grid-template-columns: minmax(0, 1fr);
 
-  /* A button keeps its own width, as in normal flow. */
   >:is(button, .utrecht-button, .utrecht-button-link, .utrecht-link-button) {
     justify-self: start;
   }
 }
 
-/* An empty child, such as a live region that waits for a message, takes no
-  row and so no gap. It stays in the page, so a screen reader still hears
-  what appears in it. */
 :is(.rhc-mox-stack, .rhc-mox-row-gap, .rhc-mox-card)>:is(div, p, span):empty {
   position: absolute;
 }
@@ -225,12 +205,10 @@ body {
 }
 
 .rhc-theme.mox-theme {
-  /* Lists bring no space of their own; the container decides. */
   --utrecht-ordered-list-margin-block-end: 0;
   --utrecht-ordered-list-margin-block-start: 0;
   --utrecht-unordered-list-margin-block-end: 0;
   --utrecht-unordered-list-margin-block-start: 0;
-  /* The same for form fields and alerts. */
   --utrecht-alert-margin-block-end: 0;
   --utrecht-alert-margin-block-start: 0;
   --utrecht-form-field-margin-block-end: 0;
@@ -238,17 +216,7 @@ body {
 
   .utrecht-page-header__content,
   .utrecht-page-body__content {
-    padding-inline: var(--mox-page-margin);
-  }
-
-  /* Extra space at the bottom as padding on top of the RHC padding, instead
-    of a margin. */
-  .utrecht-page-header__content {
-    padding-block-end: calc(var(--utrecht-page-header-content-padding-block-end, 0px) + var(--rhc-space-xl));
-  }
-
-  .utrecht-page-body__content {
-    padding-block-end: calc(var(--utrecht-page-body-content-padding-block-end, 0px) + var(--rhc-space-xl));
+    padding-inline: var(--rhc-mox-page-margin);
   }
 
   .rhc-grid:has(> .rhc-mox-card) {
@@ -286,7 +254,6 @@ body {
     cursor: default;
   }
 
-  /* Name and organisation as two spans: space between them, in every theme. */
   .rhc-mox-header-organizations__identity>*+* {
     margin-inline-start: var(--rhc-space-sm);
   }
@@ -301,6 +268,7 @@ body {
 
   .rhc-nav-bar__link {
     align-items: center;
+    background: transparent;
     display: inline-flex;
     gap: var(--rhc-space-sm);
   }
@@ -314,8 +282,8 @@ body {
   }
 
   :where(.utrecht-page-header) .rhc-language-navigation {
-    /* Houvast voor de lijst. :where(), zodat mox.css hem nog absoluut kan
-      zetten. */
+    /* Houvast voor de lijst. :where(), zodat mox.css deze nog absoluut kan
+      positioneren. */
     position: relative;
   }
 
@@ -333,7 +301,6 @@ body {
     }
   }
 
-  /* De productnaam MijnOverheid Zakelijk: op een smal scherm onder het logo, op een breed scherm als titel in de NavBar. */
   @media (width < 768px) {
     .utrecht-page-header .rhc-nav-bar__heading {
       display: none;
@@ -355,9 +322,6 @@ body {
 }
 
 /* --- Navigatie --- */
-/* Pijltje tussen de kruimels, met CSS. Een apart <li> als scheidingsteken
-  (BreadcrumbNavSeparator) telt als leeg lijstitem; zo bevat de lijst alleen
-  echte stappen. Dezelfde maat en kleur als het RHC-icoon chevron-right. */
 .utrecht-breadcrumb-nav__item+.utrecht-breadcrumb-nav__item {
   align-items: center;
   display: inline-flex;
@@ -372,9 +336,7 @@ body {
   }
 }
 
-/* Huidige pagina in het kruimelpad: gewone tekst, geen link. */
 .rhc-mox-breadcrumb-current {
-  /* Same colour and spacing as the current link of RHC used to have. */
   color: var(--rhc-breadcrumb-nav-link-current-color);
   display: inline-block;
   padding-block: var(--utrecht-breadcrumb-nav-item-padding-block-start, 8px) var(--utrecht-breadcrumb-nav-item-padding-block-end, 8px);
@@ -413,7 +375,6 @@ body {
       display: none;
     }
 
-    /* Open menu: vult het scherm onder de header en verbergt de pagina. */
     &:has(.rhc-mox-menu-lists--open) {
 
       .rhc-mox-main-container,
@@ -422,7 +383,7 @@ body {
       }
 
       .utrecht-page-body {
-        min-block-size: calc(100dvh - var(--mox-header-hoogte, 0px));
+        min-block-size: calc(100dvh - var(--rhc-mox-header-height, 0px));
       }
     }
   }
@@ -439,13 +400,10 @@ body {
     padding-inline: var(--rhc-sidenav-link-padding-inline-start, 0);
   }
 
-  /* Organisation choice in the narrow menu: space around the group is part
-    of the group, so its children need no margins. */
   .rhc-mox-menu-organizations {
     padding-block: var(--rhc-space-md) var(--rhc-space-2xl);
   }
 
-  /* De gekozen organisatie: zelfde nadruk als de huidige pagina. */
   .rhc-mox-menu-account .rhc-side-nav__link[aria-current="true"] {
     color: var(--rhc-sidenav-link-current-color);
     font-weight: var(--rhc-sidenav-link-current-font-weight);
@@ -458,23 +416,40 @@ body {
 }
 
 /* --- Tekst --- */
-/* Small, subtle text under or next to other content, such as a note or the
-  unit of an amount. On a <p>, <div> or <small>. */
 small,
 .rhc-theme .rhc-mox-small-text {
   color: var(--rhc-color-foreground-subtle);
   font-size: var(--rhc-text-font-size-sm);
 }
 
-/* --- DataSummary: a badge in the value always sits on the right --- */
+/* --- DataSummary --- */
 .rhc-data-summary__item-value:has(> .rhc-mox-text-badge) {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: var(--rhc-space-xs) var(--rhc-space-md);
+}
 
-  >.rhc-mox-text-badge {
+.rhc-data-summary__item-key {
+  display: flex;
+
+  .rhc-mox-text-badge {
+    align-self: start;
     margin-inline-start: auto;
+  }
+}
+
+.rhc-theme.mox-theme {
+  @media (width >=768px) {
+    .rhc-data-summary--columns {
+      column-gap: var(--rhc-space-lg);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rhc-data-summary__item-key {
+      flex-basis: 25%;
+    }
   }
 }
 
@@ -500,7 +475,8 @@ small,
   }
 }
 
-/* --- Cluster: short items in a row that wrap, such as badges --- */
+/* --- Cluster: korte items op een rij die over meerdere regels kunnen wrappen,
+zoals badges --- */
 .rhc-mox-cluster {
   align-items: center;
   display: flex;
@@ -508,7 +484,7 @@ small,
   gap: var(--rhc-space-md);
 }
 
-/* --- Highlight: a light blue block that sets a result apart, such as a total --- */
+/* --- Highlight --- */
 .rhc-mox-highlight {
   background-color: color-mix(in srgb, var(--rhc-color-hemelblauw-50) 60%, transparent);
   border: var(--rhc-border-width-sm) solid var(--rhc-color-hemelblauw-100);
@@ -518,7 +494,7 @@ small,
   padding: var(--rhc-space-xl);
 }
 
-/* --- Timeline: events on a vertical line, newest first --- */
+/* --- Timeline --- */
 .rhc-mox-timeline {
   --rhc-mox-timeline-dot: var(--rhc-space-lg);
 
@@ -553,13 +529,11 @@ small,
   background-color: var(--rhc-color-cool-grey-500);
 }
 
-/* Replaced by a later event: the heading is struck through. */
 .rhc-mox-timeline__item--replaced :is(h2, h3, h4) {
   text-decoration-line: line-through;
   text-decoration-thickness: var(--rhc-border-width-sm);
 }
 
-/* A button link that does not work yet, such as during a calculation. */
 .utrecht-button-link[aria-disabled="true"] {
   background-color: var(--utrecht-button-disabled-background-color);
   border-color: var(--utrecht-button-disabled-border-color);
@@ -570,25 +544,19 @@ small,
 /* ==== Componenten ======================================================== */
 
 /* --- Interactie --- */
-
-/* Eén rustige overgang voor alle interactieve elementen. Alles in :where(),
-  ook de theme-classes, zodat de specificiteit 0 is en een eigen transition
-  van een component altijd wint. */
 @media (prefers-reduced-motion: no-preference) {
   :where(.rhc-theme.mox-theme) :where(a, button, summary, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"], dialog)) {
-    transition-duration: var(--mox-transition-duration);
+    transition-duration: var(--rhc-mox-transition-duration);
     transition-property: color, background-color, border-color, outline-color, outline-offset, text-decoration-color, box-shadow;
-    transition-timing-function: var(--mox-transition-easing);
+    transition-timing-function: var(--rhc-mox-transition-easing);
   }
 
-  /* De knop van een schuifregelaar is een pseudo-element; :where() hierboven
-    raakt die niet. Per browser een eigen regel. */
   .rhc-theme.mox-theme .rhc-mox-range-slider__input::-webkit-slider-thumb {
-    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+    transition: background-color var(--rhc-mox-transition-duration) var(--rhc-mox-transition-easing), border-color var(--rhc-mox-transition-duration) var(--rhc-mox-transition-easing), outline-color var(--rhc-mox-transition-duration) var(--rhc-mox-transition-easing);
   }
 
   .rhc-theme.mox-theme .rhc-mox-range-slider__input::-moz-range-thumb {
-    transition: background-color var(--mox-transition-duration) var(--mox-transition-easing), border-color var(--mox-transition-duration) var(--mox-transition-easing), outline-color var(--mox-transition-duration) var(--mox-transition-easing);
+    transition: background-color var(--rhc-mox-transition-duration) var(--rhc-mox-transition-easing), border-color var(--rhc-mox-transition-duration) var(--rhc-mox-transition-easing), outline-color var(--rhc-mox-transition-duration) var(--rhc-mox-transition-easing);
   }
 }
 
@@ -609,33 +577,6 @@ small,
   }
 }
 
-
-/* --- DataSummary --- */
-.rhc-data-summary__item-key {
-  display: flex;
-
-  /* Its own height, also when the name wraps over several lines: a flex item
-    stretches to the full height of the row by default. */
-  .rhc-mox-text-badge {
-    align-self: start;
-    margin-inline-start: auto;
-  }
-}
-
-.rhc-theme.mox-theme {
-  @media (width >=768px) {
-    .rhc-data-summary--columns {
-      column-gap: var(--rhc-space-lg);
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .rhc-data-summary__item-key {
-      flex-basis: 25%;
-    }
-  }
-}
-
 /* --- Kaarten --- */
 .rhc-theme.mox-theme {
   .rhc-mox-card {
@@ -644,7 +585,6 @@ small,
     gap: var(--rhc-space-lg);
   }
 
-  /* In cards of equal height, the buttons line up at the bottom. */
   .rhc-mox-card>.utrecht-action-group:last-child {
     margin-block-start: auto;
   }
@@ -655,7 +595,6 @@ small,
   flex-direction: column;
   gap: var(--rhc-space-3xl);
 
-  /* Title, summary and button of one item. */
   >li {
     display: grid;
     gap: var(--rhc-space-md);
@@ -699,9 +638,6 @@ small,
 }
 
 /* --- Dropdown --- */
-/* Dropdown (src/components/Dropdown.tsx): a button with a popover menu.
-  Without anchor positioning the browser shows the menu in the middle of the
-  screen, the default for a popover. */
 .rhc-mox-dropdown__trigger {
   anchor-name: var(--rhc-mox-dropdown-anchor);
 }
@@ -768,20 +704,17 @@ small,
     outline-offset: calc(-1 * var(--utrecht-focus-outline-width));
   }
 
-  /* Own icons (src/components/icons) have no size of their own. */
   .utrecht-icon svg {
     block-size: 100%;
     inline-size: 100%;
   }
 
-  /* The chosen option: check mark (DropdownItem), bold, white. */
   &[aria-current="true"] {
     background-color: var(--rhc-mox-dropdown-item-selected-background, var(--rhc-color-wit));
     font-weight: var(--rhc-text-font-weight-semi-bold);
   }
 }
 
-/* Space of the check mark for the options that are not chosen. */
 .rhc-mox-dropdown__icon-space {
   flex-shrink: 0;
   inline-size: var(--utrecht-icon-size, 1em);
@@ -794,23 +727,15 @@ small,
   }
 }
 
-/* Space between the blocks in an open panel. Not on [hidden], or the panel
-  would stay visible. */
 .utrecht-accordion__panel:not([hidden]) {
   display: grid;
   gap: var(--rhc-space-lg);
 }
 
-/* Het paneel uit- en inklappen. Het wisselt met [hidden], dus display loopt
-  mee via allow-discrete; interpolate-size maakt de hoogte auto animeerbaar.
-  Zonder interpolate-size (Safari, Firefox) alleen de fade. Binnen
-  .rhc-theme.mox-theme, zodat padding-block: 0 voorgaat op de padding uit
-  mox.css. */
 @media (prefers-reduced-motion: no-preference) {
   .rhc-theme.mox-theme .utrecht-accordion {
     interpolate-size: allow-keywords;
 
-    /* Hetzelfde pijltje, open 180 graden gedraaid: laat het meedraaien. */
     .utrecht-accordion__button-icon {
       transition: transform 250ms ease;
     }
@@ -824,7 +749,6 @@ small,
         padding-block 250ms ease,
         display 250ms allow-discrete;
 
-      /* Ook de padding, anders begint en eindigt de hoogte niet bij 0. */
       @starting-style {
         block-size: 0;
         opacity: 0;
@@ -842,9 +766,7 @@ small,
 
 /* --- Tabs --- */
 .rhc-mox-tabs {
-  --rhc-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
-  /* The grey line under the tabs as an inset shadow, not as a background
-    image: then a contrast check sees a plain background behind the text. */
+  --rhc-mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
   box-shadow: inset 0 calc(-1 * var(--rhc-border-width-md)) 0 var(--rhc-color-cool-grey-400);
   display: flex;
   gap: var(--rhc-space-xl);
@@ -860,7 +782,7 @@ small,
   @supports (animation-timeline: scroll()) {
     animation: rhc-mox-tabs-fade linear both;
     animation-timeline: scroll(self inline);
-    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-tabs-fade-start), #000 calc(100% - var(--rhc-tabs-fade-end)), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--rhc-mox-tabs-fade-start), #000 calc(100% - var(--rhc-mox-tabs-fade-end)), transparent);
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -870,22 +792,18 @@ small,
 }
 
 .rhc-mox-tab {
+  --utrecht-link-text-decoration: none;
+  --utrecht-link-hover-text-decoration: none;
+  --utrecht-link-focus-text-decoration: none;
   align-items: center;
   background-color: var(--rhc-color-wit);
   display: flex;
   gap: var(--rhc-space-md);
   padding: var(--rhc-space-md);
-  /* Een tab die in beeld schuift, valt niet in het verloop. */
-  scroll-margin-inline: var(--rhc-tabs-fade);
+  scroll-margin-inline: var(--rhc-mox-tabs-fade);
   text-decoration: none;
   white-space: nowrap;
 
-  &.utrecht-link,
-  &.utrecht-link--html-a {
-    text-decoration: none !important;
-  }
-
-  /* Binnen de tab, anders valt de focusrand weg aan de randen. */
   &:focus-visible {
     outline-offset: calc(-1 * var(--utrecht-focus-outline-width, 2px));
   }
@@ -896,14 +814,13 @@ small,
   }
 }
 
-/* Verloop aan de randen van scrollende tabs (.rhc-mox-tabs op een smal scherm). */
-@property --rhc-tabs-fade-start {
+@property --rhc-mox-tabs-fade-start {
   inherits: false;
   initial-value: 0px;
   syntax: "<length>";
 }
 
-@property --rhc-tabs-fade-end {
+@property --rhc-mox-tabs-fade-end {
   inherits: false;
   initial-value: 0;
   syntax: "<length>";
@@ -911,21 +828,21 @@ small,
 
 @keyframes rhc-mox-tabs-fade {
   0% {
-    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
-    --rhc-tabs-fade-start: 0;
+    --rhc-mox-tabs-fade-end: var(--rhc-mox-tabs-fade);
+    --rhc-mox-tabs-fade-start: 0;
   }
 
   10% {
-    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+    --rhc-mox-tabs-fade-start: var(--rhc-mox-tabs-fade);
   }
 
   90% {
-    --rhc-tabs-fade-end: var(--rhc-tabs-fade);
+    --rhc-mox-tabs-fade-end: var(--rhc-mox-tabs-fade);
   }
 
   100% {
-    --rhc-tabs-fade-end: 0;
-    --rhc-tabs-fade-start: var(--rhc-tabs-fade);
+    --rhc-mox-tabs-fade-end: 0;
+    --rhc-mox-tabs-fade-start: var(--rhc-mox-tabs-fade);
   }
 }
 
@@ -941,9 +858,10 @@ small,
   border-radius: var(--rhc-border-radius-md);
   display: flex;
   flex-direction: column;
-  gap: var(--rhc-space-lg);
+  gap: var(--rhc-space-3xl);
   overflow-y: auto;
   padding: var(--rhc-space-lg);
+  padding-block-end: calc(var(--rhc-space-lg) + var(--rhc-size-icon-md));
 }
 
 .rhc-mox-chat-rule {
@@ -961,15 +879,12 @@ small,
   padding: var(--rhc-space-md) var(--rhc-space-lg);
 }
 
-/* The margin makes room for the tail of the speech bubble (::before), which
-  hangs below the box. */
 .rhc-mox-chat-message,
 .rhc-mox-chat-suggestions {
-  margin-block-end: var(--rhc-space-2xl);
   position: relative;
 
   &:before {
-    background-color: var(--rhc-color-cool-grey-100);
+    background-color: inherit;
     block-size: var(--rhc-size-icon-md);
     clip-path: shape(from 0% 0%, line to 100% 0%, line to 20% 80%, curve to 0% 80% with 0% 100%);
     content: "";
@@ -983,11 +898,11 @@ small,
 .rhc-mox-chat-message--assistant,
 .rhc-mox-chat-card,
 .rhc-mox-chat-suggestions {
-  --rhc-chat-border-color: var(--rhc-color-cool-grey-300);
+  --rhc-mox-chat-border-color: var(--rhc-color-cool-grey-300);
 
   align-self: flex-start;
   background-color: var(--rhc-color-cool-grey-100);
-  filter: drop-shadow(1px 0 0 var(--rhc-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-chat-border-color));
+  filter: drop-shadow(1px 0 0 var(--rhc-mox-chat-border-color)) drop-shadow(-1px 0 0 var(--rhc-mox-chat-border-color)) drop-shadow(0 1px 0 var(--rhc-mox-chat-border-color)) drop-shadow(0 -1px 0 var(--rhc-mox-chat-border-color));
 }
 
 .rhc-mox-chat-message--user {
@@ -996,14 +911,8 @@ small,
   color: var(--rhc-color-wit);
 
   &:before {
-    background-color: var(--rhc-color-lintblauw-700);
-    block-size: var(--rhc-size-icon-md);
     clip-path: shape(from 0% 0%, line to 100% 0%, line to 100% 80%, curve to 80% 80% with 100% 100%);
-    content: "";
-    inline-size: var(--rhc-size-icon-md);
-    inset-block-end: calc(-1 * var(--rhc-size-icon-md));
-    inset-inline-end: var(--rhc-size-icon-md);
-    position: absolute;
+    inset-inline: auto var(--rhc-size-icon-md);
   }
 
   .nl-paragraph {
@@ -1158,27 +1067,26 @@ small,
 
 /* --- Lopende zaken --- */
 .rhc-mox-status-track {
-  --rhc-stap-maat: calc(var(--rhc-size-icon-lg) * 1.25);
-  --rhc-stap-gap: var(--rhc-space-lg);
+  --rhc-mox-step-size: calc(var(--rhc-size-icon-lg) * 1.25);
+  --rhc-mox-step-gap: var(--rhc-space-lg);
 
   display: grid;
-  gap: var(--rhc-stap-gap);
+  gap: var(--rhc-mox-step-gap);
 
   >li {
     display: flex;
     gap: var(--rhc-space-md);
     position: relative;
 
-    /* Cirkel met stapnummer, of vinkje als stap klaar is. */
     >.rhc-mox-status-marker {
       background-color: var(--rhc-color-groen-600);
-      block-size: var(--rhc-stap-maat);
+      block-size: var(--rhc-mox-step-size);
       border-radius: var(--rhc-border-radius-round);
       color: var(--rhc-color-wit);
       display: grid;
       flex-shrink: 0;
       font-weight: var(--rhc-text-font-weight-bold);
-      inline-size: var(--rhc-stap-maat);
+      inline-size: var(--rhc-mox-step-size);
       place-items: center;
 
       .utrecht-icon {
@@ -1196,8 +1104,8 @@ small,
       background-color: var(--rhc-color-groen-600);
       content: "";
       inline-size: var(--rhc-border-width-md);
-      inset-block: var(--rhc-stap-maat) calc(-1 * var(--rhc-stap-gap));
-      inset-inline-start: calc(var(--rhc-stap-maat) / 2 - var(--rhc-border-width-md) / 2);
+      inset-block: var(--rhc-mox-step-size) calc(-1 * var(--rhc-mox-step-gap));
+      inset-inline-start: calc(var(--rhc-mox-step-size) / 2 - var(--rhc-border-width-md) / 2);
       position: absolute;
     }
 
@@ -1233,7 +1141,7 @@ small,
     font-weight: var(--rhc-text-font-weight-bold);
     gap: var(--rhc-space-sm);
     list-style: none;
-    min-block-size: var(--rhc-stap-maat);
+    min-block-size: var(--rhc-mox-step-size);
 
     &::-webkit-details-marker {
       display: none;
@@ -1248,8 +1156,6 @@ small,
     transform: rotate(90deg);
   }
 
-  /* Openen en sluiten animeren. Zonder interpolate-size (Safari, Firefox)
-    klapt de stap direct open. */
   @media (prefers-reduced-motion: no-preference) {
     interpolate-size: allow-keywords;
 
@@ -1282,8 +1188,6 @@ small,
 }
 
 /* --- LinkButton --- */
-/* Destructieve actie als LinkButton, zoals Verwijderen in Berichtenbox.
-  LinkButton kent geen hint="danger", daarom deze class. */
 .rhc-theme.mox-theme {
   .rhc-mox-link-button--danger {
     --utrecht-link-button-color: var(--rhc-color-rood-500);
@@ -1320,20 +1224,15 @@ small,
 
   .utrecht-icon {
     block-size: 1lh;
-    /* Het 1lh-vak centreert al; de verschuiving van RHC zou dubbel tellen. */
     inset-block-start: 0;
   }
 }
 
 /* --- Melding --- */
-/* Een lege live region (role="status", role="alert", aria-live) neemt geen
-  ruimte in, ook niet als gap in een flex- of grid-container. Hij blijft wel
-  in de DOM en in de toegankelijkheidsboom. */
 :where(.rhc-theme.mox-theme) :where([role="status"], [role="alert"], [aria-live]):empty {
   position: absolute;
 }
 
-/* Een melding die na een tijd uitfadet (BerichtDetail). */
 .rhc-theme.mox-theme {
   .rhc-mox-fade-out {
     @media (prefers-reduced-motion: no-preference) {
@@ -1368,7 +1267,7 @@ small,
   }
 
   &:hover {
-    background: transparent !important;
+    --utrecht-button-subtle-hover-background-color: transparent;
   }
 }
 
@@ -1383,8 +1282,6 @@ small,
   }
 }
 
-/* Navigatielijst in kolommen: één lijst, op een breed scherm twee kolommen
-  naast elkaar. De volgorde loopt per rij. */
 .rhc-theme.mox-theme {
   .rhc-navigation-list.rhc-mox-navigation-grid {
     column-gap: var(--rhc-space-xl);
@@ -1395,7 +1292,6 @@ small,
       grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Items in een rij even hoog, zodat de lijnen gelijk lopen. */
     >li {
       display: flex;
     }
@@ -1420,6 +1316,9 @@ small,
   }
 
   .rhc-mox-range-slider__input {
+    --rhc-mox-range-slider-thumb: var(--rhc-size-icon-lg);
+    --rhc-mox-range-slider-track: 0.75rem;
+
     accent-color: var(--rhc-color-lintblauw-500);
     appearance: none;
     background: transparent;
@@ -1430,22 +1329,20 @@ small,
     &::-webkit-slider-thumb {
       appearance: none;
       background: var(--rhc-color-lintblauw-500);
-      block-size: var(--rhc-size-icon-lg);
+      block-size: var(--rhc-mox-range-slider-thumb);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
       border-radius: var(--rhc-border-radius-round);
-      inline-size: var(--rhc-size-icon-lg);
-      margin-block-start: -.5rem;
-      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      inline-size: var(--rhc-mox-range-slider-thumb);
+      margin-block-start: calc((var(--rhc-mox-range-slider-track) - var(--rhc-mox-range-slider-thumb)) / 2 - var(--rhc-border-width-md));
       outline: var(--rhc-border-width-lg) solid transparent;
     }
 
     &::-moz-range-thumb {
       background: var(--rhc-color-lintblauw-500);
-      block-size: var(--rhc-size-icon-lg);
+      block-size: var(--rhc-mox-range-slider-thumb);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
       border-radius: var(--rhc-border-radius-round);
-      inline-size: var(--rhc-size-icon-lg);
-      /* Onzichtbaar in rust, zodat bij hover alleen de kleur verandert. */
+      inline-size: var(--rhc-mox-range-slider-thumb);
       outline: var(--rhc-border-width-lg) solid transparent;
     }
 
@@ -1459,10 +1356,6 @@ small,
       }
     }
 
-    /* Hover on the thumb, or keyboard focus on the slider: darker thumb with
-      a ring. A pseudo-element cannot have :focus itself, so the focus sits
-      on the input. One rule per browser: an unknown pseudo-element would
-      drop the whole list. */
     &::-webkit-slider-thumb:hover,
     &:focus-visible::-webkit-slider-thumb {
       background: var(--rhc-color-lintblauw-600);
@@ -1487,14 +1380,14 @@ small,
 
     &::-webkit-slider-runnable-track {
       background: var(--rhc-color-cool-grey-100);
-      block-size: 0.75rem;
+      block-size: var(--rhc-mox-range-slider-track);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
       border-radius: var(--rhc-border-radius-round);
     }
 
     &::-moz-range-track {
       background: var(--rhc-color-cool-grey-100);
-      block-size: 0.75rem;
+      block-size: var(--rhc-mox-range-slider-track);
       border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-50);
       border-radius: var(--rhc-border-radius-round);
     }
@@ -1506,20 +1399,19 @@ small,
     }
   }
 
-  /* RangeSlider met gevulde baan tot aan de knop (thumb). */
+  /* RangeSlider met gevulde baan tot aan thumb. */
   .rhc-mox-range-slider__input--filled {
-    --rhc-range-slider-fill-color: var(--rhc-color-lintblauw-50);
-    --rhc-range-slider-thumb: var(--rhc-size-icon-lg);
-    --rhc-range-slider-stop: calc(var(--rhc-range-slider-thumb) / 2 + (100% - var(--rhc-range-slider-thumb)) * var(--rhc-range-slider-fill, 0));
+    --rhc-mox-range-slider-fill-color: var(--rhc-color-lintblauw-50);
+    --rhc-mox-range-slider-stop: calc(var(--rhc-mox-range-slider-thumb) / 2 + (100% - var(--rhc-mox-range-slider-thumb)) * var(--rhc-mox-range-slider-fill, 0));
 
     &::-webkit-slider-runnable-track {
-      background: linear-gradient(to right, var(--rhc-range-slider-fill-color) var(--rhc-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-range-slider-stop));
+      background: linear-gradient(to right, var(--rhc-mox-range-slider-fill-color) var(--rhc-mox-range-slider-stop), var(--rhc-color-cool-grey-100) var(--rhc-mox-range-slider-stop));
     }
 
-    /* Firefox kent een eigen element voor het gevulde deel. */
+    /* Specifiek Firefox */
     &::-moz-range-progress {
-      background: var(--rhc-range-slider-fill-color);
-      block-size: 0.75rem;
+      background: var(--rhc-mox-range-slider-fill-color);
+      block-size: var(--rhc-mox-range-slider-track);
       border-radius: var(--rhc-border-radius-round);
     }
   }
@@ -1533,7 +1425,6 @@ small,
 }
 
 /* --- Voortgangsbalk --- */
-/* Basis voor elke balk: ophaalvoortgang, budget (subsidies) en aftelbalk. */
 .rhc-mox-progressbar,
 .rhc-mox-bar-graph__track {
   background-color: var(--rhc-color-cool-grey-50);
@@ -1551,8 +1442,6 @@ small,
   border-radius: var(--rhc-border-radius-round);
 }
 
-/* In een info-melding de kleur van die melding (het info-icoon), zoals
-  bij "De pdf wordt geladen". */
 .utrecht-alert--info .rhc-mox-progressbar {
   border-color: var(--rhc-color-hemelblauw-100);
 
@@ -1562,7 +1451,6 @@ small,
   background-color: var(--utrecht-alert-icon-info-color);
 }
 
-/* Laadduur onbekend, zoals bij de pdf. */
 .rhc-mox-progressbar--indeterminate .rhc-mox-progressbar-track {
   inline-size: 40%;
 
@@ -1594,13 +1482,8 @@ small,
 }
 
 /* --- Tooltip --- */
-/* The content opens as a layer under the (i) button and pushes nothing
-  aside. With anchor positioning it moves to the other side when there is
-  no room on the right. */
-/* The (i) button sits on the baseline, so it stood a little above the middle
-  of the text next to it; -0.15em centres it on the text. */
 .rhc-toggletip {
-  anchor-scope: --rhc-toggletip;
+  anchor-scope: --rhc-mox-toggletip;
   position: relative;
   vertical-align: -0.15em;
   --rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
@@ -1618,12 +1501,11 @@ small,
 }
 
 .rhc-toggletip__summary {
-  anchor-name: --rhc-toggletip;
+  anchor-name: --rhc-mox-toggletip;
   margin-block-end: 0;
 }
 
-/* No room on either side, as on a narrow screen: the width of the window. */
-@position-try --rhc-toggletip-full {
+@position-try --rhc-mox-toggletip-full {
   inline-size: auto;
   inset-inline-end: var(--rhc-space-lg);
   inset-inline-start: var(--rhc-space-lg);
@@ -1637,14 +1519,12 @@ small,
   position: absolute;
   z-index: 10;
 
-  /* Fixed against the window, so the fallback checks the room in the window
-    and not in the small button. */
   @supports (position-anchor: --a) {
     inset-block-start: calc(anchor(bottom) + var(--rhc-space-sm));
     inset-inline-start: anchor(start);
     position: fixed;
-    position-anchor: --rhc-toggletip;
-    position-try-fallbacks: flip-inline, --rhc-toggletip-full;
+    position-anchor: --rhc-mox-toggletip;
+    position-try-fallbacks: flip-inline, --rhc-mox-toggletip-full;
   }
 }
 
@@ -1680,9 +1560,6 @@ small,
   }
 
   @media (width < 768px) {
-
-    /* Paginering op één regel: "vorige" en "volgende" alleen als pijl. De
-      toegankelijke naam ("Vorige pagina") blijft. */
     .ams-pagination__link[rel]>span[aria-hidden="true"] {
       display: none;
     }
@@ -1696,9 +1573,6 @@ small,
   }
 }
 
-/* Tabel die horizontaal scrolt als hij niet past. position: relative houdt
-  ook verborgen tekst (rhc-visually-hidden, absoluut gepositioneerd) binnen
-  de scrollcontainer; anders scrolt de hele pagina. */
 .rhc-theme.mox-theme {
   .rhc-mox-table-container {
     overflow-x: auto;
@@ -1730,8 +1604,6 @@ small,
 }
 
 /* --- Meldingen --- */
-/* The text of an alert as a stack: space between paragraphs, heading and
-  button comes from the gap. */
 .utrecht-alert__message {
   --utrecht-alert-message-row-gap: var(--rhc-space-md);
 
@@ -1742,8 +1614,6 @@ small,
   }
 }
 
-/* Een melding die in zijn geheel een link is, zoals de status van een zaak
-  die iets van u vraagt. De tekst kleurt als een link, de melding blijft. */
 .rhc-theme.mox-theme {
   .rhc-mox-alert-link {
     border-radius: var(--rhc-border-radius-md);
@@ -1777,10 +1647,6 @@ small,
   }
 }
 
-/* A fieldset with extra information next to the legend
-  (src/components/Fieldset.tsx). A floated legend is an ordinary child, so it
-  becomes a grid item: legend and info share the first row, the fields span
-  the full width below. The legend still names the group. */
 .utrecht-form-fieldset.rhc-mox-fieldset--info {
   .utrecht-form-fieldset__fieldset {
     align-items: center;
@@ -1801,9 +1667,6 @@ small,
   }
 }
 
-/* A label or heading with extra information right after it, such as an
-  InfoToggletip (src/components/FieldLabel.tsx). The information follows the
-  last word, also when the text wraps over several lines. */
 .rhc-mox-with-info {
   >:first-child {
     display: inline;
@@ -1815,8 +1678,6 @@ small,
   }
 }
 
-/* Variant: the information in the top right corner, with the text next to
-  it. For a heading at the top of a block, such as a highlight. */
 .rhc-mox-with-info--end {
   align-items: start;
   display: flex;
@@ -1832,7 +1693,6 @@ small,
   }
 }
 
-/* The chosen value of a range slider ("32 uur") stays on one line. */
 .rhc-mox-range-slider__value {
   white-space: nowrap;
 }
@@ -1856,7 +1716,7 @@ small,
 }
 
 .rhc-mox-bar-graph__item {
-  --rhc-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
+  --rhc-mox-bar-graph-stripe: color-mix(in srgb, var(--rhc-color-wit) 55%, transparent);
 
   align-items: baseline;
   display: grid;
@@ -1873,20 +1733,19 @@ small,
 }
 
 .rhc-mox-bar-graph__bar {
-  background-color: var(--rhc-bar-graph-color, var(--rhc-color-lintblauw-400));
-  background-image: var(--rhc-bar-graph-pattern, none);
+  background-color: var(--rhc-mox-bar-graph-color, var(--rhc-color-lintblauw-400));
+  background-image: var(--rhc-mox-bar-graph-pattern, none);
   block-size: var(--rhc-space-xl);
-  border: var(--rhc-border-width-sm) solid var(--rhc-bar-graph-border-color, var(--rhc-color-cool-grey-500));
+  border: var(--rhc-border-width-sm) solid var(--rhc-mox-bar-graph-border-color, var(--rhc-color-cool-grey-500));
   border-radius: var(--rhc-border-radius-round);
-  /* At least a sliver, so a value of 0 still shows where the bar starts. */
-  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% - 5rem)));
+  inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-mox-bar-graph-fill, 0) * (100% - 5rem)));
 }
 
 .rhc-mox-bar-graph__track {
-  --rhc-bar-graph-track-border-width: var(--rhc-border-width-sm);
+  --rhc-mox-bar-graph-track-border-width: var(--rhc-border-width-sm);
 
   background-color: var(--rhc-color-cool-grey-50);
-  border: var(--rhc-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
+  border: var(--rhc-mox-bar-graph-track-border-width) solid var(--rhc-color-cool-grey-200);
   border-radius: var(--rhc-border-radius-round);
   display: flex;
   inline-size: calc(100% - 5rem);
@@ -1894,27 +1753,27 @@ small,
   >.rhc-mox-bar-graph__bar {
     box-sizing: border-box;
     flex-shrink: 0;
-    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-bar-graph-fill, 0) * (100% + 2 * var(--rhc-bar-graph-track-border-width))));
-    margin-block: calc(-1 * var(--rhc-bar-graph-track-border-width));
-    margin-inline-start: calc(-1 * var(--rhc-bar-graph-track-border-width));
+    inline-size: max(var(--rhc-border-width-md), calc(var(--rhc-mox-bar-graph-fill, 0) * (100% + 2 * var(--rhc-mox-bar-graph-track-border-width))));
+    margin-block: calc(-1 * var(--rhc-mox-bar-graph-track-border-width));
+    margin-inline-start: calc(-1 * var(--rhc-mox-bar-graph-track-border-width));
   }
 }
 
 .rhc-mox-bar-graph__item--positive {
-  --rhc-bar-graph-color: var(--rhc-color-groen-400);
-  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  --rhc-bar-graph-border-color: var(--rhc-color-groen-400);
+  --rhc-mox-bar-graph-color: var(--rhc-color-groen-400);
+  --rhc-mox-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-mox-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-mox-bar-graph-border-color: var(--rhc-color-groen-400);
 }
 
 .rhc-mox-bar-graph__item--negative {
-  --rhc-bar-graph-color: var(--rhc-color-rood-500);
-  --rhc-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-bar-graph-stripe) 0 2px, transparent 2px 6px);
-  --rhc-bar-graph-border-color: var(--rhc-color-rood-400);
+  --rhc-mox-bar-graph-color: var(--rhc-color-rood-500);
+  --rhc-mox-bar-graph-pattern: repeating-linear-gradient(45deg, var(--rhc-mox-bar-graph-stripe) 0 2px, transparent 2px 6px), repeating-linear-gradient(-45deg, var(--rhc-mox-bar-graph-stripe) 0 2px, transparent 2px 6px);
+  --rhc-mox-bar-graph-border-color: var(--rhc-color-rood-400);
 }
 
 /* --- Step indicator --- */
 .rhc-mox-step-indicator {
-  --rhc-step-indicator-size: var(--rhc-size-icon-lg);
+  --rhc-mox-step-indicator-size: var(--rhc-size-icon-lg);
 
   display: grid;
   gap: var(--rhc-space-md);
@@ -1941,13 +1800,13 @@ small,
 }
 
 .rhc-mox-step-indicator__marker {
-  block-size: var(--rhc-step-indicator-size);
+  block-size: var(--rhc-mox-step-indicator-size);
   border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
   border-radius: var(--rhc-border-radius-round);
   display: grid;
   flex-shrink: 0;
   font-weight: var(--rhc-text-font-weight-bold);
-  inline-size: var(--rhc-step-indicator-size);
+  inline-size: var(--rhc-mox-step-indicator-size);
   line-height: 1;
   place-items: center;
 }
@@ -1969,7 +1828,6 @@ small,
   }
 }
 
-/* Small scherm: alleen "Stap 2 van 4" en huidige stap. */
 @media (width < 768px) {
   .rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
     display: none;
@@ -1977,7 +1835,6 @@ small,
 }
 
 /* --- Sticky info box --- */
-/* StickyInfoBox blijft getoond worden bij pagina-scroll op een vaste plek; op een smal scherm blijft deze mee-scrollen. */
 .rhc-mox-sticky-info-box {
   align-self: start;
   background-color: var(--rhc-color-hemelblauw-50);
@@ -2055,13 +1912,12 @@ small,
   background-color: var(--rhc-color-cool-grey-500);
   block-size: 100%;
   border-radius: var(--rhc-border-radius-round);
-  /* Transparent ring at rest, so its colour can fade in on hover. */
   outline: var(--rhc-border-width-md) solid transparent;
 
   @media (prefers-reduced-motion: no-preference) {
-    transition-duration: var(--mox-transition-duration);
+    transition-duration: var(--rhc-mox-transition-duration);
     transition-property: transform, background-color, outline-color;
-    transition-timing-function: var(--mox-transition-easing);
+    transition-timing-function: var(--rhc-mox-transition-easing);
   }
 }
 
@@ -2090,8 +1946,6 @@ small,
   min-inline-size: 2rem;
 }
 
-/* Two-way: a choice between two options, not on/off. The track has the
-  same colour in both positions; the chosen option is in bold. */
 .rhc-mox-switch__button--two-way .rhc-mox-switch__track,
 .rhc-mox-switch__button--two-way[aria-checked="true"] .rhc-mox-switch__track {
   background-color: var(--rhc-color-wit);
@@ -2128,17 +1982,12 @@ small,
   font-size: var(--rhc-text-font-size-xs);
   font-weight: var(--rhc-text-font-weight-semi-bold);
   gap: var(--rhc-space-sm);
-  /* About as high as a line of text, so it does not stick out above or
-    below the text next to it; the text in the badge on its baseline. */
   line-height: var(--rhc-text-line-height-sm);
   padding-block: var(--rhc-space-xs);
   padding-inline: var(--rhc-space-lg);
   vertical-align: baseline;
 }
 
-/* Room between a badge and the element before it. Not in a flex container
-  with gap (cluster, the key of a DataSummary, the summary of a disclosure):
-  there the gap already sets the room. */
 :not(.rhc-mox-cluster, .rhc-data-summary__item-key, summary)>*+.rhc-mox-text-badge {
   margin-inline-start: var(--rhc-space-sm);
 }
@@ -2167,8 +2016,6 @@ small,
   border-color: var(--rhc-color-rood-500);
 }
 
-/* Badge als link: onderstreept, zodat het niet alleen aan de kleur te zien
-  is. Bij hover en focus wordt de onderstreping dikker. */
 .rhc-mox-text-badge--link {
   text-decoration-line: underline;
   text-decoration-thickness: var(--rhc-border-width-sm);
@@ -2216,7 +2063,6 @@ small,
     max-block-size: 80vh;
   }
 
-  /* Een tabelrij waarvan de hele rij naar het bericht linkt. */
   .rhc-mox-row-linked {
     position: relative;
 
@@ -2236,7 +2082,6 @@ small,
     position: absolute;
   }
 
-  /* Berichtenbox: een bericht dat net binnenkwam licht kort op. */
   @media (prefers-reduced-motion: no-preference) {
     .rhc-mox-row-new {
       animation: rhc-mox-row-new 2s ease-out;
@@ -2264,7 +2109,6 @@ small,
   margin-block: var(--rhc-space-md);
 }
 
-/* Zoeken en afzender naast elkaar; op een smal scherm onder elkaar. */
 .rhc-mox-inbox-filters {
   align-items: end;
   display: flex;
@@ -2308,7 +2152,6 @@ small,
   border-radius: var(--rhc-border-radius-round);
   flex-shrink: 0;
   inline-size: calc(var(--rhc-size-icon-md)/2);
-  /* centreert de stip op de eerste regel van de afzender */
   margin-block-start: calc((1lh - var(--rhc-size-icon-md)/2)/2);
 }
 
@@ -2322,7 +2165,6 @@ small,
   font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
-/* Buiten .rhc-theme: @keyframes mag niet genest staan. */
 @keyframes rhc-mox-row-new {
   from {
     background-color: var(--rhc-color-core-50);
@@ -2336,14 +2178,14 @@ small,
   }
 
   .rhc-mox-landing-hero {
-    background: var(--mox-landing-info-background);
+    background: var(--rhc-mox-landing-info-background);
     block-size: calc(var(--rhc-size-lint) * 10);
     display: grid;
     grid-template-columns: 50% 50%;
   }
 
   .rhc-mox-landing-info {
-    background: var(--mox-landing-info-background);
+    background: var(--rhc-mox-landing-info-background);
     display: grid;
     grid-template-columns: 50% 50%;
 
@@ -2383,7 +2225,7 @@ small,
 
 .mox-landing-hero-text {
   align-content: flex-end;
-  background: var(--mox-landing-hero-background);
+  background: var(--rhc-mox-landing-hero-background);
   display: grid;
   flex-direction: column;
   gap: var(--rhc-card-column-gap);
@@ -2407,8 +2249,6 @@ small,
 }
 
 /* --- Getalveld --- */
-
-/* NumberInput: knoppen - en + voor en na het invoerveld. */
 .rhc-theme.mox-theme {
   .rhc-number-input {
     align-items: stretch;
@@ -2416,7 +2256,6 @@ small,
     gap: var(--rhc-space-sm);
 
     .utrecht-textbox {
-      /* Firefox: geen pijltjes in het veld; de knoppen - en + doen dat. */
       appearance: textfield;
       flex: 1;
       min-inline-size: 0;

@@ -98,7 +98,7 @@ const RangeSlider = ({
             filled
               ? ({
                   ...style,
-                  "--rhc-range-slider-fill": fraction,
+                  "--rhc-mox-range-slider-fill": fraction,
                 } as CSSProperties)
               : style
           }
