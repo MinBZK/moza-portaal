@@ -10,133 +10,137 @@
 */
 
 @layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border: 0 solid;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
 
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border: 0 solid;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+	html,
+	:host {
+		font-family:
+			ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+			"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+		line-height: 1.5;
+		tab-size: 4;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-text-size-adjust: 100%;
+	}
 
-  html,
-  :host {
-    font-family:
-      ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    line-height: 1.5;
-    tab-size: 4;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-text-size-adjust: 100%;
-  }
+	hr {
+		block-size: 0;
+		border-block-start-width: 1px;
+		color: inherit;
+	}
 
-  hr {
-    block-size: 0;
-    border-block-start-width: 1px;
-    color: inherit;
-  }
+	abbr:where([title]) {
+		text-decoration: underline dotted;
+	}
 
-  abbr:where([title]) {
-    text-decoration: underline dotted;
-  }
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-size: inherit;
+		font-weight: inherit;
+	}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: inherit;
-    font-weight: inherit;
-  }
+	a {
+		color: inherit;
+		text-decoration: inherit;
+	}
 
-  a {
-    color: inherit;
-    text-decoration: inherit;
-  }
+	b,
+	strong {
+		font-weight: bolder;
+	}
 
-  b,
-  strong {
-    font-weight: bolder;
-  }
+	code,
+	kbd,
+	samp,
+	pre {
+		font-family:
+			ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+			"Courier New", monospace;
+		font-size: 1em;
+	}
 
-  code,
-  kbd,
-  samp,
-  pre {
-    font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-      "Courier New", monospace;
-    font-size: 1em;
-  }
+	small {
+		font-size: 80%;
+	}
 
-  small {
-    font-size: 80%;
-  }
+	sub,
+	sup {
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+	}
 
-  sub,
-  sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-  }
+	sub {
+		inset-block-end: -0.25em;
+	}
 
-  sub {
-    inset-block-end: -0.25em;
-  }
+	sup {
+		inset-block-start: -0.5em;
+	}
 
-  sup {
-    inset-block-start: -0.5em;
-  }
+	summary {
+		display: list-item;
+	}
 
-  summary {
-    display: list-item;
-  }
+	ol,
+	ul,
+	menu {
+		list-style: none;
+	}
 
-  ol,
-  ul,
-  menu {
-    list-style: none;
-  }
+	img {
+		block-size: auto;
+		max-inline-size: 100%;
+	}
 
-  /* Dialogen en lades (RHC Drawer) schuiven in en faden. */
-  dialog,
-  dialog::backdrop {
-    transition:
-      display 300ms allow-discrete,
-      overlay 300ms allow-discrete,
-      transform 300ms,
-      opacity 300ms;
-  }
+	/* Dialogen en lades (RHC Drawer) schuiven in en faden. */
+	dialog,
+	dialog::backdrop {
+		transition:
+			display 300ms allow-discrete,
+			overlay 300ms allow-discrete,
+			transform 300ms,
+			opacity 300ms;
+	}
 
-  dialog {
-    transform: translateX(-288px);
-  }
+	dialog {
+		transform: translateX(-288px);
+	}
 
-  dialog::backdrop {
-    background: rgb(0 0 0 / 50%);
-    opacity: 0;
-  }
+	dialog::backdrop {
+		background: rgb(0 0 0 / 50%);
+		opacity: 0;
+	}
 
-  dialog[open] {
-    transform: translateX(0);
-  }
+	dialog[open] {
+		transform: translateX(0);
+	}
 
-  dialog[open]::backdrop {
-    opacity: 1;
-  }
+	dialog[open]::backdrop {
+		opacity: 1;
+	}
 
-  @starting-style {
-    dialog[open] {
-      transform: translateX(-288px);
-    }
+	@starting-style {
+		dialog[open] {
+			transform: translateX(-288px);
+		}
 
-    dialog[open]::backdrop {
-      opacity: 0;
-    }
-  }
+		dialog[open]::backdrop {
+			opacity: 0;
+		}
+	}
 }
