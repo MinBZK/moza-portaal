@@ -2,8 +2,8 @@ import { components } from "@/network/omc/generated";
 
 /** Statuses with their own colour; the rest gets the default colour. */
 const statusClass: Record<string, string> = {
-  Accepted: "mox-status--accepted",
-  PermanentFailure: "mox-status--permanent-failure",
+  Accepted: " rhc-mox-timeline__item--ok",
+  PermanentFailure: " rhc-mox-timeline__item--error",
 };
 
 const ContactMoment = ({
@@ -19,23 +19,19 @@ const ContactMoment = ({
   });
 
   return (
-    <div>
-      {/* The colour repeats the status below; the text carries the information. */}
-      <span
-        aria-hidden="true"
-        className={`mox-status ${statusClass[notification.status ?? ""] ?? ""}`}
-      />
+    // The colour of the dot repeats the status below; the text carries it.
+    <li
+      className={`rhc-mox-timeline__item${statusClass[notification.status ?? ""] ?? ""}`}
+    >
       <div>
-        <div>
-          <div>Scenario 8 met kanaalherstel</div>
-          <time>{sendAt}</time>
-        </div>
-        <div>Status: {notification.status}</div>
-        <div>Medium: {notification.type}</div>
-
-        <div>UWV</div>
+        <div>Scenario 8 met kanaalherstel</div>
+        <time>{sendAt}</time>
       </div>
-    </div>
+      <div>Status: {notification.status}</div>
+      <div>Medium: {notification.type}</div>
+
+      <div>UWV</div>
+    </li>
   );
 };
 
