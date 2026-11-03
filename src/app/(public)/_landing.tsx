@@ -156,88 +156,92 @@ const PublicPage = () => {
         </NavigationList>
       </div>
 
-      <div className="prototype-landing-demo-info">
-        <Heading level={2}>
-          Dit is een prototype van het MijnOverheid Zakelijk portaal
-        </Heading>
-        <section>
-          <Paragraph>
-            Dit is een versie bedoeld om ideeën en functionaliteiten te testen
-            of UX-onderzoek uit te voeren. De inhoud en werking zijn in
-            ontwikkeling aan wijziging onderheven.
-          </Paragraph>
-          <Paragraph>
-            Let op: dit prototype bevat <strong>géén</strong> echte DigiD en
-            eHerkenning koppeling. Vul hier geen persoonlijke gegevens in.
-          </Paragraph>
-        </section>
-        <Heading level={3}>UX-onderzoek uitvoeren</Heading>
-        <section>
-          {/* Een lijst mag niet in een alinea staan (hydration-fout). */}
-          <Paragraph>
-            Gebruik de sneltoetsen (op een Mac is Alt de Option-toets):
-          </Paragraph>
-          <UnorderedList>
-            <UnorderedListItem>
-              <code>Alt</code> + <code>Shift</code> + <code>P</code>: selecteer
-              een persona
-            </UnorderedListItem>
-            <UnorderedListItem>
-              <code>Alt</code> + <code>Shift</code> + <code>F</code>: schakel
-              flags in/uit
-            </UnorderedListItem>
-          </UnorderedList>
-          <Paragraph>
-            Kies vervolgens links boven een inlogoptie (DigiD of eHerkenning).
-          </Paragraph>
-          <Paragraph>
-            Het is ook mogelijk om een persona te selecteren via de URL.
-            Bijvoorbeeld:{" "}
-            <code>
-              https://proef.mijnoverheidzakelijk.nl/?persona=gebruiker1
-            </code>
-          </Paragraph>
-        </section>
-        <Heading level={3}>Functionaliteiten testen</Heading>
-        <section>
-          <Paragraph>
-            Voor de beveiligde omgeving kunt u inloggen door linksboven via de
-            knop <code>keycloak login</code> een keuze te maken voor DigiD of
-            eHerkenning en deze testgegevens te gebruiken:
-          </Paragraph>
-          <DataSummary>
-            <DataSummaryItem
-              itemKey="Gebruikersnaam"
-              itemValue="gebruiker1, gebruiker2 of gebruiker3, bedrijf"
-            />
-            <DataSummaryItem itemKey="Wachtwoord" itemValue="password" />
-          </DataSummary>
-          <Paragraph>
-            Gebruiker 1 heeft een onderneming met bsn 000000036.
-          </Paragraph>
-          <Paragraph>
-            Gebruiker 2 heeft twee ondernemingen met bsn 000000024.
-          </Paragraph>
-          <Paragraph>
-            Gebruiker 3 heeft drie ondernemingen met bsn 000000012.
-          </Paragraph>
-          <Paragraph>
-            Bedrijf is een mock van eHerkenning voor een enkele onderneming.
-          </Paragraph>
-        </section>
-        <section>
-          <Heading level={3}>
-            Wilt u meer weten over MijnOverheid Zakelijk?
+      <details className="prototype-landing-demo-info">
+        <summary>
+          <Heading level={2}>
+            Dit is een prototype van het MijnOverheid Zakelijk portaal
           </Heading>
-          <Paragraph>
-            Ga naar{" "}
-            <a href="https://www.mijnoverheidzakelijk.nl/">
-              de website van MijnOverheid Zakelijk
-            </a>{" "}
-            voor meer informatie.
-          </Paragraph>
-        </section>
-      </div>
+          <Icon icon="chevron-right" />
+        </summary>
+        <div className="prototype-landing-demo-info__content">
+          <section>
+            <Paragraph>
+              Dit is een versie bedoeld om ideeën en functionaliteiten te testen
+              of UX-onderzoek uit te voeren. De inhoud en werking zijn in
+              ontwikkeling aan wijziging onderheven.
+            </Paragraph>
+            <Paragraph>
+              Let op: dit prototype bevat <strong>géén</strong> echte DigiD en
+              eHerkenning koppeling. Vul hier geen persoonlijke gegevens in.
+            </Paragraph>
+          </section>
+          <Heading level={3}>UX-onderzoek uitvoeren</Heading>
+          <section>
+            {/* Een lijst mag niet in een alinea staan (hydration-fout). */}
+            <Paragraph>
+              Gebruik de sneltoetsen, of beweeg met de muis naar rechtsonder:
+            </Paragraph>
+            <UnorderedList>
+              <UnorderedListItem>
+                <code>P</code>: selecteer een persona
+              </UnorderedListItem>
+              <UnorderedListItem>
+                <code>F</code>: schakel flags in of uit
+              </UnorderedListItem>
+              <UnorderedListItem>
+                <code>K</code>: log in via Keycloak met DigiD of eHerkenning
+              </UnorderedListItem>
+            </UnorderedList>
+            <Paragraph>
+              Het is ook mogelijk om een persona te selecteren via de URL.
+              Bijvoorbeeld:{" "}
+              <code>
+                https://proef.mijnoverheidzakelijk.nl/?persona=gebruiker1
+              </code>
+            </Paragraph>
+          </section>
+          <Heading level={3}>Functionaliteiten testen</Heading>
+          <section>
+            <Paragraph>
+              Voor de beveiligde omgeving logt u in via de knop{" "}
+              <strong>Keycloak</strong> rechtsonder, of met de toets{" "}
+              <code>K</code>. Kies DigiD of eHerkenning en gebruik deze
+              testgegevens:
+            </Paragraph>
+            <DataSummary>
+              <DataSummaryItem
+                itemKey="Gebruikersnaam"
+                itemValue="gebruiker1, gebruiker2 of gebruiker3, bedrijf"
+              />
+              <DataSummaryItem itemKey="Wachtwoord" itemValue="password" />
+            </DataSummary>
+            <Paragraph>
+              Gebruiker 1 heeft een onderneming met bsn 000000036.
+            </Paragraph>
+            <Paragraph>
+              Gebruiker 2 heeft twee ondernemingen met bsn 000000024.
+            </Paragraph>
+            <Paragraph>
+              Gebruiker 3 heeft drie ondernemingen met bsn 000000012.
+            </Paragraph>
+            <Paragraph>
+              Bedrijf is een mock van eHerkenning voor een enkele onderneming.
+            </Paragraph>
+          </section>
+          <section>
+            <Heading level={3}>
+              Wilt u meer weten over MijnOverheid Zakelijk?
+            </Heading>
+            <Paragraph>
+              Ga naar{" "}
+              <a href="https://www.mijnoverheidzakelijk.nl/">
+                de website van MijnOverheid Zakelijk
+              </a>{" "}
+              voor meer informatie.
+            </Paragraph>
+          </section>
+        </div>
+      </details>
     </div>
   );
 };
