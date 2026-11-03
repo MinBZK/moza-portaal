@@ -23,10 +23,22 @@ const NOTIFICATIONS: components["schemas"]["Notificatie"][] = [
     createdAt: "2026-11-02T14:40:00Z",
   },
   {
+    id: "demo-5",
+    status: "TemporaryFailure",
+    type: "Sms",
+    createdAt: "2026-10-31T11:30:00Z",
+  },
+  {
     id: "demo-3",
     status: "PermanentFailure",
     type: "Email",
     createdAt: "2026-10-30T08:05:00Z",
+  },
+  {
+    id: "demo-6",
+    status: "Cancelled",
+    type: "Email",
+    createdAt: "2026-10-29T10:00:00Z",
   },
   {
     id: "demo-4",
@@ -41,8 +53,12 @@ const ContactmomentenPage = () => (
     <Heading level={1}>Contactmomenten</Heading>
     <div className="rhc-mox-card">
       <ol className="rhc-mox-timeline">
-        {NOTIFICATIONS.map((notification) => (
-          <ContactMoment notification={notification} key={notification.id} />
+        {NOTIFICATIONS.map((notification, index) => (
+          <ContactMoment
+            notification={notification}
+            open={index === 0}
+            key={notification.id}
+          />
         ))}
       </ol>
     </div>

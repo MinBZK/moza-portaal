@@ -25,6 +25,9 @@
 	--rhc-mox-transition-duration: 150ms;
 	--rhc-mox-transition-easing: ease-out;
 
+	--rhc-mox-step-size: calc(var(--rhc-size-icon-lg) * 1.25);
+	--rhc-mox-step-gap: var(--rhc-space-lg);
+
 	--rhc-mox-page-margin: var(--rhc-space-max-xl);
 
 	@media (width >=768px) {
@@ -1623,9 +1626,6 @@ small,
 
 /* --- Status track --- */
 .rhc-mox-status-track {
-	--rhc-mox-step-size: calc(var(--rhc-size-icon-lg) * 1.25);
-	--rhc-mox-step-gap: var(--rhc-space-lg);
-
 	display: grid;
 	gap: var(--rhc-mox-step-gap);
 
@@ -1668,7 +1668,11 @@ small,
 		}
 
 		&:last-child::after {
-			content: none;
+			inset-block-end: 0;
+			mask-image: linear-gradient(
+				#000 calc(100% - var(--rhc-space-5xl)),
+				transparent
+			);
 		}
 	}
 
@@ -1689,7 +1693,10 @@ small,
 			);
 		}
 	}
+}
 
+/* Disclosure of a step or event: shared with the Timeline. */
+:is(.rhc-mox-status-track, .rhc-mox-timeline) {
 	details {
 		flex: 1;
 		min-inline-size: 0;
@@ -2147,47 +2154,85 @@ small,
 
 /* --- Timeline --- */
 .rhc-mox-timeline {
-	--rhc-mox-timeline-dot: var(--rhc-space-lg);
-
-	border-inline-start: var(--rhc-border-width-md) solid
-		var(--rhc-color-cool-grey-300);
 	display: grid;
+	gap: var(--rhc-mox-step-gap);
 }
 
 .rhc-mox-timeline__item {
-	display: grid;
-	gap: var(--rhc-space-sm);
-	padding-block: var(--rhc-space-lg);
-	padding-inline-start: var(--rhc-space-2xl);
+	--rhc-mox-timeline-background-color: var(--rhc-color-info-500);
+	--rhc-mox-timeline-border-color: var(--rhc-mox-timeline-background-color);
+	--rhc-mox-timeline-icon-color: var(--rhc-color-wit);
+	--rhc-mox-timeline-line-color: var(--rhc-mox-timeline-background-color);
+
+	display: flex;
+	gap: var(--rhc-space-md);
 	position: relative;
 
-	&::before {
-		background-color: var(--rhc-color-lintblauw-500);
-		block-size: var(--rhc-mox-timeline-dot);
-		border-radius: 50%;
+	&::after {
+		background: repeating-linear-gradient(
+			var(--rhc-mox-timeline-line-color) 0 4px,
+			transparent 4px 8px
+		);
 		content: "";
-		inline-size: var(--rhc-mox-timeline-dot);
-		inset-block-start: calc(var(--rhc-space-lg) + 0.35em);
+		inline-size: var(--rhc-border-width-md);
+		inset-block: var(--rhc-mox-step-size) calc(-1 * var(--rhc-mox-step-gap));
 		inset-inline-start: calc(
-			-0.5 * var(--rhc-mox-timeline-dot) - 0.5 * var(--rhc-border-width-md)
+			var(--rhc-mox-step-size) / 2 - var(--rhc-border-width-md) / 2
 		);
 		position: absolute;
 	}
+
+	&:last-child::after {
+		inset-block-end: 0;
+		mask-image: linear-gradient(
+			#000 calc(100% - var(--rhc-space-2xl)),
+			transparent
+		);
+	}
 }
 
-.rhc-mox-timeline__item--ok::before {
-	background-color: var(--rhc-color-groen-600);
+.rhc-mox-timeline__marker {
+	background-color: var(--rhc-mox-timeline-background-color);
+	block-size: var(--rhc-mox-step-size);
+	border: var(--rhc-border-width-md) solid var(--rhc-mox-timeline-border-color);
+	border-radius: var(--rhc-border-radius-round);
+	box-sizing: border-box;
+	color: var(--rhc-mox-timeline-icon-color);
+	display: grid;
+	flex-shrink: 0;
+	inline-size: var(--rhc-mox-step-size);
+	place-items: center;
+
+	.utrecht-icon {
+		block-size: var(--utrecht-icon-size);
+		inline-size: var(--utrecht-icon-size);
+	}
+
+	svg {
+		block-size: 100%;
+		inline-size: 100%;
+	}
 }
 
-.rhc-mox-timeline__item--error::before {
-	background-color: var(--rhc-color-rood-500);
+.rhc-mox-timeline__item--ok {
+	--rhc-mox-timeline-background-color: var(--rhc-color-positive-500);
 }
 
-.rhc-mox-timeline__item--neutral::before {
-	background-color: var(--rhc-color-cool-grey-500);
+.rhc-mox-timeline__item--warning {
+	--rhc-mox-timeline-background-color: var(--rhc-color-warning-500);
+	--rhc-mox-timeline-icon-color: var(--rhc-color-zwart);
 }
 
-.rhc-mox-timeline__item--replaced :is(h2, h3, h4) {
+.rhc-mox-timeline__item--error {
+	--rhc-mox-timeline-background-color: var(--rhc-color-negative-500);
+}
+
+.rhc-mox-timeline__item--neutral {
+	--rhc-mox-timeline-background-color: var(--rhc-color-cool-grey-500);
+	--rhc-mox-timeline-line-color: var(--rhc-color-cool-grey-400);
+}
+
+.rhc-mox-timeline__item--replaced summary {
 	text-decoration-line: line-through;
 	text-decoration-thickness: var(--rhc-border-width-sm);
 }

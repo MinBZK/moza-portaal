@@ -1,15 +1,33 @@
+import { DataSummary, DataSummaryItem } from "@/components/rhc";
+import TimelineItem, { type TimelineStatus } from "@/components/TimelineItem";
 import { components } from "@/network/omc/generated";
 
-/** Statuses with their own colour; the rest gets the default colour. */
-const statusClass: Record<string, string> = {
-  Accepted: " rhc-mox-timeline__item--ok",
-  PermanentFailure: " rhc-mox-timeline__item--error",
+/** Visible name per medium; the API gives an English code. */
+const MEDIUM: Record<components["schemas"]["NotificationTypes"], string> = {
+  Email: "E-mail",
+  Sms: "Sms",
+  Unknown: "Onbekend",
+};
+
+/** Delivery statuses with their own state; the rest is info. */
+const STATUS: Partial<
+  Record<components["schemas"]["DeliveryStatuses"], TimelineStatus>
+> = {
+  Accepted: "ok",
+  Delivered: "ok",
+  TemporaryFailure: "warning",
+  PermanentFailure: "error",
+  TechnicalFailure: "error",
+  Cancelled: "neutral",
 };
 
 const ContactMoment = ({
   notification,
+  open = false,
 }: {
   notification: components["schemas"]["Notificatie"];
+  /** Expanded by default, as for the most recent contact moment. */
+  open?: boolean;
 }) => {
   const date = new Date(notification.createdAt!);
   const sendAt = date.toLocaleString("nl-NL", {
@@ -19,19 +37,24 @@ const ContactMoment = ({
   });
 
   return (
-    // The colour of the dot repeats the status below; the text carries it.
-    <li
-      className={`rhc-mox-timeline__item${statusClass[notification.status ?? ""] ?? ""}`}
+    <TimelineItem
+      title="Scenario 8 met kanaalherstel"
+      open={open}
+      date={<time dateTime={notification.createdAt}>{sendAt}</time>}
+      status={(notification.status && STATUS[notification.status]) || "info"}
     >
-      <div>
-        <div>Scenario 8 met kanaalherstel</div>
-        <time>{sendAt}</time>
-      </div>
-      <div>Status: {notification.status}</div>
-      <div>Medium: {notification.type}</div>
-
-      <div>UWV</div>
-    </li>
+      <DataSummary appearance="column">
+        <DataSummaryItem
+          itemKey="Status"
+          itemValue={notification.status ?? "Onbekend"}
+        />
+        <DataSummaryItem
+          itemKey="Medium"
+          itemValue={notification.type ? MEDIUM[notification.type] : "Onbekend"}
+        />
+        <DataSummaryItem itemKey="Organisatie" itemValue="UWV" />
+      </DataSummary>
+    </TimelineItem>
   );
 };
 
