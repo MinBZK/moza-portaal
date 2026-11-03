@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 #v6.0.2
         with:
-          node-version: 20
+          node-version: 22
           cache: "npm"
           cache-dependency-path: package-lock.json
 
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 #v6.0.2
         with:
-          node-version: 20
+          node-version: 22
           cache: "npm"
           cache-dependency-path: package-lock.json
 

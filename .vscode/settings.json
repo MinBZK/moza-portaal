@@ -7,5 +7,6 @@
       "source.fixAll.stylelint": "explicit"
     }
   },
-  "stylelint.validate": ["css"]
+  "stylelint.validate": ["css"],
+  "npm.packageManager": "npm"
 }
