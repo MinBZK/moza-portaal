@@ -85,7 +85,7 @@ jobs:
     steps:
       - name: Deploy to ZAD
         id: deploy
-        uses: RijksICTGilde/zad-actions/deploy@5ad04045d781ed153ad75625305bf14d57496128 # v2.4.0
+        uses: RijksICTGilde/zad-actions/deploy@4217ceaa5c347f3c6d16142b5ad8ab94110c4cdb # v4.4.0
         with:
           # ZAD_API_KEY: API-key uit de ZAD Operations Manager
           api-key: ${{ secrets.ZAD_API_KEY }}
