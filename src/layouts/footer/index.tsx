@@ -8,66 +8,79 @@ import {
 
 type FooterLink = { href: string; label: string; extern?: boolean };
 
-const groepen: { id: string; kop: string; links: FooterLink[] }[] = [
-  {
-    id: "over-deze-site",
-    kop: "Over deze site",
-    links: [
-      {
-        href: "/wat-is-mijnoverheid-zakelijk",
-        label: "Wat is MijnOverheid Zakelijk",
-      },
-      { href: "/toegankelijkheid", label: "Toegankelijkheid" },
-      { href: "/sitemap", label: "Sitemap" },
-      { href: "/english", label: "English" },
-    ],
-  },
-  {
-    id: "gegevensverwerking",
-    kop: "Gegevensverwerking",
-    links: [
-      { href: "/veiligheid", label: "Veiligheid" },
-      { href: "/privacyverklaring", label: "Privacyverklaring" },
-      { href: "/wet-en-regelgeving", label: "Wet- en regelgeving" },
-    ],
-  },
-  {
-    id: "service",
-    kop: "Service",
-    links: [
-      { href: "/mededelingen", label: "Mededelingen" },
-      { href: "/herken-oplichting", label: "Herken oplichting" },
-      { href: "/veelgestelde-vragen", label: "Veelgestelde vragen" },
-      { href: "/contact", label: "Contact" },
-      { href: "/klachtafhandeling", label: "Klachtafhandeling" },
-    ],
-  },
-  {
-    id: "partners",
-    kop: "Partners",
-    links: [
-      { href: "/aangesloten-organisaties", label: "Aangesloten organisaties" },
-      { href: "https://www.overheid.nl/", label: "Overheid.nl", extern: true },
-      {
-        href: "https://www.rijksoverheid.nl/",
-        label: "Rijksoverheid.nl",
-        extern: true,
-      },
-      {
-        href: "https://www.rvig.nl/mfo-burgers",
-        label: "Meldpunt Fouten in Overheidsregistraties",
-        extern: true,
-      },
-    ],
-  },
-];
+export const footerGroups: { id: string; kop: string; links: FooterLink[] }[] =
+  [
+    {
+      id: "over-deze-site",
+      kop: "Over deze site",
+      links: [
+        {
+          href: "/wat-is-mijnoverheid-zakelijk",
+          label: "Wat is MijnOverheid Zakelijk",
+        },
+        { href: "/toegankelijkheid", label: "Toegankelijkheid" },
+        { href: "/sitemap", label: "Sitemap" },
+        { href: "/english", label: "English" },
+      ],
+    },
+    {
+      id: "gegevensverwerking",
+      kop: "Gegevensverwerking",
+      links: [
+        { href: "/veiligheid", label: "Veiligheid" },
+        { href: "/privacyverklaring", label: "Privacyverklaring" },
+        { href: "/wet-en-regelgeving", label: "Wet- en regelgeving" },
+      ],
+    },
+    {
+      id: "service",
+      kop: "Service",
+      links: [
+        { href: "/mededelingen", label: "Mededelingen" },
+        { href: "/herken-oplichting", label: "Herken oplichting" },
+        { href: "/veelgestelde-vragen", label: "Veelgestelde vragen" },
+        { href: "/contact", label: "Contact" },
+        { href: "/klachtafhandeling", label: "Klachtafhandeling" },
+      ],
+    },
+    {
+      id: "partners",
+      kop: "Partners",
+      links: [
+        {
+          href: "/aangesloten-organisaties",
+          label: "Aangesloten organisaties",
+        },
+        {
+          href: "https://www.overheid.nl/",
+          label: "Overheid.nl",
+          extern: true,
+        },
+        {
+          href: "https://www.rijksoverheid.nl/",
+          label: "Rijksoverheid.nl",
+          extern: true,
+        },
+        {
+          href: "https://www.rvig.nl/mfo-burgers",
+          label: "Meldpunt Fouten in Overheidsregistraties",
+          extern: true,
+        },
+      ],
+    },
+  ];
+
+/** The footer links within the portal; each has a page, for now a placeholder. */
+export const footerPages = footerGroups
+  .flatMap(({ links }) => links)
+  .filter(({ extern }) => !extern);
 
 const gridCell =
   "rhc-grid__cell rhc-grid__cell-12 rhc-grid__cell-t-6 rhc-grid__cell-d-3";
 
 const FooterLinks = () => (
   <div className="rhc-grid">
-    {groepen.map(({ id, kop, links }) => (
+    {footerGroups.map(({ id, kop, links }) => (
       <nav
         key={id}
         className={`${gridCell} rhc-mox-stack rhc-mox-stack--lg`}
