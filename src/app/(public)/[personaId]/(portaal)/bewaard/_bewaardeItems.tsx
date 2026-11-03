@@ -99,10 +99,13 @@ const BewaardeItems = ({
         </Alert>
       )}
 
-      {items.length === 0
-        ? leeg
-        : [...perCategorie].map(([categorie, inCategorie]) => (
-            <section key={categorie} className="rhc-mox-card">
+      {items.length === 0 ? (
+        leeg
+      ) : (
+        // Inside the card of the page: no card of its own per category.
+        <div className="mox-card-topic-list">
+          {[...perCategorie].map(([categorie, inCategorie]) => (
+            <section key={categorie} className="rhc-mox-row-gap">
               <Heading
                 level={2}
                 tabIndex={-1}
@@ -116,7 +119,7 @@ const BewaardeItems = ({
               <ul className="mox-card-topic-list">
                 {inCategorie.map((item) => (
                   <li key={item.sleutel}>
-                    <Heading level={4}>
+                    <Heading level={3} appearanceLevel={4}>
                       <Link href={item.href}>{item.titel}</Link>
                     </Heading>
                     <Paragraph>{item.samenvatting}</Paragraph>
@@ -132,6 +135,8 @@ const BewaardeItems = ({
               </ul>
             </section>
           ))}
+        </div>
+      )}
     </>
   );
 };

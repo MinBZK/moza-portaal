@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { components } from "@/network/profiel/generated";
@@ -104,6 +104,11 @@ export const ContactDetails = ({
   const languageRef = useRef<HTMLSelectElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+  // FormFieldSelect does not pass autoComplete on: set the purpose of the
+  // language field on the select itself (WCAG 1.3.5).
+  useEffect(() => {
+    languageRef.current?.setAttribute("autocomplete", "language");
+  }, [editing]);
   const focusField = (field: Field) =>
     ({
       salutation: salutationRef,
@@ -215,7 +220,11 @@ export const ContactDetails = ({
       </div>
 
       {editing ? (
-        <form className="rhc-mox-row-gap" noValidate onSubmit={save}>
+        <form
+          className="rhc-mox-stack rhc-mox-stack--2xl"
+          noValidate
+          onSubmit={save}
+        >
           <FormFieldTextInput
             label="Aanhef"
             inputRef={salutationRef}
@@ -248,6 +257,7 @@ export const ContactDetails = ({
             inputRef={emailRef}
             type="email"
             name="Email"
+            autoComplete="email"
             value={values.email}
             invalid={!!errors.email}
             errorMessage={errors.email}
@@ -260,6 +270,7 @@ export const ContactDetails = ({
             inputRef={phoneRef}
             type="tel"
             name="Telefoonnummer"
+            autoComplete="tel"
             value={values.phone}
             invalid={!!errors.phone}
             errorMessage={errors.phone}

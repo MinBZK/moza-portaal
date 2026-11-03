@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Alert, Paragraph } from "@/components/rhc";
 import { getBerichtenboxVariant } from "@/app/actions";
@@ -10,6 +11,16 @@ import DemoBerichtInhoud from "../_demoBerichtInhoud";
 import { stelselTekst } from "../_lijstPagina";
 import NieuwBericht from "../_nieuwBericht";
 import StelselBericht from "../_stelselBericht";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const [{ id }, persona] = await Promise.all([params, getActievePersona()]);
+  const bericht = await getDemoBerichtById(id, persona?.id);
+  return { title: `${bericht?.onderwerp ?? "Bericht"} - Berichtenbox` };
+};
 
 /** Ids van binnengedruppelde demo-berichten; die staan alleen in de browser. */
 const NIEUW_BERICHT = /^live-/;

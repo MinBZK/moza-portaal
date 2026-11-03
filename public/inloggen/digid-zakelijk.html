@@ -42,7 +42,7 @@
     />
     <style>
       .temp-moza-poc-banner {
-        background: #6aa549;
+        background: oklch(38.71% 0.1016 137.1);
         color: #fff;
         font-weight: 600;
         inline-size: 256px;
@@ -55,28 +55,44 @@
         text-decoration: none;
         transform: rotate(45deg);
         transform-origin: center;
-        z-index: 1;
+        z-index: 9;
       }
-      .temp-moza-poc-banner:hover {
-        background: #39870c;
-        color: #fff;
+      /* The phone as a pseudo-element instead of a background of the link,
+        so a contrast checker sees a plain white background behind the text. */
+      .login_tile.active.app {
+        background-image: none;
+      }
+      .login_tile.active.app::before {
+        background: url(/inloggen/assets/images/authenticatie.svg) no-repeat
+          bottom left / auto 90px;
+        block-size: 90px;
+        content: "";
+        inline-size: 68px;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        pointer-events: none;
+        position: absolute;
+      }
+      .temp-moza-poc-banner:hover,
+      .temp-moza-poc-banner:focus-visible {
+        text-decoration-line: underline;
       }
     </style>
   </head>
   <body>
-    <a class="temp-moza-poc-banner" href="https://www.mijnoverheidzakelijk.nl/"
-      >Proof of Concept</a
-    >
     <div class="message-dialog" tabindex="-1"></div>
     <nav id="skiplink">
       <ul>
         <li>
-          <a href="#main_content" tabindex="1" title="Direct naar de inhoud">
+          <a href="#main_content">
             Ga direct naar: inhoud
           </a>
         </li>
       </ul>
     </nav>
+    <a class="temp-moza-poc-banner" href="https://www.mijnoverheidzakelijk.nl/"
+      >Proof of Concept</a
+    >
     <div class="window small">
       <div class="content">
         <header class="header">
@@ -85,6 +101,7 @@
             <select
               name="language-select"
               id="language-select"
+              autocomplete="off"
               class="service-menu"
             >
               <option selected="selected" value="nl">Nederlands</option>
@@ -96,18 +113,16 @@
               ><img
                 alt="Logo Rijksoverheid - Ga naar www.digid.nl"
                 class="rijksoverheid-logo"
-                title="Logo Rijksoverheid - Ga naar www.digid.nl"
                 src="/inloggen/assets/images/ro-logo.svg"
             /></a>
             <nav class="header-navigation"></nav>
           </div>
           <div class="margin-top-15px"></div>
         </header>
-        <div class="main">
+        <main class="main">
           <img
             alt="DigiD"
             class="mydigid-logo"
-            title="DigiD"
             src="/inloggen/assets/images/digid-logo.svg"
           />
           <section
@@ -141,7 +156,6 @@
 
             <div class="authentications">
               <a
-                aria-label="Inlogoptie 1 van 4: Inloggen Met de DigiD app"
                 class="authentication login_tile app active"
                 href="/inloggen/digid-app/zakelijk"
                 id="authentication_type_account_app"
@@ -155,12 +169,10 @@
                 <i
                   class="icon-3941-delta-links-24px right"
                   aria-hidden="true"
-                  aria-label="3941-delta-links- icoon"
                 ></i>
               </a>
 
               <a
-                aria-label="Inlogoptie 2 van 4: Inloggen Met een sms-controle"
                 class="authentication login_tile"
                 href="/inloggen/digid-app/zakelijk"
                 id="authentication_type_account_midden"
@@ -169,7 +181,6 @@
                   <i
                     class="icon-midden"
                     aria-hidden="true"
-                    aria-label="midden icoon"
                   ></i>
                   <span>Met een sms-controle</span>
                   <p class="description"></p>
@@ -177,12 +188,10 @@
                 <i
                   class="icon-3941-delta-links-24px right"
                   aria-hidden="true"
-                  aria-label="3941-delta-links- icoon"
                 ></i>
               </a>
 
               <a
-                aria-label="Inlogoptie 3 van 4: Inloggen Met mijn rijbewijs"
                 class="authentication login_tile"
                 href="/inloggen/digid-app/zakelijk"
                 id="authentication_type_account_hoog_driving_licence"
@@ -191,7 +200,6 @@
                   <i
                     class="icon-hoog_driving_licence"
                     aria-hidden="true"
-                    aria-label="hoog_driving_licence icoon"
                   ></i>
                   <span>Met mijn rijbewijs</span>
                   <p class="description"></p>
@@ -199,12 +207,10 @@
                 <i
                   class="icon-3941-delta-links-24px right"
                   aria-hidden="true"
-                  aria-label="3941-delta-links- icoon"
                 ></i>
               </a>
 
               <a
-                aria-label="Inlogoptie 4 van 4: Inloggen Met mijn identiteitskaart"
                 class="authentication login_tile"
                 href="/inloggen/digid-app/zakelijk"
                 id="authentication_type_account_hoog_id_card"
@@ -213,7 +219,6 @@
                   <i
                     class="icon-hoog_id_card"
                     aria-hidden="true"
-                    aria-label="hoog_id_card icoon"
                   ></i>
                   <span>Met mijn identiteitskaart</span>
                   <p class="description"></p>
@@ -221,7 +226,6 @@
                 <i
                   class="icon-3941-delta-links-24px right"
                   aria-hidden="true"
-                  aria-label="3941-delta-links- icoon"
                 ></i>
               </a>
             </div>
@@ -248,7 +252,7 @@
             </ul>
           </section>
           <div class="bld-footer-ribbon"></div>
-        </div>
+        </main>
       </div>
       <footer class="footer">
         <div class="footer-questions">
@@ -259,7 +263,6 @@
                 <i
                   class="icon-3941-delta-links-24px faq"
                   aria-hidden="true"
-                  aria-label="delta links icoon"
                 ></i>
                 Ik ben mijn gebruikersnaam vergeten
                 <div class="accessibility__information">
@@ -289,7 +292,6 @@
                 <i
                   class="icon-3941-delta-links-24px faq"
                   aria-hidden="true"
-                  aria-label="delta links icoon"
                 ></i>
                 Hoe kan ik de sms-controle activeren?
                 <div class="accessibility__information">
@@ -309,7 +311,6 @@
                 <i
                   class="icon-3941-delta-links-24px faq"
                   aria-hidden="true"
-                  aria-label="delta links icoon"
                 ></i>
                 Waar download ik de DigiD app?
                 <div class="accessibility__information">

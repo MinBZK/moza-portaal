@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   AccordionProvider,
@@ -18,6 +19,8 @@ import { getKetenStatus } from "@/network/keten";
 import { stelselTekst } from "./berichtenbox/_lijstPagina";
 import BewaardeAanvragen from "./lopendezaken/_bewaardeAanvragen";
 import RecenteBerichten from "./_recenteBerichten";
+
+export const metadata: Metadata = { title: "Home" };
 
 const vragen = [
   {

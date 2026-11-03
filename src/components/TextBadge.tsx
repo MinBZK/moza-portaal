@@ -19,10 +19,13 @@ const ICONS = {
  */
 const TextBadge = ({
   variant = "neutral",
+  icon = true,
   href,
   children,
 }: {
   variant?: TextBadgeVariant;
+  /** Show the icon of the variant. A neutral badge has no icon. */
+  icon?: boolean;
   /** Makes the badge a link to this address. */
   href?: string;
   children: ReactNode;
@@ -30,7 +33,7 @@ const TextBadge = ({
   const className = `rhc-mox-text-badge rhc-mox-text-badge--${variant}`;
   const content = (
     <>
-      {variant !== "neutral" && <Icon icon={ICONS[variant]} />}
+      {icon && variant !== "neutral" && <Icon icon={ICONS[variant]} />}
       {children}
     </>
   );

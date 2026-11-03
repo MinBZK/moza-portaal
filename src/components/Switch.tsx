@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
+import FieldLabel from "./FieldLabel";
 
 /**
  * Two-way switch for a setting that takes effect right away, such as
@@ -15,6 +16,7 @@ import { useId, useState } from "react";
  */
 const Switch = ({
   label,
+  info,
   checked,
   defaultChecked = false,
   onChange,
@@ -24,6 +26,8 @@ const Switch = ({
   twoWay = false,
 }: {
   label: string;
+  /** Next to the label, for example an InfoToggletip. */
+  info?: ReactNode;
   /** With checked and onChange the parent keeps track of the state. */
   checked?: boolean;
   defaultChecked?: boolean;
@@ -47,13 +51,14 @@ const Switch = ({
   return (
     <div className="rhc-mox-switch">
       {/* A real label: clicking it toggles the switch too. */}
-      <label
+      <FieldLabel
         id={labelId}
         htmlFor={buttonId}
-        className="utrecht-form-label rhc-mox-switch__label"
+        className="rhc-mox-switch__label"
+        info={info}
       >
         {label}
-      </label>
+      </FieldLabel>
       <button
         id={buttonId}
         type="button"

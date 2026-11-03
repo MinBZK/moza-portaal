@@ -52,7 +52,9 @@ export const BerichtenboxTableRow = ({ index }: { index: number }) => {
           {onderwerp}
         </span>
       </TableCell>
-      <TableCell>21 februari 2025</TableCell>
+      <TableCell className="rhc-mox-table-cell-date">
+        21 februari 2025
+      </TableCell>
       <TableCell>
         <Icon icon="paperclip" />
         <VisuallyHidden>Heeft bijlage</VisuallyHidden>

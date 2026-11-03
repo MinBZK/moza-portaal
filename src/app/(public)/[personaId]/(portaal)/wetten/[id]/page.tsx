@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Heading, Icon, Paragraph } from "@/components/rhc";
@@ -7,6 +8,15 @@ import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
 import WetGegevens from "../_wetGegevens";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const wet = await getDemoWetById((await params).id);
+  return { title: `${wet?.titel ?? "Wet"} - Wetten en regelgeving` };
+};
 
 const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;

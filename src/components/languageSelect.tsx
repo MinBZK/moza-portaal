@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { LanguageNavigation } from "@/components/rhc";
 import { LanguageIcon } from "@/components/icons/languageIcon";
 
@@ -57,29 +58,39 @@ const LanguageSelect = ({
   label?: string;
   /** Icon for the language, as in the menu on a narrow screen. */
   withIcon?: boolean;
-}) => (
-  <LanguageNavigation
-    aria-label={label}
-    defaultSelectedLanguage={selectedLanguage}
-  >
-    {/* Custom content: an icon for the language. Without children the
-        trigger only shows the name of the language. */}
-    <LanguageNavigation.Trigger>
-      {withIcon && <LanguageIcon />}
-      {selectedLanguage}
-    </LanguageNavigation.Trigger>
-    <LanguageNavigation.Content>
-      {languages.map(({ lang, languageName, localLanguageName, href }) => (
-        <LanguageNavigation.Item
-          key={lang}
-          href={href}
-          lang={lang}
-          languageName={languageName}
-          localLanguageName={localLanguageName}
-        />
-      ))}
-    </LanguageNavigation.Content>
-  </LanguageNavigation>
-);
+}) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <LanguageNavigation
+      aria-label={label}
+      defaultSelectedLanguage={selectedLanguage}
+      open={open}
+      onOpenChange={setOpen}
+    >
+      {/* Custom content: an icon for the language. Without children the
+          trigger only shows the name of the language. */}
+      {/* RHC sets aria-controls also while the list is closed, and then the
+          list is not in the DOM: an id that points nowhere. Only while it is
+          open do we keep the aria-controls of RHC. */}
+      <LanguageNavigation.Trigger
+        {...(!open && { "aria-controls": undefined })}
+      >
+        {withIcon && <LanguageIcon />}
+        {selectedLanguage}
+      </LanguageNavigation.Trigger>
+      <LanguageNavigation.Content>
+        {languages.map(({ lang, languageName, localLanguageName, href }) => (
+          <LanguageNavigation.Item
+            key={lang}
+            href={href}
+            lang={lang}
+            languageName={languageName}
+            localLanguageName={localLanguageName}
+          />
+        ))}
+      </LanguageNavigation.Content>
+    </LanguageNavigation>
+  );
+};
 
 export default LanguageSelect;

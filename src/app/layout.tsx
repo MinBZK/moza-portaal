@@ -16,7 +16,11 @@ import { SkipLink } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
 
 export const metadata: Metadata = {
-  title: "MijnOverheid Zakelijk",
+  // Each page sets its own title; it comes before the name of the site.
+  title: {
+    default: "MijnOverheid Zakelijk",
+    template: "%s - MijnOverheid Zakelijk",
+  },
   description: "MijnOverheid Zakelijk",
 };
 

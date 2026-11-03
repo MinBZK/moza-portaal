@@ -45,7 +45,7 @@ const PersoneelZaak = ({
         </section>
       )}
       <section
-        className="rhc-mox-card mox-hiring-research"
+        className="rhc-mox-card rhc-mox-row-gap prototype-research-card"
         aria-labelledby="onderzoeker"
       >
         <Heading level={2} id="onderzoeker">

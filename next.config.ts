@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
+  agentRules: false,
 
   // De inlogflow uit moza-poc staat als losse HTML in public/inloggen, met de
   // eigen CSS en bestanden van moza-poc en DigiD in public/inloggen/assets.
@@ -33,6 +34,12 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      {
+        // De componentenvoorbeelden staan nu op /demo.
+        source: "/componenten-voorbeeld",
+        destination: "/demo",
+        permanent: true,
+      },
       {
         // Oude naam van de stap Controleren en versturen.
         source: "/personeel/iemand-aannemen/indienen",

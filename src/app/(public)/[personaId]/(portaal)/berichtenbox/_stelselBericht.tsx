@@ -147,7 +147,7 @@ const StelselBericht = ({
             )}
 
             {inhoud.bijlagen.length > 0 && (
-              <section aria-labelledby="bijlagen">
+              <section className="rhc-mox-stack" aria-labelledby="bijlagen">
                 <Heading level={2} id="bijlagen">
                   {inhoud.bijlagen.length === 1 ? "Bijlage" : "Bijlagen"}
                 </Heading>

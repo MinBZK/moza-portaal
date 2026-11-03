@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { Heading, Paragraph, Alert } from "@/components/rhc";
+
+export const metadata: Metadata = { title: "Pagina-grid" };
 
 /** Maakt een cel zichtbaar, alleen voor deze testpagina. */
 const cellStyle = {

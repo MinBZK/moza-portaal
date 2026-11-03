@@ -1,10 +1,16 @@
-import { Alert, Heading, Paragraph } from "@/components/rhc";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
 import Stappen from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
+
+export const metadata: Metadata = {
+  title: "Aanvraag laten invullen - Personeel en rollen",
+};
 
 /** Scherm 2: aanvraag laten invullen. Namens wie, de kandidaat, en per bron bevestigen. */
 const GegevensPage = async () => {
@@ -31,18 +37,30 @@ const GegevensPage = async () => {
   return (
     <>
       <Heading level={1}>Aanvraag laten invullen</Heading>
-      <Stappen huidige={2} />
       <Paragraph>
-        Om de aanvragen in te vullen, halen we gegevens op bij de organisaties
-        die ze al hebben. U hoeft ze dan niet zelf op te zoeken.
+        <Link
+          href="/personeel/iemand-aannemen"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          <Icon icon="chevron-left" />
+          Terug naar de vragen
+        </Link>
       </Paragraph>
-      <Alert type="info">
-        <Paragraph>
-          Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
-          omgeving, tot u die zelf verstuurt.
-        </Paragraph>
-      </Alert>
-      <Bronnen perSituatie={perSituatie} werkgever={werkgever} />
+      <div className="rhc-mox-card">
+        <Stappen huidige={2} />
+        <Alert type="info" closable>
+          <Paragraph>
+            Om de aanvragen in te vullen, halen wij gegevens op bij de
+            organisaties die ze al hebben. U hoeft ze dan niet zelf op te
+            zoeken.
+          </Paragraph>
+          <Paragraph>
+            Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
+            omgeving, tot u die zelf verstuurt.
+          </Paragraph>
+        </Alert>
+        <Bronnen perSituatie={perSituatie} werkgever={werkgever} />
+      </div>
     </>
   );
 };

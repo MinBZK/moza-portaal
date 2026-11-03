@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import InfoToggletip from "@/components/InfoToggletip";
 import {
   Accordion,
   AccordionSection,
@@ -90,10 +90,7 @@ const Bronnen = ({
 
   return (
     <>
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="namens"
-      >
+      <section className="rhc-mox-stack" aria-labelledby="namens">
         <Heading level={2} id="namens">
           Namens wie vult u in?
         </Heading>
@@ -114,17 +111,14 @@ const Bronnen = ({
           />
         </Fieldset>
         {staat?.rol === "namens" && (
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             U kunt de aanvraag invullen. De eigenaar ondertekent de aanvraag
             voordat u die verstuurt.
           </Paragraph>
         )}
       </section>
 
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="kandidaat"
-      >
+      <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
         </Heading>
@@ -162,6 +156,9 @@ const Bronnen = ({
           <div className="rhc-mox-row-gap">
             <FormFieldTextInput
               label="Naam van de kandidaat"
+              // Not the user's own data: the browser must not fill in the
+              // user's name or date of birth here (WCAG 1.3.5).
+              autoComplete="off"
               value={nieuw.naam}
               onChange={(event) =>
                 setNieuw({
@@ -172,6 +169,7 @@ const Bronnen = ({
             />
             <FormFieldTextInput
               label="Geboortedatum (dag-maand-jaar)"
+              autoComplete="off"
               value={nieuw.geboortedatum}
               onChange={(event) =>
                 setNieuw({
@@ -180,7 +178,7 @@ const Bronnen = ({
                 })
               }
             />
-            <Paragraph className="mox-hiring-note">
+            <Paragraph className="rhc-mox-small-text">
               De kandidaat krijgt een verzoek om toestemming in MijnOverheid.
               Zodra die er is, halen we de gegevens op. Het BSN vragen we niet
               aan u; dat komt mee met de toestemming.
@@ -197,90 +195,106 @@ const Bronnen = ({
           </div>
         )}
         {gekozen && (
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             BSN {kandidaat.bsnMasker} gaat mee met de aanvraag en staat niet op
             het scherm.
           </Paragraph>
         )}
       </section>
 
-      <Heading level={2}>Wat de overheid al weet</Heading>
-      {wachtend ? (
-        <Paragraph>
-          Wij hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
-          toestemming gevraagd. Zodra die er is, halen we op wat de overheid al
-          weet en ziet u het hier. In dit prototype komt die toestemming niet.
-        </Paragraph>
-      ) : !gekozen ? (
-        <Paragraph>
-          Kies eerst de kandidaat. Daarna halen we op wat de overheid al weet en
-          ziet u het hier.
-        </Paragraph>
-      ) : (
-        <>
+      <section className="rhc-mox-stack" aria-labelledby="overheid-weet">
+        <Heading level={2} id="overheid-weet">
+          Wat de overheid al weet
+        </Heading>
+        {wachtend ? (
           <Paragraph>
-            Per organisatie staat aangevinkt dat de gegevens kloppen en gebruikt
-            mogen worden. Open een organisatie om te zien wat we ophalen. Klopt
-            iets niet, haal het vinkje weg; die gegevens vult u dan zelf aan in
-            de aanvraag.
+            Wij hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
+            toestemming gevraagd. Zodra die er is, halen we op wat de overheid
+            al weet en ziet u het hier. In dit prototype komt die toestemming
+            niet.
           </Paragraph>
-          <Accordion>
-            {bronnen.map((bron) => {
-              const aan = !!staat && bronBevestigd(staat, bron.id);
-              return (
-                <AccordionSection
-                  key={bron.id}
-                  // Het niveau op Accordion geldt alleen voor diens eigen kop.
-                  headingLevel={3}
-                  label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
-                  // Het type eist `body`, de component rendert alleen `children`.
-                  body={null}
-                  expanded={open.includes(bron.id)}
-                  onActivate={() =>
-                    setOpen(
-                      open.includes(bron.id)
-                        ? open.filter((id) => id !== bron.id)
-                        : [...open, bron.id],
-                    )
-                  }
-                >
-                  <div className="rhc-mox-row-gap">
-                    <Paragraph className="mox-hiring-note">
-                      {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
-                    </Paragraph>
-                    <dl className="mox-hiring-facts">
-                      {bron.gegevens.map((g) => (
-                        <div key={g.parameter}>
-                          <dt>{g.vraag}</dt>
-                          <dd>{g.waarde}</dd>
-                          <details className="mox-hiring-legal-question">
-                            <summary>Zo vraagt de wet het</summary>
-                            <Paragraph>
-                              “{g.wetsvraag}” ({g.grond})
-                            </Paragraph>
-                          </details>
-                        </div>
-                      ))}
-                    </dl>
-                    <FormFieldCheckboxOption
-                      label={
-                        bron.id === "eigen"
-                          ? "Klopt, gebruik mijn opgave"
-                          : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
-                      }
-                      name={`vinkje-${bron.id}`}
-                      checked={aan}
-                      onChange={(event) => vink(bron.id, event.target.checked)}
-                    />
-                  </div>
-                </AccordionSection>
-              );
-            })}
-          </Accordion>
-        </>
-      )}
+        ) : !gekozen ? (
+          <Paragraph>
+            Kies eerst de kandidaat. Daarna halen we op wat de overheid al weet
+            en ziet u het hier.
+          </Paragraph>
+        ) : (
+          <>
+            <Paragraph>
+              Per organisatie staat aangevinkt dat de gegevens kloppen en
+              gebruikt mogen worden. Open een organisatie om te zien wat we
+              ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult u
+              dan zelf aan in de aanvraag.
+            </Paragraph>
+            <Accordion>
+              {bronnen.map((bron) => {
+                const aan = !!staat && bronBevestigd(staat, bron.id);
+                return (
+                  <AccordionSection
+                    key={bron.id}
+                    // Het niveau op Accordion geldt alleen voor diens eigen kop.
+                    headingLevel={3}
+                    label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
+                    // Het type eist `body`, de component rendert alleen `children`.
+                    body={null}
+                    expanded={open.includes(bron.id)}
+                    onActivate={() =>
+                      setOpen(
+                        open.includes(bron.id)
+                          ? open.filter((id) => id !== bron.id)
+                          : [...open, bron.id],
+                      )
+                    }
+                  >
+                    <div className="rhc-mox-row-gap">
+                      <Paragraph className="rhc-mox-small-text">
+                        {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
+                      </Paragraph>
+                      {/* The markup of the RHC DataSummary: its component only
+                        takes text as value, and the toggletip with the law
+                        question belongs in the value. */}
+                      <dl className="rhc-data-summary rhc-data-summary--column">
+                        {bron.gegevens.map((g) => (
+                          <div
+                            key={g.parameter}
+                            className="rhc-data-summary__item"
+                          >
+                            <dt className="rhc-data-summary__item-key">
+                              {g.vraag}
+                            </dt>
+                            <dd className="rhc-data-summary__item-value">
+                              {g.waarde}{" "}
+                              <InfoToggletip
+                                label={`Zo vraagt de wet het: ${g.vraag}`}
+                              >
+                                {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
+                              </InfoToggletip>
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                      <FormFieldCheckboxOption
+                        label={
+                          bron.id === "eigen"
+                            ? "Klopt, gebruik mijn opgave"
+                            : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
+                        }
+                        name={`vinkje-${bron.id}`}
+                        checked={aan}
+                        onChange={(event) =>
+                          vink(bron.id, event.target.checked)
+                        }
+                      />
+                    </div>
+                  </AccordionSection>
+                );
+              })}
+            </Accordion>
+          </>
+        )}
+      </section>
 
-      <section className="rhc-mox-card rhc-mox-row-gap">
+      <div className="rhc-mox-stack">
         <Paragraph role="status">
           {wachtend
             ? "Wachten op toestemming van de kandidaat."
@@ -305,14 +319,8 @@ const Bronnen = ({
           >
             {naarOverzicht ? "Bekijk wat voor u geldt" : "Vul de aanvraag in"}
           </Button>
-          <Link
-            href="/personeel/iemand-aannemen"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Terug naar de vragen
-          </Link>
         </ActionGroup>
-      </section>
+      </div>
     </>
   );
 };

@@ -5,26 +5,23 @@ import { CheckIcon } from "@/components/icons/checkIcon";
 /**
  * Where the user is in a form with several steps: "Stap 2 van 4" and the
  * steps in a row. Completed steps get a check mark, the current step has
- * aria-current="step". On a narrow screen only the text and the current
- * step remain.
+ * aria-current="step". A completed step with an href is a link back to
+ * that step. On a narrow screen only the text and the current step remain.
  */
 const StepIndicator = ({
   steps,
   current,
   label = "Voortgang",
   hideCount = false,
-  hrefs,
 }: {
-  /** Names of the steps, in order. */
-  steps: string[];
+  /** The steps in order: a name, or a name with the address of the step. */
+  steps: (string | { name: string; href?: string })[];
   /** Index of the current step, starting at 0. */
   current: number;
   /** Accessible name of the navigation. */
   label?: string;
   /** Hide "Stap 2 van 4" visually; screen readers still read it. */
   hideCount?: boolean;
-  /** Per step a link; a completed step with a link can be revisited. */
-  hrefs?: (string | undefined)[];
 }) => (
   <nav className="rhc-mox-step-indicator" aria-label={label}>
     {hideCount ? (
@@ -38,11 +35,19 @@ const StepIndicator = ({
     )}
     <ol className="rhc-mox-step-indicator__list">
       {steps.map((step, index) => {
+        const { name, href } =
+          typeof step === "string" ? { name: step, href: undefined } : step;
         const state =
           index < current ? "done" : index === current ? "current" : "todo";
+        const text = (
+          <>
+            {state === "done" && <VisuallyHidden>Klaar: </VisuallyHidden>}
+            {name}
+          </>
+        );
         return (
           <li
-            key={step}
+            key={name}
             className={`rhc-mox-step-indicator__step rhc-mox-step-indicator__step--${state}`}
             aria-current={state === "current" ? "step" : undefined}
           >
@@ -50,16 +55,12 @@ const StepIndicator = ({
               {state === "done" ? <CheckIcon /> : index + 1}
             </span>
             <span className="rhc-mox-step-indicator__name">
-              {state === "done" && <VisuallyHidden>Klaar: </VisuallyHidden>}
-              {state === "done" && hrefs?.[index] ? (
-                <Link
-                  href={hrefs[index]}
-                  className="utrecht-link utrecht-link--html-a"
-                >
-                  {step}
+              {state === "done" && href ? (
+                <Link href={href} className="utrecht-link utrecht-link--html-a">
+                  {text}
                 </Link>
               ) : (
-                step
+                text
               )}
             </span>
           </li>

@@ -3,8 +3,9 @@
 /* Proof-of-concept banner */
 
 .temp-moza-poc-banner {
-	background: var(--toepassing-color-feedback-success-default);
-	color: var(--toepassing-color-text-inverse);
+	/* Same as .prototype-temp-poc-banner in the portal (--rhc-color-groen-700). */
+	background: oklch(38.71% 0.1016 137.1);
+	color: #fff;
 	font-weight: var(--toepassing-text-font-weight-bold);
 	inline-size: 256px;
 	inset-block-start: 3rem;
@@ -16,10 +17,10 @@
 	text-decoration: none;
 	transform: rotate(45deg);
 	transform-origin: center;
-	z-index: 1;
-	&:hover {
-		background: var(--toepassing-color-feedback-success-emphasis);
-		color: var(--toepassing-color-text-inverse);
+	z-index: 9;
+	&:hover,
+	&:focus-visible {
+		text-decoration-line: underline;
 	}
 }
 

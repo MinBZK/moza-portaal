@@ -67,7 +67,9 @@ const BerichtRij = ({
         {bericht.onderwerp}
       </Link>
     </TableCell>
-    <TableCell>{formatDatum(bericht.datum)}</TableCell>
+    <TableCell className="rhc-mox-table-cell-date">
+      {formatDatum(bericht.datum)}
+    </TableCell>
     <TableCell>
       {bericht.heeftBijlage && (
         <>

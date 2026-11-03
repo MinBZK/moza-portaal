@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Heading,
   Paragraph,
@@ -14,6 +15,8 @@ import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ShareButton from "@/components/ShareButton";
 import { getDemoBuurtberichten } from "@/demo";
 import { getFlagsFromServerCookie } from "@/app/actions";
+
+export const metadata: Metadata = { title: "Berichten over uw buurt" };
 
 const OmgevingsberichtenPage = async () => {
   const flags = await getFlagsFromServerCookie();

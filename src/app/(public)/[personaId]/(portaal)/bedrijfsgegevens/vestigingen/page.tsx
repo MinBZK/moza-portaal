@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { DataSummary, DataSummaryItem, Heading } from "@/components/rhc";
 import OnderdeelPagina, {
   type OnderdeelPaginaProps,
 } from "../_onderdeelPagina";
+
+export const metadata: Metadata = { title: "Vestigingen - Bedrijfsgegevens" };
 
 const VestigingenPage = (props: OnderdeelPaginaProps) => (
   <OnderdeelPagina
@@ -9,7 +12,7 @@ const VestigingenPage = (props: OnderdeelPaginaProps) => (
     id="vestigingen"
     inhoud={({ vestigingen }) =>
       vestigingen.map(({ nummer, type, adres }) => (
-        <div key={nummer}>
+        <div key={nummer} className="rhc-mox-stack rhc-mox-stack--md">
           <Heading level={3}>{type}</Heading>
           <DataSummary appearance="column">
             <DataSummaryItem itemKey="Vestigingsnummer" itemValue={nummer} />

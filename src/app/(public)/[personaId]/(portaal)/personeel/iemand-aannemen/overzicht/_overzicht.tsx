@@ -93,7 +93,7 @@ const Kaart = ({
   uitvoerder?: UitvoerderId;
   children: ReactNode;
 }) => (
-  <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby={id}>
+  <section className="rhc-mox-stack" aria-labelledby={id}>
     <Heading level={3} id={id}>
       {kop} {uitvoerder && <Uitvoerder id={uitvoerder} />}
     </Heading>
@@ -164,7 +164,7 @@ const OverzichtInhoud = ({
       )}
 
       {bekend && uitleg.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="uitleg">
+        <section className="rhc-mox-stack" aria-labelledby="uitleg">
           <Heading level={2} id="uitleg">
             Wat voor deze situatie geldt
           </Heading>
@@ -177,7 +177,7 @@ const OverzichtInhoud = ({
       )}
 
       {bekend && route.taken.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="taken-werknemer">
+        <section className="rhc-mox-stack" aria-labelledby="taken-werknemer">
           <Heading level={2} id="taken-werknemer">
             Taken voor de werknemer
           </Heading>
@@ -190,7 +190,7 @@ const OverzichtInhoud = ({
       )}
 
       {bekend && route.vanzelf.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
+        <section className="rhc-mox-stack" aria-labelledby="vanzelf">
           <Heading level={2} id="vanzelf">
             Gaat vanzelf of via de loonaangifte
           </Heading>
@@ -201,10 +201,10 @@ const OverzichtInhoud = ({
               uitvoerder="loonaangifte"
             >
               {lkv && (
-                <p className="mox-hiring-amount">
-                  {euro(lkv.bedragPerJaar)}{" "}
-                  <span className="mox-hiring-note">per jaar</span>
-                </p>
+                <Paragraph purpose="lead">
+                  <strong>{euro(lkv.bedragPerJaar)}</strong>{" "}
+                  <small className="rhc-mox-small-text">per jaar</small>
+                </Paragraph>
               )}
               {lkv?.aanname && <Aanname id={lkv.aanname} />}
               <Paragraph>
@@ -261,7 +261,7 @@ const OverzichtInhoud = ({
       )}
 
       {bekend && (
-        <section className="rhc-mox-card rhc-mox-row-gap" aria-labelledby="zo">
+        <section className="rhc-mox-stack" aria-labelledby="zo">
           <Heading level={2} id="zo">
             Zo is dit berekend
           </Heading>

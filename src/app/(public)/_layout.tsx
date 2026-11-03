@@ -66,7 +66,7 @@ export default async function PublicLayout({
         <div className="utrecht-page-body__content">
           <div className="rhc-grid">
             {withNavigation && (
-              <nav className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
+              <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
                 <Navigation
                   flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
@@ -85,7 +85,7 @@ export default async function PublicLayout({
                     })) ?? []
                   }
                 />
-              </nav>
+              </div>
             )}
             <div
               className={

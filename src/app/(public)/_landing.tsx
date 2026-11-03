@@ -20,18 +20,19 @@ const PublicPage = () => {
           <Heading level={1}>MijnOverheid Zakelijk</Heading>
           <Paragraph>Makkelijk zakendoen met de overheid</Paragraph>
           <Link href="/?persona=1111" className="mox-login-digid">
-            <svg viewBox="0 0 150 150" width={40} height={40}>
+            <svg
+              viewBox="0 0 150 150"
+              width={40}
+              height={40}
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M136 150H14c-8 0-14-6-14-14V14C0 6 6 0 14 0h122c8 0 14 6 14 14v122c0 8-6 14-14 14z" />
               <path
-                xmlns="http://www.w3.org/2000/svg"
-                d="M136 150H14c-8 0-14-6-14-14V14C0 6 6 0 14 0h122c8 0 14 6 14 14v122c0 8-6 14-14 14z"
-              />
-              <path
-                xmlns="http://www.w3.org/2000/svg"
                 d="M17 115V79h10c12 0 19 6 19 17 0 13-8 19-19 19H17zm6-6h4c7 0 12-4 12-13 0-8-5-12-13-12h-3v25zm31-32c3 0 4 1 4 3s-1 4-4 4c-2 0-3-2-3-4s1-3 3-3zm3 38h-6V88h6v27zm15-6h6c6 0 9 3 9 7 0 5-4 9-14 9-8 0-11-2-11-7 0-2 1-4 4-6l-2-3c0-2 1-3 3-4-3-2-4-4-4-8 0-6 4-10 11-10l4 1h9v4h-4l2 5c0 6-4 9-12 9h-3l-1 1c0 2 1 2 3 2zm1 12c6 0 8-2 8-4s-1-2-3-2l-9-1-2 3c0 2 2 4 6 4zm6-24c0-3-2-5-5-5s-5 1-5 5 1 5 5 5c3 0 5-1 5-5z"
                 fill="#fff"
               />
               <path
-                xmlns="http://www.w3.org/2000/svg"
                 d="M94 77c2 0 3 1 3 3s-1 4-3 4c-3 0-4-2-4-4s1-3 4-3zm3 38h-6V88h6v27zm8 0V79h10c12 0 18 6 18 17 0 13-7 19-19 19h-9zm6-6h4c7 0 12-4 12-13 0-8-5-12-13-12h-3v25z"
                 fill="#e17000"
               />
@@ -173,13 +174,17 @@ const PublicPage = () => {
         <Heading level={3}>UX-onderzoek uitvoeren</Heading>
         <section>
           {/* Een lijst mag niet in een alinea staan (hydration-fout). */}
-          <Paragraph>Gebruik de shortcuttoetsen:</Paragraph>
+          <Paragraph>
+            Gebruik de sneltoetsen (op een Mac is Alt de Option-toets):
+          </Paragraph>
           <UnorderedList>
             <UnorderedListItem>
-              <code>p</code>: selecteer een persona
+              <code>Alt</code> + <code>Shift</code> + <code>P</code>: selecteer
+              een persona
             </UnorderedListItem>
             <UnorderedListItem>
-              <code>f</code>: schakel flags in/uit
+              <code>Alt</code> + <code>Shift</code> + <code>F</code>: schakel
+              flags in/uit
             </UnorderedListItem>
           </UnorderedList>
           <Paragraph>

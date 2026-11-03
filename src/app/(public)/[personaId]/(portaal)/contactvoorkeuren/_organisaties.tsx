@@ -94,7 +94,7 @@ const Organisaties = ({
   };
 
   return (
-    <form className="rhc-mox-row-gap" onSubmit={opslaan}>
+    <form className="rhc-mox-stack rhc-mox-stack--2xl" onSubmit={opslaan}>
       <Paragraph>
         Deze organisaties gebruiken uw centrale contactgegevens om contact met u
         op te nemen. Kiest u een extra organisatie, dan gebruikt ook die uw

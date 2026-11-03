@@ -39,6 +39,7 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
       <Heading level={1}>Nieuwe parkeervergunning aanvragen</Heading>
       <div className="rhc-mox-card">
         <form
+          className="rhc-mox-stack rhc-mox-stack--2xl"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -52,7 +53,13 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
             {(field) => <FormField label={"Motivatie"} field={field} />}
           </form.Field>
           <form.Field name="aanvragerEmail">
-            {(field) => <FormField label="E-mailadres" field={field} />}
+            {(field) => (
+              <FormField
+                label="E-mailadres"
+                field={field}
+                autoComplete="email"
+              />
+            )}
           </form.Field>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}

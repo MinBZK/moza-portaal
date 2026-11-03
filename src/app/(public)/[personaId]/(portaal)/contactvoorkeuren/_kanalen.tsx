@@ -132,7 +132,7 @@ const Formulier = ({
   };
 
   return (
-    <form className="rhc-mox-row-gap" onSubmit={opslaan}>
+    <form className="rhc-mox-stack rhc-mox-stack--2xl" onSubmit={opslaan}>
       {melding && (
         <div ref={meldingRef} tabIndex={-1}>
           <Alert

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Heading, Icon, Paragraph } from "@/components/rhc";
@@ -10,6 +11,17 @@ import SubsidieActies, {
   bewaarItemVan,
 } from "../_subsidieActies";
 import SubsidieGegevens from "../_subsidieGegevens";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const subsidie = await getDemoSubsidieById((await params).id);
+  return {
+    title: `${subsidie?.titel ?? "Subsidie"} - Subsidies en financiering`,
+  };
+};
 
 const SubsidiePage = async ({
   params,

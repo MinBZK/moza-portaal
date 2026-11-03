@@ -59,7 +59,7 @@ const Navigation = ({
   const kiesOrganisatie = useKiesOrganisatie(actieveOrganisatieId);
 
   return (
-    <SideNav>
+    <SideNav aria-label="Hoofdmenu">
       <div
         id={MENU_ID}
         className={
@@ -257,7 +257,7 @@ const Navigation = ({
           </SideNavList>
           {/* De contextwisselaar uit de header: kies de organisatie. */}
           {organisaties.length > 1 && (
-            <>
+            <div className="rhc-mox-menu-organizations">
               <p id="menu-organisaties" className="rhc-mox-menu-heading">
                 Organisatie kiezen
               </p>
@@ -279,7 +279,7 @@ const Navigation = ({
                   );
                 })}
               </SideNavList>
-            </>
+            </div>
           )}
           <SideNavList>
             <SideNavItem>

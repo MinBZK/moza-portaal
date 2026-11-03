@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import Verstuurd from "./_verstuurd";
+
+export const metadata: Metadata = {
+  title: "Aanvraag verstuurd - Personeel en rollen",
+};
 
 /** Bevestiging na het versturen van de concept-aanvraag. */
 const VerstuurdPage = async () => {

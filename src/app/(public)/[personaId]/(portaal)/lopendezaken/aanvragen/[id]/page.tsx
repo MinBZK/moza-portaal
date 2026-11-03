@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -19,9 +20,19 @@ import {
 } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_vragen";
-import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
 import Stappen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_stappen";
+import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
 import KostenBerekening from "./_kostenBerekening";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+  const [{ id }, persona] = await Promise.all([params, getActievePersona()]);
+  const aanvraag = await getDemoConceptAanvraagById(persona?.id, id);
+  return { title: `${aanvraag?.titel ?? "Aanvraag"} - Lopende zaken` };
+};
 
 /** Een aanvraag die nog niet is ingediend, om verder in te vullen. */
 const AanvraagPage = async ({
@@ -71,17 +82,21 @@ const AanvraagPage = async ({
             Beantwoord vier vragen. Rechts ziet u meteen wat het u kost en
             oplevert. Daarna vullen wij de aanvraag voor u in.
           </Paragraph>
+          <Vragen
+            onderneming={flow.werkgever.onderneming}
+            toelichting={aanvraag.toelichting}
+          />
         </>
       )}
       {!flow && (
         <div className="rhc-mox-card rhc-mox-row-gap">
           {aanvraag.indienenVoor && (
-            <Alert type="info">
+            <Alert type="info" closable>
               Verstuur de aanvraag voor {aanvraag.indienenVoor}.
             </Alert>
           )}
 
-          <section>
+          <section className="rhc-mox-stack">
             <DataSummary appearance="column">
               <DataSummaryItem
                 itemKey="Organisatie"
@@ -92,33 +107,24 @@ const AanvraagPage = async ({
                 itemValue={aanvraag.tijdsduur}
               />
             </DataSummary>
-            {!flow &&
-              aanvraag.toelichting?.map((alinea) => (
-                <Paragraph key={alinea}>{alinea}</Paragraph>
-              ))}
+            {aanvraag.toelichting?.map((alinea) => (
+              <Paragraph key={alinea}>{alinea}</Paragraph>
+            ))}
           </section>
 
-          {!flow && (
-            <section aria-labelledby="aanvraag-kosten">
-              <Heading level={2} id="aanvraag-kosten">
-                Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
-              </Heading>
-              <Paragraph>
-                Deze berekening blijft op uw scherm. Er gaat niets naar een
-                overheidsorganisatie.
-              </Paragraph>
-              {aanvraag.berekening && (
-                <KostenBerekening {...aanvraag.berekening} />
-              )}
-            </section>
-          )}
+          <section className="rhc-mox-stack" aria-labelledby="aanvraag-kosten">
+            <Heading level={2} id="aanvraag-kosten">
+              Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
+            </Heading>
+            <Paragraph>
+              Deze berekening blijft op uw scherm. Er gaat niets naar een
+              overheidsorganisatie.
+            </Paragraph>
+            {aanvraag.berekening && (
+              <KostenBerekening {...aanvraag.berekening} />
+            )}
+          </section>
         </div>
-      )}
-      {flow && (
-        <Vragen
-          onderneming={flow.werkgever.onderneming}
-          toelichting={aanvraag.toelichting}
-        />
       )}
     </>
   );

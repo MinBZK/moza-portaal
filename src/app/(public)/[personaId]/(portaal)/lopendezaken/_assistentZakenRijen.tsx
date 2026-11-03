@@ -43,7 +43,9 @@ const AssistentZakenRijen = () => {
                   onderwerp
                 )}
               </TableCell>
-              <TableCell>{zaakDatum(zaak)}</TableCell>
+              <TableCell className="rhc-mox-table-cell-date">
+                {zaakDatum(zaak)}
+              </TableCell>
               <TableCell>{veld(zaak, ["status", "statusLabel"])}</TableCell>
             </TableRow>
           );

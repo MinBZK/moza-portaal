@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, useRef, type ComponentProps } from "react";
+import { useId, useRef, type ComponentProps, type ReactNode } from "react";
 import { Button, VisuallyHidden } from "@/components/rhc";
+import FieldLabel from "./FieldLabel";
 
 /**
  * Invoerveld voor een getal met een label, in de opmaak van de form fields
@@ -10,12 +11,15 @@ import { Button, VisuallyHidden } from "@/components/rhc";
  */
 const NumberInput = ({
   label,
+  info,
   id,
   className,
   ...props
 }: Omit<ComponentProps<"input">, "type"> & {
   /** Zichtbare naam van het veld. */
   label: string;
+  /** Naast het label, bijvoorbeeld een InfoToggletip. */
+  info?: ReactNode;
 }) => {
   const eigenId = useId();
   const veldId = id ?? eigenId;
@@ -36,9 +40,9 @@ const NumberInput = ({
   return (
     <div className="utrecht-form-field utrecht-form-field--text rhc-form-field">
       <div className="utrecht-form-field__label">
-        <label htmlFor={veldId} className="utrecht-form-label">
+        <FieldLabel htmlFor={veldId} info={info}>
           {label}
-        </label>
+        </FieldLabel>
       </div>
       <div className="utrecht-form-field__input rhc-number-input">
         <Button

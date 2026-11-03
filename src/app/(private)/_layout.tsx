@@ -31,13 +31,13 @@ export default async function PrivateLayout({
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">
           <div className="rhc-grid">
-            <nav className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
+            <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
               <Navigation
                 flags={flags}
                 berichtenboxBadge={<OngelezenBadge />}
                 lopendeZakenBadge={<ZakenBadge />}
               />
-            </nav>
+            </div>
             <div className="rhc-grid__cell rhc-grid__cell-t-9 rhc-mox-main-container">
               <Breadcrumb />
               {children}

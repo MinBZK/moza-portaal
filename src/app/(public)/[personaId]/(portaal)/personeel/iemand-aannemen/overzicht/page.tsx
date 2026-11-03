@@ -1,9 +1,15 @@
-import { Heading } from "@/components/rhc";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Stappen from "../_stappen";
 import { werkgeverVan } from "../_werkgever";
 import Overzicht from "./_overzicht";
+
+export const metadata: Metadata = {
+  title: "Wat voor u geldt - Personeel en rollen",
+};
 
 /** Eindpagina voor routes zonder aanvraag: wat geldt, wat de werknemer doet en wat vanzelf gaat. */
 const OverzichtPage = async () => {
@@ -14,11 +20,22 @@ const OverzichtPage = async () => {
   return (
     <>
       <Heading level={1}>Wat voor u geldt</Heading>
-      <Stappen huidige={3} />
-      <Overzicht
-        labels={situaties.gemeente.labels}
-        kvk={werkgeverVan(organisatie).kvkNummer}
-      />
+      <Paragraph>
+        <Link
+          href="/personeel/iemand-aannemen/gegevens"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          <Icon icon="chevron-left" />
+          Terug naar de ingevulde aanvraag
+        </Link>
+      </Paragraph>
+      <div className="rhc-mox-card">
+        <Stappen huidige={3} />
+        <Overzicht
+          labels={situaties.gemeente.labels}
+          kvk={werkgeverVan(organisatie).kvkNummer}
+        />
+      </div>
     </>
   );
 };

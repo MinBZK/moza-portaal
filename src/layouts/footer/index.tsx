@@ -68,7 +68,11 @@ const gridCell =
 const FooterLinks = () => (
   <div className="rhc-grid">
     {groepen.map(({ id, kop, links }) => (
-      <nav key={id} className={gridCell} aria-labelledby={id}>
+      <nav
+        key={id}
+        className={`${gridCell} rhc-mox-stack rhc-mox-stack--lg`}
+        aria-labelledby={id}
+      >
         <h2 id={id}>{kop}</h2>
         <LinkList>
           {links.map(({ href, label, extern }) => (

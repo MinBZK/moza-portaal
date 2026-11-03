@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Paragraph } from "@/components/rhc";
+import { Button, Paragraph, Separator } from "@/components/rhc";
 import { leesAssistentInstellingen } from "@/app/(public)/_flags/assistentInstellingen";
 import type { Berekening } from "./_useRegelrecht";
 
@@ -123,7 +123,8 @@ const UitlegTaalmodel = ({
   };
 
   return (
-    <div className="mox-hiring-llm rhc-mox-row-gap">
+    <div className="rhc-mox-stack">
+      <Separator />
       {stand.status !== "klaar" && (
         <Button
           appearance="secondary-action-button"
@@ -136,14 +137,14 @@ const UitlegTaalmodel = ({
         </Button>
       )}
       {stand.status !== "klaar" && (
-        <Paragraph className="mox-hiring-note">
+        <Paragraph className="rhc-mox-small-text">
           Drukt u op deze knop? Dan gaan de gegevens van deze uitkomst en uw
           KVK-nummer naar de digitale assistent. Het taalmodel van de digitale
           assistent schrijft daarmee de uitleg.
         </Paragraph>
       )}
       {stand.status === "fout" && (
-        <Paragraph className="mox-hiring-note" role="status">
+        <Paragraph className="rhc-mox-small-text" role="status">
           {stand.tekst}
         </Paragraph>
       )}
@@ -151,13 +152,13 @@ const UitlegTaalmodel = ({
         <>
           <Paragraph>{stand.tekst}</Paragraph>
           {!stand.toets.geslaagd && (
-            <Paragraph className="mox-hiring-note" role="status">
+            <Paragraph className="rhc-mox-small-text" role="status">
               Let op: deze tekst wijkt af van de afleiding.{" "}
               {stand.toets.opmerkingen.join(" ")} Ga uit van de afleiding
               hierboven.
             </Paragraph>
           )}
-          <Paragraph className="mox-hiring-note">
+          <Paragraph className="rhc-mox-small-text">
             Geschreven door het taalmodel van de digitale assistent (
             {stand.mode === "vlam" ? "VLAM" : "Claude"}), alleen uit de
             beslisgraaf van de engine

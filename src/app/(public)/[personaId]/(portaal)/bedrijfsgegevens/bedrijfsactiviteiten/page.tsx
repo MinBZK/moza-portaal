@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { DataSummary, DataSummaryItem } from "@/components/rhc";
 import OnderdeelPagina, {
   type OnderdeelPaginaProps,
 } from "../_onderdeelPagina";
+
+export const metadata: Metadata = {
+  title: "Bedrijfsactiviteiten - Bedrijfsgegevens",
+};
 
 const BedrijfsactiviteitenPage = (props: OnderdeelPaginaProps) => (
   <OnderdeelPagina
