@@ -26,22 +26,20 @@ import {
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
-import { datumNL, type Werkgever } from "../_werkgever";
+import { datumNL } from "../_werkgever";
 
 const NIEUW = "nieuw";
 
 /**
- * Namens wie, de kandidaat kiezen of toevoegen, en het omgekeerde formulier:
+ * De kandidaat kiezen of toevoegen, en het omgekeerde formulier:
  * alles wat de overheid al weet in een tabel, per bron een vinkje dat
  * standaard aan staat. Een zelf toegevoegde kandidaat wacht op toestemming;
  * zonder toestemming haalt het portaal niets op.
  */
 const Bronnen = ({
   perSituatie,
-  werkgever,
 }: {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
-  werkgever: Werkgever;
 }) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
@@ -90,34 +88,6 @@ const Bronnen = ({
 
   return (
     <>
-      <section className="rhc-mox-stack" aria-labelledby="namens">
-        <Heading level={2} id="namens">
-          Namens wie vult u in?
-        </Heading>
-        <Fieldset legend="Rol">
-          <FormFieldRadio
-            name="rol"
-            value="eigenaar"
-            label={`Ik ben eigenaar of vennoot van ${werkgever.onderneming}`}
-            checked={(staat?.rol ?? "eigenaar") === "eigenaar"}
-            onChange={() => werkBij({ rol: "eigenaar" })}
-          />
-          <FormFieldRadio
-            name="rol"
-            value="namens"
-            label={`Ik vul in namens ${werkgever.onderneming}, bijvoorbeeld als salarisadministrateur`}
-            checked={staat?.rol === "namens"}
-            onChange={() => werkBij({ rol: "namens" })}
-          />
-        </Fieldset>
-        {staat?.rol === "namens" && (
-          <Paragraph className="rhc-mox-small-text">
-            U kunt de aanvraag invullen. De eigenaar ondertekent de aanvraag
-            voordat u die verstuurt.
-          </Paragraph>
-        )}
-      </section>
-
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
@@ -204,25 +174,25 @@ const Bronnen = ({
 
       <section className="rhc-mox-stack" aria-labelledby="overheid-weet">
         <Heading level={2} id="overheid-weet">
-          Wat de overheid al weet
+          Gegevens die de overheid kan ophalen voor de berekening
         </Heading>
         {wachtend ? (
           <Paragraph>
             Wij hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
-            toestemming gevraagd. Zodra die er is, halen we op wat de overheid
-            al weet en ziet u het hier. In dit prototype komt die toestemming
-            niet.
+            toestemming gevraagd. Zodra die er is, halen wij de gegevens op die
+            nodig zijn voor de berekening en ziet u ze hier. In dit prototype
+            komt die toestemming niet.
           </Paragraph>
         ) : !gekozen ? (
           <Paragraph>
-            Kies eerst de kandidaat. Daarna halen we op wat de overheid al weet
-            en ziet u het hier.
+            Kies eerst de kandidaat. Daarna halen wij de gegevens op die nodig
+            zijn voor de berekening en ziet u ze hier.
           </Paragraph>
         ) : (
           <>
             <Paragraph>
               Per organisatie staat aangevinkt dat de gegevens kloppen en
-              gebruikt mogen worden. Open een organisatie om te zien wat we
+              gebruikt mogen worden. Open een organisatie om te zien wat wij
               ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult u
               dan zelf aan in de aanvraag.
             </Paragraph>
@@ -263,7 +233,11 @@ const Bronnen = ({
                               {g.vraag}
                             </dt>
                             <dd className="rhc-data-summary__item-value">
-                              {g.waarde}{" "}
+                              {/* De uren komen uit de antwoorden van stap 1. */}
+                              {g.waarde.replace(
+                                "{uren}",
+                                String(antwoorden.uren),
+                              )}{" "}
                               <InfoToggletip
                                 label={`Zo vraagt de wet het: ${g.vraag}`}
                               >

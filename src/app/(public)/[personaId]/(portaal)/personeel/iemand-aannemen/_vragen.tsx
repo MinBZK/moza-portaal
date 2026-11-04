@@ -103,7 +103,7 @@ const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
         if (!bekend) event.preventDefault();
       }}
     >
-      Gegevens delen
+      Aanvraag invullen
     </Link>
   </ActionGroup>
 );
