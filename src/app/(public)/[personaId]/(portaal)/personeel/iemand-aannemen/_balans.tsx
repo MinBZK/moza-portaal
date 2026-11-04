@@ -131,6 +131,16 @@ export const duurTekst = (jaren: number | undefined) =>
         ? "De no-riskpolis geldt bij ziekte die begint in de eerste vijf jaar na de start van het dienstverband."
         : `De no-riskpolis geldt bij ziekte die begint in de eerste ${jaren} jaar na de start van het dienstverband.`;
 
+/**
+ * Wanneer een regeling geldt, in het kort. Staat altijd achter de (i), ook als
+ * de regeling bij deze antwoorden niet geldt, zodat de ondernemer ziet waarom.
+ */
+const WANNEER: Record<BalansRegel["id"], string> = {
+  lks: "Loonkostensubsidie is voor een werknemer die bij de doelgroep van de gemeente hoort, zoals iemand met bijstand, en met een volledige baan niet het minimumloon kan verdienen. De gemeente betaalt u het verschil tussen het minimumloon en wat het werk waard is (de loonwaarde), tot ten hoogste 70 procent van het minimumloon, plus een vergoeding voor werkgeverslasten (Participatiewet, artikel 10d).",
+  ld: "Loondispensatie is voor een werknemer met een Wajong-uitkering die duidelijk minder kan dan het minimumloon rechtvaardigt. U betaalt dan minder loon. UWV stelt vast hoeveel minder (Wajong, artikel 2:20).",
+  lkv: "Loonkostenvoordeel krijgt u voor een werknemer uit het doelgroepregister: € 1,01 per verloond uur, ten hoogste € 2.000 per jaar. Of voor een arbeidsgehandicapte werknemer met een doelgroepverklaring: € 3,05 per uur, ten hoogste € 6.000 per jaar. U vraagt het aan in de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.9 en 2.13).",
+};
+
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
 const LD_UITLEG =
   "Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.";
@@ -238,7 +248,19 @@ const Balans = ({
           {regels.map((r) => (
             <div key={r.id} className="rhc-data-summary__item">
               <dt className="rhc-data-summary__item-key">
-                <span>{naam(r)}</span>
+                <span>
+                  {naam(r)}{" "}
+                  <InfoToggletip
+                    label={`Toelichting bij ${naam(r).toLowerCase()}`}
+                  >
+                    <Paragraph>{WANNEER[r.id]}</Paragraph>
+                    {bekend && !fout && r.status === "geldt_niet" && (
+                      <Paragraph>
+                        Bij uw antwoorden geldt deze regeling niet.
+                      </Paragraph>
+                    )}
+                  </InfoToggletip>
+                </span>
                 <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
               <dd className="rhc-data-summary__item-value">{waarde(r)}</dd>
@@ -276,10 +298,15 @@ const Balans = ({
           <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
         </div>
         {regels.map((r) => {
-          // De aanname, en bij een bedrag de uitleg bij loondispensatie of de
-          // duur en het voorbehoud bij het loonkostenvoordeel.
+          // Altijd wanneer de regeling geldt; daarna de aanname, en bij een
+          // bedrag de uitleg bij loondispensatie of de duur en het voorbehoud
+          // bij het loonkostenvoordeel.
           const metBedrag = bekend && !fout && r.bedrag > 0;
           const toelichting = [
+            WANNEER[r.id],
+            ...(bekend && !fout && r.status === "geldt_niet"
+              ? ["Bij uw antwoorden geldt deze regeling niet."]
+              : []),
             ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
             ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
             ...(metBedrag && r.id === "lkv"
