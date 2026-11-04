@@ -332,10 +332,14 @@ const AanvraagInhoud = ({
     bron: "Basisregistratie Personen",
   };
   const dienstRijen: Gegeven[] = [
-    { label: "Functie", waarde: dienstverband.functie, bron: "Uw opgave" },
+    {
+      label: "Functie",
+      waarde: a.functie?.trim() || dienstverband.functie,
+      bron: "Uw opgave",
+    },
     {
       label: "Eerste werkdag",
-      waarde: datumNL(dienstverband.aanvang),
+      waarde: datumNL(a.aanvang ?? dienstverband.aanvang),
       bron: "Uw opgave",
     },
     { label: "Uren per week", waarde: String(a.uren), bron: "Uw antwoord" },
@@ -466,8 +470,8 @@ const AanvraagInhoud = ({
           />
           <Paragraph>
             U vraagt de loonkostensubsidie aan uiterlijk zes maanden na de
-            eerste werkdag ({datumNL(dienstverband.aanvang)}). Dat staat in de
-            Participatiewet, artikel 10d lid 2.
+            eerste werkdag ({datumNL(a.aanvang ?? dienstverband.aanvang)}). Dat
+            staat in de Participatiewet, artikel 10d lid 2.
           </Paragraph>
           <Beoordeling
             id="beoordeelt-lks"
@@ -947,6 +951,16 @@ const AanvraagInhoud = ({
             <Antwoord
               label="Kandidaat"
               waarde={`${kandidaat.voornaam} ${kandidaat.achternaam}`}
+              href={GEGEVENS}
+            />
+            <Antwoord
+              label="Eerste werkdag"
+              waarde={datumNL(a.aanvang ?? dienstverband.aanvang)}
+              href={GEGEVENS}
+            />
+            <Antwoord
+              label="Functie"
+              waarde={a.functie?.trim() || dienstverband.functie}
               href={GEGEVENS}
             />
             <Antwoord

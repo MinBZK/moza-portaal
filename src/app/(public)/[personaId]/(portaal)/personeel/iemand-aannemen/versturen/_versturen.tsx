@@ -151,7 +151,7 @@ const VersturenInhoud = ({
   const organisatie = uwv ? "UWV" : `Gemeente ${kandidaat.gemeente}`;
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
 
-  const aanvang = `vanaf ${datumNL(dienstverband.aanvang)}, ${a.uren} uur per week, ${uurloonTekst(a)}, functie ${dienstverband.functie}`;
+  const aanvang = `vanaf ${datumNL(a.aanvang ?? dienstverband.aanvang)}, ${a.uren} uur per week, ${uurloonTekst(a)}, functie ${a.functie?.trim() || dienstverband.functie}`;
   const ingediend: ReactNode[] = [];
   const later: string[] = [];
   const niet: string[] = [];

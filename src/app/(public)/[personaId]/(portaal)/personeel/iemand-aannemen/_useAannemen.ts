@@ -55,6 +55,10 @@ export type Antwoorden = {
   loonwaarde: number;
   /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
   uurloon: number;
+  /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 2. */
+  aanvang?: string;
+  /** De functie, door de werkgever opgegeven in stap 2. */
+  functie?: string;
 };
 
 /**
@@ -121,6 +125,10 @@ export const inRegister = (a: Antwoorden) =>
 
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
+
+/** De eigen opgave in stap 2 is compleet: eerste werkdag en functie zijn ingevuld. */
+export const eigenOpgaveCompleet = (a: Antwoorden) =>
+  !!a.aanvang && !!a.functie?.trim();
 
 export const uurloonTekst = (a: Antwoorden) =>
   a.uurloon === WML_UUR_EUROCENT

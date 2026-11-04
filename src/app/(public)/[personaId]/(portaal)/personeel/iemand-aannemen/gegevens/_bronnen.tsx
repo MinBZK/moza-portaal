@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -20,8 +21,11 @@ import {
   BRONNEN,
   alleBronnenBevestigd,
   bronBevestigd,
+  eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
+  WML_UUR_EUROCENT,
+  type Antwoorden,
   type BronId,
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
@@ -29,6 +33,117 @@ import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL } from "../_werkgever";
 
 const NIEUW = "nieuw";
+
+const VRAGEN =
+  "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt";
+
+/** "16,50" naar 1650; null als het geen bedrag is. */
+const naarEurocent = (tekst: string) => {
+  const t = tekst.trim().replace(/^€\s*/, "").replace(",", ".");
+  if (!/^\d+(\.\d{1,2})?$/.test(t)) return null;
+  return Math.round(Number(t) * 100);
+};
+const alsTekst = (cent: number) => (cent / 100).toFixed(2).replace(".", ",");
+
+/**
+ * Wat alleen de werkgever weet: de eerste werkdag, de functie, de uren en het
+ * loon. Vooringevuld met de antwoorden van stap 1 waar die er zijn; nu
+ * definitief. De loonwaarde blijft een schatting: die stelt de gemeente of
+ * UWV vast.
+ */
+const EigenOpgave = ({
+  voornaam,
+  a,
+  zet,
+}: {
+  voornaam: string;
+  a: Antwoorden;
+  zet: (deel: Partial<Antwoorden>) => void;
+}) => {
+  const [uren, setUren] = useState(String(a.uren));
+  const [loon, setLoon] = useState(alsTekst(a.uurloon));
+  const urenGetal = Number(uren);
+  const urenFout =
+    /^\d+$/.test(uren.trim()) && urenGetal >= 8 && urenGetal <= 40
+      ? undefined
+      : "Vul een aantal uren in van 8 tot en met 40.";
+  const loonCent = naarEurocent(loon);
+  const loonFout =
+    loonCent === null
+      ? "Vul een bedrag in, bijvoorbeeld 16,50."
+      : loonCent < WML_UUR_EUROCENT
+        ? `Het uurloon is ten minste het minimumloon, ${alsTekst(WML_UUR_EUROCENT)} euro.`
+        : undefined;
+  return (
+    <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
+      <Heading level={3} id="eigen-opgave">
+        Uw eigen opgave
+      </Heading>
+      <Paragraph>
+        Dit weet alleen u. In de voorbeeldberekening waren het schattingen; nu
+        gaan ze in de aanvraag.
+      </Paragraph>
+      <FormFieldTextInput
+        name="aanvang"
+        type="date"
+        label={`Wat is de eerste werkdag van ${voornaam}?`}
+        value={a.aanvang ?? ""}
+        onChange={(event) =>
+          zet({
+            aanvang: (event.target as HTMLInputElement).value || undefined,
+          })
+        }
+      />
+      <FormFieldTextInput
+        name="functie"
+        label={`Welke functie krijgt ${voornaam}?`}
+        autoComplete="off"
+        value={a.functie ?? ""}
+        onChange={(event) =>
+          zet({ functie: (event.target as HTMLInputElement).value })
+        }
+      />
+      <FormFieldTextInput
+        name="uren"
+        label={`Hoeveel uur per week gaat ${voornaam} werken?`}
+        inputMode="numeric"
+        autoComplete="off"
+        value={uren}
+        invalid={urenFout !== undefined}
+        errorMessage={urenFout}
+        onChange={(event) => {
+          const t = (event.target as HTMLInputElement).value;
+          setUren(t);
+          const n = Number(t);
+          if (/^\d+$/.test(t.trim()) && n >= 8 && n <= 40) zet({ uren: n });
+        }}
+      />
+      <FormFieldTextInput
+        name="uurloon"
+        label="Bruto uurloon in euro"
+        description="Het minimumloon is 14,99 euro per uur"
+        inputMode="decimal"
+        autoComplete="off"
+        value={loon}
+        invalid={loonFout !== undefined}
+        errorMessage={loonFout}
+        onChange={(event) => {
+          const t = (event.target as HTMLInputElement).value;
+          setLoon(t);
+          const c = naarEurocent(t);
+          if (c !== null && c >= WML_UUR_EUROCENT) zet({ uurloon: c });
+        }}
+      />
+      <Paragraph>
+        Loonwaarde: uw schatting is {a.loonwaarde} procent. Die stelt de
+        gemeente of UWV vast.{" "}
+        <Link href={VRAGEN} className="utrecht-link utrecht-link--html-a">
+          Schatting wijzigen
+        </Link>
+      </Paragraph>
+    </section>
+  );
+};
 
 /**
  * De kandidaat kiezen of toevoegen, en het omgekeerde formulier:
@@ -60,10 +175,13 @@ const Bronnen = ({
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
+  // De eigen opgave is een formulier, geen bron om te bevestigen.
+  const teBevestigen = BRONNEN.filter((id) => id !== "eigen");
   const aantal = staat
-    ? BRONNEN.filter((id) => bronBevestigd(staat, id)).length
+    ? teBevestigen.filter((id) => bronBevestigd(staat, id)).length
     : 0;
   const klaar = gekozen && !!staat && alleBronnenBevestigd(staat);
+  const opgave = eigenOpgaveCompleet(antwoorden);
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
 
   const vink = (id: BronId, aan: boolean) =>
@@ -197,76 +315,87 @@ const Bronnen = ({
               dan zelf aan in de aanvraag.
             </Paragraph>
             <Accordion>
-              {bronnen.map((bron) => {
-                const aan = !!staat && bronBevestigd(staat, bron.id);
-                return (
-                  <AccordionSection
-                    key={bron.id}
-                    // Het niveau op Accordion geldt alleen voor diens eigen kop.
-                    headingLevel={3}
-                    label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
-                    // Het type eist `body`, de component rendert alleen `children`.
-                    body={null}
-                    expanded={open.includes(bron.id)}
-                    onActivate={() =>
-                      setOpen(
-                        open.includes(bron.id)
-                          ? open.filter((id) => id !== bron.id)
-                          : [...open, bron.id],
-                      )
-                    }
-                  >
-                    <div className="rhc-mox-row-gap">
-                      <Paragraph className="rhc-mox-small-text">
-                        {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
-                      </Paragraph>
-                      {/* The markup of the RHC DataSummary: its component only
+              {bronnen
+                .filter((bron) => bron.id !== "eigen")
+                .map((bron) => {
+                  const aan = !!staat && bronBevestigd(staat, bron.id);
+                  return (
+                    <AccordionSection
+                      key={bron.id}
+                      // Het niveau op Accordion geldt alleen voor diens eigen kop.
+                      headingLevel={3}
+                      label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
+                      // Het type eist `body`, de component rendert alleen `children`.
+                      body={null}
+                      expanded={open.includes(bron.id)}
+                      onActivate={() =>
+                        setOpen(
+                          open.includes(bron.id)
+                            ? open.filter((id) => id !== bron.id)
+                            : [...open, bron.id],
+                        )
+                      }
+                    >
+                      <div className="rhc-mox-row-gap">
+                        <Paragraph className="rhc-mox-small-text">
+                          {bron.register} · opgehaald op{" "}
+                          {datumNL(bron.opgehaald)}
+                        </Paragraph>
+                        {/* The markup of the RHC DataSummary: its component only
                         takes text as value, and the toggletip with the law
                         question belongs in the value. */}
-                      <dl className="rhc-data-summary rhc-data-summary--column">
-                        {bron.gegevens.map((g) => (
-                          <div
-                            key={g.parameter}
-                            className="rhc-data-summary__item"
-                          >
-                            <dt className="rhc-data-summary__item-key">
-                              {g.vraag}
-                            </dt>
-                            <dd className="rhc-data-summary__item-value">
-                              {/* De uren komen uit de antwoorden van stap 1. */}
-                              {g.waarde.replace(
-                                "{uren}",
-                                String(antwoorden.uren),
-                              )}{" "}
-                              <InfoToggletip
-                                label={`Zo vraagt de wet het: ${g.vraag}`}
-                              >
-                                {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                              </InfoToggletip>
-                            </dd>
-                          </div>
-                        ))}
-                      </dl>
-                      <FormFieldCheckboxOption
-                        label={
-                          bron.id === "eigen"
-                            ? "Klopt, gebruik mijn opgave"
-                            : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
-                        }
-                        name={`vinkje-${bron.id}`}
-                        checked={aan}
-                        onChange={(event) =>
-                          vink(bron.id, event.target.checked)
-                        }
-                      />
-                    </div>
-                  </AccordionSection>
-                );
-              })}
+                        <dl className="rhc-data-summary rhc-data-summary--column">
+                          {bron.gegevens.map((g) => (
+                            <div
+                              key={g.parameter}
+                              className="rhc-data-summary__item"
+                            >
+                              <dt className="rhc-data-summary__item-key">
+                                {g.vraag}
+                              </dt>
+                              <dd className="rhc-data-summary__item-value">
+                                {/* De uren komen uit de antwoorden van stap 1. */}
+                                {g.waarde.replace(
+                                  "{uren}",
+                                  String(antwoorden.uren),
+                                )}{" "}
+                                <InfoToggletip
+                                  label={`Zo vraagt de wet het: ${g.vraag}`}
+                                >
+                                  {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
+                                </InfoToggletip>
+                              </dd>
+                            </div>
+                          ))}
+                        </dl>
+                        <FormFieldCheckboxOption
+                          label={
+                            bron.id === "eigen"
+                              ? "Klopt, gebruik mijn opgave"
+                              : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
+                          }
+                          name={`vinkje-${bron.id}`}
+                          checked={aan}
+                          onChange={(event) =>
+                            vink(bron.id, event.target.checked)
+                          }
+                        />
+                      </div>
+                    </AccordionSection>
+                  );
+                })}
             </Accordion>
           </>
         )}
       </section>
+
+      {gekozen && (
+        <EigenOpgave
+          voornaam={kandidaat.voornaam}
+          a={antwoorden}
+          zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
+        />
+      )}
 
       <div className="rhc-mox-stack">
         <Paragraph role="status">
@@ -274,16 +403,18 @@ const Bronnen = ({
             ? "Wachten op toestemming van de kandidaat."
             : !gekozen
               ? "Nog geen kandidaat gekozen."
-              : klaar
-                ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
-                : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
+              : !opgave
+                ? "Vul uw eigen opgave in: de eerste werkdag en de functie."
+                : klaar
+                  ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
+                  : `${aantal} van ${teBevestigen.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
         <ActionGroup>
           <Button
             appearance="primary-action-button"
-            aria-disabled={!gekozen || !resultaat.bekend}
+            aria-disabled={!gekozen || !opgave || !resultaat.bekend}
             onClick={() => {
-              if (gekozen && resultaat.bekend)
+              if (gekozen && opgave && resultaat.bekend)
                 router.push(
                   naarOverzicht
                     ? "/personeel/iemand-aannemen/overzicht"
