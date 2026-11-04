@@ -94,6 +94,24 @@ const PersoneelPage = async () => {
         </ActionGroup>
       </section>
 
+      <section className="rhc-mox-card" aria-labelledby="kandidaten">
+        <Heading level={2} id="kandidaten">
+          Kandidaten
+        </Heading>
+        <Paragraph>
+          Per kandidaat ziet u of die zich aan uw onderneming heeft gekoppeld en
+          wat er met de aanvraag is gebeurd.
+        </Paragraph>
+        <Paragraph>
+          <Link
+            href="/personeel/kandidaten"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Naar uw kandidaten
+          </Link>
+        </Paragraph>
+      </section>
+
       <PersoneelZaak
         zaken={{
           gemeente: situaties.gemeente.zaak,

@@ -72,8 +72,11 @@ export type AannemenStaat = {
   /** Zelf toegevoegde kandidaten, in afwachting van hun toestemming. */
   kandidatenNieuw?: {
     naam: string;
-    geboortedatum: string;
+    /** Alleen bij kandidaten uit een eerdere versie; de koppelcode vervangt die. */
+    geboortedatum?: string;
     gevraagdOp: string;
+    /** De code die de kandidaat in MijnOverheid invoert om zich te koppelen. */
+    code?: string;
   }[];
   /** Namens wie de aanvraag wordt ingevuld. */
   rol: "eigenaar" | "namens";
@@ -124,6 +127,29 @@ export const inRegister = (a: Antwoorden) =>
 
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
+
+/** Een leesbare id voor de pagina van een kandidaat: "Lina Vermeulen" wordt "lina-vermeulen". */
+export const kandidaatId = (naam: string) =>
+  naam
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+/**
+ * Een koppelcode zoals "K7Q-4MD": zonder 0/O en 1/I, zodat de kandidaat hem
+ * goed kan overnemen.
+ */
+export const nieuweKoppelcode = () => {
+  const tekens = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const deel = () =>
+    Array.from(
+      { length: 3 },
+      () => tekens[Math.floor(Math.random() * tekens.length)],
+    ).join("");
+  return `${deel()}-${deel()}`;
+};
 
 export const uurloonTekst = (a: Antwoorden) =>
   a.uurloon === WML_UUR_EUROCENT

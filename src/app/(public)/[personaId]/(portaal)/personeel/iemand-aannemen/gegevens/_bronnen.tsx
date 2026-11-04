@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -20,6 +21,8 @@ import {
   BRONNEN,
   alleBronnenBevestigd,
   bronBevestigd,
+  kandidaatId,
+  nieuweKoppelcode,
   STANDAARD_ANTWOORDEN,
   useAannemen,
   type BronId,
@@ -54,7 +57,7 @@ const Bronnen = ({
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
     ];
-  const [nieuw, setNieuw] = useState({ naam: "", geboortedatum: "" });
+  const [nieuw, setNieuw] = useState({ naam: "" });
   const [open, setOpen] = useState<BronId[]>([]);
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
@@ -77,13 +80,13 @@ const Bronnen = ({
         ...nieuwe.filter((k) => k.naam !== n),
         {
           naam: n,
-          geboortedatum: nieuw.geboortedatum.trim(),
           gevraagdOp: new Date().toISOString().slice(0, 10),
+          code: nieuweKoppelcode(),
         },
       ],
       kandidaat: n,
     });
-    setNieuw({ naam: "", geboortedatum: "" });
+    setNieuw({ naam: "" });
   };
 
   return (
@@ -109,7 +112,7 @@ const Bronnen = ({
               key={k.naam}
               name="kandidaat"
               value={k.naam}
-              label={`${k.naam}${k.geboortedatum ? `, geboren ${k.geboortedatum}` : ""}, toestemming gevraagd op ${datumNL(k.gevraagdOp)}`}
+              label={`${k.naam}${k.geboortedatum ? `, geboren ${k.geboortedatum}` : ""}, ${k.code ? `koppelcode gegeven op ${datumNL(k.gevraagdOp)}` : `toestemming gevraagd op ${datumNL(k.gevraagdOp)}`}`}
               checked={keuze === k.naam}
               onChange={() => werkBij({ kandidaat: k.naam })}
             />
@@ -137,21 +140,12 @@ const Bronnen = ({
                 })
               }
             />
-            <FormFieldTextInput
-              label="Geboortedatum (dag-maand-jaar)"
-              autoComplete="off"
-              value={nieuw.geboortedatum}
-              onChange={(event) =>
-                setNieuw({
-                  ...nieuw,
-                  geboortedatum: (event.target as HTMLInputElement).value,
-                })
-              }
-            />
             <Paragraph className="rhc-mox-small-text">
-              De kandidaat krijgt een verzoek om toestemming in MijnOverheid.
-              Zodra die er is, halen we de gegevens op. Het BSN vragen we niet
-              aan u; dat komt mee met de toestemming.
+              De naam is alleen voor u, om de kandidaat te herkennen. Wij weten
+              niet wie het is. Daarom koppelt de kandidaat zich zelf: u krijgt
+              een code die u aan de kandidaat geeft. De kandidaat logt in op
+              MijnOverheid en voert de code in. Pas dan halen wij gegevens op.
+              Het BSN vragen wij niet aan u.
             </Paragraph>
             <ActionGroup>
               <Button
@@ -159,11 +153,35 @@ const Bronnen = ({
                 aria-disabled={!nieuw.naam.trim()}
                 onClick={voegToe}
               >
-                Toestemming vragen
+                Koppelcode maken
               </Button>
             </ActionGroup>
           </div>
         )}
+        {wachtend?.code && (
+          <Paragraph>
+            Geef {wachtend.naam} deze koppelcode:{" "}
+            <strong>{wachtend.code}</strong>. Zodra {wachtend.naam} de code in
+            MijnOverheid invoert, ziet u hier wat er is gedeeld.
+          </Paragraph>
+        )}
+        <Paragraph>
+          Status per kandidaat:{" "}
+          {[
+            { id: kandidaatId(naam), naam },
+            ...nieuwe.map((k) => ({ id: kandidaatId(k.naam), naam: k.naam })),
+          ].map((k, n, lijst) => (
+            <span key={k.id}>
+              <Link
+                href={`/personeel/kandidaten/${k.id}`}
+                className="utrecht-link utrecht-link--html-a"
+              >
+                {k.naam}
+              </Link>
+              {n < lijst.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </Paragraph>
         {gekozen && (
           <Paragraph className="rhc-mox-small-text">
             BSN {kandidaat.bsnMasker} gaat mee met de aanvraag en staat niet op
