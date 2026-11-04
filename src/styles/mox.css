@@ -252,7 +252,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	}
 
 	.rhc-mox-tile:hover .rhc-mox-tile__title {
-		text-decoration-thickness: 2px;
+		text-decoration-thickness: var(--rhc-border-width-md);
 	}
 
 	.rhc-mox-card,
