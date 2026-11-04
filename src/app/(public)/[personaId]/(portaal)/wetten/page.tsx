@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoWetten } from "@/demo";
-import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
 import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { bewaarItemVan } from "./_wetActies";
@@ -18,8 +17,7 @@ const WettenPage = async ({
 }: {
   searchParams: Promise<{ pagina?: string }>;
 }) => {
-  const [flags, persona, { pagina }] = await Promise.all([
-    getFlagsFromServerCookie(),
+  const [persona, { pagina }] = await Promise.all([
     getActievePersona(),
     searchParams,
   ]);
@@ -76,7 +74,7 @@ const WettenPage = async ({
             </Heading>
             <Paragraph>{wet.samenvatting}</Paragraph>
             <WetGegevens wet={wet} />
-            <WetActies wet={wet} delen={flags.mox_delen} />
+            <WetActies wet={wet} />
           </article>
         </RelevantItem>
       ))}

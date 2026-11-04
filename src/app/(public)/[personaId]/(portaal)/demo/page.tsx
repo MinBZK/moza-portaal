@@ -104,6 +104,14 @@ import {
   Gebruiker,
   Suggesties,
 } from "../digitale-assistent/_onderdelen";
+import {
+  DEMO_COMPONENTS,
+  DEMO_COMPONENT_NAMES,
+  DEMO_LISTS,
+  KIND_LABELS,
+  demoId,
+  type DemoComponentName,
+} from "./_components";
 
 /** One option: name, type, default and what it does. */
 type Option = [
@@ -114,7 +122,7 @@ type Option = [
 ];
 
 type Entry = {
-  name: string;
+  name: DemoComponentName;
   file: string;
   /**
    * Text, or JSX to mark words up, such as <code>. An array gives one
@@ -437,10 +445,20 @@ const BrandSwitch = () => {
   );
 };
 
-/** Card per component: description, options and an example. */
+/** Card per component: kind, description, options and an example. */
 const card = ({ name, file, description, options, example }: Entry) => (
-  <section key={name} className="rhc-mox-card" aria-label={name}>
-    <Heading level={3}>{name}</Heading>
+  <section
+    key={name}
+    id={demoId(name)}
+    className="rhc-mox-card"
+    aria-labelledby={`${demoId(name)}-kop`}
+  >
+    <Heading level={2} id={`${demoId(name)}-kop`}>
+      {name}
+    </Heading>
+    <Paragraph>
+      <TextBadge>{KIND_LABELS[DEMO_COMPONENTS[name]]}</TextBadge>
+    </Paragraph>
     <Paragraph>
       <code>{file}</code>
     </Paragraph>
@@ -452,7 +470,7 @@ const card = ({ name, file, description, options, example }: Entry) => (
     <Options options={options} />
     {example && (
       <>
-        <Heading level={4}>Voorbeeld</Heading>
+        <Heading level={3}>Voorbeeld</Heading>
         {example}
       </>
     )}
@@ -3493,6 +3511,17 @@ const ComponentsDemoPage = () => {
     },
   ];
 
+  const byName = new Map(
+    [
+      ...entries,
+      ...cssEntries,
+      ...rhcEntries,
+      ...layoutEntries,
+      ...berichtenboxEntries,
+      ...assistantEntries,
+    ].map((entry) => [entry.name, entry]),
+  );
+
   return (
     <>
       {/* Sticky and without height of its own: the switch sits next to the
@@ -3503,52 +3532,65 @@ const ComponentsDemoPage = () => {
         </div>
       </div>
       <Heading level={1}>Componenten</Heading>
+      <Paragraph>
+        Voor oplossingen voor een hele taak, zie de{" "}
+        <NextLink
+          href="/demo/ontwerppatronen"
+          className="utrecht-link utrecht-link--html-a"
+        >
+          ontwerppatronen
+        </NextLink>
+        .
+      </Paragraph>
+
+      <Paragraph>
+        Alle componenten op alfabet. Bij elke component staat of het een eigen
+        component is, een RHC-component of een aangepaste RHC-component.
+      </Paragraph>
 
       <div className="rhc-mox-main-container">
-        <Heading level={2}>MOx componenten</Heading>
-        {entries.map(card)}
-        <section className="rhc-mox-card" aria-labelledby="overige">
-          <Heading level={3} id="overige">
-            Overige maatwerkcomponenten
+        {DEMO_COMPONENT_NAMES.map((name) => byName.get(name))
+          .filter((entry) => entry !== undefined)
+          .map(card)}
+        <section
+          id={DEMO_LISTS[0].id}
+          className="rhc-mox-card"
+          aria-labelledby={`${DEMO_LISTS[0].id}-kop`}
+        >
+          <Heading level={2} id={`${DEMO_LISTS[0].id}-kop`}>
+            {DEMO_LISTS[0].name}
           </Heading>
           <Paragraph>
             Voor één plek of voor het prototype; zonder voorbeeld.
           </Paragraph>
           <SimpleTable rows={others} />
         </section>
-
-        <Heading level={2}>CSS-patronen</Heading>
-        {cssEntries.map(card)}
-
-        <Heading level={2}>RHC-componenten</Heading>
-        {rhcEntries.map(card)}
-        <section className="rhc-mox-card" aria-labelledby="rhc-layout">
-          <Heading level={3} id="rhc-layout">
-            RHC-componenten in de layout
+        <section
+          id={DEMO_LISTS[1].id}
+          className="rhc-mox-card"
+          aria-labelledby={`${DEMO_LISTS[1].id}-kop`}
+        >
+          <Heading level={2} id={`${DEMO_LISTS[1].id}-kop`}>
+            {DEMO_LISTS[1].name}
           </Heading>
           <Paragraph>
             Gebruikt in header, menu en footer; zonder voorbeeld.
           </Paragraph>
           <SimpleTable rows={rhcLayout} />
         </section>
-        <section className="rhc-mox-card" aria-labelledby="rhc-unused">
-          <Heading level={3} id="rhc-unused">
-            RHC-componenten die we nog niet gebruiken
+        <section
+          id={DEMO_LISTS[2].id}
+          className="rhc-mox-card"
+          aria-labelledby={`${DEMO_LISTS[2].id}-kop`}
+        >
+          <Heading level={2} id={`${DEMO_LISTS[2].id}-kop`}>
+            {DEMO_LISTS[2].name}
           </Heading>
           <Paragraph>
             Wel beschikbaar via <code>@/components/rhc</code>; zonder voorbeeld.
           </Paragraph>
           <SimpleTable rows={rhcUnused} />
         </section>
-
-        <Heading level={2}>Layout</Heading>
-        {layoutEntries.map(card)}
-
-        <Heading level={2}>Berichtenbox</Heading>
-        {berichtenboxEntries.map(card)}
-
-        <Heading level={2}>(AI) chat interface</Heading>
-        {assistantEntries.map(card)}
       </div>
     </>
   );

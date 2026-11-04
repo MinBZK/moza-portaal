@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoSubsidieById } from "@/demo";
-import { getFlagsFromServerCookie } from "@/app/actions";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import { RelevantItem } from "@/components/save/saveActions";
 import SubsidieActies, {
@@ -29,10 +28,7 @@ const SubsidiePage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  const [subsidie, flags] = await Promise.all([
-    getDemoSubsidieById(id),
-    getFlagsFromServerCookie(),
-  ]);
+  const subsidie = await getDemoSubsidieById(id);
   if (!subsidie) notFound();
 
   return (
@@ -70,7 +66,7 @@ const SubsidiePage = async ({
             u doen vóór de aanvraagperiode sluit?
           </Paragraph>
 
-          <SubsidieActies subsidie={subsidie} delen={flags.mox_delen} />
+          <SubsidieActies subsidie={subsidie} />
 
           <Paragraph>
             <a

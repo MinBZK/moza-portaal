@@ -12,6 +12,12 @@ import {
   getDemoOrganisatieId,
   getDemoPersonas,
 } from "@/demo";
+import {
+  DEMO_COMPONENT_NAMES,
+  DEMO_LISTS,
+  demoId,
+} from "./[personaId]/(portaal)/demo/_components";
+import { PATTERNS } from "./[personaId]/(portaal)/demo/ontwerppatronen/_patterns";
 import { FlagsProvider } from "./_flags/flagsContext";
 import FlagsPaneel from "./_flags/flagsPaneel";
 import PersonaPaneel from "./_flags/personaPaneel";
@@ -87,6 +93,17 @@ export default async function PublicLayout({
                   }
                   actieveOrganisatieNaam={organisatie?.handelsnaam}
                   organisaties={organisaties}
+                  demoMenu={{
+                    components: DEMO_COMPONENT_NAMES.map((name) => ({
+                      id: demoId(name),
+                      name,
+                    })),
+                    lists: [...DEMO_LISTS],
+                    patterns: PATTERNS.map(({ slug, title }) => ({
+                      id: slug,
+                      name: title,
+                    })),
+                  }}
                 />
               </div>
             )}

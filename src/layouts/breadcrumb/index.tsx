@@ -27,6 +27,8 @@ const breadcrumbLabels: Record<string, string> = {
   berichten: "Berichten over uw buurt",
   bewaard: "Bewaarde items",
   demo: "Componenten",
+  "ai-statusindicator": "AI-statusindicator",
+  "e-mailverificatie": "E-mailverificatie",
   gesprekken: "Gesprekken met de digitale assistent",
   "niet-relevant": "Niet relevant voor mij",
   "digitale-assistent": "Digitale assistent (AI)",

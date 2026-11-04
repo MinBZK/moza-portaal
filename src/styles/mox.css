@@ -386,18 +386,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* --- Toggletip --- */
 	.mox-toggletip {
-		--rhc-toggletip-background-color: transparent;
-		--rhc-toggletip-hover-background-color: transparent;
-		--rhc-toggletip-focus-background-color: transparent;
-		--rhc-toggletip-active-background-color: transparent;
-		--rhc-toggletip-border-color: transparent;
-		--rhc-toggletip-hover-border-color: transparent;
-		--rhc-toggletip-focus-border-color: transparent;
-		--rhc-toggletip-active-border-color: transparent;
-		--rhc-toggletip-color: var(--utrecht-link-color);
-		--rhc-toggletip-hover-color: var(--utrecht-link-hover-color);
-		--rhc-toggletip-focus-color: var(--utrecht-link-hover-color);
-		--rhc-toggletip-active-color: var(--utrecht-link-hover-color);
 		--rhc-toggletip-icon-size: 1.125rem;
 		--rhc-toggletip-size: 1.125rem;
 

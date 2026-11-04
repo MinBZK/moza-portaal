@@ -72,13 +72,6 @@ export const MOX_FLAGS = [
   },
   // Functionaliteit.
   {
-    key: "mox_delen",
-    label: "Delen",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: true,
-  },
-  {
     key: "mox_berichtenboxUnhappyFlow",
     label: "Berichtenbox met foutmeldingen",
     groep: "functionaliteit",

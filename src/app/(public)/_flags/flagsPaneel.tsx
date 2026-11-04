@@ -77,25 +77,26 @@ const FlagsPaneel = ({
       location.reload();
     });
 
-  const flagGroep = (groep: "pagina" | "functionaliteit", label: string) => (
-    <Fieldset legend={label}>
-      {MOX_FLAGS.filter((flag) => flag.groep === groep).map((flag) => (
-        <FormFieldCheckboxOption
-          key={flag.key}
-          label={flag.label}
-          description={flag.werkt ? undefined : "(Nog niet in dit prototype)"}
-          checked={zichtbareFlags[flag.key]}
-          onChange={(event) => zetFlag(flag.key, event.target.checked)}
-        />
-      ))}
+  const functionaliteit = (
+    <Fieldset legend="Functionaliteit">
+      {MOX_FLAGS.filter((flag) => flag.groep === "functionaliteit").map(
+        (flag) => (
+          <FormFieldCheckboxOption
+            key={flag.key}
+            label={flag.label}
+            description={flag.werkt ? undefined : "(Nog niet in dit prototype)"}
+            checked={zichtbareFlags[flag.key]}
+            onChange={(event) => zetFlag(flag.key, event.target.checked)}
+          />
+        ),
+      )}
     </Fieldset>
   );
 
   return (
     <SideOverlay id="flags-paneel" title="Flags" shortcut="f">
-      {flagGroep("pagina", "Pagina’s")}
       <div>
-        {flagGroep("functionaliteit", "Functionaliteit")}
+        {functionaliteit}
         <Fieldset legend="Berichtenbox A/B/C-test">
           {BERICHTENBOX_VARIANTEN.map((variant) => (
             <FormFieldRadio
@@ -126,6 +127,14 @@ const FlagsPaneel = ({
         <p className="nl-paragraph">
           <Link className="utrecht-link utrecht-link--html-a" href="/demo">
             Overzicht van componenten
+          </Link>
+        </p>
+        <p className="nl-paragraph">
+          <Link
+            className="utrecht-link utrecht-link--html-a"
+            href="/demo/ontwerppatronen"
+          >
+            Overzicht van ontwerppatronen
           </Link>
         </p>
       </div>
