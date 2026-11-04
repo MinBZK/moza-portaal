@@ -91,29 +91,52 @@ const OVERIG: Record<
 };
 
 /** Een termijn uit de wet, met het artikel waar hij staat. */
+type Bron = { tekst: string; url: string };
+
+/** Per regeling: de termijn voor de werkgever, wanneer die weet waar die aan toe is, en waar het staat. */
 type Termijn = {
+  id: string;
+  regeling: string;
   tekst: string;
-  artikel: string;
-  url: string;
+  wanneer: string;
+  bronnen: Bron[];
   /** Uitleg over de regeling op het Digitaal Ondernemersplein. */
-  meer: { tekst: string; url: string };
+  meer: Bron;
 };
 
 const DOP = "https://ondernemersplein.overheid.nl";
+const PWET = "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d";
+const WTL = "https://wetten.overheid.nl/BWBR0037522/2026-01-01";
 
-/** De termijnen die bij de uitkomsten horen; elk volgt uit het genoemde artikel. */
+/**
+ * De termijnen die bij de uitkomsten horen. Elke zin volgt uit de genoemde
+ * bron: wet, verordening of de werkwijze van UWV.
+ */
 const termijnenVoor = (regels: Regel[]): Termijn[] => {
   const geldt = (id: Regel["id"]) =>
     regels.find((r) => r.id === id && r.bedragPerJaar > 0);
   const lkv = geldt("lkv");
+  const arbeidsgehandicapt = lkv?.categorie === "arbeidsgehandicapte_werknemer";
   return [
     ...(geldt("lks")
       ? [
           {
+            id: "lks",
+            regeling: "Loonkostensubsidie",
             tekst:
               "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag.",
-            artikel: "Participatiewet, artikel 10d lid 2",
-            url: "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d",
+            wanneer:
+              "De gemeente beslist binnen vijf weken nadat zij de loonwaarde heeft vastgesteld.",
+            bronnen: [
+              {
+                tekst: "Participatieverordening Rotterdam 2015, artikel 14",
+                url: "https://zoek.officielebekendmakingen.nl/gmb-2023-286652.html",
+              },
+              {
+                tekst: "Participatiewet, artikel 10d lid 2 en lid 12",
+                url: PWET,
+              },
+            ],
             meer: {
               tekst: "Meer over loonkostensubsidie op Ondernemersplein",
               url: `${DOP}/personeel/personeelskosten-en-loon/verlaag-uw-loonkosten-met-subsidies-en-tegemoetkomingen/`,
@@ -124,10 +147,21 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
     ...(geldt("ld")
       ? [
           {
+            id: "ld",
+            regeling: "Loondispensatie",
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
-            artikel: "Besluit loondispensatie Wajong, artikel 4",
-            url: "https://wetten.overheid.nl/BWBR0020119/2010-08-19#Artikel4",
+            wanneer: "UWV beslist binnen acht weken na uw aanvraag.",
+            bronnen: [
+              {
+                tekst: "Besluit loondispensatie Wajong, artikel 4",
+                url: "https://wetten.overheid.nl/BWBR0020119/2010-08-19#Artikel4",
+              },
+              {
+                tekst: "Algemene wet bestuursrecht, artikel 4:13",
+                url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Artikel4:13",
+              },
+            ],
             meer: {
               tekst: "Meer over loondispensatie op Ondernemersplein",
               url: `${DOP}/subsidies-en-regelingen/loondispensatie-wajong/`,
@@ -135,13 +169,31 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
           },
         ]
       : []),
-    ...(lkv?.categorie === "arbeidsgehandicapte_werknemer"
+    ...(lkv
       ? [
           {
-            tekst:
-              "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start.",
-            artikel: "Wet tegemoetkomingen loondomein, artikel 2.7",
-            url: "https://wetten.overheid.nl/BWBR0037522/2026-01-01#Artikel2.7",
+            id: "lkv",
+            regeling: "Loonkostenvoordeel",
+            tekst: arbeidsgehandicapt
+              ? "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
+              : "U vraagt het loonkostenvoordeel aan in de loonaangifte.",
+            wanneer: arbeidsgehandicapt
+              ? "UWV beslist binnen acht weken over de doelgroepverklaring. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus."
+              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus.",
+            bronnen: [
+              ...(arbeidsgehandicapt
+                ? [
+                    {
+                      tekst: "Wet tegemoetkomingen loondomein, artikel 2.7",
+                      url: `${WTL}#Artikel2.7`,
+                    },
+                  ]
+                : []),
+              {
+                tekst: "Wet tegemoetkomingen loondomein, artikel 4.2",
+                url: `${WTL}#Artikel4.2`,
+              },
+            ],
             meer: {
               tekst: "Meer over het loonkostenvoordeel op Ondernemersplein",
               url: `${DOP}/subsidies-en-regelingen/loonkostenvoordeel-voor-werkgevers/`,
@@ -151,6 +203,17 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       : []),
   ];
 };
+
+const Extern = ({ bron, wat }: { bron: Bron; wat: string }) => (
+  <a
+    href={bron.url}
+    className="utrecht-link utrecht-link--html-a"
+    target="_blank"
+    rel="external noopener noreferrer"
+  >
+    {bron.tekst} ({wat})
+  </a>
+);
 
 const Termijnen = ({ regels }: { regels: Regel[] }) => {
   const termijnen = termijnenVoor(regels);
@@ -162,25 +225,18 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
       </Heading>
       <UnorderedList>
         {termijnen.map((t) => (
-          <UnorderedListItem key={t.artikel}>
-            {t.tekst}{" "}
-            <a
-              href={t.url}
-              className="utrecht-link utrecht-link--html-a"
-              target="_blank"
-              rel="external noopener noreferrer"
-            >
-              {t.artikel} (opent wetten.overheid.nl in een nieuw tabblad)
-            </a>
+          <UnorderedListItem key={t.id}>
+            <strong>{t.regeling}.</strong> {t.tekst}
             <br />
-            <a
-              href={t.meer.url}
-              className="utrecht-link utrecht-link--html-a"
-              target="_blank"
-              rel="external noopener noreferrer"
-            >
-              {t.meer.tekst} (opent in een nieuw tabblad)
-            </a>
+            Wanneer weet u het? {t.wanneer}
+            {t.bronnen.map((b) => (
+              <span key={b.url + b.tekst}>
+                <br />
+                <Extern bron={b} wat="opent in een nieuw tabblad" />
+              </span>
+            ))}
+            <br />
+            <Extern bron={t.meer} wat="opent in een nieuw tabblad" />
           </UnorderedListItem>
         ))}
       </UnorderedList>
