@@ -63,7 +63,7 @@ const kandidatenVan = (
       id: kandidaatId(naam),
       naam,
       geboren: datumNL(k.geboortedatum),
-      status: `Gekoppeld, toestemming gegeven op ${datumNL(k.toestemmingOp)}`,
+      status: `Toestemming gegeven op ${datumNL(k.toestemmingOp)}`,
       gekoppeld: true,
       journaal: [
         {
@@ -86,7 +86,7 @@ const kandidatenVan = (
       naam: n.naam,
       geboren: n.geboortedatum || undefined,
       status: n.code
-        ? `Wacht op ${n.naam}: koppelcode gegeven op ${datumNL(n.gevraagdOp)}`
+        ? `Koppelcode gegeven op ${datumNL(n.gevraagdOp)}`
         : `Toestemming gevraagd op ${datumNL(n.gevraagdOp)}`,
       gekoppeld: false,
       code: n.code,
