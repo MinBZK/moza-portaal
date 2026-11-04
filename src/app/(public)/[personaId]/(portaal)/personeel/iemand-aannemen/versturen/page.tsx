@@ -3,11 +3,13 @@ import { Heading, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Versturen from "./_versturen";
-import Stappen from "../_stappen";
+import Stappen, { TAAK_TITEL } from "../_stappen";
 import { werkgeverVan } from "../_werkgever";
+import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
+import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 
 export const metadata: Metadata = {
-  title: "Controleren en versturen - Personeel en rollen",
+  title: "Controleren en versturen - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 4: wat wordt verstuurd, bij wie, en de bevestiging. */
@@ -18,8 +20,10 @@ const VersturenPage = async () => {
   ]);
   return (
     <>
-      <Heading level={1}>Controleren en versturen</Heading>
-      <Stappen huidige={3} />
+      <CollapsibleNavigation />
+      <Heading level={1}>{TAAK_TITEL}</Heading>
+      <FocusModeSwitch />
+      <Stappen huidige={4} />
       <Paragraph>
         Dit verstuurt u, en naar wie. Klopt er iets niet? Ga terug naar de
         aanvraag om het aan te passen.

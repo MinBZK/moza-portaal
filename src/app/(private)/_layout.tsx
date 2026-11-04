@@ -1,7 +1,10 @@
+import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { getKvkFromCookie, getKvkOptionsFromCookie } from "@/utils/kvknummer";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
+import PageGrid from "@/layouts/navigation/pageGrid";
+import { FOCUS_MODE_COOKIE } from "@/layouts/navigation/focusModeCookie";
 import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
 import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import Breadcrumb from "@/layouts/breadcrumb";
@@ -28,7 +31,11 @@ export default async function PrivateLayout({
       {/* Zelfde opbouw als de PublicLayout in (public)/_layout.tsx */}
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">
-          <div className="rhc-grid">
+          <PageGrid
+            focusModeOff={
+              (await cookies()).get(FOCUS_MODE_COOKIE)?.value === "uit"
+            }
+          >
             <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
               <Navigation
                 berichtenboxBadge={<OngelezenBadge />}
@@ -39,7 +46,7 @@ export default async function PrivateLayout({
               <Breadcrumb />
               {children}
             </div>
-          </div>
+          </PageGrid>
         </div>
       </main>
     </Providers>

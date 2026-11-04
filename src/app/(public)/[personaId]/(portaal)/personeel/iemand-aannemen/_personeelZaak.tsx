@@ -32,7 +32,7 @@ const PersoneelZaak = ({
             {zaakVan(staat, situatie).onderwerp ?? zaken[situatie].onderwerp}
           </Link>
           <br />
-          {zaken[situatie].organisatie} ·{" "}
+          {zaken[situatie].organisatie},{" "}
           {statusTekst(zaakVan(staat, situatie), situatie)}
         </Paragraph>
       ))}

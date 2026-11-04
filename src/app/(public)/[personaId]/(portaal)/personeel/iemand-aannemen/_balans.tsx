@@ -234,7 +234,7 @@ const Balans = ({
   if (kort)
     return (
       <>
-        <dl className="rhc-data-summary rhc-data-summary--row">
+        <dl className="rhc-data-summary rhc-data-summary--column">
           {regels.map((r) => (
             <div key={r.id} className="rhc-data-summary__item">
               <dt className="rhc-data-summary__item-key">

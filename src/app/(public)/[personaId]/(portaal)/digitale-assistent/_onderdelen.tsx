@@ -203,7 +203,7 @@ export const EnergieKaart = ({
       </Heading>
       <Paragraph>
         Afgegeven door: {uitgever}
-        {peiljaar ? ` · peiljaar ${peiljaar}` : ""}
+        {peiljaar ? `, peiljaar ${peiljaar}` : ""}
       </Paragraph>
       {data.toestemming?.met_toestemming_ondernemer && (
         <Paragraph className="rhc-mox-chat-badge">

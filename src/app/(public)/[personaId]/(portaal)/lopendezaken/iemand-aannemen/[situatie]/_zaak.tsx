@@ -422,9 +422,9 @@ const Zaak = ({
                     )}
                     <p className="rhc-mox-small-text">
                       Vastgelegd door {g.actor}
-                      {g.grond && ` · ${g.grond}`}
-                      {g.herstelt && " · vervangt de afspraak hieronder"}
-                      {g.gecorrigeerdDoor && " · gecorrigeerd, zie hierboven"}
+                      {g.grond && `; ${g.grond}`}
+                      {g.herstelt && "; vervangt de afspraak hieronder"}
+                      {g.gecorrigeerdDoor && "; gecorrigeerd, zie hierboven"}
                     </p>
                   </TimelineItem>
                 ))}
