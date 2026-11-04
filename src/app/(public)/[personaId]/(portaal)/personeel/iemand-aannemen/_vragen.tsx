@@ -108,7 +108,7 @@ type Termijn = {
 
 const DOP = "https://ondernemersplein.overheid.nl";
 
-/** De termijnen die bij de uitkomsten horen; elk staat letterlijk in het genoemde artikel. */
+/** De termijnen die bij de uitkomsten horen; elk volgt uit het genoemde artikel. */
 const termijnenVoor = (regels: Regel[]): Termijn[] => {
   const geldt = (id: Regel["id"]) =>
     regels.find((r) => r.id === id && r.bedragPerJaar > 0);
@@ -175,18 +175,18 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
               href={t.url}
               className="utrecht-link utrecht-link--html-a"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
             >
-              {t.artikel} (opent wetten.overheid.nl)
+              {t.artikel} (opent wetten.overheid.nl in een nieuw tabblad)
             </a>
             <br />
             <a
               href={t.meer.url}
               className="utrecht-link utrecht-link--html-a"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
             >
-              {t.meer.tekst} (opent in een nieuw venster)
+              {t.meer.tekst} (opent in een nieuw tabblad)
             </a>
           </UnorderedListItem>
         ))}
@@ -198,9 +198,9 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string> = {
   lks: () =>
-    "Loonkostensubsidie: u geeft wijzigingen door aan de gemeente, zoals andere uren of een ander contract. De gemeente meet de loonwaarde in principe één keer per jaar opnieuw.",
+    "Loonkostensubsidie: u geeft wijzigingen door aan de gemeente, zoals andere uren of een ander contract. De gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet.",
   ld: () =>
-    "Loondispensatie: UWV bepaalt hoe lang die geldt, ten minste zes maanden en ten hoogste vijf jaar.",
+    "Loondispensatie: u betaalt het lagere loon dat UWV vaststelt. UWV bepaalt hoe lang dat mag, ten hoogste vijf jaar. Daarna kan UWV het verlengen.",
   lkv: (regel) =>
     regel.categorie === "arbeidsgehandicapte_werknemer"
       ? "Loonkostenvoordeel: u zet het aan in de loonaangifte en bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
@@ -279,7 +279,7 @@ const Vragen = ({
   toelichting,
 }: {
   onderneming: string;
-  /** Alinea's onder de knop: wie de regelingen uitvoert, en de termijnen. */
+  /** Alinea's onder de knop: wie de regelingen uitvoert. */
   toelichting?: string[];
 }) => {
   const { staat, werkBij } = useAannemen();
