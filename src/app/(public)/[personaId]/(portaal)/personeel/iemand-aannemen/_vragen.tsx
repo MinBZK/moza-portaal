@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ActionGroup,
   Fieldset,
@@ -18,7 +18,14 @@ import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
-import { type Overig, type Regel } from "./_uitkomsten";
+import basis from "./_basisfeiten.json";
+import {
+  invoerVoor,
+  type Feiten,
+  type Overig,
+  type Regel,
+} from "./_uitkomsten";
+import Waarom from "./_waarom";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -219,6 +226,31 @@ const WatUDoet = ({ regels }: { regels: Regel[] }) => {
   );
 };
 
+/** Per regeling met een bedrag de uitkomst die "Hoe is dit berekend?" uitlegt. */
+const BEREKEND: Record<
+  Regel["id"],
+  { wet: string; output: string; titel: string; naam: string }
+> = {
+  lks: {
+    wet: "participatiewet",
+    output: "heeft_recht_op_lks",
+    titel: "Hoe is de loonkostensubsidie berekend?",
+    naam: "Loonkostensubsidie",
+  },
+  ld: {
+    wet: "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+    output: "heeft_recht_op_loondispensatie",
+    titel: "Hoe is de loondispensatie berekend?",
+    naam: "Loondispensatie",
+  },
+  lkv: {
+    wet: "wet_tegemoetkomingen_loondomein",
+    output: "heeft_recht_op_lkv",
+    titel: "Hoe is het loonkostenvoordeel berekend?",
+    naam: "Loonkostenvoordeel",
+  },
+};
+
 /** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
 const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
   <ActionGroup>
@@ -274,6 +306,7 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
+  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
   const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
   const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
@@ -445,6 +478,29 @@ const VragenMetStaat = ({
                 aanvraag beslissen de gemeente, UWV en de Belastingdienst.
               </Paragraph>
               <Balans antwoorden={a} resultaat={resultaat} />
+              {resultaat.bekend &&
+                !resultaat.fout &&
+                resultaat.uitkomsten.regels
+                  .filter((r) => r.bedragPerJaar > 0)
+                  .map((r) => {
+                    const b = BEREKEND[r.id];
+                    const invoer = invoeren.find(
+                      (i) => i.wet === b.wet && i.output === b.output,
+                    );
+                    return invoer ? (
+                      // De sleutel bevat de antwoorden: na een wijziging rekent de uitleg opnieuw.
+                      <Waarom
+                        key={`${r.id}-${JSON.stringify(a)}`}
+                        invoer={invoer}
+                        labels={{}}
+                        regeling={b.naam}
+                        kvk=""
+                        headingLevel={4}
+                        licht
+                        titel={b.titel}
+                      />
+                    ) : null;
+                  })}
               {resultaat.bekend && !resultaat.fout && (
                 <WatUDoet regels={resultaat.uitkomsten.regels} />
               )}
