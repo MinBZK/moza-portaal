@@ -18,7 +18,7 @@ import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
-import { type Overig } from "./_uitkomsten";
+import { type Overig, type Regel } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -88,6 +88,75 @@ const OVERIG: Record<
     tekst: () =>
       "Via de Wajong kan UWV uw werknemer een voorziening geven, zoals een jobcoach of een aangepaste werkplek. Uw werknemer vraagt dit zelf aan bij UWV.",
   },
+};
+
+/** Een termijn uit de wet, met het artikel waar hij staat. */
+type Termijn = { tekst: string; artikel: string; url: string };
+
+/** De termijnen die bij de uitkomsten horen; elk staat letterlijk in het genoemde artikel. */
+const termijnenVoor = (regels: Regel[]): Termijn[] => {
+  const geldt = (id: Regel["id"]) =>
+    regels.find((r) => r.id === id && r.bedragPerJaar > 0);
+  const lkv = geldt("lkv");
+  return [
+    ...(geldt("lks")
+      ? [
+          {
+            tekst:
+              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag.",
+            artikel: "Participatiewet, artikel 10d lid 2",
+            url: "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d",
+          },
+        ]
+      : []),
+    ...(geldt("ld")
+      ? [
+          {
+            tekst:
+              "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
+            artikel: "Besluit loondispensatie Wajong, artikel 4",
+            url: "https://wetten.overheid.nl/BWBR0020119/2010-08-19#Artikel4",
+          },
+        ]
+      : []),
+    ...(lkv?.categorie === "arbeidsgehandicapte_werknemer"
+      ? [
+          {
+            tekst:
+              "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start.",
+            artikel: "Wet tegemoetkomingen loondomein, artikel 2.7",
+            url: "https://wetten.overheid.nl/BWBR0037522/2026-01-01#Artikel2.7",
+          },
+        ]
+      : []),
+  ];
+};
+
+const Termijnen = ({ regels }: { regels: Regel[] }) => {
+  const termijnen = termijnenVoor(regels);
+  if (termijnen.length === 0) return null;
+  return (
+    <section className="rhc-mox-row-gap" aria-labelledby="termijnen">
+      <Heading level={3} id="termijnen">
+        Let op de termijnen
+      </Heading>
+      <UnorderedList>
+        {termijnen.map((t) => (
+          <UnorderedListItem key={t.artikel}>
+            {t.tekst}{" "}
+            <a
+              href={t.url}
+              className="utrecht-link utrecht-link--html-a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.artikel} (opent wetten.overheid.nl)
+            </a>
+          </UnorderedListItem>
+        ))}
+      </UnorderedList>
+    </section>
+  );
 };
 
 /** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
@@ -366,6 +435,9 @@ const VragenMetStaat = ({
         {toelichting?.map((alinea) => (
           <Paragraph key={alinea}>{alinea}</Paragraph>
         ))}
+        {resultaat.bekend && !resultaat.fout && (
+          <Termijnen regels={resultaat.uitkomsten.regels} />
+        )}
       </section>
     </>
   );
