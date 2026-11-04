@@ -233,7 +233,11 @@ const Bronnen = ({
                               {g.vraag}
                             </dt>
                             <dd className="rhc-data-summary__item-value">
-                              {g.waarde}{" "}
+                              {/* De uren komen uit de antwoorden van stap 1. */}
+                              {g.waarde.replace(
+                                "{uren}",
+                                String(antwoorden.uren),
+                              )}{" "}
                               <InfoToggletip
                                 label={`Zo vraagt de wet het: ${g.vraag}`}
                               >
