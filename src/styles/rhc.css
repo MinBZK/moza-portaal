@@ -150,10 +150,6 @@ li {
 	row-gap: 0;
 }
 
-.utrecht-form-field--checkbox {
-	column-gap: var(--utrecht-checkbox-margin-inline-end);
-}
-
 .rhc-form-field-radio-option__input > .utrecht-radio-button {
 	margin-inline-end: 0;
 }
@@ -1243,7 +1239,7 @@ small,
 	block-size: var(--rhc-size-icon-md);
 	flex-shrink: 0;
 	inline-size: var(--rhc-size-icon-md);
-	inset-block-start: var(--rhc-space-2xs);
+	inset-block-start: var(--rhc-space-xs);
 }
 
 .utrecht-link .utrecht-icon {
@@ -2282,6 +2278,8 @@ small,
 	--rhc-toggletip-hover-color: var(--rhc-color-wit);
 	--rhc-toggletip-focus-color: var(--rhc-color-wit);
 	--rhc-toggletip-active-color: var(--rhc-color-wit);
+	/* No border: the button is the same size as the icon in the tooltip. */
+	--rhc-toggletip-border-width: 0;
 }
 
 .rhc-toggletip__summary {

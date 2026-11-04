@@ -15,7 +15,7 @@ export { ExternalLink, TextLink };
 
 export { PATTERNS } from "./_patterns";
 
-/** A pattern page: the heading, where it comes from, and the content in a card. */
+/** A pattern page: the heading, and the content in a card. */
 export const PatternPage = ({
   title,
   children,
@@ -25,11 +25,6 @@ export const PatternPage = ({
 }) => (
   <>
     <Heading level={1}>{title}</Heading>
-    <Paragraph>
-      Overgenomen uit de Storybook van moza-poc. De tekst beschrijft het
-      patroon; de uitwerking in dit portaal kan afwijken.{" "}
-      <TextLink href="/demo/ontwerppatronen">Alle ontwerppatronen</TextLink>
-    </Paragraph>
     <div className="rhc-mox-card">{children}</div>
   </>
 );
