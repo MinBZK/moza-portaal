@@ -759,7 +759,7 @@ const AanvraagInhoud = ({
       </section>
     );
 
-  // Zonder panelen is er niets te versturen. Bij WIA maakt "Klaar" de zaak
+  // Zonder panelen is er niets te versturen. Bij WIA maakt "Uitsturen" de zaak
   // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
   const klaar = () => {
     if (route.zaak === "wia") {
@@ -1011,7 +1011,9 @@ const AanvraagInhoud = ({
                 appearance="primary-action-button"
                 onClick={paneelIds.length > 0 ? indienen : klaar}
               >
-                {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
+                {paneelIds.length > 0
+                  ? "Controleren en versturen"
+                  : "Uitsturen"}
               </Button>
               <Link
                 href="/personeel"
