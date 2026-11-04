@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   Alert,
-  Button,
   DataSummary,
   DataSummaryItem,
   FormFieldSelect,
@@ -39,7 +38,6 @@ import {
   STANDAARD_ANTWOORDEN,
   statusTekst,
   useAannemen,
-  wisAannemen,
   zaakVan,
 } from "../../../personeel/iemand-aannemen/_useAannemen";
 import { useUitkomsten } from "../../../personeel/iemand-aannemen/_useUitkomsten";
@@ -170,9 +168,6 @@ const Zaak = ({
           ))}
         </FormFieldSelect>
       )}
-      <Button appearance="secondary-action-button" onClick={wisAannemen}>
-        Begin het scenario opnieuw
-      </Button>
     </section>
   );
 

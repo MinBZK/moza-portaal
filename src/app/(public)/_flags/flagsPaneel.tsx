@@ -3,6 +3,7 @@
 import { useOptimistic, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
+  ActionGroup,
   Button,
   Fieldset,
   FormFieldCheckboxOption,
@@ -27,6 +28,7 @@ import {
 import SideOverlay from "@/components/SideOverlay";
 import Switch from "@/components/Switch";
 import AssistentPaneel from "./assistentPaneel";
+import { herstelFlows } from "./herstelFlows";
 
 const FlagsPaneel = ({
   flags,
@@ -140,14 +142,19 @@ const FlagsPaneel = ({
         </LinkList>
       </div>
       <div className="prototype-side-overlay__footer">
-        <Button
-          appearance="secondary-action-button"
-          hint="danger"
-          disabled={bezig}
-          onClick={hardReset}
-        >
-          Alles wissen
-        </Button>
+        <ActionGroup>
+          <Button appearance="secondary-action-button" onClick={herstelFlows}>
+            Interactie-flow herstellen
+          </Button>
+          <Button
+            appearance="secondary-action-button"
+            hint="danger"
+            disabled={bezig}
+            onClick={hardReset}
+          >
+            Alles wissen
+          </Button>
+        </ActionGroup>
       </div>
     </SideOverlay>
   );
