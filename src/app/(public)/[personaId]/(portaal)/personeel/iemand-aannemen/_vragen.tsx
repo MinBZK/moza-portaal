@@ -191,9 +191,9 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string> = {
   lks: () =>
-    "Loonkostensubsidie: u geeft wijzigingen door aan de gemeente, zoals andere uren of een ander contract. De gemeente meet de loonwaarde in principe één keer per jaar opnieuw.",
+    "Loonkostensubsidie: u geeft wijzigingen door aan de gemeente, zoals andere uren of een ander contract. De gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet.",
   ld: () =>
-    "Loondispensatie: UWV bepaalt hoe lang die geldt, ten minste zes maanden en ten hoogste vijf jaar.",
+    "Loondispensatie: u betaalt het lagere loon dat UWV vaststelt. UWV bepaalt hoe lang dat mag, ten hoogste vijf jaar. Daarna kan UWV het verlengen.",
   lkv: (regel) =>
     regel.categorie === "arbeidsgehandicapte_werknemer"
       ? "Loonkostenvoordeel: u zet het aan in de loonaangifte en bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
