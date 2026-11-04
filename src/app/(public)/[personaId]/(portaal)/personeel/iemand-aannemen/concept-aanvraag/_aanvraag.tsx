@@ -28,7 +28,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
-import Stappen from "../_stappen";
+import Stappen, { TAAK_TITEL } from "../_stappen";
 import { invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
@@ -41,6 +41,7 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
+import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -52,7 +53,7 @@ const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
       <DataSummaryItem
         key={r.label}
         itemKey={r.label}
-        itemValue={`${r.waarde} · ${r.bron}`}
+        itemValue={`${r.waarde} (bron: ${r.bron})`}
       />
     ))}
   </DataSummary>
@@ -148,11 +149,11 @@ const AanvraagInhoud = ({
   const status = (id: PaneelId) =>
     g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
 
-  // Het eerste paneel staat open; `omgezet` houdt bij welke de gebruiker
-  // open- of dichtklapte.
+  // Het eerste paneel en Loondispensatie staan open; `omgezet` houdt bij
+  // welke de gebruiker open- of dichtklapte.
   const [omgezet, setOmgezet] = useState<PaneelId[]>([]);
   const isOpen = (id: PaneelId) =>
-    (id === paneelIds[0]) !== omgezet.includes(id);
+    (id === paneelIds[0] || id === "ld") !== omgezet.includes(id);
   const wissel = (id: PaneelId) =>
     setOmgezet((nu) =>
       nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
@@ -246,7 +247,7 @@ const AanvraagInhoud = ({
         key={id}
         id={`paneel-${id}`}
         headingLevel={3}
-        label={`${NAAM[id]} · ${status(id)}`}
+        label={`${NAAM[id]} ${status(id)}`}
         // Het type eist `body`, de component rendert alleen `children`.
         body={null}
         expanded={isOpen(id)}
@@ -428,7 +429,7 @@ const AanvraagInhoud = ({
 
   const taak = (id: TaakId): ReactNode => (
     <section
-      className="rhc-mox-card rhc-mox-row-gap"
+      className="rhc-mox-row-gap"
       aria-labelledby={`taak-${id}`}
       key={id}
     >
@@ -494,7 +495,7 @@ const AanvraagInhoud = ({
   const vanzelf = (id: VanzelfId): ReactNode =>
     id === "lkv" ? (
       <section
-        className="rhc-mox-card rhc-mox-row-gap"
+        className="rhc-mox-row-gap"
         aria-labelledby="vanzelf-lkv"
         key={id}
       >
@@ -538,7 +539,7 @@ const AanvraagInhoud = ({
       </section>
     ) : (
       <section
-        className="rhc-mox-card rhc-mox-row-gap"
+        className="rhc-mox-row-gap"
         aria-labelledby="vanzelf-nrp"
         key={id}
       >
@@ -595,157 +596,157 @@ const AanvraagInhoud = ({
 
   return (
     <>
-      <Heading level={1}>
-        Regelingen voor het aannemen van {kandidaat.voornaam}{" "}
-        {kandidaat.achternaam}
-      </Heading>
-      <Stappen huidige={3} />
-      <Paragraph role={bekend ? undefined : "status"}>
-        {resultaat.fout
-          ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
-          : !bekend
-            ? "De regelrecht-engine rekent uit welke regelingen gelden…"
-            : regelingen === 0
-              ? "Bij deze antwoorden is er niets aan te vragen."
-              : paneelIds.length === 0
-                ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
-                : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
-      </Paragraph>
+      <Heading level={1}>{TAAK_TITEL}</Heading>
+      <FocusModeSwitch />
+      <div className="rhc-mox-card">
+        <Stappen huidige={3} />
+        <Paragraph role={bekend ? undefined : "status"}>
+          {resultaat.fout
+            ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
+            : !bekend
+              ? "De regelrecht-engine rekent uit welke regelingen gelden…"
+              : regelingen === 0
+                ? "Bij deze antwoorden is er niets aan te vragen."
+                : paneelIds.length === 0
+                  ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+                  : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
+        </Paragraph>
 
-      <p className="rhc-mox-cluster">
-        <TextBadge variant="info">Vooringevuld</TextBadge>
-        <Tag tekst={werkgever.onderneming} />
-        <Tag
-          tekst={
-            staat.rol === "namens"
-              ? `Ingevuld namens ${werkgever.onderneming}`
-              : `Ingevuld door ${ondernemer}`
-          }
-        />
-        {/* Zonder panelen dient de werkgever niets in: geen tag. */}
-        {paneelIds.length > 0 && (
+        <p className="rhc-mox-cluster">
+          <TextBadge variant="info">Vooringevuld</TextBadge>
+          <Tag tekst={werkgever.onderneming} />
           <Tag
             tekst={
-              staat.zaken[situatie]?.ingediend
-                ? "Verstuurd"
-                : "Nog niet verstuurd"
+              staat.rol === "namens"
+                ? `Ingevuld namens ${werkgever.onderneming}`
+                : `Ingevuld door ${ondernemer}`
             }
           />
+          {/* Zonder panelen dient de werkgever niets in: geen tag. */}
+          {paneelIds.length > 0 && (
+            <Tag
+              tekst={
+                staat.zaken[situatie]?.ingediend
+                  ? "Verstuurd"
+                  : "Nog niet verstuurd"
+              }
+            />
+          )}
+        </p>
+
+        {paneelIds.length > 0 && (
+          <div className="rhc-mox-stack rhc-mox-stack--sm">
+            <Paragraph>
+              Gecontroleerd: {aantal} van {paneelIds.length}
+            </Paragraph>
+            <ProgressBar
+              label="Gecontroleerd"
+              value={aantal}
+              max={paneelIds.length}
+              valueText={`${aantal} van ${paneelIds.length}`}
+            />
+          </div>
         )}
-      </p>
 
-      {paneelIds.length > 0 && (
-        <div className="rhc-mox-stack rhc-mox-stack--sm">
-          <Paragraph>
-            Gecontroleerd: {aantal} van {paneelIds.length}
-          </Paragraph>
-          <ProgressBar
-            label="Gecontroleerd"
-            value={aantal}
-            max={paneelIds.length}
-            valueText={`${aantal} van ${paneelIds.length}`}
-          />
-        </div>
-      )}
+        {fout && aantal < paneelIds.length && (
+          <Alert type="error">
+            <Paragraph>
+              Nog niet klaar om te versturen. Controleer eerst:
+            </Paragraph>
+            <UnorderedList>
+              {paneelIds
+                .filter((id) => !g[id])
+                .map((id) => (
+                  <UnorderedListItem key={id}>
+                    <a
+                      href={`#paneel-${id}`}
+                      className="utrecht-link utrecht-link--html-a"
+                    >
+                      {NAAM[id]}
+                    </a>
+                    {mist(id) && ": vul eerst aan wat ontbreekt"}
+                  </UnorderedListItem>
+                ))}
+            </UnorderedList>
+          </Alert>
+        )}
 
-      {fout && aantal < paneelIds.length && (
-        <Alert type="error">
-          <Paragraph>
-            Nog niet klaar om te versturen. Controleer eerst:
-          </Paragraph>
-          <UnorderedList>
-            {paneelIds
-              .filter((id) => !g[id])
-              .map((id) => (
-                <UnorderedListItem key={id}>
-                  <a
-                    href={`#paneel-${id}`}
-                    className="utrecht-link utrecht-link--html-a"
-                  >
-                    {NAAM[id]}
-                  </a>
-                  {mist(id) && ": vul eerst aan wat ontbreekt"}
-                </UnorderedListItem>
+        <div className="rhc-grid">
+          <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
+            <Alert type="info" closable>
+              <Paragraph>
+                <strong>Wie kan deze aanvraag zien?</strong>
+              </Paragraph>
+              <Paragraph>
+                Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
+              </Paragraph>
+              <Paragraph>
+                Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
+                gegevens van die uitkomst naar de digitale assistent.
+              </Paragraph>
+              <Paragraph className="rhc-mox-small-text">
+                Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
+              </Paragraph>
+            </Alert>
+            {bekend &&
+              route.panelen.map((groep) => (
+                <section
+                  key={groep.organisatie}
+                  className="rhc-mox-row-gap"
+                  aria-labelledby={`naar-${groep.organisatie}`}
+                >
+                  <Heading level={2} id={`naar-${groep.organisatie}`}>
+                    {ORGANISATIE[groep.organisatie]}
+                  </Heading>
+                  <Accordion>{groep.ids.map(paneel)}</Accordion>
+                </section>
               ))}
-          </UnorderedList>
-        </Alert>
-      )}
 
-      <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
-          {bekend &&
-            route.panelen.map((groep) => (
+            {bekend && route.taken.length > 0 && (
               <section
-                key={groep.organisatie}
                 className="rhc-mox-row-gap"
-                aria-labelledby={`naar-${groep.organisatie}`}
+                aria-labelledby="taken-werknemer"
               >
-                <Heading level={2} id={`naar-${groep.organisatie}`}>
-                  {ORGANISATIE[groep.organisatie]}
+                <Heading level={2} id="taken-werknemer">
+                  Taken voor de werknemer
                 </Heading>
-                <Accordion>{groep.ids.map(paneel)}</Accordion>
+                {route.taken.map(taak)}
               </section>
-            ))}
+            )}
 
-          {bekend && route.taken.length > 0 && (
-            <section
-              className="rhc-mox-row-gap"
-              aria-labelledby="taken-werknemer"
-            >
-              <Heading level={2} id="taken-werknemer">
-                Taken voor de werknemer
-              </Heading>
-              {route.taken.map(taak)}
-            </section>
-          )}
+            {bekend && route.vanzelf.length > 0 && (
+              <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
+                <Heading level={2} id="vanzelf">
+                  Gaat vanzelf of via de loonaangifte
+                </Heading>
+                {route.vanzelf.map(vanzelf)}
+              </section>
+            )}
 
-          {bekend && route.vanzelf.length > 0 && (
-            <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
-              <Heading level={2} id="vanzelf">
-                Gaat vanzelf of via de loonaangifte
-              </Heading>
-              {route.vanzelf.map(vanzelf)}
-            </section>
-          )}
+            {bekend && (
+              <ActionGroup>
+                <Button
+                  appearance="primary-action-button"
+                  onClick={paneelIds.length > 0 ? indienen : klaar}
+                >
+                  {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
+                </Button>
+                <Link
+                  href="/personeel"
+                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--subtle"
+                >
+                  Opslaan en later afronden
+                </Link>
+              </ActionGroup>
+            )}
+          </div>
 
-          {bekend && (
-            <ActionGroup>
-              <Button
-                appearance="primary-action-button"
-                onClick={paneelIds.length > 0 ? indienen : klaar}
-              >
-                {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
-              </Button>
-              <Link
-                href="/personeel"
-                className="utrecht-link utrecht-link--html-a"
-              >
-                Opslaan en later afronden
-              </Link>
-            </ActionGroup>
-          )}
-        </div>
-
-        <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
-          <section className="rhc-mox-card" aria-labelledby="wie-ziet">
-            <Heading level={2} id="wie-ziet">
-              Wie deze aanvraag ziet
-            </Heading>
-            <Paragraph>
-              Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
-            </Paragraph>
-            <Paragraph>
-              Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
-              gegevens van die uitkomst naar de digitale assistent.
-            </Paragraph>
-            <Paragraph className="rhc-mox-small-text">
-              Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
-            </Paragraph>
-          </section>
-          {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
-          <StickyInfoBox title="Wat dit u oplevert">
-            <KorteBalans antwoorden={a} resultaat={resultaat} />
-          </StickyInfoBox>
+          <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
+            {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
+            <StickyInfoBox title="Wat dit u oplevert">
+              <KorteBalans antwoorden={a} resultaat={resultaat} />
+            </StickyInfoBox>
+          </div>
         </div>
       </div>
     </>

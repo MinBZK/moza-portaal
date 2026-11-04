@@ -56,7 +56,7 @@ dialog.prototype-side-overlay {
 	}
 
 	.utrecht-form-fieldset {
-		margin-block-end: var(--rhc-space-3xl)
+		margin-block-end: var(--rhc-space-3xl);
 	}
 }
 
@@ -91,13 +91,13 @@ dialog.prototype-side-overlay[open] {
 
 	/* De blokken delen de breedte gelijk: kolommen in het Flags-paneel, de
 	  volle breedte voor het ene blok in het persona-paneel. */
-	>* {
+	> * {
 		flex: 1 1 0;
 		min-inline-size: 0;
 	}
 
 	/* Een rij over de volle breedte onder de kolommen, zoals de Hard reset. */
-	>.prototype-side-overlay__footer {
+	> .prototype-side-overlay__footer {
 		flex-basis: 100%;
 	}
 
@@ -111,6 +111,10 @@ dialog.prototype-side-overlay[open] {
 		gap: var(--rhc-space-md);
 	}
 
+	.prototype-fieldset--2xl .utrecht-form-fieldset__fieldset {
+		gap: var(--rhc-space-2xl);
+	}
+
 	summary {
 		font-size: 1.25rem;
 		font-weight: bold;
@@ -121,13 +125,12 @@ dialog.prototype-side-overlay[open] {
 	  :where() keeps the specificity of a plain "button", so a danger button
 	  (Hard reset) still wins. */
 	button:not(:where(.rhc-mox-switch__button)) {
-		background-color: var(--rhc-color-wit);
 		margin-block-start: var(--rhc-space-lg);
 	}
 }
 
 /* Groepen kaarten (Ondernemers, Dienstverleners) met een kopje erboven. */
-.prototype-persona-group+.prototype-persona-group {
+.prototype-persona-group + .prototype-persona-group {
 	margin-block-start: var(--rhc-space-2xl);
 }
 
@@ -234,7 +237,9 @@ dialog.prototype-side-overlay[open] {
 }
 
 /* Met .prototype-persona-card ervoor, anders wint de icoonmaat uit mox.css. */
-.prototype-persona-card .prototype-persona-card__avatar--placeholder .utrecht-icon {
+.prototype-persona-card
+	.prototype-persona-card__avatar--placeholder
+	.utrecht-icon {
 	block-size: 3rem;
 	inline-size: 3rem;
 }
@@ -250,7 +255,10 @@ dialog.prototype-side-overlay[open] {
 }
 
 .prototype-persona-card__role {
-	background: var(--prototype-persona-label-kleur, var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100)));
+	background: var(
+		--prototype-persona-label-kleur,
+		var(--prototype-persona-kleur, var(--rhc-color-cool-grey-100))
+	);
 	border-radius: var(--rhc-border-radius-sm);
 	font-size: var(--rhc-text-font-size-sm);
 	padding: var(--rhc-space-2xs) var(--rhc-space-md);
@@ -333,12 +341,12 @@ dialog.prototype-side-overlay[open] {
 		gap: var(--rhc-space-xs);
 		position: relative;
 
-		>.utrecht-icon {
+		> .utrecht-icon {
 			color: var(--rhc-color-rood-600);
 		}
 	}
 
-	.prototype-chat-status--connected>.utrecht-icon {
+	.prototype-chat-status--connected > .utrecht-icon {
 		color: var(--rhc-color-groen-600);
 	}
 }
@@ -362,8 +370,8 @@ dialog.prototype-side-overlay[open] {
 	visibility: hidden;
 	z-index: 1;
 
-	li:hover>&,
-	li:focus-within>& {
+	li:hover > &,
+	li:focus-within > & {
 		opacity: 1;
 		visibility: visible;
 	}
@@ -374,8 +382,12 @@ dialog.prototype-side-overlay[open] {
 	}
 }
 
-code {
-	font-size: .875rem;
+code,
+kbd {
+	background: var(--rhc-color-cool-grey-100);
+	border-radius: var(--rhc-border-radius-md);
+	font-size: 0.875rem;
+	padding: var(--rhc-space-sm) var(--rhc-space-md);
 }
 
 /* Demo page (/demo): text and a StickyInfoBox side by side in one card. */
@@ -433,5 +445,6 @@ code {
 /* Card with tools for the researcher, such as starting a scenario again. The
   orange edge sets it apart from the content of the product. */
 .rhc-theme .prototype-research-card.prototype-research-card {
-  border-inline-start: var(--rhc-border-width-lg, 4px) solid var(--rhc-color-oranje-500);
+	border-inline-start: var(--rhc-border-width-lg, 4px) solid
+		var(--rhc-color-oranje-500);
 }

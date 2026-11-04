@@ -17,11 +17,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* ==== Typografie ========================================================= */
 
-	h1,
-	h2,
-	h3,
-	h4,
-	h5 {
+	:is(h1, h2, h3, h4, h5):where(:not(.rhc-page-footer *)) {
 		color: var(--rhc-color-light-cool-grey-900);
 		font-weight: normal;
 	}
@@ -86,7 +82,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	.rhc-nav-bar__link,
 	.rhc-mox-header-organizations__single {
-		align-items: baseline;
+		align-items: flex-start;
 		padding-block-end: var(--rhc-space-xl);
 	}
 
@@ -102,8 +98,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	}
 
 	.rhc-mox-header-account {
-		--utrecht-icon-inset-block-start: var(--rhc-space-sm);
-
 		.utrecht-icon {
 			margin-inline-end: var(--rhc-space-sm);
 		}
@@ -178,28 +172,11 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	/* --- Footer --- */
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
-
-		:is(h2, h3, h4, h5, h6) {
-			color: var(--rhc-color-wit);
-			font-size: var(--rhc-text-font-size-lg);
-		}
-
-		.utrecht-link .utrecht-icon {
-			align-self: flex-start;
-		}
-	}
-
-	.rhc-page-footer span {
-		display: flex;
 	}
 
 	/* ==== Componenten ======================================================== */
 
 	/* --- Accordion --- */
-	.utrecht-accordion .utrecht-button {
-		align-items: baseline;
-	}
-
 	.utrecht-accordion {
 		padding: var(--rhc-space-max-xl);
 	}
@@ -386,18 +363,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* --- Toggletip --- */
 	.mox-toggletip {
-		--rhc-toggletip-background-color: transparent;
-		--rhc-toggletip-hover-background-color: transparent;
-		--rhc-toggletip-focus-background-color: transparent;
-		--rhc-toggletip-active-background-color: transparent;
-		--rhc-toggletip-border-color: transparent;
-		--rhc-toggletip-hover-border-color: transparent;
-		--rhc-toggletip-focus-border-color: transparent;
-		--rhc-toggletip-active-border-color: transparent;
-		--rhc-toggletip-color: var(--utrecht-link-color);
-		--rhc-toggletip-hover-color: var(--utrecht-link-hover-color);
-		--rhc-toggletip-focus-color: var(--utrecht-link-hover-color);
-		--rhc-toggletip-active-color: var(--utrecht-link-hover-color);
 		--rhc-toggletip-icon-size: 1.125rem;
 		--rhc-toggletip-size: 1.125rem;
 
