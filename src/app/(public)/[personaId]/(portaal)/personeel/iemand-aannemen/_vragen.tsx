@@ -91,7 +91,15 @@ const OVERIG: Record<
 };
 
 /** Een termijn uit de wet, met het artikel waar hij staat. */
-type Termijn = { tekst: string; artikel: string; url: string };
+type Termijn = {
+  tekst: string;
+  artikel: string;
+  url: string;
+  /** Uitleg over de regeling op het Digitaal Ondernemersplein. */
+  meer: { tekst: string; url: string };
+};
+
+const DOP = "https://ondernemersplein.overheid.nl";
 
 /** De termijnen die bij de uitkomsten horen; elk staat letterlijk in het genoemde artikel. */
 const termijnenVoor = (regels: Regel[]): Termijn[] => {
@@ -106,6 +114,10 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
               "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag.",
             artikel: "Participatiewet, artikel 10d lid 2",
             url: "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d",
+            meer: {
+              tekst: "Meer over loonkostensubsidie op Ondernemersplein",
+              url: `${DOP}/personeel/personeelskosten-en-loon/verlaag-uw-loonkosten-met-subsidies-en-tegemoetkomingen/`,
+            },
           },
         ]
       : []),
@@ -116,6 +128,10 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
             artikel: "Besluit loondispensatie Wajong, artikel 4",
             url: "https://wetten.overheid.nl/BWBR0020119/2010-08-19#Artikel4",
+            meer: {
+              tekst: "Meer over loondispensatie op Ondernemersplein",
+              url: `${DOP}/subsidies-en-regelingen/loondispensatie-wajong/`,
+            },
           },
         ]
       : []),
@@ -126,6 +142,10 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
               "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start.",
             artikel: "Wet tegemoetkomingen loondomein, artikel 2.7",
             url: "https://wetten.overheid.nl/BWBR0037522/2026-01-01#Artikel2.7",
+            meer: {
+              tekst: "Meer over het loonkostenvoordeel op Ondernemersplein",
+              url: `${DOP}/subsidies-en-regelingen/loonkostenvoordeel-voor-werkgevers/`,
+            },
           },
         ]
       : []),
@@ -151,6 +171,15 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
               rel="noopener noreferrer"
             >
               {t.artikel} (opent wetten.overheid.nl)
+            </a>
+            <br />
+            <a
+              href={t.meer.url}
+              className="utrecht-link utrecht-link--html-a"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.meer.tekst} (opent in een nieuw venster)
             </a>
           </UnorderedListItem>
         ))}
