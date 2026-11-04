@@ -105,7 +105,7 @@ const iemandAannemen: DemoConceptAanvraag = {
   overgenomen:
     "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. Controleer hieronder of deze antwoorden nog kloppen. De berekening gaat ervan uit.",
   toelichting: [
-    "Welke regelingen gelden, hangt af van de kandidaat. UWV, de Belastingdienst en de gemeente voeren ze uit. U hoeft niet te weten welke organisatie waarover gaat.",
+    "Welke regelingen gelden, hangt af van de kandidaat. UWV, de Belastingdienst en de gemeente voeren ze uit.",
     "Let op de termijnen. Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag. Loondispensatie geldt pas vanaf de maand waarin die is aangevraagd. Een doelgroepverklaring vraagt de werknemer aan binnen drie maanden na de start.",
   ],
   flow: "iemand-aannemen",

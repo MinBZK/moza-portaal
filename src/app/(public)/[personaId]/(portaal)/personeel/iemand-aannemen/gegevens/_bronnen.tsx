@@ -174,19 +174,19 @@ const Bronnen = ({
 
       <section className="rhc-mox-stack" aria-labelledby="overheid-weet">
         <Heading level={2} id="overheid-weet">
-          Wat de overheid al weet
+          Gegevens die de overheid kan ophalen voor de berekening
         </Heading>
         {wachtend ? (
           <Paragraph>
             Wij hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
-            toestemming gevraagd. Zodra die er is, halen we op wat de overheid
-            al weet en ziet u het hier. In dit prototype komt die toestemming
-            niet.
+            toestemming gevraagd. Zodra die er is, halen wij de gegevens op die
+            nodig zijn voor de berekening en ziet u ze hier. In dit prototype
+            komt die toestemming niet.
           </Paragraph>
         ) : !gekozen ? (
           <Paragraph>
-            Kies eerst de kandidaat. Daarna halen we op wat de overheid al weet
-            en ziet u het hier.
+            Kies eerst de kandidaat. Daarna halen wij de gegevens op die nodig
+            zijn voor de berekening en ziet u het hier.
           </Paragraph>
         ) : (
           <>
