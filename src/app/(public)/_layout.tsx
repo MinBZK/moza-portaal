@@ -82,7 +82,6 @@ export default async function PublicLayout({
             {withNavigation && (
               <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
                 <Navigation
-                  flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
                   lopendeZakenBadge={
                     <ZakenBadge nogInTeDienen={conceptAanvragen.length} />

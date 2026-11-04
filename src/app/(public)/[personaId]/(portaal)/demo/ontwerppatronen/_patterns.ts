@@ -1,4 +1,4 @@
-/** The design patterns, in the order of the Storybook of moza-poc. */
+/** The design patterns: those from the Storybook of moza-poc, then our own. */
 export const PATTERNS = [
   {
     slug: "interactie-op-inhoud",
@@ -34,5 +34,17 @@ export const PATTERNS = [
     title: "Berichtenbox",
     description:
       "Berichten ophalen uit een federatief stelsel, met voortgang en storingen.",
+  },
+  {
+    slug: "focus-op-een-enkele-taak",
+    title: "Focus op een enkele taak",
+    description:
+      "Minder afleiding tijdens een taak in stappen, met altijd een duidelijke uitweg.",
+  },
+  {
+    slug: "taakgerichte-navigatie",
+    title: "Taakgerichte navigatie",
+    description:
+      "Het hoofdmenu ingedeeld naar wat u moet doen, wat u kunt doen en wat wij voor u doen.",
   },
 ] as const;

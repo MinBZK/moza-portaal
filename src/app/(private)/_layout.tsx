@@ -6,7 +6,6 @@ import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_o
 import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import Breadcrumb from "@/layouts/breadcrumb";
 import Providers from "@/app/providers";
-import { getFlagsFromServerCookie } from "@/app/actions";
 import { redirect } from "next/navigation";
 
 export default async function PrivateLayout({
@@ -14,7 +13,6 @@ export default async function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const flags = await getFlagsFromServerCookie();
   const session = await auth();
   const kvk = await getKvkFromCookie();
   const kvkOpties = await getKvkOptionsFromCookie();
@@ -33,7 +31,6 @@ export default async function PrivateLayout({
           <div className="rhc-grid">
             <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
               <Navigation
-                flags={flags}
                 berichtenboxBadge={<OngelezenBadge />}
                 lopendeZakenBadge={<ZakenBadge />}
               />

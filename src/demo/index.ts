@@ -41,9 +41,7 @@ export {
   type DemoVerwerking,
 } from "./dataverwerking";
 export {
-  getDemoContactgegevens,
   getDemoContactorganisaties,
-  getDemoContactkanalen,
   getDemoContactvragen,
   getDemoProfielIdentiteit,
   type DemoOrganisatie,

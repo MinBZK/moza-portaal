@@ -1093,12 +1093,6 @@ const layoutEntries: Entry[] = [
     ],
     options: [
       [
-        "flags",
-        "FeatureFlags",
-        "alles aan",
-        "Pagina’s die in het Flags-paneel uit staan, verdwijnen uit het menu",
-      ],
-      [
         "berichtenboxBadge / lopendeZakenBadge",
         "ReactNode",
         "–",
