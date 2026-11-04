@@ -26,22 +26,20 @@ import {
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
-import { datumNL, type Werkgever } from "../_werkgever";
+import { datumNL } from "../_werkgever";
 
 const NIEUW = "nieuw";
 
 /**
- * Namens wie, de kandidaat kiezen of toevoegen, en het omgekeerde formulier:
+ * De kandidaat kiezen of toevoegen, en het omgekeerde formulier:
  * alles wat de overheid al weet in een tabel, per bron een vinkje dat
  * standaard aan staat. Een zelf toegevoegde kandidaat wacht op toestemming;
  * zonder toestemming haalt het portaal niets op.
  */
 const Bronnen = ({
   perSituatie,
-  werkgever,
 }: {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
-  werkgever: Werkgever;
 }) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
@@ -90,34 +88,6 @@ const Bronnen = ({
 
   return (
     <>
-      <section className="rhc-mox-stack" aria-labelledby="namens">
-        <Heading level={2} id="namens">
-          Namens wie vult u in?
-        </Heading>
-        <Fieldset legend="Rol">
-          <FormFieldRadio
-            name="rol"
-            value="eigenaar"
-            label={`Ik ben eigenaar of vennoot van ${werkgever.onderneming}`}
-            checked={(staat?.rol ?? "eigenaar") === "eigenaar"}
-            onChange={() => werkBij({ rol: "eigenaar" })}
-          />
-          <FormFieldRadio
-            name="rol"
-            value="namens"
-            label={`Ik vul in namens ${werkgever.onderneming}, bijvoorbeeld als salarisadministrateur`}
-            checked={staat?.rol === "namens"}
-            onChange={() => werkBij({ rol: "namens" })}
-          />
-        </Fieldset>
-        {staat?.rol === "namens" && (
-          <Paragraph className="rhc-mox-small-text">
-            U kunt de aanvraag invullen. De eigenaar ondertekent de aanvraag
-            voordat u die verstuurt.
-          </Paragraph>
-        )}
-      </section>
-
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?

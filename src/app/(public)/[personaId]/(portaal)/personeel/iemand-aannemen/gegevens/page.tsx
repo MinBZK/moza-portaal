@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Aanvraag laten invullen - Personeel en rollen",
 };
 
-/** Scherm 2: aanvraag laten invullen. Namens wie, de kandidaat, en per bron bevestigen. */
+/** Scherm 2: aanvraag laten invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
 const GegevensPage = async () => {
   const [situaties, organisatie] = await Promise.all([
     getDemoIemandAannemenSituaties(),
@@ -59,7 +59,7 @@ const GegevensPage = async () => {
             omgeving, tot u die zelf verstuurt.
           </Paragraph>
         </Alert>
-        <Bronnen perSituatie={perSituatie} werkgever={werkgever} />
+        <Bronnen perSituatie={perSituatie} />
       </div>
     </>
   );
