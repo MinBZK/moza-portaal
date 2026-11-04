@@ -14,8 +14,6 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
@@ -140,7 +138,7 @@ const Bronnen = ({
               delen === "niet"
                 ? "deelt geen gegevens"
                 : delen === "uitvoerder"
-                  ? `deelt sinds ${datumNL(kandidaat.toestemmingOp)} gegevens met de gemeente en UWV, niet met u`
+                  ? "deelt de eigen gegevens niet met u"
                   : `toestemming gegeven op ${datumNL(kandidaat.toestemmingOp)}`
             }`}
             checked={gekozen}
@@ -248,22 +246,16 @@ const Bronnen = ({
             {verborgen.length > 0 && (
               <div className="rhc-mox-row-gap">
                 <Paragraph>
-                  {kandidaat.voornaam} deelt de eigen gegevens met de gemeente
-                  en UWV, niet met u. Zij gebruiken ze voor de berekening en om
-                  uw aanvraag te beoordelen. U ziet ze niet.
+                  {kandidaat.voornaam} deelt de eigen gegevens niet met u. Dat
+                  hoeft ook niet om aan te vragen. Als u aanvraagt, gebruiken de
+                  gemeente en UWV hun eigen gegevens over {kandidaat.voornaam}.
+                  Wij halen alleen de gegevens over uw onderneming op.
                 </Paragraph>
-                <UnorderedList>
-                  {verborgen.map((bron) => (
-                    <UnorderedListItem key={bron.id}>
-                      {bron.organisatie}: {bron.gegevens.length}{" "}
-                      {bron.gegevens.length === 1 ? "gegeven" : "gegevens"},
-                      alleen voor{" "}
-                      {bron.id === "gemeente"
-                        ? "de gemeente"
-                        : bron.organisatie}
-                    </UnorderedListItem>
-                  ))}
-                </UnorderedList>
+                <Paragraph>
+                  De bedragen in de aanvraag zijn dan een voorbeeldberekening
+                  met uw eigen antwoorden. Het echte bedrag staat in het besluit
+                  van de gemeente en UWV.
+                </Paragraph>
               </div>
             )}
             <Paragraph>

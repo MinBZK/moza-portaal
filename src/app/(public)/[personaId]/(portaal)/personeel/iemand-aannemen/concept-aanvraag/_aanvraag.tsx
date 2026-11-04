@@ -299,12 +299,16 @@ const AanvraagInhoud = ({
               bron: "UWV doelgroepregister",
             }
           : null;
-  // Deelt de kandidaat alleen met de gemeente en UWV, dan ziet de werkgever
-  // de waarde niet; de organisatie gebruikt hem wel bij de beoordeling.
+  // Deelt de kandidaat de gegevens niet met de werkgever, dan controleert de
+  // organisatie ze zelf bij de beoordeling; de werkgever ziet ze niet.
   const verborgen = staat.delen === "uitvoerder";
   const verberg = (rij: Gegeven): Gegeven =>
     verborgen
-      ? { ...rij, waarde: "Gedeeld met de gemeente en UWV, niet met u" }
+      ? {
+          ...rij,
+          waarde: `${rij.bron.startsWith("UWV") ? "UWV" : "De gemeente"} controleert dit zelf`,
+          bron: "niet met u gedeeld",
+        }
       : rij;
   if (situatieRij) werknemerRijen.push(verberg(situatieRij));
   const woonplaatsRij: Gegeven = verberg({
@@ -821,6 +825,17 @@ const AanvraagInhoud = ({
                 : `Wij hebben ${paneelIds.length === 1 ? "de aanvraag" : `${paneelIds.length} aanvragen`} voor u ingevuld met gegevens die de overheid al heeft. Er is nog niets verstuurd.`}
       </Paragraph>
 
+      {bekend && verborgen && (
+        <Alert type="info">
+          <Paragraph>
+            {kandidaat.voornaam} deelt de eigen gegevens niet met u. De gemeente
+            en UWV gebruiken hun eigen gegevens als u aanvraagt. De bedragen op
+            deze pagina zijn een voorbeeldberekening met uw antwoorden. Het
+            echte bedrag staat in het besluit.
+          </Paragraph>
+        </Alert>
+      )}
+
       {bekend && paneelIds.length > 0 && (
         <section
           className="rhc-mox-card rhc-mox-row-gap"
@@ -889,6 +904,7 @@ const AanvraagInhoud = ({
                   {t.bedrag !== undefined && (
                     <span className="rhc-mox-tile__amount">
                       {euro(t.bedrag)} per jaar
+                      {verborgen && ", voorbeeld"}
                     </span>
                   )}
                   <span className="rhc-mox-tile__status rhc-mox-small-text">
