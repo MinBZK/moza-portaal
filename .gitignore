@@ -53,5 +53,6 @@ output
 # Design token docs
 /docs/*
 
-# Behalve de schrijfwijzer, waar CLAUDE.md naar verwijst
+# Behalve de schrijfwijzer en de UX-opleveringen, waar CLAUDE.md naar verwijst
 !/docs/schrijfwijzer.md
+!/docs/ux-opleveringen.md
