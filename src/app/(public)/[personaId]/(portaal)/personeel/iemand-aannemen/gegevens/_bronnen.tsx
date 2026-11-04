@@ -14,6 +14,8 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
+  UnorderedList,
+  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
@@ -60,6 +62,38 @@ const Bronnen = ({
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
+  // De loonwaarde is nog niet gemeten als de gemeente dat zo opgeeft.
+  const loonwaardeNogNiet = bronnen.some((b) =>
+    b.gegevens.some(
+      (g) =>
+        g.parameter === "college_heeft_loonwaarde_vastgesteld" &&
+        g.waarde.startsWith("Nog niet"),
+    ),
+  );
+  // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is:
+  // alleen termijnen uit de wet of van UWV, geen gemiddelde.
+  const duur = [
+    ...(wachtend
+      ? [
+          `Eerst geeft ${wachtend.naam} toestemming. Hoe lang dat duurt, hangt af van ${wachtend.naam}.`,
+        ]
+      : []),
+    ...(situatie === "gemeente" && loonwaardeNogNiet
+      ? [
+          `De loonwaarde van ${kandidaat.voornaam} is nog niet gemeten. Een deskundige van de gemeente meet die op de werkplek, als ${kandidaat.voornaam} is ingewerkt. Een vaste wachttijd daarvoor is er niet. Daarna beslist de gemeente binnen vijf weken (Participatiewet, artikel 10d lid 12).`,
+        ]
+      : []),
+    ...(situatie === "wajong"
+      ? [
+          "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen acht weken na uw aanvraag.",
+        ]
+      : []),
+    ...(situatie === "wia"
+      ? [
+          "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+        ]
+      : []),
+  ];
   const aantal = staat
     ? BRONNEN.filter((id) => bronBevestigd(staat, id)).length
     : 0;
@@ -264,6 +298,19 @@ const Bronnen = ({
         )}
       </section>
 
+      {gekozen && duur.length > 0 && (
+        <section className="rhc-mox-stack" aria-labelledby="hoe-lang">
+          <Heading level={2} id="hoe-lang">
+            Hoe lang het kan duren
+          </Heading>
+          <UnorderedList>
+            {duur.map((zin) => (
+              <UnorderedListItem key={zin}>{zin}</UnorderedListItem>
+            ))}
+          </UnorderedList>
+        </section>
+      )}
+
       <div className="rhc-mox-stack">
         <Paragraph role="status">
           {wachtend
@@ -287,7 +334,7 @@ const Bronnen = ({
                 );
             }}
           >
-            {naarOverzicht ? "Bekijk wat voor u geldt" : "Vul de aanvraag in"}
+            {naarOverzicht ? "Vraag de data op" : "Vul de aanvraag in"}
           </Button>
         </ActionGroup>
       </div>
