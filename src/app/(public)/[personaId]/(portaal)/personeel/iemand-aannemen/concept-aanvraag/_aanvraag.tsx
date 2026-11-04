@@ -204,45 +204,65 @@ const AanvraagInhoud = ({
   const status = (id: PaneelId) =>
     g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
 
-  // De eerste aanvraag die nog niet gecontroleerd is, staat open; `omgezet`
-  // houdt bij welke de gebruiker zelf open- of dichtklapte.
-  const [omgezet, setOmgezet] = useState<PaneelId[]>([]);
+  // Welke aanvragen openstaan. Zolang de gebruiker niets open- of dichtklapte,
+  // staat de eerste aanvraag open die nog niet gecontroleerd is.
+  const [open, setOpen] = useState<PaneelId[] | null>(null);
   const [melding, setMelding] = useState("");
-  const actief = paneelIds.find((id) => !g[id]);
-  const isOpen = (id: PaneelId) => (id === actief) !== omgezet.includes(id);
+  const eerste = paneelIds.find((id) => !g[id]);
+  const openIds = open ?? (eerste ? [eerste] : []);
+  const isOpen = (id: PaneelId) => openIds.includes(id);
+  const wissel = (id: PaneelId) =>
+    setOpen(isOpen(id) ? openIds.filter((x) => x !== id) : [...openIds, id]);
 
-  // Na "Ik heb dit gecontroleerd" gaat de volgende aanvraag open.
+  // Het vinkje legt alleen vast. Verder gaan doet de gebruiker zelf met de
+  // knop eronder, zodat de focus niet verspringt (WCAG 3.2.2).
   const controleer = (id: PaneelId, aanvinken: boolean) => {
     werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
-    if (!aanvinken) return;
-    const volgende = paneelIds.find((x) => x !== id && !g[x]);
-    setOmgezet([]);
     setMelding(
-      volgende
-        ? `${NAAM[id]} is gecontroleerd. Controleer nu ${NAAM[volgende].toLowerCase()}.`
-        : "Alle aanvragen zijn gecontroleerd. U kunt ze nu versturen.",
-    );
-    const doel = volgende ? `paneel-${volgende}` : "versturen";
-    requestAnimationFrame(() =>
-      document
-        .getElementById(doel)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      aanvinken
+        ? `${NAAM[id]} is gecontroleerd.`
+        : `${NAAM[id]} is nog niet gecontroleerd.`,
     );
   };
-  const wissel = (id: PaneelId) =>
-    setOmgezet((nu) =>
-      nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
-    );
+  const volgendeVan = (id: PaneelId) =>
+    paneelIds.find((x) => x !== id && !g[x]);
+  // Deze aanvraag gaat dicht, de volgende open, en de focus gaat naar de kop
+  // van de volgende aanvraag of naar Versturen.
+  const naarVolgende = (id: PaneelId) => {
+    const volgende = volgendeVan(id);
+    setOpen(volgende ? [volgende] : []);
+    requestAnimationFrame(() => {
+      const doel = document.querySelector<HTMLElement>(
+        volgende ? `#paneel-${volgende} [aria-expanded]` : "#versturen button",
+      );
+      doel?.focus();
+      doel?.scrollIntoView({ block: "start" });
+    });
+  };
 
   // Een gewone functie, geen component: een component in de render zou bij
   // elke wijziging opnieuw worden aangemaakt.
   const vinkje = (id: PaneelId) => (
-    <FormFieldCheckboxOption
-      label="Ik heb dit gecontroleerd"
-      name={`ok-${id}`}
-      checked={!!g[id]}
-      onChange={(event) => controleer(id, event.target.checked)}
-    />
+    <>
+      <FormFieldCheckboxOption
+        label="Ik heb dit gecontroleerd"
+        name={`ok-${id}`}
+        checked={!!g[id]}
+        onChange={(event) => controleer(id, event.target.checked)}
+      />
+      {g[id] && (
+        <ActionGroup>
+          <Button
+            appearance="secondary-action-button"
+            onClick={() => naarVolgende(id)}
+          >
+            {volgendeVan(id)
+              ? `Naar ${NAAM[volgendeVan(id)!].toLowerCase()}`
+              : "Naar versturen"}
+          </Button>
+        </ActionGroup>
+      )}
+    </>
   );
 
   const waarom = (wet: string, output: string, regeling: string) => {
@@ -392,15 +412,11 @@ const AanvraagInhoud = ({
     })),
   ];
 
-  // Een tegel van een aanvraag klapt die aanvraag open en scrolt ernaartoe.
+  // Een tegel van een aanvraag klapt die aanvraag open; de link zelf brengt
+  // de gebruiker en de focus erheen.
   const naarTegel = (tegel: Tegel) => {
     const id = tegel.paneel;
     if (id && !isOpen(id)) wissel(id);
-    requestAnimationFrame(() =>
-      document
-        .getElementById(tegel.doel)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" }),
-    );
   };
 
   const paneel = (id: PaneelId): ReactNode => {
@@ -469,7 +485,8 @@ const AanvraagInhoud = ({
               <UnorderedListItem>
                 <strong>Of {kandidaat.voornaam} bij de doelgroep hoort.</strong>{" "}
                 Dat is zo als {kandidaat.voornaam} met een volledige baan niet
-                het minimumloon kan verdienen (Participatiewet, artikel 10c).
+                het minimumloon kan verdienen (Participatiewet, artikel 6 lid 1
+                onderdeel e en artikel 10c).
               </UnorderedListItem>
               <UnorderedListItem>
                 <strong>De loonwaarde.</strong> Dat is hoeveel het werk van{" "}
@@ -488,21 +505,22 @@ const AanvraagInhoud = ({
                 loonkostensubsidie Participatiewet, artikel 2).
               </UnorderedListItem>
               <UnorderedListItem>
-                U kiest met de gemeente hoe het eerste half jaar gaat. Of de
-                gemeente meet meteen. Of u krijgt eerst een vast bedrag: 50
-                procent van het minimumloon. De gemeente meet dan in de vijfde
-                maand van het dienstverband. Vanaf de zevende maand krijgt u de
-                subsidie op basis van de gemeten loonwaarde (Participatiewet,
-                artikel 10d lid 1 en lid 5).
+                Is {kandidaat.voornaam} al begonnen? Dan stelt de gemeente de
+                loonwaarde vast voordat zij beslist (Participatiewet, artikel
+                10d lid 2 en lid 4).
               </UnorderedListItem>
               <UnorderedListItem>
-                Had {kandidaat.voornaam} eerst een proefplaats bij u? Dan meet
-                de gemeente tijdens de proefplaats. Het vaste bedrag kan dan
-                niet.
+                Vraagt u aan voordat {kandidaat.voornaam} begint? Dan kunt u met
+                de gemeente afspreken dat de meting eerst niet nodig is. U
+                krijgt dan ten hoogste de eerste zes maanden een vast bedrag: 50
+                procent van het minimumloon. Daarna stelt de gemeente de
+                loonwaarde vast (artikel 10d lid 1 onderdeel b en lid 5). De
+                gemeente {kandidaat.gemeente} meet dan in de vijfde maand van
+                het dienstverband.
               </UnorderedListItem>
               <UnorderedListItem>
-                De gemeente meet de loonwaarde in principe één keer per jaar
-                opnieuw.
+                De gemeente spreekt met u en {kandidaat.voornaam} af wanneer zij
+                de loonwaarde opnieuw meet (artikel 10d lid 6).
               </UnorderedListItem>
             </UnorderedList>
             <Paragraph>
@@ -874,8 +892,12 @@ const AanvraagInhoud = ({
               </OrderedListItem>
             )}
             <OrderedListItem>
-              Binnen acht weken na uw aanvraag krijgt u een brief met het
-              besluit en het bedrag. De brief komt in uw berichtenbox.
+              Binnen acht weken na uw aanvraag krijgt u van{" "}
+              {route.panelen.length > 1 ? "elke organisatie" : "de organisatie"}{" "}
+              een brief met het besluit
+              {paneelIds.includes("lks") &&
+                ". Bij loonkostensubsidie staat daarin ook het bedrag"}
+              . De brief komt in uw berichtenbox.
             </OrderedListItem>
           </OrderedList>
         </section>
@@ -892,10 +914,7 @@ const AanvraagInhoud = ({
                 <a
                   href={`#${t.doel}`}
                   className="rhc-mox-tile"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    naarTegel(t);
-                  }}
+                  onClick={() => naarTegel(t)}
                 >
                   <span className="rhc-mox-tile__title">{t.naam}</span>
                   <span className="rhc-mox-small-text">
@@ -927,8 +946,8 @@ const AanvraagInhoud = ({
             Uw antwoorden
           </Heading>
           <Paragraph>
-            Hierop zijn de aanvragen gebaseerd. U kunt ze nog wijzigen. Wat u al
-            hebt gecontroleerd, blijft bewaard.
+            Hierop zijn de aanvragen gebaseerd. U kunt ze nog wijzigen. Wijzigt
+            u een antwoord? Controleer de aanvragen dan opnieuw.
           </Paragraph>
           <dl className="rhc-data-summary rhc-data-summary--column">
             <Antwoord

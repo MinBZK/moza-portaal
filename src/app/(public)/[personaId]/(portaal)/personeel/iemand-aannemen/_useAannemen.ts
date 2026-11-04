@@ -268,7 +268,16 @@ export const useAannemen = () => {
     () => null,
   );
   const werkBij = useCallback((wijziging: Partial<AannemenStaat>) => {
-    schrijf({ ...lees(), ...wijziging });
+    const nu = lees();
+    // Andere antwoorden geven een andere aanvraag: controleer die opnieuw.
+    const anders =
+      wijziging.antwoorden !== undefined &&
+      JSON.stringify(wijziging.antwoorden) !== JSON.stringify(nu.antwoorden);
+    schrijf({
+      ...nu,
+      ...wijziging,
+      ...(anders && !wijziging.gecontroleerd ? { gecontroleerd: {} } : {}),
+    });
   }, []);
   const werkZaakBij = useCallback(
     (situatie: Situatie, wijziging: Partial<ZaakStand>) => {

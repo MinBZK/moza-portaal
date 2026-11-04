@@ -2554,10 +2554,10 @@ small,
 }
 
 .rhc-mox-tile {
+	block-size: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: var(--rhc-space-sm);
-	block-size: 100%;
 	padding: var(--rhc-space-lg);
 	text-decoration: none;
 }
