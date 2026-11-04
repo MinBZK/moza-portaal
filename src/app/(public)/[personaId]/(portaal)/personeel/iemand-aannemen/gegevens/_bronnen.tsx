@@ -334,7 +334,7 @@ const Bronnen = ({
                 );
             }}
           >
-            {naarOverzicht ? "Vraag de data op" : "Vul de aanvraag in"}
+            Vraag de data op
           </Button>
         </ActionGroup>
       </div>
