@@ -14,8 +14,10 @@ const FocusSwitch = () => {
       <Switch label="Zijnavigatie inklappen" checked={on} onChange={setOn} />
       <Paragraph>
         Aan: op een scherm van 768 pixels of breder verdwijnt de zijnavigatie en
-        loopt de inhoud over de volle breedte. In een taak zet de schakelaar{" "}
-        <strong>Focus-mode</strong> onder de kop de navigatie terug.
+        loopt de inhoud over de volle breedte. In een taak blijft de navigatie
+        ingeklapt. Voor onderzoek zet de flag{" "}
+        <strong>Schakelaar Focus-mode in een taak</strong> een schakelaar onder
+        de kop.
       </Paragraph>
     </>
   );

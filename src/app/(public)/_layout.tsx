@@ -82,7 +82,10 @@ export default async function PublicLayout({
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">
           <PageGrid
+            // Zonder de schakelaar (een flag voor onderzoek) staat focus-mode
+            // in een taak altijd aan.
             focusModeOff={
+              flags.mox_focusSchakelaar &&
               (await cookies()).get(FOCUS_MODE_COOKIE)?.value === "uit"
             }
           >

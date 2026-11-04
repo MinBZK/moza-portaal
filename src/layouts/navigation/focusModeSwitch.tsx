@@ -3,11 +3,18 @@
 import { Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import Switch from "@/components/Switch";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import { useFocusMode } from "./pageGrid";
 
-/** Switch for focus mode, below the heading of a page with CollapsibleNavigation. */
+/**
+ * Switch for focus mode, below the heading of a page with CollapsibleNavigation.
+ * Only with the flag mox_focusSchakelaar, for research; otherwise focus mode
+ * stays on during the task.
+ */
 const FocusModeSwitch = () => {
   const { on, set } = useFocusMode();
+  const tonen = useFlag("mox_focusSchakelaar");
+  if (!tonen) return null;
   return (
     <div className="rhc-mox-focus-mode-switch">
       <Switch

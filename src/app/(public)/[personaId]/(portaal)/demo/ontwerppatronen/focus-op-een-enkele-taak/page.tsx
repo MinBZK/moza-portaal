@@ -69,8 +69,8 @@ const Page = () => (
         rows={[
           [
             "Zijnavigatie",
-            "Ingeklapt, met een schakelaar Focus-mode onder de kop",
-            "De grootste bron van afleiding. Wie weg wil, gebruikt de uitweg.",
+            "Ingeklapt, zonder schakelaar",
+            "De grootste bron van afleiding. Wie weg wil, gebruikt de uitweg. Een schakelaar vraagt om een keuze die de ondernemer niet zocht.",
           ],
           [
             "Header",
