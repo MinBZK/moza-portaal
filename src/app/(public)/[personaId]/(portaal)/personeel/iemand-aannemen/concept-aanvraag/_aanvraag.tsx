@@ -30,7 +30,8 @@ import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
 import Stappen from "../_stappen";
-import { invoerVoor, type Feiten } from "../_uitkomsten";
+import { loonkostenPerJaar } from "../_engine";
+import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
@@ -93,6 +94,20 @@ const Beoordeling = ({
     {children}
   </section>
 );
+
+/** Eén regeling als tegel in het overzicht. */
+type Tegel = {
+  id: string;
+  naam: string;
+  wie: string;
+  wet: string;
+  wat: string;
+  bedrag?: number;
+  status?: string;
+  /** Het anker van het onderdeel op de pagina. */
+  doel: string;
+  paneel?: PaneelId;
+};
 
 /** Een antwoord uit stap 1 of 2, met een link om het te wijzigen. */
 const Antwoord = ({
@@ -303,6 +318,79 @@ const AanvraagInhoud = ({
     { label: "Uren per week", waarde: String(a.uren), bron: "Uw antwoord" },
     { label: "Loon", waarde: uurloonTekst(a), bron: "Uw antwoord" },
   ];
+
+  const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
+  const bedragVan = (id: "lks" | "ld" | "lkv") =>
+    balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
+  const gemeenteNaam = `Gemeente ${kandidaat.gemeente}`;
+  const PANEEL_TEGEL: Record<PaneelId, { wie: string; wet: string }> = {
+    lks: { wie: gemeenteNaam, wet: "Participatiewet, artikel 10d" },
+    ld: { wie: "UWV", wet: "Wajong, artikel 2:20" },
+    jc: { wie: gemeenteNaam, wet: "Participatiewet, artikel 10da" },
+    wpa: { wie: gemeenteNaam, wet: "Participatiewet, artikel 10" },
+  };
+  const TAAK_TEGEL: Record<TaakId, { wie: string; wet: string }> = {
+    doelgroepverklaring: {
+      wie: "UWV",
+      wet: "Wet tegemoetkomingen loondomein, artikel 2.7",
+    },
+    vz_wajong: { wie: "UWV", wet: "Wajong, artikel 2:22" },
+    vz_wia: { wie: "UWV", wet: "Wet WIA, artikel 35" },
+    pp: { wie: gemeenteNaam, wet: "Participatiewet, artikel 8a" },
+  };
+  const tegels: Tegel[] = [
+    ...paneelIds.map((id) => ({
+      id,
+      naam: NAAM[id],
+      ...PANEEL_TEGEL[id],
+      wat: "U vraagt aan",
+      bedrag: id === "lks" || id === "ld" ? bedragVan(id) : undefined,
+      status: status(id),
+      doel: `paneel-${id}`,
+      paneel: id,
+    })),
+    ...route.vanzelf.map((id) =>
+      id === "lkv"
+        ? {
+            id,
+            naam: "Loonkostenvoordeel",
+            wie: "Belastingdienst",
+            wet:
+              lkv?.categorie === "arbeidsgehandicapte_werknemer"
+                ? "Wet tegemoetkomingen loondomein, artikel 2.9"
+                : "Wet tegemoetkomingen loondomein, artikel 2.13",
+            wat: "Via de loonaangifte",
+            bedrag: bedragVan("lkv"),
+            doel: "vanzelf-lkv",
+          }
+        : {
+            id,
+            naam: "No-riskpolis",
+            wie: "UWV",
+            wet: "Ziektewet, artikel 29b",
+            wat: "Gaat vanzelf",
+            doel: "vanzelf-nrp",
+          },
+    ),
+    ...route.taken.map((id) => ({
+      id,
+      naam: TAAK[id],
+      ...TAAK_TEGEL[id],
+      wat: "Taak voor de werknemer",
+      doel: `taak-${id}`,
+    })),
+  ];
+
+  // Een tegel van een aanvraag klapt die aanvraag open en scrolt ernaartoe.
+  const naarTegel = (tegel: Tegel) => {
+    const id = tegel.paneel;
+    if (id && !isOpen(id)) wissel(id);
+    requestAnimationFrame(() =>
+      document
+        .getElementById(tegel.doel)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+    );
+  };
 
   const paneel = (id: PaneelId): ReactNode => {
     const kop = (note: string, kind: ReactNode) => (
@@ -768,6 +856,42 @@ const AanvraagInhoud = ({
               besluit en het bedrag. De brief komt in uw berichtenbox.
             </OrderedListItem>
           </OrderedList>
+        </section>
+      )}
+
+      {bekend && tegels.length > 0 && (
+        <section className="rhc-mox-row-gap" aria-labelledby="overzicht">
+          <Heading level={2} id="overzicht">
+            Alle regelingen in één overzicht
+          </Heading>
+          <ul className="rhc-mox-tile-grid">
+            {tegels.map((t) => (
+              <li key={t.id}>
+                <a
+                  href={`#${t.doel}`}
+                  className="rhc-mox-tile"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    naarTegel(t);
+                  }}
+                >
+                  <span className="rhc-mox-tile__title">{t.naam}</span>
+                  <span className="rhc-mox-small-text">
+                    {t.wie} · {t.wet}
+                  </span>
+                  {t.bedrag !== undefined && (
+                    <span className="rhc-mox-tile__amount">
+                      {euro(t.bedrag)} per jaar
+                    </span>
+                  )}
+                  <span className="rhc-mox-tile__status rhc-mox-small-text">
+                    {t.wat}
+                    {t.status && ` · ${t.status}`}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
