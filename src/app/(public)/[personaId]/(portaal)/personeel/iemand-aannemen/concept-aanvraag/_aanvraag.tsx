@@ -326,9 +326,6 @@ const AanvraagInhoud = ({
     bron: "Basisregistratie Personen",
   };
   const dienstRijen: Gegeven[] = [
-    ...(a.functie?.trim()
-      ? [{ label: "Functie", waarde: a.functie.trim(), bron: "Uw opgave" }]
-      : []),
     {
       label: "Eerste werkdag",
       waarde: datumNL(a.aanvang ?? dienstverband.aanvang),
@@ -949,13 +946,6 @@ const AanvraagInhoud = ({
               waarde={datumNL(a.aanvang ?? dienstverband.aanvang)}
               href={GEGEVENS}
             />
-            {a.functie?.trim() && (
-              <Antwoord
-                label="Functie"
-                waarde={a.functie.trim()}
-                href={GEGEVENS}
-              />
-            )}
             <Antwoord
               label="Uren per week"
               waarde={String(a.uren)}

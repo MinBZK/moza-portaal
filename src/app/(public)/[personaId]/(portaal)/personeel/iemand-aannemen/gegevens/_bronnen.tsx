@@ -111,16 +111,6 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
-    <FormFieldTextInput
-      name="functie"
-      label={`Welke functie krijgt ${voornaam}? (niet verplicht)`}
-      description="Bijvoorbeeld medewerker magazijn. De deskundige van de gemeente of UWV bekijkt het werk op de werkplek."
-      autoComplete="off"
-      value={a.functie ?? ""}
-      onChange={(event) =>
-        zet({ functie: (event.target as HTMLInputElement).value })
-      }
-    />
     <Paragraph>
       Loonwaarde: uw schatting is {a.loonwaarde} procent. Die stelt de gemeente
       of UWV vast op de werkplek.{" "}

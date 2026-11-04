@@ -57,8 +57,6 @@ export type Antwoorden = {
   uurloon: number;
   /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 2. */
   aanvang?: string;
-  /** De functie, door de werkgever opgegeven in stap 2. */
-  functie?: string;
 };
 
 /**
