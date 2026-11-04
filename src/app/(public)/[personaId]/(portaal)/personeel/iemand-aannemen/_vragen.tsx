@@ -213,7 +213,7 @@ const VragenMetStaat = ({
             </Fieldset>
             <RangeSlider
               label="2. Hoeveel uur per week gaat de kandidaat werken?"
-              min={8}
+              min={1}
               max={40}
               step={1}
               value={a.uren}

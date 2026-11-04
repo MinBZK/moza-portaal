@@ -103,7 +103,7 @@ const EigenOpgave = ({
     {/* Dezelfde vraag als in stap 1, nu definitief. */}
     <RangeSlider
       label={`Hoeveel uur per week gaat ${voornaam} werken?`}
-      min={8}
+      min={1}
       max={40}
       step={1}
       value={a.uren}

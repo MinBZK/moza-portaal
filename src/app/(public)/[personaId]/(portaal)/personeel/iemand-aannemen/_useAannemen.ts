@@ -49,7 +49,7 @@ export const WML_UUR_EUROCENT = 1499;
 export type Antwoorden = {
   /** Meerkeuze; leeg betekent dat er niets is gekozen. */
   doelgroepen: Doelgroep[];
-  /** Uren per week, 8 tot 40. */
+  /** Uren per week, 1 tot 40; de wet kent geen ondergrens. */
   uren: number;
   /** Geschatte loonwaarde in procent, 30 tot 100; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
