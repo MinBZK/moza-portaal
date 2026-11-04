@@ -101,7 +101,7 @@ type Termijn = {
 
 const DOP = "https://ondernemersplein.overheid.nl";
 
-/** De termijnen die bij de uitkomsten horen; elk staat letterlijk in het genoemde artikel. */
+/** De termijnen die bij de uitkomsten horen; elk volgt uit het genoemde artikel. */
 const termijnenVoor = (regels: Regel[]): Termijn[] => {
   const geldt = (id: Regel["id"]) =>
     regels.find((r) => r.id === id && r.bedragPerJaar > 0);
@@ -168,18 +168,18 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
               href={t.url}
               className="utrecht-link utrecht-link--html-a"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
             >
-              {t.artikel} (opent wetten.overheid.nl)
+              {t.artikel} (opent wetten.overheid.nl in een nieuw tabblad)
             </a>
             <br />
             <a
               href={t.meer.url}
               className="utrecht-link utrecht-link--html-a"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
             >
-              {t.meer.tekst} (opent in een nieuw venster)
+              {t.meer.tekst} (opent in een nieuw tabblad)
             </a>
           </UnorderedListItem>
         ))}
@@ -247,7 +247,7 @@ const Vragen = ({
   toelichting,
 }: {
   onderneming: string;
-  /** Alinea's onder de knop: wie de regelingen uitvoert, en de termijnen. */
+  /** Alinea's onder de knop: wie de regelingen uitvoert. */
   toelichting?: string[];
 }) => {
   const { staat, werkBij } = useAannemen();
