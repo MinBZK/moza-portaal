@@ -86,7 +86,9 @@
 
 /* ==== Typography ========================================================= */
 
-.rhc-paragraph {
+.rhc-paragraph,
+p,
+li {
 	a:not(.utrecht-button-link) {
 		color: var(--rhc-color-lintblauw-500);
 		text-decoration: underline;

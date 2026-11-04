@@ -114,8 +114,8 @@ const Page = () => (
           stop dan zonder vraag.
         </UnorderedListItem>
         <UnorderedListItem>
-          De knop Vorige van de browser werkt gewoon en gaat een stap terug,
-          zonder dat er antwoorden verloren gaan.
+          De knop <strong>Vorige</strong> van de browser werkt gewoon en gaat
+          een stap terug, zonder dat er antwoorden verloren gaan.
         </UnorderedListItem>
         <UnorderedListItem>
           Het logo in de header blijft een link naar Home. Ook daar geldt: eerst
@@ -128,8 +128,9 @@ const Page = () => (
       <OrderedList>
         <OrderedListItem>
           <strong>Start</strong>: de ondernemer kiest de taak in het portaal,
-          met de gewone navigatie. De startpagina zegt wat er nodig is en hoe
-          lang het ongeveer duurt.
+          met de gewone navigatie of indien de ondernemer via een andere ingang
+          bij betreffende taak in het portaal belandt. De startpagina zegt wat
+          er nodig is en hoe lang het ongeveer duurt.
         </OrderedListItem>
         <OrderedListItem>
           <strong>Stappen</strong>: de navigatie verdwijnt. Per pagina één
@@ -156,7 +157,7 @@ const Page = () => (
         </UnorderedListItem>
         <UnorderedListItem>
           De paginatitel noemt de stap en de taak, bijvoorbeeld “Stap 2 van 4:
-          Gegevens – Iemand aannemen”. Zo weet ook een schermlezer waar de
+          Gegevens, Iemand aannemen”. Zo weet ook een schermlezer waar de
           ondernemer is.
         </UnorderedListItem>
         <UnorderedListItem>
@@ -168,13 +169,19 @@ const Page = () => (
           bereiken.
         </UnorderedListItem>
         <UnorderedListItem>
-          Vraag niet twee keer om hetzelfde gegeven in één taak (WCAG 3.3.7
-          Redundant Entry). Vul in wat de ondernemer al gaf, of laat het kiezen.
+          Vraag niet twee keer om hetzelfde gegeven in één taak (
+          <a href="https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html">
+            WCAG 3.3.7 Redundant Entry
+          </a>
+          ). Vul in wat de ondernemer al gaf, of laat het kiezen.
         </UnorderedListItem>
         <UnorderedListItem>
-          Een kortere header en footer zijn toegestaan onder WCAG 3.2.3
-          Consistent Navigation, zolang wat er staat in dezelfde volgorde staat
-          als op de andere pagina’s.
+          Een kortere header en footer zijn toegestaan onder{" "}
+          <a href="https://www.w3.org/WAI/WCAG21/Understanding/consistent-navigation">
+            WCAG 3.2.3 Consistent Navigation
+          </a>
+          , zolang wat er staat in dezelfde volgorde staat als op de andere
+          pagina’s.
         </UnorderedListItem>
       </UnorderedList>
     </PatternSection>

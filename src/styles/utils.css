@@ -382,8 +382,12 @@ dialog.prototype-side-overlay[open] {
 	}
 }
 
-code {
+code,
+kbd {
+	background: var(--rhc-color-cool-grey-100);
+	border-radius: var(--rhc-border-radius-md);
 	font-size: 0.875rem;
+	padding: var(--rhc-space-sm) var(--rhc-space-md);
 }
 
 /* Demo page (/demo): text and a StickyInfoBox side by side in one card. */
