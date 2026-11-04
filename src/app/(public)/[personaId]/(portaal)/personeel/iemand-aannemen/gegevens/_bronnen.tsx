@@ -34,13 +34,25 @@ import { datumNL } from "../_werkgever";
 
 const NIEUW = "nieuw";
 
-/** UWV geeft de werkgever alleen ja of nee op het register, niet de grond. */
-const NIET_VOOR_WERKGEVER: readonly string[] = [
-  "grond_opname_doelgroepregister",
+/** Bronnen met gegevens over de kandidaat; de rest gaat over de werkgever. */
+const OVER_KANDIDAAT: readonly string[] = ["uwv", "gemeente"];
+
+/**
+ * Over de kandidaat ziet de werkgever alleen het doelgroepregister: staat
+ * erin, ja of nee, en loopt de registratie nog. Zo geeft UWV het ook in het
+ * werkgeversportaal. Uitkering, bijstand en de grond van registratie zijn
+ * gegevens over gezondheid en inkomen; die gebruiken de gemeente en UWV zelf
+ * bij de beoordeling (AVG art. 5, 6 en 9).
+ */
+const REGISTER: readonly string[] = [
+  "is_arbeidsbeperkte",
+  "registratie_nog_niet_geeindigd",
 ];
 
 const zichtbaarVan = (bron: DemoAannemen["bronnen"][number]) =>
-  bron.gegevens.filter((g) => !NIET_VOOR_WERKGEVER.includes(g.parameter));
+  OVER_KANDIDAAT.includes(bron.id)
+    ? bron.gegevens.filter((g) => REGISTER.includes(g.parameter))
+    : bron.gegevens;
 
 /** Negen cijfers en de elfproef van het BSN. */
 const elfproef = (bsn: string) => {
@@ -156,7 +168,11 @@ const Bronnen = ({
   const gekozen = keuze === kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
   // De eigen opgave is een formulier, geen bron om te bevestigen.
-  const teBevestigen = BRONNEN.filter((id) => id !== "eigen");
+  // Bevestigen gaat over wat de werkgever ziet: niet de eigen opgave (een
+  // formulier) en niet de gemeente (die gegevens ziet de werkgever niet).
+  const teBevestigen = BRONNEN.filter(
+    (id) => id !== "eigen" && id !== "gemeente",
+  );
   const aantal = staat
     ? teBevestigen.filter((id) => bronBevestigd(staat, id)).length
     : 0;
@@ -293,6 +309,12 @@ const Bronnen = ({
         ) : (
           <>
             <Paragraph>
+              Over {kandidaat.voornaam} ziet u alleen of die in het
+              doelgroepregister staat. De gemeente en UWV gebruiken hun eigen
+              gegevens over {kandidaat.voornaam} als u aanvraagt; die ziet u
+              niet.
+            </Paragraph>
+            <Paragraph>
               Per organisatie staat aangevinkt dat de gegevens kloppen en
               gebruikt mogen worden. Open een organisatie om te zien wat wij
               ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult u
@@ -300,7 +322,10 @@ const Bronnen = ({
             </Paragraph>
             <Accordion>
               {bronnen
-                .filter((bron) => bron.id !== "eigen")
+                .filter(
+                  (bron) =>
+                    bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
+                )
                 .map((bron) => {
                   const aan = !!staat && bronBevestigd(staat, bron.id);
                   return (
@@ -329,32 +354,28 @@ const Bronnen = ({
                         takes text as value, and the toggletip with the law
                         question belongs in the value. */}
                         <dl className="rhc-data-summary rhc-data-summary--column">
-                          {bron.gegevens
-                            .filter(
-                              (g) => !NIET_VOOR_WERKGEVER.includes(g.parameter),
-                            )
-                            .map((g) => (
-                              <div
-                                key={g.parameter}
-                                className="rhc-data-summary__item"
-                              >
-                                <dt className="rhc-data-summary__item-key">
-                                  {g.vraag}
-                                </dt>
-                                <dd className="rhc-data-summary__item-value">
-                                  {/* De uren komen uit de antwoorden van stap 1. */}
-                                  {g.waarde.replace(
-                                    "{uren}",
-                                    String(antwoorden.uren),
-                                  )}{" "}
-                                  <InfoToggletip
-                                    label={`Zo vraagt de wet het: ${g.vraag}`}
-                                  >
-                                    {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                                  </InfoToggletip>
-                                </dd>
-                              </div>
-                            ))}
+                          {zichtbaarVan(bron).map((g) => (
+                            <div
+                              key={g.parameter}
+                              className="rhc-data-summary__item"
+                            >
+                              <dt className="rhc-data-summary__item-key">
+                                {g.vraag}
+                              </dt>
+                              <dd className="rhc-data-summary__item-value">
+                                {/* De uren komen uit de antwoorden van stap 1. */}
+                                {g.waarde.replace(
+                                  "{uren}",
+                                  String(antwoorden.uren),
+                                )}{" "}
+                                <InfoToggletip
+                                  label={`Zo vraagt de wet het: ${g.vraag}`}
+                                >
+                                  {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
+                                </InfoToggletip>
+                              </dd>
+                            </div>
+                          ))}
                         </dl>
                         <FormFieldCheckboxOption
                           label={

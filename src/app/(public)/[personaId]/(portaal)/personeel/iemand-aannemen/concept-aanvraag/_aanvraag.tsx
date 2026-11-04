@@ -302,25 +302,20 @@ const AanvraagInhoud = ({
     },
   ];
   const situatieRij: Gegeven | null =
-    situatie === "wajong"
+    // Uitkeringsgegevens ziet de werkgever niet; UWV controleert ze zelf.
+    situatie === "wajong" || situatie === "wia"
       ? {
-          label: "Wajong",
-          waarde: vind("uwv", "heeft_wajong_arbeidsondersteuning_of_uitkering"),
-          bron: "UWV",
+          label: "Uitkering van de werknemer",
+          waarde: "UWV controleert dit zelf",
+          bron: "niet met u gedeeld",
         }
-      : situatie === "wia"
+      : inRegister
         ? {
-            label: "WIA-uitkering in de maand voor de start",
-            waarde: vind("uwv", "had_wia_recht_maand_voor_aanvang"),
-            bron: "UWV",
+            label: "In het doelgroepregister",
+            waarde: vind("uwv", "is_arbeidsbeperkte"),
+            bron: "UWV doelgroepregister",
           }
-        : inRegister
-          ? {
-              label: "In het doelgroepregister",
-              waarde: vind("uwv", "is_arbeidsbeperkte"),
-              bron: "UWV doelgroepregister",
-            }
-          : null;
+        : null;
   if (situatieRij) werknemerRijen.push(situatieRij);
   const woonplaatsRij: Gegeven = {
     label: "Woonplaats werknemer",
