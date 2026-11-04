@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Accordion,
   AccordionSection,
@@ -36,6 +36,9 @@ const Waarom = ({
   regeling,
   kvk,
   headingLevel = 4,
+  licht = false,
+  titel = "Waarom deze uitkomst?",
+  inleiding,
 }: {
   trace?: DemoAannemenTrace;
   /** Nodig bij `trace`, voor de overschrijvingen. */
@@ -51,6 +54,12 @@ const Waarom = ({
   kvk: string;
   /** Kopniveau van "Waarom deze uitkomst?"; de lagen eronder een niveau dieper. */
   headingLevel?: number;
+  /** Alleen de korte uitleg: zonder volledige afleiding en zonder taalmodel. */
+  licht?: boolean;
+  /** De naam van de uitklapper. */
+  titel?: string;
+  /** Tekst bovenaan in de uitklapper, voor de uitleg uit de wet. */
+  inleiding?: ReactNode;
 }) => {
   const outputs = invoer
     ? [invoer.output, ...(invoer.uitleggen ?? [])]
@@ -105,13 +114,14 @@ const Waarom = ({
     <Accordion>
       <AccordionSection
         headingLevel={headingLevel}
-        label="Waarom deze uitkomst?"
+        label={titel}
         // Het type eist `body`, de component rendert alleen `children`.
         body={null}
         expanded={open.includes("waarom")}
         onActivate={() => wissel("waarom")}
       >
         <div className="rhc-mox-stack">
+          {inleiding}
           {stand.status === "laden" && (
             <Paragraph role="status">De regelrecht-engine rekent…</Paragraph>
           )}
@@ -130,49 +140,53 @@ const Waarom = ({
                   </div>
                 );
               })}
-              <Accordion>
-                <AccordionSection
-                  headingLevel={headingLevel + 1}
-                  label="Volledige afleiding, stap voor stap"
-                  body={null}
-                  expanded={open.includes("afleiding")}
-                  onActivate={() => wissel("afleiding")}
-                >
-                  <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
-                    {outputs.flatMap((o) =>
-                      (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                        .filter((r) => !r.technisch)
-                        .map((r, n) => (
-                          <li
-                            key={`${o}-${n}`}
-                            style={{
-                              paddingInlineStart: `${r.diepte * 1.25}rem`,
-                            }}
-                          >
-                            {r.tekst}
-                            {r.bron && (
-                              <small className="rhc-mox-small-text">
-                                {" "}
-                                · {r.bron}
-                              </small>
-                            )}
-                          </li>
-                        )),
-                    )}
-                  </ol>
-                </AccordionSection>
-              </Accordion>
+              {!licht && (
+                <Accordion>
+                  <AccordionSection
+                    headingLevel={headingLevel + 1}
+                    label="Volledige afleiding, stap voor stap"
+                    body={null}
+                    expanded={open.includes("afleiding")}
+                    onActivate={() => wissel("afleiding")}
+                  >
+                    <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                      {outputs.flatMap((o) =>
+                        (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                          .filter((r) => !r.technisch)
+                          .map((r, n) => (
+                            <li
+                              key={`${o}-${n}`}
+                              style={{
+                                paddingInlineStart: `${r.diepte * 1.25}rem`,
+                              }}
+                            >
+                              {r.tekst}
+                              {r.bron && (
+                                <small className="rhc-mox-small-text">
+                                  {" "}
+                                  · {r.bron}
+                                </small>
+                              )}
+                            </li>
+                          )),
+                      )}
+                    </ol>
+                  </AccordionSection>
+                </Accordion>
+              )}
               <Paragraph className="rhc-mox-small-text">
                 Afgeleid uit de uitvoering door de regelrecht-engine in uw
                 browser, wetsversie 1 juli 2026. De tekst hierboven komt niet
                 van een taalmodel: elke zin komt uit een stap van de wet.
               </Paragraph>
-              <UitlegTaalmodel
-                berekening={stand.waarde}
-                outputs={outputs}
-                regeling={regeling}
-                kvk={kvk}
-              />
+              {!licht && (
+                <UitlegTaalmodel
+                  berekening={stand.waarde}
+                  outputs={outputs}
+                  regeling={regeling}
+                  kvk={kvk}
+                />
+              )}
             </>
           )}
         </div>

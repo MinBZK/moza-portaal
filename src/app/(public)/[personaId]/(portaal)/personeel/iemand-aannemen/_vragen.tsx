@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ActionGroup,
   Fieldset,
@@ -18,7 +18,17 @@ import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
-import { type Overig, type Regel } from "./_uitkomsten";
+import basis from "./_basisfeiten.json";
+import { loonkostenPerJaar } from "./_engine";
+import {
+  balansRegels,
+  invoerVoor,
+  type Feiten,
+  type Overig,
+  type Regel,
+} from "./_uitkomsten";
+import type { Resultaat } from "./_useUitkomsten";
+import Waarom from "./_waarom";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -205,7 +215,7 @@ const WatUDoet = ({ regels }: { regels: Regel[] }) => {
   if (met.length === 0) return null;
   return (
     <section className="rhc-mox-row-gap" aria-labelledby="wat-u-doet">
-      <Heading level={3} appearanceLevel={5} id="wat-u-doet">
+      <Heading level={2} id="wat-u-doet">
         Wat u ervoor doet
       </Heading>
       <UnorderedList>
@@ -215,6 +225,91 @@ const WatUDoet = ({ regels }: { regels: Regel[] }) => {
           </UnorderedListItem>
         ))}
       </UnorderedList>
+    </section>
+  );
+};
+
+/** Per regeling de uitkomst van de engine die "Hoe is dit berekend?" uitlegt. */
+const BEREKEND: Record<
+  Regel["id"],
+  { wet: string; output: string; naam: string }
+> = {
+  lks: {
+    wet: "participatiewet",
+    output: "heeft_recht_op_lks",
+    naam: "Loonkostensubsidie",
+  },
+  ld: {
+    wet: "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+    output: "heeft_recht_op_loondispensatie",
+    naam: "Loondispensatie",
+  },
+  lkv: {
+    wet: "wet_tegemoetkomingen_loondomein",
+    output: "heeft_recht_op_lkv",
+    naam: "Loonkostenvoordeel",
+  },
+};
+
+/**
+ * De stap van de uitkomst uit de wet naar het bedrag per jaar op het scherm,
+ * in gewone woorden. De wet rekent per maand of per uur; het portaal rekent
+ * om naar een jaar.
+ */
+const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
+  if (r.id === "lks")
+    return `De gemeente betaalt per maand ${euro(Math.round(r.bedragPerJaar / 12))}. Per jaar is dat ${euro(bedrag)}.`;
+  if (r.id === "ld")
+    return r.aanspraakPerUur === undefined
+      ? `Per jaar betaalt u ongeveer ${euro(bedrag)} minder aan loon.`
+      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Het verschil keer ${a.uren} uur per week keer 52 weken, plus vakantiegeld en werkgeverslasten, is ongeveer ${euro(bedrag)} per jaar. Die laatste stap is een schatting.`;
+  const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
+  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ${euro(bedrag)} per jaar.`;
+};
+
+/**
+ * "Hoe is dit berekend?" in de hoofdkolom: per regeling met een bedrag een
+ * uitklapper met het bedrag per jaar in de titel, de stap naar dat bedrag in
+ * gewone woorden, en de korte afleiding uit de wet.
+ */
+const HoeBerekend = ({
+  a,
+  resultaat,
+}: {
+  a: Antwoorden;
+  resultaat: Resultaat;
+}) => {
+  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
+  const regels = balansRegels(
+    resultaat.uitkomsten,
+    loonkostenPerJaar(a),
+  ).filter((r) => r.bedrag > 0 && r.regel);
+  if (!resultaat.bekend || resultaat.fout || regels.length === 0) return null;
+  return (
+    <section className="rhc-mox-row-gap" aria-labelledby="hoe-berekend">
+      <Heading level={2} id="hoe-berekend">
+        Hoe is dit berekend?
+      </Heading>
+      {regels.map((r) => {
+        const b = BEREKEND[r.id];
+        const invoer = invoeren.find(
+          (i) => i.wet === b.wet && i.output === b.output,
+        );
+        if (!invoer || !r.regel) return null;
+        return (
+          <Waarom
+            key={r.id}
+            invoer={invoer}
+            labels={{}}
+            regeling={b.naam}
+            kvk=""
+            headingLevel={3}
+            licht
+            titel={`${b.naam}: ${euro(r.bedrag)} per jaar`}
+            inleiding={<Paragraph>{naarJaar(r.regel, r.bedrag, a)}</Paragraph>}
+          />
+        );
+      })}
     </section>
   );
 };
@@ -437,6 +532,10 @@ const VragenMetStaat = ({
                 />
               )}
             </Fieldset>
+            <HoeBerekend a={a} resultaat={resultaat} />
+            {resultaat.bekend && !resultaat.fout && (
+              <WatUDoet regels={resultaat.uitkomsten.regels} />
+            )}
           </div>
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
             <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
@@ -445,9 +544,20 @@ const VragenMetStaat = ({
                 organisatie die de regeling uitvoert.
               </Paragraph>
               <Balans antwoorden={a} resultaat={resultaat} />
-              {resultaat.bekend && !resultaat.fout && (
-                <WatUDoet regels={resultaat.uitkomsten.regels} />
-              )}
+              {resultaat.bekend &&
+                !resultaat.fout &&
+                resultaat.uitkomsten.regels.some(
+                  (r) => r.bedragPerJaar > 0,
+                ) && (
+                  <Paragraph>
+                    <a
+                      href="#hoe-berekend"
+                      className="utrecht-link utrecht-link--html-a"
+                    >
+                      Bekijk hoe dit is berekend en wat u ervoor doet
+                    </a>
+                  </Paragraph>
+                )}
               <AanvraagKnop bekend={resultaat.bekend} />
             </StickyInfoBox>
           </div>
