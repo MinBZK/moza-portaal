@@ -9,10 +9,10 @@ import Stappen from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
-  title: "Aanvraag laten invullen - Personeel en rollen",
+  title: "Aanvraag invullen - Personeel en rollen",
 };
 
-/** Scherm 2: aanvraag laten invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
+/** Scherm 2: aanvraag invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
 const GegevensPage = async () => {
   const [situaties, organisatie] = await Promise.all([
     getDemoIemandAannemenSituaties(),
@@ -36,7 +36,7 @@ const GegevensPage = async () => {
   };
   return (
     <>
-      <Heading level={1}>Aanvraag laten invullen</Heading>
+      <Heading level={1}>Aanvraag invullen</Heading>
       <Paragraph>
         <Link
           href="/personeel/iemand-aannemen"
