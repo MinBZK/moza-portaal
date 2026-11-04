@@ -1,6 +1,9 @@
+import { cookies } from "next/headers";
 import Breadcrumb from "@/layouts/breadcrumb";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
+import PageGrid from "@/layouts/navigation/pageGrid";
+import { FOCUS_MODE_COOKIE } from "@/layouts/navigation/focusModeCookie";
 import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
 import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import {
@@ -12,6 +15,12 @@ import {
   getDemoOrganisatieId,
   getDemoPersonas,
 } from "@/demo";
+import {
+  DEMO_COMPONENT_NAMES,
+  DEMO_LISTS,
+  demoId,
+} from "./[personaId]/(portaal)/demo/_components";
+import { PATTERNS } from "./[personaId]/(portaal)/demo/ontwerppatronen/_patterns";
 import { FlagsProvider } from "./_flags/flagsContext";
 import FlagsPaneel from "./_flags/flagsPaneel";
 import PersonaPaneel from "./_flags/personaPaneel";
@@ -72,11 +81,14 @@ export default async function PublicLayout({
 
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">
-          <div className="rhc-grid">
+          <PageGrid
+            focusModeOff={
+              (await cookies()).get(FOCUS_MODE_COOKIE)?.value === "uit"
+            }
+          >
             {withNavigation && (
               <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
                 <Navigation
-                  flags={flags}
                   berichtenboxBadge={<OngelezenBadge />}
                   lopendeZakenBadge={
                     <ZakenBadge nogInTeDienen={conceptAanvragen.length} />
@@ -87,6 +99,17 @@ export default async function PublicLayout({
                   }
                   actieveOrganisatieNaam={organisatie?.handelsnaam}
                   organisaties={organisaties}
+                  demoMenu={{
+                    components: DEMO_COMPONENT_NAMES.map((name) => ({
+                      id: demoId(name),
+                      name,
+                    })),
+                    lists: [...DEMO_LISTS],
+                    patterns: PATTERNS.map(({ slug, title }) => ({
+                      id: slug,
+                      name: title,
+                    })),
+                  }}
                 />
               </div>
             )}
@@ -100,7 +123,7 @@ export default async function PublicLayout({
               <Breadcrumb />
               {children}
             </div>
-          </div>
+          </PageGrid>
         </div>
       </main>
 

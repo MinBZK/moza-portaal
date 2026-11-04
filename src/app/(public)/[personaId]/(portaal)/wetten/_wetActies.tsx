@@ -21,14 +21,7 @@ export const assistentLink = (wet: DemoWet) =>
     wet.assistentVraag ?? `Geldt “${wet.titel.trim()}” voor mijn bedrijf?`,
   )}`;
 
-const WetActies = ({
-  wet,
-  delen,
-}: {
-  wet: DemoWet;
-  /** Flag "Delen" uit het Flags-paneel. */
-  delen: boolean;
-}) => {
+const WetActies = ({ wet }: { wet: DemoWet }) => {
   const item = bewaarItemVan(wet);
   return (
     // role vast: ActionGroup telt de children anders op server en client.
@@ -38,13 +31,7 @@ const WetActies = ({
       className="mox-action-group rhc-mox-action-group-dense"
     >
       <BewaarKnop item={item} alsLink />
-      {delen && (
-        <ShareButton
-          title={wet.titel}
-          text={wet.samenvatting}
-          url={item.href}
-        />
-      )}
+      <ShareButton title={wet.titel} text={wet.samenvatting} url={item.href} />
       {/* Een echte link (naar de assistent), met dezelfde opmaak. */}
       <Link href={assistentLink(wet)} className="utrecht-link-button">
         <DigitalAssistantIcon />

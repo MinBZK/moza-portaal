@@ -164,7 +164,7 @@ const Waarom = ({
                               {r.bron && (
                                 <small className="rhc-mox-small-text">
                                   {" "}
-                                  · {r.bron}
+                                  (bron: {r.bron})
                                 </small>
                               )}
                             </li>

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Heading, Icon, Paragraph } from "@/components/rhc";
 import { getDemoWetById } from "@/demo";
-import { getFlagsFromServerCookie } from "@/app/actions";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
@@ -20,10 +19,7 @@ export const generateMetadata = async ({
 
 const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const [wet, flags] = await Promise.all([
-    getDemoWetById(id),
-    getFlagsFromServerCookie(),
-  ]);
+  const wet = await getDemoWetById(id);
   if (!wet) notFound();
 
   return (
@@ -58,7 +54,7 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
             dan doen?
           </Paragraph>
 
-          <WetActies wet={wet} delen={flags.mox_delen} />
+          <WetActies wet={wet} />
 
           <Paragraph>
             <a

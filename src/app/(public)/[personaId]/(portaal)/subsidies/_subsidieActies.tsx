@@ -21,14 +21,7 @@ export const assistentLink = (subsidie: DemoSubsidie) =>
     `Kom ik in aanmerking voor “${subsidie.titel.trim()}”?`,
   )}`;
 
-const SubsidieActies = ({
-  subsidie,
-  delen,
-}: {
-  subsidie: DemoSubsidie;
-  /** Flag "Delen" uit het Flags-paneel. */
-  delen: boolean;
-}) => {
+const SubsidieActies = ({ subsidie }: { subsidie: DemoSubsidie }) => {
   const item = bewaarItemVan(subsidie);
   return (
     // role vast: ActionGroup telt de children anders op server en client.
@@ -38,13 +31,11 @@ const SubsidieActies = ({
       className="mox-action-group rhc-mox-action-group-dense"
     >
       <BewaarKnop item={item} alsLink />
-      {delen && (
-        <ShareButton
-          title={subsidie.titel}
-          text={subsidie.samenvatting}
-          url={item.href}
-        />
-      )}
+      <ShareButton
+        title={subsidie.titel}
+        text={subsidie.samenvatting}
+        url={item.href}
+      />
       {/* Een echte link (naar de assistent), met dezelfde opmaak. */}
       <Link href={assistentLink(subsidie)} className="utrecht-link-button">
         <DigitalAssistantIcon />

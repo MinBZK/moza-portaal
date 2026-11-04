@@ -114,14 +114,6 @@ const NIEUWE_ZAAK: ZaakStand = { ingediend: false, fase: "ontvangst" };
 export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
   staat.zaken[situatie] ?? NIEUWE_ZAAK;
 
-/** Het doelgroepregister volgens de antwoorden: ja, nee of onbekend. */
-export const inRegister = (a: Antwoorden) =>
-  a.doelgroepen.includes("register") || a.doelgroepen.includes("wajong")
-    ? "ja"
-    : a.doelgroepen.includes("geen")
-      ? "nee"
-      : "onbekend";
-
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
 

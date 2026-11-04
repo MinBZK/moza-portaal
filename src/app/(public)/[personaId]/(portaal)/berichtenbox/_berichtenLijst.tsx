@@ -29,7 +29,6 @@ import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import ShareButton from "@/components/ShareButton";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import type { DemoBericht } from "@/demo";
-import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import BerichtRij from "./_berichtRij";
 import {
   bronnenVan,
@@ -98,7 +97,6 @@ const RijActies = ({
   onVerplaats: (opener: HTMLElement | null) => void;
   onUitMap: () => void;
 }) => {
-  const delen = useFlag("mox_delen");
   const knopRef = useRef<HTMLButtonElement>(null);
 
   return (
@@ -111,11 +109,9 @@ const RijActies = ({
         </>
       }
     >
-      {delen && (
-        <li>
-          <ShareButton title={onderwerp} url={href} variant="menu" />
-        </li>
-      )}
+      <li>
+        <ShareButton title={onderwerp} url={href} variant="menu" />
+      </li>
       <DropdownItem
         icon={ongelezen ? <MailOpenIcon /> : <Icon icon="mail" />}
         onSelect={onOngelezen}

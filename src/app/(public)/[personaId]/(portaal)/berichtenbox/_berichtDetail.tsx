@@ -29,7 +29,6 @@ import {
   useBerichtenboxState,
   type Weergave,
 } from "./_useBerichtenboxState";
-import { useFlag } from "@/app/(public)/_flags/flagsContext";
 
 const lijstVan: Record<Weergave, string> = {
   inbox: "/berichtenbox",
@@ -80,7 +79,6 @@ const BerichtDetail = ({
   const [tijdelijk, setTijdelijk] = useState(false);
   // Telt mee in de key, zodat dezelfde tekst opnieuw verschijnt.
   const [meldingNummer, setMeldingNummer] = useState(0);
-  const delen = useFlag("mox_delen");
   const [vraagVoorgoed, setVraagVoorgoed] = useState(false);
   const [actieFout, setActieFout] = useState<string | null>(null);
   const voorgoedKnopRef = useRef<HTMLButtonElement>(null);
@@ -297,12 +295,10 @@ const BerichtDetail = ({
                   </LinkButton>
                 )}
 
-                {delen && (
-                  <ShareButton
-                    title={bericht?.onderwerp}
-                    url={`/berichtenbox/${berichtId}`}
-                  />
-                )}
+                <ShareButton
+                  title={bericht?.onderwerp}
+                  url={`/berichtenbox/${berichtId}`}
+                />
 
                 {status !== "archief" && (
                   <LinkButton onClick={() => void verplaats("archief")}>

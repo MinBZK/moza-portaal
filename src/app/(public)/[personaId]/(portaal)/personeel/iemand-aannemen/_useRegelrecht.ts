@@ -42,11 +42,6 @@ export type Berekening = {
   >;
 };
 
-export type Manifest = {
-  regelrecht: string;
-  corpus: { repo: string; revisie: string };
-};
-
 type Antwoord = {
   id: number;
   ok: boolean;
@@ -139,8 +134,6 @@ const vraag = <T>(
 
 export const bereken = (invoer: Invoer, geldig?: () => boolean) =>
   vraag<Berekening>({ soort: "bereken", invoer }, geldig);
-
-export const manifest = () => vraag<Manifest>({ soort: "manifest" });
 
 export type Stand<T> =
   | { status: "laden"; vorige?: T }
@@ -271,15 +264,4 @@ export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
     ...samenvoegen(ids, nu, stand?.alle ?? {}),
     fout: stand?.sleutel === sleutel ? stand.fout : undefined,
   };
-};
-
-export const useManifest = () => {
-  const [stand, setStand] = useState<Stand<Manifest>>({ status: "laden" });
-  useEffect(() => {
-    manifest().then(
-      (waarde) => setStand({ status: "klaar", waarde }),
-      (fout: Error) => setStand({ status: "fout", fout: fout.message }),
-    );
-  }, []);
-  return stand;
 };

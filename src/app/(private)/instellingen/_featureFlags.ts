@@ -5,64 +5,6 @@ import { z } from "zod";
  * in het paneel staat, maar dat de functie in dit prototype nog niet bestaat.
  */
 export const MOX_FLAGS = [
-  // Pagina's: verbergt het menu-item in de zijnavigatie.
-  {
-    key: "mox_pagina_berichtenbox",
-    label: "Berichtenbox",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_lopendeZaken",
-    label: "Lopende zaken",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_digitaleAssistent",
-    label: "Digitale assistent",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_belastingen",
-    label: "Belastingen",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_zakelijkVervoer",
-    label: "Zakelijk vervoer",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_personeel",
-    label: "Personeel en rollen",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_ziekteVerlof",
-    label: "Ziekte en verlof",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  {
-    key: "mox_pagina_dataverwerking",
-    label: "Gegevensdeling en dataverwerking",
-    groep: "pagina",
-    standaard: true,
-    werkt: true,
-  },
-  // Huisstijl: aan = mox.css uit, zodat alleen RHC en rhc.css overblijven.
   {
     key: "mox_nieuweHuisstijl",
     label: "Nieuwe MijnOverheid huisstijl (in ontwikkeling)",
@@ -71,13 +13,6 @@ export const MOX_FLAGS = [
     werkt: true,
   },
   // Functionaliteit.
-  {
-    key: "mox_delen",
-    label: "Delen",
-    groep: "functionaliteit",
-    standaard: true,
-    werkt: true,
-  },
   {
     key: "mox_berichtenboxUnhappyFlow",
     label: "Berichtenbox met foutmeldingen",
@@ -109,10 +44,6 @@ const moxFlagsShape = Object.fromEntries(
 
 // Define the schema with explicit keys
 export const featureFlagsSchema = z.object({
-  feature_MijnZaken: z.boolean(),
-  feature_MijnTaken: z.boolean(),
-  feature_MijnProducten: z.boolean(),
-  feature_RegelRecht: z.boolean(),
   ...moxFlagsShape,
 });
 
@@ -120,10 +51,6 @@ export type FeatureFlags = z.infer<typeof featureFlagsSchema>;
 export type FeatureFlagKey = keyof FeatureFlags;
 
 export const defaultFlags: FeatureFlags = {
-  feature_MijnZaken: false,
-  feature_MijnTaken: false,
-  feature_MijnProducten: false,
-  feature_RegelRecht: false,
   ...(Object.fromEntries(
     MOX_FLAGS.map((flag) => [flag.key, flag.standaard]),
   ) as Record<MoxFlagKey, boolean>),

@@ -1,14 +1,18 @@
 "use client";
 
 import { useOptimistic, useTransition } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  ActionGroup,
   Button,
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
+  LinkList,
+  LinkListLink,
 } from "@/components/rhc";
+import { PackagesIcon } from "@/components/icons/packagesIcon";
+import { PuzzleIcon } from "@/components/icons/puzzleIcon";
 import {
   resetFeatureFlags,
   setBerichtenboxVariant,
@@ -24,6 +28,7 @@ import {
 import SideOverlay from "@/components/SideOverlay";
 import Switch from "@/components/Switch";
 import AssistentPaneel from "./assistentPaneel";
+import { herstelFlows } from "./herstelFlows";
 
 const FlagsPaneel = ({
   flags,
@@ -77,25 +82,26 @@ const FlagsPaneel = ({
       location.reload();
     });
 
-  const flagGroep = (groep: "pagina" | "functionaliteit", label: string) => (
-    <Fieldset legend={label}>
-      {MOX_FLAGS.filter((flag) => flag.groep === groep).map((flag) => (
-        <FormFieldCheckboxOption
-          key={flag.key}
-          label={flag.label}
-          description={flag.werkt ? undefined : "(Nog niet in dit prototype)"}
-          checked={zichtbareFlags[flag.key]}
-          onChange={(event) => zetFlag(flag.key, event.target.checked)}
-        />
-      ))}
+  const functionaliteit = (
+    <Fieldset legend="Functionaliteit">
+      {MOX_FLAGS.filter((flag) => flag.groep === "functionaliteit").map(
+        (flag) => (
+          <FormFieldCheckboxOption
+            key={flag.key}
+            label={flag.label}
+            description={flag.werkt ? undefined : "(Nog niet in dit prototype)"}
+            checked={zichtbareFlags[flag.key]}
+            onChange={(event) => zetFlag(flag.key, event.target.checked)}
+          />
+        ),
+      )}
     </Fieldset>
   );
 
   return (
     <SideOverlay id="flags-paneel" title="Flags" shortcut="f">
-      {flagGroep("pagina", "Pagina’s")}
       <div>
-        {flagGroep("functionaliteit", "Functionaliteit")}
+        {functionaliteit}
         <Fieldset legend="Berichtenbox A/B/C-test">
           {BERICHTENBOX_VARIANTEN.map((variant) => (
             <FormFieldRadio
@@ -114,7 +120,7 @@ const FlagsPaneel = ({
         <AssistentPaneel backendIngesteld={assistentBackendIngesteld} />
       </div>
 
-      <div>
+      <div className="rhc-mox-stack">
         <Switch
           label="Huisstijl"
           twoWay
@@ -123,21 +129,32 @@ const FlagsPaneel = ({
           checked={zichtbareFlags.mox_nieuweHuisstijl}
           onChange={(nieuw) => zetFlag("mox_nieuweHuisstijl", nieuw)}
         />
-        <p className="nl-paragraph">
-          <Link className="utrecht-link utrecht-link--html-a" href="/demo">
+        <LinkList>
+          <LinkListLink href="/demo" icon={<PuzzleIcon key="icon" />}>
             Overzicht van componenten
-          </Link>
-        </p>
+          </LinkListLink>
+          <LinkListLink
+            href="/demo/ontwerppatronen"
+            icon={<PackagesIcon key="icon" />}
+          >
+            Overzicht van ontwerppatronen
+          </LinkListLink>
+        </LinkList>
       </div>
       <div className="prototype-side-overlay__footer">
-        <Button
-          appearance="secondary-action-button"
-          hint="danger"
-          disabled={bezig}
-          onClick={hardReset}
-        >
-          Alles wissen
-        </Button>
+        <ActionGroup>
+          <Button appearance="secondary-action-button" onClick={herstelFlows}>
+            Interactie-flow herstellen
+          </Button>
+          <Button
+            appearance="secondary-action-button"
+            hint="danger"
+            disabled={bezig}
+            onClick={hardReset}
+          >
+            Alles wissen
+          </Button>
+        </ActionGroup>
       </div>
     </SideOverlay>
   );

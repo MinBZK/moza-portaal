@@ -204,7 +204,7 @@ const Bronnen = ({
                     key={bron.id}
                     // Het niveau op Accordion geldt alleen voor diens eigen kop.
                     headingLevel={3}
-                    label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
+                    label={`${bron.organisatie}: ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
                     // Het type eist `body`, de component rendert alleen `children`.
                     body={null}
                     expanded={open.includes(bron.id)}
@@ -218,7 +218,7 @@ const Bronnen = ({
                   >
                     <div className="rhc-mox-row-gap">
                       <Paragraph className="rhc-mox-small-text">
-                        {bron.register} · opgehaald op {datumNL(bron.opgehaald)}
+                        {bron.register}, opgehaald op {datumNL(bron.opgehaald)}
                       </Paragraph>
                       {/* The markup of the RHC DataSummary: its component only
                         takes text as value, and the toggletip with the law
@@ -291,7 +291,7 @@ const Bronnen = ({
                 );
             }}
           >
-            {naarOverzicht ? "Bekijk wat voor u geldt" : "Vul de aanvraag in"}
+            {naarOverzicht ? "Bekijk wat voor u geldt" : "Aanvraag nakijken"}
           </Button>
         </ActionGroup>
       </div>

@@ -14,12 +14,10 @@ import {
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ShareButton from "@/components/ShareButton";
 import { getDemoBuurtberichten } from "@/demo";
-import { getFlagsFromServerCookie } from "@/app/actions";
 
 export const metadata: Metadata = { title: "Berichten over uw buurt" };
 
 const OmgevingsberichtenPage = async () => {
-  const flags = await getFlagsFromServerCookie();
   const berichten = await getDemoBuurtberichten();
 
   return (
@@ -60,13 +58,11 @@ const OmgevingsberichtenPage = async () => {
                 className="rhc-mox-action-group-dense"
               >
                 <BewaarKnop item={item} alsLink />
-                {flags.mox_delen && (
-                  <ShareButton
-                    title={bericht.titel}
-                    text={bericht.samenvatting}
-                    url={`/buurtberichten#${bericht.id}`}
-                  />
-                )}
+                <ShareButton
+                  title={bericht.titel}
+                  text={bericht.samenvatting}
+                  url={`/buurtberichten#${bericht.id}`}
+                />
                 <NietRelevantKnop item={item} alsLink />
               </ActionGroup>
             </div>
