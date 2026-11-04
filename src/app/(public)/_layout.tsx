@@ -20,6 +20,7 @@ import {
   getActieveOrganisatie,
   getActievePersona,
   getIngelogdeNaam,
+  getIngelogdeOrganisaties,
 } from "./_persona";
 
 export default async function PublicLayout({
@@ -40,11 +41,20 @@ export default async function PublicLayout({
     getDemoPersonas(),
     getBerichtenboxVariant(),
   ]);
-  const [organisatie, naam, conceptAanvragen] = await Promise.all([
+  const [organisatie, naam, conceptAanvragen, ingelogd] = await Promise.all([
     getActieveOrganisatie(persona),
     getIngelogdeNaam(persona),
     getDemoConceptAanvragen(persona?.id),
+    getIngelogdeOrganisaties(persona),
   ]);
+  // Alle organisaties van de persona; voor een organisatie zonder inlog
+  // (na inloggen met een wallet) leidt de keuze naar apart inloggen.
+  const organisaties =
+    persona?.organisaties.map((o) => ({
+      id: getDemoOrganisatieId(o),
+      handelsnaam: o.handelsnaam,
+      ingelogd: ingelogd.includes(o),
+    })) ?? [];
 
   return (
     <FlagsProvider flags={flags}>
@@ -57,12 +67,7 @@ export default async function PublicLayout({
           organisatie ? getDemoOrganisatieId(organisatie) : undefined
         }
         actieveOrganisatieNaam={organisatie?.handelsnaam}
-        organisaties={
-          persona?.organisaties.map((o) => ({
-            id: getDemoOrganisatieId(o),
-            handelsnaam: o.handelsnaam,
-          })) ?? []
-        }
+        organisaties={organisaties}
       />
 
       <main id="hoofd-inhoud" className="utrecht-page-body">
@@ -81,12 +86,7 @@ export default async function PublicLayout({
                     organisatie ? getDemoOrganisatieId(organisatie) : undefined
                   }
                   actieveOrganisatieNaam={organisatie?.handelsnaam}
-                  organisaties={
-                    persona?.organisaties.map((o) => ({
-                      id: getDemoOrganisatieId(o),
-                      handelsnaam: o.handelsnaam,
-                    })) ?? []
-                  }
+                  organisaties={organisaties}
                 />
               </div>
             )}

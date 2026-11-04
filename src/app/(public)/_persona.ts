@@ -15,11 +15,14 @@ export const getActieveOrganisatie = async (persona?: DemoPersona) => {
   ]);
   if (!actievePersona) return undefined;
 
+  // Alleen een organisatie waarvoor iemand ingelogd is, ook als het cookie
+  // organisatieId (dat de browser zelf zet) een andere noemt.
+  const organisaties = await getIngelogdeOrganisaties(actievePersona);
   const organisatieId = cookieJar.get("organisatieId")?.value;
   return (
-    actievePersona.organisaties.find(
+    organisaties.find(
       (organisatie) => getDemoOrganisatieId(organisatie) === organisatieId,
-    ) ?? actievePersona.organisaties[0]
+    ) ?? organisaties[0]
   );
 };
 
@@ -34,20 +37,63 @@ export const getKetenAccount = async () => {
 export const NL_WALLET_INLOG_COOKIE = "nl-wallet-inlog";
 
 /**
+ * Wat er na "Inloggen met een wallet" bewaard is: de persona, de naam uit de
+ * wallet en de KVK-nummers van de bevoegdheden die in deze sessie gedeeld
+ * zijn. Null zonder (geldig) cookie.
+ */
+export type WalletInlog = {
+  personaId: string;
+  naam: string;
+  kvkNummers?: string[];
+};
+
+export const leesWalletInlog = async (): Promise<WalletInlog | null> => {
+  const cookieJar = await cookies();
+  try {
+    const inlog = JSON.parse(
+      cookieJar.get(NL_WALLET_INLOG_COOKIE)?.value ?? "null",
+    ) as Partial<WalletInlog> | null;
+    if (!inlog?.personaId || !inlog.naam) return null;
+    return {
+      personaId: inlog.personaId,
+      naam: inlog.naam,
+      kvkNummers: Array.isArray(inlog.kvkNummers)
+        ? inlog.kvkNummers.filter((k) => typeof k === "string")
+        : undefined,
+    };
+  } catch {
+    // Een kapot cookie telt als geen wallet-inlog.
+    return null;
+  }
+};
+
+/**
+ * De organisaties van de persona waarvoor iemand ingelogd is. Na inloggen met
+ * een wallet alleen de ondernemingen waarvan de bevoegdheid gedeeld is; voor
+ * een andere onderneming logt iemand apart in. Zonder wallet-inlog (de
+ * persona uit het demo-paneel) alle organisaties van de persona.
+ */
+export const getIngelogdeOrganisaties = async (persona?: DemoPersona) => {
+  if (!persona) return [];
+  const inlog = await leesWalletInlog();
+  if (inlog?.personaId !== persona.id || !inlog.kvkNummers?.length)
+    return persona.organisaties;
+  const ingelogd = persona.organisaties.filter(
+    (organisatie) =>
+      !!organisatie.kvkNummer &&
+      inlog.kvkNummers!.includes(organisatie.kvkNummer),
+  );
+  return ingelogd.length ? ingelogd : persona.organisaties;
+};
+
+/**
  * De naam waarmee iemand ingelogd is: uit NL Wallet als die bij deze persona
  * hoort, anders de naam van de persona. Wisselt iemand van persona, dan geldt
  * de naam uit de wallet niet meer.
  */
 export const getIngelogdeNaam = async (persona?: DemoPersona) => {
   if (!persona) return undefined;
-  const cookieJar = await cookies();
-  try {
-    const inlog = JSON.parse(
-      cookieJar.get(NL_WALLET_INLOG_COOKIE)?.value ?? "null",
-    ) as { personaId?: string; naam?: string } | null;
-    if (inlog?.personaId === persona.id && inlog.naam) return inlog.naam;
-  } catch {
-    // Een kapot cookie: dan gewoon de naam van de persona.
-  }
+  const inlog = await leesWalletInlog();
+  if (inlog?.personaId === persona.id) return inlog.naam;
   return `${persona.persoon.voornaam} ${persona.persoon.achternaam}`;
 };

@@ -14,7 +14,10 @@ import {
   Icon,
 } from "@/components/rhc";
 import { MENU_ID, useMenuOpen } from "./menuKnop";
-import { useKiesOrganisatie } from "@/layouts/header/useKiesOrganisatie";
+import {
+  useKiesOrganisatie,
+  type KeuzeOrganisatie,
+} from "@/layouts/header/useKiesOrganisatie";
 import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import { AbsenceIcon } from "@/components/icons/absenceIcon";
 import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
@@ -41,7 +44,7 @@ const Navigation = ({
   /** Naam in het menu op een smal scherm, net als in de header. */
   naam?: string;
   /** Organisaties om tussen te wisselen, net als in de header. */
-  organisaties?: { id: string; handelsnaam: string }[];
+  organisaties?: KeuzeOrganisatie[];
   actieveOrganisatieId?: string;
   actieveOrganisatieNaam?: string;
 }) => {
@@ -270,10 +273,11 @@ const Navigation = ({
                         type="button"
                         className="rhc-side-nav__link"
                         aria-current={actief ? "true" : undefined}
-                        onClick={() => kiesOrganisatie(organisatie.id)}
+                        onClick={() => kiesOrganisatie(organisatie)}
                       >
                         <Icon icon="briefcase" />
                         {organisatie.handelsnaam}
+                        {organisatie.ingelogd === false && " (inloggen)"}
                       </button>
                     </SideNavItem>
                   );

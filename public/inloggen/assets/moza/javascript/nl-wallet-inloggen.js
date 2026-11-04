@@ -284,7 +284,7 @@
 		verbergOverlay();
 		bevoegdheidKnop = verwijder(bevoegdheidKnop);
 		loginKnop = verwijder(loginKnop);
-		loginKnop = maakKnop({ usecase: "moza_inloggen", "start-url": "/api/nl-wallet/sessies", text: "Inloggen met NL Wallet" });
+		loginKnop = maakKnop({ usecase: "moza_inloggen", "start-url": "/api/nl-wallet/sessies" + (toevoegen ? "?onderneming=toevoegen" : ""), text: "Inloggen met NL Wallet" });
 		loginKnop.addEventListener("success", function (e) {
 			var sessieToken = e.detail && e.detail[0];
 			if (!sessieToken || doorgestuurd) return;

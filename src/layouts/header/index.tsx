@@ -7,7 +7,10 @@ import { Logo, NavBar, Icon, VisuallyHidden } from "@/components/rhc";
 import MenuKnop from "@/layouts/navigation/menuKnop";
 import LanguageSelect, { LANGUAGES } from "@/components/languageSelect";
 import LogoutButton from "@/components/LogoutButton";
-import { useKiesOrganisatie } from "./useKiesOrganisatie";
+import {
+  useKiesOrganisatie,
+  type KeuzeOrganisatie,
+} from "./useKiesOrganisatie";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
 
 // kvk, kvkOpties en isPublic worden nog meegegeven door de layouts, maar zijn
@@ -28,7 +31,7 @@ const Header = ({
   metMenu?: boolean;
   /** Naam van de ingelogde persoon. Komt van de actieve persona. */
   naam?: string;
-  organisaties?: { id: string; handelsnaam: string }[];
+  organisaties?: KeuzeOrganisatie[];
   actieveOrganisatieId?: string;
   actieveOrganisatieNaam?: string;
 }) => {
@@ -120,9 +123,10 @@ const Header = ({
                         <DropdownItem
                           key={organisatie.id}
                           selected={organisatie.id === actieveOrganisatieId}
-                          onSelect={() => kies(organisatie.id)}
+                          onSelect={() => kies(organisatie)}
                         >
                           {organisatie.handelsnaam}
+                          {organisatie.ingelogd === false && " (inloggen)"}
                         </DropdownItem>
                       ))}
                     </Dropdown>
