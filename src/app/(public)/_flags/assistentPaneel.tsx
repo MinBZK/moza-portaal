@@ -13,6 +13,7 @@ import {
   zetAssistentInstelling,
   type AssistentDemo,
 } from "./assistentInstellingen";
+import InfoToggletip from "@/components/InfoToggletip";
 import Switch from "@/components/Switch";
 
 const DEMO_KNOPPEN: [AssistentDemo, string][] = [
@@ -41,7 +42,10 @@ const AssistentPaneel = ({
 
   return (
     <div>
-      <Fieldset legend="Digitale assistent">
+      <Fieldset
+        legend="Digitale assistent chat interface"
+        className="prototype-fieldset--2xl"
+      >
         <Switch
           label="LLM"
           twoWay
@@ -62,14 +66,20 @@ const AssistentPaneel = ({
             zetAssistentInstelling("transport", cli ? "cli" : "mcp")
           }
         />
-        <FormFieldCheckboxOption
-          label="Demo-modus: speel het draaiboek af zonder backend"
-          description="Stel een voorbeeldvraag (energiebesparing, bedrijfsgegevens, belastingaangifte) en beantwoord de vragen. Typ “fout” voor de foutmelding."
-          checked={demo}
-          onChange={(event) =>
-            zetAssistentInstelling("demoModus", event.target.checked)
-          }
-        />
+        <div className="rhc-mox-with-info rhc-mox-with-info--end">
+          <FormFieldCheckboxOption
+            label="Demo-modus: speel het draaiboek af zonder backend"
+            checked={demo}
+            onChange={(event) =>
+              zetAssistentInstelling("demoModus", event.target.checked)
+            }
+          />
+          <InfoToggletip label="Toelichting bij Demo-modus">
+            Stel een voorbeeldvraag (energiebesparing, bedrijfsgegevens,
+            belastingaangifte) en beantwoord de vragen. Typ “fout” voor de
+            foutmelding.
+          </InfoToggletip>
+        </div>
         <FormFieldTextInput
           label="VLAM API-sleutel"
           type="password"

@@ -1,5 +1,4 @@
 import type { DemoVraag } from "./binnenkort";
-import type { DemoGegeven } from "./onderneming";
 
 export type DemoOrganisatie = {
   id: string;
@@ -28,11 +27,6 @@ const profielIdentiteiten: Record<"zakelijk" | "prive", DemoProfielIdentiteit> =
 export const getDemoProfielIdentiteit = async (
   soort: "zakelijk" | "prive",
 ): Promise<DemoProfielIdentiteit> => profielIdentiteiten[soort];
-
-const contactgegevens: DemoGegeven[] = [
-  { label: "E-mailadres", waarde: "info@bloombv.nl" },
-  { label: "Telefoonnummer", waarde: "06 12 34 56 78" },
-];
 
 const organisaties: DemoOrganisatie[] = [
   {
@@ -66,11 +60,6 @@ const organisaties: DemoOrganisatie[] = [
   },
 ];
 
-const kanalen: DemoGegeven[] = [
-  { label: "Voorkeurskanaal", waarde: "E-mail" },
-  { label: "Bellen", waarde: "Ik wil niet gebeld worden" },
-];
-
 const vragen: DemoVraag[] = [
   {
     vraag: "Wat gebeurt er als ik een organisatie aanvink?",
@@ -84,14 +73,8 @@ const vragen: DemoVraag[] = [
   },
 ];
 
-export const getDemoContactgegevens = async (): Promise<DemoGegeven[]> =>
-  contactgegevens;
-
 export const getDemoContactorganisaties = async (): Promise<
   DemoOrganisatie[]
 > => organisaties;
-
-export const getDemoContactkanalen = async (): Promise<DemoGegeven[]> =>
-  kanalen;
 
 export const getDemoContactvragen = async (): Promise<DemoVraag[]> => vragen;

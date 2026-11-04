@@ -32,11 +32,13 @@
 ### Task 1: Engine in Node en de neutrale basis
 
 **Files:**
+
 - Create: `scripts/regelrecht-node.mjs` — laadt `public/regelrecht/pkg` met `initSync`, exporteert `bereken(invoer): Berekening` en `gegevens(wet, output, peildatum)`.
 - Create: `scripts/iemand-aannemen-basisfeiten.mjs` — schrijft `_basisfeiten.json`.
 - Create: `src/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_basisfeiten.json` (gegenereerd, gecommit).
 
 **Interfaces:**
+
 - Produces: `_basisfeiten.json`: `Record<string, boolean | number | string | null>` met elke parameter die een van de doelen hieronder transitief vraagt (via `gegevens`, `respondent.soort === "andere_regeling"` volgen).
 - Doelen (wet → output, plus `uitleggen`): `participatiewet` → `heeft_recht_op_lks` (+`hoogte_lks_eurocent_per_maand`), `mag_proefplaatsing_aangaan`, `heeft_aanspraak_op_begeleiding_op_de_werkplek`; `wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten` → `heeft_recht_op_loondispensatie` (+`aanspraak_beloning_per_uur_eurocent`); `wet_tegemoetkomingen_loondomein` → `heeft_recht_op_lkv` (+`hoogte_lkv_per_jaar_eurocent`, `categorie_lkv`); `ziektewet` → `heeft_recht_op_no_risk_polis` (+`duur_no_risk_polis_jaren`); `werkloosheidswet` → `uwv_mag_toestemming_verlenen`; `wet_werk_en_inkomen_naar_arbeidsvermogen` → `mag_jobcoaching_toekennen` (+`mag_werkplekaanpassing_toekennen`).
 
@@ -47,10 +49,12 @@
 ### Task 2: Vraag 1 met acht opties
 
 **Files:**
+
 - Modify: `_useAannemen.ts` (DOELGROEPEN, `kiesDoelgroep`, `registerVast`, migratie in `lees`)
 - Test: `scripts/iemand-aannemen-uitkomsten.test.mjs` (nieuw; `node --test`)
 
 **Interfaces:**
+
 - Produces: `Doelgroep = "register" | "wajong" | "wia" | "bijstand" | "wsw" | "beschut" | "geen" | "weetniet"`; `kiesDoelgroep(huidig, waarde, aan): Doelgroep[]`.
 
 Omdat `_useAannemen.ts` React importeert, gaat de pure keuzelogica naar `_uitkomsten.ts` (`kiesDoelgroep`, `DOELGROEPEN`, `type Doelgroep`), en `_useAannemen.ts` exporteert die door.
@@ -63,10 +67,12 @@ Omdat `_useAannemen.ts` React importeert, gaat de pure keuzelogica naar `_uitkom
 ### Task 3: Van antwoorden naar engine-invoer en uitkomsten
 
 **Files:**
+
 - Create/extend: `_uitkomsten.ts`
 - Test: `scripts/iemand-aannemen-uitkomsten.test.mjs`
 
 **Interfaces:**
+
 - Consumes: `Antwoorden` (type), `Invoer`/`Berekening` (types uit `_useRegelrecht.ts`), basis uit Task 1 als argument.
 - Produces:
   - `invoerVoor(a: Antwoorden, basis: Feiten): Invoer[]` — één `Invoer` per doel uit Task 1, gedeelde `parameters` = basis + feiten per vinkje.
@@ -74,6 +80,7 @@ Omdat `_useAannemen.ts` React importeert, gaat de pure keuzelogica naar `_uitkom
   - `type Uitkomsten = { regels: Regel[]; overige: Overig[]; aannames: Aanname[] }`, `Regel = { id: "lks" | "ld" | "lkv"; bedragPerJaar: number; categorie?: string; aanname?: AannameId }`, `Overig = { id: "nrp" | "pp_pwet" | "pp_ww" | "begeleiding" | "vz_wia" | "vz_wajong"; geldt: boolean; duurJaren?: number }`, `AannameId = "lks_lid4" | "wia_nieuw" | "wsw_zuinig" | "beschut_lks" | "weetniet" | "geen"`.
 
 Feiten per vinkje (volgens het ontwerp; afstemmen op de engine tot de tabel klopt, zonder te gunstig te worden):
+
 - bijstand (alleen als geen Wajong en geen WIA): Pwet-doelgroep 7 lid 1 a, `ontvangt_algemene_bijstand`, toestemming proefplaatsing, `is_pwet_toegeleid_of_lks_lid_2`; bij loonwaarde < 100 ook `behoort_tot_doelgroep_lks`, `kan_minimumloon_niet_verdienen`, `college_heeft_loonwaarde_vastgesteld_conform_10d`, `datum_aanvraag_lks` `2026-02-01`.
 - register en weetniet: `was_arbeidsbeperkte_lid_1_of_2`, `registratie_nog_niet_geeindigd`, `datum_eerste_opname_doelgroepregister` `2025-11-03`.
 - wajong: Wajong-recht voor Wfsv/ZW/WIA 35 en voor loondispensatie; `vastgesteld_aanspraakpercentage_minimumloon` = loonwaarde; `gebruikelijke_beloning_per_uur_eurocent` = 1499; `gerechtvaardigde_beloning_per_uur_eurocent` = 1499 × loonwaarde / 100; `aanvraag_loondispensatie_ingediend`; verwachte duur 12.
@@ -85,22 +92,22 @@ Feiten per vinkje (volgens het ontwerp; afstemmen op de engine tot de tabel klop
 
 - [ ] Testtabel (32 uur, uurloon 1499, peildatum 2026-07-01), elk geval draait `invoerVoor` → `bereken` (Task 1) → `uitkomstenUit`:
 
-| geval | vinkjes, loonwaarde | verwacht |
-|---|---|---|
-| Koen | bijstand, 60 | lks 89741 × 12; lkv 168064 banenafspraak; nrp ja, duur −1; pp_pwet ja; begeleiding ja; geen ld |
-| register 100 | register, 100 | geen lks; lkv 168064; nrp ja |
-| register 60 | register, 60 | geen lks; lkv 168064 |
-| Sadee | wajong, 70 | ld: aanspraak 1049,3 ct/uur; lkv 168064; nrp ja (−1); geen lks; vz_wajong; geen vz_wia |
-| Wajong 80 | wajong, 80 | geen ld (minder dan 25 procent lager) |
-| WIA | wia, 100 | lkv 507520 arbeidsgehandicapte; nrp ja, duur 5; vz_wia ja; geen lks |
-| Wsw | wsw, 60 | geen lks, geen lkv, geen nrp |
-| beschut | beschut, 60 | geen lks (aanname beschut_lks), geen lkv; nrp ja (−1) |
-| beschut + bijstand | beschut, bijstand, 60 | lks 89741 × 12; geen lkv |
-| register + bijstand | register, bijstand, 60 | als Koen |
-| WIA + register | wia, register, 100 | lkv 507520 arbeidsgehandicapte |
-| Wajong + bijstand | wajong, bijstand, 60 | geen lks |
-| geen | geen, 60 | alles nee/0 |
-| weet niet | weetniet, 60 | geen lks; lkv 168064; nrp ja; aanname weetniet |
+| geval               | vinkjes, loonwaarde    | verwacht                                                                                       |
+| ------------------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
+| Koen                | bijstand, 60           | lks 89741 × 12; lkv 168064 banenafspraak; nrp ja, duur −1; pp_pwet ja; begeleiding ja; geen ld |
+| register 100        | register, 100          | geen lks; lkv 168064; nrp ja                                                                   |
+| register 60         | register, 60           | geen lks; lkv 168064                                                                           |
+| Sadee               | wajong, 70             | ld: aanspraak 1049,3 ct/uur; lkv 168064; nrp ja (−1); geen lks; vz_wajong; geen vz_wia         |
+| Wajong 80           | wajong, 80             | geen ld (minder dan 25 procent lager)                                                          |
+| WIA                 | wia, 100               | lkv 507520 arbeidsgehandicapte; nrp ja, duur 5; vz_wia ja; geen lks                            |
+| Wsw                 | wsw, 60                | geen lks, geen lkv, geen nrp                                                                   |
+| beschut             | beschut, 60            | geen lks (aanname beschut_lks), geen lkv; nrp ja (−1)                                          |
+| beschut + bijstand  | beschut, bijstand, 60  | lks 89741 × 12; geen lkv                                                                       |
+| register + bijstand | register, bijstand, 60 | als Koen                                                                                       |
+| WIA + register      | wia, register, 100     | lkv 507520 arbeidsgehandicapte                                                                 |
+| Wajong + bijstand   | wajong, bijstand, 60   | geen lks                                                                                       |
+| geen                | geen, 60               | alles nee/0                                                                                    |
+| weet niet           | weetniet, 60           | geen lks; lkv 168064; nrp ja; aanname weetniet                                                 |
 
 - [ ] Run `node --test …` → FAIL eerst, na implementatie PASS. Afwijking van de kaart zonder gedocumenteerde aanname = fout in de feiten, niet in de test.
 - [ ] Commit `feat: oriëntatie rekent elke uitgangssituatie`.
@@ -108,6 +115,7 @@ Feiten per vinkje (volgens het ontwerp; afstemmen op de engine tot de tabel klop
 ### Task 4: Scherm
 
 **Files:**
+
 - Modify: `_vragen.tsx` (vraag 1 uit DOELGROEPEN; uitleg vraag 3 per situatie: Wajong → "percentage van het minimumloon dat de kandidaat verdient (loondispensatie)", anders loonwaarde; (i) bij "Geen van deze" en "Aanvraag laten invullen" als de keuze niet bijstand of register is)
 - Modify: `_balans.tsx` (volle balans uit `Uitkomsten`: één `useBerekening` per `Invoer`; regels lks/ld/lkv met (i); onderschrift "De bedragen gelden als u de regelingen aanvraagt."; kort-variant blijft rekenen met `{ ...a, doelgroepen: ["bijstand"] }`)
 - Modify: `_vragen.tsx` "Regelingen die verder kunnen gelden" uit `Uitkomsten.overige` met teksten per id (no-riskpolis met duur "vijf jaar" of "zonder einddatum")

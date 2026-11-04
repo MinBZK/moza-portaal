@@ -5,8 +5,10 @@ import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
-import Stappen from "../_stappen";
+import Stappen, { TAAK_TITEL } from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
+import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
+import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 
 export const metadata: Metadata = {
   title: "Aanvraag invullen - Personeel en rollen",
@@ -36,8 +38,10 @@ const GegevensPage = async () => {
   };
   return (
     <>
-      <Heading level={1}>Aanvraag invullen</Heading>
-      <Paragraph>
+      <CollapsibleNavigation />
+      <Heading level={1}>{TAAK_TITEL}</Heading>
+      <FocusModeSwitch />
+      <Paragraph className="rhc-mox-back-link">
         <Link
           href="/personeel/iemand-aannemen"
           className="utrecht-link utrecht-link--html-a"

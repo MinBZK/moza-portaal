@@ -7,9 +7,10 @@ import {
 } from "@/app/(public)/_persona";
 import Aanvraag from "./_aanvraag";
 import { vul, werkgeverVan } from "../_werkgever";
+import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
 
 export const metadata: Metadata = {
-  title: "Regelingen voor het aannemen - Personeel en rollen",
+  title: "Aanvraag nakijken - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 3: de vooringevulde aanvraag, per organisatie de panelen van de situatie. */
@@ -31,14 +32,17 @@ const ConceptAanvraagPage = async () => {
     })),
   });
   return (
-    <Aanvraag
-      perSituatie={{
-        gemeente: gevuld(situaties.gemeente),
-        wajong: gevuld(situaties.wajong),
-        wia: gevuld(situaties.wia),
-      }}
-      werkgever={werkgever}
-    />
+    <>
+      <CollapsibleNavigation />
+      <Aanvraag
+        perSituatie={{
+          gemeente: gevuld(situaties.gemeente),
+          wajong: gevuld(situaties.wajong),
+          wia: gevuld(situaties.wia),
+        }}
+        werkgever={werkgever}
+      />
+    </>
   );
 };
 

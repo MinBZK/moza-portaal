@@ -29,7 +29,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
-import Stappen from "../_stappen";
+import Stappen, { TAAK_TITEL } from "../_stappen";
 import { taakTegel, Tegels, vanzelfTegel, type Tegel } from "../_tegels";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -42,6 +42,7 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
+import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -51,7 +52,7 @@ const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
       <DataSummaryItem
         key={r.label}
         itemKey={r.label}
-        itemValue={`${r.waarde} · ${r.bron}`}
+        itemValue={`${r.waarde} (bron: ${r.bron})`}
       />
     ))}
   </DataSummary>
@@ -361,7 +362,7 @@ const AanvraagInhoud = ({
         key={id}
         id={`paneel-${id}`}
         headingLevel={3}
-        label={`${NAAM[id]} · ${status(id)}`}
+        label={`${NAAM[id]} ${status(id)}`}
         // Het type eist `body`, de component rendert alleen `children`.
         body={null}
         expanded={isOpen(id)}
@@ -608,7 +609,7 @@ const AanvraagInhoud = ({
 
   const taak = (id: TaakId): ReactNode => (
     <section
-      className="rhc-mox-card rhc-mox-row-gap"
+      className="rhc-mox-row-gap"
       aria-labelledby={`taak-${id}`}
       key={id}
     >
@@ -674,7 +675,7 @@ const AanvraagInhoud = ({
   const vanzelf = (id: VanzelfId): ReactNode =>
     id === "lkv" ? (
       <section
-        className="rhc-mox-card rhc-mox-row-gap"
+        className="rhc-mox-row-gap"
         aria-labelledby="vanzelf-lkv"
         key={id}
       >
@@ -718,7 +719,7 @@ const AanvraagInhoud = ({
       </section>
     ) : (
       <section
-        className="rhc-mox-card rhc-mox-row-gap"
+        className="rhc-mox-row-gap"
         aria-labelledby="vanzelf-nrp"
         key={id}
       >
@@ -775,229 +776,225 @@ const AanvraagInhoud = ({
 
   return (
     <>
-      <Heading level={1}>
-        Regelingen voor het aannemen van {kandidaat.voornaam}{" "}
-        {kandidaat.achternaam}
-      </Heading>
-      <Stappen huidige={3} />
-      <Paragraph role={bekend ? undefined : "status"}>
-        {resultaat.fout
-          ? "De berekening lukt nu niet. Laad de pagina opnieuw."
-          : !bekend
-            ? "Wij zoeken in de wet uit welke regelingen gelden…"
-            : regelingen === 0
-              ? "Bij deze antwoorden is er niets aan te vragen."
-              : paneelIds.length === 0
-                ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
-                : `Wij hebben ${paneelIds.length === 1 ? "de aanvraag" : `${paneelIds.length} aanvragen`} voor u ingevuld met gegevens die de overheid al heeft. Er is nog niets verstuurd.`}
-      </Paragraph>
+      <Heading level={1}>{TAAK_TITEL}</Heading>
+      <FocusModeSwitch />
+      <div className="rhc-mox-card">
+        <Stappen huidige={3} />
+        <Paragraph role={bekend ? undefined : "status"}>
+          {resultaat.fout
+            ? "De berekening lukt nu niet. Laad de pagina opnieuw."
+            : !bekend
+              ? "Wij zoeken in de wet uit welke regelingen gelden…"
+              : regelingen === 0
+                ? "Bij deze antwoorden is er niets aan te vragen."
+                : paneelIds.length === 0
+                  ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+                  : `Wij hebben ${paneelIds.length === 1 ? "de aanvraag" : `${paneelIds.length} aanvragen`} voor u ingevuld met gegevens die de overheid al heeft. Er is nog niets verstuurd.`}
+        </Paragraph>
 
-      {bekend && paneelIds.length > 0 && (
-        <section
-          className="rhc-mox-card rhc-mox-row-gap"
-          aria-labelledby="zo-gaat-het"
-        >
-          <Heading level={2} id="zo-gaat-het">
-            Zo gaat het
-          </Heading>
-          <OrderedList>
-            <OrderedListItem>
-              U controleert de aanvragen hieronder, één voor één. Klopt een
-              antwoord niet? Kies dan <strong>Wijzigen</strong>.
-            </OrderedListItem>
-            <OrderedListItem>
-              U verstuurt{" "}
-              {route.panelen
-                .map((p) =>
-                  p.organisatie === "gemeente"
-                    ? `de aanvraag naar de gemeente ${kandidaat.gemeente}`
-                    : "de aanvraag naar UWV",
-                )
-                .join(" en ")}
-              .
-            </OrderedListItem>
-            {paneelIds.includes("lks") && (
+        {bekend && paneelIds.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="zo-gaat-het">
+            <Heading level={2} id="zo-gaat-het">
+              Zo gaat het
+            </Heading>
+            <OrderedList>
               <OrderedListItem>
-                De gemeente {kandidaat.gemeente} laat de loonwaarde van{" "}
-                {kandidaat.voornaam} meten op de werkplek. Hoe dat gaat, staat
-                bij de loonkostensubsidie.
+                U controleert de aanvragen hieronder, één voor één. Klopt een
+                antwoord niet? Kies dan <strong>Wijzigen</strong>.
               </OrderedListItem>
-            )}
-            {paneelIds.includes("ld") && (
               <OrderedListItem>
-                Een arbeidsdeskundige van UWV komt op de werkplek en stelt vast
-                welk loon past bij het werk.
+                U verstuurt{" "}
+                {route.panelen
+                  .map((p) =>
+                    p.organisatie === "gemeente"
+                      ? `de aanvraag naar de gemeente ${kandidaat.gemeente}`
+                      : "de aanvraag naar UWV",
+                  )
+                  .join(" en ")}
+                .
               </OrderedListItem>
-            )}
-            <OrderedListItem>
-              U krijgt van{" "}
-              {route.panelen.length > 1 ? "elke organisatie" : "de organisatie"}{" "}
-              een brief met het besluit
-              {paneelIds.includes("lks") &&
-                ". Bij loonkostensubsidie staat daarin ook het bedrag"}
-              . De brief komt in uw berichtenbox. Wanneer u die krijgt, staat
-              bij elke aanvraag.
-            </OrderedListItem>
-          </OrderedList>
-        </section>
-      )}
+              {paneelIds.includes("lks") && (
+                <OrderedListItem>
+                  De gemeente {kandidaat.gemeente} laat de loonwaarde van{" "}
+                  {kandidaat.voornaam} meten op de werkplek. Hoe dat gaat, staat
+                  bij de loonkostensubsidie.
+                </OrderedListItem>
+              )}
+              {paneelIds.includes("ld") && (
+                <OrderedListItem>
+                  Een arbeidsdeskundige van UWV komt op de werkplek en stelt
+                  vast welk loon past bij het werk.
+                </OrderedListItem>
+              )}
+              <OrderedListItem>
+                U krijgt van{" "}
+                {route.panelen.length > 1
+                  ? "elke organisatie"
+                  : "de organisatie"}{" "}
+                een brief met het besluit
+                {paneelIds.includes("lks") &&
+                  ". Bij loonkostensubsidie staat daarin ook het bedrag"}
+                . De brief komt in uw berichtenbox. Wanneer u die krijgt, staat
+                bij elke aanvraag.
+              </OrderedListItem>
+            </OrderedList>
+          </section>
+        )}
 
-      {bekend && tegels.length > 0 && (
-        <Tegels tegels={tegels} onKlik={naarTegel} />
-      )}
+        {bekend && tegels.length > 0 && (
+          <Tegels tegels={tegels} onKlik={naarTegel} />
+        )}
 
-      {bekend && paneelIds.length > 0 && (
-        <section
-          className="rhc-mox-card rhc-mox-row-gap"
-          aria-labelledby="uw-antwoorden"
-        >
-          <Heading level={2} id="uw-antwoorden">
-            Uw antwoorden
-          </Heading>
-          <Paragraph>
-            Hierop zijn de aanvragen gebaseerd. U kunt ze nog wijzigen. Wijzigt
-            u een antwoord? Controleer de aanvragen dan opnieuw.
-          </Paragraph>
-          <dl className="rhc-data-summary rhc-data-summary--column">
-            <Antwoord
-              label="Kandidaat"
-              waarde={`${kandidaat.voornaam} ${kandidaat.achternaam}`}
-              href={GEGEVENS}
-            />
-            <Antwoord
-              label="Eerste werkdag"
-              waarde={datumNL(a.aanvang ?? dienstverband.aanvang)}
-              href={GEGEVENS}
-            />
-            <Antwoord
-              label="Uren per week"
-              waarde={String(a.uren)}
-              href={VRAGEN}
-            />
-            <Antwoord
-              label="Loonwaarde, uw schatting"
-              waarde={`${a.loonwaarde} procent`}
-              href={VRAGEN}
-            />
-          </dl>
-        </section>
-      )}
-
-      {paneelIds.length > 0 && (
-        <div className="rhc-mox-stack rhc-mox-stack--sm">
-          <Paragraph>
-            Gecontroleerd: {aantal} van {paneelIds.length}
-          </Paragraph>
-          <ProgressBar
-            label="Gecontroleerd"
-            value={aantal}
-            max={paneelIds.length}
-            valueText={`${aantal} van ${paneelIds.length}`}
-          />
-          <Paragraph role="status" className="rhc-mox-small-text">
-            {melding}
-          </Paragraph>
-        </div>
-      )}
-
-      {fout && aantal < paneelIds.length && (
-        <Alert type="error">
-          <Paragraph>
-            Nog niet klaar om te versturen. Controleer eerst:
-          </Paragraph>
-          <UnorderedList>
-            {paneelIds
-              .filter((id) => !g[id])
-              .map((id) => (
-                <UnorderedListItem key={id}>
-                  <a
-                    href={`#paneel-${id}`}
-                    className="utrecht-link utrecht-link--html-a"
-                  >
-                    {NAAM[id]}
-                  </a>
-                  {mist(id) && ": vul eerst aan wat ontbreekt"}
-                </UnorderedListItem>
-              ))}
-          </UnorderedList>
-        </Alert>
-      )}
-
-      <div className="rhc-grid">
-        <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
-          {bekend &&
-            route.panelen.map((groep) => (
-              <section
-                key={groep.organisatie}
-                className="rhc-mox-row-gap"
-                aria-labelledby={`naar-${groep.organisatie}`}
-              >
-                <Heading level={2} id={`naar-${groep.organisatie}`}>
-                  {ORGANISATIE[groep.organisatie]}
-                </Heading>
-                <Accordion>{groep.ids.map(paneel)}</Accordion>
-              </section>
-            ))}
-
-          {bekend && route.taken.length > 0 && (
-            <section
-              className="rhc-mox-row-gap"
-              aria-labelledby="taken-werknemer"
-            >
-              <Heading level={2} id="taken-werknemer">
-                Taken voor de werknemer
-              </Heading>
-              {route.taken.map(taak)}
-            </section>
-          )}
-
-          {bekend && route.vanzelf.length > 0 && (
-            <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
-              <Heading level={2} id="vanzelf">
-                Gaat vanzelf of via de loonaangifte
-              </Heading>
-              {route.vanzelf.map(vanzelf)}
-            </section>
-          )}
-
-          {bekend && (
-            <ActionGroup id="versturen">
-              <Button
-                appearance="primary-action-button"
-                onClick={paneelIds.length > 0 ? indienen : klaar}
-              >
-                {paneelIds.length > 0 ? "Versturen" : "Klaar"}
-              </Button>
-              <Link
-                href="/personeel"
-                className="utrecht-link utrecht-link--html-a"
-              >
-                Opslaan en later afronden
-              </Link>
-            </ActionGroup>
-          )}
-        </div>
-
-        <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
-          <section className="rhc-mox-card" aria-labelledby="wie-ziet">
-            <Heading level={2} id="wie-ziet">
-              Wie deze aanvraag ziet
+        {bekend && paneelIds.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="uw-antwoorden">
+            <Heading level={2} id="uw-antwoorden">
+              Uw antwoorden
             </Heading>
             <Paragraph>
-              Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
+              Hierop zijn de aanvragen gebaseerd. U kunt ze nog wijzigen.
+              Wijzigt u een antwoord? Controleer de aanvragen dan opnieuw.
             </Paragraph>
-            <Paragraph>
-              Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
-              gegevens van die uitkomst naar de digitale assistent.
-            </Paragraph>
-            <Paragraph className="rhc-mox-small-text">
-              Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
-            </Paragraph>
+            <dl className="rhc-data-summary rhc-data-summary--column">
+              <Antwoord
+                label="Kandidaat"
+                waarde={`${kandidaat.voornaam} ${kandidaat.achternaam}`}
+                href={GEGEVENS}
+              />
+              <Antwoord
+                label="Eerste werkdag"
+                waarde={datumNL(a.aanvang ?? dienstverband.aanvang)}
+                href={GEGEVENS}
+              />
+              <Antwoord
+                label="Uren per week"
+                waarde={String(a.uren)}
+                href={VRAGEN}
+              />
+              <Antwoord
+                label="Loonwaarde, uw schatting"
+                waarde={`${a.loonwaarde} procent`}
+                href={VRAGEN}
+              />
+            </dl>
           </section>
-          {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
-          <StickyInfoBox title="Wat dit u oplevert">
-            <KorteBalans antwoorden={a} resultaat={resultaat} />
-          </StickyInfoBox>
+        )}
+
+        {paneelIds.length > 0 && (
+          <div className="rhc-mox-stack rhc-mox-stack--sm">
+            <Paragraph>
+              Gecontroleerd: {aantal} van {paneelIds.length}
+            </Paragraph>
+            <ProgressBar
+              label="Gecontroleerd"
+              value={aantal}
+              max={paneelIds.length}
+              valueText={`${aantal} van ${paneelIds.length}`}
+            />
+            <Paragraph role="status" className="rhc-mox-small-text">
+              {melding}
+            </Paragraph>
+          </div>
+        )}
+
+        {fout && aantal < paneelIds.length && (
+          <Alert type="error">
+            <Paragraph>
+              Nog niet klaar om te versturen. Controleer eerst:
+            </Paragraph>
+            <UnorderedList>
+              {paneelIds
+                .filter((id) => !g[id])
+                .map((id) => (
+                  <UnorderedListItem key={id}>
+                    <a
+                      href={`#paneel-${id}`}
+                      className="utrecht-link utrecht-link--html-a"
+                    >
+                      {NAAM[id]}
+                    </a>
+                    {mist(id) && ": vul eerst aan wat ontbreekt"}
+                  </UnorderedListItem>
+                ))}
+            </UnorderedList>
+          </Alert>
+        )}
+
+        <div className="rhc-grid">
+          <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
+            <Alert type="info" closable>
+              <Paragraph>
+                <strong>Wie kan deze aanvraag zien?</strong>
+              </Paragraph>
+              <Paragraph>
+                Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
+              </Paragraph>
+              <Paragraph>
+                Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
+                gegevens van die uitkomst naar de digitale assistent.
+              </Paragraph>
+              <Paragraph className="rhc-mox-small-text">
+                Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
+              </Paragraph>
+            </Alert>
+            {bekend &&
+              route.panelen.map((groep) => (
+                <section
+                  key={groep.organisatie}
+                  className="rhc-mox-row-gap"
+                  aria-labelledby={`naar-${groep.organisatie}`}
+                >
+                  <Heading level={2} id={`naar-${groep.organisatie}`}>
+                    {ORGANISATIE[groep.organisatie]}
+                  </Heading>
+                  <Accordion>{groep.ids.map(paneel)}</Accordion>
+                </section>
+              ))}
+
+            {bekend && route.taken.length > 0 && (
+              <section
+                className="rhc-mox-row-gap"
+                aria-labelledby="taken-werknemer"
+              >
+                <Heading level={2} id="taken-werknemer">
+                  Taken voor de werknemer
+                </Heading>
+                {route.taken.map(taak)}
+              </section>
+            )}
+
+            {bekend && route.vanzelf.length > 0 && (
+              <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
+                <Heading level={2} id="vanzelf">
+                  Gaat vanzelf of via de loonaangifte
+                </Heading>
+                {route.vanzelf.map(vanzelf)}
+              </section>
+            )}
+
+            {bekend && (
+              <ActionGroup id="versturen">
+                <Button
+                  appearance="primary-action-button"
+                  onClick={paneelIds.length > 0 ? indienen : klaar}
+                >
+                  {paneelIds.length > 0 ? "Versturen" : "Klaar"}
+                </Button>
+                <Link
+                  href="/personeel"
+                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--subtle"
+                >
+                  Opslaan en later afronden
+                </Link>
+              </ActionGroup>
+            )}
+          </div>
+
+          <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
+            {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
+            <StickyInfoBox title="Wat dit u oplevert">
+              <KorteBalans antwoorden={a} resultaat={resultaat} />
+            </StickyInfoBox>
+          </div>
         </div>
       </div>
     </>

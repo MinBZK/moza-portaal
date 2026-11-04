@@ -19,6 +19,8 @@ import {
   getDemoIemandAannemenTraces,
 } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
+import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
+import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_vragen";
 import Stappen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_stappen";
 import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
@@ -64,8 +66,10 @@ const AanvraagPage = async ({
         pad={`/lopendezaken/aanvragen/${aanvraag.id}`}
         label={aanvraag.titel}
       />
+      {flow && <CollapsibleNavigation />}
       <Heading level={1}>{aanvraag.titel}</Heading>
-      <Paragraph>
+      {flow && <FocusModeSwitch />}
+      <Paragraph className="rhc-mox-back-link">
         <Link
           href="/lopendezaken#nog-in-te-dienen"
           className="utrecht-link utrecht-link--html-a"

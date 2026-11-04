@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import { getDemoSubsidies } from "@/demo";
-import { getFlagsFromServerCookie } from "@/app/actions";
 import { getActievePersona } from "@/app/(public)/_persona";
 import { RelevantItem } from "@/components/save/saveActions";
 import SubsidieActies, { bewaarItemVan } from "./_subsidieActies";
@@ -18,8 +17,7 @@ const SubsidiesPage = async ({
 }: {
   searchParams: Promise<{ pagina?: string }>;
 }) => {
-  const [flags, persona, { pagina }] = await Promise.all([
-    getFlagsFromServerCookie(),
+  const [persona, { pagina }] = await Promise.all([
     getActievePersona(),
     searchParams,
   ]);
@@ -79,7 +77,7 @@ const SubsidiesPage = async ({
             </Heading>
             <Paragraph>{subsidie.samenvatting}</Paragraph>
             <SubsidieGegevens subsidie={subsidie} />
-            <SubsidieActies subsidie={subsidie} delen={flags.mox_delen} />
+            <SubsidieActies subsidie={subsidie} />
           </article>
         </RelevantItem>
       ))}

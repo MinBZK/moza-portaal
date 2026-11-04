@@ -101,7 +101,7 @@ export const Tegels = ({
           >
             <span className="rhc-mox-tile__title">{t.naam}</span>
             <span className="rhc-mox-small-text">
-              {t.wie} · {t.wet}
+              {t.wie}, {t.wet}
             </span>
             {t.bedrag !== undefined && (
               <span className="rhc-mox-tile__amount">
@@ -110,7 +110,7 @@ export const Tegels = ({
             )}
             <span className="rhc-mox-tile__status rhc-mox-small-text">
               {t.wat}
-              {t.status && ` · ${t.status}`}
+              {t.status && `, ${t.status}`}
             </span>
           </a>
         </li>

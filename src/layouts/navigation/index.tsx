@@ -1,10 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import type {
-  FeatureFlagKey,
-  FeatureFlags,
-} from "@/app/(private)/instellingen/_featureFlags";
 import {
   SideNav,
   SideNavList,
@@ -25,18 +21,17 @@ import { StaffIcon } from "@/components/icons/staffIcon";
 import { RegulationIcon } from "@/components/icons/regulationIcon";
 import { SubsidyIcon } from "@/components/icons/subsidyIcon";
 import LogoutButton from "@/components/LogoutButton";
+import DemoNavigation, { type DemoMenu } from "./demoNavigation";
 
 const Navigation = ({
-  flags,
   berichtenboxBadge,
   lopendeZakenBadge,
   naam = "Robin Vogel",
   organisaties = [],
   actieveOrganisatieId,
   actieveOrganisatieNaam,
+  demoMenu,
 }: {
-  /** Pagina-flags uit het Flags-paneel. Zonder flags staat alles aan. */
-  flags?: FeatureFlags;
   /** Aantal ongelezen berichten. Komt van de layout, want die kent de berichten. */
   berichtenboxBadge?: ReactNode;
   /** Zaken die de Digitale assistent aanmaakte. */
@@ -47,8 +42,9 @@ const Navigation = ({
   organisaties?: KeuzeOrganisatie[];
   actieveOrganisatieId?: string;
   actieveOrganisatieNaam?: string;
+  /** Menu for the demo pages; without it they get the main menu. */
+  demoMenu?: DemoMenu;
 }) => {
-  const toon = (key: FeatureFlagKey) => flags?.[key] !== false;
   const pathname = usePathname();
   // Actief op de pagina zelf en op onderliggende pagina's. "/" alleen exact.
   const isActief = (...hrefs: string[]) =>
@@ -58,11 +54,15 @@ const Navigation = ({
         : pathname === href || pathname.startsWith(`${href}/`),
     );
 
+  // The demo pages get their own menu, to each component.
+  const isDemo =
+    !!demoMenu && (pathname === "/demo" || pathname.startsWith("/demo/"));
+
   const open = useMenuOpen();
   const kiesOrganisatie = useKiesOrganisatie(actieveOrganisatieId);
 
   return (
-    <SideNav aria-label="Hoofdmenu">
+    <SideNav aria-label={isDemo ? "Componenten" : "Hoofdmenu"}>
       <div
         id={MENU_ID}
         className={
@@ -71,176 +71,146 @@ const Navigation = ({
             : "rhc-mox-menu-lists"
         }
       >
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink current={isActief("/")} href="/" icon="home">
-              Home
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-        <Separator />
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/bedrijfsgegevens")}
-              href="/bedrijfsgegevens"
-              icon="briefcase"
-            >
-              Bedrijfsgegevens
-            </SideNavLink>
-          </SideNavItem>
-          {toon("mox_pagina_berichtenbox") && (
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/berichtenbox")}
-                href="/berichtenbox"
-                icon="inbox"
-              >
-                Berichtenbox
-                {berichtenboxBadge}
-              </SideNavLink>
-            </SideNavItem>
-          )}
-          {toon("mox_pagina_lopendeZaken") && (
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/lopendezaken")}
-                href="/lopendezaken"
-                icon="activiteit"
-              >
-                Lopende zaken
-                {lopendeZakenBadge}
-              </SideNavLink>
-            </SideNavItem>
-          )}
-        </SideNavList>
-        <Separator />
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink current={isActief("/subsidies")} href="/subsidies">
-              <SubsidyIcon />
-              Subsidies en financiering
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink current={isActief("/wetten")} href="/wetten">
-              <RegulationIcon />
-              Wetten en regelgeving
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/buurtberichten")}
-              href="/buurtberichten"
-              icon="locatiemarker"
-            >
-              Berichten over uw buurt
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/bewaard")}
-              href="/bewaard"
-              icon="favoriet"
-            >
-              Bewaarde items
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
-        {toon("mox_pagina_digitaleAssistent") && (
-          <SideNavList>
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/digitale-assistent")}
-                href="/digitale-assistent"
-              >
-                <DigitalAssistantIcon />
-                Digitale assistent (AI)
-              </SideNavLink>
-            </SideNavItem>
-          </SideNavList>
+        {isDemo ? (
+          <DemoNavigation pathname={pathname} menu={demoMenu} />
+        ) : (
+          <>
+            <SideNavList>
+              <SideNavItem>
+                <SideNavLink current={isActief("/")} href="/" icon="home">
+                  Home
+                </SideNavLink>
+              </SideNavItem>
+            </SideNavList>
+            <SideNavList>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/bedrijfsgegevens")}
+                  href="/bedrijfsgegevens"
+                  icon="briefcase"
+                >
+                  Bedrijfsgegevens
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/berichtenbox")}
+                  href="/berichtenbox"
+                  icon="inbox"
+                >
+                  Berichtenbox
+                  {berichtenboxBadge}
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/lopendezaken")}
+                  href="/lopendezaken"
+                  icon="activiteit"
+                >
+                  Lopende zaken
+                  {lopendeZakenBadge}
+                </SideNavLink>
+              </SideNavItem>
+            </SideNavList>
+            <SideNavList>
+              <SideNavItem>
+                <SideNavLink current={isActief("/subsidies")} href="/subsidies">
+                  <SubsidyIcon />
+                  Subsidies en financiering
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink current={isActief("/wetten")} href="/wetten">
+                  <RegulationIcon />
+                  Wetten en regelgeving
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/buurtberichten")}
+                  href="/buurtberichten"
+                  icon="locatiemarker"
+                >
+                  Berichten over uw buurt
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/bewaard")}
+                  href="/bewaard"
+                  icon="favoriet"
+                >
+                  Bewaarde items
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/digitale-assistent")}
+                  href="/digitale-assistent"
+                >
+                  <DigitalAssistantIcon />
+                  Digitale assistent (AI)
+                </SideNavLink>
+              </SideNavItem>
+            </SideNavList>
+            <SideNavList>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/belastingen")}
+                  href="/belastingen"
+                  icon="currency-euro"
+                >
+                  Belastingen
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/zakelijk-vervoer")}
+                  href="/zakelijk-vervoer"
+                  icon="car"
+                >
+                  Zakelijk vervoer
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink current={isActief("/personeel")} href="/personeel">
+                  <StaffIcon />
+                  Personeel en rollen
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/verzuim-en-verlof")}
+                  href="/verzuim-en-verlof"
+                >
+                  <AbsenceIcon />
+                  Ziekte en verlof
+                </SideNavLink>
+              </SideNavItem>
+            </SideNavList>
+            <SideNavList>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/dataverwerking")}
+                  href="/dataverwerking"
+                  icon="gegevensuitwisseling"
+                >
+                  Gegevensdeling en dataverwerking
+                </SideNavLink>
+              </SideNavItem>
+              <SideNavItem>
+                <SideNavLink
+                  current={isActief("/contactvoorkeuren")}
+                  href="/contactvoorkeuren"
+                  icon="instellingen"
+                >
+                  Contactvoorkeuren
+                </SideNavLink>
+              </SideNavItem>
+            </SideNavList>
+          </>
         )}
-        <Separator />
-        {toon("mox_pagina_belastingen") && (
-          <SideNavList>
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/belastingen")}
-                href="/belastingen"
-                icon="currency-euro"
-              >
-                Belastingen
-              </SideNavLink>
-            </SideNavItem>
-          </SideNavList>
-        )}
-        {toon("mox_pagina_zakelijkVervoer") && (
-          <SideNavList>
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/zakelijk-vervoer")}
-                href="/zakelijk-vervoer"
-                icon="car"
-              >
-                Zakelijk vervoer
-              </SideNavLink>
-            </SideNavItem>
-          </SideNavList>
-        )}
-        {toon("mox_pagina_personeel") && (
-          <SideNavList>
-            <SideNavItem>
-              <SideNavLink current={isActief("/personeel")} href="/personeel">
-                <StaffIcon />
-                Personeel en rollen
-              </SideNavLink>
-            </SideNavItem>
-          </SideNavList>
-        )}
-        {toon("mox_pagina_ziekteVerlof") && (
-          <SideNavList>
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/verzuim-en-verlof")}
-                href="/verzuim-en-verlof"
-              >
-                <AbsenceIcon />
-                Ziekte en verlof
-              </SideNavLink>
-            </SideNavItem>
-          </SideNavList>
-        )}
-        <Separator />
-        {toon("mox_pagina_dataverwerking") && (
-          <SideNavList>
-            <SideNavItem>
-              <SideNavLink
-                current={isActief("/dataverwerking")}
-                href="/dataverwerking"
-                icon="gegevensuitwisseling"
-              >
-                Gegevensdeling en dataverwerking
-              </SideNavLink>
-            </SideNavItem>
-          </SideNavList>
-        )}
-        <SideNavList>
-          <SideNavItem>
-            <SideNavLink
-              current={isActief("/contactvoorkeuren")}
-              href="/contactvoorkeuren"
-              icon="instellingen"
-            >
-              Contactvoorkeuren
-            </SideNavLink>
-          </SideNavItem>
-        </SideNavList>
         {/* Alleen op een smal scherm; op breed staan deze in de header. */}
         <div className="rhc-mox-menu-account">
           <Separator />
