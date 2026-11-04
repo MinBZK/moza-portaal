@@ -34,6 +34,24 @@ import { datumNL } from "../_werkgever";
 
 const NIEUW = "nieuw";
 
+/** UWV geeft de werkgever alleen ja of nee op het register, niet de grond. */
+const NIET_VOOR_WERKGEVER: readonly string[] = [
+  "grond_opname_doelgroepregister",
+];
+
+const zichtbaarVan = (bron: DemoAannemen["bronnen"][number]) =>
+  bron.gegevens.filter((g) => !NIET_VOOR_WERKGEVER.includes(g.parameter));
+
+/** Negen cijfers en de elfproef van het BSN. */
+const elfproef = (bsn: string) => {
+  if (!/^\d{9}$/.test(bsn)) return false;
+  const som = [...bsn].reduce(
+    (t, c, i) => t + Number(c) * (i === 8 ? -1 : 9 - i),
+    0,
+  );
+  return som % 11 === 0;
+};
+
 const VRAGEN =
   "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt";
 
@@ -102,8 +120,10 @@ const EigenOpgave = ({
 /**
  * De kandidaat kiezen of toevoegen, en het omgekeerde formulier:
  * alles wat de overheid al weet in een tabel, per bron een vinkje dat
- * standaard aan staat. Een zelf toegevoegde kandidaat wacht op toestemming;
- * zonder toestemming haalt het portaal niets op.
+ * standaard aan staat. De werkgever geeft de werknemer op met naam en BSN, zoals
+ * nu bij de gemeente en UWV; de organisaties kijken met het BSN in hun eigen
+ * gegevens. De grond van registratie in het doelgroepregister ziet de
+ * werkgever niet: UWV geeft alleen ja of nee.
  */
 const Bronnen = ({
   perSituatie,
@@ -123,7 +143,13 @@ const Bronnen = ({
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
     ];
-  const [nieuw, setNieuw] = useState({ naam: "", geboortedatum: "" });
+  const [nieuw, setNieuw] = useState({ naam: "", bsn: "" });
+  // Een BSN heeft negen cijfers en voldoet aan de elfproef.
+  const bsnGoed = elfproef(nieuw.bsn.trim());
+  const bsnFout =
+    nieuw.bsn.trim() === "" || bsnGoed
+      ? undefined
+      : "Een BSN heeft negen cijfers. Controleer het nummer.";
   const [open, setOpen] = useState<BronId[]>([]);
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
@@ -143,19 +169,19 @@ const Bronnen = ({
 
   const voegToe = () => {
     const n = nieuw.naam.trim();
-    if (!n) return;
+    if (!n || !bsnGoed) return;
     werkBij({
       kandidatenNieuw: [
         ...nieuwe.filter((k) => k.naam !== n),
         {
           naam: n,
-          geboortedatum: nieuw.geboortedatum.trim(),
+          bsn: `•••••${nieuw.bsn.trim().slice(-4)}`,
           gevraagdOp: new Date().toISOString().slice(0, 10),
         },
       ],
       kandidaat: n,
     });
-    setNieuw({ naam: "", geboortedatum: "" });
+    setNieuw({ naam: "", bsn: "" });
   };
 
   return (
@@ -165,14 +191,16 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
-          Gegevens over de kandidaat halen we alleen op met diens toestemming.
-          De kandidaat geeft die via de eigen MijnOverheid.
+          Wij gebruiken het burgerservicenummer (BSN) van de werknemer. U hebt
+          het uit uw loonadministratie, of de kandidaat geeft het u. De
+          gemeente, UWV en de Belastingdienst kijken met het BSN in hun eigen
+          gegevens.
         </Paragraph>
         <Fieldset legend="Kandidaten">
           <FormFieldRadio
             name="kandidaat"
             value={kandidaat.bsnMasker}
-            label={`${naam}, geboren ${datumNL(kandidaat.geboortedatum)}, toestemming gegeven op ${datumNL(kandidaat.toestemmingOp)}`}
+            label={`${naam}, geboren ${datumNL(kandidaat.geboortedatum)}, BSN ${kandidaat.bsnMasker}`}
             checked={gekozen}
             onChange={() => werkBij({ kandidaat: kandidaat.bsnMasker })}
           />
@@ -181,7 +209,7 @@ const Bronnen = ({
               key={k.naam}
               name="kandidaat"
               value={k.naam}
-              label={`${k.naam}${k.geboortedatum ? `, geboren ${k.geboortedatum}` : ""}, toestemming gevraagd op ${datumNL(k.gevraagdOp)}`}
+              label={`${k.naam}${k.geboortedatum ? `, geboren ${k.geboortedatum}` : ""}${k.bsn ? `, BSN ${k.bsn}` : ""}`}
               checked={keuze === k.naam}
               onChange={() => werkBij({ kandidaat: k.naam })}
             />
@@ -189,7 +217,7 @@ const Bronnen = ({
           <FormFieldRadio
             name="kandidaat"
             value={NIEUW}
-            label="Iemand anders: nieuwe kandidaat toevoegen"
+            label="Iemand anders: werknemer toevoegen"
             checked={keuze === NIEUW}
             onChange={() => werkBij({ kandidaat: NIEUW })}
           />
@@ -210,28 +238,31 @@ const Bronnen = ({
               }
             />
             <FormFieldTextInput
-              label="Geboortedatum (dag-maand-jaar)"
+              label="Burgerservicenummer (BSN)"
+              inputMode="numeric"
               autoComplete="off"
-              value={nieuw.geboortedatum}
+              value={nieuw.bsn}
+              invalid={bsnFout !== undefined}
+              errorMessage={bsnFout}
               onChange={(event) =>
                 setNieuw({
                   ...nieuw,
-                  geboortedatum: (event.target as HTMLInputElement).value,
+                  bsn: (event.target as HTMLInputElement).value,
                 })
               }
             />
             <Paragraph className="rhc-mox-small-text">
-              De kandidaat krijgt een verzoek om toestemming in MijnOverheid.
-              Zodra die er is, halen we de gegevens op. Het BSN vragen we niet
-              aan u; dat komt mee met de toestemming.
+              Neemt u de kandidaat nog niet aan? Vraag het BSN dan pas na de
+              selectie, en gebruik het alleen om na te gaan of de kandidaat in
+              het doelgroepregister staat.
             </Paragraph>
             <ActionGroup>
               <Button
                 appearance="secondary-action-button"
-                aria-disabled={!nieuw.naam.trim()}
+                aria-disabled={!nieuw.naam.trim() || !bsnGoed}
                 onClick={voegToe}
               >
-                Toestemming vragen
+                Toevoegen
               </Button>
             </ActionGroup>
           </div>
@@ -250,10 +281,9 @@ const Bronnen = ({
         </Heading>
         {wachtend ? (
           <Paragraph>
-            Wij hebben {wachtend.naam} op {datumNL(wachtend.gevraagdOp)} om
-            toestemming gevraagd. Zodra die er is, halen wij de gegevens op die
-            nodig zijn voor de berekening en ziet u ze hier. In dit prototype
-            komt die toestemming niet.
+            Voor {wachtend.naam} haalt dit prototype geen gegevens op. In het
+            echt vragen wij ze met het BSN op bij UWV, de gemeente en de
+            Belastingdienst.
           </Paragraph>
         ) : !gekozen ? (
           <Paragraph>
@@ -278,7 +308,7 @@ const Bronnen = ({
                       key={bron.id}
                       // Het niveau op Accordion geldt alleen voor diens eigen kop.
                       headingLevel={3}
-                      label={`${bron.organisatie} · ${bron.gegevens.length} ${bron.gegevens.length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
+                      label={`${bron.organisatie} · ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"} · ${aan ? "bevestigd" : "niet bevestigd"}`}
                       // Het type eist `body`, de component rendert alleen `children`.
                       body={null}
                       expanded={open.includes(bron.id)}
@@ -299,28 +329,32 @@ const Bronnen = ({
                         takes text as value, and the toggletip with the law
                         question belongs in the value. */}
                         <dl className="rhc-data-summary rhc-data-summary--column">
-                          {bron.gegevens.map((g) => (
-                            <div
-                              key={g.parameter}
-                              className="rhc-data-summary__item"
-                            >
-                              <dt className="rhc-data-summary__item-key">
-                                {g.vraag}
-                              </dt>
-                              <dd className="rhc-data-summary__item-value">
-                                {/* De uren komen uit de antwoorden van stap 1. */}
-                                {g.waarde.replace(
-                                  "{uren}",
-                                  String(antwoorden.uren),
-                                )}{" "}
-                                <InfoToggletip
-                                  label={`Zo vraagt de wet het: ${g.vraag}`}
-                                >
-                                  {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                                </InfoToggletip>
-                              </dd>
-                            </div>
-                          ))}
+                          {bron.gegevens
+                            .filter(
+                              (g) => !NIET_VOOR_WERKGEVER.includes(g.parameter),
+                            )
+                            .map((g) => (
+                              <div
+                                key={g.parameter}
+                                className="rhc-data-summary__item"
+                              >
+                                <dt className="rhc-data-summary__item-key">
+                                  {g.vraag}
+                                </dt>
+                                <dd className="rhc-data-summary__item-value">
+                                  {/* De uren komen uit de antwoorden van stap 1. */}
+                                  {g.waarde.replace(
+                                    "{uren}",
+                                    String(antwoorden.uren),
+                                  )}{" "}
+                                  <InfoToggletip
+                                    label={`Zo vraagt de wet het: ${g.vraag}`}
+                                  >
+                                    {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
+                                  </InfoToggletip>
+                                </dd>
+                              </div>
+                            ))}
                         </dl>
                         <FormFieldCheckboxOption
                           label={
@@ -354,7 +388,7 @@ const Bronnen = ({
       <div className="rhc-mox-stack">
         <Paragraph role="status">
           {wachtend
-            ? "Wachten op toestemming van de kandidaat."
+            ? "Voor deze werknemer zijn in dit prototype geen gegevens."
             : !gekozen
               ? "Nog geen kandidaat gekozen."
               : !opgave

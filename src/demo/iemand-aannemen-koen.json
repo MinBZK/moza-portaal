@@ -375,9 +375,9 @@
       "tijd": "14:05",
       "actor": "U",
       "soort": "uitvoering",
-      "titel": "Koen toegevoegd als kandidaat; Koen gaf toestemming",
-      "tekst": "Koen de Wit gaf toestemming dat {onderneming} zijn gegevens bij UWV en de gemeente gebruikt voor deze aanvraag.",
-      "grond": "AVG 6 lid 1 a",
+      "titel": "Koen opgegeven als werknemer, met BSN",
+      "tekst": "U gaf Koen de Wit op met het BSN. UWV, de gemeente en de Belastingdienst gebruiken het BSN om in hun eigen gegevens te kijken.",
+      "grond": "",
       "stap": "indicatie"
     },
     {

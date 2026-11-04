@@ -76,7 +76,10 @@ export type AannemenStaat = {
   /** Zelf toegevoegde kandidaten, in afwachting van hun toestemming. */
   kandidatenNieuw?: {
     naam: string;
-    geboortedatum: string;
+    /** Alleen bij kandidaten uit een eerdere versie. */
+    geboortedatum?: string;
+    /** Het BSN, afgeschermd tot de laatste vier cijfers. */
+    bsn?: string;
     gevraagdOp: string;
   }[];
   /** Per regeling in de aanvraag: gecontroleerd. */
