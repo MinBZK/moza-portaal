@@ -226,7 +226,7 @@ const Bronnen = ({
         ) : !gekozen ? (
           <Paragraph>
             Kies eerst de kandidaat. Daarna halen wij de gegevens op die nodig
-            zijn voor de berekening en ziet u het hier.
+            zijn voor de berekening en ziet u ze hier.
           </Paragraph>
         ) : deeltNiet ? (
           <div className="rhc-mox-row-gap">
@@ -260,7 +260,7 @@ const Bronnen = ({
             )}
             <Paragraph>
               Per organisatie staat aangevinkt dat de gegevens kloppen en
-              gebruikt mogen worden. Open een organisatie om te zien wat we
+              gebruikt mogen worden. Open een organisatie om te zien wat wij
               ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult u
               dan zelf aan in de aanvraag.
             </Paragraph>
