@@ -13,7 +13,7 @@ export type ZaakStand = {
   verstuurdOp?: string;
   fase: string;
   vraag?: string;
-  /** De antwoorden bij het indienen (of bij "Uitsturen"); de zaak rekent daarmee. */
+  /** De antwoorden bij het indienen (of bij "Klaar"); de zaak rekent daarmee. */
   antwoorden?: Keuzes;
   /** Het onderwerp zoals de zaak het bij het indienen kreeg. */
   onderwerp?: string;
