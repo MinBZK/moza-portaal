@@ -488,9 +488,8 @@ const VragenMetStaat = ({
                       (i) => i.wet === b.wet && i.output === b.output,
                     );
                     return invoer ? (
-                      // De sleutel bevat de antwoorden: na een wijziging rekent de uitleg opnieuw.
                       <Waarom
-                        key={`${r.id}-${JSON.stringify(a)}`}
+                        key={r.id}
                         invoer={invoer}
                         labels={{}}
                         regeling={b.naam}
