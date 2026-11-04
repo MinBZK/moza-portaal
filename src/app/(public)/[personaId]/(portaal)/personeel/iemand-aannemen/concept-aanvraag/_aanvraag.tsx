@@ -37,7 +37,6 @@ import Waarom from "../_waarom";
 import {
   onderMinimumloon,
   useAannemen,
-  uurloonTekst,
   type AannemenStaat,
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
@@ -332,18 +331,15 @@ const AanvraagInhoud = ({
     bron: "Basisregistratie Personen",
   };
   const dienstRijen: Gegeven[] = [
-    {
-      label: "Functie",
-      waarde: a.functie?.trim() || dienstverband.functie,
-      bron: "Uw opgave",
-    },
+    ...(a.functie?.trim()
+      ? [{ label: "Functie", waarde: a.functie.trim(), bron: "Uw opgave" }]
+      : []),
     {
       label: "Eerste werkdag",
       waarde: datumNL(a.aanvang ?? dienstverband.aanvang),
       bron: "Uw opgave",
     },
     { label: "Uren per week", waarde: String(a.uren), bron: "Uw antwoord" },
-    { label: "Loon", waarde: uurloonTekst(a), bron: "Uw antwoord" },
   ];
 
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
@@ -958,17 +954,18 @@ const AanvraagInhoud = ({
               waarde={datumNL(a.aanvang ?? dienstverband.aanvang)}
               href={GEGEVENS}
             />
-            <Antwoord
-              label="Functie"
-              waarde={a.functie?.trim() || dienstverband.functie}
-              href={GEGEVENS}
-            />
+            {a.functie?.trim() && (
+              <Antwoord
+                label="Functie"
+                waarde={a.functie.trim()}
+                href={GEGEVENS}
+              />
+            )}
             <Antwoord
               label="Uren per week"
               waarde={String(a.uren)}
               href={VRAGEN}
             />
-            <Antwoord label="Loon" waarde={uurloonTekst(a)} href={VRAGEN} />
             <Antwoord
               label="Loonwaarde, uw schatting"
               waarde={`${a.loonwaarde} procent`}

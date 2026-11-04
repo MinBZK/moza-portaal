@@ -126,9 +126,8 @@ export const inRegister = (a: Antwoorden) =>
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
 
-/** De eigen opgave in stap 2 is compleet: eerste werkdag en functie zijn ingevuld. */
-export const eigenOpgaveCompleet = (a: Antwoorden) =>
-  !!a.aanvang && !!a.functie?.trim();
+/** De eigen opgave in stap 2 is compleet: de eerste werkdag is ingevuld. */
+export const eigenOpgaveCompleet = (a: Antwoorden) => !!a.aanvang;
 
 export const uurloonTekst = (a: Antwoorden) =>
   a.uurloon === WML_UUR_EUROCENT

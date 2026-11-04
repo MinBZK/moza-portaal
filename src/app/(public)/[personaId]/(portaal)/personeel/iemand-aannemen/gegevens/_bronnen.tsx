@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -24,7 +25,6 @@ import {
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
-  WML_UUR_EUROCENT,
   type Antwoorden,
   type BronId,
 } from "../_useAannemen";
@@ -36,14 +36,6 @@ const NIEUW = "nieuw";
 
 const VRAGEN =
   "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt";
-
-/** "16,50" naar 1650; null als het geen bedrag is. */
-const naarEurocent = (tekst: string) => {
-  const t = tekst.trim().replace(/^€\s*/, "").replace(",", ".");
-  if (!/^\d+(\.\d{1,2})?$/.test(t)) return null;
-  return Math.round(Number(t) * 100);
-};
-const alsTekst = (cent: number) => (cent / 100).toFixed(2).replace(".", ",");
 
 /**
  * Wat alleen de werkgever weet: de eerste werkdag, de functie, de uren en het
@@ -59,91 +51,53 @@ const EigenOpgave = ({
   voornaam: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
-}) => {
-  const [uren, setUren] = useState(String(a.uren));
-  const [loon, setLoon] = useState(alsTekst(a.uurloon));
-  const urenGetal = Number(uren);
-  const urenFout =
-    /^\d+$/.test(uren.trim()) && urenGetal >= 8 && urenGetal <= 40
-      ? undefined
-      : "Vul een aantal uren in van 8 tot en met 40.";
-  const loonCent = naarEurocent(loon);
-  const loonFout =
-    loonCent === null
-      ? "Vul een bedrag in, bijvoorbeeld 16,50."
-      : loonCent < WML_UUR_EUROCENT
-        ? `Het uurloon is ten minste het minimumloon, ${alsTekst(WML_UUR_EUROCENT)} euro.`
-        : undefined;
-  return (
-    <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
-      <Heading level={3} id="eigen-opgave">
-        Uw eigen opgave
-      </Heading>
-      <Paragraph>
-        Dit weet alleen u. In de voorbeeldberekening waren het schattingen; nu
-        gaan ze in de aanvraag.
-      </Paragraph>
-      <FormFieldTextInput
-        name="aanvang"
-        type="date"
-        label={`Wat is de eerste werkdag van ${voornaam}?`}
-        value={a.aanvang ?? ""}
-        onChange={(event) =>
-          zet({
-            aanvang: (event.target as HTMLInputElement).value || undefined,
-          })
-        }
-      />
-      <FormFieldTextInput
-        name="functie"
-        label={`Welke functie krijgt ${voornaam}?`}
-        autoComplete="off"
-        value={a.functie ?? ""}
-        onChange={(event) =>
-          zet({ functie: (event.target as HTMLInputElement).value })
-        }
-      />
-      <FormFieldTextInput
-        name="uren"
-        label={`Hoeveel uur per week gaat ${voornaam} werken?`}
-        inputMode="numeric"
-        autoComplete="off"
-        value={uren}
-        invalid={urenFout !== undefined}
-        errorMessage={urenFout}
-        onChange={(event) => {
-          const t = (event.target as HTMLInputElement).value;
-          setUren(t);
-          const n = Number(t);
-          if (/^\d+$/.test(t.trim()) && n >= 8 && n <= 40) zet({ uren: n });
-        }}
-      />
-      <FormFieldTextInput
-        name="uurloon"
-        label="Bruto uurloon in euro"
-        description="Het minimumloon is 14,99 euro per uur"
-        inputMode="decimal"
-        autoComplete="off"
-        value={loon}
-        invalid={loonFout !== undefined}
-        errorMessage={loonFout}
-        onChange={(event) => {
-          const t = (event.target as HTMLInputElement).value;
-          setLoon(t);
-          const c = naarEurocent(t);
-          if (c !== null && c >= WML_UUR_EUROCENT) zet({ uurloon: c });
-        }}
-      />
-      <Paragraph>
-        Loonwaarde: uw schatting is {a.loonwaarde} procent. Die stelt de
-        gemeente of UWV vast.{" "}
-        <Link href={VRAGEN} className="utrecht-link utrecht-link--html-a">
-          Schatting wijzigen
-        </Link>
-      </Paragraph>
-    </section>
-  );
-};
+}) => (
+  <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
+    <Heading level={3} id="eigen-opgave">
+      Uw eigen opgave
+    </Heading>
+    <Paragraph>Dit weet alleen u, en het gaat mee in de aanvraag.</Paragraph>
+    <FormFieldTextInput
+      name="aanvang"
+      type="date"
+      label={`Wat is de eerste werkdag van ${voornaam}?`}
+      value={a.aanvang ?? ""}
+      onChange={(event) =>
+        zet({
+          aanvang: (event.target as HTMLInputElement).value || undefined,
+        })
+      }
+    />
+    {/* Dezelfde vraag als in stap 1, nu definitief. */}
+    <RangeSlider
+      label={`Hoeveel uur per week gaat ${voornaam} werken?`}
+      min={8}
+      max={40}
+      step={1}
+      value={a.uren}
+      onChange={(uren) => zet({ uren })}
+      formatValue={(uren) => `${uren} uur`}
+      filled
+    />
+    <FormFieldTextInput
+      name="functie"
+      label={`Welke functie krijgt ${voornaam}? (niet verplicht)`}
+      description="Bijvoorbeeld medewerker magazijn. De deskundige van de gemeente of UWV bekijkt het werk op de werkplek."
+      autoComplete="off"
+      value={a.functie ?? ""}
+      onChange={(event) =>
+        zet({ functie: (event.target as HTMLInputElement).value })
+      }
+    />
+    <Paragraph>
+      Loonwaarde: uw schatting is {a.loonwaarde} procent. Die stelt de gemeente
+      of UWV vast op de werkplek.{" "}
+      <Link href={VRAGEN} className="utrecht-link utrecht-link--html-a">
+        Schatting wijzigen
+      </Link>
+    </Paragraph>
+  </section>
+);
 
 /**
  * De kandidaat kiezen of toevoegen, en het omgekeerde formulier:
@@ -404,7 +358,7 @@ const Bronnen = ({
             : !gekozen
               ? "Nog geen kandidaat gekozen."
               : !opgave
-                ? "Vul uw eigen opgave in: de eerste werkdag en de functie."
+                ? "Vul uw eigen opgave in: de eerste werkdag."
                 : klaar
                   ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
                   : `${aantal} van ${teBevestigen.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
