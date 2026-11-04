@@ -188,6 +188,37 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
   );
 };
 
+/** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
+const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string> = {
+  lks: () =>
+    "Loonkostensubsidie: u geeft wijzigingen door aan de gemeente, zoals andere uren of een ander contract. De gemeente meet de loonwaarde in principe één keer per jaar opnieuw.",
+  ld: () =>
+    "Loondispensatie: UWV bepaalt hoe lang die geldt, ten minste zes maanden en ten hoogste vijf jaar.",
+  lkv: (regel) =>
+    regel.categorie === "arbeidsgehandicapte_werknemer"
+      ? "Loonkostenvoordeel: u zet het aan in de loonaangifte en bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
+      : "Loonkostenvoordeel: u zet het aan in de loonaangifte.",
+};
+
+const WatUDoet = ({ regels }: { regels: Regel[] }) => {
+  const met = regels.filter((r) => r.bedragPerJaar > 0);
+  if (met.length === 0) return null;
+  return (
+    <section className="rhc-mox-row-gap" aria-labelledby="wat-u-doet">
+      <Heading level={3} appearanceLevel={5} id="wat-u-doet">
+        Wat u ervoor doet
+      </Heading>
+      <UnorderedList>
+        {met.map((r) => (
+          <UnorderedListItem key={r.id}>
+            {WAT_U_DOET[r.id](r)}
+          </UnorderedListItem>
+        ))}
+      </UnorderedList>
+    </section>
+  );
+};
+
 /** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
 const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
   <ActionGroup>
@@ -408,8 +439,15 @@ const VragenMetStaat = ({
             </Fieldset>
           </div>
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
-            <StickyInfoBox title="Wat het kost en oplevert">
+            <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
+              <Paragraph className="rhc-mox-small-text">
+                Een berekening vooraf met uw antwoorden. Geen toezegging: na uw
+                aanvraag beslissen de gemeente, UWV en de Belastingdienst.
+              </Paragraph>
               <Balans antwoorden={a} resultaat={resultaat} />
+              {resultaat.bekend && !resultaat.fout && (
+                <WatUDoet regels={resultaat.uitkomsten.regels} />
+              )}
               <AanvraagKnop bekend={resultaat.bekend} />
             </StickyInfoBox>
           </div>

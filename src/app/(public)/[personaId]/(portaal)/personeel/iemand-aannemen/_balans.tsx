@@ -154,7 +154,7 @@ export const Aanname = ({ id }: { id: AannameId }) => (
 );
 
 /**
- * "Wat het kost en oplevert": loonkosten (benadering) min wat de
+ * "Voorbeeldberekening: wat het u kan opleveren": loonkosten (benadering) min wat de
  * regelingen opleveren, live uit de regelrecht-engine (useUitkomsten).
  * Compact (`kort`) voor de zijkolom van de aanvraag.
  */
