@@ -63,6 +63,14 @@ export type Antwoorden = {
  */
 export type RegelingId = PaneelId;
 
+/**
+ * Met wie de kandidaat de gegevens deelt: met de werkgever, alleen met de
+ * gemeente en UWV (de werkgever ziet ze niet), of met niemand.
+ */
+export type Delen = "werkgever" | "uitvoerder" | "niet";
+
+export const DELEN: readonly Delen[] = ["werkgever", "uitvoerder", "niet"];
+
 export type AannemenStaat = {
   antwoorden: Antwoorden;
   /** Per bron: mag de aanvraag deze gegevens gebruiken. Niet gezet is ja. */
@@ -75,6 +83,8 @@ export type AannemenStaat = {
     geboortedatum: string;
     gevraagdOp: string;
   }[];
+  /** Wat de kandidaat deelt; niet gezet is met de werkgever. */
+  delen?: Delen;
   /** Per regeling in de aanvraag: gecontroleerd. */
   gecontroleerd: Partial<Record<RegelingId, boolean>>;
   /** Keuzes bij de regelingen die niet vanzelf gelden. */

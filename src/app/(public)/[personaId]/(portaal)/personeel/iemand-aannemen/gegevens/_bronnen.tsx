@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
 import {
   Accordion,
@@ -14,16 +14,28 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
+  UnorderedList,
+  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
   BRONNEN,
+  DELEN,
   alleBronnenBevestigd,
   bronBevestigd,
   STANDAARD_ANTWOORDEN,
   useAannemen,
   type BronId,
+  type Delen,
 } from "../_useAannemen";
+
+/** Bronnen met gegevens over de kandidaat; de rest gaat over de werkgever. */
+const OVER_KANDIDAAT: readonly string[] = ["uwv", "gemeente"];
+
+/** UWV geeft de werkgever alleen ja of nee op het register, niet de grond. */
+const NIET_VOOR_WERKGEVER: readonly string[] = [
+  "grond_opname_doelgroepregister",
+];
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL } from "../_werkgever";
@@ -43,6 +55,18 @@ const Bronnen = ({
 }) => {
   const router = useRouter();
   const { staat, werkBij } = useAannemen();
+  // Voor het onderzoek: ?delen=uitvoerder of ?delen=niet zet wat de kandidaat deelt.
+  const gevraagd = useSearchParams().get("delen");
+  useEffect(() => {
+    if (
+      staat &&
+      gevraagd &&
+      DELEN.includes(gevraagd as Delen) &&
+      staat.delen !== gevraagd
+    )
+      werkBij({ delen: gevraagd as Delen });
+  }, [staat, gevraagd, werkBij]);
+  const delen: Delen = staat?.delen ?? "werkgever";
   const situatie = situatieVan(staat?.antwoorden.doelgroepen ?? []);
   // Zonder iets om aan te vragen gaat de route na de gegevens naar het overzicht.
   const antwoorden = staat?.antwoorden ?? STANDAARD_ANTWOORDEN;
@@ -64,6 +88,18 @@ const Bronnen = ({
     ? BRONNEN.filter((id) => bronBevestigd(staat, id)).length
     : 0;
   const klaar = gekozen && !!staat && alleBronnenBevestigd(staat);
+  const deeltNiet = gekozen && delen === "niet";
+  const zichtbaar = bronnen
+    .filter((b) => delen === "werkgever" || !OVER_KANDIDAAT.includes(b.id))
+    .map((b) => ({
+      ...b,
+      gegevens: b.gegevens.filter(
+        (g) => !NIET_VOOR_WERKGEVER.includes(g.parameter),
+      ),
+    }));
+  const verborgen = bronnen.filter(
+    (b) => delen === "uitvoerder" && OVER_KANDIDAAT.includes(b.id),
+  );
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
 
   const vink = (id: BronId, aan: boolean) =>
@@ -100,7 +136,13 @@ const Bronnen = ({
           <FormFieldRadio
             name="kandidaat"
             value={kandidaat.bsnMasker}
-            label={`${naam}, geboren ${datumNL(kandidaat.geboortedatum)}, toestemming gegeven op ${datumNL(kandidaat.toestemmingOp)}`}
+            label={`${naam}, geboren ${datumNL(kandidaat.geboortedatum)}, ${
+              delen === "niet"
+                ? "deelt geen gegevens"
+                : delen === "uitvoerder"
+                  ? `deelt sinds ${datumNL(kandidaat.toestemmingOp)} gegevens met de gemeente en UWV, niet met u`
+                  : `toestemming gegeven op ${datumNL(kandidaat.toestemmingOp)}`
+            }`}
             checked={gekozen}
             onChange={() => werkBij({ kandidaat: kandidaat.bsnMasker })}
           />
@@ -188,8 +230,42 @@ const Bronnen = ({
             Kies eerst de kandidaat. Daarna halen wij de gegevens op die nodig
             zijn voor de berekening en ziet u het hier.
           </Paragraph>
+        ) : deeltNiet ? (
+          <div className="rhc-mox-row-gap">
+            <Paragraph>
+              {kandidaat.voornaam} deelt deze gegevens niet. Dat is de keuze van{" "}
+              {kandidaat.voornaam}. Die keuze mag geen rol spelen bij uw
+              beslissing om {kandidaat.voornaam} aan te nemen.
+            </Paragraph>
+            <Paragraph>
+              Zonder deze gegevens kunnen wij de aanvragen niet voor u invullen.
+              U kunt de regelingen wel zelf aanvragen bij de gemeente en UWV.
+              Het loonkostenvoordeel vraagt u aan in de loonaangifte.
+            </Paragraph>
+          </div>
         ) : (
           <>
+            {verborgen.length > 0 && (
+              <div className="rhc-mox-row-gap">
+                <Paragraph>
+                  {kandidaat.voornaam} deelt de eigen gegevens met de gemeente
+                  en UWV, niet met u. Zij gebruiken ze voor de berekening en om
+                  uw aanvraag te beoordelen. U ziet ze niet.
+                </Paragraph>
+                <UnorderedList>
+                  {verborgen.map((bron) => (
+                    <UnorderedListItem key={bron.id}>
+                      {bron.organisatie}: {bron.gegevens.length}{" "}
+                      {bron.gegevens.length === 1 ? "gegeven" : "gegevens"},
+                      alleen voor{" "}
+                      {bron.id === "gemeente"
+                        ? "de gemeente"
+                        : bron.organisatie}
+                    </UnorderedListItem>
+                  ))}
+                </UnorderedList>
+              </div>
+            )}
             <Paragraph>
               Per organisatie staat aangevinkt dat de gegevens kloppen en
               gebruikt mogen worden. Open een organisatie om te zien wat we
@@ -197,7 +273,7 @@ const Bronnen = ({
               dan zelf aan in de aanvraag.
             </Paragraph>
             <Accordion>
-              {bronnen.map((bron) => {
+              {zichtbaar.map((bron) => {
                 const aan = !!staat && bronBevestigd(staat, bron.id);
                 return (
                   <AccordionSection
@@ -268,18 +344,20 @@ const Bronnen = ({
         <Paragraph role="status">
           {wachtend
             ? "Wachten op toestemming van de kandidaat."
-            : !gekozen
-              ? "Nog geen kandidaat gekozen."
-              : klaar
-                ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
-                : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
+            : deeltNiet
+              ? "De kandidaat deelt geen gegevens. Er is niets in te vullen."
+              : !gekozen
+                ? "Nog geen kandidaat gekozen."
+                : klaar
+                  ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
+                  : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
         <ActionGroup>
           <Button
             appearance="primary-action-button"
-            aria-disabled={!gekozen || !resultaat.bekend}
+            aria-disabled={!gekozen || deeltNiet || !resultaat.bekend}
             onClick={() => {
-              if (gekozen && resultaat.bekend)
+              if (gekozen && !deeltNiet && resultaat.bekend)
                 router.push(
                   naarOverzicht
                     ? "/personeel/iemand-aannemen/overzicht"

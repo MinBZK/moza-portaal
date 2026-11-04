@@ -299,15 +299,22 @@ const AanvraagInhoud = ({
               bron: "UWV doelgroepregister",
             }
           : null;
-  if (situatieRij) werknemerRijen.push(situatieRij);
-  const woonplaatsRij: Gegeven = {
+  // Deelt de kandidaat alleen met de gemeente en UWV, dan ziet de werkgever
+  // de waarde niet; de organisatie gebruikt hem wel bij de beoordeling.
+  const verborgen = staat.delen === "uitvoerder";
+  const verberg = (rij: Gegeven): Gegeven =>
+    verborgen
+      ? { ...rij, waarde: "Gedeeld met de gemeente en UWV, niet met u" }
+      : rij;
+  if (situatieRij) werknemerRijen.push(verberg(situatieRij));
+  const woonplaatsRij: Gegeven = verberg({
     label: "Woonplaats werknemer",
     waarde:
       kandidaat.woonplaats === kandidaat.gemeente
         ? kandidaat.woonplaats
         : `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
     bron: "Basisregistratie Personen",
-  };
+  });
   const dienstRijen: Gegeven[] = [
     { label: "Functie", waarde: dienstverband.functie, bron: "Uw opgave" },
     {
@@ -436,11 +443,11 @@ const AanvraagInhoud = ({
             rijen={[
               ...(inRegister
                 ? [
-                    {
+                    verberg({
                       label: "Regeling werknemer",
                       waarde: "Doelgroep banenafspraak",
                       bron: "UWV doelgroepregister",
-                    },
+                    }),
                   ]
                 : []),
             ]}
