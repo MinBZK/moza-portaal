@@ -217,6 +217,9 @@ const AanvraagInhoud = ({
   // Het vinkje legt alleen vast. Verder gaan doet de gebruiker zelf met de
   // knop eronder, zodat de focus niet verspringt (WCAG 3.2.2).
   const controleer = (id: PaneelId, aanvinken: boolean) => {
+    // Leg vast wat nu open is, anders schuift de standaard mee en klapt deze
+    // aanvraag dicht terwijl de focus erin staat.
+    setOpen(openIds);
     werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
     setMelding(
       aanvinken
@@ -474,8 +477,8 @@ const AanvraagInhoud = ({
               <UnorderedListItem>
                 <strong>Of {kandidaat.voornaam} bij de doelgroep hoort.</strong>{" "}
                 Dat is zo als {kandidaat.voornaam} met een volledige baan niet
-                het minimumloon kan verdienen (Participatiewet, artikel 6 lid 1
-                onderdeel e en artikel 10c).
+                het minimumloon kan verdienen (Participatiewet, artikel 6,
+                onderdeel e, en artikel 10c).
               </UnorderedListItem>
               <UnorderedListItem>
                 <strong>De loonwaarde.</strong> Dat is hoeveel het werk van{" "}
@@ -502,10 +505,12 @@ const AanvraagInhoud = ({
                 Vraagt u aan voordat {kandidaat.voornaam} begint? Dan kunt u met
                 de gemeente afspreken dat de meting eerst niet nodig is. U
                 krijgt dan ten hoogste de eerste zes maanden een vast bedrag: 50
-                procent van het minimumloon. Daarna stelt de gemeente de
-                loonwaarde vast (artikel 10d lid 1 onderdeel b en lid 5). De
-                gemeente {kandidaat.gemeente} meet dan in de vijfde maand van
-                het dienstverband.
+                procent van het minimumloon met vakantiegeld, naar verhouding
+                van de uren, plus een vergoeding voor werkgeverslasten. Daarna
+                stelt de gemeente de loonwaarde vast (artikel 10d lid 1
+                onderdeel b en lid 5). In Rotterdam is die meting dan in de
+                vijfde maand van het dienstverband (werkwijze van de gemeente
+                Rotterdam).
               </UnorderedListItem>
               <UnorderedListItem>
                 De gemeente spreekt met u en {kandidaat.voornaam} af wanneer zij
@@ -513,9 +518,14 @@ const AanvraagInhoud = ({
               </UnorderedListItem>
             </UnorderedList>
             <Paragraph>
-              <strong>Binnen acht weken</strong> na uw aanvraag krijgt u een
-              brief van de gemeente. Daarin staat of u loonkostensubsidie krijgt
-              en hoeveel.
+              U krijgt een brief van de gemeente. Daarin staat of u
+              loonkostensubsidie krijgt en hoeveel. Is {kandidaat.voornaam} al
+              begonnen? Dan krijgt u de brief <strong>binnen acht weken</strong>{" "}
+              na uw aanvraag (Algemene wet bestuursrecht, artikel 4:13). Vraagt
+              u aan voordat {kandidaat.voornaam} begint? Dan beslist de gemeente{" "}
+              <strong>binnen vijf weken</strong> nadat zij de loonwaarde heeft
+              vastgesteld of heeft afgesproken dat de meting eerst niet nodig is
+              (Participatiewet, artikel 10d lid 12).
             </Paragraph>
           </Beoordeling>
           {waarom(
@@ -568,6 +578,12 @@ const AanvraagInhoud = ({
             Loondispensatie geldt vanaf de eerste dag van de maand waarin u de
             aanvraag doet (Besluit loondispensatie Wajong, artikel 4). Vraagt u
             later aan, dan geldt de loondispensatie ook later.
+          </Paragraph>
+          <Paragraph>
+            Na uw aanvraag komt een arbeidsdeskundige van UWV meestal op de
+            werkplek. Die praat met u en met {kandidaat.voornaam}. UWV stuurt u{" "}
+            <strong>binnen acht weken</strong> na de aanvraag een brief met het
+            besluit.
           </Paragraph>
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
@@ -870,12 +886,13 @@ const AanvraagInhoud = ({
               </OrderedListItem>
             )}
             <OrderedListItem>
-              Binnen acht weken na uw aanvraag krijgt u van{" "}
+              U krijgt van{" "}
               {route.panelen.length > 1 ? "elke organisatie" : "de organisatie"}{" "}
               een brief met het besluit
               {paneelIds.includes("lks") &&
                 ". Bij loonkostensubsidie staat daarin ook het bedrag"}
-              . De brief komt in uw berichtenbox.
+              . De brief komt in uw berichtenbox. Wanneer u die krijgt, staat
+              bij elke aanvraag.
             </OrderedListItem>
           </OrderedList>
         </section>
