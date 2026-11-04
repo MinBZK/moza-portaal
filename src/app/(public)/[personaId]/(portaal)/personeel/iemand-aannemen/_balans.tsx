@@ -57,7 +57,7 @@ export const VOORBEHOUD: Record<VoorbehoudId, string> = {
   zes_maanden:
     "Was de kandidaat in de zes maanden voor de start al bij u in dienst? Dan geldt het loonkostenvoordeel niet.",
   samenloop:
-    "Het loonkostenvoordeel kan samengaan met de no-riskpolis, loonkostensubsidie en loondispensatie. Hoe ze samen uitpakken, rekenen we hier niet uit.",
+    "U krijgt het loonkostenvoordeel naast de andere regelingen. Samen zijn ze nooit meer dan de loonkosten.",
 };
 
 /**

@@ -30,6 +30,7 @@ import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
 import Stappen from "../_stappen";
+import { taakTegel, Tegels, vanzelfTegel, type Tegel } from "../_tegels";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
@@ -93,20 +94,6 @@ const Beoordeling = ({
     {children}
   </section>
 );
-
-/** Eén regeling als tegel in het overzicht. */
-type Tegel = {
-  id: string;
-  naam: string;
-  wie: string;
-  wet: string;
-  wat: string;
-  bedrag?: number;
-  status?: string;
-  /** Het anker van het onderdeel op de pagina. */
-  doel: string;
-  paneel?: PaneelId;
-};
 
 /** Een antwoord uit stap 1 of 2, met een link om het te wijzigen. */
 const Antwoord = ({
@@ -344,15 +331,6 @@ const AanvraagInhoud = ({
     jc: { wie: gemeenteNaam, wet: "Participatiewet, artikel 10da" },
     wpa: { wie: gemeenteNaam, wet: "Participatiewet, artikel 10" },
   };
-  const TAAK_TEGEL: Record<TaakId, { wie: string; wet: string }> = {
-    doelgroepverklaring: {
-      wie: "UWV",
-      wet: "Wet tegemoetkomingen loondomein, artikel 2.7",
-    },
-    vz_wajong: { wie: "UWV", wet: "Wajong, artikel 2:22" },
-    vz_wia: { wie: "UWV", wet: "Wet WIA, artikel 35" },
-    pp: { wie: gemeenteNaam, wet: "Participatiewet, artikel 8a" },
-  };
   const tegels: Tegel[] = [
     ...paneelIds.map((id) => ({
       id,
@@ -365,35 +343,9 @@ const AanvraagInhoud = ({
       paneel: id,
     })),
     ...route.vanzelf.map((id) =>
-      id === "lkv"
-        ? {
-            id,
-            naam: "Loonkostenvoordeel",
-            wie: "Belastingdienst",
-            wet:
-              lkv?.categorie === "arbeidsgehandicapte_werknemer"
-                ? "Wet tegemoetkomingen loondomein, artikel 2.9"
-                : "Wet tegemoetkomingen loondomein, artikel 2.13",
-            wat: "Via de loonaangifte",
-            bedrag: bedragVan("lkv"),
-            doel: "vanzelf-lkv",
-          }
-        : {
-            id,
-            naam: "No-riskpolis",
-            wie: "UWV",
-            wet: "Ziektewet, artikel 29b",
-            wat: "Gaat vanzelf",
-            doel: "vanzelf-nrp",
-          },
+      vanzelfTegel(id, { categorie: lkv?.categorie, bedrag: bedragVan("lkv") }),
     ),
-    ...route.taken.map((id) => ({
-      id,
-      naam: TAAK[id],
-      ...TAAK_TEGEL[id],
-      wat: "Taak voor de werknemer",
-      doel: `taak-${id}`,
-    })),
+    ...route.taken.map((id) => taakTegel(id, TAAK[id], gemeenteNaam)),
   ];
 
   // Een tegel van een aanvraag klapt die aanvraag open; de link zelf brengt
@@ -891,36 +843,7 @@ const AanvraagInhoud = ({
       )}
 
       {bekend && tegels.length > 0 && (
-        <section className="rhc-mox-row-gap" aria-labelledby="overzicht">
-          <Heading level={2} id="overzicht">
-            Alle regelingen in één overzicht
-          </Heading>
-          <ul className="rhc-mox-tile-grid">
-            {tegels.map((t) => (
-              <li key={t.id}>
-                <a
-                  href={`#${t.doel}`}
-                  className="rhc-mox-tile"
-                  onClick={() => naarTegel(t)}
-                >
-                  <span className="rhc-mox-tile__title">{t.naam}</span>
-                  <span className="rhc-mox-small-text">
-                    {t.wie} · {t.wet}
-                  </span>
-                  {t.bedrag !== undefined && (
-                    <span className="rhc-mox-tile__amount">
-                      {euro(t.bedrag)} per jaar
-                    </span>
-                  )}
-                  <span className="rhc-mox-tile__status rhc-mox-small-text">
-                    {t.wat}
-                    {t.status && ` · ${t.status}`}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <Tegels tegels={tegels} onKlik={naarTegel} />
       )}
 
       {bekend && paneelIds.length > 0 && (

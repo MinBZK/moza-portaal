@@ -22,6 +22,7 @@ import {
 } from "../_balans";
 import { overzichtTekst, routeVoor, type TaakId } from "../_route";
 import {
+  balansRegels,
   DOELGROEPEN,
   invoerVoor,
   lkvVoorbehoud,
@@ -38,6 +39,8 @@ import {
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import { euro } from "../_werkgever";
+import { loonkostenPerJaar } from "../_engine";
+import { Tegels, taakTegel, vanzelfTegel } from "../_tegels";
 
 /** Naam van de organisatie achter elke bron die de ondernemer kan delen. */
 const BRON_NAAM: Record<BronId, string> = {
@@ -135,6 +138,16 @@ const OverzichtInhoud = ({
   const { situatie } = route;
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
+  const lkvBedrag = balansRegels(uitkomsten, loonkostenPerJaar(a)).find(
+    (r) => r.id === "lkv" && r.status === "bedrag",
+  )?.bedrag;
+  // Dezelfde tegels als in stap 3, voor wat vanzelf gaat en de taken.
+  const tegels = [
+    ...route.vanzelf.map((id) =>
+      vanzelfTegel(id, { categorie: lkv?.categorie, bedrag: lkvBedrag }),
+    ),
+    ...route.taken.map((id) => taakTegel(id, TAAK[id].kop, "Gemeente")),
+  ];
   const uitleg = a.doelgroepen.flatMap((d) => {
     const u = UITLEG[d];
     return u ? [{ ...u, id: d }] : [];
@@ -161,6 +174,10 @@ const OverzichtInhoud = ({
               ? "De regelrecht-engine rekent uit wat voor u geldt…"
               : overzichtTekst(route)}
         </Paragraph>
+      )}
+
+      {bekend && route.overzicht && tegels.length > 0 && (
+        <Tegels tegels={tegels} />
       )}
 
       {bekend && uitleg.length > 0 && (
