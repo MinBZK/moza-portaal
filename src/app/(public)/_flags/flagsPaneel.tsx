@@ -1,14 +1,17 @@
 "use client";
 
 import { useOptimistic, useTransition } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Button,
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
+  LinkList,
+  LinkListLink,
 } from "@/components/rhc";
+import { PackagesIcon } from "@/components/icons/packagesIcon";
+import { PuzzleIcon } from "@/components/icons/puzzleIcon";
 import {
   resetFeatureFlags,
   setBerichtenboxVariant,
@@ -115,7 +118,7 @@ const FlagsPaneel = ({
         <AssistentPaneel backendIngesteld={assistentBackendIngesteld} />
       </div>
 
-      <div>
+      <div className="rhc-mox-stack">
         <Switch
           label="Huisstijl"
           twoWay
@@ -124,19 +127,17 @@ const FlagsPaneel = ({
           checked={zichtbareFlags.mox_nieuweHuisstijl}
           onChange={(nieuw) => zetFlag("mox_nieuweHuisstijl", nieuw)}
         />
-        <p className="nl-paragraph">
-          <Link className="utrecht-link utrecht-link--html-a" href="/demo">
+        <LinkList>
+          <LinkListLink href="/demo" icon={<PuzzleIcon key="icon" />}>
             Overzicht van componenten
-          </Link>
-        </p>
-        <p className="nl-paragraph">
-          <Link
-            className="utrecht-link utrecht-link--html-a"
+          </LinkListLink>
+          <LinkListLink
             href="/demo/ontwerppatronen"
+            icon={<PackagesIcon key="icon" />}
           >
             Overzicht van ontwerppatronen
-          </Link>
-        </p>
+          </LinkListLink>
+        </LinkList>
       </div>
       <div className="prototype-side-overlay__footer">
         <Button

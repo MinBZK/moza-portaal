@@ -154,8 +154,8 @@ li {
 	column-gap: var(--utrecht-checkbox-margin-inline-end);
 }
 
-.utrecht-form-field--radio {
-	column-gap: var(--utrecht-radio-button-margin-inline-end);
+.rhc-form-field-radio-option__input > .utrecht-radio-button {
+	margin-inline-end: 0;
 }
 
 .utrecht-form-fieldset {

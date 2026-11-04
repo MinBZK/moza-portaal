@@ -42,7 +42,10 @@ const AssistentPaneel = ({
 
   return (
     <div>
-      <Fieldset legend="Digitale assistent">
+      <Fieldset
+        legend="Digitale assistent chat interface"
+        className="prototype-fieldset--2xl"
+      >
         <Switch
           label="LLM"
           twoWay
