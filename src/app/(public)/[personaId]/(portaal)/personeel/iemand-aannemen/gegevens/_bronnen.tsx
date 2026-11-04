@@ -462,7 +462,7 @@ const Bronnen = ({
                 );
             }}
           >
-            Vraag de data op
+            {naarOverzicht ? "Bekijk wat voor u geldt" : "Aanvraag nakijken"}
           </Button>
         </ActionGroup>
       </div>

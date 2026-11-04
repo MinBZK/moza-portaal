@@ -192,11 +192,13 @@ const AanvraagInhoud = ({
     g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
 
   // Welke aanvragen openstaan. Zolang de gebruiker niets open- of dichtklapte,
-  // staat de eerste aanvraag open die nog niet gecontroleerd is.
+  // staan de eerste aanvraag die nog niet gecontroleerd is en Loondispensatie
+  // open (zoals op main).
   const [open, setOpen] = useState<PaneelId[] | null>(null);
   const [melding, setMelding] = useState("");
   const eerste = paneelIds.find((id) => !g[id]);
-  const openIds = open ?? (eerste ? [eerste] : []);
+  const openIds =
+    open ?? paneelIds.filter((id) => !g[id] && (id === eerste || id === "ld"));
   const isOpen = (id: PaneelId) => openIds.includes(id);
   const wissel = (id: PaneelId) =>
     setOpen(isOpen(id) ? openIds.filter((x) => x !== id) : [...openIds, id]);
@@ -217,7 +219,7 @@ const AanvraagInhoud = ({
   const volgendeVan = (id: PaneelId) =>
     paneelIds.find((x) => x !== id && !g[x]);
   // Deze aanvraag gaat dicht, de volgende open, en de focus gaat naar de kop
-  // van de volgende aanvraag of naar Versturen.
+  // van de volgende aanvraag of naar Controleren en versturen.
   const naarVolgende = (id: PaneelId) => {
     const volgende = volgendeVan(id);
     setOpen(volgende ? [volgende] : []);
@@ -977,7 +979,7 @@ const AanvraagInhoud = ({
                   appearance="primary-action-button"
                   onClick={paneelIds.length > 0 ? indienen : klaar}
                 >
-                  {paneelIds.length > 0 ? "Versturen" : "Klaar"}
+                  {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
                 </Button>
                 <Link
                   href="/personeel"
