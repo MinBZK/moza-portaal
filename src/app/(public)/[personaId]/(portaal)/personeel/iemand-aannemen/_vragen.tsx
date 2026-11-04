@@ -191,9 +191,9 @@ const Termijnen = ({ regels }: { regels: Regel[] }) => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string> = {
   lks: () =>
-    "Loonkostensubsidie: u geeft wijzigingen door aan de gemeente, zoals andere uren of een ander contract. De gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet.",
+    "Loonkostensubsidie: de gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet. Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
   ld: () =>
-    "Loondispensatie: u betaalt het lagere loon dat UWV vaststelt. UWV bepaalt hoe lang dat mag, ten hoogste vijf jaar. Daarna kan UWV het verlengen.",
+    "Loondispensatie: u betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, ten hoogste vijf jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>
     regel.categorie === "arbeidsgehandicapte_werknemer"
       ? "Loonkostenvoordeel: u zet het aan in de loonaangifte en bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
@@ -441,8 +441,8 @@ const VragenMetStaat = ({
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
             <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
               <Paragraph className="rhc-mox-small-text">
-                Een berekening vooraf met uw antwoorden. Geen toezegging: na uw
-                aanvraag beslissen de gemeente, UWV en de Belastingdienst.
+                Een berekening vooraf met uw antwoorden. De beslissing neemt de
+                organisatie die de regeling uitvoert.
               </Paragraph>
               <Balans antwoorden={a} resultaat={resultaat} />
               {resultaat.bekend && !resultaat.fout && (
