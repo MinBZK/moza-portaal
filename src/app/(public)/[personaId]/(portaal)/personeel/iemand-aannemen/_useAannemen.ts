@@ -75,8 +75,6 @@ export type AannemenStaat = {
     geboortedatum: string;
     gevraagdOp: string;
   }[];
-  /** Namens wie de aanvraag wordt ingevuld. */
-  rol: "eigenaar" | "namens";
   /** Per regeling in de aanvraag: gecontroleerd. */
   gecontroleerd: Partial<Record<RegelingId, boolean>>;
   /** Keuzes bij de regelingen die niet vanzelf gelden. */
@@ -101,7 +99,6 @@ export const STANDAARD_ANTWOORDEN: Antwoorden = {
 const LEEG: AannemenStaat = {
   antwoorden: STANDAARD_ANTWOORDEN,
   bronnen: {},
-  rol: "eigenaar",
   gecontroleerd: {},
   keuzes: {},
   zaken: {},

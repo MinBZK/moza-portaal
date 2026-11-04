@@ -15,6 +15,8 @@ import {
   FormFieldCheckboxOption,
   FormFieldRadio,
   Heading,
+  OrderedList,
+  OrderedListItem,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
@@ -22,7 +24,6 @@ import {
 import InfoToggletip from "@/components/InfoToggletip";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import ProgressBar from "@/components/ProgressBar";
-import TextBadge from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
@@ -37,14 +38,11 @@ import {
   useAannemen,
   uurloonTekst,
   type AannemenStaat,
-  type RegelingId,
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
 
 type Gegeven = { label: string; waarde: string; bron: string };
-
-const Tag = ({ tekst }: { tekst: string }) => <TextBadge>{tekst}</TextBadge>;
 
 const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
   <DataSummary appearance="column">
@@ -74,10 +72,56 @@ const TAAK: Record<TaakId, string> = {
 
 const ORGANISATIE = { gemeente: "Naar de gemeente", uwv: "Naar UWV" } as const;
 
+const VRAGEN =
+  "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt";
+const GEGEVENS = "/personeel/iemand-aannemen/gegevens";
+
+/** Wat de organisatie zelf beoordeelt voordat die beslist; de aanvraag levert dat niet. */
+const Beoordeling = ({
+  id,
+  titel,
+  children,
+}: {
+  id: string;
+  titel: string;
+  children: ReactNode;
+}) => (
+  <section className="rhc-mox-highlight rhc-mox-row-gap" aria-labelledby={id}>
+    <Heading level={4} id={id}>
+      {titel}
+    </Heading>
+    {children}
+  </section>
+);
+
+/** Een antwoord uit stap 1 of 2, met een link om het te wijzigen. */
+const Antwoord = ({
+  label,
+  waarde,
+  href,
+}: {
+  label: string;
+  waarde: string;
+  href: string;
+}) => (
+  <div className="rhc-data-summary__item">
+    <dt className="rhc-data-summary__item-key">{label}</dt>
+    <dd className="rhc-data-summary__item-value">
+      {waarde}{" "}
+      <Link
+        href={href}
+        className="utrecht-link utrecht-link--html-a"
+        aria-label={`Wijzigen: ${label.toLowerCase()}`}
+      >
+        Wijzigen
+      </Link>
+    </dd>
+  </div>
+);
+
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
   werkgever: Werkgever;
-  ondernemer: string;
 };
 
 /**
@@ -98,7 +142,6 @@ const Aanvraag = (props: Props) => {
 const AanvraagInhoud = ({
   perSituatie,
   werkgever,
-  ondernemer,
   staat,
 }: Props & { staat: AannemenStaat }) => {
   const router = useRouter();
@@ -138,8 +181,6 @@ const AanvraagInhoud = ({
   const ld = uitkomsten.regels.find((r) => r.id === "ld");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
-  const controleer = (id: RegelingId, aanvinken: boolean) =>
-    werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
   const kies = (deel: typeof k) => werkBij({ keuzes: { ...k, ...deel } });
 
   const mist = (id: PaneelId) =>
@@ -148,11 +189,31 @@ const AanvraagInhoud = ({
   const status = (id: PaneelId) =>
     g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
 
-  // Het eerste paneel staat open; `omgezet` houdt bij welke de gebruiker
-  // open- of dichtklapte.
+  // De eerste aanvraag die nog niet gecontroleerd is, staat open; `omgezet`
+  // houdt bij welke de gebruiker zelf open- of dichtklapte.
   const [omgezet, setOmgezet] = useState<PaneelId[]>([]);
-  const isOpen = (id: PaneelId) =>
-    (id === paneelIds[0]) !== omgezet.includes(id);
+  const [melding, setMelding] = useState("");
+  const actief = paneelIds.find((id) => !g[id]);
+  const isOpen = (id: PaneelId) => (id === actief) !== omgezet.includes(id);
+
+  // Na "Ik heb dit gecontroleerd" gaat de volgende aanvraag open.
+  const controleer = (id: PaneelId, aanvinken: boolean) => {
+    werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
+    if (!aanvinken) return;
+    const volgende = paneelIds.find((x) => x !== id && !g[x]);
+    setOmgezet([]);
+    setMelding(
+      volgende
+        ? `${NAAM[id]} is gecontroleerd. Controleer nu ${NAAM[volgende].toLowerCase()}.`
+        : "Alle aanvragen zijn gecontroleerd. U kunt ze nu versturen.",
+    );
+    const doel = volgende ? `paneel-${volgende}` : "versturen";
+    requestAnimationFrame(() =>
+      document
+        .getElementById(doel)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+    );
+  };
   const wissel = (id: PaneelId) =>
     setOmgezet((nu) =>
       nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
@@ -226,7 +287,10 @@ const AanvraagInhoud = ({
   if (situatieRij) werknemerRijen.push(situatieRij);
   const woonplaatsRij: Gegeven = {
     label: "Woonplaats werknemer",
-    waarde: `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
+    waarde:
+      kandidaat.woonplaats === kandidaat.gemeente
+        ? kandidaat.woonplaats
+        : `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
     bron: "Basisregistratie Personen",
   };
   const dienstRijen: Gegeven[] = [
@@ -259,12 +323,19 @@ const AanvraagInhoud = ({
         </div>
       </AccordionSection>
     );
-    const gemeente = "Gemeente waar de kandidaat woont";
+    const gemeente = `Gemeente ${kandidaat.gemeente}, waar ${kandidaat.voornaam} woont`;
+    const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
 
     if (id === "lks")
       return kop(
         gemeente,
         <>
+          <Paragraph>
+            U vraagt het college van burgemeester en wethouders van{" "}
+            {kandidaat.gemeente} om loonkostensubsidie voor {naam}{" "}
+            (Participatiewet, artikel 10d).
+          </Paragraph>
+          <Heading level={4}>Wat in de aanvraag staat</Heading>
           <Gegevens
             rijen={[
               ...werkgeverRijen,
@@ -284,25 +355,63 @@ const AanvraagInhoud = ({
                     },
                   ]
                 : []),
-              {
-                label: "Loonwaarde",
-                waarde: onderMinimumloon(a)
-                  ? `${a.loonwaarde} procent, uw schatting; de gemeente meet op de werkplek`
-                  : "Geen verminderde loonwaarde; geen loonkostensubsidie",
-                bron: "Uw antwoord",
-              },
             ]}
           />
           <Paragraph>
-            Is de werknemer al begonnen? Dan vraagt u de loonkostensubsidie aan
-            binnen zes maanden na de eerste werkdag (
-            {datumNL(dienstverband.aanvang)}). Dat staat in de Participatiewet,
-            artikel 10d lid 2. Vraagt u de subsidie aan voordat de werknemer
-            begint? Dan stelt de gemeente eerst de loonwaarde vast. De gemeente
-            kan ook met u afspreken dat dit eerst niet nodig is. Dan stelt de
-            gemeente de loonwaarde na ten hoogste zes maanden vast (artikel 10d
-            lid 1 en lid 5).
+            U vraagt de loonkostensubsidie aan uiterlijk zes maanden na de
+            eerste werkdag ({datumNL(dienstverband.aanvang)}). Dat staat in de
+            Participatiewet, artikel 10d lid 2.
           </Paragraph>
+          <Beoordeling
+            id="beoordeelt-lks"
+            titel={`Wat de gemeente ${kandidaat.gemeente} zelf beoordeelt`}
+          >
+            <UnorderedList>
+              <UnorderedListItem>
+                <strong>Of {kandidaat.voornaam} bij de doelgroep hoort.</strong>{" "}
+                Dat is zo als {kandidaat.voornaam} met een volledige baan niet
+                het minimumloon kan verdienen (Participatiewet, artikel 10c).
+              </UnorderedListItem>
+              <UnorderedListItem>
+                <strong>De loonwaarde.</strong> Dat is hoeveel het werk van{" "}
+                {kandidaat.voornaam} waard is, in procenten van het minimumloon.{" "}
+                {onderMinimumloon(a)
+                  ? `U schatte ${a.loonwaarde} procent. De bedragen op deze pagina rekenen met die schatting. De gemeente stelt de loonwaarde vast; daarna weet u het precieze bedrag.`
+                  : "U gaf aan dat er geen verminderde loonwaarde is. Dan is er geen loonkostensubsidie."}
+              </UnorderedListItem>
+            </UnorderedList>
+            <Heading level={5}>Zo meet de gemeente de loonwaarde</Heading>
+            <UnorderedList>
+              <UnorderedListItem>
+                Een deskundige komt op de werkplek. Die kijkt naar het werk dat{" "}
+                {kandidaat.voornaam} doet en praat ook met u. De deskundige
+                werkt met een vaste, beschreven methode (Besluit
+                loonkostensubsidie Participatiewet, artikel 2).
+              </UnorderedListItem>
+              <UnorderedListItem>
+                U kiest met de gemeente hoe het eerste half jaar gaat. Of de
+                gemeente meet meteen. Of u krijgt eerst een vast bedrag: 50
+                procent van het minimumloon. De gemeente meet dan in de vijfde
+                maand van het dienstverband. Vanaf de zevende maand krijgt u de
+                subsidie op basis van de gemeten loonwaarde (Participatiewet,
+                artikel 10d lid 1 en lid 5).
+              </UnorderedListItem>
+              <UnorderedListItem>
+                Had {kandidaat.voornaam} eerst een proefplaats bij u? Dan meet
+                de gemeente tijdens de proefplaats. Het vaste bedrag kan dan
+                niet.
+              </UnorderedListItem>
+              <UnorderedListItem>
+                De gemeente meet de loonwaarde in principe één keer per jaar
+                opnieuw.
+              </UnorderedListItem>
+            </UnorderedList>
+            <Paragraph>
+              <strong>Binnen acht weken</strong> na uw aanvraag krijgt u een
+              brief van de gemeente. Daarin staat of u loonkostensubsidie krijgt
+              en hoeveel.
+            </Paragraph>
+          </Beoordeling>
           {waarom(
             "participatiewet",
             "heeft_recht_op_lks",
@@ -315,6 +424,11 @@ const AanvraagInhoud = ({
       return kop(
         "UWV",
         <>
+          <Paragraph>
+            U vraagt UWV om loondispensatie voor {naam} (Wajong, artikel 2:20).
+            Met loondispensatie mag u minder loon betalen dan het minimumloon.
+          </Paragraph>
+          <Heading level={4}>Wat in de aanvraag staat</Heading>
           <Gegevens
             rijen={[
               ...werkgeverRijen,
@@ -330,7 +444,7 @@ const AanvraagInhoud = ({
                     {
                       label: "Aanspraak per uur",
                       waarde: `${euro(ld.aanspraakPerUur)}, het minimumloon maal het percentage`,
-                      bron: "Berekend door de engine",
+                      bron: "Volgt uit de wet",
                     },
                   ]
                 : []),
@@ -602,37 +716,93 @@ const AanvraagInhoud = ({
       <Stappen huidige={3} />
       <Paragraph role={bekend ? undefined : "status"}>
         {resultaat.fout
-          ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
+          ? "De berekening lukt nu niet. Laad de pagina opnieuw."
           : !bekend
-            ? "De regelrecht-engine rekent uit welke regelingen gelden…"
+            ? "Wij zoeken in de wet uit welke regelingen gelden…"
             : regelingen === 0
               ? "Bij deze antwoorden is er niets aan te vragen."
               : paneelIds.length === 0
                 ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
-                : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
+                : `Wij hebben ${paneelIds.length === 1 ? "de aanvraag" : `${paneelIds.length} aanvragen`} voor u ingevuld met gegevens die de overheid al heeft. Er is nog niets verstuurd.`}
       </Paragraph>
 
-      <p className="rhc-mox-cluster">
-        <TextBadge variant="info">Vooringevuld</TextBadge>
-        <Tag tekst={werkgever.onderneming} />
-        <Tag
-          tekst={
-            staat.rol === "namens"
-              ? `Ingevuld namens ${werkgever.onderneming}`
-              : `Ingevuld door ${ondernemer}`
-          }
-        />
-        {/* Zonder panelen dient de werkgever niets in: geen tag. */}
-        {paneelIds.length > 0 && (
-          <Tag
-            tekst={
-              staat.zaken[situatie]?.ingediend
-                ? "Verstuurd"
-                : "Nog niet verstuurd"
-            }
-          />
-        )}
-      </p>
+      {bekend && paneelIds.length > 0 && (
+        <section
+          className="rhc-mox-card rhc-mox-row-gap"
+          aria-labelledby="zo-gaat-het"
+        >
+          <Heading level={2} id="zo-gaat-het">
+            Zo gaat het
+          </Heading>
+          <OrderedList>
+            <OrderedListItem>
+              U controleert de aanvragen hieronder, één voor één. Klopt een
+              antwoord niet? Kies dan <strong>Wijzigen</strong>.
+            </OrderedListItem>
+            <OrderedListItem>
+              U verstuurt{" "}
+              {route.panelen
+                .map((p) =>
+                  p.organisatie === "gemeente"
+                    ? `de aanvraag naar de gemeente ${kandidaat.gemeente}`
+                    : "de aanvraag naar UWV",
+                )
+                .join(" en ")}
+              .
+            </OrderedListItem>
+            {paneelIds.includes("lks") && (
+              <OrderedListItem>
+                De gemeente {kandidaat.gemeente} laat de loonwaarde van{" "}
+                {kandidaat.voornaam} meten op de werkplek. Hoe dat gaat, staat
+                bij de loonkostensubsidie.
+              </OrderedListItem>
+            )}
+            {paneelIds.includes("ld") && (
+              <OrderedListItem>
+                Een arbeidsdeskundige van UWV komt op de werkplek en stelt vast
+                welk loon past bij het werk.
+              </OrderedListItem>
+            )}
+            <OrderedListItem>
+              Binnen acht weken na uw aanvraag krijgt u een brief met het
+              besluit en het bedrag. De brief komt in uw berichtenbox.
+            </OrderedListItem>
+          </OrderedList>
+        </section>
+      )}
+
+      {bekend && paneelIds.length > 0 && (
+        <section
+          className="rhc-mox-card rhc-mox-row-gap"
+          aria-labelledby="uw-antwoorden"
+        >
+          <Heading level={2} id="uw-antwoorden">
+            Uw antwoorden
+          </Heading>
+          <Paragraph>
+            Hierop zijn de aanvragen gebaseerd. U kunt ze nog wijzigen. Wat u al
+            hebt gecontroleerd, blijft bewaard.
+          </Paragraph>
+          <dl className="rhc-data-summary rhc-data-summary--column">
+            <Antwoord
+              label="Kandidaat"
+              waarde={`${kandidaat.voornaam} ${kandidaat.achternaam}`}
+              href={GEGEVENS}
+            />
+            <Antwoord
+              label="Uren per week"
+              waarde={String(a.uren)}
+              href={VRAGEN}
+            />
+            <Antwoord label="Loon" waarde={uurloonTekst(a)} href={VRAGEN} />
+            <Antwoord
+              label="Loonwaarde, uw schatting"
+              waarde={`${a.loonwaarde} procent`}
+              href={VRAGEN}
+            />
+          </dl>
+        </section>
+      )}
 
       {paneelIds.length > 0 && (
         <div className="rhc-mox-stack rhc-mox-stack--sm">
@@ -645,6 +815,9 @@ const AanvraagInhoud = ({
             max={paneelIds.length}
             valueText={`${aantal} van ${paneelIds.length}`}
           />
+          <Paragraph role="status" className="rhc-mox-small-text">
+            {melding}
+          </Paragraph>
         </div>
       )}
 
@@ -709,7 +882,7 @@ const AanvraagInhoud = ({
           )}
 
           {bekend && (
-            <ActionGroup>
+            <ActionGroup id="versturen">
               <Button
                 appearance="primary-action-button"
                 onClick={paneelIds.length > 0 ? indienen : klaar}

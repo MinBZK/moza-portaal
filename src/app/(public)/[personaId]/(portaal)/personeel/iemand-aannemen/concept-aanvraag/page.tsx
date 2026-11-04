@@ -38,11 +38,6 @@ const ConceptAanvraagPage = async () => {
         wia: gevuld(situaties.wia),
       }}
       werkgever={werkgever}
-      ondernemer={
-        persona
-          ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
-          : "u"
-      }
     />
   );
 };

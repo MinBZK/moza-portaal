@@ -5,8 +5,8 @@
     "achternaam": "de Wit",
     "geboortedatum": "1984-03-15",
     "leeftijd": 42,
-    "woonplaats": "Bergschenhoek",
-    "gemeente": "Lansingerland",
+    "woonplaats": "Rotterdam",
+    "gemeente": "Rotterdam",
     "bsnMasker": "•••••0101",
     "toestemmingOp": "2026-09-07"
   },
@@ -20,8 +20,8 @@
     "soort": "Onbepaalde tijd"
   },
   "zaak": {
-    "nummer": "LLD-LKS-2026-0417",
-    "organisatie": "Gemeente Lansingerland",
+    "nummer": "RTM-LKS-2026-0417",
+    "organisatie": "Gemeente Rotterdam",
     "onderwerp": "Loonkostensubsidie voor Koen de Wit",
     "regel": "Artikel 10d van de Participatiewet, zoals dat geldt op 1 juli 2026",
     "url": "/lopendezaken/iemand-aannemen/gemeente"
@@ -170,7 +170,7 @@
     {
       "id": "lks",
       "naam": "Loonkostensubsidie",
-      "organisatie": "Gemeente Lansingerland",
+      "organisatie": "Gemeente Rotterdam",
       "soort": "concept-aanvraag",
       "soortLabel": "Concept-aanvraag staat klaar",
       "uitkomst": "Kan gelden",
@@ -216,7 +216,7 @@
     {
       "id": "begeleiding",
       "naam": "Begeleiding op de werkplek (jobcoach)",
-      "organisatie": "Gemeente Lansingerland",
+      "organisatie": "Gemeente Rotterdam",
       "soort": "optioneel",
       "soortLabel": "Aanvragen als u wilt",
       "uitkomst": "Aanspraak",
@@ -232,7 +232,7 @@
     {
       "id": "proefplaatsing",
       "naam": "Proefplaatsing",
-      "organisatie": "Gemeente Lansingerland",
+      "organisatie": "Gemeente Rotterdam",
       "soort": "optioneel",
       "soortLabel": "Mogelijk, vóór de eerste werkdag",
       "uitkomst": "Mogelijk",
@@ -387,7 +387,7 @@
       "actor": "U",
       "soort": "uitvoering",
       "titel": "Gegevens per bron bevestigd",
-      "tekst": "UWV, gemeente Lansingerland, KVK, Belastingdienst en uw eigen opgave: per bron aangevinkt dat de gegevens kloppen en gebruikt mogen worden.",
+      "tekst": "UWV, gemeente Rotterdam, KVK, Belastingdienst en uw eigen opgave: per bron aangevinkt dat de gegevens kloppen en gebruikt mogen worden.",
       "grond": "",
       "stap": "indicatie"
     },
@@ -409,7 +409,7 @@
       "actor": "U",
       "soort": "uitvoering",
       "titel": "Aanvraag loonkostensubsidie verstuurd",
-      "tekst": "De concept-aanvraag is verstuurd naar de gemeente Lansingerland, binnen zes maanden na de eerste werkdag.",
+      "tekst": "De concept-aanvraag is verstuurd naar de gemeente Rotterdam, binnen zes maanden na de eerste werkdag.",
       "grond": "Pwet 10d lid 2",
       "stap": "ontvangst"
     },
@@ -417,9 +417,9 @@
       "id": "g7",
       "datum": "2026-10-06",
       "tijd": "09:14",
-      "actor": "Gemeente Lansingerland",
+      "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
-      "titel": "Ontvangstbevestiging, zaaknummer LLD-LKS-2026-0417",
+      "titel": "Ontvangstbevestiging, zaaknummer RTM-LKS-2026-0417",
       "tekst": "De gemeente heeft uw aanvraag ontvangen en in behandeling genomen.",
       "grond": "Awb 4:3a",
       "stap": "ontvangst"
@@ -428,7 +428,7 @@
       "id": "g8",
       "datum": "2026-10-09",
       "tijd": "11:40",
-      "actor": "Gemeente Lansingerland",
+      "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Afspraak loonwaardemeting op de werkplek: 13 oktober",
       "tekst": "Een loonwaardedeskundige meet de loonwaarde van Koen op de werkvloer.",
@@ -440,7 +440,7 @@
       "id": "g9",
       "datum": "2026-10-12",
       "tijd": "08:55",
-      "actor": "Gemeente Lansingerland",
+      "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Correctie: afspraak verzet naar 20 oktober",
       "tekst": "De loonwaardedeskundige is 13 oktober niet beschikbaar. De afspraak van 13 oktober vervalt.",
@@ -452,7 +452,7 @@
       "id": "g10",
       "datum": "2026-10-20",
       "tijd": "10:00",
-      "actor": "Gemeente Lansingerland",
+      "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Loonwaardemeting uitgevoerd",
       "tekst": "De loonwaardedeskundige heeft de meting op de werkplek gedaan.",
@@ -463,7 +463,7 @@
       "id": "g11",
       "datum": "2026-10-27",
       "tijd": "15:20",
-      "actor": "College van Lansingerland",
+      "actor": "College van Rotterdam",
       "soort": "besluit",
       "titel": "Loonwaarde vastgesteld: {loonwaarde} van het minimumloon",
       "tekst": "Het college heeft de loonwaarde van Koen vastgesteld op {loonwaarde} van het wettelijk minimumloon.",
@@ -474,7 +474,7 @@
       "id": "g12",
       "datum": "2026-11-03",
       "tijd": "11:41",
-      "actor": "College van Lansingerland",
+      "actor": "College van Rotterdam",
       "soort": "besluit",
       "titel": "Besluit: loonkostensubsidie toegekend, {lksPerMaand} per maand vanaf 1 oktober 2026",
       "tekst": "Het college kent loonkostensubsidie toe. De berekening staat bij het besluit; u kunt binnen zes weken bezwaar maken.",
@@ -497,7 +497,7 @@
       "id": "g14",
       "datum": "2026-11-06",
       "tijd": "13:48",
-      "actor": "Gemeente Lansingerland",
+      "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Antwoord op uw vraag",
       "tekst": "In artikel 10d, vierde lid, staat de vergoeding voor werkgeverslasten in de zin over het maximum van 70 procent. De berekening telt de vergoeding alleen mee voor dat maximum. Of de vergoeding ook bij de subsidie zelf hoort, staat nog niet vast. Dat wordt nagegaan. Verandert het bedrag daardoor, dan hoort u dat. U hoeft daar niet op te wachten. Bent u het niet eens met het besluit? Dan kunt u bezwaar maken binnen zes weken na 3 november 2026.",
@@ -509,7 +509,7 @@
       "id": "g15",
       "datum": "2026-11-27",
       "tijd": "06:00",
-      "actor": "Gemeente Lansingerland",
+      "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Betaling loonkostensubsidie oktober en november: {lksTweeMaanden}",
       "tekst": "Twee maanden loonkostensubsidie, overgemaakt naar {iban}.",
@@ -572,7 +572,7 @@
     "heeft_recht_op_arbeidsondersteuning": "Recht op arbeidsondersteuning (2:15)"
   },
   "besluit": {
-    "organisatie": "College van burgemeester en wethouders van Lansingerland",
+    "organisatie": "College van burgemeester en wethouders van Rotterdam",
     "datum": "2026-11-03",
     "bezwaar": "zes weken"
   }

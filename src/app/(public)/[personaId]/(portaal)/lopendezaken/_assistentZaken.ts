@@ -98,7 +98,7 @@ const AANNEMEN_SITUATIES = ["gemeente", "wajong", "wia"];
  * blijven aan de bestanden.
  */
 const AANNEMEN_NUMMERS: Record<string, string> = {
-  "LLD-LKS-2026-0417": "gemeente",
+  "RTM-LKS-2026-0417": "gemeente",
   "UWV-LD-2026-0231": "wajong",
   "UWV-DV-2026-0518": "wia",
 };

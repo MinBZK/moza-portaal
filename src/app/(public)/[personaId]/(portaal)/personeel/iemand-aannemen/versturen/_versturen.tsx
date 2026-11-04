@@ -78,7 +78,6 @@ const Versturen = (props: Props) => {
  */
 const VersturenInhoud = ({
   perSituatie,
-  werkgever,
   staat,
 }: Props & { staat: AannemenStaat }) => {
   const router = useRouter();
@@ -260,7 +259,7 @@ const VersturenInhoud = ({
       {fout && !bevestigd && (
         <Alert type="error">
           <Paragraph>
-            Bevestig eerst dat u alles naar waarheid heeft ingevuld.
+            Bevestig eerst dat u alles naar waarheid hebt ingevuld.
           </Paragraph>
         </Alert>
       )}
@@ -304,7 +303,7 @@ const VersturenInhoud = ({
           berichtenbox, en u volgt de zaak bij Lopende zaken.
         </Paragraph>
         <FormFieldCheckboxOption
-          label={`Ik heb alles naar waarheid ingevuld${staat.rol === "namens" ? `, namens ${werkgever.onderneming}` : ""}.`}
+          label="Ik heb alles naar waarheid ingevuld."
           name="bevestiging"
           checked={bevestigd}
           onChange={(event) => setBevestigd(event.target.checked)}
