@@ -24,6 +24,7 @@
 	--rhc-mox-font-weight-medium: 500;
 	--rhc-mox-transition-duration: 150ms;
 	--rhc-mox-transition-easing: ease-out;
+	--rhc-mox-target-size-min: 1.5rem;
 
 	--rhc-mox-step-size: calc(var(--rhc-size-icon-lg) * 1.25);
 	--rhc-mox-step-gap: var(--rhc-space-lg);
@@ -763,8 +764,21 @@ small,
 		position: absolute;
 	}
 
-	&:hover {
-		--utrecht-button-subtle-hover-background-color: transparent;
+	--utrecht-button-subtle-active-background-color: transparent;
+	--utrecht-button-subtle-focus-background-color: transparent;
+	--utrecht-button-subtle-hover-background-color: transparent;
+
+	/* The click area stays large; the focus ring goes around the visible icon. */
+	&:focus-visible {
+		box-shadow: none;
+		outline: none;
+
+		.utrecht-icon {
+			border-radius: var(--rhc-border-radius-sm);
+			outline: var(--utrecht-focus-outline-width)
+				var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+			outline-offset: var(--utrecht-focus-outline-offset);
+		}
 	}
 }
 
@@ -2484,6 +2498,25 @@ small,
 	--rhc-toggletip-focus-color: var(--rhc-color-wit);
 	--rhc-toggletip-active-color: var(--rhc-color-wit);
 	--rhc-toggletip-border-width: 0;
+	.rhc-toggletip__icon {
+		background-color: var(--rhc-color-info-500);
+		border-radius: var(--rhc-border-radius-md);
+		inset-block-start: 0;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition-duration: var(--rhc-mox-transition-duration);
+			transition-property: background-color, color;
+			transition-timing-function: var(--rhc-mox-transition-easing);
+		}
+	}
+	/* The focus is on the summary inside, so :focus-within, not :focus. */
+	&:hover,
+	&:focus-within,
+	&:active {
+		.rhc-toggletip__icon {
+			background-color: var(--utrecht-icon-color);
+		}
+	}
 }
 
 .rhc-toggletip__summary {
@@ -2492,14 +2525,23 @@ small,
 	box-sizing: content-box;
 	justify-content: space-around;
 	margin-block-end: 0;
+	position: relative;
 
 	svg {
 		display: block;
 	}
-}
 
-.rhc-toggletip__icon {
-	inset-block-start: 0;
+	/* A larger click area (WCAG 2.5.8) around the small icon, without
+	   taking up space in the layout. */
+	&::after {
+		block-size: var(--rhc-mox-target-size-min);
+		content: "";
+		inline-size: var(--rhc-mox-target-size-min);
+		inset-block-start: 50%;
+		inset-inline-start: 50%;
+		position: absolute;
+		translate: -50% -50%;
+	}
 }
 
 @position-try --rhc-mox-toggletip-full {
@@ -2536,6 +2578,11 @@ small,
 		background-color: var(--rhc-color-lintblauw-500);
 		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-wit);
+	}
+
+	/* The (i) has the same colour as the button that opens the toggletip. */
+	.utrecht-alert__icon .utrecht-icon {
+		background-color: var(--rhc-color-info-500);
 	}
 }
 
