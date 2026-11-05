@@ -74,3 +74,7 @@ export {
   type DemoAannemenFase,
   type DemoAannemenTrace,
 } from "./iemandAannemen";
+export {
+  getDemoPersoneelsonderwerpen,
+  type DemoPersoneelsonderwerp,
+} from "./personeelsonderwerpen";

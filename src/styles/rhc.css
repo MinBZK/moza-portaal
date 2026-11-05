@@ -948,6 +948,13 @@ small,
 	}
 }
 
+/* Lijst zonder opsommingstekens, bijvoorbeeld kaarten in een rhc-grid. */
+.rhc-mox-plain-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 /* --- Code block --- */
 .rhc-mox-code-block {
 	background-color: var(--rhc-color-cool-grey-100);

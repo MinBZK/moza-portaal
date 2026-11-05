@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  AccordionProvider,
-  ActionGroup,
   DataSummary,
   DataSummaryItem,
   Heading,
-  Icon,
-  OrderedList,
-  OrderedListItem,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
-import { getDemoIemandAannemenSituaties } from "@/demo";
+import {
+  getDemoIemandAannemenSituaties,
+  getDemoPersoneelsonderwerpen,
+} from "@/demo";
 import {
   getActieveOrganisatie,
   getActievePersona,
@@ -21,54 +17,9 @@ import {
 } from "@/app/(public)/_persona";
 import { ExternalLink } from "@/app/(footer)/_article";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
-import { STAPPEN, TAAK_TITEL } from "./iemand-aannemen/_stappen";
 
 export const metadata: Metadata = { title: "Personeel en rollen" };
 
-const vragen = [
-  {
-    vraag: "Welke gegevens van de kandidaat worden gebruikt?",
-    antwoord: (
-      <>
-        <Paragraph>
-          Alleen wat de wet nodig heeft om te bepalen of een regeling geldt:
-        </Paragraph>
-        <UnorderedList>
-          <UnorderedListItem>
-            van UWV: of de kandidaat in het doelgroepregister staat
-          </UnorderedListItem>
-          <UnorderedListItem>
-            van de gemeente: of die de kandidaat ondersteunt en wat de
-            loonwaarde is
-          </UnorderedListItem>
-          <UnorderedListItem>
-            van u: de uren, de startdatum en het loon
-          </UnorderedListItem>
-        </UnorderedList>
-        <Paragraph>
-          De kandidaat geeft daarvoor toestemming. U ziet per gegeven de bron en
-          de datum waarop het is opgehaald.
-        </Paragraph>
-      </>
-    ),
-  },
-  {
-    vraag: "Is de uitkomst een besluit?",
-    antwoord: (
-      <Paragraph>
-        Nee. Wat u vooraf ziet is een berekening met dezelfde regels als de
-        organisatie later gebruikt. Het besluit neemt de gemeente, UWV of de
-        Belastingdienst nadat u een aanvraag heeft verstuurd. Bij het besluit
-        ziet u dezelfde berekening terug.
-      </Paragraph>
-    ),
-  },
-];
-
-const ONDERNEMERSPLEIN_AANNEMEN =
-  "https://ondernemersplein.overheid.nl/personeel/aannemen/stappenplan-personeel-aannemen/";
-const BELASTINGDIENST_LOON =
-  "https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/personeel-en-loon";
 const EHERKENNING = "https://www.eherkenning.nl/";
 
 const aantalTekst = (voltijd = 0, deeltijd = 0) =>
@@ -77,14 +28,15 @@ const aantalTekst = (voltijd = 0, deeltijd = 0) =>
     : `${voltijd + deeltijd}, waarvan ${voltijd} voltijd en ${deeltijd} deeltijd`;
 
 /**
- * Personeel en rollen: het personeel van de onderneming, wat de ondernemer
- * daarvoor kan regelen (met de ingang naar Iemand aannemen), en wie namens
- * de onderneming mag handelen.
+ * Personeel en rollen: het personeel van de onderneming, de onderwerpen over
+ * personeel (alleen Iemand aannemen is uitgewerkt), en wie namens de
+ * onderneming mag handelen.
  */
 const PersoneelPage = async () => {
   const persona = await getActievePersona();
-  const [situaties, organisatie, naam] = await Promise.all([
+  const [situaties, onderwerpen, organisatie, naam] = await Promise.all([
     getDemoIemandAannemenSituaties(),
+    getDemoPersoneelsonderwerpen(),
     getActieveOrganisatie(persona),
     getIngelogdeNaam(persona),
   ]);
@@ -127,94 +79,27 @@ const PersoneelPage = async () => {
       />
 
       <Heading level={2}>Wat u kunt regelen</Heading>
-      <section className="rhc-mox-card" aria-labelledby="iemand-aannemen">
-        <Heading level={3} id="iemand-aannemen">
-          {TAAK_TITEL}
-        </Heading>
-        <Paragraph>
-          Neemt u iemand aan die niet zelfstandig het minimumloon kan verdienen?
-          Bijvoorbeeld omdat die in het doelgroepregister staat of een uitkering
-          heeft. Dan ziet u vooraf welke regelingen voor u kunnen gelden en wat
-          ze opleveren. Wij gebruiken daarvoor wat de overheid al van u en van
-          de kandidaat weet.
-        </Paragraph>
-        <Paragraph>Dit gaat in {STAPPEN.length} stappen:</Paragraph>
-        <OrderedList>
-          {STAPPEN.map((stap) => (
-            <OrderedListItem key={stap.name}>{stap.name}</OrderedListItem>
-          ))}
-        </OrderedList>
-        <Paragraph>
-          U vult alleen in wat de overheid nog niet weet. Wij versturen niets
-          zonder dat u dat zelf doet.
-        </Paragraph>
-        <ActionGroup>
-          <Link
-            href={STAPPEN[0].href}
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+      <ul className="rhc-grid rhc-mox-plain-list">
+        {onderwerpen.map(({ id, titel, samenvatting, href }) => (
+          <li
+            key={id}
+            className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           >
-            Begin met de {STAPPEN[0].name.toLowerCase()}
-            <Icon icon="chevron-right" />
-          </Link>
-        </ActionGroup>
-      </section>
-
-      <div className="rhc-grid">
-        <section
-          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
-          aria-labelledby="ziekte-verlof"
-        >
-          <Heading level={3} id="ziekte-verlof">
-            Ziekte en verlof
-          </Heading>
-          <Paragraph>
-            Een werknemer ziek melden, en zien welk verlof uw personeel kan
-            opnemen.
-          </Paragraph>
-          <ActionGroup>
-            <Link
-              href="/verzuim-en-verlof"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-            >
-              Naar Ziekte en verlof
-            </Link>
-          </ActionGroup>
-        </section>
-        <section
-          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
-          aria-labelledby="loon"
-        >
-          <Heading level={3} id="loon">
-            Loon en loonaangifte
-          </Heading>
-          <Paragraph>
-            Elke maand of elke vier weken doet u loonaangifte bij de
-            Belastingdienst. Daar leest u ook wat u moet regelen voor het loon.
-          </Paragraph>
-          <Paragraph>
-            <ExternalLink href={BELASTINGDIENST_LOON}>
-              Personeel en loon bij de Belastingdienst
-            </ExternalLink>
-          </Paragraph>
-        </section>
-        <section
-          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
-          aria-labelledby="aannemen-algemeen"
-        >
-          <Heading level={3} id="aannemen-algemeen">
-            Personeel aannemen
-          </Heading>
-          <Paragraph>
-            Neemt u voor het eerst iemand aan? Lees welke stappen u moet zetten,
-            van contract tot loonheffingennummer.
-          </Paragraph>
-          <Paragraph>
-            <ExternalLink href={ONDERNEMERSPLEIN_AANNEMEN}>
-              Stappenplan personeel aannemen op Ondernemersplein
-            </ExternalLink>
-          </Paragraph>
-        </section>
-      </div>
+            <Heading level={3}>
+              {href?.startsWith("http") ? (
+                <ExternalLink href={href}>{titel}</ExternalLink>
+              ) : href ? (
+                <Link href={href} className="utrecht-link utrecht-link--html-a">
+                  {titel}
+                </Link>
+              ) : (
+                titel
+              )}
+            </Heading>
+            <Paragraph>{samenvatting}</Paragraph>
+          </li>
+        ))}
+      </ul>
 
       <section className="rhc-mox-card" aria-labelledby="rollen">
         <Heading level={2} id="rollen">
@@ -249,17 +134,6 @@ const PersoneelPage = async () => {
           </ExternalLink>
         </Paragraph>
       </section>
-
-      <Heading level={2}>Veelgestelde vragen</Heading>
-      <div className="mox-faq-card">
-        <AccordionProvider
-          headingLevel={3}
-          sections={vragen.map(({ vraag, antwoord }) => ({
-            label: vraag,
-            body: antwoord,
-          }))}
-        />
-      </div>
     </>
   );
 };
