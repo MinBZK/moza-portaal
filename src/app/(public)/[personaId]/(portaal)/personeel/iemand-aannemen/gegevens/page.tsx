@@ -11,7 +11,7 @@ import { vul, werkgeverVan } from "../_werkgever";
 import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
-  title: "Aanvraag invullen - Personeel en rollen",
+  title: "Laat de aanvraag invullen - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 2: aanvraag invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
@@ -42,7 +42,7 @@ const GegevensPage = async () => {
       <PageSearch />
       <Paragraph>
         <Link
-          href="/personeel/iemand-aannemen"
+          href="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
           className="utrecht-link utrecht-link--html-a"
         >
           <Icon icon="chevron-left" />
@@ -50,7 +50,7 @@ const GegevensPage = async () => {
         </Link>
       </Paragraph>
       <div className="rhc-mox-card">
-        <Stappen huidige={2} />
+        <Stappen huidige={3} />
         <Alert type="info" closable>
           <Paragraph>
             Om de aanvragen in te vullen, halen wij gegevens op bij de

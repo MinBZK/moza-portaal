@@ -600,7 +600,7 @@ const AanvraagInhoud = ({
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <PageSearch />
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
           {resultaat.fout
             ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."

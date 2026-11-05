@@ -4,22 +4,26 @@ import { useEffect } from "react";
 import StepIndicator from "@/components/StepIndicator";
 import { useAannemen } from "./_useAannemen";
 
+/**
+ * De stappen naar het voorbeeld van het concept-prototype. Stap 4 beslaat
+ * twee schermen: de ingevulde aanvraag controleren en die versturen.
+ */
 const STAPPEN = [
+  {
+    name: "Lees wat er kan",
+    href: "/personeel/iemand-aannemen",
+  },
   {
     name: "Voorbeeldberekening",
     href: "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
   },
   {
-    name: "Gegevens delen",
+    name: "Laat de aanvraag invullen",
     href: "/personeel/iemand-aannemen/gegevens",
   },
   {
-    name: "Aanvraag nakijken",
-    href: "/personeel/iemand-aannemen/concept-aanvraag",
-  },
-  {
     name: "Controleren en versturen",
-    href: "/personeel/iemand-aannemen/versturen",
+    href: "/personeel/iemand-aannemen/concept-aanvraag",
   },
 ];
 
