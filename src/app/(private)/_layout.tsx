@@ -6,6 +6,8 @@ import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_o
 import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import Breadcrumb from "@/layouts/breadcrumb";
 import Providers from "@/app/providers";
+import { getFlagsFromServerCookie } from "@/app/actions";
+import { FlagsProvider } from "@/app/(public)/_flags/flagsContext";
 import { redirect } from "next/navigation";
 
 export default async function PrivateLayout({
@@ -16,6 +18,7 @@ export default async function PrivateLayout({
   const session = await auth();
   const kvk = await getKvkFromCookie();
   const kvkOpties = await getKvkOptionsFromCookie();
+  const flags = await getFlagsFromServerCookie();
 
   // Zie src/app/page.tsx: zonder gebruiker is er geen geldige sessie.
   if (!session?.user) {
@@ -24,24 +27,26 @@ export default async function PrivateLayout({
 
   return (
     <Providers session={session}>
-      <Header kvk={kvk!} kvkOpties={kvkOpties} metMenu />
-      {/* Zelfde opbouw als de PublicLayout in (public)/_layout.tsx */}
-      <main id="hoofd-inhoud" className="utrecht-page-body">
-        <div className="utrecht-page-body__content">
-          <div className="rhc-grid">
-            <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
-              <Navigation
-                berichtenboxBadge={<OngelezenBadge />}
-                lopendeZakenBadge={<ZakenBadge />}
-              />
-            </div>
-            <div className="rhc-grid__cell rhc-grid__cell-t-9 rhc-mox-main-container">
-              <Breadcrumb />
-              {children}
+      <FlagsProvider flags={flags}>
+        <Header kvk={kvk!} kvkOpties={kvkOpties} metMenu />
+        {/* Zelfde opbouw als de PublicLayout in (public)/_layout.tsx */}
+        <main id="hoofd-inhoud" className="utrecht-page-body">
+          <div className="utrecht-page-body__content">
+            <div className="rhc-grid">
+              <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
+                <Navigation
+                  berichtenboxBadge={<OngelezenBadge />}
+                  lopendeZakenBadge={<ZakenBadge />}
+                />
+              </div>
+              <div className="rhc-grid__cell rhc-grid__cell-t-9 rhc-mox-main-container">
+                <Breadcrumb />
+                {children}
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </FlagsProvider>
     </Providers>
   );
 }
