@@ -7,8 +7,6 @@ import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
 import Stappen, { TAAK_TITEL } from "../_stappen";
 import { vul, werkgeverVan } from "../_werkgever";
-import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
-import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 
 export const metadata: Metadata = {
   title: "Aanvraag invullen - Personeel en rollen",
@@ -38,10 +36,8 @@ const GegevensPage = async () => {
   };
   return (
     <>
-      <CollapsibleNavigation />
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <FocusModeSwitch />
-      <Paragraph className="rhc-mox-back-link">
+      <Paragraph>
         <Link
           href="/personeel/iemand-aannemen"
           className="utrecht-link utrecht-link--html-a"

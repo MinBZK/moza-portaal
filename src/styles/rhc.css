@@ -462,58 +462,7 @@ body {
 	}
 }
 
-.rhc-mox-focus-mode-switch {
-	display: none;
-}
-
-@media (width >=768px) {
-	.rhc-mox-focus-mode-switch {
-		align-items: center;
-		display: flex;
-		gap: var(--rhc-space-md);
-	}
-
-	:root:has(
-			.rhc-mox-page-grid:not([data-navigation="open"])
-				.rhc-mox-collapsible-navigation
-		)
-		.rhc-page-footer {
-		.rhc-mox-footer-full {
-			display: none;
-		}
-
-		.rhc-mox-footer-compact {
-			display: block;
-		}
-	}
-
-	.rhc-mox-page-grid:has(.rhc-mox-collapsible-navigation) {
-		.rhc-mox-back-link {
-			display: none;
-		}
-
-		&:not([data-navigation="open"]) {
-			:is(.main-navigation, .utrecht-breadcrumb-nav) {
-				display: none;
-			}
-
-			> .rhc-mox-main-container {
-				grid-column: 1 / -1;
-			}
-		}
-	}
-}
-
 /* --- Footer --- */
-.rhc-mox-footer-compact {
-	display: none;
-
-	.utrecht-link-list {
-		column-gap: var(--rhc-space-2xl);
-		flex-flow: row wrap;
-	}
-}
-
 .rhc-page-footer {
 	:is(h2, h3, h4, h5, h6) {
 		color: inherit;

@@ -41,7 +41,6 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
-import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -597,7 +596,6 @@ const AanvraagInhoud = ({
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <FocusModeSwitch />
       <div className="rhc-mox-card">
         <Stappen huidige={3} />
         <Paragraph role={bekend ? undefined : "status"}>
