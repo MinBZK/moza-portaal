@@ -438,7 +438,7 @@ const Bronnen = ({
           {wachtend
             ? `Wacht op toestemming van ${wachtend.naam}.`
             : !gekozen
-              ? "Nog geen kandidaat gekozen."
+              ? ""
               : !opgave
                 ? "Vul uw eigen opgave in: de eerste werkdag."
                 : klaar
