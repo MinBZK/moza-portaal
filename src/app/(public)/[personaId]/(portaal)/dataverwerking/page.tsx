@@ -14,7 +14,6 @@ import {
 } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import ActivityLog from "./_activityLog";
-import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Gegevensdeling en dataverwerking" };
 
@@ -37,7 +36,6 @@ const DataverwerkingPage = async ({
   return (
     <>
       <Heading level={1}>Gegevensdeling en dataverwerking</Heading>
-      <PageSearch />
       <Paragraph>
         Hier ziet u hoe overheidsorganisaties de gegevens van uw bedrijf delen
         en gebruiken.

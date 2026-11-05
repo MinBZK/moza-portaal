@@ -31,7 +31,7 @@ const Page = () => (
     <Paragraph>
       <strong>
         Let op: dit is een aanzet voor een patroon. Het is nog niet getoetst met
-        gebruikers en nog niet uitgewerkt in het portaal.
+        gebruikers.
       </strong>
     </Paragraph>
 
@@ -208,6 +208,13 @@ const Page = () => (
     </PatternSection>
 
     <PatternSection id="suggesties" title="Suggesties tijdens het typen">
+      <Paragraph>
+        De suggesties volgen het patroon{" "}
+        <TextLink href="/demo/ontwerppatronen/autocomplete-en-autosuggest">
+          Autocomplete en autosuggest
+        </TextLink>
+        . De belangrijkste afspraken:
+      </Paragraph>
       <UnorderedList>
         <UnorderedListItem>
           Hoogstens 10 suggesties op een groot scherm en 4 tot 8 op een telefoon

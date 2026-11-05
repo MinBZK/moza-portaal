@@ -39,7 +39,6 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
-import PageSearch from "@/layouts/search";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -595,7 +594,6 @@ const AanvraagInhoud = ({
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <Stappen huidige={3} />
         <Paragraph role={bekend ? undefined : "status"}>

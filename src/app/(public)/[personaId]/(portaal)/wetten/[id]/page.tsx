@@ -7,7 +7,6 @@ import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { assistentLink, bewaarItemVan } from "../_wetActies";
 import WetGegevens from "../_wetGegevens";
-import PageSearch from "@/layouts/search";
 
 export const generateMetadata = async ({
   params,
@@ -27,7 +26,6 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     <>
       <HuidigeKruimel pad={`/wetten/${wet.id}`} label={wet.titel} />
       <Heading level={1}>{wet.titel}</Heading>
-      <PageSearch />
       <Paragraph>
         <Link href="/wetten" className="utrecht-link utrecht-link--html-a">
           <Icon icon="chevron-left" />

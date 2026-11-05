@@ -34,9 +34,12 @@ const RESULTATEN = [
   },
 ];
 
+/** Prototype: the query when none is given. */
+const DEFAULT_QUERY = "afstand tot de arbeidsmarkt";
+
 const readQuery = async (searchParams: SearchParams) => {
   const { q } = await searchParams;
-  return (Array.isArray(q) ? q[0] : q)?.trim() ?? "";
+  return (Array.isArray(q) ? q[0] : q)?.trim() || DEFAULT_QUERY;
 };
 
 const countText = (query: string) =>
@@ -50,7 +53,9 @@ export const generateMetadata = async ({
   searchParams: SearchParams;
 }): Promise<Metadata> => {
   const query = await readQuery(searchParams);
-  return { title: query ? `${countText(query)} - Zoeken` : "Zoeken" };
+  return {
+    title: query ? `${countText(query)} - Zoekresultaten` : "Zoekresultaten",
+  };
 };
 
 const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
@@ -61,7 +66,7 @@ const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   return (
     <>
-      <Heading level={1}>Zoeken</Heading>
+      <Heading level={1}>Zoekresultaten</Heading>
       <PageSearch key={query} defaultValue={query} />
 
       <section className="rhc-mox-card" aria-labelledby="zoekresultaten">
