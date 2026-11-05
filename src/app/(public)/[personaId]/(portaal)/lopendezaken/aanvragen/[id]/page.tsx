@@ -66,12 +66,9 @@ const AanvraagPage = async ({
       />
       <Heading level={1}>{aanvraag.titel}</Heading>
       <Paragraph>
-        <Link
-          href="/lopendezaken#nog-in-te-dienen"
-          className="utrecht-link utrecht-link--html-a"
-        >
+        <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
           <Icon icon="chevron-left" />
-          Terug naar Lopende zaken
+          Terug naar Personeel
         </Link>
       </Paragraph>
 

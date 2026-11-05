@@ -68,7 +68,7 @@ export const getDemoZaakById = async (
 
 export const getDemoZakenVragen = async (): Promise<DemoVraag[]> => vragen;
 
-/** Een aanvraag die is opgeslagen maar nog niet verstuurd. */
+/** Een aanvraag die de gebruiker kan starten; er wordt geen concept van bewaard. */
 export type DemoConceptAanvraag = {
   id: string;
   titel: string;
@@ -79,8 +79,6 @@ export type DemoConceptAanvraag = {
   tijdsduur: string;
   /** Uiterste datum om in te dienen; alleen als de wet of de organisatie er een noemt. */
   indienenVoor?: string;
-  /** Waar de antwoorden vandaan komen, zoals Ondernemersplein. */
-  bewaardVan?: string;
   /** Wat er van daar is overgenomen, voor de melding op de detailpagina. */
   overgenomen?: string;
   /** Alinea's onder die melding. */
@@ -101,7 +99,6 @@ const iemandAannemen: DemoConceptAanvraag = {
   titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
   organisatie: "UWV, Belastingdienst en gemeente",
   tijdsduur: "Ongeveer 15 minuten",
-  bewaardVan: "Ondernemersplein",
   overgenomen:
     "Kandidaat uit het doelgroepregister, 32 uur per week, geschatte loonwaarde 60 procent. Controleer hieronder of deze antwoorden nog kloppen. De berekening gaat ervan uit.",
   toelichting: [
