@@ -256,7 +256,7 @@ const VragenMetStaat = ({
 
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-          <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
+          <Fieldset legend="1. Wie wilt u aannemen?">
             {/* Niets aanvinken telt als "Geen van deze"; die optie staat er niet meer. */}
             {DOELGROEPEN.filter(([waarde]) => waarde !== "geen").map(
               ([waarde, label]) => (
