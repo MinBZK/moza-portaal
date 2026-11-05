@@ -17,21 +17,21 @@ const RESULTATEN = [
   {
     href: "/personeel/iemand-aannemen",
     titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
-    soort: "Aanvraag",
+    soort: "Aanvragen",
     tekst:
       "Beantwoord vier vragen en zie wat het u kost en oplevert. Daarna vullen wij de aanvragen bij UWV, de Belastingdienst en de gemeente voor u in.",
   },
   {
     href: "/subsidies/praktijkleren",
     titel: "Subsidieregeling praktijkleren",
-    soort: "Informatie",
+    soort: "Informeren",
     tekst:
       "Biedt u een leerwerkplek aan een leerling, student of werknemer die een opleiding volgt? Dan krijgt u tot €2.700 per leerplaats voor de begeleiding.",
   },
   {
     href: "/wetten/gelijke-kansen",
     titel: "Wet toezicht gelijke kansen bij werving en selectie",
-    soort: "Informatie",
+    soort: "Informeren",
     tekst:
       "Als werkgever legt u vast hoe u discriminatie voorkomt bij werving en selectie. Deze wet geldt sinds 1 juli 2026.",
   },
