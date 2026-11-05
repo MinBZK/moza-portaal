@@ -7,8 +7,7 @@ const onderwerpen: DemoPersoneelsonderwerp[] = [
   {
     id: "iemand-aannemen",
     titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
-    samenvatting:
-      "U ziet vooraf welke regelingen voor u gelden en wat ze opleveren.",
+    samenvatting: "U ziet vooraf welke regelingen voor u kunnen gelden.",
     href: "/personeel/iemand-aannemen",
   },
   {

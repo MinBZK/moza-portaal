@@ -20,6 +20,7 @@ import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
 import { type Overig } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
+import { verderNaar } from "./_stappen";
 import {
   DOELGROEPEN,
   WML_UUR_EUROCENT,
@@ -350,6 +351,7 @@ const VragenMetStaat = ({
       {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
       <StepNavigation
         next={{
+          label: verderNaar(2),
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !resultaat.bekend,
           describedBy: resultaat.bekend ? undefined : "aanvragen-bezig",

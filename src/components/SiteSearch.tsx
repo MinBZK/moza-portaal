@@ -4,6 +4,7 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
   type FormEvent,
   type KeyboardEvent,
   type ReactNode,
@@ -19,6 +20,11 @@ type Option = {
 };
 
 const MAX_SUGGESTIONS = 8;
+
+/** The last search in this tab, so the field keeps it on other pages. */
+const LAST_SEARCH_KEY = "mox-laatste-zoekterm";
+const subscribe = () => () => {};
+const readLastSearch = () => sessionStorage.getItem(LAST_SEARCH_KEY) ?? "";
 
 /**
  * Lower case without accents, with a hyphen as a space, so "btw nummer"
@@ -93,7 +99,7 @@ const SiteSearch = ({
   suggestions?: string[];
   /** Questions about the page the user is on; shown first. */
   pageSuggestions?: string[];
-  /** What the user searched for before; shown also in an empty field. */
+  /** What the user searched for before; always shown, whatever is typed. */
   recentSearches?: string[];
   /** Text in the field on load, such as the query on the results page. */
   defaultValue?: string;
@@ -105,8 +111,12 @@ const SiteSearch = ({
   const inputId = `${id}-input`;
   const listId = `${id}-list`;
   const inputRef = useRef<HTMLInputElement>(null);
-  const [typed, setTyped] = useState(defaultValue);
-  const [value, setValue] = useState(defaultValue);
+  const lastSearch = useSyncExternalStore(subscribe, readLastSearch, () => "");
+  // Null until the user types: then the field shows the last search.
+  const [ownTyped, setTyped] = useState<string | null>(defaultValue || null);
+  const [ownValue, setValue] = useState<string | null>(defaultValue || null);
+  const typed = ownTyped ?? lastSearch;
+  const value = ownValue ?? lastSearch;
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
 
@@ -114,7 +124,7 @@ const SiteSearch = ({
     .filter((text) => matches(text, typed))
     .slice(0, MAX_SUGGESTIONS);
   const recent = recentSearches
-    .filter((text) => matches(text, typed) && !page.includes(text))
+    .filter((text) => !page.includes(text))
     .slice(0, Math.max(0, MAX_SUGGESTIONS - page.length));
   const ask: Option[] =
     assistant && typed.trim()
@@ -155,6 +165,7 @@ const SiteSearch = ({
     const q = text.trim();
     if (!q) return;
     close();
+    sessionStorage.setItem(LAST_SEARCH_KEY, q);
     if (onSearch) onSearch(q);
     else router.push(`${action}?q=${encodeURIComponent(q)}`);
   };

@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
+import { useSliderDragging } from "@/components/RangeSlider";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import Spinner from "@/components/Spinner";
@@ -178,10 +181,32 @@ const Balans = ({
   kort?: boolean;
 }) => {
   const { uitkomsten, bekend, bezig, fout } = resultaat;
+  // Values that follow a slider light up when the user lets go of it.
+  const slepen = useSliderDragging();
   const kosten = loonkostenPerJaar(antwoorden);
   const regels = balansRegels(uitkomsten, kosten);
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
   const netto = Math.max(0, kosten - terug);
+
+  // For a screen reader: the new total once the calculation is done after a
+  // change. Not on the first result, so loading the page stays quiet.
+  const totaal =
+    bekend && !bezig && !fout
+      ? kort
+        ? `Samen ongeveer ${euro(terug)} per jaar.`
+        : `Uw loonkosten met deze regelingen: ongeveer ${euro(netto)} per jaar.`
+      : undefined;
+  const [vorigTotaal, setVorigTotaal] = useState(totaal);
+  const [melding, setMelding] = useState("");
+  if (totaal !== undefined && totaal !== vorigTotaal) {
+    setVorigTotaal(totaal);
+    if (vorigTotaal !== undefined) setMelding(totaal);
+  }
+  const statusmelding = (
+    <div role="status" className="rhc-visually-hidden">
+      {melding}
+    </div>
+  );
   const ldBedrag =
     bekend && !fout && regels.some((r) => r.id === "ld" && r.bedrag > 0);
   const lkvBedrag =
@@ -191,15 +216,21 @@ const Balans = ({
   // Tijdens het rekenen staan alle regelingen er al, met een spinner; na een
   // fout met "…".
   const bezigOfFout = fout ? "…" : <Spinner />;
-  const bedrag = (cent: number) => (bekend && !fout ? euro(cent) : bezigOfFout);
-  const waarde = (r: BalansRegel, min = "") =>
-    !bekend || fout
-      ? bezigOfFout
-      : r.status === "bedrag"
-        ? `${min}${euro(r.bedrag)}`
-        : r.status === "niet_meegeteld"
-          ? "niet meegeteld"
-          : euro(0);
+  // ChangedValue stays mounted during the spinner, so it still sees the change.
+  const bedrag = (cent: number) => (
+    <ChangedValue>{bekend && !fout ? euro(cent) : bezigOfFout}</ChangedValue>
+  );
+  const waarde = (r: BalansRegel, min = "") => (
+    <ChangedValue>
+      {!bekend || fout
+        ? bezigOfFout
+        : r.status === "bedrag"
+          ? `${min}${euro(r.bedrag)}`
+          : r.status === "niet_meegeteld"
+            ? "niet meegeteld"
+            : euro(0)}
+    </ChangedValue>
+  );
 
   // Rekenen en fouten blijven zichtbaar; de herkomst staat in de toggletip.
   const bron =
@@ -243,7 +274,7 @@ const Balans = ({
 
   if (kort)
     return (
-      <>
+      <ChangedValueGroup settled={!slepen}>
         <dl className="rhc-data-summary rhc-data-summary--column">
           {regels.map((r) => (
             <div key={r.id} className="rhc-data-summary__item">
@@ -280,22 +311,27 @@ const Balans = ({
           </Paragraph>
         )}
         <Paragraph className="rhc-mox-small-text">
-          Bij {antwoorden.uren} uur per week en {euro(antwoorden.uurloon)} per
-          uur. De loonkosten zijn dan {euro(kosten)} per jaar.
+          Bij <ChangedValue>{`${antwoorden.uren} uur`}</ChangedValue> per week
+          en <ChangedValue>{euro(antwoorden.uurloon)}</ChangedValue> per uur. De
+          loonkosten zijn dan <ChangedValue>{euro(kosten)}</ChangedValue> per
+          jaar.
         </Paragraph>
         {bron}
-      </>
+        {statusmelding}
+      </ChangedValueGroup>
     );
 
   return (
-    <>
+    <ChangedValueGroup settled={!slepen}>
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
       <dl className="rhc-data-summary rhc-data-summary--column">
         <div className="rhc-data-summary__item">
           <dt className="rhc-data-summary__item-key">Loonkosten</dt>
-          <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
+          <dd className="rhc-data-summary__item-value">
+            <ChangedValue>{euro(kosten)}</ChangedValue>
+          </dd>
         </div>
         {regels.map((r) => {
           // Altijd wanneer de regeling geldt; daarna de aanname, en bij een
@@ -365,12 +401,14 @@ const Balans = ({
         </Paragraph>
         {bekend && !fout && terug > 0 && (
           <Paragraph>
-            Dat is ongeveer {euro(terug)} per jaar minder dan zonder regelingen.
+            Dat is ongeveer <ChangedValue>{euro(terug)}</ChangedValue> per jaar
+            minder dan zonder regelingen.
           </Paragraph>
         )}
       </div>
       {bron}
-    </>
+      {statusmelding}
+    </ChangedValueGroup>
   );
 };
 

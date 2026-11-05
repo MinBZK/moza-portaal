@@ -76,6 +76,8 @@ import CountdownBar from "@/components/CountdownBar";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
+import ChangedValue from "@/components/ChangedValue";
+import StepNavigation from "@/components/StepNavigation";
 import Spinner from "@/components/Spinner";
 import InfoToggletip from "@/components/InfoToggletip";
 import FieldLabel from "@/components/FieldLabel";
@@ -446,6 +448,78 @@ const BrandSwitch = () => {
   );
 };
 
+/** ChangedValue: an amount that changes with each click. */
+const DemoChangedValue = () => {
+  const [hours, setHours] = useState(32);
+  return (
+    <div className="rhc-mox-row-gap">
+      <Paragraph>
+        Loonkosten:{" "}
+        <ChangedValue>{`€${(hours * 52 * 14.99).toLocaleString("nl-NL", { maximumFractionDigits: 0 })} per jaar`}</ChangedValue>{" "}
+        bij <ChangedValue>{`${hours} uur`}</ChangedValue> per week
+      </Paragraph>
+      <ActionGroup>
+        <Button
+          appearance="secondary-action-button"
+          onClick={() => setHours(hours - 4)}
+        >
+          4 uur minder
+        </Button>
+        <Button
+          appearance="secondary-action-button"
+          onClick={() => setHours(hours + 4)}
+        >
+          4 uur meer
+        </Button>
+      </ActionGroup>
+    </div>
+  );
+};
+
+/** StepNavigation: Verder works only after the checkbox is ticked. */
+const DemoStepNavigation = () => {
+  const [ticked, setTicked] = useState(false);
+  const [error, setError] = useState(false);
+  const [done, setDone] = useState(false);
+  return (
+    <div className="rhc-mox-row-gap">
+      <FormFieldCheckboxOption
+        id="demo-step-check"
+        label="Ik heb alles gecontroleerd."
+        name="demo-step-check"
+        checked={ticked}
+        invalid={error && !ticked}
+        errorMessage={
+          error && !ticked ? "U hebt nog niet alles gecontroleerd." : undefined
+        }
+        onChange={(event) => setTicked(event.target.checked)}
+      />
+      <StepNavigation
+        back="/demo"
+        backLabel="Terug naar Stap 2"
+        next={{
+          label: "Versturen naar UWV",
+          final: true,
+          sends: true,
+          disabled: !ticked,
+          onBlocked: () => {
+            setError(true);
+            document
+              .querySelector<HTMLInputElement>("#demo-step-check input")
+              ?.focus();
+          },
+          onClick: () => setDone(true),
+        }}
+      />
+      {done && (
+        <Paragraph role="status">
+          Hier zou de aanvraag verstuurd worden.
+        </Paragraph>
+      )}
+    </div>
+  );
+};
+
 /** SiteSearch with example data; shows the search instead of going there. */
 const DemoSiteSearch = () => {
   const [searched, setSearched] = useState("");
@@ -467,6 +541,7 @@ const DemoSiteSearch = () => {
           "subsidie energiebesparing",
           "personeel aannemen",
         ]}
+        recentSearches={["Iemand aannemen met afstand tot de arbeidsmarkt"]}
         onSearch={setSearched}
       />
       {searched && (
@@ -1421,7 +1496,9 @@ const ComponentsDemoPage = () => {
             de RHC Alert
           </a>{" "}
           met een sluitknop en de mogelijkheid om vanzelf te verdwijnen als
-          extra opties. Importeer via <code>@/components/rhc</code>.
+          extra opties. Importeer via <code>@/components/rhc</code>. De
+          sluitknop houdt een klikvlak van 48 bij 48 pixels; de focusring staat
+          om het zichtbare kruisje.
         </>
       ),
       options: [
@@ -1720,6 +1797,42 @@ const ComponentsDemoPage = () => {
       ),
     },
     {
+      name: "ChangedValue en ChangedValueGroup",
+      file: "src/components/ChangedValue.tsx",
+      description: [
+        <>
+          Een waarde die verandert door wat de gebruiker invult, wordt even vet
+          en groter. Voor het patroon{" "}
+          <NextLink href="/demo/ontwerppatronen/veranderde-waarden-tonen">
+            Veranderde waarden tonen
+          </NextLink>
+          .
+        </>,
+        "Niet bij het laden, niet na een spinner en niet bij prefers-reduced-motion. Waarden in een ChangedValueGroup wachten tot de groep klaar is, zoals tot de gebruiker een schuifregelaar loslaat.",
+      ],
+      options: [
+        [
+          "children",
+          "ReactNode",
+          "–",
+          "De waarde als tekst; een spinner of ander element gaat er ongewijzigd doorheen",
+        ],
+        [
+          "quiet",
+          "boolean",
+          "false",
+          "Even geen nadruk, zoals tijdens het slepen van een schuifregelaar",
+        ],
+        [
+          "ChangedValueGroup settled",
+          "boolean",
+          "–",
+          "False zolang de waarden nog veranderen; daarna lichten ze samen op",
+        ],
+      ],
+      example: <DemoChangedValue />,
+    },
+    {
       name: "CountdownBar",
       file: "src/components/CountdownBar.tsx",
       description:
@@ -1786,6 +1899,16 @@ const ComponentsDemoPage = () => {
           Een schermlezer leest de knop voor als uitklapknop met de naam uit{" "}
           <code>label</code>, en daarna de uitleg. Geen live-regio: de gebruiker
           opent de uitleg zelf.
+        </>,
+        <>
+          De knop is 18 bij 18 pixels, maar het klikvlak is 24 bij 24 pixels
+          (WCAG 2.5.8), zonder dat de layout verandert. Bij hover, focus en
+          indrukken wordt de knop donkerder, met een korte overgang. Het i-icoon
+          in de uitleg zelf heeft de info-kleur.
+        </>,
+        <>
+          De sluitknop houdt een klikvlak van 48 bij 48 pixels; de focusring
+          staat om het zichtbare kruisje.
         </>,
       ],
       options: [
@@ -1967,8 +2090,15 @@ const ComponentsDemoPage = () => {
     {
       name: "RangeSlider",
       file: "src/components/RangeSlider.tsx",
-      description:
+      description: [
         "Schuifregelaar met label, de gekozen waarde en de grenzen eronder.",
+        <>
+          Verandert de waarde, dan wordt die even vet en groter (
+          <code>ChangedValue</code>). Tijdens het slepen blijft de waarde groter
+          tot de gebruiker loslaat. Met <code>useSliderDragging()</code> kunnen
+          waarden elders op de pagina wachten tot het loslaten.
+        </>,
+      ],
       options: [
         ["label", "string", "–", "Zichtbare naam"],
         ["info", "ReactNode", "–", "Naast het label, zoals een InfoToggletip"],
@@ -2044,7 +2174,7 @@ const ComponentsDemoPage = () => {
       name: "StepIndicator",
       file: "src/components/StepIndicator.tsx",
       description:
-        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step". Een voltooide stap met een href is een link terug naar die stap.',
+        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step". Een voltooide stap met een href is een link terug naar die stap. Met reached zijn ook latere stappen die de gebruiker al eerder bereikte een link.',
       options: [
         [
           "steps",
@@ -2054,6 +2184,18 @@ const ComponentsDemoPage = () => {
         ],
         ["current", "number", "–", "Huidige stap, vanaf 0"],
         ["label", "string", "Voortgang", "Naam van de navigatie"],
+        [
+          "hideCount",
+          "boolean",
+          "false",
+          "“Stap 2 van 4” alleen voor schermlezers",
+        ],
+        [
+          "reached",
+          "number",
+          "current",
+          "Verste stap die de gebruiker al eerder bereikte, vanaf 0",
+        ],
       ],
       example: (
         <StepIndicator
@@ -2069,6 +2211,49 @@ const ComponentsDemoPage = () => {
           current={1}
         />
       ),
+    },
+    {
+      name: "StepNavigation",
+      file: "src/components/StepNavigation.tsx",
+      description: [
+        <>
+          Terug en Verder onderaan een stap in een taak. Voor het patroon{" "}
+          <NextLink href="/demo/ontwerppatronen/terug-en-verder">
+            Terug en Verder in een taak
+          </NextLink>
+          .
+        </>,
+        "Verder staat in de HTML eerst: als eerste bereikbaar met Tab, en bovenaan als de knoppen onder elkaar staan. In een rij staat Terug vooraan. Kies in het voorbeeld Versturen zonder het vinkje.",
+      ],
+      options: [
+        ["back", "string", "–", "Adres van de vorige stap"],
+        ["backLabel", "string", "Terug", "Tekst, zoals “Terug naar Stap 2”"],
+        [
+          "next.label",
+          "string",
+          "Verder",
+          "Tekst, zoals “Verder naar Aanvraag nakijken”",
+        ],
+        [
+          "next.href / next.onClick",
+          "string / () => void",
+          "–",
+          "Adres, of wat de knop doet",
+        ],
+        [
+          "next.disabled / next.onBlocked",
+          "boolean / () => void",
+          "false / –",
+          "Nog niet mogelijk (aria-disabled), en wat er gebeurt bij een klik, zoals de focus op het ontbrekende veld",
+        ],
+        [
+          "next.final / next.sends",
+          "boolean",
+          "false",
+          "Laatste actie van de taak: vinkje, of verzenden-icoon als er iets wordt verstuurd",
+        ],
+      ],
+      example: <DemoStepNavigation />,
     },
     {
       name: "StickyInfoBox",
@@ -2118,7 +2303,7 @@ const ComponentsDemoPage = () => {
           </NextLink>
           .
         </>,
-        "Tijdens het typen komen eerst vragen over deze pagina, dan zoeksuggesties en als laatste de digitale assistent. Met de pijltjestoetsen komt een suggestie in het veld; Enter kiest, Escape sluit de lijst. Werkt ook zonder JavaScript, als gewoon formulier.",
+        "Eerst vragen over deze pagina, dan Laatst gezocht (ook bij een leeg veld), dan zoeksuggesties en als laatste de digitale assistent. Hoogstens 8 suggesties. Met de pijltjestoetsen komt een suggestie in het veld; Enter kiest, Escape sluit de lijst. Werkt ook zonder JavaScript, als gewoon formulier.",
       ],
       options: [
         [
@@ -2126,6 +2311,25 @@ const ComponentsDemoPage = () => {
           "string",
           "Zoeken of een vraag stellen",
           "Zichtbaar label boven het veld; op elke pagina hetzelfde",
+        ],
+        ["hideLabel", "boolean", "false", "Label alleen voor schermlezers"],
+        [
+          "recentSearches",
+          "string[]",
+          "[]",
+          "Eerdere zoekopdrachten; altijd bovenaan bij Laatst gezocht",
+        ],
+        [
+          "defaultValue",
+          "string",
+          "–",
+          "Tekst in het veld bij het laden, zoals de zoekterm op de zoekpagina",
+        ],
+        [
+          "assistant",
+          "boolean",
+          "true",
+          "Biedt “Vraag het de digitale assistent” aan als laatste suggestie",
         ],
         [
           "pageSuggestions",
@@ -2264,6 +2468,22 @@ const ComponentsDemoPage = () => {
       "Taalmenu (languages, selectedLanguage, label, withIcon). Bouwt verder op de RHC Language Navigation.",
     ],
     ["ErrorBoundary", "Foutmelding met Opnieuw proberen (error, reset)."],
+    [
+      "NumberInput",
+      "Invoerveld voor een getal met knoppen om één stap omlaag of omhoog te gaan (label, value, step).",
+    ],
+    [
+      "SortableHeaderCell",
+      "Kolomkop van een tabel die op die kolom sorteert (sortKey, sorting, onSort).",
+    ],
+    [
+      "TimelineItem",
+      "Eén gebeurtenis op een tijdlijn, met datum en status (title, date, status, open).",
+    ],
+    [
+      "LogoutButton",
+      "Knop om uit te loggen, ook zonder werkende Keycloak (children, className).",
+    ],
     ["ContactMoment", "Eén contactmoment in de private route (notification)."],
     [
       "form/FormField, FieldInfo",
