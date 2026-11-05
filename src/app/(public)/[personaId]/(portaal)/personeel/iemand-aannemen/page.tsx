@@ -54,9 +54,6 @@ const REGELINGEN = [
   },
 ] as const;
 
-const DOP =
-  "https://ondernemersplein.overheid.nl/personeel/personeelskosten-en-loon/verlaag-uw-loonkosten-met-subsidies-en-tegemoetkomingen/";
-
 /** Stap 1: wat er kan bij het aannemen van iemand met afstand tot de arbeidsmarkt. */
 const IemandAannemenPage = () => (
   <>
@@ -71,16 +68,16 @@ const IemandAannemenPage = () => (
         gelden, hangt af van de kandidaat, bijvoorbeeld of die in het
         doelgroepregister staat.
       </Paragraph>
-      <Paragraph>
-        De regelingen worden uitgevoerd door UWV, de Belastingdienst en de
-        gemeente. U hoeft niet te weten welke organisatie waarover gaat: wij
-        vullen de aanvragen voor u in.
-      </Paragraph>
 
       <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
         <Heading level={2} id="regelingen">
           Regelingen die kunnen gelden
         </Heading>
+        <Paragraph>
+          De regelingen worden uitgevoerd door UWV, de Belastingdienst en de
+          gemeente. U hoeft niet te weten welke organisatie waarover gaat: wij
+          vullen de aanvragen voor u in.
+        </Paragraph>
         <ul className="rhc-mox-icon-list">
           {REGELINGEN.map((r) => (
             <li key={r.naam} className="rhc-mox-icon-list__item">
@@ -91,28 +88,6 @@ const IemandAannemenPage = () => (
               </span>
             </li>
           ))}
-        </ul>
-        <ul className="rhc-mox-icon-list">
-          <li>
-            <a
-              href={DOP}
-              className="rhc-mox-icon-list__item"
-              target="_blank"
-              rel="external noopener noreferrer"
-            >
-              <Icon icon="externe-link" />
-              <span className="rhc-mox-icon-list__text">
-                <span className="rhc-mox-icon-list__title">
-                  Verlaag uw loonkosten met subsidies en tegemoetkomingen
-                </span>
-                <span className="rhc-mox-small-text">
-                  Alle regelingen op een rij, op Ondernemersplein (opent in een
-                  nieuw tabblad)
-                </span>
-              </span>
-              <Icon icon="chevron-right" />
-            </a>
-          </li>
         </ul>
       </section>
 
