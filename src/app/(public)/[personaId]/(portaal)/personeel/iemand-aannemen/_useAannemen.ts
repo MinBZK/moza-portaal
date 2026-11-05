@@ -9,6 +9,7 @@ import {
   type Situatie,
   type TaakId,
   type TaakStand,
+  type VanzelfId,
   type ZaakStand,
   type Zaken,
 } from "./_route";
@@ -60,10 +61,10 @@ export type Antwoorden = {
 };
 
 /**
- * De regelingen met een paneel in de aanvraag. De opslag kan nog sleutels
- * voor lkv en nrp hebben (eerdere versies); die tellen niet meer mee.
+ * Elke regeling in de aanvraag: wat de werkgever indient (gecontroleerd), en
+ * wat vanzelf gaat of een taak van de werknemer is (gelezen).
  */
-export type RegelingId = PaneelId;
+export type RegelingId = PaneelId | VanzelfId | TaakId;
 
 export type AannemenStaat = {
   antwoorden: Antwoorden;
