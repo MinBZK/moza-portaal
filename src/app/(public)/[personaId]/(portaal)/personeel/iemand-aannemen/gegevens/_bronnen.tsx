@@ -56,6 +56,12 @@ const zichtbaarVan = (bron: DemoAannemen["bronnen"][number]) =>
     ? bron.gegevens.filter((g) => REGISTER.includes(g.parameter))
     : bron.gegevens;
 
+/** "UWV", "UWV en de gemeente": wie gegevens over de kandidaat heeft. */
+const opsomming = (namen: string[]) =>
+  namen.length < 2
+    ? (namen[0] ?? "")
+    : `${namen.slice(0, -1).join(", ")} en ${namen[namen.length - 1]}`;
+
 /** Negen cijfers en de elfproef van het BSN. */
 const elfproef = (bsn: string) => {
   if (!/^\d{9}$/.test(bsn)) return false;
@@ -187,6 +193,18 @@ const Bronnen = ({
   const klaar = gekozen && !!staat && alleBronnenBevestigd(staat);
   const opgave = eigenOpgaveCompleet(antwoorden);
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
+  // Wie in deze situatie gegevens over de kandidaat heeft, uit dezelfde
+  // bronnen als de lijst hieronder; zo klopt de tekst met wat er gebeurt.
+  const overKandidaat = bronnen.filter((b) => OVER_KANDIDAAT.includes(b.id));
+  const meer = overKandidaat.length > 1;
+  const wie = opsomming(
+    overKandidaat.map((b) =>
+      b.id === "gemeente" ? "de gemeente" : b.organisatie,
+    ),
+  );
+  const wieKijkt = `${wie} ${meer ? "kijken" : "kijkt"}`;
+  const eigen = meer ? "hun eigen gegevens" : "de eigen gegevens";
+  const zietRegister = overKandidaat.some((b) => zichtbaarVan(b).length > 0);
 
   const vink = (id: BronId, aan: boolean) =>
     werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
@@ -215,10 +233,13 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
-          Wij gebruiken het burgerservicenummer (BSN) van de werknemer. U hebt
-          het uit uw loonadministratie, of de kandidaat geeft het u. De
-          gemeente, UWV en de Belastingdienst kijken met het BSN in hun eigen
-          gegevens.
+          Gegevens over de kandidaat halen wij alleen op als de kandidaat
+          daarvoor toestemming geeft. Daarvoor gebruiken wij het
+          burgerservicenummer (BSN): {wieKijkt} daarmee in {eigen}.
+        </Paragraph>
+        <Paragraph>
+          Werkt de kandidaat al bij u? Dan staat het BSN in uw
+          loonadministratie. Anders krijgt u het van de kandidaat.
         </Paragraph>
         <Fieldset legend="Kandidaten">
           <FormFieldRadio
@@ -299,118 +320,116 @@ const Bronnen = ({
         )}
       </section>
 
-      <section className="rhc-mox-stack" aria-labelledby="overheid-weet">
-        <Heading level={2} id="overheid-weet">
-          Gegevens die de overheid kan ophalen voor de berekening
-        </Heading>
-        {wachtend ? (
-          <>
-            <Paragraph>
-              Wij vragen {wachtend.naam} eerst om toestemming. Daarna halen wij
-              met het BSN de gegevens op bij UWV, de gemeente en de
-              Belastingdienst.
-            </Paragraph>
-            <Paragraph>
-              Tot {wachtend.naam} toestemming geeft, kunt u niet verder. Uw
-              aanvraag blijft bewaard.
-            </Paragraph>
-          </>
-        ) : !gekozen ? (
-          <Paragraph>
-            Kies eerst de kandidaat. Daarna halen wij de gegevens op die nodig
-            zijn voor de berekening en ziet u ze hier.
-          </Paragraph>
-        ) : (
-          <>
-            <Paragraph>
-              Over {kandidaat.voornaam} ziet u alleen of die in het
-              doelgroepregister staat. De gemeente en UWV gebruiken hun eigen
-              gegevens over {kandidaat.voornaam} als u aanvraagt; die ziet u
-              niet.
-            </Paragraph>
-            <Paragraph>
-              Per organisatie staat aangevinkt dat de gegevens kloppen en
-              gebruikt mogen worden. Open een organisatie om te zien wat wij
-              ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult u
-              dan zelf aan in de aanvraag.
-            </Paragraph>
-            <Accordion>
-              {bronnen
-                .filter(
-                  (bron) =>
-                    bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
-                )
-                .map((bron) => {
-                  const aan = !!staat && bronBevestigd(staat, bron.id);
-                  return (
-                    <AccordionSection
-                      key={bron.id}
-                      // Het niveau op Accordion geldt alleen voor diens eigen kop.
-                      headingLevel={3}
-                      label={`${bron.organisatie}: ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
-                      // Het type eist `body`, de component rendert alleen `children`.
-                      body={null}
-                      expanded={open.includes(bron.id)}
-                      onActivate={() =>
-                        setOpen(
-                          open.includes(bron.id)
-                            ? open.filter((id) => id !== bron.id)
-                            : [...open, bron.id],
-                        )
-                      }
-                    >
-                      <div className="rhc-mox-row-gap">
-                        <Paragraph className="rhc-mox-small-text">
-                          {bron.register}, opgehaald op{" "}
-                          {datumNL(bron.opgehaald)}
-                        </Paragraph>
-                        {/* The markup of the RHC DataSummary: its component only
+      {(gekozen || wachtend) && (
+        <section className="rhc-mox-stack" aria-labelledby="overheid-weet">
+          <Heading level={2} id="overheid-weet">
+            Gegevens die de overheid kan ophalen voor de berekening
+          </Heading>
+          {wachtend ? (
+            <>
+              <Paragraph>
+                Wij vragen {wachtend.naam} eerst om toestemming. Daarna{" "}
+                {meer ? "kijken" : "kijkt"} {wie} met het BSN in {eigen}.
+              </Paragraph>
+              <Paragraph>
+                Tot {wachtend.naam} toestemming geeft, kunt u niet verder. Uw
+                aanvraag blijft bewaard.
+              </Paragraph>
+            </>
+          ) : (
+            <>
+              <Paragraph>
+                {zietRegister
+                  ? `Over ${kandidaat.voornaam} ziet u alleen of die in het doelgroepregister staat.`
+                  : `Over ${kandidaat.voornaam} ziet u hier geen gegevens.`}{" "}
+                {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
+                {meer ? "gebruiken hun" : "gebruikt de"} eigen gegevens over{" "}
+                {kandidaat.voornaam} bij de beoordeling; die ziet u niet.
+              </Paragraph>
+              <Paragraph>
+                Per organisatie staat aangevinkt dat de gegevens kloppen en
+                gebruikt mogen worden. Open een organisatie om te zien wat wij
+                ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult
+                u dan zelf aan in de aanvraag.
+              </Paragraph>
+              <Accordion>
+                {bronnen
+                  .filter(
+                    (bron) =>
+                      bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
+                  )
+                  .map((bron) => {
+                    const aan = !!staat && bronBevestigd(staat, bron.id);
+                    return (
+                      <AccordionSection
+                        key={bron.id}
+                        // Het niveau op Accordion geldt alleen voor diens eigen kop.
+                        headingLevel={3}
+                        label={`${bron.organisatie}: ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
+                        // Het type eist `body`, de component rendert alleen `children`.
+                        body={null}
+                        expanded={open.includes(bron.id)}
+                        onActivate={() =>
+                          setOpen(
+                            open.includes(bron.id)
+                              ? open.filter((id) => id !== bron.id)
+                              : [...open, bron.id],
+                          )
+                        }
+                      >
+                        <div className="rhc-mox-row-gap">
+                          <Paragraph className="rhc-mox-small-text">
+                            {bron.register}, opgehaald op{" "}
+                            {datumNL(bron.opgehaald)}
+                          </Paragraph>
+                          {/* The markup of the RHC DataSummary: its component only
                         takes text as value, and the toggletip with the law
                         question belongs in the value. */}
-                        <dl className="rhc-data-summary rhc-data-summary--column">
-                          {zichtbaarVan(bron).map((g) => (
-                            <div
-                              key={g.parameter}
-                              className="rhc-data-summary__item"
-                            >
-                              <dt className="rhc-data-summary__item-key">
-                                {g.vraag}
-                              </dt>
-                              <dd className="rhc-data-summary__item-value">
-                                {/* De uren komen uit de antwoorden van stap 1. */}
-                                {g.waarde.replace(
-                                  "{uren}",
-                                  String(antwoorden.uren),
-                                )}{" "}
-                                <InfoToggletip
-                                  label={`Zo vraagt de wet het: ${g.vraag}`}
-                                >
-                                  {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                                </InfoToggletip>
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                        <FormFieldCheckboxOption
-                          label={
-                            bron.id === "eigen"
-                              ? "Klopt, gebruik mijn opgave"
-                              : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
-                          }
-                          name={`vinkje-${bron.id}`}
-                          checked={aan}
-                          onChange={(event) =>
-                            vink(bron.id, event.target.checked)
-                          }
-                        />
-                      </div>
-                    </AccordionSection>
-                  );
-                })}
-            </Accordion>
-          </>
-        )}
-      </section>
+                          <dl className="rhc-data-summary rhc-data-summary--column">
+                            {zichtbaarVan(bron).map((g) => (
+                              <div
+                                key={g.parameter}
+                                className="rhc-data-summary__item"
+                              >
+                                <dt className="rhc-data-summary__item-key">
+                                  {g.vraag}
+                                </dt>
+                                <dd className="rhc-data-summary__item-value">
+                                  {/* De uren komen uit de antwoorden van stap 1. */}
+                                  {g.waarde.replace(
+                                    "{uren}",
+                                    String(antwoorden.uren),
+                                  )}{" "}
+                                  <InfoToggletip
+                                    label={`Zo vraagt de wet het: ${g.vraag}`}
+                                  >
+                                    {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
+                                  </InfoToggletip>
+                                </dd>
+                              </div>
+                            ))}
+                          </dl>
+                          <FormFieldCheckboxOption
+                            label={
+                              bron.id === "eigen"
+                                ? "Klopt, gebruik mijn opgave"
+                                : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
+                            }
+                            name={`vinkje-${bron.id}`}
+                            checked={aan}
+                            onChange={(event) =>
+                              vink(bron.id, event.target.checked)
+                            }
+                          />
+                        </div>
+                      </AccordionSection>
+                    );
+                  })}
+              </Accordion>
+            </>
+          )}
+        </section>
+      )}
 
       {gekozen && (
         <EigenOpgave
