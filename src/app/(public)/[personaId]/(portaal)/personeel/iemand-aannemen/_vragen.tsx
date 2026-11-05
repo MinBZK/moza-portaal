@@ -97,10 +97,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
               "De gemeente beslist binnen vijf weken nadat zij de loonwaarde heeft vastgesteld.",
             bronnen: [
               {
-                tekst: "Participatieverordening Rotterdam 2015, artikel 14",
-                url: "https://zoek.officielebekendmakingen.nl/gmb-2023-286652.html",
-              },
-              {
                 tekst: "Participatiewet, artikel 10d lid 2 en lid 12",
                 url: PWET,
               },
@@ -244,10 +240,16 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
-  // Verder kan pas als de voorbeeldberekening een bedrag oplevert.
+  // Verder kan pas als de voorbeeldberekening een bedrag oplevert, of als een
+  // regeling geldt die we niet meetellen: loonkostensubsidie bij beschut werk
+  // (de gemeente beoordeelt die) en loondispensatie boven het minimumloon.
+  const nietMeegeteld = resultaat.uitkomsten.aannames.some(
+    (id) => id === "beschut_lks" || id === "ld_cao",
+  );
   const geenBedrag =
     resultaat.bekend &&
     !resultaat.fout &&
+    !nietMeegeteld &&
     balansRegels(resultaat.uitkomsten, loonkostenPerJaar(a)).every(
       (r) => r.bedrag <= 0,
     );

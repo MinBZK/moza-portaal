@@ -41,7 +41,7 @@ const breadcrumbLabels: Record<string, string> = {
   voorbeeldberekening: "Voorbeeldberekening",
   versturen: "Controleren en versturen",
   overzicht: "Overzicht",
-  "concept-aanvraag": "Aanvraag nakijken",
+  "concept-aanvraag": "Controleren en versturen",
   verstuurd: "Aanvraag verstuurd",
   gemeente: "Loonkostensubsidie",
   wajong: "Loondispensatie",
