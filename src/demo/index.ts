@@ -74,3 +74,8 @@ export {
   type DemoAannemenFase,
   type DemoAannemenTrace,
 } from "./iemandAannemen";
+export {
+  searchDemo,
+  type DemoSearchKind,
+  type DemoSearchResult,
+} from "./search";

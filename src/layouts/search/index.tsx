@@ -24,8 +24,18 @@ const SUGGESTIONS = [
  * Search and help below the h1 of every portal page (pattern Zoeken en hulp
  * op elke pagina). Not on the footer pages.
  */
-const PageSearch = ({ pageSuggestions }: { pageSuggestions?: string[] }) => (
-  <SiteSearch suggestions={SUGGESTIONS} pageSuggestions={pageSuggestions} />
+const PageSearch = ({
+  pageSuggestions,
+  defaultValue,
+}: {
+  pageSuggestions?: string[];
+  defaultValue?: string;
+}) => (
+  <SiteSearch
+    suggestions={SUGGESTIONS}
+    pageSuggestions={pageSuggestions}
+    defaultValue={defaultValue}
+  />
 );
 
 export default PageSearch;
