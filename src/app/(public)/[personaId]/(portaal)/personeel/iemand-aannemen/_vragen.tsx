@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import { useState } from "react";
 import {
-  ActionGroup,
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
@@ -89,24 +88,6 @@ const OVERIG: Record<
       "Via de Wajong kan UWV uw werknemer een voorziening geven, zoals een jobcoach of een aangepaste werkplek. Uw werknemer vraagt dit zelf aan bij UWV.",
   },
 };
-
-/** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
-const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
-  <ActionGroup>
-    {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
-    <Link
-      href="/personeel/iemand-aannemen/gegevens"
-      className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-      aria-disabled={bekend ? undefined : true}
-      aria-describedby={bekend ? undefined : "aanvragen-bezig"}
-      onClick={(event) => {
-        if (!bekend) event.preventDefault();
-      }}
-    >
-      Aanvraag invullen
-    </Link>
-  </ActionGroup>
-);
 
 /**
  * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
@@ -312,7 +293,6 @@ const VragenMetStaat = ({
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
             <StickyInfoBox title="Wat het kost en oplevert">
               <Balans antwoorden={a} resultaat={resultaat} />
-              <AanvraagKnop bekend={resultaat.bekend} />
             </StickyInfoBox>
           </div>
         </div>
@@ -353,9 +333,8 @@ const VragenMetStaat = ({
         <Paragraph>
           Wij vullen de aanvragen voor u in met gegevens die al bij de overheid
           bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
-          beslist zelf of u de aanvraag verstuurt. Tussendoor opslaan kan.
+          beslist zelf of u de aanvraag verstuurt.
         </Paragraph>
-        <AanvraagKnop bekend={resultaat.bekend} />
         <Paragraph role="status" id="aanvragen-bezig">
           {resultaat.bekend
             ? ""
@@ -367,6 +346,15 @@ const VragenMetStaat = ({
           <Paragraph key={alinea}>{alinea}</Paragraph>
         ))}
       </section>
+
+      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+      <StepNavigation
+        next={{
+          href: "/personeel/iemand-aannemen/gegevens",
+          disabled: !resultaat.bekend,
+          describedBy: resultaat.bekend ? undefined : "aanvragen-bezig",
+        }}
+      />
     </>
   );
 };
