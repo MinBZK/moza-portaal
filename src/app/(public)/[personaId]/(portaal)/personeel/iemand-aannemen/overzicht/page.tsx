@@ -19,16 +19,6 @@ const OverzichtPage = async () => {
   return (
     <>
       <Heading level={1}>Wat voor u geldt</Heading>
-      <PageSearch />
-      <Paragraph>
-        <Link
-          href="/personeel/iemand-aannemen/gegevens"
-          className="utrecht-link utrecht-link--html-a"
-        >
-          <Icon icon="chevron-left" />
-          Terug naar de ingevulde aanvraag
-        </Link>
-      </Paragraph>
       <div className="rhc-mox-card">
         <Stappen huidige={3} />
         <Overzicht

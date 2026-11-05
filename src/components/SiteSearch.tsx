@@ -282,6 +282,7 @@ const SiteSearch = ({
                 setOpen(true);
               }}
               onKeyDown={onKeyDown}
+              onFocus={() => setOpen(true)}
               onBlur={close}
             />
             {value && (
@@ -294,9 +295,6 @@ const SiteSearch = ({
                 <Icon icon="kruis" />
               </button>
             )}
-              onFocus={() => setOpen(true)}
-              onBlur={close}
-            />
             <div
               id={listId}
               role="listbox"
