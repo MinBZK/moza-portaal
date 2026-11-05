@@ -913,9 +913,46 @@ small,
 	display: flex;
 	gap: var(--rhc-space-sm);
 	position: relative;
+}
+
+.rhc-mox-site-search__input {
+	display: flex;
+	flex: 1;
+	position: relative;
 
 	.utrecht-textbox {
 		flex: 1;
+		padding-inline-end: calc(var(--rhc-size-icon-md) + var(--rhc-space-lg));
+	}
+
+	/* The clear button below replaces the browser's own. */
+	.utrecht-textbox::-webkit-search-cancel-button {
+		appearance: none;
+	}
+}
+
+.rhc-mox-site-search__clear {
+	align-items: center;
+	background: none;
+	block-size: 100%;
+	border: 0;
+	color: var(--rhc-color-foreground-subtle);
+	cursor: pointer;
+	display: flex;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	justify-content: center;
+	padding-inline: var(--rhc-space-md);
+	position: absolute;
+
+	&:hover {
+		color: var(--rhc-color-foreground-default);
+	}
+
+	&:focus-visible {
+		outline: var(--rhc-focus-outline-width) var(--rhc-focus-outline-style)
+			var(--rhc-focus-outline-color);
+		outline-offset: calc(var(--rhc-focus-outline-offset) * -1);
 	}
 }
 
