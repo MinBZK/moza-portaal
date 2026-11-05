@@ -71,4 +71,10 @@ export const PATTERNS = [
     description:
       "Een bedrag dat meeverandert met de invoer wordt even vet en groter, zodat de ondernemer het ziet.",
   },
+  {
+    slug: "terug-en-verder",
+    title: "Terug en Verder in een taak",
+    description:
+      "Knoppen onderaan een stap: tekst, volgorde voor het toetsenbord, en wat er gebeurt als de ondernemer nog niet verder kan.",
+  },
 ] as const;

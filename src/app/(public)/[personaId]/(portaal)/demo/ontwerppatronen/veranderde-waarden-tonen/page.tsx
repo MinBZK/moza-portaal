@@ -83,6 +83,16 @@ const Page = () => (
             "De opmaak eromheen blijft staan; alleen de waarde groeit even.",
           ],
           [
+            "Waarden die een schuifregelaar volgen",
+            "Bedragen die meeveranderen met een schuifregelaar, zoals de loonkosten, lichten pas op als de ondernemer de schuifregelaar loslaat",
+            "Tijdens het slepen kijkt de ondernemer naar de schuifregelaar. Na het loslaten valt het nieuwe bedrag op, en alle bedragen lichten tegelijk op.",
+          ],
+          [
+            "Schuifregelaar slepen",
+            "De waarde bij de schuifregelaar blijft vet en groter zolang de ondernemer sleept, en krimpt na het loslaten terug",
+            "De ondernemer kijkt naar het getal terwijl die sleept. Een effect bij elke tussenstand zou onrustig zijn.",
+          ],
+          [
             "Na een spinner",
             "Geen effect: de nieuwe waarde verschijnt gewoon",
             "De spinner liet al zien dat er iets verandert. Een tweede signaal is dubbel en maakt het onrustig.",
@@ -123,10 +133,12 @@ const Page = () => (
 
     <PatternSection id="portaal" title="In het portaal">
       <Paragraph>
-        Het component <code>ChangedValue</code> doet dit. Het staat om de
-        bedragen in de voorbeeldberekening van Iemand aannemen, en om de waarde
-        van elke schuifregelaar (<code>RangeSlider</code>). De opmaak staat in{" "}
-        <code>rhc.css</code> onder <code>rhc-mox-changed-value</code>.
+        Het component <code>ChangedValue</code> doet dit. Waarden die een
+        schuifregelaar volgen, staan samen in een <code>ChangedValueGroup</code>
+        . Het staat om de bedragen in de voorbeeldberekening van Iemand
+        aannemen, en om de waarde van elke schuifregelaar (
+        <code>RangeSlider</code>). De opmaak staat in <code>rhc.css</code> onder{" "}
+        <code>rhc-mox-changed-value</code>.
       </Paragraph>
       <Paragraph>
         Probeer het in{" "}

@@ -17,16 +17,18 @@ type Next = {
   onBlocked?: () => void;
   /** Id of the text that says why the button does not work yet. */
   describedBy?: string;
-  /** The last action of the task, such as sending: a green button with a check mark. */
+  /** The last action of the task, such as sending: a check mark instead of the arrow. Not green: nothing has succeeded yet. */
   final?: boolean;
   /** The final action sends something: a paper plane instead of the check mark. */
   sends?: boolean;
 };
 
 /**
- * Back and forward at the bottom of a step in a task, in an action group:
- * Terug on the left, Verder on the right. On the last step
- * the forward button is the final action, in its own style.
+ * Back and forward at the end of a step in a task, in an action group.
+ * Verder comes first in the HTML, so it gets the keyboard focus first and is
+ * at the block start when the buttons wrap; in a row, the CSS shows Terug at
+ * the inline start. On the last step the forward button is the final action,
+ * with its own icon.
  */
 const StepNavigation = ({
   back,
@@ -38,9 +40,6 @@ const StepNavigation = ({
   backLabel?: string;
   next?: Next;
 }) => {
-  const forwardClass = next?.final
-    ? "rhc-mox-step-navigation__final"
-    : undefined;
   const label = (
     <>
       {next?.final && (next.sends ? <Icon icon="verzenden" /> : <CheckIcon />)}
@@ -50,21 +49,12 @@ const StepNavigation = ({
   );
 
   return (
-    <ActionGroup>
-      {back && (
-        <Link
-          href={back}
-          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-        >
-          <Icon icon="chevron-left" />
-          {backLabel}
-        </Link>
-      )}
+    <ActionGroup className="rhc-mox-step-navigation">
       {next &&
         (next.href && !next.onClick ? (
           <Link
             href={next.href}
-            className={`utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action${forwardClass ? ` ${forwardClass}` : ""}`}
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             aria-disabled={next.disabled || undefined}
             aria-describedby={next.describedBy}
             onClick={(event) => {
@@ -78,7 +68,6 @@ const StepNavigation = ({
         ) : (
           <Button
             appearance="primary-action-button"
-            className={forwardClass}
             aria-disabled={next.disabled || undefined}
             aria-describedby={next.describedBy}
             onClick={() => {
@@ -89,6 +78,15 @@ const StepNavigation = ({
             {label}
           </Button>
         ))}
+      {back && (
+        <Link
+          href={back}
+          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
+        >
+          <Icon icon="chevron-left" />
+          {backLabel}
+        </Link>
+      )}
     </ActionGroup>
   );
 };
