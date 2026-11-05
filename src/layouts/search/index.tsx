@@ -23,6 +23,9 @@ const SUGGESTIONS = [
   "wetten en regelgeving",
 ];
 
+/** Prototype: the same recent search for everyone. */
+const RECENT_SEARCHES = ["Iemand aannemen met afstand tot de arbeidsmarkt"];
+
 /**
  * Search and help on the home page and the search results page, without a
  * visible label. With the digital assistant
@@ -43,6 +46,7 @@ const PageSearch = ({
       hideLabel
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
+      recentSearches={RECENT_SEARCHES}
       defaultValue={defaultValue}
     />
   );

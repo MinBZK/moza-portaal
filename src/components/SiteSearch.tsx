@@ -14,24 +14,51 @@ import FieldLabel from "@/components/FieldLabel";
 import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 
 type Option = {
-  kind: "page" | "query" | "assistant";
+  kind: "page" | "recent" | "query" | "assistant";
   text: string;
 };
 
 const MAX_SUGGESTIONS = 8;
 
-const matches = (text: string, typed: string) =>
-  text.toLowerCase().includes(typed.trim().toLowerCase());
+/**
+ * Lower case without accents, with a hyphen as a space, so "btw nummer"
+ * finds "btw-nummer". Keeps one character per character, so an index in the
+ * result is also an index in the text.
+ */
+const fold = (text: string) =>
+  Array.from(text, (char) =>
+    char
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace("-", " "),
+  ).join("");
 
-/** Bold for the part the user did not type yet (Baymard). */
-const Predictive = ({ text, typed }: { text: string; typed: string }) => {
-  const start = text.toLowerCase().indexOf(typed.trim().toLowerCase());
+const findIn = (text: string, typed: string) =>
+  fold(text).indexOf(fold(typed.trim()));
+
+const matches = (text: string, typed: string) => findIn(text, typed) >= 0;
+
+/**
+ * Bold for what the suggestion adds to the typed text. If the typed text is
+ * somewhere in the middle, bold for the typed text instead (Baymard, NN/g).
+ */
+const Highlight = ({ text, typed }: { text: string; typed: string }) => {
+  const start = findIn(text, typed);
   if (!typed.trim() || start < 0) return <>{text}</>;
   const end = start + typed.trim().length;
+  if (start > 0) {
+    return (
+      <>
+        {text.slice(0, start)}
+        <strong>{text.slice(start, end)}</strong>
+        {text.slice(end)}
+      </>
+    );
+  }
   return (
     <>
-      {start > 0 && <strong>{text.slice(0, start)}</strong>}
-      {text.slice(start, end)}
+      {text.slice(0, end)}
       {end < text.length && <strong>{text.slice(end)}</strong>}
     </>
   );
@@ -49,6 +76,7 @@ const SiteSearch = ({
   assistant = true,
   suggestions = [],
   pageSuggestions = [],
+  recentSearches = [],
   defaultValue = "",
   onSearch,
 }: {
@@ -65,6 +93,8 @@ const SiteSearch = ({
   suggestions?: string[];
   /** Questions about the page the user is on; shown first. */
   pageSuggestions?: string[];
+  /** What the user searched for before; shown also in an empty field. */
+  recentSearches?: string[];
   /** Text in the field on load, such as the query on the results page. */
   defaultValue?: string;
   /** Instead of going to the results page, for example in a demo. */
@@ -83,19 +113,37 @@ const SiteSearch = ({
   const page = pageSuggestions
     .filter((text) => matches(text, typed))
     .slice(0, MAX_SUGGESTIONS);
+  const recent = recentSearches
+    .filter((text) => matches(text, typed) && !page.includes(text))
+    .slice(0, Math.max(0, MAX_SUGGESTIONS - page.length));
+  const ask: Option[] =
+    assistant && typed.trim()
+      ? [{ kind: "assistant", text: typed.trim() }]
+      : [];
   const query = typed.trim()
     ? suggestions
-        .filter((text) => matches(text, typed) && !page.includes(text))
-        .slice(0, MAX_SUGGESTIONS - page.length)
+        .filter(
+          (text) =>
+            matches(text, typed) &&
+            !page.includes(text) &&
+            !recent.includes(text),
+        )
+        .slice(
+          0,
+          Math.max(
+            0,
+            MAX_SUGGESTIONS - page.length - recent.length - ask.length,
+          ),
+        )
     : [];
   const options: Option[] = [
     ...page.map((text) => ({ kind: "page" as const, text })),
+    ...recent.map((text) => ({ kind: "recent" as const, text })),
     ...query.map((text) => ({ kind: "query" as const, text })),
-    ...(assistant && typed.trim()
-      ? [{ kind: "assistant" as const, text: typed.trim() }]
-      : []),
+    ...ask,
   ];
   const expanded = open && options.length > 0;
+  const noSuggestions = open && !options.length && Boolean(typed.trim());
   const optionId = (index: number) => `${id}-option-${index}`;
 
   const close = () => {
@@ -182,13 +230,14 @@ const SiteSearch = ({
       onClick={() => choose(option)}
     >
       {option.kind === "page" && <Icon icon="vraagteken" />}
+      {option.kind === "recent" && <Icon icon="klok" />}
       {option.kind === "query" && <Icon icon="zoek" />}
       {option.kind === "assistant" && <DigitalAssistantIcon />}
       <span>
         {option.kind === "assistant" ? (
           <>Vraag het de digitale assistent: “{option.text}”</>
         ) : (
-          <Predictive text={option.text} typed={typed} />
+          <Highlight text={option.text} typed={typed} />
         )}
       </span>
     </li>
@@ -196,7 +245,8 @@ const SiteSearch = ({
 
   const groups: { label: string; kind: Option["kind"] }[] = [
     { label: "Over deze pagina", kind: "page" },
-    { label: "Zoeken in het portaal", kind: "query" },
+    { label: "Laatst gezocht", kind: "recent" },
+    { label: "Zoeken in MijnOverheid Zakelijk", kind: "query" },
     { label: "Of stel uw vraag", kind: "assistant" },
   ];
 
@@ -244,49 +294,52 @@ const SiteSearch = ({
                 <Icon icon="kruis" />
               </button>
             )}
+              onFocus={() => setOpen(true)}
+              onBlur={close}
+            />
+            <div
+              id={listId}
+              role="listbox"
+              aria-label="Suggesties"
+              className="utrecht-listbox rhc-mox-site-search__popup"
+              hidden={!expanded}
+            >
+              {groups.map(({ label: groupLabel, kind }) => {
+                const indexed = options
+                  .map((option, index) => ({ option, index }))
+                  .filter(({ option }) => option.kind === kind);
+                if (!indexed.length) return null;
+                const groupId = `${id}-${kind}`;
+                return (
+                  <ul
+                    key={kind}
+                    role="group"
+                    aria-labelledby={groupId}
+                    className="utrecht-listbox__group"
+                  >
+                    <li
+                      id={groupId}
+                      role="presentation"
+                      className="utrecht-listbox__group-label"
+                    >
+                      {groupLabel}
+                    </li>
+                    {indexed.map(({ option, index }) =>
+                      renderOption(option, index),
+                    )}
+                  </ul>
+                );
+              })}
+            </div>
           </div>
           <Button type="submit" appearance="primary-action-button">
             Zoeken
           </Button>
-          <div
-            id={listId}
-            role="listbox"
-            aria-label="Suggesties"
-            className="utrecht-listbox rhc-mox-site-search__popup"
-            hidden={!expanded}
-          >
-            {groups.map(({ label: groupLabel, kind }) => {
-              const indexed = options
-                .map((option, index) => ({ option, index }))
-                .filter(({ option }) => option.kind === kind);
-              if (!indexed.length) return null;
-              const groupId = `${id}-${kind}`;
-              return (
-                <ul
-                  key={kind}
-                  role="group"
-                  aria-labelledby={groupId}
-                  className="utrecht-listbox__group"
-                >
-                  <li
-                    id={groupId}
-                    role="presentation"
-                    className="utrecht-listbox__group-label"
-                  >
-                    {groupLabel}
-                  </li>
-                  {indexed.map(({ option, index }) =>
-                    renderOption(option, index),
-                  )}
-                </ul>
-              );
-            })}
-          </div>
         </div>
         <div role="status" className="rhc-visually-hidden">
-          {expanded
-            ? `${options.length} ${options.length === 1 ? "suggestie" : "suggesties"}. Kies met de pijltjestoetsen.`
-            : ""}
+          {expanded &&
+            `${options.length} ${options.length === 1 ? "suggestie" : "suggesties"}. Kies met de pijltjestoetsen.`}
+          {noSuggestions && "Geen suggesties."}
         </div>
       </form>
     </search>

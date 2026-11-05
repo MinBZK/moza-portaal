@@ -53,7 +53,9 @@ export const generateMetadata = async ({
   searchParams: SearchParams;
 }): Promise<Metadata> => {
   const query = await readQuery(searchParams);
-  return { title: query ? `${countText(query)} - Zoeken` : "Zoeken" };
+  return {
+    title: query ? `${countText(query)} - Zoekresultaten` : "Zoekresultaten",
+  };
 };
 
 const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
@@ -64,9 +66,7 @@ const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   return (
     <>
-      <Heading level={1} className="rhc-visually-hidden">
-        Zoeken
-      </Heading>
+      <Heading level={1}>Zoekresultaten</Heading>
       <PageSearch key={query} defaultValue={query} />
 
       <section className="rhc-mox-card" aria-labelledby="zoekresultaten">

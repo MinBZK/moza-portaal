@@ -913,6 +913,10 @@ small,
 .rhc-mox-site-search__field {
 	display: flex;
 	gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-site-search__input {
+	flex: 1;
 	position: relative;
 }
 
@@ -954,6 +958,8 @@ small,
 		outline: var(--rhc-focus-outline-width) var(--rhc-focus-outline-style)
 			var(--rhc-focus-outline-color);
 		outline-offset: calc(var(--rhc-focus-outline-offset) * -1);
+		inline-size: 100%;
+		max-inline-size: none;
 	}
 }
 
