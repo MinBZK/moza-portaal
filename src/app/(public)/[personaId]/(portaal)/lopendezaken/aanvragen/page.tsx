@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-/** Het kruimelpad linkt hierheen; de aanvragen staan op Lopende zaken. */
-const AanvragenPage = () => redirect("/lopendezaken#nog-in-te-dienen");
+/** Het kruimelpad linkt hierheen; er is geen lijst met aanvragen meer. */
+const AanvragenPage = () => redirect("/lopendezaken");
 
 export default AanvragenPage;

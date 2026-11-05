@@ -44,6 +44,7 @@ const SiteSearch = ({
   label = "Zoeken of een vraag stellen",
   action = "/zoeken",
   assistantHref = "/digitale-assistent",
+  assistant = true,
   suggestions = [],
   pageSuggestions = [],
   defaultValue = "",
@@ -52,6 +53,8 @@ const SiteSearch = ({
   label?: string;
   /** Page with the search results; gets the query as ?q=. */
   action?: string;
+  /** Offer "ask the digital assistant" as the last option. */
+  assistant?: boolean;
   /** Opens the digital assistant with the question as ?vraag=. */
   assistantHref?: string;
   /** Search suggestions for the whole portal. */
@@ -83,7 +86,7 @@ const SiteSearch = ({
   const options: Option[] = [
     ...page.map((text) => ({ kind: "page" as const, text })),
     ...query.map((text) => ({ kind: "query" as const, text })),
-    ...(typed.trim()
+    ...(assistant && typed.trim()
       ? [{ kind: "assistant" as const, text: typed.trim() }]
       : []),
   ];

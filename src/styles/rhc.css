@@ -902,21 +902,6 @@ small,
 	padding: var(--rhc-space-lg);
 }
 
-/* --- Result list --- */
-.rhc-mox-result-list {
-	display: grid;
-	gap: var(--rhc-space-xl);
-	list-style: none;
-	margin: 0;
-	padding: 0;
-
-	> li {
-		display: grid;
-		gap: var(--rhc-space-xs);
-		justify-items: start;
-	}
-}
-
 /* --- Site search --- */
 .rhc-mox-site-search form {
 	display: flex;
@@ -1886,6 +1871,25 @@ small,
 	display: flex;
 	font-size: var(--rhc-text-font-size-sm);
 	gap: var(--rhc-space-sm);
+}
+
+/* --- Search results --- */
+.rhc-mox-search-results {
+	display: grid;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	> li {
+		border-block-start: var(--rhc-border-width-sm) solid
+			var(--rhc-color-cool-grey-200);
+		display: grid;
+		padding-block: var(--rhc-space-lg);
+	}
+
+	> li:last-child {
+		padding-block-end: 0;
+	}
 }
 
 /* --- Step indicator --- */

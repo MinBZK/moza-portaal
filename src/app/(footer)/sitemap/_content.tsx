@@ -36,13 +36,7 @@ const PORTAL: SitemapLink[] = [
   {
     href: "/lopendezaken",
     label: "Lopende zaken",
-    children: [
-      {
-        href: "/lopendezaken/aanvragen",
-        label: "Aanvragen die u nog moet versturen",
-      },
-      { href: "/lopendezaken/afgehandeld", label: "Afgehandeld" },
-    ],
+    children: [{ href: "/lopendezaken/afgehandeld", label: "Afgehandeld" }],
   },
   { href: "/subsidies", label: "Subsidies en financiering" },
   { href: "/wetten", label: "Wetten en regelgeving" },

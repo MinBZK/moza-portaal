@@ -685,7 +685,8 @@ const AanvraagInhoud = ({
                 gegevens van die uitkomst naar de digitale assistent.
               </Paragraph>
               <Paragraph className="rhc-mox-small-text">
-                Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
+                Uw antwoorden worden niet bewaard. Sluit u de browser, dan
+                begint u opnieuw.
               </Paragraph>
             </Alert>
             {bekend &&
