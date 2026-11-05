@@ -8,7 +8,6 @@ import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "./_berichtDetail";
 import DemoBerichtInhoud from "./_demoBerichtInhoud";
 import { useNieuweBerichten } from "./_demoSimulatie";
-import PageSearch from "@/layouts/search";
 
 /** Een binnengedruppeld demo-bericht. Dat staat alleen in deze browser. */
 const NieuwBericht = ({
@@ -29,7 +28,6 @@ const NieuwBericht = ({
     return (
       <>
         <Heading level={1}>Bericht niet gevonden</Heading>
-        <PageSearch />
         <Paragraph>Dit bericht staat niet (meer) in uw berichtenbox.</Paragraph>
         <Paragraph>
           <Link

@@ -15,7 +15,6 @@ import {
 import dopOpenDataClient from "@/network/dop/opendata";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { TYPE_LABELS } from "../_articleTypes";
-import PageSearch from "@/layouts/search";
 
 const ArtikelDetailPage = async ({
   params,
@@ -40,7 +39,6 @@ const ArtikelDetailPage = async ({
         <Heading level={1}>
           {error ? "Fout bij ophalen artikel" : "Artikel niet gevonden"}
         </Heading>
-        <PageSearch />
         <div className="rhc-mox-card">
           <Paragraph>
             {error
@@ -91,7 +89,6 @@ const ArtikelDetailPage = async ({
       </Paragraph>
 
       <Heading level={1}>{article.headLine ?? "Onbekend artikel"}</Heading>
-      <PageSearch />
 
       <div className="rhc-mox-card">
         <DataSummary appearance="column">

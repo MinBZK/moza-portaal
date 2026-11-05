@@ -1,14 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 import {
   Accordion,
   AccordionSection,
-  ActionGroup,
   Alert,
-  Button,
   DataSummary,
   DataSummaryItem,
   Fieldset,
@@ -42,7 +40,6 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
-import PageSearch from "@/layouts/search";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -598,7 +595,6 @@ const AanvraagInhoud = ({
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
@@ -726,20 +722,15 @@ const AanvraagInhoud = ({
             )}
 
             {bekend && (
-              <ActionGroup>
-                <Button
-                  appearance="primary-action-button"
-                  onClick={paneelIds.length > 0 ? indienen : klaar}
-                >
-                  {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
-                </Button>
-                <Link
-                  href="/personeel"
-                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--subtle"
-                >
-                  Opslaan en later afronden
-                </Link>
-              </ActionGroup>
+              <StepNavigation
+                back="/personeel/iemand-aannemen/gegevens"
+                next={
+                  paneelIds.length > 0
+                    ? { onClick: indienen }
+                    : // Niets te versturen: hier rondt de ondernemer af.
+                      { label: "Klaar", onClick: klaar, final: true }
+                }
+              />
             )}
           </div>
 

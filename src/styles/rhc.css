@@ -62,6 +62,7 @@
 	--nl-heading-level-1-color: var(--rhc-color-core-500);
 	--rhc-sidenav-link-color: var(--rhc-color-foreground-default);
 	--utrecht-separator-color: var(--rhc-color-transparent);
+	--utrecht-focus-outline-color: var(--rhc-color-core-500);
 
 	--rhc-mox-landing-hero-background: var(--rhc-color-core-50);
 	--rhc-mox-landing-info-background: var(--rhc-color-core-500);
@@ -912,10 +913,53 @@ small,
 .rhc-mox-site-search__field {
 	display: flex;
 	gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-site-search__input {
+	flex: 1;
+	position: relative;
+}
+
+.rhc-mox-site-search__input {
+	display: flex;
+	flex: 1;
 	position: relative;
 
 	.utrecht-textbox {
 		flex: 1;
+		padding-inline-end: calc(var(--rhc-size-icon-md) + var(--rhc-space-lg));
+	}
+
+	/* The clear button below replaces the browser's own. */
+	.utrecht-textbox::-webkit-search-cancel-button {
+		appearance: none;
+	}
+}
+
+.rhc-mox-site-search__clear {
+	align-items: center;
+	background: none;
+	block-size: 100%;
+	border: 0;
+	color: var(--rhc-color-foreground-subtle);
+	cursor: pointer;
+	display: flex;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	justify-content: center;
+	padding-inline: var(--rhc-space-md);
+	position: absolute;
+
+	&:hover {
+		color: var(--rhc-color-foreground-default);
+	}
+
+	&:focus-visible {
+		outline: var(--rhc-focus-outline-width) var(--rhc-focus-outline-style)
+			var(--rhc-focus-outline-color);
+		outline-offset: calc(var(--rhc-focus-outline-offset) * -1);
+		inline-size: 100%;
+		max-inline-size: none;
 	}
 }
 
@@ -1704,7 +1748,7 @@ small,
 		&:focus-visible {
 			border-radius: var(--rhc-border-radius-round);
 			outline: var(--utrecht-focus-outline-width)
-				var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+				var(--utrecht-focus-outline-style) var(--rhc-color-lintblauw-500);
 			outline-offset: calc(var(--utrecht-focus-outline-offset) * 3);
 		}
 	}
@@ -1942,6 +1986,47 @@ small,
 
 .rhc-mox-icon-list__title {
 	color: var(--rhc-color-foreground-default);
+}
+
+/* --- Step navigation: Terug on the left, Verder on the right --- */
+.rhc-mox-step-navigation {
+	align-items: center;
+	border-block-start: var(--rhc-border-width-sm) solid
+		var(--rhc-color-cool-grey-200);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--rhc-space-md);
+	justify-content: space-between;
+	padding-block-start: var(--rhc-space-lg);
+
+	/* Without Terug, Verder still sits on the right. */
+	> :only-child {
+		margin-inline-start: auto;
+	}
+}
+
+/* The last action of a task: green with a check mark, so it stands apart from Verder. */
+.rhc-mox-step-navigation__final {
+	--utrecht-button-primary-action-background-color: var(--rhc-color-groen-600);
+	--utrecht-button-primary-action-border-color: var(--rhc-color-groen-600);
+	--utrecht-button-primary-action-hover-background-color: var(
+		--rhc-color-groen-700
+	);
+	--utrecht-button-primary-action-hover-border-color: var(
+		--rhc-color-groen-700
+	);
+	--utrecht-button-primary-action-active-background-color: var(
+		--rhc-color-groen-700
+	);
+	--utrecht-button-primary-action-active-border-color: var(
+		--rhc-color-groen-700
+	);
+	--utrecht-button-primary-action-focus-background-color: var(
+		--rhc-color-groen-700
+	);
+	--utrecht-button-primary-action-focus-border-color: var(
+		--rhc-color-groen-700
+	);
 }
 
 /* --- Step indicator --- */

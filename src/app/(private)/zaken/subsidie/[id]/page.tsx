@@ -3,7 +3,6 @@ import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
-import PageSearch from "@/layouts/search";
 
 const SubsidieDetail = async ({
   params,
@@ -34,7 +33,6 @@ const SubsidieDetail = async ({
   return (
     <>
       <Heading level={1}>Uw aanvraag</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {gegevens.map(({ label, waarde }) => (

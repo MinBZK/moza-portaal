@@ -6,7 +6,6 @@ import Versturen from "./_versturen";
 import Stappen from "../_stappen";
 import { TAAK_TITEL } from "../_taakTitel";
 import { werkgeverVan } from "../_werkgever";
-import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
   title: "Controleren en versturen - Iemand aannemen - Personeel en rollen",
@@ -21,7 +20,6 @@ const VersturenPage = async () => {
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
       <Stappen huidige={4} />
       <Paragraph>
         Dit verstuurt u, en naar wie. Klopt er iets niet? Ga terug naar de

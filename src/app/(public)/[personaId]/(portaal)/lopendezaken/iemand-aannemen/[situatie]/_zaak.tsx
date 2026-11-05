@@ -42,7 +42,6 @@ import {
 } from "../../../personeel/iemand-aannemen/_useAannemen";
 import { useUitkomsten } from "../../../personeel/iemand-aannemen/_useUitkomsten";
 import { datumNL } from "../../../personeel/iemand-aannemen/_werkgever";
-import PageSearch from "@/layouts/search";
 
 /** State on the timeline per kind of event; a correction is a warning. */
 const EVENT_KIND: Record<DemoAannemenGebeurtenis["soort"], TimelineStatus> = {
@@ -101,7 +100,6 @@ const Zaak = ({
     return (
       <>
         <Heading level={1}>{demo.zaak.onderwerp}</Heading>
-        <PageSearch />
       </>
     );
 
@@ -182,7 +180,6 @@ const Zaak = ({
     return (
       <>
         <Heading level={1}>{onderwerp}</Heading>
-        <PageSearch />
         <Alert type="info">
           <Paragraph>
             Deze zaak bestaat nog niet: de aanvraag is nog niet verstuurd.{" "}
@@ -288,7 +285,6 @@ const Zaak = ({
       <div className="rhc-mox-card rhc-mox-row-gap">
         <ZakenTabs actief="lopend" />
         <Heading level={1}>{onderwerp}</Heading>
-        <PageSearch />
 
         <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
           <Heading level={2} id="zaak-gegevens">

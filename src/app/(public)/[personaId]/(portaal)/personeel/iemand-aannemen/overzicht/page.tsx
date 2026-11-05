@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Heading, Icon, Paragraph } from "@/components/rhc";
+import { Heading } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Stappen from "../_stappen";
 import { werkgeverVan } from "../_werkgever";
 import Overzicht from "./_overzicht";
-import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
   title: "Wat voor u geldt - Personeel en rollen",

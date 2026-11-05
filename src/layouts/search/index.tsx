@@ -23,20 +23,31 @@ const SUGGESTIONS = [
   "wetten en regelgeving",
 ];
 
+/** Prototype: the same recent search for everyone. */
+const RECENT_SEARCHES = ["Iemand aannemen met afstand tot de arbeidsmarkt"];
+
 /**
- * Search and help below the h1 of every portal page (pattern Zoeken en hulp
- * op elke pagina). Not on the footer pages. With the digital assistant
+ * Search and help on the home page and the search results page, without a
+ * visible label. With the digital assistant
  * switched off (flag mox_digitaleAssistent), every outcome leads to the
  * search results.
  */
-const PageSearch = ({ pageSuggestions }: { pageSuggestions?: string[] }) => {
+const PageSearch = ({
+  pageSuggestions,
+  defaultValue,
+}: {
+  pageSuggestions?: string[];
+  defaultValue?: string;
+}) => {
   const assistent = useFlag("mox_digitaleAssistent");
   return (
     <SiteSearch
-      label={assistent ? undefined : "Zoeken"}
       assistant={assistent}
+      hideLabel
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
+      recentSearches={RECENT_SEARCHES}
+      defaultValue={defaultValue}
     />
   );
 };

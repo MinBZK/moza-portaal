@@ -1,9 +1,9 @@
 "use client";
 
+import StepNavigation from "@/components/StepNavigation";
 import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import {
-  ActionGroup,
   DataSummary,
   DataSummaryItem,
   Heading,
@@ -294,21 +294,11 @@ const OverzichtInhoud = ({
         </section>
       )}
 
-      <ActionGroup>
-        {/* Er valt niets te versturen; de ondernemer rondt hier af. */}
-        <Link
-          href="/lopendezaken"
-          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-        >
-          Klaar
-        </Link>
-        <Link
-          href="/personeel/iemand-aannemen/voorbeeldberekening"
-          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-        >
-          Antwoorden wijzigen
-        </Link>
-      </ActionGroup>
+      {/* Er valt niets te versturen; de ondernemer rondt hier af. */}
+      <StepNavigation
+        back="/personeel/iemand-aannemen/gegevens"
+        next={{ label: "Klaar", href: "/lopendezaken", final: true }}
+      />
     </>
   );
 };

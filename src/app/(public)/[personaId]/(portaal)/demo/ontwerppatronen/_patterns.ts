@@ -53,4 +53,10 @@ export const PATTERNS = [
     description:
       "Eén vaste plek om te zoeken of een vraag te stellen, over de pagina of over het hele portaal.",
   },
+  {
+    slug: "autocomplete-en-autosuggest",
+    title: "Autocomplete en autosuggest",
+    description:
+      "Suggesties en aanvullingen tijdens het typen, in het zoekveld en in formulieren.",
+  },
 ] as const;
