@@ -13,7 +13,9 @@ const STATUS_TEXT: Record<Status, string> = {
 /**
  * Where the user is in a task with several steps, built like nldd-step-bar of
  * the NLDD Design System: discs on a line with the name under each. A
- * completed step gets a check mark and, with an href, links back to that step.
+ * completed step gets a check mark. Every step the user has already been to
+ * (up to `reached`) links to that step when it has an href, also one after
+ * the current step, so the user can go back and forth.
  * The current step has aria-current="step"; the status of every step is also
  * read out as text. On a narrow container only the name of the current step,
  * "Stap 2 van 4" and a bar in segments remain.
@@ -21,12 +23,15 @@ const STATUS_TEXT: Record<Status, string> = {
 const StepIndicator = ({
   steps,
   current,
+  reached = current,
   label = "Voortgang",
 }: {
   /** The steps in order: a name, or a name with the address of the step. */
   steps: (string | { name: string; href?: string })[];
   /** Index of the current step, starting at 0. */
   current: number;
+  /** Index of the furthest step the user has been to; defaults to `current`. */
+  reached?: number;
   /** Accessible name of the navigation. */
   label?: string;
 }) => {
@@ -38,7 +43,12 @@ const StepIndicator = ({
       <ol className="rhc-mox-step-indicator__list">
         {items.map(({ name, href }, index) => {
           const status: Status =
-            index < current ? "past" : index === current ? "current" : "future";
+            index === current
+              ? "current"
+              : index < Math.max(current, reached)
+                ? "past"
+                : "future";
+          const bezocht = index !== current && index <= reached;
           const content = (
             <>
               <span
@@ -59,7 +69,7 @@ const StepIndicator = ({
               className={`rhc-mox-step-indicator__step rhc-mox-step-indicator__step--${status}`}
               aria-current={status === "current" ? "step" : undefined}
             >
-              {status === "past" && href ? (
+              {bezocht && href ? (
                 <Link href={href} className="rhc-mox-step-indicator__control">
                   {content}
                 </Link>

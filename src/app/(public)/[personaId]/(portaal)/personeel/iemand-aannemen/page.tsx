@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
  * ingang (menu Personeel, oude links) verwijst daarheen.
  */
 const IemandAannemenPage = () =>
-  redirect("/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt");
+  redirect(
+    "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+  );
 
 export default IemandAannemenPage;

@@ -5,7 +5,8 @@ import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
-import Stappen, { TAAK_TITEL } from "../_stappen";
+import Stappen from "../_stappen";
+import { TAAK_TITEL } from "../_taakTitel";
 import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
