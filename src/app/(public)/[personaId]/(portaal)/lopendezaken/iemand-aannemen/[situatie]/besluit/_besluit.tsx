@@ -36,7 +36,6 @@ import { useUitkomsten } from "../../../../personeel/iemand-aannemen/_useUitkoms
 import Waarom from "../../../../personeel/iemand-aannemen/_waarom";
 import { INGEDIEND_OP } from "../../../../personeel/iemand-aannemen/_zaakStart";
 import { datumNL } from "../../../../personeel/iemand-aannemen/_werkgever";
-import PageSearch from "@/layouts/search";
 
 /** Waar het besluit over gaat: de engine-uitkomst van de regeling en de fase met de vaststelling. */
 const REGELING = {
@@ -90,7 +89,6 @@ const Besluit = ({
         Besluit: {REGELING[situatie].naam.toLowerCase()} voor{" "}
         {kandidaat.voornaam} {kandidaat.achternaam}
       </Heading>
-      <PageSearch />
     </>
   );
   // Ook voordat de opgeslagen staat er is, heeft de pagina een kop.

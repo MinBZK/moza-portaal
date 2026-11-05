@@ -24,8 +24,8 @@ const SUGGESTIONS = [
 ];
 
 /**
- * Search and help below the h1 of every portal page (pattern Zoeken en hulp
- * op elke pagina). Not on the footer pages. With the digital assistant
+ * Search and help on the home page and the search results page, without a
+ * visible label. With the digital assistant
  * switched off (flag mox_digitaleAssistent), every outcome leads to the
  * search results.
  */
@@ -40,6 +40,7 @@ const PageSearch = ({
   return (
     <SiteSearch
       assistant={assistent}
+      hideLabel
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
       defaultValue={defaultValue}
