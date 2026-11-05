@@ -955,11 +955,11 @@ small,
 	}
 
 	&:focus-visible {
+		inline-size: 100%;
+		max-inline-size: none;
 		outline: var(--rhc-focus-outline-width) var(--rhc-focus-outline-style)
 			var(--rhc-focus-outline-color);
 		outline-offset: calc(var(--rhc-focus-outline-offset) * -1);
-		inline-size: 100%;
-		max-inline-size: none;
 	}
 }
 
