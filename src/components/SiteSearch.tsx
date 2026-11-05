@@ -47,6 +47,7 @@ const SiteSearch = ({
   assistant = true,
   suggestions = [],
   pageSuggestions = [],
+  defaultValue = "",
   onSearch,
 }: {
   label?: string;
@@ -60,6 +61,8 @@ const SiteSearch = ({
   suggestions?: string[];
   /** Questions about the page the user is on; shown first. */
   pageSuggestions?: string[];
+  /** Text in the field on load, such as the query on the results page. */
+  defaultValue?: string;
   /** Instead of going to the results page, for example in a demo. */
   onSearch?: (query: string) => void;
 }) => {
@@ -67,8 +70,8 @@ const SiteSearch = ({
   const id = useId();
   const inputId = `${id}-input`;
   const listId = `${id}-list`;
-  const [typed, setTyped] = useState("");
-  const [value, setValue] = useState("");
+  const [typed, setTyped] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
 
@@ -137,6 +140,8 @@ const SiteSearch = ({
       choose(options[active]);
     } else if (event.key === "Escape") {
       if (expanded) {
+        // Otherwise the browser also clears the search field.
+        event.preventDefault();
         setValue(typed);
         close();
       } else {

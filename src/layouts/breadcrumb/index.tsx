@@ -26,6 +26,7 @@ const breadcrumbLabels: Record<string, string> = {
   wetten: "Wetten en regelgeving",
   berichten: "Berichten over uw buurt",
   bewaard: "Bewaarde items",
+  zoeken: "Zoeken",
   demo: "Componenten",
   "ai-statusindicator": "AI-statusindicator",
   "e-mailverificatie": "E-mailverificatie",

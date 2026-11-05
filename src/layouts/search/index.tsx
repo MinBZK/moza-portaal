@@ -29,7 +29,13 @@ const SUGGESTIONS = [
  * switched off (flag mox_digitaleAssistent), every outcome leads to the
  * search results.
  */
-const PageSearch = ({ pageSuggestions }: { pageSuggestions?: string[] }) => {
+const PageSearch = ({
+  pageSuggestions,
+  defaultValue,
+}: {
+  pageSuggestions?: string[];
+  defaultValue?: string;
+}) => {
   const assistent = useFlag("mox_digitaleAssistent");
   return (
     <SiteSearch
@@ -37,6 +43,7 @@ const PageSearch = ({ pageSuggestions }: { pageSuggestions?: string[] }) => {
       assistant={assistent}
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
+      defaultValue={defaultValue}
     />
   );
 };
