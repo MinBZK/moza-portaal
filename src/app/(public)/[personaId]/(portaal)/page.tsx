@@ -17,6 +17,7 @@ import { getIngelogdeNaam, getKetenAccount } from "@/app/(public)/_persona";
 import { getKetenStatus } from "@/network/keten";
 import { stelselTekst } from "./berichtenbox/_lijstPagina";
 import RecenteBerichten from "./_recenteBerichten";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Home" };
 
@@ -67,6 +68,7 @@ const HomePage = async ({
   return (
     <>
       <Heading level={1}>Welkom {naam}</Heading>
+      <PageSearch />
 
       <section className="rhc-mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">

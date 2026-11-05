@@ -19,6 +19,7 @@ import {
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import Link from "next/link";
+import PageSearch from "@/layouts/search";
 
 export const BerichtenboxTableRow = ({ index }: { index: number }) => {
   const ongelezen = index === 0;
@@ -84,6 +85,7 @@ const BerichtenboxPage = async ({
   return (
     <>
       <Heading level={1}>Mijn Berichtenbox</Heading>
+      <PageSearch />
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-mox-row-gap">
           <div className="rhc-mox-card">

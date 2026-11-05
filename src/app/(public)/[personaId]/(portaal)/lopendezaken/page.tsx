@@ -3,6 +3,7 @@ import { AccordionProvider, Heading, Paragraph } from "@/components/rhc";
 import { getDemoZaken, getDemoZakenVragen } from "@/demo";
 import ZakenTabel from "./_zakenTabel";
 import ZakenTabs from "./_zakenTabs";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Lopende zaken" };
 
@@ -15,6 +16,7 @@ const LopendeZakenPage = async () => {
   return (
     <>
       <Heading level={1}>Lopende zaken</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <ZakenTabs actief="lopend" />
         <ZakenTabel zaken={zaken} soort="lopend" />

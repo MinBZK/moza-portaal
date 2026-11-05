@@ -6,6 +6,7 @@ import { useUpdateZwangerschapsverlof } from "@/network/mock/hooks/updateZwanger
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import PageSearch from "@/layouts/search";
 
 const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
   const zwangerschapsverlofSchema = z.object({
@@ -37,6 +38,7 @@ const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
   return (
     <>
       <Heading level={1}>Opmerking bij melding zwangerschapsverlof</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <form
           className="rhc-mox-stack rhc-mox-stack--2xl"

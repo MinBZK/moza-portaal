@@ -6,6 +6,7 @@ import {
   UnorderedListItem,
   AccordionProvider,
 } from "@/components/rhc";
+import PageSearch from "@/layouts/search";
 
 export type Question = { question: string; answer: string };
 
@@ -26,6 +27,7 @@ const ComingSoon = ({
 }) => (
   <>
     <Heading level={1}>{title}</Heading>
+    <PageSearch />
 
     <Alert type="info">
       <Paragraph>Binnenkort beschikbaar</Paragraph>

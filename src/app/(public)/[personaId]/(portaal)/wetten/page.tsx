@@ -7,6 +7,7 @@ import { getActievePersona } from "@/app/(public)/_persona";
 import { RelevantItem } from "@/components/save/saveActions";
 import WetActies, { bewaarItemVan } from "./_wetActies";
 import WetGegevens from "./_wetGegevens";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Wetten en regelgeving" };
 
@@ -43,6 +44,7 @@ const WettenPage = async ({
   return (
     <>
       <Heading level={1}>Wetten en regelgeving</Heading>
+      <PageSearch />
 
       <Alert type="info" closable>
         <Paragraph>

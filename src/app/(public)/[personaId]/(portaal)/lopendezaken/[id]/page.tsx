@@ -5,6 +5,7 @@ import { getDemoZaakById } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import StatusTrack from "@/components/StatusTrack";
 import ZakenTabs from "../_zakenTabs";
+import PageSearch from "@/layouts/search";
 
 export const generateMetadata = async ({
   params,
@@ -47,6 +48,7 @@ const ZaakPage = async ({ params }: { params: Promise<{ id: string }> }) => {
       <div className="rhc-mox-card rhc-mox-row-gap">
         <ZakenTabs actief={zaak.soort} />
         <Heading level={1}>{zaak.titel}</Heading>
+        <PageSearch />
         {zaak.gegevensBovenaan ? (
           <>
             {gegevens}

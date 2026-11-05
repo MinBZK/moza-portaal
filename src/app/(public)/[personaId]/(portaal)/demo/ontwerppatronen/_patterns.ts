@@ -47,4 +47,10 @@ export const PATTERNS = [
     description:
       "Het hoofdmenu ingedeeld naar wat u moet doen, wat u kunt doen en wat wij voor u doen.",
   },
+  {
+    slug: "zoeken-en-hulp",
+    title: "Zoeken en hulp op elke pagina",
+    description:
+      "Eén vaste plek om te zoeken of een vraag te stellen, over de pagina of over het hele portaal.",
+  },
 ] as const;
