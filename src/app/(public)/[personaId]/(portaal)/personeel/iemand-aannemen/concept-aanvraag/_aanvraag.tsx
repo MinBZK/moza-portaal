@@ -1,14 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 import {
   Accordion,
   AccordionSection,
-  ActionGroup,
   Alert,
-  Button,
   DataSummary,
   DataSummaryItem,
   Fieldset,
@@ -21,15 +19,13 @@ import {
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import StickyInfoBox from "@/components/StickyInfoBox";
-import ProgressBar from "@/components/ProgressBar";
 import TextBadge from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
-import Stappen from "../_stappen";
-import { TAAK_TITEL } from "../_taakTitel";
+import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
@@ -42,7 +38,6 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
-import PageSearch from "@/layouts/search";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -150,11 +145,11 @@ const AanvraagInhoud = ({
   const status = (id: PaneelId) =>
     g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
 
-  // Het eerste paneel en Loondispensatie staan open; `omgezet` houdt bij
-  // welke de gebruiker open- of dichtklapte.
+  // Het eerste paneel staat open; `omgezet` houdt bij welke de gebruiker
+  // open- of dichtklapte.
   const [omgezet, setOmgezet] = useState<PaneelId[]>([]);
   const isOpen = (id: PaneelId) =>
-    (id === paneelIds[0] || id === "ld") !== omgezet.includes(id);
+    (id === paneelIds[0]) !== omgezet.includes(id);
   const wissel = (id: PaneelId) =>
     setOmgezet((nu) =>
       nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
@@ -243,24 +238,42 @@ const AanvraagInhoud = ({
   ];
 
   const paneel = (id: PaneelId): ReactNode => {
-    const kop = (note: string, kind: ReactNode) => (
-      <AccordionSection
-        key={id}
-        id={`paneel-${id}`}
-        headingLevel={3}
-        label={`${NAAM[id]} ${status(id)}`}
-        // Het type eist `body`, de component rendert alleen `children`.
-        body={null}
-        expanded={isOpen(id)}
-        onActivate={() => wissel(id)}
-      >
-        <div className="rhc-mox-stack">
-          <Paragraph className="rhc-mox-small-text">{note}</Paragraph>
+    const kop = (note: string, kind: ReactNode) =>
+      // Loondispensatie is plain text with a heading, not a panel to open.
+      id === "ld" ? (
+        <section
+          key={id}
+          id={`paneel-${id}`}
+          className="rhc-mox-stack"
+          aria-labelledby={`paneel-${id}-kop`}
+        >
+          <Heading level={3} id={`paneel-${id}-kop`}>
+            {NAAM[id]}
+          </Heading>
+          <DataSummary appearance="column">
+            <DataSummaryItem itemKey="Organisatie" itemValue={note} />
+          </DataSummary>
           {kind}
           {vinkje(id)}
-        </div>
-      </AccordionSection>
-    );
+        </section>
+      ) : (
+        <AccordionSection
+          key={id}
+          id={`paneel-${id}`}
+          headingLevel={3}
+          label={`${NAAM[id]} ${status(id)}`}
+          // Het type eist `body`, de component rendert alleen `children`.
+          body={null}
+          expanded={isOpen(id)}
+          onActivate={() => wissel(id)}
+        >
+          <div className="rhc-mox-stack">
+            <Paragraph className="rhc-mox-small-text">{note}</Paragraph>
+            {kind}
+            {vinkje(id)}
+          </div>
+        </AccordionSection>
+      );
     const gemeente = "Gemeente waar de kandidaat woont";
 
     if (id === "lks")
@@ -598,7 +611,6 @@ const AanvraagInhoud = ({
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
@@ -635,20 +647,6 @@ const AanvraagInhoud = ({
           )}
         </p>
 
-        {paneelIds.length > 0 && (
-          <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <Paragraph>
-              Gecontroleerd: {aantal} van {paneelIds.length}
-            </Paragraph>
-            <ProgressBar
-              label="Gecontroleerd"
-              value={aantal}
-              max={paneelIds.length}
-              valueText={`${aantal} van ${paneelIds.length}`}
-            />
-          </div>
-        )}
-
         {fout && aantal < paneelIds.length && (
           <Alert type="error">
             <Paragraph>
@@ -673,7 +671,7 @@ const AanvraagInhoud = ({
         )}
 
         <div className="rhc-grid">
-          <div className="rhc-grid__cell rhc-grid__cell-t-8 rhc-mox-row-gap">
+          <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
             <Alert type="info" closable>
               <Paragraph>
                 <strong>Wie kan deze aanvraag zien?</strong>
@@ -700,7 +698,12 @@ const AanvraagInhoud = ({
                   <Heading level={2} id={`naar-${groep.organisatie}`}>
                     {ORGANISATIE[groep.organisatie]}
                   </Heading>
-                  <Accordion>{groep.ids.map(paneel)}</Accordion>
+                  {groep.ids.some((id) => id !== "ld") && (
+                    <Accordion>
+                      {groep.ids.filter((id) => id !== "ld").map(paneel)}
+                    </Accordion>
+                  )}
+                  {groep.ids.includes("ld") && paneel("ld")}
                 </section>
               ))}
 
@@ -726,24 +729,20 @@ const AanvraagInhoud = ({
             )}
 
             {bekend && (
-              <ActionGroup>
-                <Button
-                  appearance="primary-action-button"
-                  onClick={paneelIds.length > 0 ? indienen : klaar}
-                >
-                  {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
-                </Button>
-                <Link
-                  href="/personeel"
-                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--subtle"
-                >
-                  Opslaan en later afronden
-                </Link>
-              </ActionGroup>
+              <StepNavigation
+                back="/personeel/iemand-aannemen/gegevens"
+                backLabel={terugNaar(3)}
+                next={
+                  paneelIds.length > 0
+                    ? { onClick: indienen }
+                    : // Niets te versturen: hier rondt de ondernemer af.
+                      { label: "Klaar", onClick: klaar, final: true }
+                }
+              />
             )}
           </div>
 
-          <div className="rhc-grid__cell rhc-grid__cell-t-4 rhc-mox-row-gap">
+          <div className="rhc-grid__cell rhc-grid__cell-t-5 rhc-mox-row-gap">
             {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
             <StickyInfoBox title="Wat dit u oplevert">
               <KorteBalans antwoorden={a} resultaat={resultaat} />

@@ -11,7 +11,6 @@ import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useCreateSubsidie } from "@/network/mock/hooks/createSubsidie/useCreateSubsidie";
-import PageSearch from "@/layouts/search";
 
 const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
   const subsidieSchema = z.object({
@@ -42,7 +41,6 @@ const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Nieuwe subsidie aanvragen</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <form
           className="rhc-mox-stack rhc-mox-stack--2xl"

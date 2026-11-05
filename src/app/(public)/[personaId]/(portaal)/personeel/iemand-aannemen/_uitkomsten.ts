@@ -46,6 +46,48 @@ export const kiesDoelgroep = (
   return DOELGROEPEN.map(([d]) => d).filter((d) => nieuw.includes(d));
 };
 
+/** Vraag 1: staat de persoon in het doelgroepregister? */
+export type InRegister = "ja" | "nee" | "onbekend";
+
+/** Vraag 2: welke uitkering de persoon heeft. */
+export const UITKERINGEN = [
+  ["wajong", "Wajong"],
+  ["wia", "WIA"],
+  ["bijstand", "Bijstand"],
+  ["andere", "Een andere uitkering"],
+  ["geen", "Geen uitkering"],
+] as const;
+export type Uitkering = (typeof UITKERINGEN)[number][0];
+
+/**
+ * Van de losse vragen naar de doelgroepen waarmee de engine rekent. "Weet ik
+ * niet" rekent als niet in het register. Beschut werk telt als beschut, niet
+ * als register (aanhef 38b lid 1); Wajong zonder beschut werk zet het
+ * register aan, net als kiesDoelgroep.
+ */
+export const doelgroepenUit = (
+  register: InRegister,
+  beschut: boolean,
+  uitkering: Uitkering,
+): Doelgroep[] => {
+  let d: Doelgroep[] = [];
+  if (register === "ja") d = [beschut ? "beschut" : "register"];
+  if (uitkering === "wajong" || uitkering === "wia" || uitkering === "bijstand")
+    d = kiesDoelgroep(d, uitkering, true);
+  return d;
+};
+
+/** Van de opgeslagen doelgroepen terug naar de losse vragen (oudere opslag). */
+export const vragenUit = (doelgroepen: Doelgroep[]) => ({
+  register: (doelgroepen.includes("register") || doelgroepen.includes("beschut")
+    ? "ja"
+    : "nee") as InRegister,
+  beschut: doelgroepen.includes("beschut"),
+  uitkering: ((["wajong", "wia", "bijstand"] as const).find((x) =>
+    doelgroepen.includes(x),
+  ) ?? "geen") as Uitkering,
+});
+
 /** De antwoorden op de vier vragen (zie Antwoorden in _useAannemen.ts). */
 export type Keuzes = {
   doelgroepen: Doelgroep[];
@@ -269,7 +311,12 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  "lks_lid4" | "ld_cao" | "ld_beschut" | "wia_nieuw" | "beschut_lks" | "geen";
+  | "lks_lid4"
+  | "ld_cao"
+  | "ld_beschut"
+  | "wia_nieuw"
+  | "beschut_lks"
+  | "geen";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";

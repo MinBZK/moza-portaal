@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
+import { Alert, Heading, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
@@ -8,7 +7,6 @@ import Bronnen from "./_bronnen";
 import Stappen from "../_stappen";
 import { TAAK_TITEL } from "../_taakTitel";
 import { vul, werkgeverVan } from "../_werkgever";
-import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
   title: "Laat de aanvraag invullen - Iemand aannemen - Personeel en rollen",
@@ -39,16 +37,6 @@ const GegevensPage = async () => {
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
-      <Paragraph>
-        <Link
-          href="/personeel/iemand-aannemen/voorbeeldberekening"
-          className="utrecht-link utrecht-link--html-a"
-        >
-          <Icon icon="chevron-left" />
-          Terug naar de vragen
-        </Link>
-      </Paragraph>
       <div className="rhc-mox-card">
         <Stappen huidige={3} />
         <Alert type="info" closable>

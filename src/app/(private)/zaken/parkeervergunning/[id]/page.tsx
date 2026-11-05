@@ -3,7 +3,6 @@ import { components } from "@/network/mock/generated";
 import zakenClient from "@/network/mock";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
-import PageSearch from "@/layouts/search";
 
 const ParkeervergunningDetail = async ({
   params,
@@ -34,7 +33,6 @@ const ParkeervergunningDetail = async ({
   return (
     <>
       <Heading level={1}>Parkeervergunning details</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {gegevens.map(({ label, waarde }) => (

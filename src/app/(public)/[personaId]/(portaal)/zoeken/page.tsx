@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Button,
-  FormFieldTextInput,
-  Heading,
-  Paragraph,
-} from "@/components/rhc";
+import { Heading, Paragraph } from "@/components/rhc";
+import { getFlagsFromServerCookie } from "@/app/actions";
+import PageSearch from "@/layouts/search";
+import TextBadge from "@/components/TextBadge";
 
-export const metadata: Metadata = { title: "Zoeken" };
+type SearchParams = Promise<{ q?: string | string[] }>;
 
 /**
  * Prototype: whatever the search term, the same three results about hiring
@@ -37,44 +35,53 @@ const RESULTATEN = [
   },
 ];
 
-const ZoekenPage = async ({
+/** Prototype: the query when none is given. */
+const DEFAULT_QUERY = "afstand tot de arbeidsmarkt";
+
+const readQuery = async (searchParams: SearchParams) => {
+  const { q } = await searchParams;
+  return (Array.isArray(q) ? q[0] : q)?.trim() || DEFAULT_QUERY;
+};
+
+const countText = (query: string) =>
+  query
+    ? `${RESULTATEN.length} resultaten voor “${query}”`
+    : `${RESULTATEN.length} resultaten`;
+
+export const generateMetadata = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string | string[] }>;
-}) => {
-  const { q } = await searchParams;
-  const zoekterm = (Array.isArray(q) ? q[0] : q)?.trim() ?? "";
+  searchParams: SearchParams;
+}): Promise<Metadata> => {
+  const query = await readQuery(searchParams);
+  return {
+    title: query ? `${countText(query)} - Zoekresultaten` : "Zoekresultaten",
+  };
+};
+
+const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const [query, flags] = await Promise.all([
+    readQuery(searchParams),
+    getFlagsFromServerCookie(),
+  ]);
 
   return (
     <>
-      <Heading level={1}>Zoeken</Heading>
-
-      <search className="rhc-mox-card">
-        <form
-          action="/zoeken"
-          method="get"
-          className="rhc-mox-stack rhc-mox-stack--md"
-        >
-          <FormFieldTextInput
-            label="Zoeken in MijnOverheid Zakelijk"
-            name="q"
-            type="search"
-            defaultValue={zoekterm}
-            autoComplete="off"
-          />
-          <Button type="submit" appearance="primary-action-button">
-            Zoeken
-          </Button>
-        </form>
-      </search>
+      <Heading level={1}>Zoekresultaten</Heading>
+      <PageSearch key={query} defaultValue={query} />
 
       <section className="rhc-mox-card" aria-labelledby="zoekresultaten">
-        <Heading level={2} id="zoekresultaten">
-          {zoekterm
-            ? `${RESULTATEN.length} resultaten voor “${zoekterm}”`
-            : `${RESULTATEN.length} resultaten`}
+        <Heading level={2} appearanceLevel={4} id="zoekresultaten">
+          {query ? (
+            <>
+              {RESULTATEN.length} resultaten voor “
+              <span className="rhc-mox-semi-bold">{query}</span>”
+            </>
+          ) : (
+            countText(query)
+          )}
         </Heading>
-        <ol className="rhc-mox-search-results">
+        <ol className="rhc-mox-search-results rhc-mox-stack rhc-mox-stack--3xl">
           {RESULTATEN.map((resultaat) => (
             <li
               key={resultaat.href}
@@ -88,14 +95,33 @@ const ZoekenPage = async ({
                   {resultaat.titel}
                 </Link>
               </Heading>
-              <Paragraph className="rhc-mox-small-text">
-                {resultaat.soort}
+              <Paragraph>
+                <TextBadge>{resultaat.soort}</TextBadge>
               </Paragraph>
               <Paragraph>{resultaat.tekst}</Paragraph>
             </li>
           ))}
         </ol>
       </section>
+
+      {query && flags.mox_digitaleAssistent && (
+        <section className="rhc-mox-card" aria-labelledby="zoeken-assistent">
+          <Heading level={2} id="zoeken-assistent">
+            Hulp van de digitale assistent
+          </Heading>
+          <Paragraph>
+            Staat het antwoord er niet bij? Stel uw vraag in uw eigen woorden.
+          </Paragraph>
+          <Paragraph>
+            <Link
+              href={`/digitale-assistent?vraag=${encodeURIComponent(query)}`}
+              className="utrecht-link utrecht-link--html-a"
+            >
+              Vraag het de digitale assistent: “{query}”
+            </Link>
+          </Paragraph>
+        </section>
+      )}
     </>
   );
 };

@@ -1,13 +1,12 @@
 "use client";
 
+import StepNavigation from "@/components/StepNavigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 import TextBadge from "@/components/TextBadge";
 import {
-  ActionGroup,
   Alert,
-  Button,
   FormFieldCheckboxOption,
   Heading,
   Paragraph,
@@ -36,7 +35,7 @@ const Loket = ({
   label?: string;
   items: ReactNode[];
 }) => (
-  <section className="rhc-mox-card rhc-mox-row-gap" aria-label={titel}>
+  <section className="rhc-mox-stack" aria-label={titel}>
     <div className="rhc-mox-cluster">
       <Heading level={3}>{titel}</Heading>
       {label && <TextBadge variant="info">{label}</TextBadge>}
@@ -112,14 +111,10 @@ const VersturenInhoud = ({
             wat er verder geldt.
           </Paragraph>
         </Alert>
-        <Paragraph>
-          <Link
-            href="/personeel/iemand-aannemen/concept-aanvraag"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Terug naar de aanvraag
-          </Link>
-        </Paragraph>
+        <StepNavigation
+          back="/personeel/iemand-aannemen/concept-aanvraag"
+          backLabel="Terug naar de ingevulde aanvraag"
+        />
       </>
     );
 
@@ -225,26 +220,22 @@ const VersturenInhoud = ({
           </Paragraph>
         </Alert>
         {taken}
-        <ActionGroup>
-          <Link
-            href="/personeel/iemand-aannemen/overzicht"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Bekijk het overzicht
-          </Link>
-          <Link
-            href="/personeel/iemand-aannemen/concept-aanvraag"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Terug naar de aanvraag
-          </Link>
-        </ActionGroup>
+        <StepNavigation
+          back="/personeel/iemand-aannemen/concept-aanvraag"
+          backLabel="Terug naar de ingevulde aanvraag"
+          next={{
+            label: "Bekijk het overzicht",
+            href: "/personeel/iemand-aannemen/overzicht",
+          }}
+        />
       </>
     );
 
   const indienen = () => {
     if (!bevestigd) {
+      // Show why, and go to the checkbox the user still has to tick.
       setFout(true);
+      document.querySelector<HTMLInputElement>("#bevestiging input")?.focus();
       return;
     }
     werkZaakBij(
@@ -257,13 +248,6 @@ const VersturenInhoud = ({
 
   return (
     <>
-      {fout && !bevestigd && (
-        <Alert type="error">
-          <Paragraph>
-            Bevestig eerst dat u alles naar waarheid heeft ingevuld.
-          </Paragraph>
-        </Alert>
-      )}
       <Heading level={2}>Wat u verstuurt</Heading>
       <Loket titel={organisatie} label="Aanvraag" items={ingediend} />
       {taken}
@@ -288,10 +272,7 @@ const VersturenInhoud = ({
         </Link>
       </Paragraph>
 
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="wat-gebeurt"
-      >
+      <section className="rhc-mox-stack" aria-labelledby="wat-gebeurt">
         <Heading level={2} id="wat-gebeurt">
           Wat er gebeurt als u de aanvraag verstuurt
         </Heading>
@@ -304,22 +285,28 @@ const VersturenInhoud = ({
           berichtenbox, en u volgt de zaak bij Lopende zaken.
         </Paragraph>
         <FormFieldCheckboxOption
+          id="bevestiging"
+          invalid={fout && !bevestigd}
+          errorMessage={
+            fout && !bevestigd
+              ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+              : undefined
+          }
           label={`Ik heb alles naar waarheid ingevuld${staat.rol === "namens" ? `, namens ${werkgever.onderneming}` : ""}.`}
           name="bevestiging"
           checked={bevestigd}
           onChange={(event) => setBevestigd(event.target.checked)}
         />
-        <ActionGroup>
-          <Button appearance="primary-action-button" onClick={indienen}>
-            Versturen naar {uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}
-          </Button>
-          <Link
-            href="/personeel/iemand-aannemen/concept-aanvraag"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Annuleren
-          </Link>
-        </ActionGroup>
+        <StepNavigation
+          back="/personeel/iemand-aannemen/concept-aanvraag"
+          backLabel="Terug naar de ingevulde aanvraag"
+          next={{
+            label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
+            onClick: indienen,
+            final: true,
+            sends: true,
+          }}
+        />
       </section>
     </>
   );

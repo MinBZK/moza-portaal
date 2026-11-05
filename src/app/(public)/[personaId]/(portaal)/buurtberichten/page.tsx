@@ -14,7 +14,6 @@ import {
 import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ShareButton from "@/components/ShareButton";
 import { getDemoBuurtberichten } from "@/demo";
-import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Berichten over uw buurt" };
 
@@ -24,7 +23,6 @@ const OmgevingsberichtenPage = async () => {
   return (
     <>
       <Heading level={1}>Berichten over uw buurt</Heading>
-      <PageSearch />
       <Paragraph>
         Berichten over de omgeving van uw bedrijfsadres. Denk aan werkzaamheden,
         vergunningen en verkeersmaatregelen.

@@ -11,7 +11,6 @@ import { getActievePersona } from "@/app/(public)/_persona";
 import { getDemoConceptAanvraagById } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import KostenBerekening from "./_kostenBerekening";
-import PageSearch from "@/layouts/search";
 
 export const generateMetadata = async ({
   params,
@@ -42,7 +41,6 @@ const AanvraagPage = async ({
         label={aanvraag.titel}
       />
       <Heading level={1}>{aanvraag.titel}</Heading>
-      <PageSearch />
 
       <div className="rhc-mox-card rhc-mox-row-gap">
         {aanvraag.indienenVoor && (

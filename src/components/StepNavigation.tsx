@@ -1,0 +1,94 @@
+"use client";
+
+import Link from "next/link";
+import { ActionGroup, Button, Icon } from "@/components/rhc";
+import { CheckIcon } from "@/components/icons/checkIcon";
+
+type Next = {
+  /** Text of the button; "Verder" by default. */
+  label?: string;
+  /** Go to this address. */
+  href?: string;
+  /** Or do this, for example check the form first. */
+  onClick?: () => void;
+  /** Not yet possible; the button stays focusable (aria-disabled). */
+  disabled?: boolean;
+  /** When the button is clicked while disabled, such as focus the field to fill in. */
+  onBlocked?: () => void;
+  /** Id of the text that says why the button does not work yet. */
+  describedBy?: string;
+  /** The last action of the task, such as sending: a check mark instead of the arrow. Not green: nothing has succeeded yet. */
+  final?: boolean;
+  /** The final action sends something: a paper plane instead of the check mark. */
+  sends?: boolean;
+};
+
+/**
+ * Back and forward at the end of a step in a task, in an action group.
+ * Verder comes first in the HTML, so it gets the keyboard focus first and is
+ * at the block start when the buttons wrap; in a row, the CSS shows Terug at
+ * the inline start. On the last step the forward button is the final action,
+ * with its own icon.
+ */
+const StepNavigation = ({
+  back,
+  backLabel = "Terug",
+  next,
+}: {
+  back?: string;
+  /** Text of the back button; "Terug" by default. */
+  backLabel?: string;
+  next?: Next;
+}) => {
+  const label = (
+    <>
+      {next?.final && (next.sends ? <Icon icon="verzenden" /> : <CheckIcon />)}
+      {next?.label ?? "Verder"}
+      {!next?.final && <Icon icon="chevron-right" />}
+    </>
+  );
+
+  return (
+    <ActionGroup className="rhc-mox-step-navigation">
+      {next &&
+        (next.href && !next.onClick ? (
+          <Link
+            href={next.href}
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            aria-disabled={next.disabled || undefined}
+            aria-describedby={next.describedBy}
+            onClick={(event) => {
+              if (!next.disabled) return;
+              event.preventDefault();
+              next.onBlocked?.();
+            }}
+          >
+            {label}
+          </Link>
+        ) : (
+          <Button
+            appearance="primary-action-button"
+            aria-disabled={next.disabled || undefined}
+            aria-describedby={next.describedBy}
+            onClick={() => {
+              if (next.disabled) next.onBlocked?.();
+              else next.onClick?.();
+            }}
+          >
+            {label}
+          </Button>
+        ))}
+      {back && (
+        <Link
+          href={back}
+          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
+        >
+          <Icon icon="chevron-left" />
+          {backLabel}
+        </Link>
+      )}
+    </ActionGroup>
+  );
+};
+
+export default StepNavigation;

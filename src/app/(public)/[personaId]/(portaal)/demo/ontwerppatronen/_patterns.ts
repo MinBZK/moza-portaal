@@ -53,4 +53,28 @@ export const PATTERNS = [
     description:
       "Eén vaste plek om te zoeken of een vraag te stellen, over de pagina of over het hele portaal.",
   },
+  {
+    slug: "autocomplete-en-autosuggest",
+    title: "Autocomplete en autosuggest",
+    description:
+      "Suggesties en aanvullingen tijdens het typen, in het zoekveld en in formulieren.",
+  },
+  {
+    slug: "invoerformaten-accepteren",
+    title: "Verschillende invoerformaten accepteren",
+    description:
+      "Spaties, streepjes en andere schrijfwijzen accepteren, en zelf omzetten naar één vaste vorm.",
+  },
+  {
+    slug: "veranderde-waarden-tonen",
+    title: "Veranderde waarden tonen",
+    description:
+      "Een bedrag dat meeverandert met de invoer wordt even vet en groter, zodat de ondernemer het ziet.",
+  },
+  {
+    slug: "terug-en-verder",
+    title: "Terug en Verder in een taak",
+    description:
+      "Knoppen onderaan een stap: tekst, volgorde voor het toetsenbord, en wat er gebeurt als de ondernemer nog niet verder kan.",
+  },
 ] as const;

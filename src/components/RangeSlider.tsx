@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  useEffect,
+  useSyncExternalStore,
   useId,
   useState,
   type ChangeEvent,
@@ -9,6 +11,26 @@ import {
   type ReactNode,
 } from "react";
 import FieldLabel from "./FieldLabel";
+import ChangedValue from "./ChangedValue";
+
+// Whether the user is dragging any slider, for values elsewhere that follow it.
+let anyDragging = false;
+const draggingListeners = new Set<() => void>();
+const setAnyDragging = (value: boolean) => {
+  anyDragging = value;
+  draggingListeners.forEach((listener) => listener());
+};
+
+/** True while the user drags the thumb of a slider on the page. */
+export const useSliderDragging = () =>
+  useSyncExternalStore(
+    (listener) => {
+      draggingListeners.add(listener);
+      return () => draggingListeners.delete(listener);
+    },
+    () => anyDragging,
+    () => false,
+  );
 
 type RangeSliderProps = Omit<
   ComponentProps<"input">,
@@ -54,6 +76,7 @@ const RangeSlider = ({
   filled = false,
   className,
   style,
+  onPointerDown,
   ...props
 }: RangeSliderProps) => {
   const ownId = useId();
@@ -62,6 +85,22 @@ const RangeSlider = ({
   const current = value ?? ownValue;
   // How far along the thumb is, from 0 to 1; the CSS colours the track up to there.
   const fraction = max > min ? (current - min) / (max - min) : 0;
+  // While the user drags the thumb, the value stays emphasized.
+  const [dragging, setDragging] = useState(false);
+  useEffect(() => {
+    if (!dragging) return;
+    setAnyDragging(true);
+    const stop = () => {
+      setDragging(false);
+      setAnyDragging(false);
+    };
+    window.addEventListener("pointerup", stop);
+    window.addEventListener("pointercancel", stop);
+    return () => {
+      window.removeEventListener("pointerup", stop);
+      window.removeEventListener("pointercancel", stop);
+    };
+  }, [dragging]);
 
   return (
     <div className="utrecht-form-field utrecht-form-field--text rhc-form-field rhc-mox-range-slider">
@@ -69,8 +108,11 @@ const RangeSlider = ({
         <FieldLabel htmlFor={fieldId} info={info}>
           {label}
         </FieldLabel>
-        <output htmlFor={fieldId} className="rhc-mox-range-slider__value">
-          {formatValue(current)}
+        <output
+          htmlFor={fieldId}
+          className={`rhc-mox-range-slider__value${dragging ? " rhc-mox-range-slider__value--dragging" : ""}`}
+        >
+          <ChangedValue quiet={dragging}>{formatValue(current)}</ChangedValue>
         </output>
       </div>
       <div className="utrecht-form-field__input">
@@ -82,6 +124,10 @@ const RangeSlider = ({
           value={current}
           // Screen readers read out the shown value, not just the number.
           aria-valuetext={formatValueText(current)}
+          onPointerDown={(event) => {
+            setDragging(true);
+            onPointerDown?.(event);
+          }}
           onChange={(event) => {
             const next = Number(event.target.value);
             if (value === undefined) setOwnValue(next);

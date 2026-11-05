@@ -1,33 +1,53 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import { useState, type ReactNode } from "react";
 import {
-  ActionGroup,
   Fieldset,
-  FormFieldCheckboxOption,
   FormFieldRadio,
   FormFieldTextInput,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
   Separator,
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans from "./_balans";
-import type { BalansRegel, Regel } from "./_uitkomsten";
+import { loonkostenPerJaar } from "./_engine";
+import {
+  balansRegels,
+  doelgroepenUit,
+  UITKERINGEN,
+  vragenUit,
+  type BalansRegel,
+  type InRegister,
+  type Regel,
+  type Uitkering,
+} from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
-import {
-  DOELGROEPEN,
-  WML_UUR_EUROCENT,
-  kiesDoelgroep,
-  registerVast,
-  useAannemen,
-  type Antwoorden,
-} from "./_useAannemen";
+import { terugNaar, verderNaar } from "./_stappen";
+import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
+
+/** De check bij UWV of iemand in het doelgroepregister staat. */
+const UWV_REGISTER =
+  "https://www.uwv.nl/nl/doelgroepregister/staat-werknemer-in-doelgroepregister";
+
+/**
+ * Vraag 4 in blokjes, met de loonwaarde in procent waarmee de engine rekent:
+ * het midden van het blokje. Loondispensatie vraagt ten minste 25 procent
+ * minder (Besluit loondispensatie Wajong); vanaf driekwart geldt die niet.
+ */
+const WERKVERMOGEN = [
+  [40, "Minder dan de helft"],
+  [60, "De helft tot driekwart"],
+  [85, "Meer dan driekwart"],
+  [100, "Evenveel"],
+] as const;
+
+/** Welk blokje bij een opgeslagen loonwaarde hoort (ook oude waarden van de schuif). */
+const blokVan = (loonwaarde: number) =>
+  loonwaarde < 50 ? 40 : loonwaarde < 75 ? 60 : loonwaarde < 100 ? 85 : 100;
 
 /** Bovengrens van "anders, namelijk" bij het uurloon: € 200 per uur. */
 const MAX_UURLOON_EUROCENT = 20000;
@@ -51,11 +71,8 @@ type Termijn = {
   tekst: string;
   wanneer: string;
   bronnen: Bron[];
-  /** Uitleg over de regeling op het Digitaal Ondernemersplein. */
-  meer: Bron;
 };
 
-const DOP = "https://ondernemersplein.overheid.nl";
 const PWET = "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d";
 const WTL = "https://wetten.overheid.nl/BWBR0037522/2026-01-01";
 
@@ -88,10 +105,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 url: PWET,
               },
             ],
-            meer: {
-              tekst: "Meer over loonkostensubsidie op Ondernemersplein",
-              url: `${DOP}/personeel/personeelskosten-en-loon/verlaag-uw-loonkosten-met-subsidies-en-tegemoetkomingen/`,
-            },
           },
         ]
       : []),
@@ -113,10 +126,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Artikel4:13",
               },
             ],
-            meer: {
-              tekst: "Meer over loondispensatie op Ondernemersplein",
-              url: `${DOP}/subsidies-en-regelingen/loondispensatie-wajong/`,
-            },
           },
         ]
       : []),
@@ -145,26 +154,11 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 url: `${WTL}#Artikel4.2`,
               },
             ],
-            meer: {
-              tekst: "Meer over het loonkostenvoordeel op Ondernemersplein",
-              url: `${DOP}/subsidies-en-regelingen/loonkostenvoordeel-voor-werkgevers/`,
-            },
           },
         ]
       : []),
   ];
 };
-
-const Extern = ({ bron, wat }: { bron: Bron; wat: string }) => (
-  <a
-    href={bron.url}
-    className="utrecht-link utrecht-link--html-a"
-    target="_blank"
-    rel="external noopener noreferrer"
-  >
-    {bron.tekst} ({wat})
-  </a>
-);
 
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
@@ -189,7 +183,7 @@ const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
   if (r.id === "ld")
     return r.aanspraakPerUur === undefined
       ? `Per jaar betaalt u ongeveer ${euro(bedrag)} minder aan loon.`
-      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Het verschil keer ${a.uren} uur per week keer 52 weken, plus vakantiegeld en werkgeverslasten, is ongeveer ${euro(bedrag)} per jaar. Die laatste stap is een schatting.`;
+      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euro(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
   const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
   return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ${euro(bedrag)} per jaar.`;
 };
@@ -217,38 +211,14 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
       {termijn && (
         <>
           <Paragraph>
-            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer}
+            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer} (
+            {termijn.bronnen.map((b) => b.tekst).join("; ")})
           </Paragraph>
-          <UnorderedList>
-            {[...termijn.bronnen, termijn.meer].map((b) => (
-              <UnorderedListItem key={b.url + b.tekst}>
-                <Extern bron={b} wat="opent in een nieuw tabblad" />
-              </UnorderedListItem>
-            ))}
-          </UnorderedList>
         </>
       )}
     </>
   );
 };
-
-/** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
-const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
-  <ActionGroup>
-    {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
-    <Link
-      href="/personeel/iemand-aannemen/gegevens"
-      className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-      aria-disabled={bekend ? undefined : true}
-      aria-describedby={bekend ? undefined : "aanvragen-bezig"}
-      onClick={(event) => {
-        if (!bekend) event.preventDefault();
-      }}
-    >
-      Laat de aanvraag invullen
-    </Link>
-  </ActionGroup>
-);
 
 /**
  * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
@@ -274,17 +244,41 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
-  const vast = registerVast(a);
-  const wajong = a.doelgroepen.includes("wajong");
-  // Vraag 4: het minimumloon, of een eigen bedrag dat pas telt als het klopt.
-  const [anders, setAnders] = useState(a.uurloon !== WML_UUR_EUROCENT);
-  const [loonTekst, setLoonTekst] = useState(
-    a.uurloon !== WML_UUR_EUROCENT ? alsTekst(a.uurloon) : "",
-  );
+  // Verder kan pas als de voorbeeldberekening een bedrag oplevert.
+  const geenBedrag =
+    resultaat.bekend &&
+    !resultaat.fout &&
+    balansRegels(resultaat.uitkomsten, loonkostenPerJaar(a)).every(
+      (r) => r.bedrag <= 0,
+    );
+  const kanVerder = resultaat.bekend && !resultaat.fout && !geenBedrag;
+  // Vraag 1, 1a en 2; oudere opslag kent alleen de doelgroepen.
+  const afgeleid = vragenUit(a.doelgroepen);
+  const register = a.register ?? afgeleid.register;
+  const beschut = a.beschut ?? afgeleid.beschut;
+  const uitkering = a.uitkering ?? afgeleid.uitkering;
+  const zetVraag = (deel: {
+    register?: InRegister;
+    beschut?: boolean;
+    uitkering?: Uitkering;
+  }) => {
+    const r = deel.register ?? register;
+    const b = (deel.beschut ?? beschut) && r === "ja";
+    const u = deel.uitkering ?? uitkering;
+    zet({
+      register: r,
+      beschut: b,
+      uitkering: u,
+      doelgroepen: doelgroepenUit(r, b, u),
+    });
+  };
+  const wajong = uitkering === "wajong";
+  // Vraag 5: vooringevuld met het minimumloon; een eigen bedrag telt pas als het klopt.
+  const [loonTekst, setLoonTekst] = useState(alsTekst(a.uurloon));
   const loonCent = naarEurocent(loonTekst);
   const loonFout =
-    !anders || loonTekst.trim() === ""
-      ? undefined
+    loonTekst.trim() === ""
+      ? "Vul het bruto uurloon in, bijvoorbeeld 16,50."
       : loonCent === null
         ? "Vul een bedrag in, bijvoorbeeld 16,50."
         : loonCent < WML_UUR_EUROCENT
@@ -309,34 +303,77 @@ const VragenMetStaat = ({
 
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-          <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
-            {DOELGROEPEN.map(([waarde, label]) => (
-              <FormFieldCheckboxOption
+          <div className="rhc-mox-stack rhc-mox-stack--sm">
+            <Fieldset legend="1. Staat de persoon in het doelgroepregister?">
+              {(
+                [
+                  ["ja", "Ja"],
+                  ["nee", "Nee"],
+                  ["onbekend", "Weet ik niet"],
+                ] as const
+              ).map(([waarde, label]) => (
+                <FormFieldRadio
+                  key={waarde}
+                  name="register"
+                  value={waarde}
+                  label={label}
+                  checked={register === waarde}
+                  onChange={() => zetVraag({ register: waarde })}
+                />
+              ))}
+            </Fieldset>
+            {register === "onbekend" && (
+              <Paragraph className="rhc-mox-small-text">
+                <a
+                  href={UWV_REGISTER}
+                  className="utrecht-link utrecht-link--html-a"
+                  target="_blank"
+                  rel="external noopener noreferrer"
+                >
+                  Controleer bij UWV of de persoon in het doelgroepregister
+                  staat (opent in een nieuw tabblad)
+                </a>
+                . Tot dan rekenen wij alsof de persoon er niet in staat.
+              </Paragraph>
+            )}
+          </div>
+          {register === "ja" && (
+            <Fieldset legend="1a. Is de persoon door de gemeente aangewezen op beschut werk?">
+              <FormFieldRadio
+                name="beschut"
+                value="ja"
+                label="Ja"
+                checked={beschut}
+                onChange={() => zetVraag({ beschut: true })}
+              />
+              <FormFieldRadio
+                name="beschut"
+                value="nee"
+                label="Nee"
+                checked={!beschut}
+                onChange={() => zetVraag({ beschut: false })}
+              />
+            </Fieldset>
+          )}
+          <Fieldset legend="2. Heeft de persoon een uitkering?">
+            {UITKERINGEN.map(([waarde, label]) => (
+              <FormFieldRadio
                 key={waarde}
-                name="doelgroepen"
+                name="uitkering"
                 value={waarde}
                 label={label}
-                checked={a.doelgroepen.includes(waarde)}
-                disabled={waarde === "register" && vast}
+                checked={uitkering === waarde}
                 description={
-                  waarde === "register" && vast
+                  waarde === "wajong" && register !== "ja"
                     ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
                     : undefined
                 }
-                onChange={(event) =>
-                  zet({
-                    doelgroepen: kiesDoelgroep(
-                      a.doelgroepen,
-                      waarde,
-                      event.target.checked,
-                    ),
-                  })
-                }
+                onChange={() => zetVraag({ uitkering: waarde })}
               />
             ))}
           </Fieldset>
           <RangeSlider
-            label="2. Hoeveel uur per week gaat de kandidaat werken?"
+            label="3. Hoeveel uur per week gaat de persoon werken?"
             min={1}
             max={40}
             step={1}
@@ -346,119 +383,92 @@ const VragenMetStaat = ({
             filled
           />
           <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <RangeSlider
-              label="3. Welke verminderde loonwaarde verwacht u?"
-              min={30}
-              max={100}
-              step={5}
-              value={a.loonwaarde}
-              onChange={(loonwaarde) => zet({ loonwaarde })}
-              formatValue={(loonwaarde) => `${loonwaarde} procent`}
-              formatValueText={(loonwaarde) =>
-                loonwaarde === 100
-                  ? "100 procent: geen verminderde loonwaarde"
-                  : `${loonwaarde} procent`
-              }
-              filled
-              info={
-                <InfoToggletip label="Toelichting bij de loonwaarde">
-                  <Paragraph>
-                    De loonwaarde is wat de kandidaat in het werk presteert, in
-                    vergelijking met een collega zonder beperking in dezelfde
-                    functie.
-                  </Paragraph>
-                  <Paragraph>
-                    Onder 100 procent is de loonwaarde verminderd. Bij 100
-                    procent is er geen loonkostensubsidie. Ook dan kan de
-                    kandidaat begeleiding nodig hebben, zoals een jobcoach.
-                  </Paragraph>
-                  <Paragraph>
-                    De gemeente meet de loonwaarde later op de werkplek.
-                  </Paragraph>
-                  <Paragraph>
-                    Volgens de wet is de loonkostensubsidie altijd het verschil
-                    tussen het minimumloon en de loonwaarde. Betaalt u meer dan
-                    het minimumloon, dan krijgt u dus niet meer subsidie. Het
-                    loonkostenvoordeel is een vast bedrag per verloond uur. Een
-                    hoger uurloon maakt alleen uw loonkosten hoger.
-                  </Paragraph>
-                </InfoToggletip>
-              }
-            />
+            <Fieldset legend="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?">
+              {WERKVERMOGEN.map(([waarde, label]) => (
+                <FormFieldRadio
+                  key={waarde}
+                  name="werkvermogen"
+                  value={String(waarde)}
+                  label={label}
+                  checked={blokVan(a.loonwaarde) === waarde}
+                  onChange={() => zet({ loonwaarde: waarde })}
+                />
+              ))}
+            </Fieldset>
+            <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
+              <Paragraph>
+                Dit heet de loonwaarde: wat de werknemer presteert, vergeleken
+                met een collega zonder beperking in dezelfde functie. De
+                gemeente of UWV meet die later op de werkplek.
+              </Paragraph>
+              <Paragraph>
+                Wij rekenen met het midden van wat u kiest. Het echte bedrag kan
+                daardoor hoger of lager uitvallen.
+              </Paragraph>
+              <Paragraph>
+                De loonkostensubsidie is het verschil tussen het minimumloon en
+                de loonwaarde, ten hoogste 70 procent van het minimumloon. Een
+                hoger uurloon geeft geen hogere subsidie.
+              </Paragraph>
+            </InfoToggletip>
             {wajong && (
               <Paragraph className="rhc-mox-small-text">
-                Het percentage van het minimumloon dat de kandidaat aankan. UWV
-                stelt dit vast.
+                Bij een Wajong-uitkering stelt UWV vast welk deel van het
+                minimumloon de werknemer aankan.
               </Paragraph>
             )}
           </div>
-          <Fieldset legend="4. Wat wordt het bruto uurloon?">
-            <FormFieldRadio
-              name="uurloon"
-              value="wml"
-              label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
-              description="Voor iemand van 21 jaar of ouder."
-              checked={!anders}
-              onChange={() => {
-                setAnders(false);
-                zet({ uurloon: WML_UUR_EUROCENT });
-              }}
-            />
-            <FormFieldRadio
-              name="uurloon"
-              value="anders"
-              label="Anders, namelijk:"
-              checked={anders}
-              onChange={() => {
-                setAnders(true);
-                zetLoon(loonTekst);
-              }}
-            />
-            {anders && (
-              <FormFieldTextInput
-                name="uurloon-anders"
-                label="Bruto uurloon in euro"
-                inputMode="decimal"
-                autoComplete="off"
-                description="Bijvoorbeeld 16,50"
-                value={loonTekst}
-                invalid={loonFout !== undefined}
-                errorMessage={loonFout}
-                // Het event komt van de input, maar is getypt op de wrapper-div.
-                onChange={(e) => zetLoon((e.target as HTMLInputElement).value)}
-              />
-            )}
-          </Fieldset>
+          <FormFieldTextInput
+            name="uurloon"
+            label="5. Wat wordt het bruto uurloon in euro?"
+            inputMode="decimal"
+            autoComplete="off"
+            description={`Vooringevuld met het wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur, voor iemand van 21 jaar of ouder. Betaalt u meer? Vul dan uw bedrag in, bijvoorbeeld 16,50.`}
+            value={loonTekst}
+            invalid={loonFout !== undefined}
+            errorMessage={loonFout}
+            // Het event komt van de input, maar is getypt op de wrapper-div.
+            onChange={(e) => zetLoon((e.target as HTMLInputElement).value)}
+          />
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
-          <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
-            <Paragraph className="rhc-mox-small-text">
-              Een berekening vooraf met uw antwoorden. De beslissing neemt de
-              organisatie die de regeling uitvoert.
-            </Paragraph>
+          <StickyInfoBox title="Voorbeeldberekening">
             <Balans
               antwoorden={a}
               resultaat={resultaat}
               meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
             />
-            <AanvraagKnop bekend={resultaat.bekend} />
-            <Paragraph className="rhc-mox-small-text">
-              Wij vullen de aanvraag voor u in. U controleert en verstuurt zelf.
-            </Paragraph>
-            <Paragraph
-              role="status"
-              id="aanvragen-bezig"
-              className="rhc-mox-small-text"
-            >
-              {resultaat.bekend
-                ? ""
-                : resultaat.fout
-                  ? "De berekening is niet gelukt. Laad de pagina opnieuw."
-                  : "De berekening is nog bezig."}
-            </Paragraph>
           </StickyInfoBox>
         </div>
       </div>
+
+      <div className="rhc-mox-stack">
+        <Paragraph>
+          Deze voorbeeldberekening laat niet alle mogelijkheden zien. Er kunnen
+          meer regelingen gelden dan hier staan.
+        </Paragraph>
+        <Paragraph role="status" id="aanvragen-bezig">
+          {resultaat.fout
+            ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+            : !resultaat.bekend
+              ? "De berekening is nog bezig."
+              : geenBedrag
+                ? "Bij deze antwoorden komt er geen bedrag uit. Pas uw antwoorden aan om verder te gaan."
+                : ""}
+        </Paragraph>
+      </div>
+
+      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+      <StepNavigation
+        back="/personeel/iemand-aannemen"
+        backLabel={terugNaar(1)}
+        next={{
+          label: verderNaar(3),
+          href: "/personeel/iemand-aannemen/gegevens",
+          disabled: !kanVerder,
+          describedBy: kanVerder ? undefined : "aanvragen-bezig",
+        }}
+      />
     </>
   );
 };

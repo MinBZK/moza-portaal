@@ -15,6 +15,7 @@ export type PaneelArtikel = {
 
 export type Regeling = {
   naam: string;
+  uitvoerder: string;
   tekst: string;
   icoon: string;
   artikel: PaneelArtikel | null;
@@ -22,6 +23,7 @@ export type Regeling = {
 
 const Tekst = ({ r }: { r: Regeling }) => (
   <span className="rhc-mox-icon-list__text">
+    <span className="rhc-mox-small-text">{r.uitvoerder}</span>
     <span className="rhc-mox-icon-list__title">{r.naam}</span>
     <span className="rhc-mox-small-text">{r.tekst}</span>
   </span>

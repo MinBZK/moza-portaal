@@ -29,7 +29,6 @@ import {
   useBerichtenboxState,
   type Weergave,
 } from "./_useBerichtenboxState";
-import PageSearch from "@/layouts/search";
 
 const lijstVan: Record<Weergave, string> = {
   inbox: "/berichtenbox",
@@ -213,7 +212,6 @@ const BerichtDetail = ({
         {status === "weg" ? (
           <>
             <Heading level={1}>Bericht verwijderd</Heading>
-            <PageSearch />
             <Paragraph>
               U hebt dit bericht voorgoed verwijderd. Het staat niet meer in uw
               Berichtenbox.

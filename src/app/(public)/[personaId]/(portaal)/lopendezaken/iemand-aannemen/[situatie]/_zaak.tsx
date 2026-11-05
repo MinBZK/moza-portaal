@@ -1,5 +1,6 @@
 "use client";
 
+import { PageTools } from "@/app/(public)/_flags/pageTools";
 import Link from "next/link";
 import {
   Alert,
@@ -42,7 +43,6 @@ import {
 } from "../../../personeel/iemand-aannemen/_useAannemen";
 import { useUitkomsten } from "../../../personeel/iemand-aannemen/_useUitkomsten";
 import { datumNL } from "../../../personeel/iemand-aannemen/_werkgever";
-import PageSearch from "@/layouts/search";
 
 /** State on the timeline per kind of event; a correction is a warning. */
 const EVENT_KIND: Record<DemoAannemenGebeurtenis["soort"], TimelineStatus> = {
@@ -101,7 +101,6 @@ const Zaak = ({
     return (
       <>
         <Heading level={1}>{demo.zaak.onderwerp}</Heading>
-        <PageSearch />
       </>
     );
 
@@ -137,16 +136,10 @@ const Zaak = ({
       });
   };
 
+  // For the team: in the Flags panel, not on the page itself.
   const onderzoeker = (
-    <section
-      className="rhc-mox-card rhc-mox-row-gap prototype-research-card"
-      aria-labelledby="onderzoeker"
-    >
-      <Heading level={2} id="onderzoeker">
-        Voor de onderzoeker
-      </Heading>
+    <PageTools title="zaak">
       <FormFieldSelect
-        id="da-fase"
         label="Toon de zaak op het moment"
         value={fasen[i].id}
         onChange={(event) => zetFase(event.target.value)}
@@ -161,7 +154,6 @@ const Zaak = ({
       </FormFieldSelect>
       {situatie === "wia" && (
         <FormFieldSelect
-          id="da-taak"
           label="Taak van de werknemer: doelgroepverklaring"
           value={taak}
           onChange={(event) =>
@@ -175,14 +167,13 @@ const Zaak = ({
           ))}
         </FormFieldSelect>
       )}
-    </section>
+    </PageTools>
   );
 
   if (!zaakStand.ingediend)
     return (
       <>
         <Heading level={1}>{onderwerp}</Heading>
-        <PageSearch />
         <Alert type="info">
           <Paragraph>
             Deze zaak bestaat nog niet: de aanvraag is nog niet verstuurd.{" "}
@@ -288,7 +279,6 @@ const Zaak = ({
       <div className="rhc-mox-card rhc-mox-row-gap">
         <ZakenTabs actief="lopend" />
         <Heading level={1}>{onderwerp}</Heading>
-        <PageSearch />
 
         <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
           <Heading level={2} id="zaak-gegevens">

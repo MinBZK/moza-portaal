@@ -1,14 +1,13 @@
-"use client";
+import Voortgang from "./_voortgang";
 
-import { useEffect } from "react";
-import StepIndicator from "@/components/StepIndicator";
-import { useAannemen } from "./_useAannemen";
+/** The heading of every step: the task itself. */
+export { TAAK_TITEL } from "./_taakTitel";
 
 /**
  * De stappen naar het voorbeeld van het concept-prototype. Stap 4 beslaat
  * twee schermen: de ingevulde aanvraag controleren en die versturen.
  */
-const STAPPEN = [
+export const STAPPEN = [
   {
     name: "Lees wat er kan",
     href: "/personeel/iemand-aannemen",
@@ -27,25 +26,17 @@ const STAPPEN = [
   },
 ];
 
-/**
- * Waar de ondernemer is in Iemand aannemen (1 tot 4). Elke stap waar de
- * ondernemer al is geweest, is een link, ook als die na de huidige stap komt.
- */
-const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 | 4 }) => {
-  const { staat, werkBij } = useAannemen();
-  const verste = Math.max(huidige, staat?.versteStap ?? 1);
-  useEffect(() => {
-    if (staat && (staat.versteStap ?? 1) < huidige)
-      werkBij({ versteStap: huidige });
-  }, [staat, huidige, werkBij]);
-  return (
-    <StepIndicator
-      steps={STAPPEN}
-      current={huidige - 1}
-      reached={verste - 1}
-      label="Stappen"
-    />
-  );
-};
+/** Text of the forward button: "Verder naar" and the name of the next step. */
+export const verderNaar = (stap: 2 | 3 | 4) =>
+  `Verder naar ${STAPPEN[stap - 1].name}`;
+
+/** Text of the back button: "Terug naar" and the name of the previous step. */
+export const terugNaar = (stap: 1 | 2 | 3) =>
+  `Terug naar ${STAPPEN[stap - 1].name}`;
+
+/** Waar de ondernemer is in Iemand aannemen (1 tot 4). */
+const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 | 4 }) => (
+  <Voortgang steps={STAPPEN} huidige={huidige} />
+);
 
 export default Stappen;

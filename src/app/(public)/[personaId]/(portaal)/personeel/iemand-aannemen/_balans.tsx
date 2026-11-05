@@ -1,6 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useState } from "react";
+import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
+import { useSliderDragging } from "@/components/RangeSlider";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import Spinner from "@/components/Spinner";
@@ -102,12 +105,6 @@ export const UITVOERDER = {
 
 export type UitvoerderId = keyof typeof UITVOERDER;
 
-const UITVOERDER_VAN: Record<BalansRegel["id"], UitvoerderId> = {
-  lks: "gemeente",
-  ld: "uwv",
-  lkv: "loonaangifte",
-};
-
 export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
   <TextBadge variant={UITVOERDER[id].variant} icon={false}>
     {UITVOERDER[id].tekst}
@@ -137,14 +134,14 @@ export const duurTekst = (jaren: number | undefined) =>
  * de regeling bij deze antwoorden niet geldt, zodat de ondernemer ziet waarom.
  */
 const WANNEER: Record<BalansRegel["id"], string> = {
-  lks: "Loonkostensubsidie is voor een werknemer die bij de doelgroep van de gemeente hoort, zoals iemand met bijstand, en met een volledige baan niet het minimumloon kan verdienen. De gemeente betaalt u het verschil tussen het minimumloon en wat het werk waard is (de loonwaarde), tot ten hoogste 70 procent van het minimumloon, plus een vergoeding voor werkgeverslasten (Participatiewet, artikel 10d).",
-  ld: "Loondispensatie is voor een werknemer met een Wajong-uitkering die duidelijk minder kan dan het minimumloon rechtvaardigt. U betaalt dan minder loon. UWV stelt vast hoeveel minder (Wajong, artikel 2:20).",
-  lkv: "Loonkostenvoordeel krijgt u voor een werknemer uit het doelgroepregister: € 1,01 per verloond uur, ten hoogste € 2.000 per jaar. Of voor een arbeidsgehandicapte werknemer met een doelgroepverklaring: € 3,05 per uur, ten hoogste € 6.000 per jaar. U vraagt het aan in de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.9 en 2.13).",
+  lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde (Participatiewet, artikel 10d).",
+  ld: "Voor een werknemer met een Wajong-uitkering die duidelijk minder kan. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20).",
+  lkv: "Voor een werknemer uit het doelgroepregister of met een doelgroepverklaring. U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein).",
 };
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
 const LD_UITLEG =
-  "Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.";
+  "U krijgt dit bedrag niet uitbetaald: het is een schatting van wat u minder betaalt aan loon.";
 
 const LdNotitie = ({ kort }: { kort?: boolean }) => (
   <Paragraph className="rhc-mox-small-text">
@@ -182,10 +179,32 @@ const Balans = ({
   meer?: (regel: BalansRegel) => ReactNode;
 }) => {
   const { uitkomsten, bekend, bezig, fout } = resultaat;
+  // Values that follow a slider light up when the user lets go of it.
+  const slepen = useSliderDragging();
   const kosten = loonkostenPerJaar(antwoorden);
   const regels = balansRegels(uitkomsten, kosten);
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
   const netto = Math.max(0, kosten - terug);
+
+  // For a screen reader: the new total once the calculation is done after a
+  // change. Not on the first result, so loading the page stays quiet.
+  const totaal =
+    bekend && !bezig && !fout
+      ? kort
+        ? `Samen ongeveer ${euro(terug)} per jaar.`
+        : `Uw loonkosten met deze regelingen: ongeveer ${euro(netto)} per jaar.`
+      : undefined;
+  const [vorigTotaal, setVorigTotaal] = useState(totaal);
+  const [melding, setMelding] = useState("");
+  if (totaal !== undefined && totaal !== vorigTotaal) {
+    setVorigTotaal(totaal);
+    if (vorigTotaal !== undefined) setMelding(totaal);
+  }
+  const statusmelding = (
+    <div role="status" className="rhc-visually-hidden">
+      {melding}
+    </div>
+  );
   const ldBedrag =
     bekend && !fout && regels.some((r) => r.id === "ld" && r.bedrag > 0);
   const lkvBedrag =
@@ -195,15 +214,21 @@ const Balans = ({
   // Tijdens het rekenen staan alle regelingen er al, met een spinner; na een
   // fout met "…".
   const bezigOfFout = fout ? "…" : <Spinner />;
-  const bedrag = (cent: number) => (bekend && !fout ? euro(cent) : bezigOfFout);
-  const waarde = (r: BalansRegel, min = "") =>
-    !bekend || fout
-      ? bezigOfFout
-      : r.status === "bedrag"
-        ? `${min}${euro(r.bedrag)}`
-        : r.status === "niet_meegeteld"
-          ? "niet meegeteld"
-          : euro(0);
+  // ChangedValue stays mounted during the spinner, so it still sees the change.
+  const bedrag = (cent: number) => (
+    <ChangedValue>{bekend && !fout ? euro(cent) : bezigOfFout}</ChangedValue>
+  );
+  const waarde = (r: BalansRegel, min = "") => (
+    <ChangedValue>
+      {!bekend || fout
+        ? bezigOfFout
+        : r.status === "bedrag"
+          ? `${min}${euro(r.bedrag)}`
+          : r.status === "niet_meegeteld"
+            ? "niet meegeteld"
+            : `${min}${euro(0)}`}
+    </ChangedValue>
+  );
 
   // Rekenen en fouten blijven zichtbaar; de herkomst staat in de toggletip.
   const bron =
@@ -213,7 +238,7 @@ const Balans = ({
         role={bezig ? "status" : undefined}
       >
         {fout
-          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. Een schatting vooraf. Na uw aanvraag beslist de organisatie die de regeling uitvoert.`
+          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw.`
           : "Wij rekenen uit…"}
       </Paragraph>
     ) : null;
@@ -224,30 +249,14 @@ const Balans = ({
    * bevatten, en de naam van de knop zou dan in de kop komen.
    */
   const totaalKop = (tekst: string) => (
-    <div className="rhc-mox-with-info rhc-mox-with-info--end">
-      <Heading level={3} appearanceLevel={5}>
-        {tekst}
-      </Heading>
-      {!fout && (
-        <>
-          <InfoToggletip label="Toelichting bij de berekening">
-            <Paragraph>
-              Berekend in uw browser: er gaat niets naar een
-              overheidsorganisatie.
-            </Paragraph>
-            <Paragraph>
-              Een schatting vooraf. Na uw aanvraag beslist de organisatie die de
-              regeling uitvoert.
-            </Paragraph>
-          </InfoToggletip>
-        </>
-      )}
-    </div>
+    <Heading level={3} appearanceLevel={5}>
+      {tekst}
+    </Heading>
   );
 
   if (kort)
     return (
-      <>
+      <ChangedValueGroup settled={!slepen}>
         <dl className="rhc-data-summary rhc-data-summary--column">
           {regels.map((r) => (
             <div key={r.id} className="rhc-data-summary__item">
@@ -265,7 +274,6 @@ const Balans = ({
                     )}
                   </InfoToggletip>
                 </span>
-                <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
               <dd className="rhc-data-summary__item-value">{waarde(r)}</dd>
             </div>
@@ -284,22 +292,38 @@ const Balans = ({
           </Paragraph>
         )}
         <Paragraph className="rhc-mox-small-text">
-          Bij {antwoorden.uren} uur per week en {euro(antwoorden.uurloon)} per
-          uur. De loonkosten zijn dan {euro(kosten)} per jaar.
+          Bij <ChangedValue>{`${antwoorden.uren} uur`}</ChangedValue> per week
+          en <ChangedValue>{euro(antwoorden.uurloon)}</ChangedValue> per uur. De
+          loonkosten zijn dan <ChangedValue>{euro(kosten)}</ChangedValue> per
+          jaar.
         </Paragraph>
         {bron}
-      </>
+        {statusmelding}
+      </ChangedValueGroup>
     );
 
   return (
-    <>
+    <ChangedValueGroup settled={!slepen}>
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
-      <dl className="rhc-data-summary rhc-data-summary--column">
+      {/* Een optelsom: loonkosten, min elke regeling, en onder de streep de uitkomst. */}
+      <dl className="rhc-data-summary rhc-data-summary--column rhc-mox-sum">
         <div className="rhc-data-summary__item">
-          <dt className="rhc-data-summary__item-key">Loonkosten</dt>
-          <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
+          <dt className="rhc-data-summary__item-key">
+            <span className="rhc-mox-stack rhc-mox-stack--sm">
+              <span>Loonkosten</span>
+              {/* Zo volgt het bedrag uit de uren en het uurloon (loonkostenPerJaar). */}
+              <span className="rhc-mox-small-text">
+                {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
+                plus 8 procent vakantiegeld en ongeveer 20 procent
+                werkgeverslasten
+              </span>
+            </span>
+          </dt>
+          <dd className="rhc-data-summary__item-value">
+            <ChangedValue>{euro(kosten)}</ChangedValue>
+          </dd>
         </div>
         {regels.map((r) => {
           // Altijd wanneer de regeling geldt; daarna de aanname, en bij een
@@ -336,7 +360,6 @@ const Balans = ({
                     </>
                   )}
                 </span>
-                <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
               <dd className="rhc-data-summary__item-value">
                 {waarde(r, "− ")}
@@ -344,6 +367,12 @@ const Balans = ({
             </div>
           );
         })}
+        <div className="rhc-data-summary__item rhc-mox-sum__total">
+          <dt className="rhc-data-summary__item-key">
+            Geschatte loonkosten per jaar
+          </dt>
+          <dd className="rhc-data-summary__item-value">{bedrag(netto)}</dd>
+        </div>
       </dl>
       {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
       {bekend &&
@@ -362,20 +391,9 @@ const Balans = ({
           </Paragraph>
         </Alert>
       )}
-      {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
-      <div className="rhc-mox-highlight">
-        {totaalKop("Uw loonkosten met deze regelingen, ongeveer per jaar")}
-        <Paragraph purpose="lead">
-          <strong>{bedrag(netto)}</strong>
-        </Paragraph>
-        {bekend && !fout && terug > 0 && (
-          <Paragraph>
-            Dat is ongeveer {euro(terug)} per jaar minder dan zonder regelingen.
-          </Paragraph>
-        )}
-      </div>
       {bron}
-    </>
+      {statusmelding}
+    </ChangedValueGroup>
   );
 };
 

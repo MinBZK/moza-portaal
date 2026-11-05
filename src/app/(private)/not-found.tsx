@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { Heading, Paragraph } from "@/components/rhc";
-import PageSearch from "@/layouts/search";
 
 export default function PrivateNotFound() {
   return (
     <>
       <Heading level={1}>Pagina niet gevonden</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <Paragraph>
           De pagina die u zoekt bestaat niet of is verplaatst.
