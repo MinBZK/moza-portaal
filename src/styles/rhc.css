@@ -913,10 +913,15 @@ small,
 .rhc-mox-site-search__field {
 	display: flex;
 	gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-site-search__input {
+	flex: 1;
 	position: relative;
 
 	.utrecht-textbox {
-		flex: 1;
+		inline-size: 100%;
+		max-inline-size: none;
 	}
 }
 

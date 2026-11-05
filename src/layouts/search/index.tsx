@@ -23,6 +23,9 @@ const SUGGESTIONS = [
   "wetten en regelgeving",
 ];
 
+/** Prototype: the same recent search for everyone. */
+const RECENT_SEARCHES = ["Iemand aannemen met afstand tot de arbeidsmarkt"];
+
 /**
  * Search and help below the h1 of every portal page (pattern Zoeken en hulp
  * op elke pagina). Not on the footer pages. With the digital assistant
@@ -42,6 +45,7 @@ const PageSearch = ({
       assistant={assistent}
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
+      recentSearches={RECENT_SEARCHES}
       defaultValue={defaultValue}
     />
   );

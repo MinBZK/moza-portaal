@@ -24,7 +24,7 @@ const Page = () => (
     <Paragraph>
       <strong>
         Let op: dit is een aanzet voor een patroon. Het is nog niet getoetst met
-        gebruikers en nog niet uitgewerkt in het portaal.
+        gebruikers.
       </strong>
     </Paragraph>
 
