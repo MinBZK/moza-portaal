@@ -1,5 +1,6 @@
 "use client";
 
+import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -278,22 +279,18 @@ const Bronnen = ({
                 ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
                 : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
-        <ActionGroup>
-          <Button
-            appearance="primary-action-button"
-            aria-disabled={!gekozen || !resultaat.bekend}
-            onClick={() => {
-              if (gekozen && resultaat.bekend)
-                router.push(
-                  naarOverzicht
-                    ? "/personeel/iemand-aannemen/overzicht"
-                    : "/personeel/iemand-aannemen/concept-aanvraag",
-                );
-            }}
-          >
-            {naarOverzicht ? "Bekijk wat voor u geldt" : "Aanvraag nakijken"}
-          </Button>
-        </ActionGroup>
+        <StepNavigation
+          back="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
+          next={{
+            disabled: !gekozen || !resultaat.bekend,
+            onClick: () =>
+              router.push(
+                naarOverzicht
+                  ? "/personeel/iemand-aannemen/overzicht"
+                  : "/personeel/iemand-aannemen/concept-aanvraag",
+              ),
+          }}
+        />
       </div>
     </>
   );

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Alert, Heading, Icon, Paragraph } from "@/components/rhc";
+import { Alert, Heading, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
@@ -39,15 +38,6 @@ const GegevensPage = async () => {
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <PageSearch />
-      <Paragraph>
-        <Link
-          href="/personeel/iemand-aannemen"
-          className="utrecht-link utrecht-link--html-a"
-        >
-          <Icon icon="chevron-left" />
-          Terug naar de vragen
-        </Link>
-      </Paragraph>
       <div className="rhc-mox-card">
         <Stappen huidige={2} />
         <Alert type="info" closable>
