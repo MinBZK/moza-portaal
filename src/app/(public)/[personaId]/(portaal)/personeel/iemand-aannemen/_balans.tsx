@@ -340,7 +340,7 @@ const Balans = ({
       )}
       {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
       <div className="rhc-mox-highlight">
-        {totaalKop("Uitkomst loonkosten per jaar van de voorbeeldberekening")}
+        {totaalKop("Geschatte loonkosten per jaar")}
         <Paragraph purpose="lead">
           <strong>{bedrag(netto)}</strong>
         </Paragraph>
