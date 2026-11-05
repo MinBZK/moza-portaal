@@ -42,7 +42,7 @@ const GegevensPage = async () => {
       <PageSearch />
       <Paragraph>
         <Link
-          href="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
+          href="/personeel/iemand-aannemen/voorbeeldberekening"
           className="utrecht-link utrecht-link--html-a"
         >
           <Icon icon="chevron-left" />

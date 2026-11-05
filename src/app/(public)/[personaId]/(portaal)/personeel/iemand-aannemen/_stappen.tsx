@@ -15,7 +15,7 @@ const STAPPEN = [
   },
   {
     name: "Voorbeeldberekening",
-    href: "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+    href: "/personeel/iemand-aannemen/voorbeeldberekening",
   },
   {
     name: "Laat de aanvraag invullen",
