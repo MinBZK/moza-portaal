@@ -7,7 +7,6 @@ import {
 } from "@/app/(public)/_persona";
 import Aanvraag from "./_aanvraag";
 import { vul, werkgeverVan } from "../_werkgever";
-import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
 
 export const metadata: Metadata = {
   title: "Aanvraag nakijken - Iemand aannemen - Personeel en rollen",
@@ -32,17 +31,14 @@ const ConceptAanvraagPage = async () => {
     })),
   });
   return (
-    <>
-      <CollapsibleNavigation />
-      <Aanvraag
-        perSituatie={{
-          gemeente: gevuld(situaties.gemeente),
-          wajong: gevuld(situaties.wajong),
-          wia: gevuld(situaties.wia),
-        }}
-        werkgever={werkgever}
-      />
-    </>
+    <Aanvraag
+      perSituatie={{
+        gemeente: gevuld(situaties.gemeente),
+        wajong: gevuld(situaties.wajong),
+        wia: gevuld(situaties.wia),
+      }}
+      werkgever={werkgever}
+    />
   );
 };
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Heading, Paragraph, Alert, Link } from "@/components/rhc";
 import BewaardeItems from "../_bewaardeItems";
 import SavedTabs from "../_savedTabs";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Gesprekken - Bewaarde items" };
 
@@ -9,6 +10,7 @@ const ConversationsPage = async () => {
   return (
     <>
       <Heading level={1}>Bewaarde items</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <SavedTabs active="conversations" />
         <BewaardeItems

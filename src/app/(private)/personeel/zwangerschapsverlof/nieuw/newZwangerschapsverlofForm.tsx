@@ -6,6 +6,7 @@ import { useCreateZwangerschapsverlof } from "@/network/mock/hooks/createZwanger
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import PageSearch from "@/layouts/search";
 
 /** Datum uit het datumveld (jjjj-mm-dd) als UTC ISO-string. Leeg blijft leeg. */
 const naarUtc = (datum: string) =>
@@ -55,6 +56,7 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Melding zwangerschapsverlof</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <form
           className="rhc-mox-stack rhc-mox-stack--2xl"

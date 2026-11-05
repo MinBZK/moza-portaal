@@ -78,57 +78,42 @@ export const footerPages = footerGroups
 const gridCell =
   "rhc-grid__cell rhc-grid__cell-12 rhc-grid__cell-t-6 rhc-grid__cell-d-3";
 
-/** In focus mode (CollapsibleNavigation) only these links stay. */
-const compactHrefs = ["/toegankelijkheid", "/privacyverklaring", "/contact"];
-
-const linkIcon = (extern?: boolean) => (
-  // key: Utrecht zet het icoon in een array met de linktekst.
-  <Icon key="icoon" icon={extern ? "externe-link" : "chevron-right"} />
-);
-
 const FooterLinks = () => (
-  <>
-    <div className="rhc-grid rhc-mox-footer-full">
-      {footerGroups.map(({ id, kop, links }) => (
-        <nav
-          key={id}
-          className={`${gridCell} rhc-mox-stack rhc-mox-stack--lg`}
-          aria-labelledby={id}
-        >
-          <h2 id={id}>{kop}</h2>
-          <LinkList>
-            {links.map(({ href, label, extern }) => (
-              <LinkListLink
-                key={href}
-                href={href}
-                icon={linkIcon(extern)}
-                {...(extern && {
-                  target: "_blank",
-                  rel: "external noopener noreferrer",
-                })}
-              >
-                {label}
-                {extern && (
-                  <VisuallyHidden> (opent in nieuw tabblad)</VisuallyHidden>
-                )}
-              </LinkListLink>
-            ))}
-          </LinkList>
-        </nav>
-      ))}
-    </div>
-    <nav className="rhc-mox-footer-compact" aria-label="Voettekst">
-      <LinkList>
-        {footerPages
-          .filter(({ href }) => compactHrefs.includes(href))
-          .map(({ href, label }) => (
-            <LinkListLink key={href} href={href} icon={linkIcon()}>
+  <div className="rhc-grid">
+    {footerGroups.map(({ id, kop, links }) => (
+      <nav
+        key={id}
+        className={`${gridCell} rhc-mox-stack rhc-mox-stack--lg`}
+        aria-labelledby={id}
+      >
+        <h2 id={id}>{kop}</h2>
+        <LinkList>
+          {links.map(({ href, label, extern }) => (
+            <LinkListLink
+              key={href}
+              href={href}
+              // key: Utrecht zet het icoon in een array met de linktekst.
+              icon={
+                <Icon
+                  key="icoon"
+                  icon={extern ? "externe-link" : "chevron-right"}
+                />
+              }
+              {...(extern && {
+                target: "_blank",
+                rel: "external noopener noreferrer",
+              })}
+            >
               {label}
+              {extern && (
+                <VisuallyHidden> (opent in nieuw tabblad)</VisuallyHidden>
+              )}
             </LinkListLink>
           ))}
-      </LinkList>
-    </nav>
-  </>
+        </LinkList>
+      </nav>
+    ))}
+  </div>
 );
 
 // slot2 is verplicht in de NLDS-typing, maar een lege waarde laat de hele

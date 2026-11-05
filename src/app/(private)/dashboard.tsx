@@ -12,6 +12,7 @@ import profielClient from "@/network/profiel";
 import { getKvkFromCookie } from "@/utils/kvknummer";
 import { BerichtenboxTableRow } from "@/app/(private)/berichtenbox/[status]/page";
 import Link from "next/link";
+import PageSearch from "@/layouts/search";
 
 const accordionSections = [
   {
@@ -76,6 +77,7 @@ const Dashboard = async () => {
       )}
 
       <Heading level={1}>Welkom gemachtigde voor KVK-nummer {kvk}</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <Heading level={2}>Recente berichten in uw berichtenbox</Heading>
         <div className="rhc-mox-table-container">

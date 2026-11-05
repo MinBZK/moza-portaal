@@ -5,8 +5,7 @@ import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Versturen from "./_versturen";
 import Stappen, { TAAK_TITEL } from "../_stappen";
 import { werkgeverVan } from "../_werkgever";
-import CollapsibleNavigation from "@/layouts/navigation/collapsibleNavigation";
-import FocusModeSwitch from "@/layouts/navigation/focusModeSwitch";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
   title: "Controleren en versturen - Iemand aannemen - Personeel en rollen",
@@ -20,9 +19,8 @@ const VersturenPage = async () => {
   ]);
   return (
     <>
-      <CollapsibleNavigation />
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <FocusModeSwitch />
+      <PageSearch />
       <Stappen huidige={4} />
       <Paragraph>
         Dit verstuurt u, en naar wie. Klopt er iets niet? Ga terug naar de

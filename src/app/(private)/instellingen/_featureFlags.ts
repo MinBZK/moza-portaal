@@ -34,13 +34,6 @@ export const MOX_FLAGS = [
     standaard: false,
     werkt: true,
   },
-  {
-    key: "mox_focusSchakelaar",
-    label: "Schakelaar Focus-mode in een taak",
-    groep: "functionaliteit",
-    standaard: false,
-    werkt: true,
-  },
 ] as const;
 
 export type MoxFlagKey = (typeof MOX_FLAGS)[number]["key"];

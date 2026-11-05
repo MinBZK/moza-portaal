@@ -8,6 +8,7 @@ import {
 import Contactgegevens from "./_contactgegevens";
 import Organisaties from "./_organisaties";
 import Kanalen from "./_kanalen";
+import PageSearch from "@/layouts/search";
 
 const tabs = [
   { soort: "zakelijk", label: "Zakelijk", href: "/contactvoorkeuren" },
@@ -31,6 +32,7 @@ const ContactvoorkeurenPagina = async ({
   return (
     <>
       <Heading level={1}>Contactvoorkeuren</Heading>
+      <PageSearch />
       <Paragraph>
         Uw contactgegevens en de organisaties die deze mogen gebruiken.
       </Paragraph>

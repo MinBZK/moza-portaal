@@ -1,9 +1,6 @@
-import { cookies } from "next/headers";
 import Breadcrumb from "@/layouts/breadcrumb";
 import Header from "@/layouts/header";
 import Navigation from "@/layouts/navigation";
-import PageGrid from "@/layouts/navigation/pageGrid";
-import { FOCUS_MODE_COOKIE } from "@/layouts/navigation/focusModeCookie";
 import OngelezenBadge from "@/app/(public)/[personaId]/(portaal)/berichtenbox/_ongelezenBadge";
 import ZakenBadge from "@/app/(public)/[personaId]/(portaal)/lopendezaken/_zakenBadge";
 import {
@@ -81,14 +78,7 @@ export default async function PublicLayout({
 
       <main id="hoofd-inhoud" className="utrecht-page-body">
         <div className="utrecht-page-body__content">
-          <PageGrid
-            // Zonder de schakelaar (een flag voor onderzoek) staat focus-mode
-            // in een taak altijd aan.
-            focusModeOff={
-              flags.mox_focusSchakelaar &&
-              (await cookies()).get(FOCUS_MODE_COOKIE)?.value === "uit"
-            }
-          >
+          <div className="rhc-grid">
             {withNavigation && (
               <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
                 <Navigation
@@ -126,7 +116,7 @@ export default async function PublicLayout({
               <Breadcrumb />
               {children}
             </div>
-          </PageGrid>
+          </div>
         </div>
       </main>
 

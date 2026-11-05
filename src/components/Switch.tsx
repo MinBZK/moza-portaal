@@ -24,7 +24,6 @@ const Switch = ({
   onText = "Aan",
   offText = "Uit",
   twoWay = false,
-  hideLabel = false,
 }: {
   label: string;
   /** Next to the label, for example an InfoToggletip. */
@@ -37,8 +36,6 @@ const Switch = ({
   onText?: string;
   offText?: string;
   twoWay?: boolean;
-  /** Only for assistive technology, when the switch text already says it. */
-  hideLabel?: boolean;
 }) => {
   const labelId = useId();
   const buttonId = useId();
@@ -57,7 +54,7 @@ const Switch = ({
       <FieldLabel
         id={labelId}
         htmlFor={buttonId}
-        className={`rhc-mox-switch__label${hideLabel ? " rhc-visually-hidden" : ""}`}
+        className="rhc-mox-switch__label"
         info={info}
       >
         {label}
