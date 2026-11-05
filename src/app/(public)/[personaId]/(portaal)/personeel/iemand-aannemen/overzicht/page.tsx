@@ -6,7 +6,6 @@ import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Stappen from "../_stappen";
 import { werkgeverVan } from "../_werkgever";
 import Overzicht from "./_overzicht";
-import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
   title: "Wat voor u geldt - Personeel en rollen",
@@ -21,7 +20,6 @@ const OverzichtPage = async () => {
   return (
     <>
       <Heading level={1}>Wat voor u geldt</Heading>
-      <PageSearch />
       <Paragraph>
         <Link
           href="/personeel/iemand-aannemen/gegevens"

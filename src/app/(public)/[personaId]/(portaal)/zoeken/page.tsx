@@ -34,9 +34,12 @@ const RESULTATEN = [
   },
 ];
 
+/** Prototype: the query when none is given. */
+const DEFAULT_QUERY = "afstand tot de arbeidsmarkt";
+
 const readQuery = async (searchParams: SearchParams) => {
   const { q } = await searchParams;
-  return (Array.isArray(q) ? q[0] : q)?.trim() ?? "";
+  return (Array.isArray(q) ? q[0] : q)?.trim() || DEFAULT_QUERY;
 };
 
 const countText = (query: string) =>

@@ -2,6 +2,7 @@
 
 import {
   useId,
+  useRef,
   useState,
   type FormEvent,
   type KeyboardEvent,
@@ -69,6 +70,7 @@ const Highlight = ({ text, typed }: { text: string; typed: string }) => {
  */
 const SiteSearch = ({
   label = "Zoeken of een vraag stellen",
+  hideLabel = false,
   action = "/zoeken",
   assistantHref = "/digitale-assistent",
   assistant = true,
@@ -79,6 +81,8 @@ const SiteSearch = ({
   onSearch,
 }: {
   label?: string;
+  /** Hide the label visually; screen readers still read it. */
+  hideLabel?: boolean;
   /** Page with the search results; gets the query as ?q=. */
   action?: string;
   /** Offer "ask the digital assistant" as the last option. */
@@ -100,6 +104,7 @@ const SiteSearch = ({
   const id = useId();
   const inputId = `${id}-input`;
   const listId = `${id}-list`;
+  const inputRef = useRef<HTMLInputElement>(null);
   const [typed, setTyped] = useState(defaultValue);
   const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
@@ -199,6 +204,13 @@ const SiteSearch = ({
     }
   };
 
+  const clear = () => {
+    setValue("");
+    setTyped("");
+    close();
+    inputRef.current?.focus();
+  };
+
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     search(value);
@@ -241,10 +253,16 @@ const SiteSearch = ({
   return (
     <search className="rhc-mox-site-search">
       <form action={action} method="get" onSubmit={onSubmit}>
-        <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
+        <FieldLabel
+          htmlFor={inputId}
+          className={hideLabel ? "rhc-visually-hidden" : undefined}
+        >
+          {label}
+        </FieldLabel>
         <div className="rhc-mox-site-search__field">
           <div className="rhc-mox-site-search__input">
             <TextInput
+              ref={inputRef}
               id={inputId}
               name="q"
               type="search"
@@ -264,6 +282,18 @@ const SiteSearch = ({
                 setOpen(true);
               }}
               onKeyDown={onKeyDown}
+              onBlur={close}
+            />
+            {value && (
+              <button
+                type="button"
+                className="rhc-mox-site-search__clear"
+                aria-label="Zoekterm wissen"
+                onClick={clear}
+              >
+                <Icon icon="kruis" />
+              </button>
+            )}
               onFocus={() => setOpen(true)}
               onBlur={close}
             />
