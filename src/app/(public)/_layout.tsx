@@ -7,11 +7,7 @@ import {
   getBerichtenboxVariant,
   getFlagsFromServerCookie,
 } from "@/app/actions";
-import {
-  getDemoConceptAanvragen,
-  getDemoOrganisatieId,
-  getDemoPersonas,
-} from "@/demo";
+import { getDemoOrganisatieId, getDemoPersonas } from "@/demo";
 import {
   DEMO_COMPONENT_NAMES,
   DEMO_LISTS,
@@ -47,10 +43,9 @@ export default async function PublicLayout({
     getDemoPersonas(),
     getBerichtenboxVariant(),
   ]);
-  const [organisatie, naam, conceptAanvragen, ingelogd] = await Promise.all([
+  const [organisatie, naam, ingelogd] = await Promise.all([
     getActieveOrganisatie(persona),
     getIngelogdeNaam(persona),
-    getDemoConceptAanvragen(persona?.id),
     getIngelogdeOrganisaties(persona),
   ]);
   // Alle organisaties van de persona; voor een organisatie zonder inlog
@@ -83,9 +78,7 @@ export default async function PublicLayout({
               <div className="main-navigation rhc-grid__cell rhc-grid__cell-t-3">
                 <Navigation
                   berichtenboxBadge={<OngelezenBadge />}
-                  lopendeZakenBadge={
-                    <ZakenBadge nogInTeDienen={conceptAanvragen.length} />
-                  }
+                  lopendeZakenBadge={<ZakenBadge />}
                   naam={naam}
                   actieveOrganisatieId={
                     organisatie ? getDemoOrganisatieId(organisatie) : undefined

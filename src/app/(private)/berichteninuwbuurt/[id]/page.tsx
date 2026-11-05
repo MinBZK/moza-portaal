@@ -9,6 +9,7 @@ import {
   VisuallyHidden,
 } from "@/components/rhc";
 import { getPublicatieById } from "@/network/sru/fetchers/getPublicatieById";
+import PageSearch from "@/layouts/search";
 
 const isReadableUrl = (url: string) =>
   url && !url.endsWith(".xml") && !url.includes("/metadata/");
@@ -25,6 +26,7 @@ const PublicatieDetailPage = async ({
     return (
       <>
         <Heading level={1}>Publicatie niet gevonden</Heading>
+        <PageSearch />
         <div className="rhc-mox-card">
           <Paragraph>
             Wij kunnen dit bericht nu niet ophalen. Probeer het later opnieuw.
@@ -72,6 +74,7 @@ const PublicatieDetailPage = async ({
       </Paragraph>
 
       <Heading level={1}>{publicatie.title || "Onbekende titel"}</Heading>
+      <PageSearch />
 
       <div className="rhc-mox-card">
         {publicatie.abstract && <Paragraph>{publicatie.abstract}</Paragraph>}
