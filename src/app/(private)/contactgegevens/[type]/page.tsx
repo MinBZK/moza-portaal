@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Heading } from "@/components/rhc";
 import Prive from "@/app/(private)/contactgegevens/[type]/prive";
 import Zakelijk from "@/app/(private)/contactgegevens/[type]/zakelijk";
+import PageSearch from "@/layouts/search";
 
 const tabs = [
   { type: "prive", label: "Privé", href: "/contactgegevens/prive" },
@@ -18,6 +19,7 @@ const ContactgegevensPage = async ({
   return (
     <>
       <Heading level={1}>Contactgegevens</Heading>
+      <PageSearch />
       <div className="rhc-mox-card rhc-mox-row-gap">
         <nav aria-label="Soort contactgegevens">
           <ul className="rhc-mox-tabs">

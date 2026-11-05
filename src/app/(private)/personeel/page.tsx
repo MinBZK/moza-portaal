@@ -14,6 +14,7 @@ import { getKvkFromCookie } from "@/utils/kvknummer";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import Link from "next/link";
+import PageSearch from "@/layouts/search";
 
 const Personeel = async () => {
   const kvk = await getKvkFromCookie();
@@ -24,6 +25,7 @@ const Personeel = async () => {
   return (
     <>
       <Heading level={1}>Personeel en rollen</Heading>
+      <PageSearch />
       <section className="rhc-mox-card" aria-labelledby="nieuwe-meldingen">
         <Heading level={2} id="nieuwe-meldingen">
           Nieuwe meldingen

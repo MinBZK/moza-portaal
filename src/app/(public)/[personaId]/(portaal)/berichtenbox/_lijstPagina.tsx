@@ -6,6 +6,7 @@ import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
 import StelselLijst from "./_stelselLijst";
 import type { Weergave } from "./_useBerichtenboxState";
+import PageSearch from "@/layouts/search";
 
 export type LijstPaginaProps = {
   searchParams: Promise<{ pagina?: string }>;
@@ -35,6 +36,7 @@ const LijstPagina = async ({
     return (
       <>
         <Heading level={1}>Berichtenbox</Heading>
+        <PageSearch />
         <div className="rhc-mox-card">
           <StelselLijst
             ontvanger={keten.ontvanger}
@@ -50,6 +52,7 @@ const LijstPagina = async ({
     return (
       <>
         <Heading level={1}>Berichtenbox</Heading>
+        <PageSearch />
         <Alert type="error">
           <Paragraph>{stelselTekst[keten.soort]}</Paragraph>
         </Alert>
@@ -61,6 +64,7 @@ const LijstPagina = async ({
   return (
     <>
       <Heading level={1}>Berichtenbox</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <BerichtenboxNav berichten={berichten} actief={weergave} />
         <BerichtenLijst

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Heading, Paragraph, Alert } from "@/components/rhc";
 import BewaardeItems from "../_bewaardeItems";
 import SavedTabs from "../_savedTabs";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Niet relevant - Bewaarde items" };
 
@@ -9,6 +10,7 @@ const NotRelevantPage = async () => {
   return (
     <>
       <Heading level={1}>Bewaarde items</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <SavedTabs active="notRelevant" />
         <Alert type="info" closable>

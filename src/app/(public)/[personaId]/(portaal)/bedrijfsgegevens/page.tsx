@@ -18,6 +18,7 @@ import {
   getActievePersona,
 } from "@/app/(public)/_persona";
 import NextLink from "next/link";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Bedrijfsgegevens" };
 
@@ -35,6 +36,7 @@ const OndernemingsgegevensPage = async () => {
   return (
     <>
       <Heading level={1}>Bedrijfsgegevens</Heading>
+      <PageSearch />
       <Paragraph>
         Dit weet de overheid over uw organisatie. De gegevens komen van de KVK
         en de Belastingdienst.
