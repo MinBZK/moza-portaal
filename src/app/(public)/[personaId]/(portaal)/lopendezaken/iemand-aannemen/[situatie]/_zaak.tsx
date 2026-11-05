@@ -1,5 +1,6 @@
 "use client";
 
+import { PageTools } from "@/app/(public)/_flags/pageTools";
 import Link from "next/link";
 import {
   Alert,
@@ -135,16 +136,10 @@ const Zaak = ({
       });
   };
 
+  // For the team: in the Flags panel, not on the page itself.
   const onderzoeker = (
-    <section
-      className="rhc-mox-card rhc-mox-row-gap prototype-research-card"
-      aria-labelledby="onderzoeker"
-    >
-      <Heading level={2} id="onderzoeker">
-        Voor de onderzoeker
-      </Heading>
+    <PageTools title="zaak">
       <FormFieldSelect
-        id="da-fase"
         label="Toon de zaak op het moment"
         value={fasen[i].id}
         onChange={(event) => zetFase(event.target.value)}
@@ -159,7 +154,6 @@ const Zaak = ({
       </FormFieldSelect>
       {situatie === "wia" && (
         <FormFieldSelect
-          id="da-taak"
           label="Taak van de werknemer: doelgroepverklaring"
           value={taak}
           onChange={(event) =>
@@ -173,7 +167,7 @@ const Zaak = ({
           ))}
         </FormFieldSelect>
       )}
-    </section>
+    </PageTools>
   );
 
   if (!zaakStand.ingediend)

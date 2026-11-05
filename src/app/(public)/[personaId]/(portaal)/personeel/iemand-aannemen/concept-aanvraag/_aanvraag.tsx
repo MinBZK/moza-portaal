@@ -25,8 +25,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
-import Stappen from "../_stappen";
-import { TAAK_TITEL } from "../_taakTitel";
+import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
@@ -730,6 +729,7 @@ const AanvraagInhoud = ({
         {bekend && (
           <StepNavigation
             back="/personeel/iemand-aannemen/gegevens"
+            backLabel={terugNaar(3)}
             later="/personeel"
             next={
               paneelIds.length > 0

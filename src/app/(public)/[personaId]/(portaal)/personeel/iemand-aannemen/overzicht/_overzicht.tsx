@@ -41,6 +41,7 @@ import Waarom from "../_waarom";
 import { euro } from "../_werkgever";
 import { loonkostenPerJaar } from "../_engine";
 import { Tegels, taakTegel, vanzelfTegel } from "../_tegels";
+import { terugNaar } from "../_stappen";
 
 /** Naam van de organisatie achter elke bron die de ondernemer kan delen. */
 const BRON_NAAM: Record<BronId, string> = {
@@ -314,6 +315,7 @@ const OverzichtInhoud = ({
       {/* Er valt niets te versturen; de ondernemer rondt hier af. */}
       <StepNavigation
         back="/personeel/iemand-aannemen/gegevens"
+        backLabel={terugNaar(3)}
         next={{ label: "Klaar", href: "/lopendezaken", final: true }}
       />
     </>

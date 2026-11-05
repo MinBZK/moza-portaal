@@ -12,6 +12,7 @@ import {
   Button,
   Fieldset,
   FormFieldCheckboxOption,
+  FormFieldErrorMessage,
   FormFieldRadio,
   FormFieldTextInput,
   Heading,
@@ -33,6 +34,7 @@ import {
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL } from "../_werkgever";
+import { terugNaar, verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
 
@@ -210,6 +212,53 @@ const Bronnen = ({
   const eigen = meer ? "hun eigen gegevens" : "de eigen gegevens";
   const zietRegister = overKandidaat.some((b) => zichtbaarVan(b).length > 0);
 
+  // The first thing that still stops Verder, in the order of the form.
+  const ontbreekt: "kandidaat" | "naam" | "bsn" | "toestemming" | undefined =
+    gekozen
+      ? undefined
+      : keuze !== NIEUW
+        ? "kandidaat"
+        : !nieuw.naam.trim()
+          ? "naam"
+          : !bsnGoed
+            ? "bsn"
+            : "toestemming";
+  // Set when Verder is clicked; the message shows while that part is missing.
+  const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
+  const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
+  const kandidaatFout =
+    fout === "kandidaat"
+      ? wachtend
+        ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
+        : "U hebt nog geen kandidaat gekozen."
+      : undefined;
+  const naamFout =
+    fout === "naam"
+      ? "U hebt nog geen naam van de kandidaat ingevuld."
+      : undefined;
+  const bsnVeldFout =
+    fout === "bsn" && nieuw.bsn.trim() === ""
+      ? "U hebt nog geen BSN ingevuld."
+      : bsnFout;
+
+  // Verder does not work yet: show why, and go to what is still missing.
+  const naarInvoer = () => {
+    if (!ontbreekt) return;
+    setFoutBij(ontbreekt);
+    const veld =
+      ontbreekt === "naam"
+        ? document.querySelector<HTMLElement>("#kandidaat-naam input")
+        : ontbreekt === "bsn"
+          ? document.querySelector<HTMLElement>("#kandidaat-bsn input")
+          : ontbreekt === "toestemming"
+            ? document.getElementById("toestemming-vragen")
+            : (document.querySelector<HTMLElement>(
+                'input[name="kandidaat"]:checked',
+              ) ??
+              document.querySelector<HTMLElement>('input[name="kandidaat"]'));
+    veld?.focus();
+  };
+
   const vink = (id: BronId, aan: boolean) =>
     werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
 
@@ -246,7 +295,16 @@ const Bronnen = ({
           Werkt de kandidaat al bij u? Dan staat het BSN in uw
           loonadministratie. Anders vraagt u het aan de kandidaat.
         </Paragraph>
-        <Fieldset legend="Kandidaten">
+        <Fieldset
+          legend="Kandidaten"
+          invalid={!!kandidaatFout}
+          aria-describedby={kandidaatFout ? "kandidaat-fout" : undefined}
+        >
+          {kandidaatFout && (
+            <FormFieldErrorMessage id="kandidaat-fout">
+              {kandidaatFout}
+            </FormFieldErrorMessage>
+          )}
           <FormFieldRadio
             name="kandidaat"
             value={kandidaat.bsnMasker}
@@ -275,7 +333,10 @@ const Bronnen = ({
         {keuze === NIEUW && (
           <div className="rhc-mox-row-gap">
             <FormFieldTextInput
+              id="kandidaat-naam"
               label="Naam van de kandidaat"
+              invalid={!!naamFout}
+              errorMessage={naamFout}
               // Not the user's own data: the browser must not fill in the
               // user's name or date of birth here (WCAG 1.3.5).
               autoComplete="off"
@@ -288,12 +349,13 @@ const Bronnen = ({
               }
             />
             <FormFieldTextInput
+              id="kandidaat-bsn"
               label="Burgerservicenummer (BSN)"
               inputMode="numeric"
               autoComplete="off"
               value={nieuw.bsn}
-              invalid={bsnFout !== undefined}
-              errorMessage={bsnFout}
+              invalid={bsnVeldFout !== undefined}
+              errorMessage={bsnVeldFout}
               onChange={(event) =>
                 setNieuw({
                   ...nieuw,
@@ -305,13 +367,23 @@ const Bronnen = ({
               Vraag het BSN pas als u de kandidaat wilt aannemen. Gebruik het
               alleen voor deze aanvraag.
             </Paragraph>
+            {fout === "toestemming" && (
+              <FormFieldErrorMessage id="toestemming-fout">
+                U hebt nog geen toestemming gevraagd. Kies{" "}
+                <strong>Toestemming vragen</strong>.
+              </FormFieldErrorMessage>
+            )}
             <ActionGroup>
               <Button
+                id="toestemming-vragen"
                 appearance="secondary-action-button"
                 aria-disabled={!nieuw.naam.trim() || !bsnGoed}
+                aria-describedby={
+                  fout === "toestemming" ? "toestemming-fout" : undefined
+                }
                 onClick={voegToe}
               >
-                Toevoegen
+                Toestemming vragen
               </Button>
             </ActionGroup>
           </div>
@@ -471,9 +543,12 @@ const Bronnen = ({
         </Paragraph>
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
+          backLabel={terugNaar(2)}
           later={wachtend ? "/personeel" : undefined}
           next={{
+            label: verderNaar(4),
             disabled: !gekozen || !opgave || !resultaat.bekend,
+            onBlocked: naarInvoer,
             onClick: () =>
               router.push(
                 naarOverzicht

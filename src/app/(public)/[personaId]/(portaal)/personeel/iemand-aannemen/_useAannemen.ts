@@ -103,8 +103,8 @@ export type AannemenStaat = {
   zaken: Zaken;
   /** Per taak van de werknemer waar die staat. */
   taken: Partial<Record<TaakId, TaakStand>>;
-  /** De verste stap (1 tot 4) waar de ondernemer is geweest. */
-  versteStap?: number;
+  /** The furthest step (1 to 4) the user has reached in this session. */
+  verstStap?: number;
 };
 
 export const STANDAARD_ANTWOORDEN: Antwoorden = {

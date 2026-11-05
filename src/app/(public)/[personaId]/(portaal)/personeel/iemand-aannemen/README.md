@@ -166,9 +166,10 @@ Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ruim t
   kandidaat) blijven. Bij een wissel begint het scenario opnieuw: de opslag
   onthoudt van welke persona en onderneming hij is (`_eigenaar.ts`), en
   `moza-iemand-aannemen` staat in de lijst van het persona-paneel.
-- Op de zaakpagina van elke situatie: blok "Voor de onderzoeker" met het moment
-  (per situatie eigen fasen; bij de gemeente ontvangen, gemeten, vastgesteld, besluit, antwoord, betaling; bij WIA de stand van de taak van de werknemer) en "Begin
-  het scenario opnieuw".
+- Op de zaakpagina van elke situatie: in het Flags-paneel (toets f), onder
+  "Deze pagina: zaak", het moment van de zaak (per situatie eigen fasen; bij
+  de gemeente ontvangen, gemeten, vastgesteld, besluit, antwoord, betaling;
+  bij WIA de stand van de taak van de werknemer).
 - "Klopt dit niet?" op het besluit zet de vraag in de tijdlijn; het antwoord
   van de gemeente verschijnt bij het moment "Antwoord op uw vraag".
 
