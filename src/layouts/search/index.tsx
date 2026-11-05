@@ -1,4 +1,7 @@
+"use client";
+
 import SiteSearch from "@/components/SiteSearch";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 
 /** Search suggestions for the whole portal, until there is a search API. */
 const SUGGESTIONS = [
@@ -22,10 +25,20 @@ const SUGGESTIONS = [
 
 /**
  * Search and help below the h1 of every portal page (pattern Zoeken en hulp
- * op elke pagina). Not on the footer pages.
+ * op elke pagina). Not on the footer pages. With the digital assistant
+ * switched off (flag mox_digitaleAssistent), every outcome leads to the
+ * search results.
  */
-const PageSearch = ({ pageSuggestions }: { pageSuggestions?: string[] }) => (
-  <SiteSearch suggestions={SUGGESTIONS} pageSuggestions={pageSuggestions} />
-);
+const PageSearch = ({ pageSuggestions }: { pageSuggestions?: string[] }) => {
+  const assistent = useFlag("mox_digitaleAssistent");
+  return (
+    <SiteSearch
+      label={assistent ? undefined : "Zoeken"}
+      assistant={assistent}
+      suggestions={SUGGESTIONS}
+      pageSuggestions={pageSuggestions}
+    />
+  );
+};
 
 export default PageSearch;
