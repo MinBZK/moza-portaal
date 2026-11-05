@@ -96,15 +96,6 @@ const IemandAannemenPage = () => (
         </ul>
       </section>
 
-      <section className="rhc-mox-row-gap" aria-labelledby="oplevert">
-        <Heading level={2} id="oplevert">
-          Wat levert het u op?
-        </Heading>
-        <Paragraph>
-          Reken uit wat een nieuwe werknemer u kost en wat de regelingen
-          opleveren. Dat blijft op uw scherm; er gaat niets naar de overheid.
-        </Paragraph>
-      </section>
       <StepNavigation
         next={{
           href: "/personeel/iemand-aannemen/voorbeeldberekening",
