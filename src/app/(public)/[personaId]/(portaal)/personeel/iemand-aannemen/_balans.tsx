@@ -276,7 +276,17 @@ const Balans = ({
       {/* Een optelsom: loonkosten, min elke regeling, en onder de streep de uitkomst. */}
       <dl className="rhc-data-summary rhc-data-summary--column rhc-mox-sum">
         <div className="rhc-data-summary__item">
-          <dt className="rhc-data-summary__item-key">Loonkosten</dt>
+          <dt className="rhc-data-summary__item-key">
+            <span className="rhc-mox-stack rhc-mox-stack--sm">
+              <span>Loonkosten</span>
+              {/* Zo volgt het bedrag uit de uren en het uurloon (loonkostenPerJaar). */}
+              <span className="rhc-mox-small-text">
+                {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
+                plus 8 procent vakantiegeld en ongeveer 20 procent
+                werkgeverslasten
+              </span>
+            </span>
+          </dt>
           <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
         </div>
         {regels.map((r) => {
