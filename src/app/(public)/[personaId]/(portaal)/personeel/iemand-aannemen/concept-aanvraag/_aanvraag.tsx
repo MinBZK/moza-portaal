@@ -18,12 +18,11 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import InfoToggletip from "@/components/InfoToggletip";
 import ProgressBar from "@/components/ProgressBar";
 import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
-import { Aanname, duurTekst, LkvVoorbehoud } from "../_balans";
+import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
 import Stappen from "../_stappen";
@@ -33,7 +32,6 @@ import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
-  onderMinimumloon,
   useAannemen,
   type AannemenStaat,
   type RegelingId,
@@ -164,7 +162,6 @@ const AanvraagInhoud = ({
   const rijIds: RegelingId[] = [...paneelIds, ...route.vanzelf, ...route.taken];
   const aantal = rijIds.filter((id) => g[id]).length;
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
-  const ld = uitkomsten.regels.find((r) => r.id === "ld");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
   const kies = (deel: typeof k) => werkBij({ keuzes: { ...k, ...deel } });
@@ -348,12 +345,11 @@ const AanvraagInhoud = ({
     </AccordionSection>
   );
 
-  const voorbeeldbedrag = (id: "lks" | "ld") => {
+  const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
     const bedrag = bedragVan(id);
     return bedrag === undefined ? null : (
       <Paragraph>
-        Voorbeeldbedrag: <strong>{euro(bedrag)}</strong> per jaar, met uw
-        antwoorden. De beslissing neemt de organisatie die de regeling uitvoert.
+        Voorbeeldbedrag: <strong>{euro(bedrag)}</strong> per jaar.
       </Paragraph>
     );
   };
@@ -361,19 +357,16 @@ const AanvraagInhoud = ({
   const paneel = (id: PaneelId): ReactNode => {
     const kop = (note: string, kind: ReactNode) => rij(id, note, kind);
     const gemeente = `Gemeente ${kandidaat.gemeente}, waar ${kandidaat.voornaam} woont`;
-    const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
 
     if (id === "lks")
       return kop(
         gemeente,
         <>
           <Paragraph>
-            U vraagt het college van burgemeester en wethouders van{" "}
-            {kandidaat.gemeente} om loonkostensubsidie voor {naam}{" "}
+            U vraagt de gemeente {kandidaat.gemeente} om loonkostensubsidie
             (Participatiewet, artikel 10d).
           </Paragraph>
           {voorbeeldbedrag("lks")}
-          <Heading level={4}>Wat in de aanvraag staat</Heading>
           <Gegevens
             rijen={[
               ...werkgeverRijen,
@@ -382,83 +375,33 @@ const AanvraagInhoud = ({
               ...dienstRijen,
             ]}
           />
-          <Gegevens
-            rijen={[
-              ...(inRegister
-                ? [
-                    {
-                      label: "Regeling werknemer",
-                      waarde: "Doelgroep banenafspraak",
-                      bron: "UWV doelgroepregister",
-                    },
-                  ]
-                : []),
-            ]}
-          />
           <Paragraph>
-            U vraagt de loonkostensubsidie aan uiterlijk zes maanden na de
-            eerste werkdag ({datumNL(a.aanvang ?? dienstverband.aanvang)}). Dat
-            staat in de Participatiewet, artikel 10d lid 2.
+            Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
+            artikel 10d lid 2).
           </Paragraph>
           <Beoordeling
-            titel={`Wat de gemeente ${kandidaat.gemeente} zelf beoordeelt`}
+            titel={`Hoe de gemeente ${kandidaat.gemeente} beslist`}
             open={isOpen("beoordeelt-lks")}
             onWissel={() => wissel("beoordeelt-lks")}
           >
             <UnorderedList>
               <UnorderedListItem>
-                <strong>Of {kandidaat.voornaam} bij de doelgroep hoort.</strong>{" "}
-                Dat is zo als {kandidaat.voornaam} met een volledige baan niet
-                het minimumloon kan verdienen (Participatiewet, artikel 6,
-                onderdeel e, en artikel 10c).
+                De gemeente beoordeelt of {kandidaat.voornaam} met een volledige
+                baan het minimumloon niet kan verdienen (Participatiewet,
+                artikel 10c).
               </UnorderedListItem>
               <UnorderedListItem>
-                <strong>De loonwaarde.</strong> Dat is hoeveel het werk van{" "}
-                {kandidaat.voornaam} waard is, in procenten van het minimumloon.{" "}
-                {onderMinimumloon(a)
-                  ? `U schatte ${a.loonwaarde} procent. De bedragen op deze pagina rekenen met die schatting. De gemeente stelt de loonwaarde vast; daarna weet u het precieze bedrag.`
-                  : "U gaf aan dat er geen verminderde loonwaarde is. Dan is er geen loonkostensubsidie."}
+                Een deskundige meet de loonwaarde op de werkplek (Besluit
+                loonkostensubsidie Participatiewet, artikel 2). Daarna weet u
+                het precieze bedrag.
+              </UnorderedListItem>
+              <UnorderedListItem>
+                U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
+                begonnen? Dan binnen acht weken (Algemene wet bestuursrecht,
+                artikel 4:13). Anders binnen vijf weken na de meting
+                (Participatiewet, artikel 10d lid 12).
               </UnorderedListItem>
             </UnorderedList>
-            <Heading level={5}>Zo meet de gemeente de loonwaarde</Heading>
-            <UnorderedList>
-              <UnorderedListItem>
-                Een deskundige komt op de werkplek. Die kijkt naar het werk dat{" "}
-                {kandidaat.voornaam} doet en praat ook met u. De deskundige
-                werkt met een vaste, beschreven methode (Besluit
-                loonkostensubsidie Participatiewet, artikel 2).
-              </UnorderedListItem>
-              <UnorderedListItem>
-                Is {kandidaat.voornaam} al begonnen? Dan stelt de gemeente de
-                loonwaarde vast voordat zij beslist (Participatiewet, artikel
-                10d lid 2 en lid 4).
-              </UnorderedListItem>
-              <UnorderedListItem>
-                Vraagt u aan voordat {kandidaat.voornaam} begint? Dan kunt u met
-                de gemeente afspreken dat de meting eerst niet nodig is. U
-                krijgt dan ten hoogste de eerste zes maanden een vast bedrag: 50
-                procent van het minimumloon met vakantiegeld, naar verhouding
-                van de uren, plus een vergoeding voor werkgeverslasten. Daarna
-                stelt de gemeente de loonwaarde vast (artikel 10d lid 1
-                onderdeel b en lid 5). In Rotterdam is die meting dan in de
-                vijfde maand van het dienstverband (werkwijze van de gemeente
-                Rotterdam).
-              </UnorderedListItem>
-              <UnorderedListItem>
-                De gemeente spreekt met u en {kandidaat.voornaam} af wanneer zij
-                de loonwaarde opnieuw meet (artikel 10d lid 6).
-              </UnorderedListItem>
-            </UnorderedList>
-            <Paragraph>
-              U krijgt een brief van de gemeente. Daarin staat of u
-              loonkostensubsidie krijgt en hoeveel. Is {kandidaat.voornaam} al
-              begonnen? Dan krijgt u de brief <strong>binnen acht weken</strong>{" "}
-              na uw aanvraag (Algemene wet bestuursrecht, artikel 4:13). Vraagt
-              u aan voordat {kandidaat.voornaam} begint? Dan beslist de gemeente{" "}
-              <strong>binnen vijf weken</strong> nadat zij de loonwaarde heeft
-              vastgesteld of heeft afgesproken dat de meting eerst niet nodig is
-              (Participatiewet, artikel 10d lid 12).
-            </Paragraph>
           </Beoordeling>
           {waarom(
             "participatiewet",
@@ -473,50 +416,17 @@ const AanvraagInhoud = ({
         "UWV",
         <>
           <Paragraph>
-            U vraagt UWV om loondispensatie voor {naam} (Wajong, artikel 2:20).
-            Met loondispensatie mag u minder loon betalen dan het minimumloon.
+            U vraagt UWV om loondispensatie: u betaalt minder loon dan het
+            minimumloon (Wajong, artikel 2:20).
           </Paragraph>
           {voorbeeldbedrag("ld")}
-          <Heading level={4}>Wat in de aanvraag staat</Heading>
           <Gegevens
-            rijen={[
-              ...werkgeverRijen,
-              ...werknemerRijen,
-              ...dienstRijen,
-              {
-                label: "Percentage",
-                waarde: `${a.loonwaarde} procent, uw schatting; UWV stelt dit vast`,
-                bron: "Uw antwoord",
-              },
-              ...(ld?.aanspraakPerUur !== undefined
-                ? [
-                    {
-                      label: "Aanspraak per uur",
-                      waarde: `${euro(ld.aanspraakPerUur)}, het minimumloon maal het percentage`,
-                      bron: "Volgt uit de wet",
-                    },
-                  ]
-                : []),
-            ]}
+            rijen={[...werkgeverRijen, ...werknemerRijen, ...dienstRijen]}
           />
-          <div className="rhc-mox-small-text">
-            Het percentage is een schatting.{" "}
-            <InfoToggletip label="Toelichting bij het percentage">
-              UWV stelt het percentage vast na een onderzoek op de werkplek. Dat
-              kan hoger of lager uitvallen dan uw schatting. De aanspraak per
-              uur verandert dan mee.
-            </InfoToggletip>
-          </div>
           <Paragraph>
-            Loondispensatie geldt vanaf de eerste dag van de maand waarin u de
-            aanvraag doet (Besluit loondispensatie Wajong, artikel 4). Vraagt u
-            later aan, dan geldt de loondispensatie ook later.
-          </Paragraph>
-          <Paragraph>
-            Na uw aanvraag komt een arbeidsdeskundige van UWV meestal op de
-            werkplek. Die praat met u en met {kandidaat.voornaam}. UWV stuurt u{" "}
-            <strong>binnen acht weken</strong> na de aanvraag een brief met het
-            besluit.
+            Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
+            loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
+            beslist binnen acht weken.
           </Paragraph>
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
@@ -531,10 +441,8 @@ const AanvraagInhoud = ({
         gemeente,
         <>
           <Paragraph>
-            Begeleiding op de werkplek door een jobcoach. Hoort de werknemer bij
-            de doelgroep loonkostensubsidie? Dan heeft de werknemer recht op
-            deze begeleiding (Participatiewet 10da). U kunt de begeleiding voor
-            de werknemer aanvragen bij de gemeente.
+            Begeleiding op de werkplek door een jobcoach. De werknemer heeft
+            daar recht op (Participatiewet, artikel 10da).
           </Paragraph>
           <Fieldset legend="Wilt u jobcoaching aanvragen?">
             <FormFieldRadio
@@ -565,8 +473,7 @@ const AanvraagInhoud = ({
       <>
         <Paragraph>
           Vergoeding voor een aangepaste werkplek of een hulpmiddel. De gemeente
-          beslist of de aanpassing nodig is (Participatiewet 10). De gemeente
-          heeft daarvoor eigen regels.
+          beslist of dat nodig is (Participatiewet, artikel 10).
         </Paragraph>
         <Fieldset legend="Is er een aanpassing nodig?">
           <FormFieldRadio
@@ -609,29 +516,22 @@ const AanvraagInhoud = ({
       <>
         {id === "doelgroepverklaring" && (
           <Paragraph>
-            De werknemer vraagt de doelgroepverklaring zelf aan bij UWV, binnen
-            drie maanden na de start. U bewaart de verklaring bij de
-            loonadministratie. Zonder verklaring kunt u het loonkostenvoordeel
-            niet krijgen (Wet tegemoetkomingen loondomein 2.7).
+            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen drie
+            maanden na de start. Zonder verklaring geen loonkostenvoordeel (Wet
+            tegemoetkomingen loondomein, artikel 2.7).
           </Paragraph>
         )}
         {id === "vz_wajong" && (
           <Paragraph>
-            De werknemer vraagt een jobcoach of een aanpassing van de werkplek
-            zelf aan bij UWV, als dat nodig is (Wajong 2:22). U kunt dit niet
-            namens de werknemer aanvragen in dit portaal.
+            De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
+            bij UWV (Wajong, artikel 2:22).
           </Paragraph>
         )}
         {id === "vz_wia" && (
           <Paragraph>
-            De werknemer vraagt een jobcoach of een aanpassing van de werkplek
-            zelf aan bij UWV, als dat nodig is (Wet WIA 35). U kunt dit niet
-            namens de werknemer aanvragen in dit portaal. Duurt het
-            dienstverband ten minste zes maanden, dan kunt u bij UWV zelf
-            subsidie vragen voor de extra kosten van voorzieningen (Wet WIA 36).
-            Daarvoor gelden meer voorwaarden. De kosten moeten bijvoorbeeld
-            hoger zijn dan een drempelbedrag. UWV beslist of u de subsidie
-            krijgt.
+            De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
+            bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
+            subsidie vragen bij UWV (Wet WIA, artikel 36).
           </Paragraph>
         )}
         {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
@@ -640,17 +540,9 @@ const AanvraagInhoud = ({
         {id === "pp" && (
           <>
             <Paragraph>
-              Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag.
-              De proefplaats duurt twee maanden. Verlengen kan met ten hoogste
-              vier maanden (Participatiewet 8a). De gemeente geeft de
-              toestemming aan de kandidaat, omdat de kandidaat bijstand krijgt.
-              De gemeente heeft daarvoor eigen regels.
-            </Paragraph>
-            <Paragraph>
-              Wilt u eerst een proefplaats? Dan vraagt de kandidaat de gemeente
-              om toestemming, vóór de eerste werkdag. Dat gaat buiten deze
-              aanvraag om. Of een proefplaats en loonkostensubsidie samen
-              kunnen, staat nog niet vast.
+              Onbetaald werk bij u vóór de eerste werkdag, twee maanden
+              (Participatiewet, artikel 8a). De kandidaat vraagt de gemeente om
+              toestemming; dat gaat buiten deze aanvraag om.
             </Paragraph>
             {waarom(
               "participatiewet",
@@ -668,22 +560,12 @@ const AanvraagInhoud = ({
           id,
           "Belastingdienst, via de loonaangifte",
           <>
-            {lkv && (
-              <Paragraph>
-                Voorbeeldbedrag: <strong>{euro(lkv.bedragPerJaar)}</strong> per
-                jaar.
-              </Paragraph>
-            )}
-            {lkv?.aanname && <Aanname id={lkv.aanname} />}
-            <LkvVoorbehoud categorie={lkv?.categorie} />
             <Paragraph>
-              U vraagt het loonkostenvoordeel aan door in de loonaangifte het
-              vakje loonkostenvoordeel aan te zetten; een aparte aanvraag is
-              niet nodig.
-              {lkv?.categorie === "arbeidsgehandicapte_werknemer" &&
-                " Dat kan zodra u de doelgroepverklaring van de werknemer hebt."}{" "}
-              De Belastingdienst rekent het na afloop van het jaar uit.
+              U zet het vakje loonkostenvoordeel aan in de loonaangifte; een
+              aparte aanvraag is niet nodig (Wet tegemoetkomingen loondomein).
             </Paragraph>
+            {voorbeeldbedrag("lkv")}
+            {lkv?.aanname && <Aanname id={lkv.aanname} />}
             <Gegevens
               rijen={[
                 {
@@ -710,13 +592,9 @@ const AanvraagInhoud = ({
           "UWV, geen aanvraag nodig",
           <>
             <Paragraph>
-              Wordt de werknemer ziek? Dan betaalt u het loon door. UWV betaalt
-              u ziekengeld voor de werknemer: 70 procent van het dagloon
-              (Ziektewet 29b). In de eerste 52 weken van de ziekte kunt u UWV
-              vragen om het hele dagloon. Het ziekengeld is dan niet hoger dan
-              het loon. U hoeft de no-riskpolis niet aan te vragen.{" "}
-              {duurTekst(nrp?.duurJaren)} Bij ziekte meldt u de werknemer ziek
-              bij UWV.
+              U hoeft niets aan te vragen. Wordt de werknemer ziek, dan meldt u
+              dat bij UWV en betaalt UWV u ziekengeld (Ziektewet, artikel 29b).{" "}
+              {duurTekst(nrp?.duurJaren)}
             </Paragraph>
             {waarom(
               "ziektewet",
@@ -776,13 +654,11 @@ const AanvraagInhoud = ({
                 ? "Bij deze antwoorden is er niets aan te vragen."
                 : paneelIds.length === 0
                   ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
-                  : `Wij hebben ${paneelIds.length === 1 ? "de aanvraag" : `${paneelIds.length} aanvragen`} voor u ingevuld met gegevens die de overheid al heeft. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
+                  : "Controleer per regeling de gegevens en vul aan wat ontbreekt."}
         </Paragraph>
         <Paragraph className="rhc-mox-small-text">
-          Alleen u ziet deze aanvraag. Er is nog niets naar de gemeente of UWV
-          gestuurd. Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan
-          de gegevens van die uitkomst naar de digitale assistent. Uw antwoorden
-          worden niet bewaard: sluit u de browser, dan begint u opnieuw.
+          Alleen u ziet deze aanvraag. Er gaat pas iets naar de gemeente of UWV
+          als u verstuurt.
         </Paragraph>
 
         {bekend && rijIds.length > 0 && (
