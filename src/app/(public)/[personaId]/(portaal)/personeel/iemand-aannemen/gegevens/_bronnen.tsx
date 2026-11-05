@@ -195,14 +195,18 @@ const Bronnen = ({
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
   // Wie in deze situatie gegevens over de kandidaat heeft, uit dezelfde
   // bronnen als de lijst hieronder; zo klopt de tekst met wat er gebeurt.
-  const overKandidaat = bronnen.filter((b) => OVER_KANDIDAAT.includes(b.id));
+  const overKandidaat = bronnen.filter(
+    (b) =>
+      OVER_KANDIDAAT.includes(b.id) &&
+      // Zonder aanvraag bij de gemeente kijkt de gemeente nergens naar.
+      !(b.id === "gemeente" && situatie === "register"),
+  );
   const meer = overKandidaat.length > 1;
   const wie = opsomming(
     overKandidaat.map((b) =>
       b.id === "gemeente" ? "de gemeente" : b.organisatie,
     ),
   );
-  const wieKijkt = `${wie} ${meer ? "kijken" : "kijkt"}`;
   const eigen = meer ? "hun eigen gegevens" : "de eigen gegevens";
   const zietRegister = overKandidaat.some((b) => zichtbaarVan(b).length > 0);
 
@@ -233,13 +237,14 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
-          Gegevens over de kandidaat halen wij alleen op als de kandidaat
-          daarvoor toestemming geeft. Daarvoor gebruiken wij het
-          burgerservicenummer (BSN): {wieKijkt} daarmee in {eigen}.
+          Wij vragen de kandidaat eerst om toestemming; dat is de werkwijze van
+          dit portaal. {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
+          {meer ? "zoeken" : "zoekt"} de kandidaat op met het
+          burgerservicenummer (BSN).
         </Paragraph>
         <Paragraph>
           Werkt de kandidaat al bij u? Dan staat het BSN in uw
-          loonadministratie. Anders krijgt u het van de kandidaat.
+          loonadministratie. Anders vraagt u het aan de kandidaat.
         </Paragraph>
         <Fieldset legend="Kandidaten">
           <FormFieldRadio
@@ -297,9 +302,8 @@ const Bronnen = ({
               }
             />
             <Paragraph className="rhc-mox-small-text">
-              Neemt u de kandidaat nog niet aan? Vraag het BSN dan pas na de
-              selectie, en gebruik het alleen om na te gaan of de kandidaat in
-              het doelgroepregister staat.
+              Vraag het BSN pas als u de kandidaat wilt aannemen. Gebruik het
+              alleen voor deze aanvraag.
             </Paragraph>
             <ActionGroup>
               <Button
@@ -314,8 +318,9 @@ const Bronnen = ({
         )}
         {gekozen && (
           <Paragraph className="rhc-mox-small-text">
-            BSN {kandidaat.bsnMasker} gaat mee met de aanvraag en staat niet op
-            het scherm.
+            {naarOverzicht
+              ? "U ziet alleen de laatste vier cijfers van het BSN."
+              : "Het BSN gaat mee met de aanvraag. U ziet alleen de laatste vier cijfers."}
           </Paragraph>
         )}
       </section>
@@ -332,25 +337,25 @@ const Bronnen = ({
                 {meer ? "kijken" : "kijkt"} {wie} met het BSN in {eigen}.
               </Paragraph>
               <Paragraph>
-                Tot {wachtend.naam} toestemming geeft, kunt u niet verder. Uw
-                aanvraag blijft bewaard.
+                Tot {wachtend.naam} toestemming geeft, kunt u hier niet verder.
+                Uw antwoorden blijven bewaard tot u de browser sluit.
               </Paragraph>
             </>
           ) : (
             <>
               <Paragraph>
                 {zietRegister
-                  ? `Over ${kandidaat.voornaam} ziet u alleen of die in het doelgroepregister staat.`
+                  ? `Over ${kandidaat.voornaam} ziet u alleen of die in het doelgroepregister staat, en sinds wanneer.`
                   : `Over ${kandidaat.voornaam} ziet u hier geen gegevens.`}{" "}
                 {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
                 {meer ? "gebruiken hun" : "gebruikt de"} eigen gegevens over{" "}
-                {kandidaat.voornaam} bij de beoordeling; die ziet u niet.
+                {kandidaat.voornaam} bij de beoordeling; die ziet u niet. U
+                krijgt wel het besluit.
               </Paragraph>
               <Paragraph>
-                Per organisatie staat aangevinkt dat de gegevens kloppen en
-                gebruikt mogen worden. Open een organisatie om te zien wat wij
-                ophalen. Klopt iets niet, haal het vinkje weg; die gegevens vult
-                u dan zelf aan in de aanvraag.
+                Per organisatie staat aangevinkt dat de gegevens kloppen. Open
+                een organisatie om ze te bekijken. Klopt iets niet, haal het
+                vinkje weg; die gegevens vult u dan zelf aan in de aanvraag.
               </Paragraph>
               <Accordion>
                 {bronnen

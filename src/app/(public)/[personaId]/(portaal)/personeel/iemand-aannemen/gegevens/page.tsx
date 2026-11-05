@@ -41,13 +41,11 @@ const GegevensPage = async () => {
         <Stappen huidige={3} />
         <Alert type="info" closable>
           <Paragraph>
-            Om de aanvragen in te vullen, halen wij gegevens op bij de
-            organisaties die ze al hebben. U hoeft ze dan niet zelf op te
-            zoeken.
+            Wij halen gegevens over uw onderneming op. UWV en de gemeente
+            bekijken zelf de gegevens over de kandidaat.
           </Paragraph>
           <Paragraph>
-            Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
-            omgeving, tot u die zelf verstuurt.
+            De aanvraag versturen wij pas als u dat zelf doet.
           </Paragraph>
         </Alert>
         <Bronnen perSituatie={perSituatie} />
