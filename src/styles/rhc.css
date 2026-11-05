@@ -2574,15 +2574,11 @@ small,
 		inline-size: var(--rhc-space-2xl);
 	}
 
-	.utrecht-icon {
-		background-color: var(--rhc-color-lintblauw-500);
-		border-radius: var(--rhc-border-radius-md);
-		color: var(--rhc-color-wit);
-	}
-
-	/* The (i) has the same colour as the button that opens the toggletip. */
+	/* Only the (i): the close button looks the same as in an Alert. */
 	.utrecht-alert__icon .utrecht-icon {
 		background-color: var(--rhc-color-info-500);
+		border-radius: var(--rhc-border-radius-md);
+		color: var(--rhc-color-wit);
 	}
 }
 
