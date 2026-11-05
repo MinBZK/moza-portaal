@@ -62,6 +62,7 @@
 	--nl-heading-level-1-color: var(--rhc-color-core-500);
 	--rhc-sidenav-link-color: var(--rhc-color-foreground-default);
 	--utrecht-separator-color: var(--rhc-color-transparent);
+	--utrecht-focus-outline-color: var(--rhc-color-core-500);
 
 	--rhc-mox-landing-hero-background: var(--rhc-color-core-50);
 	--rhc-mox-landing-info-background: var(--rhc-color-core-500);
@@ -1704,7 +1705,7 @@ small,
 		&:focus-visible {
 			border-radius: var(--rhc-border-radius-round);
 			outline: var(--utrecht-focus-outline-width)
-				var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+				var(--utrecht-focus-outline-style) var(--rhc-color-lintblauw-500);
 			outline-offset: calc(var(--utrecht-focus-outline-offset) * 3);
 		}
 	}
