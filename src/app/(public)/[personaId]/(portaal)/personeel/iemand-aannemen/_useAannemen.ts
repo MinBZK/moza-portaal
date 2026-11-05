@@ -6,7 +6,6 @@ import {
   DOELGROEPEN,
   doelgroepenUit,
   vinkDoelgroep,
-  vraag1Botst,
   type Doelgroep,
 } from "./_uitkomsten";
 import {
@@ -42,37 +41,33 @@ export const BRONNEN = [
 ] as const;
 export type BronId = (typeof BRONNEN)[number];
 
-export { DOELGROEPEN, vraag1Botst, type Doelgroep };
+export { DOELGROEPEN, type Doelgroep };
 
 /**
  * De vinkjes van vraag 1 zoals de gebruiker ze zette. Zonder eigen vinkjes, of
  * als doelgroepen er niet uit volgt, gelden de doelgroepen zelf.
  */
 export const aangevinktVan = (a: Antwoorden): Doelgroep[] =>
-  a.aangevinkt &&
-  (vraag1Botst(a.aangevinkt) ||
-    doelgroepenUit(a.aangevinkt).join() === a.doelgroepen.join())
+  a.aangevinkt && doelgroepenUit(a.aangevinkt).join() === a.doelgroepen.join()
     ? a.aangevinkt
     : a.doelgroepen;
 
-/**
- * Eén vinkje van vraag 1 aan of uit; de doelgroepen volgen eruit. Botsen de
- * vinkjes, dan blijft de berekening bij de vorige doelgroepen, zoals een
- * uurloon bij vraag 4 pas telt als het klopt.
- */
+/** Eén vinkje van vraag 1 aan of uit; de doelgroepen volgen eruit. */
 export const vinkVraag1 = (
   a: Antwoorden,
   waarde: Doelgroep,
   aan: boolean,
 ): Pick<Antwoorden, "aangevinkt" | "doelgroepen"> => {
   const aangevinkt = vinkDoelgroep(aangevinktVan(a), waarde, aan);
-  return {
-    aangevinkt,
-    doelgroepen: vraag1Botst(aangevinkt)
-      ? a.doelgroepen
-      : doelgroepenUit(aangevinkt),
-  };
+  return { aangevinkt, doelgroepen: doelgroepenUit(aangevinkt) };
 };
+
+/**
+ * Alleen keuzes die nog bestaan. Eerdere versies kenden "weet ik nog niet" en
+ * "geen van deze"; zonder vinkje is er nu geen doelgroep.
+ */
+const bekend = (d: unknown): d is Doelgroep =>
+  DOELGROEPEN.some(([id]) => id === d);
 
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;
@@ -189,11 +184,13 @@ const lees = (): AannemenStaat => {
       const oud = g.antwoorden as { doelgroep?: Doelgroep } | undefined;
       const antwoorden = { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) };
       if (oud?.doelgroep && !g.antwoorden?.doelgroepen)
-        antwoorden.doelgroepen = doelgroepenUit([oud.doelgroep]);
-      // Eerdere versies kenden "weet ik nog niet"; die keuze bestaat niet meer.
-      antwoorden.doelgroepen = antwoorden.doelgroepen.filter((d) =>
-        DOELGROEPEN.some(([id]) => id === d),
+        antwoorden.doelgroepen = [oud.doelgroep];
+      // Alleen combinaties die vraag 1 kan geven: oude opslag kan iets anders bevatten.
+      antwoorden.doelgroepen = doelgroepenUit(
+        antwoorden.doelgroepen.filter(bekend),
       );
+      if (antwoorden.aangevinkt)
+        antwoorden.aangevinkt = antwoorden.aangevinkt.filter(bekend);
       const oudeZaak = g as Parameters<typeof migreerZaken>[0];
       staat = {
         ...LEEG,

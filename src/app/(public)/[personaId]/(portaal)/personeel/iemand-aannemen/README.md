@@ -31,18 +31,18 @@ actor en wetsgrond van het verhaal via de gemeente staat in
 
 ## Vraag 1: vinkjes en doelgroepen
 
-Elk vinkje van vraag 1 zet alleen zichzelf aan of uit (`aangevinkt`). De
-koppelingen uit de wet zitten in `doelgroepenUit` (`_uitkomsten.ts`): Wajong
-rekent met het register, beschut werk zonder register. Daarmee rekent de engine
-(`doelgroepen`). "Geen van deze" samen met een ander vinkje geeft een melding;
-de bedragen blijven dan bij het vorige antwoord. Zo kan de engine dezelfde 21
-combinaties krijgen als toen de vinkjes elkaar nog aan- en uitzetten.
+Elk vinkje van vraag 1 zet alleen zichzelf aan of uit (`aangevinkt`); niets
+aangevinkt is geen doelgroep. De koppelingen uit de wet zitten in
+`doelgroepenUit` (`_uitkomsten.ts`): Wajong rekent met het register, beschut
+werk zonder register (Wfsv 38b lid 1). Daarmee rekent de engine
+(`doelgroepen`): 20 mogelijke combinaties. Oude opslag met "geen van deze" of
+"weet ik nog niet" valt terug op wat er nog bestaat, meestal niets.
 
 ## Route per situatie
 
 `situatieVan` in `_route.ts` kiest uit de doelgroepen van vraag 1 de eerste die
-past: Wajong, WIA, bijstand of register, anders uitleg (beschut werk,
-geen van deze of niets gekozen). `routeVoor` maakt daarvan de route met de uitkomsten van
+past: Wajong, WIA, bijstand of register, anders uitleg (beschut werk of
+niets gekozen). `routeVoor` maakt daarvan de route met de uitkomsten van
 de engine: welke panelen er zijn per organisatie, welke taken de werknemer
 heeft, wat vanzelf gaat en of er een zaak is. Geeft de engine geen recht, dan
 is er geen paneel; blijft er niets over, dan volgt na de gegevens het

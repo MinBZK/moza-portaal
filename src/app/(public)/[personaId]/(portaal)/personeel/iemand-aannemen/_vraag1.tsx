@@ -1,17 +1,10 @@
 "use client";
 
-import { Fragment } from "react";
-import {
-  Fieldset,
-  FormFieldCheckboxOption,
-  FormFieldErrorMessage,
-  Paragraph,
-} from "@/components/rhc";
+import { Fieldset, FormFieldCheckboxOption } from "@/components/rhc";
 import {
   DOELGROEPEN,
   aangevinktVan,
   vinkVraag1,
-  vraag1Botst,
   type Antwoorden,
   type Doelgroep,
 } from "./_useAannemen";
@@ -21,17 +14,15 @@ import {
  * elkaar; de wet koppelt ze pas in doelgroepenUit (_uitkomsten.ts).
  */
 const UITLEG: Partial<Record<Doelgroep, string>> = {
+  // Wfsv 38b lid 1 c: ook zonder arbeidsvermogen, zodra in dienstbetrekking; 38d: de registratie.
   wajong:
-    "Iemand met een Wajong-uitkering staat ook in het doelgroepregister. Dat hoeft u niet apart te kiezen.",
+    "Wie een Wajong-uitkering heeft en bij u in dienst komt, hoort in het doelgroepregister. Dat geldt niet bij beschut werk.",
+  // Wfsv 38b lid 1 aanhef; Wtl 2.10 met 2.13, 2.6 lid 3 b en 2.14 lid 2 b.
   beschut:
-    "Beschut werk telt niet mee voor de banenafspraak. De berekening houdt dan geen rekening met het doelgroepregister.",
+    "Wie de gemeente op beschut werk aanwijst, hoort niet in het doelgroepregister. U krijgt dan geen loonkostenvoordeel.",
 };
 
-/**
- * Vraag 1: keuzevakjes die elk alleen zichzelf aan- of uitzetten. Kiest de
- * gebruiker "Geen van deze" samen met iets anders, dan volgt een melding en
- * blijven de bedragen bij het vorige antwoord.
- */
+/** Vraag 1: keuzevakjes die elk alleen zichzelf aan- of uitzetten. */
 const Vraag1 = ({
   a,
   zet,
@@ -40,35 +31,19 @@ const Vraag1 = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const aangevinkt = aangevinktVan(a);
-  const botst = vraag1Botst(aangevinkt);
   return (
-    <Fieldset
-      legend="1. Wie wilt u aannemen? Kies wat past."
-      invalid={botst}
-      aria-describedby={botst ? "vraag1-fout" : undefined}
-    >
+    <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
       {DOELGROEPEN.map(([waarde, label]) => (
-        <Fragment key={waarde}>
-          {waarde === "geen" && <Paragraph>of</Paragraph>}
-          <FormFieldCheckboxOption
-            name="doelgroepen"
-            value={waarde}
-            label={label}
-            checked={aangevinkt.includes(waarde)}
-            description={UITLEG[waarde]}
-            onChange={(event) =>
-              zet(vinkVraag1(a, waarde, event.target.checked))
-            }
-          />
-        </Fragment>
+        <FormFieldCheckboxOption
+          key={waarde}
+          name="doelgroepen"
+          value={waarde}
+          label={label}
+          checked={aangevinkt.includes(waarde)}
+          description={UITLEG[waarde]}
+          onChange={(event) => zet(vinkVraag1(a, waarde, event.target.checked))}
+        />
       ))}
-      {botst && (
-        <FormFieldErrorMessage id="vraag1-fout" role="alert">
-          <strong>Geen van deze</strong> kan niet samen met een andere keuze.
-          Haal een vinkje weg. Tot dan gaan de bedragen uit van uw vorige
-          antwoord.
-        </FormFieldErrorMessage>
-      )}
     </Fieldset>
   );
 };

@@ -130,6 +130,16 @@ li {
 	font-size: var(--rhc-text-font-size-sm);
 }
 
+/*
+ * RHC trekt de beschrijving met een negatieve marge onder het label. Bij een
+ * keuzevakje of keuzerondje staat er geen ruimte onder het label, dus komt de
+ * eerste regel dan te strak tegen het label aan.
+ */
+.rhc-form-field:is(.utrecht-form-field--checkbox, .utrecht-form-field--radio)
+	.utrecht-form-field__description {
+	--utrecht-form-field-description-margin-block-start: 0;
+}
+
 .rhc-theme.mox-theme .rhc-form-field {
 	--rhc-mox-invalid-background-color: color-mix(
 		in srgb,

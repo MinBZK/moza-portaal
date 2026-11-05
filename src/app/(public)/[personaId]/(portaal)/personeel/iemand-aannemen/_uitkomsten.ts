@@ -13,7 +13,6 @@ export const DOELGROEPEN = [
   ["wia", "Iemand met een WIA-uitkering"],
   ["bijstand", "Iemand met een bijstandsuitkering"],
   ["beschut", "Is door de gemeente aangewezen op beschut werk"],
-  ["geen", "Geen van deze"],
 ] as const;
 export type Doelgroep = (typeof DOELGROEPEN)[number][0];
 
@@ -30,18 +29,14 @@ export const vinkDoelgroep = (
   return geordend(aan ? [...nieuw, waarde] : nieuw);
 };
 
-/** "Geen van deze" kan niet samen met een andere keuze. */
-export const vraag1Botst = (aangevinkt: Doelgroep[]) =>
-  aangevinkt.includes("geen") && aangevinkt.length > 1;
-
 /**
- * Van de vinkjes naar de situatie waarmee de engine rekent. Wajong hoort bij
- * het register (Wfsv 38b lid 1 c). Beschut werk sluit alleen het register uit
- * (aanhef 38b lid 1); Pwet 10b lid 1 noemt de Wajong juist. Wajong met beschut
- * werk blijft dus zonder register.
+ * Van de vinkjes naar de situatie waarmee de engine rekent; niets aangevinkt
+ * is geen doelgroep. Wie Wajong heeft en in dienst komt, is arbeidsbeperkte
+ * en hoort bij het register (Wfsv 38b lid 1 c). Wie de gemeente op beschut
+ * werk aanwijst, is dat niet (aanhef 38b lid 1); Pwet 10b lid 1 noemt de
+ * Wajong juist. Wajong met beschut werk blijft dus zonder register.
  */
 export const doelgroepenUit = (aangevinkt: Doelgroep[]): Doelgroep[] => {
-  if (aangevinkt.includes("geen")) return ["geen"];
   const d = new Set(aangevinkt);
   if (d.has("beschut")) d.delete("register");
   else if (d.has("wajong")) d.add("register");
@@ -87,7 +82,7 @@ type Doel = Omit<EngineInvoer, "peildatum" | "parameters"> & {
 
 const viaGemeente = (d: Set<Doelgroep>) =>
   d.has("bijstand") && !d.has("wajong") && !d.has("wia");
-const iets = (d: Set<Doelgroep>) => d.size > 0 && !d.has("geen");
+const iets = (d: Set<Doelgroep>) => d.size > 0;
 
 /**
  * Wat de oriëntatie rekent, met de bedragen eerst: elke aanroep kost de kern
@@ -271,7 +266,7 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  "lks_lid4" | "ld_cao" | "ld_beschut" | "wia_nieuw" | "beschut_lks" | "geen";
+  "lks_lid4" | "ld_cao" | "ld_beschut" | "wia_nieuw" | "beschut_lks";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";
@@ -435,7 +430,6 @@ export const uitkomstenUit = (
   const aannames: AannameId[] = [];
   if (ldBovenWml) aannames.push("ld_cao");
   if (d.has("beschut") && !d.has("bijstand")) aannames.push("beschut_lks");
-  if (d.has("geen")) aannames.push("geen");
   return { regels, overige, aannames };
 };
 

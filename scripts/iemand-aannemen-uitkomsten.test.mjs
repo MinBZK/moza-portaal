@@ -38,17 +38,10 @@ test("vraag 1: elk vinkje staat los van de andere", () => {
   assert.deepEqual(U.vinkDoelgroep(["wajong", "beschut"], "beschut", false), [
     "wajong",
   ]);
-  assert.deepEqual(U.vinkDoelgroep(["register", "wia"], "geen", true), [
-    "register",
-    "wia",
-    "geen",
-  ]);
 });
 
-test("vraag 1: geen van deze botst met een andere keuze", () => {
-  assert.equal(U.vraag1Botst(["register", "geen"]), true);
-  assert.equal(U.vraag1Botst(["geen"]), false);
-  assert.equal(U.vraag1Botst(["register", "wia"]), false);
+test("vraag 1: niets aangevinkt is geen doelgroep", () => {
+  assert.deepEqual(U.doelgroepenUit([]), []);
 });
 
 test("vraag 1: Wajong rekent met het register", () => {
@@ -68,19 +61,15 @@ test("vraag 1: beschut werk rekent zonder register, wel met Wajong", () => {
   ]);
 });
 
-// Dezelfde 21 combinaties als met de gekoppelde vinkjes van eerder; de
-// tabel in regelrecht-corpus-FCV (uitkomsten.feature) rekent ze allemaal.
-test("vraag 1: alle vinkjes samen geven precies de 21 combinaties", () => {
+// De 21 combinaties van eerder zonder "geen"; de tabel in
+// regelrecht-corpus-FCV (uitkomsten.feature) rekent ze allemaal.
+test("vraag 1: alle vinkjes samen geven precies de 20 combinaties", () => {
   const ids = U.DOELGROEPEN.map(([id]) => id);
   const uit = new Set();
-  for (let m = 0; m < 1 << ids.length; m++) {
-    const vinkjes = ids.filter((_, i) => m & (1 << i));
-    // Botsende vinkjes gaan niet naar de engine (vinkVraag1).
-    if (!U.vraag1Botst(vinkjes)) uit.add(U.doelgroepenUit(vinkjes).join());
-  }
+  for (let m = 0; m < 1 << ids.length; m++)
+    uit.add(U.doelgroepenUit(ids.filter((_, i) => m & (1 << i))).join());
   const verwacht = [
     "",
-    "geen",
     "register",
     "register,bijstand",
     "register,wajong",
@@ -104,16 +93,9 @@ test("vraag 1: alle vinkjes samen geven precies de 21 combinaties", () => {
   assert.deepEqual([...uit].sort(), verwacht.sort());
 });
 
-test("vraag 1: zes opties, WIA zonder WAO, geen Wsw of weet ik nog niet", () => {
+test("vraag 1: vijf opties, WIA zonder WAO, geen Wsw, weet ik nog niet of geen van deze", () => {
   const ids = U.DOELGROEPEN.map(([id]) => id);
-  assert.deepEqual(ids, [
-    "register",
-    "wajong",
-    "wia",
-    "bijstand",
-    "beschut",
-    "geen",
-  ]);
+  assert.deepEqual(ids, ["register", "wajong", "wia", "bijstand", "beschut"]);
   assert.equal(
     U.DOELGROEPEN.find(([id]) => id === "wia")[1],
     "Iemand met een WIA-uitkering",
@@ -247,13 +229,6 @@ test("Wajong + bijstand: geen loonkostensubsidie", () => {
   assert.equal(regel(u, "lks"), undefined);
 });
 
-test("geen van deze: niets, wel de toelichting", () => {
-  const u = reken(["geen"], 60);
-  assert.deepEqual(u.regels, []);
-  assert.ok(u.overige.every((o) => !o.geldt));
-  assert.ok(u.aannames.includes("geen"));
-});
-
 test("niets aangevinkt: geen bedragen en geen no-riskpolis", () => {
   const u = reken([], 60);
   assert.deepEqual(u.regels, []);
@@ -293,7 +268,7 @@ test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
     "heeft_recht_op_no_risk_polis",
     "mag_jobcoaching_toekennen",
   ]);
-  assert.deepEqual(doelen(["geen"]), []);
+  assert.deepEqual(doelen([]), []);
 });
 
 test("fix: tijdens het rekenen geldt een oude uitkomst niet als bekend", () => {
@@ -328,7 +303,7 @@ test("route: situatie volgt de volgorde wajong, wia, bijstand, register, uitleg"
   assert.equal(s(["register", "wajong", "wia"]), "wajong");
   assert.equal(s(["register", "wia"]), "wia");
   assert.equal(s(["register"]), "register");
-  for (const d of ["beschut", "geen"]) assert.equal(s([d]), "uitleg");
+  assert.equal(s(["beschut"]), "uitleg");
   assert.equal(s([]), "uitleg");
 });
 
@@ -497,7 +472,7 @@ test("fix: overzicht met een taak voor de werknemer zegt niet 'niets aan te vrag
 });
 
 test("route: uitleg en niets aangevinkt geven een overzicht zonder zaak", () => {
-  for (const d of [["beschut"], ["geen"], []]) {
+  for (const d of [["beschut"], []]) {
     const r = R.routeVoor(d, reken(d, 100));
     assert.equal(r.overzicht, true, d.join());
     assert.equal(r.zaak, null, d.join());

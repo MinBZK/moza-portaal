@@ -45,11 +45,6 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
     uitleg:
       "Bij beschut werk verstrekt de gemeente loonkostensubsidie als dat nodig is. Of dat zo is, beoordeelt de gemeente. Daarom staat het bedrag er niet in.",
   },
-  geen: {
-    kort: "Geen regeling met een bedrag.",
-    uitleg:
-      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
-  },
 };
 
 /** De disclaimers bij het loonkostenvoordeel (lkvVoorbehoud in _uitkomsten.ts). */
