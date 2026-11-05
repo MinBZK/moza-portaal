@@ -1920,7 +1920,7 @@ small,
 	padding-inline: var(--rhc-space-md);
 }
 
-.rhc-mox-icon-list a.rhc-mox-icon-list__item {
+.rhc-mox-icon-list :is(a, button).rhc-mox-icon-list__item {
 	color: inherit;
 	text-decoration: none;
 
@@ -1933,6 +1933,62 @@ small,
 			var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
 		outline-offset: calc(-1 * var(--utrecht-focus-outline-width));
 	}
+}
+
+/* A row that opens something, such as a side panel. */
+.rhc-mox-icon-list button.rhc-mox-icon-list__item {
+	background: none;
+	border: 0;
+	cursor: pointer;
+	font: inherit;
+	inline-size: 100%;
+	text-align: start;
+}
+
+/* --- Side panel: slides in from the right, for extra explanation --- */
+dialog.rhc-mox-side-panel {
+	--utrecht-drawer-background-color: var(--rhc-color-wit);
+	--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
+	--utrecht-drawer-min-inline-size: min(40rem, calc(100vw - 44px));
+	--utrecht-drawer-padding-block-end: var(--rhc-space-2xl);
+	--utrecht-drawer-padding-block-start: var(--rhc-space-2xl);
+	--utrecht-drawer-padding-inline-end: var(--rhc-space-2xl);
+	--utrecht-drawer-padding-inline-start: var(--rhc-space-2xl);
+	background: var(--utrecht-drawer-background-color);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	inset-block: 0;
+	inset-inline-end: 0;
+	position: fixed;
+	transform: translateX(100%);
+}
+
+dialog.rhc-mox-side-panel[open] {
+	display: flex;
+	flex-direction: column;
+	row-gap: var(--rhc-space-2xl);
+	transform: translateX(0);
+}
+
+@starting-style {
+	dialog.rhc-mox-side-panel[open] {
+		transform: translateX(100%);
+	}
+}
+
+.rhc-mox-side-panel__header {
+	align-items: start;
+	display: flex;
+	gap: var(--rhc-space-lg);
+	justify-content: space-between;
+
+	h2 {
+		margin: 0;
+	}
+}
+
+.rhc-mox-side-panel__content {
+	display: grid;
+	row-gap: var(--rhc-space-lg);
 }
 
 .rhc-mox-icon-list__text {
