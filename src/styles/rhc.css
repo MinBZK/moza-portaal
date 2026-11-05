@@ -1892,8 +1892,8 @@ small,
 	}
 }
 
-/* --- Icon list: rows with an icon, a title and one line of text --- */
-.rhc-mox-icon-list {
+/* --- Bordered list: rows with a title and one line of text --- */
+.rhc-mox-bordered-list {
 	border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
 	border-radius: var(--rhc-border-radius-md);
 	display: grid;
@@ -1911,20 +1911,18 @@ small,
 	}
 }
 
-.rhc-mox-icon-list__item {
-	align-items: start;
-	column-gap: var(--rhc-space-md);
+.rhc-mox-bordered-list__item {
 	display: grid;
-	grid-template-columns: auto 1fr auto;
 	padding-block: var(--rhc-space-md);
 	padding-inline: var(--rhc-space-md);
+	row-gap: var(--rhc-space-2xs);
 }
 
-.rhc-mox-icon-list a.rhc-mox-icon-list__item {
+.rhc-mox-bordered-list a.rhc-mox-bordered-list__item {
 	color: inherit;
 	text-decoration: none;
 
-	&:hover .rhc-mox-icon-list__title {
+	&:hover .rhc-mox-bordered-list__title {
 		text-decoration: underline;
 	}
 
@@ -1935,12 +1933,12 @@ small,
 	}
 }
 
-.rhc-mox-icon-list__text {
+.rhc-mox-bordered-list__text {
 	display: grid;
 	row-gap: var(--rhc-space-2xs);
 }
 
-.rhc-mox-icon-list__title {
+.rhc-mox-bordered-list__title {
 	color: var(--rhc-color-foreground-default);
 }
 
