@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   Alert,
   DataSummary,
   DataSummaryItem,
   Heading,
-  Icon,
   Paragraph,
 } from "@/components/rhc";
 import {
@@ -65,12 +63,6 @@ const AanvraagPage = async ({
         label={aanvraag.titel}
       />
       <Heading level={1}>{aanvraag.titel}</Heading>
-      <Paragraph>
-        <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-          <Icon icon="chevron-left" />
-          Terug naar Personeel
-        </Link>
-      </Paragraph>
 
       {flow && (
         <div className="rhc-mox-card rhc-mox-row-gap">
