@@ -441,23 +441,23 @@ const VragenMetStaat = ({
               resultaat={resultaat}
               meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
             />
-            <AanvraagKnop bekend={resultaat.bekend} />
-            <Paragraph className="rhc-mox-small-text">
-              Wij vullen de aanvraag voor u in. U controleert en verstuurt zelf.
-            </Paragraph>
-            <Paragraph
-              role="status"
-              id="aanvragen-bezig"
-              className="rhc-mox-small-text"
-            >
-              {resultaat.bekend
-                ? ""
-                : resultaat.fout
-                  ? "De berekening is niet gelukt. Laad de pagina opnieuw."
-                  : "De berekening is nog bezig."}
-            </Paragraph>
           </StickyInfoBox>
         </div>
+      </div>
+
+      {/* Onderaan de kaart, net als de knop naar de volgende stap in elke stap. */}
+      <div className="rhc-mox-stack">
+        <Paragraph>
+          Wij vullen de aanvraag voor u in. U controleert en verstuurt zelf.
+        </Paragraph>
+        <AanvraagKnop bekend={resultaat.bekend} />
+        <Paragraph role="status" id="aanvragen-bezig">
+          {resultaat.bekend
+            ? ""
+            : resultaat.fout
+              ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+              : "De berekening is nog bezig."}
+        </Paragraph>
       </div>
     </>
   );
