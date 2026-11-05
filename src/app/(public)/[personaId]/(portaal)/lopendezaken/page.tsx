@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import { AccordionProvider, Heading, Paragraph } from "@/components/rhc";
-import { getActievePersona } from "@/app/(public)/_persona";
-import {
-  getDemoConceptAanvragen,
-  getDemoZaken,
-  getDemoZakenVragen,
-} from "@/demo";
-import ConceptAanvragen from "./_conceptAanvragen";
+import { getDemoZaken, getDemoZakenVragen } from "@/demo";
 import ZakenTabel from "./_zakenTabel";
 import ZakenTabs from "./_zakenTabs";
 import PageSearch from "@/layouts/search";
@@ -14,11 +8,9 @@ import PageSearch from "@/layouts/search";
 export const metadata: Metadata = { title: "Lopende zaken" };
 
 const LopendeZakenPage = async () => {
-  const persona = await getActievePersona();
-  const [zaken, vragen, concepten] = await Promise.all([
+  const [zaken, vragen] = await Promise.all([
     getDemoZaken("lopend"),
     getDemoZakenVragen(),
-    getDemoConceptAanvragen(persona?.id),
   ]);
 
   return (
@@ -29,8 +21,6 @@ const LopendeZakenPage = async () => {
         <ZakenTabs actief="lopend" />
         <ZakenTabel zaken={zaken} soort="lopend" />
       </div>
-
-      <ConceptAanvragen aanvragen={concepten} />
 
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
