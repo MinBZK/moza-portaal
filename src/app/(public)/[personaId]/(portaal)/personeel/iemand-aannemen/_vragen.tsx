@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   ActionGroup,
   Fieldset,
@@ -18,17 +18,7 @@ import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
-import basis from "./_basisfeiten.json";
-import { loonkostenPerJaar } from "./_engine";
-import {
-  balansRegels,
-  invoerVoor,
-  type Feiten,
-  type Overig,
-  type Regel,
-} from "./_uitkomsten";
-import type { Resultaat } from "./_useUitkomsten";
-import Waarom from "./_waarom";
+import type { BalansRegel, Overig, Regel } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -225,86 +215,16 @@ const Extern = ({ bron, wat }: { bron: Bron; wat: string }) => (
   </a>
 );
 
-const Termijnen = ({ regels }: { regels: Regel[] }) => {
-  const termijnen = termijnenVoor(regels);
-  if (termijnen.length === 0) return null;
-  return (
-    <section className="rhc-mox-row-gap" aria-labelledby="termijnen">
-      <Heading level={3} id="termijnen">
-        Let op de termijnen
-      </Heading>
-      <UnorderedList>
-        {termijnen.map((t) => (
-          <UnorderedListItem key={t.id}>
-            <strong>{t.regeling}.</strong> {t.tekst}
-            <br />
-            Wanneer weet u het? {t.wanneer}
-            {t.bronnen.map((b) => (
-              <span key={b.url + b.tekst}>
-                <br />
-                <Extern bron={b} wat="opent in een nieuw tabblad" />
-              </span>
-            ))}
-            <br />
-            <Extern bron={t.meer} wat="opent in een nieuw tabblad" />
-          </UnorderedListItem>
-        ))}
-      </UnorderedList>
-    </section>
-  );
-};
-
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
-const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string> = {
+const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
   lks: () =>
-    "Loonkostensubsidie: de gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet. Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
+    "De gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet. Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
   ld: () =>
-    "Loondispensatie: u betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, ten hoogste vijf jaar. Daarna kan UWV die verlengen.",
+    "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, ten hoogste vijf jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>
     regel.categorie === "arbeidsgehandicapte_werknemer"
-      ? "Loonkostenvoordeel: u zet het aan in de loonaangifte en bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
-      : "Loonkostenvoordeel: u zet het aan in de loonaangifte.",
-};
-
-const WatUDoet = ({ regels }: { regels: Regel[] }) => {
-  const met = regels.filter((r) => r.bedragPerJaar > 0);
-  if (met.length === 0) return null;
-  return (
-    <section className="rhc-mox-row-gap" aria-labelledby="wat-u-doet">
-      <Heading level={2} id="wat-u-doet">
-        Wat u ervoor doet
-      </Heading>
-      <UnorderedList>
-        {met.map((r) => (
-          <UnorderedListItem key={r.id}>
-            {WAT_U_DOET[r.id](r)}
-          </UnorderedListItem>
-        ))}
-      </UnorderedList>
-    </section>
-  );
-};
-
-/** Per regeling de uitkomst van de engine die "Hoe is dit berekend?" uitlegt. */
-const BEREKEND: Record<
-  Regel["id"],
-  { wet: string; output: string; naam: string }
-> = {
-  lks: {
-    wet: "participatiewet",
-    output: "heeft_recht_op_lks",
-    naam: "Loonkostensubsidie",
-  },
-  ld: {
-    wet: "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
-    output: "heeft_recht_op_loondispensatie",
-    naam: "Loondispensatie",
-  },
-  lkv: {
-    wet: "wet_tegemoetkomingen_loondomein",
-    output: "heeft_recht_op_lkv",
-    naam: "Loonkostenvoordeel",
-  },
+      ? "U bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
+      : undefined,
 };
 
 /**
@@ -324,49 +244,40 @@ const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
 };
 
 /**
- * "Hoe is dit berekend?" in de hoofdkolom: per regeling met een bedrag een
- * uitklapper met het bedrag per jaar in de titel, de stap naar dat bedrag in
- * gewone woorden, en de korte afleiding uit de wet.
+ * Wat in de (i) van een regeling met een bedrag komt, na wanneer die geldt:
+ * hoe het bedrag is berekend, wat de werkgever ervoor doet en de termijn met
+ * de bron. De uitleg staat zo bij het bedrag, en alleen als de ondernemer
+ * erom vraagt.
  */
-const HoeBerekend = ({
-  a,
-  resultaat,
-}: {
-  a: Antwoorden;
-  resultaat: Resultaat;
-}) => {
-  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
-  const regels = balansRegels(
-    resultaat.uitkomsten,
-    loonkostenPerJaar(a),
-  ).filter((r) => r.bedrag > 0 && r.regel);
-  if (!resultaat.bekend || resultaat.fout || regels.length === 0) return null;
+const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
+  if (!r.regel || r.bedrag <= 0) return null;
+  const doet = WAT_U_DOET[r.id](r.regel);
+  const termijn = termijnenVoor(regels).find((t) => t.id === r.id);
   return (
-    <section className="rhc-mox-row-gap" aria-labelledby="hoe-berekend">
-      <Heading level={2} id="hoe-berekend">
-        Hoe is dit berekend?
-      </Heading>
-      {regels.map((r) => {
-        const b = BEREKEND[r.id];
-        const invoer = invoeren.find(
-          (i) => i.wet === b.wet && i.output === b.output,
-        );
-        if (!invoer || !r.regel) return null;
-        return (
-          <Waarom
-            key={r.id}
-            invoer={invoer}
-            labels={{}}
-            regeling={b.naam}
-            kvk=""
-            headingLevel={3}
-            licht
-            titel={`${b.naam}: ${euro(r.bedrag)} per jaar`}
-            inleiding={<Paragraph>{naarJaar(r.regel, r.bedrag, a)}</Paragraph>}
-          />
-        );
-      })}
-    </section>
+    <>
+      <Paragraph>
+        <strong>Zo berekend.</strong> {naarJaar(r.regel, r.bedrag, a)}
+      </Paragraph>
+      {doet && (
+        <Paragraph>
+          <strong>Wat u ervoor doet.</strong> {doet}
+        </Paragraph>
+      )}
+      {termijn && (
+        <>
+          <Paragraph>
+            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer}
+          </Paragraph>
+          <UnorderedList>
+            {[...termijn.bronnen, termijn.meer].map((b) => (
+              <UnorderedListItem key={b.url + b.tekst}>
+                <Extern bron={b} wat="opent in een nieuw tabblad" />
+              </UnorderedListItem>
+            ))}
+          </UnorderedList>
+        </>
+      )}
+    </>
   );
 };
 
@@ -393,20 +304,12 @@ const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
-const Vragen = ({
-  onderneming,
-  toelichting,
-}: {
-  onderneming: string;
-  /** Alinea's onder de knop: wie de regelingen uitvoert. */
-  toelichting?: string[];
-}) => {
+const Vragen = ({ onderneming }: { onderneming: string }) => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
   return (
     <VragenMetStaat
       onderneming={onderneming}
-      toelichting={toelichting}
       a={staat.antwoorden}
       zet={(deel) => werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })}
     />
@@ -415,12 +318,10 @@ const Vragen = ({
 
 const VragenMetStaat = ({
   onderneming,
-  toelichting,
   a,
   zet,
 }: {
   onderneming: string;
-  toelichting?: string[];
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
@@ -588,10 +489,6 @@ const VragenMetStaat = ({
                 />
               )}
             </Fieldset>
-            <HoeBerekend a={a} resultaat={resultaat} />
-            {resultaat.bekend && !resultaat.fout && (
-              <WatUDoet regels={resultaat.uitkomsten.regels} />
-            )}
           </div>
           <div className="rhc-grid__cell rhc-grid__cell-t-5">
             <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
@@ -599,22 +496,27 @@ const VragenMetStaat = ({
                 Een berekening vooraf met uw antwoorden. De beslissing neemt de
                 organisatie die de regeling uitvoert.
               </Paragraph>
-              <Balans antwoorden={a} resultaat={resultaat} />
-              {resultaat.bekend &&
-                !resultaat.fout &&
-                resultaat.uitkomsten.regels.some(
-                  (r) => r.bedragPerJaar > 0,
-                ) && (
-                  <Paragraph>
-                    <a
-                      href="#hoe-berekend"
-                      className="utrecht-link utrecht-link--html-a"
-                    >
-                      Bekijk hoe dit is berekend en wat u ervoor doet
-                    </a>
-                  </Paragraph>
-                )}
+              <Balans
+                antwoorden={a}
+                resultaat={resultaat}
+                meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
+              />
               <AanvraagKnop bekend={resultaat.bekend} />
+              <Paragraph className="rhc-mox-small-text">
+                Wij vullen de aanvraag voor u in. U controleert en verstuurt
+                zelf.
+              </Paragraph>
+              <Paragraph
+                role="status"
+                id="aanvragen-bezig"
+                className="rhc-mox-small-text"
+              >
+                {resultaat.bekend
+                  ? ""
+                  : resultaat.fout
+                    ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+                    : "De berekening is nog bezig."}
+              </Paragraph>
             </StickyInfoBox>
           </div>
         </div>
@@ -634,44 +536,18 @@ const VragenMetStaat = ({
                 <InfoToggletip
                   label={`Toelichting bij ${OVERIG[o.id].naam.toLowerCase()}`}
                 >
-                  Uitkomst van de regelrecht-engine bij uw antwoorden. Of de
-                  regeling geldt, beslist de organisatie die haar uitvoert.
+                  <Paragraph>{OVERIG[o.id].tekst(o)}</Paragraph>
+                  <Paragraph>
+                    Of de regeling geldt, beslist de organisatie die haar
+                    uitvoert.
+                  </Paragraph>
                 </InfoToggletip>{" "}
                 <Uitvoerder id={OVERIG[o.id].uitvoerder} />
-                <br />
-                {OVERIG[o.id].tekst(o)}
               </UnorderedListItem>
             ))}
           </UnorderedList>
         </section>
       )}
-
-      <Separator></Separator>
-
-      <section className="rhc-mox-stack" aria-labelledby="aanvragen">
-        <Heading level={2} id="aanvragen">
-          Regelingen aanvragen
-        </Heading>
-        <Paragraph>
-          Wij vullen de aanvragen voor u in met gegevens die al bij de overheid
-          bekend zijn. U controleert alles, vult aan wat nog ontbreekt en
-          beslist zelf of u de aanvraag verstuurt. Tussendoor opslaan kan.
-        </Paragraph>
-        <AanvraagKnop bekend={resultaat.bekend} />
-        <Paragraph role="status" id="aanvragen-bezig">
-          {resultaat.bekend
-            ? ""
-            : resultaat.fout
-              ? "De berekening is niet gelukt. Laad de pagina opnieuw."
-              : "De berekening is nog bezig."}
-        </Paragraph>
-        {toelichting?.map((alinea) => (
-          <Paragraph key={alinea}>{alinea}</Paragraph>
-        ))}
-        {resultaat.bekend && !resultaat.fout && (
-          <Termijnen regels={resultaat.uitkomsten.regels} />
-        )}
-      </section>
     </>
   );
 };
