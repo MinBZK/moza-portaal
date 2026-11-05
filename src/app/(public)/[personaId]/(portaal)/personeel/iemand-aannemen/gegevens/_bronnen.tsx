@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -303,11 +304,17 @@ const Bronnen = ({
           Gegevens die de overheid kan ophalen voor de berekening
         </Heading>
         {wachtend ? (
-          <Paragraph>
-            Voor {wachtend.naam} haalt dit prototype geen gegevens op. In het
-            echt vragen wij ze met het BSN op bij UWV, de gemeente en de
-            Belastingdienst.
-          </Paragraph>
+          <>
+            <Paragraph>
+              Wij vragen {wachtend.naam} eerst om toestemming. Daarna halen wij
+              met het BSN de gegevens op bij UWV, de gemeente en de
+              Belastingdienst.
+            </Paragraph>
+            <Paragraph>
+              Tot {wachtend.naam} toestemming geeft, kunt u niet verder. Uw
+              aanvraag blijft bewaard.
+            </Paragraph>
+          </>
         ) : !gekozen ? (
           <Paragraph>
             Kies eerst de kandidaat. Daarna halen wij de gegevens op die nodig
@@ -429,7 +436,7 @@ const Bronnen = ({
       <div className="rhc-mox-stack">
         <Paragraph role="status">
           {wachtend
-            ? "Voor deze werknemer zijn in dit prototype geen gegevens."
+            ? `Wacht op toestemming van ${wachtend.naam}.`
             : !gekozen
               ? "Nog geen kandidaat gekozen."
               : !opgave
@@ -455,6 +462,14 @@ const Bronnen = ({
               ? "Bekijk wat voor u geldt"
               : "Controleren en versturen"}
           </Button>
+          {wachtend && (
+            <Link
+              href="/personeel"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
+            >
+              Sla op en ga later verder
+            </Link>
+          )}
         </ActionGroup>
       </div>
     </>

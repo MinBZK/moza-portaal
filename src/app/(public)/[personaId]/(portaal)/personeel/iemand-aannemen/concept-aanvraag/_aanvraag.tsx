@@ -861,9 +861,9 @@ const AanvraagInhoud = ({
             </Button>
             <Link
               href="/personeel"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--subtle"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
             >
-              Opslaan en later afronden
+              Sla op en ga later verder
             </Link>
           </ActionGroup>
         )}
