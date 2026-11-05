@@ -22,6 +22,7 @@ import { RegulationIcon } from "@/components/icons/regulationIcon";
 import { SubsidyIcon } from "@/components/icons/subsidyIcon";
 import LogoutButton from "@/components/LogoutButton";
 import DemoNavigation, { type DemoMenu } from "./demoNavigation";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 
 const Navigation = ({
   berichtenboxBadge,
@@ -60,6 +61,7 @@ const Navigation = ({
 
   const open = useMenuOpen();
   const kiesOrganisatie = useKiesOrganisatie(actieveOrganisatieId);
+  const metDigitaleAssistent = useFlag("mox_digitaleAssistent");
 
   return (
     <SideNav aria-label={isDemo ? "Componenten" : "Hoofdmenu"}>
@@ -144,15 +146,17 @@ const Navigation = ({
                   Bewaarde items
                 </SideNavLink>
               </SideNavItem>
-              <SideNavItem>
-                <SideNavLink
-                  current={isActief("/digitale-assistent")}
-                  href="/digitale-assistent"
-                >
-                  <DigitalAssistantIcon />
-                  Digitale assistent (AI)
-                </SideNavLink>
-              </SideNavItem>
+              {metDigitaleAssistent && (
+                <SideNavItem>
+                  <SideNavLink
+                    current={isActief("/digitale-assistent")}
+                    href="/digitale-assistent"
+                  >
+                    <DigitalAssistantIcon />
+                    Digitale assistent (AI)
+                  </SideNavLink>
+                </SideNavItem>
+              )}
             </SideNavList>
             <SideNavList>
               <SideNavItem>
