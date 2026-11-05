@@ -110,7 +110,8 @@ h3,
 h4,
 h5,
 p,
-li {
+li,
+dd {
 	max-inline-size: 75ch;
 }
 
@@ -652,6 +653,12 @@ small,
 /* Centred instead of baseline: an icon at the start would move the baseline. */
 .rhc-theme.mox-theme .utrecht-action-group {
 	align-items: center;
+}
+
+/* Verder is first in the HTML: at the block start when wrapped, at the inline end in a row. */
+.utrecht-action-group.rhc-mox-step-navigation {
+	flex-direction: row-reverse;
+	justify-content: flex-end;
 }
 
 .rhc-mox-action-group-dense {
@@ -1668,8 +1675,22 @@ small,
 	}
 
 	.rhc-mox-range-slider__value {
+		display: inline-block;
 		font-weight: var(--rhc-text-font-weight-semi-bold);
+		transform-origin: right center;
 		white-space: nowrap;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: transform 150ms var(--rhc-mox-transition-easing);
+		}
+	}
+
+	/* Same emphasis as a changed value, for as long as the thumb is dragged. */
+	@media (prefers-reduced-motion: no-preference) {
+		.rhc-mox-range-slider__value--dragging {
+			font-weight: var(--rhc-text-font-weight-bold);
+			transform: scale(1.15);
+		}
 	}
 
 	.rhc-mox-range-slider__input {
@@ -2248,7 +2269,7 @@ small,
 	gap: var(--rhc-space-md);
 	padding: var(--rhc-space-md);
 	scroll-margin-inline: var(--rhc-mox-tabs-fade);
-	text-decoration: none;
+	text-decoration: none !important;
 	white-space: nowrap;
 
 	&:focus-visible {

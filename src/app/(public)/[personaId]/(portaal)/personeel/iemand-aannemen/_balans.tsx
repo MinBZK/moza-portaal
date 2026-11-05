@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ChangedValue from "@/components/ChangedValue";
+import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
+import { useSliderDragging } from "@/components/RangeSlider";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import Spinner from "@/components/Spinner";
@@ -180,6 +181,8 @@ const Balans = ({
   kort?: boolean;
 }) => {
   const { uitkomsten, bekend, bezig, fout } = resultaat;
+  // Values that follow a slider light up when the user lets go of it.
+  const slepen = useSliderDragging();
   const kosten = loonkostenPerJaar(antwoorden);
   const regels = balansRegels(uitkomsten, kosten);
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
@@ -271,7 +274,7 @@ const Balans = ({
 
   if (kort)
     return (
-      <>
+      <ChangedValueGroup settled={!slepen}>
         <dl className="rhc-data-summary rhc-data-summary--column">
           {regels.map((r) => (
             <div key={r.id} className="rhc-data-summary__item">
@@ -315,11 +318,11 @@ const Balans = ({
         </Paragraph>
         {bron}
         {statusmelding}
-      </>
+      </ChangedValueGroup>
     );
 
   return (
-    <>
+    <ChangedValueGroup settled={!slepen}>
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
@@ -405,7 +408,7 @@ const Balans = ({
       </div>
       {bron}
       {statusmelding}
-    </>
+    </ChangedValueGroup>
   );
 };
 
