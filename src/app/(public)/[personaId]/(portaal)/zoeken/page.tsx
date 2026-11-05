@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Heading, Paragraph } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import PageSearch from "@/layouts/search";
+import TextBadge from "@/components/TextBadge";
 
 type SearchParams = Promise<{ q?: string | string[] }>;
 
@@ -70,10 +71,17 @@ const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       <PageSearch key={query} defaultValue={query} />
 
       <section className="rhc-mox-card" aria-labelledby="zoekresultaten">
-        <Heading level={2} id="zoekresultaten">
-          {countText(query)}
+        <Heading level={2} appearanceLevel={4} id="zoekresultaten">
+          {query ? (
+            <>
+              {RESULTATEN.length} resultaten voor “
+              <span className="rhc-mox-semi-bold">{query}</span>”
+            </>
+          ) : (
+            countText(query)
+          )}
         </Heading>
-        <ol className="rhc-mox-search-results">
+        <ol className="rhc-mox-search-results rhc-mox-stack rhc-mox-stack--3xl">
           {RESULTATEN.map((resultaat) => (
             <li
               key={resultaat.href}
@@ -87,8 +95,8 @@ const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
                   {resultaat.titel}
                 </Link>
               </Heading>
-              <Paragraph className="rhc-mox-small-text">
-                {resultaat.soort}
+              <Paragraph>
+                <TextBadge>{resultaat.soort}</TextBadge>
               </Paragraph>
               <Paragraph>{resultaat.tekst}</Paragraph>
             </li>

@@ -38,6 +38,7 @@ import {
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import { euro } from "../_werkgever";
+import { terugNaar } from "../_stappen";
 
 /** Naam van de organisatie achter elke bron die de ondernemer kan delen. */
 const BRON_NAAM: Record<BronId, string> = {
@@ -297,6 +298,7 @@ const OverzichtInhoud = ({
       {/* Er valt niets te versturen; de ondernemer rondt hier af. */}
       <StepNavigation
         back="/personeel/iemand-aannemen/gegevens"
+        backLabel={terugNaar(2)}
         next={{ label: "Klaar", href: "/lopendezaken", final: true }}
       />
     </>

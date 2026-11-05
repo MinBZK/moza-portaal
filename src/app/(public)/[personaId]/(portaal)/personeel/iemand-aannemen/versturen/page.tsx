@@ -19,15 +19,20 @@ const VersturenPage = async () => {
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <Stappen huidige={4} />
-      <Paragraph>
-        Dit verstuurt u, en naar wie. Klopt er iets niet? Ga terug naar de
-        aanvraag om het aan te passen.
-      </Paragraph>
-      <Versturen
-        perSituatie={{ gemeente: situaties.gemeente, wajong: situaties.wajong }}
-        werkgever={werkgeverVan(organisatie)}
-      />
+      <div className="rhc-mox-card">
+        <Stappen huidige={4} />
+        <Paragraph>
+          Dit verstuurt u, en naar wie. Klopt er iets niet? Ga terug naar de
+          aanvraag om het aan te passen.
+        </Paragraph>
+        <Versturen
+          perSituatie={{
+            gemeente: situaties.gemeente,
+            wajong: situaties.wajong,
+          }}
+          werkgever={werkgeverVan(organisatie)}
+        />
+      </div>
     </>
   );
 };
