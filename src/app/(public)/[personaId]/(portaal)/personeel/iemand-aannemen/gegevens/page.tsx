@@ -10,7 +10,7 @@ import { vul, werkgeverVan } from "../_werkgever";
 import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
-  title: "Aanvraag invullen - Personeel en rollen",
+  title: "Gegevens delen - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 2: aanvraag invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
