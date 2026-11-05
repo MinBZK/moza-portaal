@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ActionGroup, Heading, Icon, Paragraph } from "@/components/rhc";
+import { ActionGroup, Heading, Paragraph } from "@/components/rhc";
 import PageSearch from "@/layouts/search";
 import Stappen from "./_stappen";
 import { TAAK_TITEL } from "./_taakTitel";
@@ -13,42 +13,35 @@ export const metadata: Metadata = {
 const REGELINGEN = [
   {
     naam: "Loonkostensubsidie",
-    icoon: "currency-euro",
     tekst:
       "De gemeente betaalt het verschil tussen wat uw werknemer kan en het minimumloon. Gemeente.",
   },
   {
     naam: "Loondispensatie",
-    icoon: "briefcase",
     tekst:
       "U betaalt minder loon aan een werknemer met een Wajong-uitkering die minder kan. UWV.",
   },
   {
     naam: "Loonkostenvoordeel",
-    icoon: "currency-euro",
     tekst:
       "Een bedrag per verloond uur, voor iemand uit het doelgroepregister of met een doelgroepverklaring. Belastingdienst.",
   },
   {
     naam: "No-riskpolis",
-    icoon: "versleutelen",
     tekst:
       "Wordt uw werknemer ziek, dan betaalt UWV ziekengeld. U betaalt het loon door. UWV, geen aanvraag nodig.",
   },
   {
     naam: "Jobcoaching",
-    icoon: "user",
     tekst: "Begeleiding op de werkplek. Gemeente of UWV.",
   },
   {
     naam: "Werkplekaanpassing",
-    icoon: "instellingen",
     tekst:
       "Een aangepaste werkplek of een hulpmiddel voor uw werknemer. Gemeente of UWV.",
   },
   {
     naam: "Proefplaatsing",
-    icoon: "kalender",
     tekst:
       "De kandidaat werkt eerst op proef bij u, zonder dat u loon betaalt. Gemeente of UWV.",
   },
@@ -81,28 +74,26 @@ const IemandAannemenPage = () => (
         <Heading level={2} id="regelingen">
           Regelingen die kunnen gelden
         </Heading>
-        <ul className="rhc-mox-icon-list">
+        <ul className="rhc-mox-bordered-list">
           {REGELINGEN.map((r) => (
-            <li key={r.naam} className="rhc-mox-icon-list__item">
-              <Icon icon={r.icoon} />
-              <span className="rhc-mox-icon-list__text">
-                <span className="rhc-mox-icon-list__title">{r.naam}</span>
+            <li key={r.naam} className="rhc-mox-bordered-list__item">
+              <span className="rhc-mox-bordered-list__text">
+                <span className="rhc-mox-bordered-list__title">{r.naam}</span>
                 <span className="rhc-mox-small-text">{r.tekst}</span>
               </span>
             </li>
           ))}
         </ul>
-        <ul className="rhc-mox-icon-list">
+        <ul className="rhc-mox-bordered-list">
           <li>
             <a
               href={DOP}
-              className="rhc-mox-icon-list__item"
+              className="rhc-mox-bordered-list__item"
               target="_blank"
               rel="external noopener noreferrer"
             >
-              <Icon icon="externe-link" />
-              <span className="rhc-mox-icon-list__text">
-                <span className="rhc-mox-icon-list__title">
+              <span className="rhc-mox-bordered-list__text">
+                <span className="rhc-mox-bordered-list__title">
                   Verlaag uw loonkosten met subsidies en tegemoetkomingen
                 </span>
                 <span className="rhc-mox-small-text">
@@ -110,7 +101,6 @@ const IemandAannemenPage = () => (
                   nieuw tabblad)
                 </span>
               </span>
-              <Icon icon="chevron-right" />
             </a>
           </li>
         </ul>
