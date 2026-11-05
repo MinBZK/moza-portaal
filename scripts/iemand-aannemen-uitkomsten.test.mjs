@@ -29,6 +29,49 @@ test("basis: elk doel rekent en alle routes staan dicht", () => {
 
 const U = await import("../" + MAP + "_uitkomsten.ts");
 
+// Stap 2 vraagt register, beschut werk en uitkering los; de engine krijgt
+// dezelfde doelgroepen als bij de vinkjes (doelgroepenUit).
+test("vragen: register ja zonder uitkering is register", () => {
+  assert.deepEqual(U.doelgroepenUit("ja", false, "geen"), ["register"]);
+});
+
+test("vragen: beschut werk telt als beschut, niet als register", () => {
+  assert.deepEqual(U.doelgroepenUit("ja", true, "bijstand"), [
+    "bijstand",
+    "beschut",
+  ]);
+});
+
+test("vragen: Wajong zet het register aan, ook bij Nee (Wfsv 38b lid 1 c)", () => {
+  assert.deepEqual(U.doelgroepenUit("nee", false, "wajong"), [
+    "register",
+    "wajong",
+  ]);
+});
+
+test("vragen: Weet ik niet rekent als niet in het register", () => {
+  assert.deepEqual(U.doelgroepenUit("onbekend", false, "bijstand"), [
+    "bijstand",
+  ]);
+});
+
+test("vragen: een andere uitkering geeft geen doelgroep", () => {
+  assert.deepEqual(U.doelgroepenUit("nee", false, "andere"), []);
+});
+
+test("vragen: oudere opslag terug naar de vragen", () => {
+  assert.deepEqual(U.vragenUit(["register", "wia"]), {
+    register: "ja",
+    beschut: false,
+    uitkering: "wia",
+  });
+  assert.deepEqual(U.vragenUit(["bijstand", "beschut"]), {
+    register: "ja",
+    beschut: true,
+    uitkering: "bijstand",
+  });
+});
+
 test("vraag 1: Wajong vinkt het register aan", () => {
   assert.deepEqual(U.kiesDoelgroep([], "wajong", true), ["register", "wajong"]);
 });
