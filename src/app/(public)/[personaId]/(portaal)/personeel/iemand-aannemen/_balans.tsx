@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import Spinner from "@/components/Spinner";
@@ -164,7 +165,7 @@ export const Aanname = ({ id }: { id: AannameId }) => (
 );
 
 /**
- * "Wat het kost en oplevert": loonkosten (benadering) min wat de
+ * "Voorbeeldberekening: wat het u kan opleveren": loonkosten (benadering) min wat de
  * regelingen opleveren, live uit de regelrecht-engine (useUitkomsten).
  * Compact (`kort`) voor de zijkolom van de aanvraag.
  */
@@ -172,10 +173,13 @@ const Balans = ({
   antwoorden,
   resultaat,
   kort,
+  meer,
 }: {
   antwoorden: Antwoorden;
   resultaat: Resultaat;
   kort?: boolean;
+  /** Extra uitleg in de (i) van een regeling, na wanneer die geldt. */
+  meer?: (regel: BalansRegel) => ReactNode;
 }) => {
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   const kosten = loonkostenPerJaar(antwoorden);
@@ -327,6 +331,7 @@ const Balans = ({
                         {toelichting.map((zin) => (
                           <Paragraph key={zin}>{zin}</Paragraph>
                         ))}
+                        {bekend && !fout && meer?.(r)}
                       </InfoToggletip>
                     </>
                   )}

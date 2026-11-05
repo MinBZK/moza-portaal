@@ -116,10 +116,10 @@ const IemandAannemenPage = () => (
         </Paragraph>
         <ActionGroup>
           <Link
-            href="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
+            href="/personeel/iemand-aannemen/voorbeeldberekening"
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Bereken wat het u oplevert
+            Maak een voorbeeldberekening
           </Link>
         </ActionGroup>
       </section>
