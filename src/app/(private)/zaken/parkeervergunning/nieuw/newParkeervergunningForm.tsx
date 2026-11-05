@@ -6,6 +6,7 @@ import { useCreateParkeervergunning } from "@/network/mock/hooks/createParkeerve
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import PageSearch from "@/layouts/search";
 
 const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
   const parkeervergunningSchema = z.object({
@@ -37,6 +38,7 @@ const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Nieuwe parkeervergunning aanvragen</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <form
           className="rhc-mox-stack rhc-mox-stack--2xl"

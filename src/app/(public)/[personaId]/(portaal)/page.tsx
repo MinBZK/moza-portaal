@@ -9,7 +9,6 @@ import {
 } from "@/components/rhc";
 import {
   getDemoBerichten,
-  getDemoConceptAanvragen,
   getDemoPersona,
   getDemoSubsidies,
   getDemoWetten,
@@ -17,8 +16,8 @@ import {
 import { getIngelogdeNaam, getKetenAccount } from "@/app/(public)/_persona";
 import { getKetenStatus } from "@/network/keten";
 import { stelselTekst } from "./berichtenbox/_lijstPagina";
-import BewaardeAanvragen from "./lopendezaken/_bewaardeAanvragen";
 import RecenteBerichten from "./_recenteBerichten";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Home" };
 
@@ -46,15 +45,13 @@ const HomePage = async ({
   params: Promise<{ personaId: string }>;
 }) => {
   const persona = await getDemoPersona((await params).personaId);
-  const [berichten, subsidies, wetten, naam, keten, concepten] =
-    await Promise.all([
-      getDemoBerichten(persona?.id),
-      getDemoSubsidies(persona?.homepageSubsidies),
-      getDemoWetten(persona?.homepageRegelgeving),
-      getIngelogdeNaam(persona),
-      getKetenAccount().then(getKetenStatus),
-      getDemoConceptAanvragen(persona?.id),
-    ]);
+  const [berichten, subsidies, wetten, naam, keten] = await Promise.all([
+    getDemoBerichten(persona?.id),
+    getDemoSubsidies(persona?.homepageSubsidies),
+    getDemoWetten(persona?.homepageRegelgeving),
+    getIngelogdeNaam(persona),
+    getKetenAccount().then(getKetenStatus),
+  ]);
 
   // Only shown once the messages have loaded (RecenteBerichten).
   const naarBerichtenbox = (
@@ -70,8 +67,8 @@ const HomePage = async ({
 
   return (
     <>
-      <BewaardeAanvragen aanvragen={concepten} />
       <Heading level={1}>Welkom {naam}</Heading>
+      <PageSearch />
 
       <section className="rhc-mox-card" aria-labelledby="recente-berichten">
         <Heading level={2} id="recente-berichten">

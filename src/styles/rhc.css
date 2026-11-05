@@ -67,7 +67,7 @@
 	--rhc-mox-landing-info-background: var(--rhc-color-core-500);
 
 	--rhc-border-width-lg: 4px;
-	--rhc-nav-bar-border-block-end-width: var(--rhc-border-width-lg);
+	--rhc-nav-bar-border-block-end-width: var(--rhc-border-width-md);
 	--rhc-sidenav-link-padding-block-end: var(--rhc-space-md);
 	--rhc-sidenav-link-padding-block-start: var(--rhc-space-md);
 	--rhc-sidenav-link-padding-inline-start: var(--rhc-space-md);
@@ -902,6 +902,70 @@ small,
 	padding: var(--rhc-space-lg);
 }
 
+/* --- Site search --- */
+.rhc-mox-site-search form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-site-search__field {
+	display: flex;
+	gap: var(--rhc-space-sm);
+	position: relative;
+
+	.utrecht-textbox {
+		flex: 1;
+	}
+}
+
+.rhc-mox-site-search__popup {
+	--utrecht-listbox-max-block-size: none;
+
+	background-color: var(--rhc-color-wit);
+	border-radius: var(--rhc-border-radius-md);
+	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-400);
+	gap: var(--rhc-space-md);
+	inline-size: 100%;
+	inset-block-start: calc(100% + var(--rhc-space-xs));
+	inset-inline-start: 0;
+	padding: var(--rhc-space-md) 0;
+	position: absolute;
+	z-index: 10;
+
+	&[hidden] {
+		display: none;
+	}
+
+	.utrecht-listbox__group-label {
+		background-color: transparent;
+		color: var(--rhc-color-foreground-subtle);
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+		padding-inline: var(--rhc-space-lg);
+	}
+}
+
+.rhc-mox-site-search__option {
+	cursor: pointer;
+	gap: var(--rhc-space-sm);
+	padding: var(--rhc-space-sm) var(--rhc-space-lg);
+
+	strong {
+		font-weight: var(--rhc-text-font-weight-semi-bold);
+	}
+
+	&:hover,
+	&.utrecht-listbox__option--active {
+		background-color: var(--rhc-color-lintblauw-50);
+		color: inherit;
+	}
+
+	&.utrecht-listbox__option--active {
+		box-shadow: inset var(--rhc-border-width-md) 0 0
+			var(--rhc-color-lintblauw-500);
+	}
+}
+
 /* --- Dialog --- */
 .rhc-mox-dialog {
 	background: var(--rhc-color-wit);
@@ -1561,7 +1625,7 @@ small,
 					) /
 					2 - var(--rhc-border-width-md)
 			);
-			outline: var(--rhc-border-width-lg) solid transparent;
+			outline: var(--rhc-border-width-md) solid transparent;
 		}
 
 		&::-moz-range-thumb {
@@ -1570,7 +1634,7 @@ small,
 			border: var(--rhc-border-width-md) solid var(--rhc-color-lintblauw-500);
 			border-radius: var(--rhc-border-radius-round);
 			inline-size: var(--rhc-mox-range-slider-thumb);
-			outline: var(--rhc-border-width-lg) solid transparent;
+			outline: var(--rhc-border-width-md) solid transparent;
 		}
 
 		&:hover {
@@ -1595,7 +1659,7 @@ small,
 		&:focus-visible::-webkit-slider-thumb {
 			background: var(--rhc-color-lintblauw-600);
 			border-color: var(--rhc-color-lintblauw-600);
-			outline: var(--rhc-border-width-lg) solid
+			outline: var(--rhc-border-width-md) solid
 				color-mix(in srgb, var(--rhc-color-lintblauw-500) 30%, transparent);
 		}
 
@@ -1611,7 +1675,7 @@ small,
 		&:focus-visible::-moz-range-thumb {
 			background: var(--rhc-color-lintblauw-600);
 			border-color: var(--rhc-color-lintblauw-600);
-			outline: var(--rhc-border-width-lg) solid
+			outline: var(--rhc-border-width-md) solid
 				color-mix(in srgb, var(--rhc-color-lintblauw-500) 40%, transparent);
 		}
 
@@ -2102,7 +2166,7 @@ small,
 	}
 
 	&[aria-current] {
-		border-block-end: var(--rhc-border-width-lg) solid
+		border-block-end: var(--rhc-border-width-md) solid
 			var(--rhc-color-lintblauw-500);
 		font-weight: var(--rhc-text-font-weight-semi-bold);
 	}

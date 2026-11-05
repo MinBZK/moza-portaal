@@ -7,6 +7,7 @@ import { getActievePersona } from "@/app/(public)/_persona";
 import { RelevantItem } from "@/components/save/saveActions";
 import SubsidieActies, { bewaarItemVan } from "./_subsidieActies";
 import SubsidieGegevens from "./_subsidieGegevens";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Subsidies en financiering" };
 
@@ -43,6 +44,7 @@ const SubsidiesPage = async ({
   return (
     <>
       <Heading level={1}>Subsidies en financiering</Heading>
+      <PageSearch />
 
       <Alert type="info" closable>
         <Paragraph>

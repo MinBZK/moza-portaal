@@ -7,6 +7,7 @@ import {
 } from "@/app/(public)/_persona";
 import Chat from "./_chat";
 import type { AssistentPersona } from "./_types";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Digitale assistent (AI)" };
 
@@ -38,6 +39,7 @@ const DigitaleAssistentPage = async () => {
   return (
     <>
       <Heading level={1}>Digitale assistent (AI)</Heading>
+      <PageSearch />
       <Chat
         persona={context}
         backendIngesteld={!!process.env.ASSISTENT_BACKEND_URL}

@@ -13,6 +13,7 @@ import type { DemoAannemen } from "@/demo";
 import { situatieVan } from "../_route";
 import { useAannemen, zaakVan } from "../_useAannemen";
 import { datumNL } from "../_werkgever";
+import PageSearch from "@/layouts/search";
 
 const BESLUIT = {
   gemeente:
@@ -42,6 +43,7 @@ const Verstuurd = ({
     return (
       <>
         <Heading level={1}>Nog niets verstuurd</Heading>
+        <PageSearch />
         <Paragraph>
           U heeft nog geen aanvraag verstuurd. Controleer de aanvraag en
           verstuur die.
@@ -67,6 +69,7 @@ const Verstuurd = ({
   return (
     <>
       <Heading level={1}>Uw aanvraag is verstuurd</Heading>
+      <PageSearch />
       <Alert type="ok">
         <Paragraph>
           De aanvraag {onderwerp} is verstuurd naar {organisatie}
