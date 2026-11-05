@@ -31,7 +31,7 @@ const REGELINGEN = [
   },
   {
     naam: "No-riskpolis",
-    icoon: "schild-met-vinkje-erop",
+    icoon: "versleutelen",
     tekst:
       "Wordt uw werknemer ziek, dan betaalt UWV ziekengeld. U betaalt het loon door. UWV, geen aanvraag nodig.",
   },
@@ -48,7 +48,7 @@ const REGELINGEN = [
   },
   {
     naam: "Proefplaatsing",
-    icoon: "kalender-met-vinkje",
+    icoon: "kalender",
     tekst:
       "De kandidaat werkt eerst op proef bij u, zonder dat u loon betaalt. Gemeente of UWV.",
   },
