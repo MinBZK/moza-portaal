@@ -1,13 +1,12 @@
 "use client";
 
+import StepNavigation from "@/components/StepNavigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 import TextBadge from "@/components/TextBadge";
 import {
-  ActionGroup,
   Alert,
-  Button,
   FormFieldCheckboxOption,
   Heading,
   Paragraph,
@@ -111,14 +110,7 @@ const VersturenInhoud = ({
             wat er verder geldt.
           </Paragraph>
         </Alert>
-        <Paragraph>
-          <Link
-            href="/personeel/iemand-aannemen/concept-aanvraag"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Terug naar de aanvraag
-          </Link>
-        </Paragraph>
+        <StepNavigation back="/personeel/iemand-aannemen/concept-aanvraag" />
       </>
     );
 
@@ -224,20 +216,13 @@ const VersturenInhoud = ({
           </Paragraph>
         </Alert>
         {taken}
-        <ActionGroup>
-          <Link
-            href="/personeel/iemand-aannemen/overzicht"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Bekijk het overzicht
-          </Link>
-          <Link
-            href="/personeel/iemand-aannemen/concept-aanvraag"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Terug naar de aanvraag
-          </Link>
-        </ActionGroup>
+        <StepNavigation
+          back="/personeel/iemand-aannemen/concept-aanvraag"
+          next={{
+            label: "Bekijk het overzicht",
+            href: "/personeel/iemand-aannemen/overzicht",
+          }}
+        />
       </>
     );
 
@@ -308,17 +293,14 @@ const VersturenInhoud = ({
           checked={bevestigd}
           onChange={(event) => setBevestigd(event.target.checked)}
         />
-        <ActionGroup>
-          <Button appearance="primary-action-button" onClick={indienen}>
-            Versturen naar {uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}
-          </Button>
-          <Link
-            href="/personeel/iemand-aannemen/concept-aanvraag"
-            className="utrecht-link utrecht-link--html-a"
-          >
-            Annuleren
-          </Link>
-        </ActionGroup>
+        <StepNavigation
+          back="/personeel/iemand-aannemen/concept-aanvraag"
+          next={{
+            label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
+            onClick: indienen,
+            final: true,
+          }}
+        />
       </section>
     </>
   );

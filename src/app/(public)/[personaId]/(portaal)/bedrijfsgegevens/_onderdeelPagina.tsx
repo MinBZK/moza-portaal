@@ -14,7 +14,6 @@ import {
   type DemoBedrijfsdetails,
 } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
-import PageSearch from "@/layouts/search";
 
 export type OnderdeelPaginaProps = {
   params: Promise<{ personaId: string }>;
@@ -45,7 +44,6 @@ const OnderdeelPagina = async ({
   return (
     <>
       <Heading level={1}>{onderdeel.titel}</Heading>
-      <PageSearch />
       <Paragraph>
         <Link href="/bedrijfsgegevens">
           <Icon icon="chevron-left" />

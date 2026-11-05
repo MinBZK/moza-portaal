@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 import {
@@ -40,7 +40,6 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
-import PageSearch from "@/layouts/search";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -208,13 +207,15 @@ const AanvraagInhoud = ({
   };
   const volgendeVan = (id: RegelingId) => rijIds.find((x) => x !== id && !g[x]);
   // Deze regeling gaat dicht, de volgende open, en de focus gaat naar de kop
-  // van de volgende regeling of naar Controleren en versturen.
+  // van de volgende regeling of naar de knop Verder.
   const naarVolgende = (id: RegelingId) => {
     const volgende = volgendeVan(id);
     setOpen(volgende ? [volgende] : []);
     requestAnimationFrame(() => {
       const doel = document.querySelector<HTMLElement>(
-        volgende ? `#paneel-${volgende} [aria-expanded]` : "#versturen button",
+        volgende
+          ? `#paneel-${volgende} [aria-expanded]`
+          : ".rhc-mox-step-navigation button",
       );
       doel?.focus();
       doel?.scrollIntoView({ block: "start" });
@@ -764,7 +765,6 @@ const AanvraagInhoud = ({
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
       <div className="rhc-mox-card">
         <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
@@ -852,20 +852,16 @@ const AanvraagInhoud = ({
         )}
 
         {bekend && (
-          <ActionGroup id="versturen">
-            <Button
-              appearance="primary-action-button"
-              onClick={paneelIds.length > 0 ? indienen : klaar}
-            >
-              {paneelIds.length > 0 ? "Controleren en versturen" : "Klaar"}
-            </Button>
-            <Link
-              href="/personeel"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-            >
-              Sla op en ga later verder
-            </Link>
-          </ActionGroup>
+          <StepNavigation
+            back="/personeel/iemand-aannemen/gegevens"
+            later="/personeel"
+            next={
+              paneelIds.length > 0
+                ? { onClick: indienen }
+                : // Niets te versturen: hier rondt de ondernemer af.
+                  { label: "Klaar", onClick: klaar, final: true }
+            }
+          />
         )}
       </div>
     </>

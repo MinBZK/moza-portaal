@@ -2,6 +2,7 @@
 
 import {
   useId,
+  useRef,
   useState,
   type FormEvent,
   type KeyboardEvent,
@@ -13,24 +14,51 @@ import FieldLabel from "@/components/FieldLabel";
 import { DigitalAssistantIcon } from "@/components/icons/digitalAssistantIcon";
 
 type Option = {
-  kind: "page" | "query" | "assistant";
+  kind: "page" | "recent" | "query" | "assistant";
   text: string;
 };
 
 const MAX_SUGGESTIONS = 8;
 
-const matches = (text: string, typed: string) =>
-  text.toLowerCase().includes(typed.trim().toLowerCase());
+/**
+ * Lower case without accents, with a hyphen as a space, so "btw nummer"
+ * finds "btw-nummer". Keeps one character per character, so an index in the
+ * result is also an index in the text.
+ */
+const fold = (text: string) =>
+  Array.from(text, (char) =>
+    char
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace("-", " "),
+  ).join("");
 
-/** Bold for the part the user did not type yet (Baymard). */
-const Predictive = ({ text, typed }: { text: string; typed: string }) => {
-  const start = text.toLowerCase().indexOf(typed.trim().toLowerCase());
+const findIn = (text: string, typed: string) =>
+  fold(text).indexOf(fold(typed.trim()));
+
+const matches = (text: string, typed: string) => findIn(text, typed) >= 0;
+
+/**
+ * Bold for what the suggestion adds to the typed text. If the typed text is
+ * somewhere in the middle, bold for the typed text instead (Baymard, NN/g).
+ */
+const Highlight = ({ text, typed }: { text: string; typed: string }) => {
+  const start = findIn(text, typed);
   if (!typed.trim() || start < 0) return <>{text}</>;
   const end = start + typed.trim().length;
+  if (start > 0) {
+    return (
+      <>
+        {text.slice(0, start)}
+        <strong>{text.slice(start, end)}</strong>
+        {text.slice(end)}
+      </>
+    );
+  }
   return (
     <>
-      {start > 0 && <strong>{text.slice(0, start)}</strong>}
-      {text.slice(start, end)}
+      {text.slice(0, end)}
       {end < text.length && <strong>{text.slice(end)}</strong>}
     </>
   );
@@ -42,14 +70,19 @@ const Predictive = ({ text, typed }: { text: string; typed: string }) => {
  */
 const SiteSearch = ({
   label = "Zoeken of een vraag stellen",
+  hideLabel = false,
   action = "/zoeken",
   assistantHref = "/digitale-assistent",
   assistant = true,
   suggestions = [],
   pageSuggestions = [],
+  recentSearches = [],
+  defaultValue = "",
   onSearch,
 }: {
   label?: string;
+  /** Hide the label visually; screen readers still read it. */
+  hideLabel?: boolean;
   /** Page with the search results; gets the query as ?q=. */
   action?: string;
   /** Offer "ask the digital assistant" as the last option. */
@@ -60,6 +93,10 @@ const SiteSearch = ({
   suggestions?: string[];
   /** Questions about the page the user is on; shown first. */
   pageSuggestions?: string[];
+  /** What the user searched for before; shown also in an empty field. */
+  recentSearches?: string[];
+  /** Text in the field on load, such as the query on the results page. */
+  defaultValue?: string;
   /** Instead of going to the results page, for example in a demo. */
   onSearch?: (query: string) => void;
 }) => {
@@ -67,27 +104,46 @@ const SiteSearch = ({
   const id = useId();
   const inputId = `${id}-input`;
   const listId = `${id}-list`;
-  const [typed, setTyped] = useState("");
-  const [value, setValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [typed, setTyped] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
 
   const page = pageSuggestions
     .filter((text) => matches(text, typed))
     .slice(0, MAX_SUGGESTIONS);
+  const recent = recentSearches
+    .filter((text) => matches(text, typed) && !page.includes(text))
+    .slice(0, Math.max(0, MAX_SUGGESTIONS - page.length));
+  const ask: Option[] =
+    assistant && typed.trim()
+      ? [{ kind: "assistant", text: typed.trim() }]
+      : [];
   const query = typed.trim()
     ? suggestions
-        .filter((text) => matches(text, typed) && !page.includes(text))
-        .slice(0, MAX_SUGGESTIONS - page.length)
+        .filter(
+          (text) =>
+            matches(text, typed) &&
+            !page.includes(text) &&
+            !recent.includes(text),
+        )
+        .slice(
+          0,
+          Math.max(
+            0,
+            MAX_SUGGESTIONS - page.length - recent.length - ask.length,
+          ),
+        )
     : [];
   const options: Option[] = [
     ...page.map((text) => ({ kind: "page" as const, text })),
+    ...recent.map((text) => ({ kind: "recent" as const, text })),
     ...query.map((text) => ({ kind: "query" as const, text })),
-    ...(assistant && typed.trim()
-      ? [{ kind: "assistant" as const, text: typed.trim() }]
-      : []),
+    ...ask,
   ];
   const expanded = open && options.length > 0;
+  const noSuggestions = open && !options.length && Boolean(typed.trim());
   const optionId = (index: number) => `${id}-option-${index}`;
 
   const close = () => {
@@ -137,6 +193,8 @@ const SiteSearch = ({
       choose(options[active]);
     } else if (event.key === "Escape") {
       if (expanded) {
+        // Otherwise the browser also clears the search field.
+        event.preventDefault();
         setValue(typed);
         close();
       } else {
@@ -144,6 +202,13 @@ const SiteSearch = ({
         setTyped("");
       }
     }
+  };
+
+  const clear = () => {
+    setValue("");
+    setTyped("");
+    close();
+    inputRef.current?.focus();
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -165,13 +230,14 @@ const SiteSearch = ({
       onClick={() => choose(option)}
     >
       {option.kind === "page" && <Icon icon="vraagteken" />}
+      {option.kind === "recent" && <Icon icon="klok" />}
       {option.kind === "query" && <Icon icon="zoek" />}
       {option.kind === "assistant" && <DigitalAssistantIcon />}
       <span>
         {option.kind === "assistant" ? (
           <>Vraag het de digitale assistent: “{option.text}”</>
         ) : (
-          <Predictive text={option.text} typed={typed} />
+          <Highlight text={option.text} typed={typed} />
         )}
       </span>
     </li>
@@ -179,79 +245,99 @@ const SiteSearch = ({
 
   const groups: { label: string; kind: Option["kind"] }[] = [
     { label: "Over deze pagina", kind: "page" },
-    { label: "Zoeken in het portaal", kind: "query" },
+    { label: "Laatst gezocht", kind: "recent" },
+    { label: "Zoeken in MijnOverheid Zakelijk", kind: "query" },
     { label: "Of stel uw vraag", kind: "assistant" },
   ];
 
   return (
     <search className="rhc-mox-site-search">
       <form action={action} method="get" onSubmit={onSubmit}>
-        <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
+        <FieldLabel
+          htmlFor={inputId}
+          className={hideLabel ? "rhc-visually-hidden" : undefined}
+        >
+          {label}
+        </FieldLabel>
         <div className="rhc-mox-site-search__field">
-          <TextInput
-            id={inputId}
-            name="q"
-            type="search"
-            autoComplete="off"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-expanded={expanded}
-            aria-controls={listId}
-            aria-activedescendant={
-              expanded && active >= 0 ? optionId(active) : undefined
-            }
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-              setTyped(event.target.value);
-              setActive(-1);
-              setOpen(true);
-            }}
-            onKeyDown={onKeyDown}
-            onBlur={close}
-          />
+          <div className="rhc-mox-site-search__input">
+            <TextInput
+              ref={inputRef}
+              id={inputId}
+              name="q"
+              type="search"
+              autoComplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={expanded}
+              aria-controls={listId}
+              aria-activedescendant={
+                expanded && active >= 0 ? optionId(active) : undefined
+              }
+              value={value}
+              onChange={(event) => {
+                setValue(event.target.value);
+                setTyped(event.target.value);
+                setActive(-1);
+                setOpen(true);
+              }}
+              onKeyDown={onKeyDown}
+              onFocus={() => setOpen(true)}
+              onBlur={close}
+            />
+            {value && (
+              <button
+                type="button"
+                className="rhc-mox-site-search__clear"
+                aria-label="Zoekterm wissen"
+                onClick={clear}
+              >
+                <Icon icon="kruis" />
+              </button>
+            )}
+            <div
+              id={listId}
+              role="listbox"
+              aria-label="Suggesties"
+              className="utrecht-listbox rhc-mox-site-search__popup"
+              hidden={!expanded}
+            >
+              {groups.map(({ label: groupLabel, kind }) => {
+                const indexed = options
+                  .map((option, index) => ({ option, index }))
+                  .filter(({ option }) => option.kind === kind);
+                if (!indexed.length) return null;
+                const groupId = `${id}-${kind}`;
+                return (
+                  <ul
+                    key={kind}
+                    role="group"
+                    aria-labelledby={groupId}
+                    className="utrecht-listbox__group"
+                  >
+                    <li
+                      id={groupId}
+                      role="presentation"
+                      className="utrecht-listbox__group-label"
+                    >
+                      {groupLabel}
+                    </li>
+                    {indexed.map(({ option, index }) =>
+                      renderOption(option, index),
+                    )}
+                  </ul>
+                );
+              })}
+            </div>
+          </div>
           <Button type="submit" appearance="primary-action-button">
             Zoeken
           </Button>
-          <div
-            id={listId}
-            role="listbox"
-            aria-label="Suggesties"
-            className="utrecht-listbox rhc-mox-site-search__popup"
-            hidden={!expanded}
-          >
-            {groups.map(({ label: groupLabel, kind }) => {
-              const indexed = options
-                .map((option, index) => ({ option, index }))
-                .filter(({ option }) => option.kind === kind);
-              if (!indexed.length) return null;
-              const groupId = `${id}-${kind}`;
-              return (
-                <ul
-                  key={kind}
-                  role="group"
-                  aria-labelledby={groupId}
-                  className="utrecht-listbox__group"
-                >
-                  <li
-                    id={groupId}
-                    role="presentation"
-                    className="utrecht-listbox__group-label"
-                  >
-                    {groupLabel}
-                  </li>
-                  {indexed.map(({ option, index }) =>
-                    renderOption(option, index),
-                  )}
-                </ul>
-              );
-            })}
-          </div>
         </div>
         <div role="status" className="rhc-visually-hidden">
-          {expanded
-            ? `${options.length} ${options.length === 1 ? "suggestie" : "suggesties"}. Kies met de pijltjestoetsen.`
-            : ""}
+          {expanded &&
+            `${options.length} ${options.length === 1 ? "suggestie" : "suggesties"}. Kies met de pijltjestoetsen.`}
+          {noSuggestions && "Geen suggesties."}
         </div>
       </form>
     </search>

@@ -1,13 +1,11 @@
 import { Heading, Paragraph } from "@/components/rhc";
 import PostcodesBeheer from "./_postcodesBeheer";
 import PublicatiesOverzicht from "./_publicatiesOverzicht";
-import PageSearch from "@/layouts/search";
 
 const BerichtenInUwBuurtPage = async () => {
   return (
     <>
       <Heading level={1}>Berichten over uw buurt</Heading>
-      <PageSearch />
 
       <div className="rhc-mox-card">
         <PostcodesBeheer />

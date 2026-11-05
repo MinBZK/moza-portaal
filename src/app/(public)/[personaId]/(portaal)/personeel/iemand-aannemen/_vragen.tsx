@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import { useState, type ReactNode } from "react";
 import {
-  ActionGroup,
   Fieldset,
   FormFieldCheckboxOption,
   FormFieldRadio,
@@ -232,24 +231,6 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
   );
 };
 
-/** De knop naar stap 2; werkt pas als de engine klaar is met rekenen. */
-const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
-  <ActionGroup>
-    {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
-    <Link
-      href="/personeel/iemand-aannemen/gegevens"
-      className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-      aria-disabled={bekend ? undefined : true}
-      aria-describedby={bekend ? undefined : "aanvragen-bezig"}
-      onClick={(event) => {
-        if (!bekend) event.preventDefault();
-      }}
-    >
-      Laat de aanvraag invullen
-    </Link>
-  </ActionGroup>
-);
-
 /**
  * Scherm 1: vier korte vragen met schuifregelaars, en rechts live wat de
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
@@ -445,12 +426,10 @@ const VragenMetStaat = ({
         </div>
       </div>
 
-      {/* Onderaan de kaart, net als de knop naar de volgende stap in elke stap. */}
       <div className="rhc-mox-stack">
         <Paragraph>
           Wij vullen de aanvraag voor u in. U controleert en verstuurt zelf.
         </Paragraph>
-        <AanvraagKnop bekend={resultaat.bekend} />
         <Paragraph role="status" id="aanvragen-bezig">
           {resultaat.bekend
             ? ""
@@ -459,6 +438,16 @@ const VragenMetStaat = ({
               : "De berekening is nog bezig."}
         </Paragraph>
       </div>
+
+      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+      <StepNavigation
+        back="/personeel/iemand-aannemen"
+        next={{
+          href: "/personeel/iemand-aannemen/gegevens",
+          disabled: !resultaat.bekend,
+          describedBy: resultaat.bekend ? undefined : "aanvragen-bezig",
+        }}
+      />
     </>
   );
 };

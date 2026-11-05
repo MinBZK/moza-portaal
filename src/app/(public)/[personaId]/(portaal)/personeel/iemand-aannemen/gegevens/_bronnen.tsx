@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -445,32 +445,19 @@ const Bronnen = ({
                   ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
                   : `${aantal} van ${teBevestigen.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
-        <ActionGroup>
-          <Button
-            appearance="primary-action-button"
-            aria-disabled={!gekozen || !opgave || !resultaat.bekend}
-            onClick={() => {
-              if (gekozen && opgave && resultaat.bekend)
-                router.push(
-                  naarOverzicht
-                    ? "/personeel/iemand-aannemen/overzicht"
-                    : "/personeel/iemand-aannemen/concept-aanvraag",
-                );
-            }}
-          >
-            {naarOverzicht
-              ? "Bekijk wat voor u geldt"
-              : "Controleren en versturen"}
-          </Button>
-          {wachtend && (
-            <Link
-              href="/personeel"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-            >
-              Sla op en ga later verder
-            </Link>
-          )}
-        </ActionGroup>
+        <StepNavigation
+          back="/personeel/iemand-aannemen/voorbeeldberekening"
+          later={wachtend ? "/personeel" : undefined}
+          next={{
+            disabled: !gekozen || !opgave || !resultaat.bekend,
+            onClick: () =>
+              router.push(
+                naarOverzicht
+                  ? "/personeel/iemand-aannemen/overzicht"
+                  : "/personeel/iemand-aannemen/concept-aanvraag",
+              ),
+          }}
+        />
       </div>
     </>
   );
