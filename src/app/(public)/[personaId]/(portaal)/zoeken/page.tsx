@@ -20,14 +20,14 @@ const RESULTATEN = [
   {
     href: "/subsidies/praktijkleren",
     titel: "Subsidieregeling praktijkleren",
-    soort: "Subsidie",
+    soort: "Informatie",
     tekst:
       "Biedt u een leerwerkplek aan een leerling, student of werknemer die een opleiding volgt? Dan krijgt u tot €2.700 per leerplaats voor de begeleiding.",
   },
   {
     href: "/wetten/gelijke-kansen",
     titel: "Wet toezicht gelijke kansen bij werving en selectie",
-    soort: "Wet en regelgeving",
+    soort: "Informatie",
     tekst:
       "Als werkgever legt u vast hoe u discriminatie voorkomt bij werving en selectie. Deze wet geldt sinds 1 juli 2026.",
   },
