@@ -24,12 +24,7 @@ const STAPPEN = [
 
 /** Waar de ondernemer is in Iemand aannemen (1 tot 4). */
 const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 | 4 }) => (
-  <StepIndicator
-    steps={STAPPEN}
-    current={huidige - 1}
-    label="Stappen"
-    hideCount
-  />
+  <StepIndicator steps={STAPPEN} current={huidige - 1} label="Stappen" />
 );
 
 export default Stappen;
