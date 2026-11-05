@@ -1901,6 +1901,10 @@ small,
 	margin: 0;
 	padding: 0;
 
+	> li {
+		max-inline-size: none;
+	}
+
 	> li + li {
 		border-block-start: var(--rhc-border-width-sm) solid
 			var(--rhc-color-cool-grey-200);
@@ -1916,7 +1920,7 @@ small,
 	padding-inline: var(--rhc-space-md);
 }
 
-a.rhc-mox-icon-list__item {
+.rhc-mox-icon-list a.rhc-mox-icon-list__item {
 	color: inherit;
 	text-decoration: none;
 
