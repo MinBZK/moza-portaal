@@ -36,16 +36,6 @@ const GegevensPage = async () => {
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
-      <PageSearch />
-      <Paragraph>
-        <Link
-          href="/personeel/iemand-aannemen"
-          className="utrecht-link utrecht-link--html-a"
-        >
-          <Icon icon="chevron-left" />
-          Terug naar de vragen
-        </Link>
-      </Paragraph>
       <div className="rhc-mox-card">
         <Stappen huidige={2} />
         <Alert type="info" closable>
