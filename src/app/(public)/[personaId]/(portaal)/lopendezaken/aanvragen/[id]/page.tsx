@@ -23,6 +23,7 @@ import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannem
 import Stappen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_stappen";
 import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
 import KostenBerekening from "./_kostenBerekening";
+import PageSearch from "@/layouts/search";
 
 export const generateMetadata = async ({
   params,
@@ -65,7 +66,8 @@ const AanvraagPage = async ({
         label={aanvraag.titel}
       />
       <Heading level={1}>{aanvraag.titel}</Heading>
-      <Paragraph className="rhc-mox-back-link">
+      <PageSearch />
+      <Paragraph>
         <Link
           href="/lopendezaken#nog-in-te-dienen"
           className="utrecht-link utrecht-link--html-a"

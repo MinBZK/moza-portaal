@@ -10,6 +10,7 @@ import SubsidieActies, {
   bewaarItemVan,
 } from "../_subsidieActies";
 import SubsidieGegevens from "../_subsidieGegevens";
+import PageSearch from "@/layouts/search";
 
 export const generateMetadata = async ({
   params,
@@ -38,6 +39,7 @@ const SubsidiePage = async ({
         label={subsidie.titel}
       />
       <Heading level={1}>{subsidie.titel}</Heading>
+      <PageSearch />
       <Paragraph>
         <Link href="/subsidies" className="utrecht-link utrecht-link--html-a">
           <Icon icon="chevron-left" />

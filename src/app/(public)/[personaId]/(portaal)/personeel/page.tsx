@@ -10,6 +10,7 @@ import {
 } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = { title: "Personeel en rollen" };
 
@@ -59,6 +60,7 @@ const PersoneelPage = async () => {
   return (
     <>
       <Heading level={1}>Personeel</Heading>
+      <PageSearch />
 
       <section className="rhc-mox-card" aria-labelledby="iemand-aannemen">
         <Heading level={2} id="iemand-aannemen">

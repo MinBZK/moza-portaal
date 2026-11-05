@@ -63,6 +63,7 @@ export const DEMO_COMPONENTS = {
   RangeSlider: "custom",
   Separator: "rhc",
   ShareButton: "custom",
+  SiteSearch: "custom",
   Spinner: "custom",
   StatusTrack: "custom",
   StepIndicator: "custom",

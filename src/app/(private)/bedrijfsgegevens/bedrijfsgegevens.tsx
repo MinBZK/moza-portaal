@@ -10,6 +10,7 @@ import {
 import { GetBasisprofielByKvkNummer } from "@/network/kvk/basisprofiel/fetchers/getBasisprofielByKvkNummer";
 import { format, isValid, parse } from "date-fns";
 import { nl } from "date-fns/locale";
+import PageSearch from "@/layouts/search";
 
 const formatDateString = (dateString: string | null | undefined): string => {
   if (!dateString) return "-";
@@ -29,6 +30,7 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
     return (
       <>
         <Heading level={1}>Bedrijfsgegevens</Heading>
+        <PageSearch />
         <div className="rhc-mox-card">
           <Heading level={2}>Algemeen</Heading>
           <Paragraph>
@@ -70,6 +72,7 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Bedrijfsgegevens</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <Heading level={2}>Algemene gegevens</Heading>
         <Paragraph>

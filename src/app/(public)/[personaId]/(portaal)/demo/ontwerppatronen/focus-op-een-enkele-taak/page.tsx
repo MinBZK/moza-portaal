@@ -7,7 +7,6 @@ import {
   UnorderedListItem,
 } from "@/components/rhc";
 import { PatternPage, PatternSection, PatternTable, Source } from "../_parts";
-import FocusSwitch from "./_focusSwitch";
 
 export const metadata: Metadata = {
   title: "Focus op een enkele taak - Ontwerppatronen",
@@ -55,21 +54,13 @@ const Page = () => (
       </UnorderedList>
     </PatternSection>
 
-    <PatternSection id="proberen" title="Probeer het op deze pagina">
-      <FocusSwitch />
-      <Paragraph>
-        Een pagina zet dit aan met <code>&lt;CollapsibleNavigation /&gt;</code>.
-        De stappen van Iemand aannemen doen dat al.
-      </Paragraph>
-    </PatternSection>
-
     <PatternSection id="patroon" title="Ontwerppatroon">
       <PatternTable
         head={["Onderdeel", "Tijdens de taak", "Waarom"]}
         rows={[
           [
             "Zijnavigatie",
-            "Ingeklapt, met een schakelaar Focus-mode onder de kop",
+            "Verborgen",
             "De grootste bron van afleiding. Wie weg wil, gebruikt de uitweg.",
           ],
           [
