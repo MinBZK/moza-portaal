@@ -32,7 +32,7 @@ const OverzichtPage = async () => {
         </Link>
       </Paragraph>
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={4} />
         <Overzicht
           labels={situaties.gemeente.labels}
           kvk={werkgeverVan(organisatie).kvkNummer}

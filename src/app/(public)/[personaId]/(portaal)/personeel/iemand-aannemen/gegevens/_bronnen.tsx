@@ -462,7 +462,9 @@ const Bronnen = ({
                 );
             }}
           >
-            {naarOverzicht ? "Bekijk wat voor u geldt" : "Aanvraag nakijken"}
+            {naarOverzicht
+              ? "Bekijk wat voor u geldt"
+              : "Controleren en versturen"}
           </Button>
         </ActionGroup>
       </div>

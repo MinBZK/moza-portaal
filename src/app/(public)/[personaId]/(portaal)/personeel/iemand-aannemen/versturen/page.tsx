@@ -3,7 +3,8 @@ import { Heading, Paragraph } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import Versturen from "./_versturen";
-import Stappen, { TAAK_TITEL } from "../_stappen";
+import Stappen from "../_stappen";
+import { TAAK_TITEL } from "../_taakTitel";
 import { werkgeverVan } from "../_werkgever";
 import PageSearch from "@/layouts/search";
 

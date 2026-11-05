@@ -29,7 +29,8 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
-import Stappen, { TAAK_TITEL } from "../_stappen";
+import Stappen from "../_stappen";
+import { TAAK_TITEL } from "../_taakTitel";
 import { taakTegel, Tegels, vanzelfTegel, type Tegel } from "../_tegels";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -781,7 +782,7 @@ const AanvraagInhoud = ({
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <PageSearch />
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
           {resultaat.fout
             ? "De berekening lukt nu niet. Laad de pagina opnieuw."

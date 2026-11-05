@@ -1873,67 +1873,242 @@ small,
 	gap: var(--rhc-space-sm);
 }
 
+/* --- Search results --- */
+.rhc-mox-search-results {
+	display: grid;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	> li {
+		border-block-start: var(--rhc-border-width-sm) solid
+			var(--rhc-color-cool-grey-200);
+		display: grid;
+		padding-block: var(--rhc-space-lg);
+	}
+
+	> li:last-child {
+		padding-block-end: 0;
+	}
+}
+
+/* --- Icon list: rows with an icon, a title and one line of text --- */
+.rhc-mox-icon-list {
+	border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
+	border-radius: var(--rhc-border-radius-md);
+	display: grid;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	> li + li {
+		border-block-start: var(--rhc-border-width-sm) solid
+			var(--rhc-color-cool-grey-200);
+	}
+}
+
+.rhc-mox-icon-list__item {
+	align-items: start;
+	column-gap: var(--rhc-space-md);
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	padding-block: var(--rhc-space-md);
+	padding-inline: var(--rhc-space-md);
+}
+
+a.rhc-mox-icon-list__item {
+	color: inherit;
+	text-decoration: none;
+
+	&:hover .rhc-mox-icon-list__title {
+		text-decoration: underline;
+	}
+
+	&:focus-visible {
+		outline: var(--utrecht-focus-outline-width)
+			var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+		outline-offset: calc(-1 * var(--utrecht-focus-outline-width));
+	}
+}
+
+.rhc-mox-icon-list__text {
+	display: grid;
+	row-gap: var(--rhc-space-2xs);
+}
+
+.rhc-mox-icon-list__title {
+	color: var(--rhc-color-foreground-default);
+}
+
 /* --- Step indicator --- */
 .rhc-mox-step-indicator {
 	--rhc-mox-step-indicator-size: var(--rhc-size-icon-lg);
+	--rhc-mox-step-indicator-track: var(--rhc-border-width-md);
+	--rhc-mox-step-indicator-track-color: var(--rhc-color-cool-grey-300);
+	--rhc-mox-step-indicator-progress-color: var(--rhc-color-lintblauw-500);
 
-	display: grid;
-	gap: var(--rhc-space-md);
-}
-
-.rhc-mox-step-indicator__count {
-	font-weight: var(--rhc-text-font-weight-semi-bold);
-	margin: 0;
+	container-type: inline-size;
 }
 
 .rhc-mox-step-indicator__list {
 	display: flex;
-	gap: var(--rhc-space-xl);
 	list-style: none;
 	margin: 0;
 	padding: 0;
+
+	@container (width < 40rem) {
+		display: none;
+	}
 }
 
 .rhc-mox-step-indicator__step {
-	align-items: center;
 	color: var(--rhc-color-foreground-subtle);
+	flex: 1;
+	min-inline-size: 0;
+	position: relative;
+	text-align: center;
+
+	/* The line between the discs: half to the left and half to the right. */
+	&::before,
+	&::after {
+		background-color: var(--rhc-mox-step-indicator-track-color);
+		block-size: var(--rhc-mox-step-indicator-track);
+		content: "";
+		inset-block-start: calc(
+			(
+					var(--rhc-mox-step-indicator-size) -
+						var(--rhc-mox-step-indicator-track)
+				) /
+				2
+		);
+		position: absolute;
+	}
+
+	&::before {
+		inset-inline: 0 50%;
+	}
+
+	&::after {
+		inset-inline: 50% 0;
+	}
+
+	&:first-child::before,
+	&:last-child::after {
+		content: none;
+	}
+}
+
+.rhc-mox-step-indicator__step--past::before,
+.rhc-mox-step-indicator__step--past::after,
+.rhc-mox-step-indicator__step--current::before {
+	background-color: var(--rhc-mox-step-indicator-progress-color);
+}
+
+.rhc-mox-step-indicator__step,
+.rhc-mox-step-indicator__control {
+	align-items: center;
 	display: flex;
-	gap: var(--rhc-space-md);
+	flex-direction: column;
+	gap: var(--rhc-space-sm);
+}
+
+.rhc-mox-step-indicator__control {
+	border-radius: var(--rhc-border-radius-md);
+	color: var(--rhc-color-lintblauw-500);
+	text-decoration: underline;
+
+	&:hover {
+		color: var(--rhc-color-lintblauw-700);
+	}
+
+	&:focus-visible {
+		outline: var(--rhc-focus-outline-width) var(--rhc-focus-outline-style)
+			var(--rhc-focus-outline-color);
+		outline-offset: var(--rhc-focus-outline-offset);
+	}
 }
 
 .rhc-mox-step-indicator__marker {
+	align-items: center;
+	background-color: var(--rhc-color-wit);
 	block-size: var(--rhc-mox-step-indicator-size);
 	border: var(--rhc-border-width-md) solid var(--rhc-color-cool-grey-400);
 	border-radius: var(--rhc-border-radius-round);
-	display: grid;
-	flex-shrink: 0;
+	/* A ring in the card colour keeps the line clear of the disc. */
+	box-shadow: 0 0 0 var(--rhc-space-xs) var(--rhc-color-wit);
+	box-sizing: border-box;
+	color: var(--rhc-color-foreground-subtle);
+	display: flex;
 	font-weight: var(--rhc-text-font-weight-bold);
 	inline-size: var(--rhc-mox-step-indicator-size);
+	justify-content: center;
 	line-height: 1;
-	place-items: center;
+	position: relative;
+	z-index: 1;
+
+	.utrecht-icon {
+		--utrecht-icon-size: var(--rhc-size-icon-md);
+	}
 }
 
-.rhc-mox-step-indicator__step--done .rhc-mox-step-indicator__marker {
-	background-color: var(--rhc-color-groen-600);
-	border-color: var(--rhc-color-groen-600);
+.rhc-mox-step-indicator__step--past .rhc-mox-step-indicator__marker,
+.rhc-mox-step-indicator__step--current .rhc-mox-step-indicator__marker {
+	background-color: var(--rhc-mox-step-indicator-progress-color);
+	border-color: var(--rhc-mox-step-indicator-progress-color);
 	color: var(--rhc-color-wit);
+}
+
+.rhc-mox-step-indicator__name {
+	overflow-wrap: anywhere;
 }
 
 .rhc-mox-step-indicator__step--current {
 	color: var(--rhc-color-foreground-default);
 	font-weight: var(--rhc-text-font-weight-semi-bold);
+}
 
-	.rhc-mox-step-indicator__marker {
-		background-color: var(--rhc-color-lintblauw-500);
-		border-color: var(--rhc-color-lintblauw-500);
-		color: var(--rhc-color-wit);
+.rhc-mox-step-indicator__compact {
+	display: none;
+	gap: var(--rhc-space-sm);
+
+	@container (width < 40rem) {
+		display: grid;
 	}
 }
 
-@media (width < 768px) {
-	.rhc-mox-step-indicator__step:not(.rhc-mox-step-indicator__step--current) {
-		display: none;
-	}
+.rhc-mox-step-indicator__compact-text {
+	align-items: baseline;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--rhc-space-sm);
+	justify-content: space-between;
+	margin: 0;
+}
+
+.rhc-mox-step-indicator__compact-name {
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
+.rhc-mox-step-indicator__compact-count {
+	color: var(--rhc-color-foreground-subtle);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.rhc-mox-step-indicator__compact-bar {
+	display: flex;
+	gap: var(--rhc-space-xs);
+}
+
+.rhc-mox-step-indicator__segment {
+	background-color: var(--rhc-mox-step-indicator-track-color);
+	block-size: var(--rhc-space-sm);
+	border-radius: var(--rhc-border-radius-round);
+	flex: 1;
+}
+
+.rhc-mox-step-indicator__segment--filled {
+	background-color: var(--rhc-mox-step-indicator-progress-color);
 }
 
 /* --- Sticky info box --- */
