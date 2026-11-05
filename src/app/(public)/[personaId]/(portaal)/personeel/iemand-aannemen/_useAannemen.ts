@@ -2,7 +2,13 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { eigenaarUit, isVanEigenaar } from "./_eigenaar";
-import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
+import {
+  DOELGROEPEN,
+  kiesDoelgroep,
+  type Doelgroep,
+  type InRegister,
+  type Uitkering,
+} from "./_uitkomsten";
 import {
   migreerZaken,
   type PaneelId,
@@ -47,11 +53,15 @@ export const WML_UUR_EUROCENT = 1499;
 
 /** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
-  /** Meerkeuze; leeg betekent dat er niets is gekozen. */
+  /** Waarmee de engine rekent; volgt uit register, beschut en uitkering. */
   doelgroepen: Doelgroep[];
+  /** Vraag 1, 1a en 2; zonder waarde afgeleid uit de doelgroepen. */
+  register?: InRegister;
+  beschut?: boolean;
+  uitkering?: Uitkering;
   /** Uren per week, 1 tot 40; de wet kent geen ondergrens. */
   uren: number;
-  /** Geschatte loonwaarde in procent, 30 tot 100; 100 is geen verminderde loonwaarde. */
+  /** Geschatte loonwaarde in procent: het midden van het gekozen blokje; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
   /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
   uurloon: number;
