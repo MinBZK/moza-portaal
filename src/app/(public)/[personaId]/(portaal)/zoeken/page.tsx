@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Heading, Paragraph } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
 import { getDemoPersoneelsonderwerpen } from "@/demo";
+import { ExternalLink } from "@/app/(footer)/_article";
 import PageSearch from "@/layouts/search";
 import TextBadge from "@/components/TextBadge";
 
@@ -18,7 +19,7 @@ type Resultaat = {
 
 /**
  * Prototype: whatever the search term, the same results: the topics from
- * Personeel (only those with an href are worked out), then two others.
+ * Personeel (those with an href link to a page in the portal or of the government), then two others.
  */
 const OVERIGE_RESULTATEN: Resultaat[] = [
   {
@@ -107,7 +108,11 @@ const ZoekenPage = async ({ searchParams }: { searchParams: SearchParams }) => {
           {resultaten.map((resultaat) => (
             <li key={resultaat.id} className="rhc-mox-stack rhc-mox-stack--sm">
               <Heading level={3}>
-                {resultaat.href ? (
+                {resultaat.href?.startsWith("http") ? (
+                  <ExternalLink href={resultaat.href}>
+                    {resultaat.titel}
+                  </ExternalLink>
+                ) : resultaat.href ? (
                   <Link
                     href={resultaat.href}
                     className="utrecht-link utrecht-link--html-a"

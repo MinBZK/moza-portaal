@@ -86,7 +86,9 @@ const PersoneelPage = async () => {
             className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           >
             <Heading level={3}>
-              {href ? (
+              {href?.startsWith("http") ? (
+                <ExternalLink href={href}>{titel}</ExternalLink>
+              ) : href ? (
                 <Link href={href} className="utrecht-link utrecht-link--html-a">
                   {titel}
                 </Link>
