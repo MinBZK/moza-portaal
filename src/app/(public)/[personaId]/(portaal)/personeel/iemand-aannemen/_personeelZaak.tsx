@@ -1,9 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Heading, Paragraph } from "@/components/rhc";
+import {
+  Heading,
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableHeaderCell,
+  TableRow,
+  VisuallyHidden,
+} from "@/components/rhc";
 import type { DemoAannemen, DemoAannemenSituatie } from "@/demo";
 import { statusTekst, useAannemen, zaakVan } from "./_useAannemen";
+import { datumNL } from "./_werkgever";
 
 const SITUATIES: DemoAannemenSituatie[] = ["gemeente", "wajong", "wia"];
 
@@ -23,19 +33,50 @@ const PersoneelZaak = ({
       <Heading level={2} id="personeel-zaken">
         Lopende zaken over personeel
       </Heading>
-      {lopend.map((situatie) => (
-        <Paragraph key={situatie}>
-          <Link
-            href={zaken[situatie].url}
-            className="utrecht-link utrecht-link--html-a"
-          >
-            {zaakVan(staat, situatie).onderwerp ?? zaken[situatie].onderwerp}
-          </Link>
-          <br />
-          {zaken[situatie].organisatie},{" "}
-          {statusTekst(zaakVan(staat, situatie), situatie)}
-        </Paragraph>
-      ))}
+      {/* Same columns as the table on Lopende zaken. */}
+      <div className="rhc-mox-table-container">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderCell scope="col">Organisatie</TableHeaderCell>
+              <TableHeaderCell scope="col">Onderwerp</TableHeaderCell>
+              <TableHeaderCell scope="col">Laatste wijziging</TableHeaderCell>
+              <TableHeaderCell scope="col">Status</TableHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {lopend.map((situatie) => {
+              const zaak = zaakVan(staat, situatie);
+              const onderwerp = zaak.onderwerp ?? zaken[situatie].onderwerp;
+              return (
+                <TableRow key={situatie}>
+                  <TableCell>{zaken[situatie].organisatie}</TableCell>
+                  <TableCell>
+                    <Link
+                      href={zaken[situatie].url}
+                      className="utrecht-link utrecht-link--html-a"
+                    >
+                      {onderwerp}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="rhc-mox-table-cell-date">
+                    {zaak.verstuurdOp ? datumNL(zaak.verstuurdOp) : ""}
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      href={zaken[situatie].url}
+                      className="utrecht-link utrecht-link--html-a"
+                    >
+                      {statusTekst(zaak, situatie)}
+                      <VisuallyHidden>: {onderwerp}</VisuallyHidden>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </section>
   );
 };

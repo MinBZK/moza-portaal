@@ -34,6 +34,11 @@ const StepIndicator = ({
   reached?: number;
   /** Accessible name of the navigation. */
   label?: string;
+  /**
+   * Accepted for compatibility with callers on main. This version already
+   * shows "Stap 2 van 4" only on a narrow container.
+   */
+  hideCount?: boolean;
 }) => {
   const items = steps.map((step) =>
     typeof step === "string" ? { name: step, href: undefined } : step,

@@ -11,6 +11,7 @@ import {
   Button,
   Fieldset,
   FormFieldCheckboxOption,
+  FormFieldErrorMessage,
   FormFieldRadio,
   FormFieldTextInput,
   Heading,
@@ -28,6 +29,8 @@ import {
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL } from "../_werkgever";
+import { formatDayMonthYear, parseDayMonthYear } from "@/utils/date";
+import { terugNaar, verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
 
@@ -67,24 +70,95 @@ const Bronnen = ({
   const klaar = gekozen && !!staat && alleBronnenBevestigd(staat);
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
 
+  const datum = parseDayMonthYear(nieuw.geboortedatum);
+  const datumProbleem = !nieuw.geboortedatum.trim()
+    ? "leeg"
+    : !datum
+      ? "ongeldig"
+      : datum > new Date()
+        ? "toekomst"
+        : undefined;
+  // Checked when the user leaves the field, not while typing.
+  const [datumGecontroleerd, setDatumGecontroleerd] = useState(false);
+
+  // The first thing that still stops Verder, in the order of the form.
+  const ontbreekt:
+    | "kandidaat"
+    | "naam"
+    | "geboortedatum"
+    | "toestemming"
+    | undefined = gekozen
+    ? undefined
+    : keuze !== NIEUW
+      ? "kandidaat"
+      : !nieuw.naam.trim()
+        ? "naam"
+        : datumProbleem
+          ? "geboortedatum"
+          : "toestemming";
+  // Set when Verder is clicked; the message shows while that part is missing.
+  const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
+  const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
+  const kandidaatFout =
+    fout === "kandidaat"
+      ? wachtend
+        ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
+        : "U hebt nog geen kandidaat gekozen."
+      : undefined;
+  const naamFout =
+    fout === "naam"
+      ? "U hebt nog geen naam van de kandidaat ingevuld."
+      : undefined;
+  const geboortedatumFout =
+    datumProbleem === "leeg"
+      ? fout === "geboortedatum"
+        ? "U hebt nog geen geboortedatum ingevuld."
+        : undefined
+      : datumProbleem && (datumGecontroleerd || fout === "geboortedatum")
+        ? datumProbleem === "toekomst"
+          ? "De geboortedatum ligt in de toekomst. Vul de geboortedatum van de kandidaat in."
+          : "Vul een bestaande datum in, met dag, maand en jaar. Bijvoorbeeld 15-3-1984 of 15 maart 1984."
+        : undefined;
+
+  // Verder does not work yet: show why, and go to what is still missing.
+  const naarInvoer = () => {
+    if (!ontbreekt) return;
+    setFoutBij(ontbreekt);
+    const veld =
+      ontbreekt === "naam"
+        ? document.querySelector<HTMLElement>("#kandidaat-naam input")
+        : ontbreekt === "geboortedatum"
+          ? document.querySelector<HTMLElement>(
+              "#kandidaat-geboortedatum input",
+            )
+          : ontbreekt === "toestemming"
+            ? document.getElementById("toestemming-vragen")
+            : (document.querySelector<HTMLElement>(
+                'input[name="kandidaat"]:checked',
+              ) ??
+              document.querySelector<HTMLElement>('input[name="kandidaat"]'));
+    veld?.focus();
+  };
+
   const vink = (id: BronId, aan: boolean) =>
     werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
 
   const voegToe = () => {
     const n = nieuw.naam.trim();
-    if (!n) return;
+    if (!n || datumProbleem || !datum) return;
     werkBij({
       kandidatenNieuw: [
         ...nieuwe.filter((k) => k.naam !== n),
         {
           naam: n,
-          geboortedatum: nieuw.geboortedatum.trim(),
+          geboortedatum: formatDayMonthYear(datum),
           gevraagdOp: new Date().toISOString().slice(0, 10),
         },
       ],
       kandidaat: n,
     });
     setNieuw({ naam: "", geboortedatum: "" });
+    setDatumGecontroleerd(false);
   };
 
   return (
@@ -97,7 +171,16 @@ const Bronnen = ({
           Gegevens over de kandidaat halen we alleen op met diens toestemming.
           De kandidaat geeft die via de eigen MijnOverheid.
         </Paragraph>
-        <Fieldset legend="Kandidaten">
+        <Fieldset
+          legend="Kandidaten"
+          invalid={!!kandidaatFout}
+          aria-describedby={kandidaatFout ? "kandidaat-fout" : undefined}
+        >
+          {kandidaatFout && (
+            <FormFieldErrorMessage id="kandidaat-fout">
+              {kandidaatFout}
+            </FormFieldErrorMessage>
+          )}
           <FormFieldRadio
             name="kandidaat"
             value={kandidaat.bsnMasker}
@@ -126,7 +209,10 @@ const Bronnen = ({
         {keuze === NIEUW && (
           <div className="rhc-mox-row-gap">
             <FormFieldTextInput
+              id="kandidaat-naam"
               label="Naam van de kandidaat"
+              invalid={!!naamFout}
+              errorMessage={naamFout}
               // Not the user's own data: the browser must not fill in the
               // user's name or date of birth here (WCAG 1.3.5).
               autoComplete="off"
@@ -139,8 +225,13 @@ const Bronnen = ({
               }
             />
             <FormFieldTextInput
-              label="Geboortedatum (dag-maand-jaar)"
+              id="kandidaat-geboortedatum"
+              label="Geboortedatum"
+              description="Dag, maand en jaar. Bijvoorbeeld 15-3-1984 of 15 maart 1984."
+              invalid={!!geboortedatumFout}
+              errorMessage={geboortedatumFout}
               autoComplete="off"
+              spellCheck={false}
               value={nieuw.geboortedatum}
               onChange={(event) =>
                 setNieuw({
@@ -148,16 +239,36 @@ const Bronnen = ({
                   geboortedatum: (event.target as HTMLInputElement).value,
                 })
               }
+              onBlur={() => {
+                setDatumGecontroleerd(true);
+                // Accept every usual form, then show it as 03-06-2001.
+                if (datum) {
+                  setNieuw({
+                    ...nieuw,
+                    geboortedatum: formatDayMonthYear(datum),
+                  });
+                }
+              }}
             />
             <Paragraph className="rhc-mox-small-text">
               De kandidaat krijgt een verzoek om toestemming in MijnOverheid.
               Zodra die er is, halen we de gegevens op. Het BSN vragen we niet
               aan u; dat komt mee met de toestemming.
             </Paragraph>
+            {fout === "toestemming" && (
+              <FormFieldErrorMessage id="toestemming-fout">
+                U hebt nog geen toestemming gevraagd. Kies{" "}
+                <strong>Toestemming vragen</strong>.
+              </FormFieldErrorMessage>
+            )}
             <ActionGroup>
               <Button
+                id="toestemming-vragen"
                 appearance="secondary-action-button"
-                aria-disabled={!nieuw.naam.trim()}
+                aria-disabled={!nieuw.naam.trim() || !!datumProbleem}
+                aria-describedby={
+                  fout === "toestemming" ? "toestemming-fout" : undefined
+                }
                 onClick={voegToe}
               >
                 Toestemming vragen
@@ -281,8 +392,11 @@ const Bronnen = ({
         </Paragraph>
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
+          backLabel={terugNaar(2)}
           next={{
+            label: verderNaar(4),
             disabled: !gekozen || !resultaat.bekend,
+            onBlocked: naarInvoer,
             onClick: () =>
               router.push(
                 naarOverzicht

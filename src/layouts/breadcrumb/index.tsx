@@ -53,6 +53,16 @@ const breadcrumbLabels: Record<string, string> = {
   prive: "Privé",
 };
 
+/**
+ * Pages that belong to another part of the portal than their URL says. The
+ * breadcrumb shows them at that place, so the user sees where the task lives.
+ */
+const breadcrumbPaths: Record<string, string> = {
+  // Step 1 of Iemand aannemen lives at the requests, but is part of Personeel.
+  "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt":
+    "/personeel/iemand-aannemen",
+};
+
 /** Label of a segment: from the list, the footer, or the segment without dashes. */
 const labelOf = (segment: string) =>
   breadcrumbLabels[segment] ??
@@ -69,7 +79,8 @@ const NldsNextLink = ({ className, ...props }: ComponentProps<typeof Link>) => (
 );
 
 const Breadcrumb = () => {
-  const paths = usePathname();
+  const pathname = usePathname();
+  const paths = breadcrumbPaths[pathname] ?? pathname;
   const huidigeKruimel = useHuidigeKruimel();
   const pathNames = paths.split("/").filter((path) => path);
 

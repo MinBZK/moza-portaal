@@ -28,6 +28,7 @@ import {
 import SideOverlay from "@/components/SideOverlay";
 import Switch from "@/components/Switch";
 import AssistentPaneel from "./assistentPaneel";
+import { usePageTools } from "./pageTools";
 import { herstelFlows } from "./herstelFlows";
 
 const FlagsPaneel = ({
@@ -40,6 +41,7 @@ const FlagsPaneel = ({
   /** Is de backend van de Digitale assistent ingesteld? */
   assistentBackendIngesteld: boolean;
 }) => {
+  const pageTools = usePageTools();
   const router = useRouter();
   const [bezig, startTransition] = useTransition();
   const [zichtbareFlags, zetZichtbareFlag] = useOptimistic(
@@ -100,6 +102,11 @@ const FlagsPaneel = ({
 
   return (
     <SideOverlay id="flags-paneel" title="Flags" shortcut="f">
+      {pageTools && (
+        <Fieldset legend={`Deze pagina: ${pageTools.title}`}>
+          <div className="rhc-mox-stack">{pageTools.content}</div>
+        </Fieldset>
+      )}
       <div>
         {functionaliteit}
         <Fieldset legend="Berichtenbox A/B/C-test">

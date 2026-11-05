@@ -24,6 +24,7 @@
 	--rhc-mox-font-weight-medium: 500;
 	--rhc-mox-transition-duration: 150ms;
 	--rhc-mox-transition-easing: ease-out;
+	--rhc-mox-target-size-min: 1.5rem;
 
 	--rhc-mox-step-size: calc(var(--rhc-size-icon-lg) * 1.25);
 	--rhc-mox-step-gap: var(--rhc-space-lg);
@@ -110,7 +111,8 @@ h3,
 h4,
 h5,
 p,
-li {
+li,
+dd {
 	max-inline-size: 75ch;
 }
 
@@ -127,6 +129,8 @@ li {
 }
 
 .rhc-theme.mox-theme .rhc-form-field .utrecht-form-field__description {
+	--utrecht-form-field-description-margin-block-start: var(--rhc-space-xs);
+
 	color: var(--rhc-color-cool-grey-700);
 	font-size: var(--rhc-text-font-size-sm);
 }
@@ -490,6 +494,10 @@ small,
 	font-size: var(--rhc-text-font-size-sm);
 }
 
+.rhc-mox-semi-bold {
+	font-weight: var(--rhc-text-font-weight-semi-bold);
+}
+
 /* --- Data summary --- */
 .rhc-data-summary__item-value:has(> .rhc-mox-text-badge) {
 	align-items: center;
@@ -566,6 +574,29 @@ small,
 	padding: var(--rhc-space-xl);
 }
 
+/* --- Changed value --- */
+@media (prefers-reduced-motion: no-preference) {
+	.rhc-mox-changed-value {
+		animation:
+			rhc-mox-changed-value-weight 600ms 150ms,
+			rhc-mox-changed-value-size 400ms var(--rhc-mox-transition-easing) 150ms;
+		display: inline-block;
+	}
+}
+
+@keyframes rhc-mox-changed-value-weight {
+	from,
+	80% {
+		font-weight: var(--rhc-text-font-weight-bold);
+	}
+}
+
+@keyframes rhc-mox-changed-value-size {
+	30% {
+		transform: scale(1.15);
+	}
+}
+
 .utrecht-button-link[aria-disabled="true"] {
 	background-color: var(--utrecht-button-disabled-background-color);
 	border-color: var(--utrecht-button-disabled-border-color);
@@ -620,6 +651,17 @@ small,
 }
 
 /* --- Action group --- */
+/* Centred instead of baseline: an icon at the start would move the baseline. */
+.rhc-theme.mox-theme .utrecht-action-group {
+	align-items: center;
+}
+
+/* Verder is first in the HTML: at the block start when wrapped, at the inline end in a row. */
+.utrecht-action-group.rhc-mox-step-navigation {
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+}
+
 .rhc-mox-action-group-dense {
 	:is(button, a) {
 		padding-block: var(--rhc-space-sm);
@@ -722,8 +764,21 @@ small,
 		position: absolute;
 	}
 
-	&:hover {
-		--utrecht-button-subtle-hover-background-color: transparent;
+	--utrecht-button-subtle-active-background-color: transparent;
+	--utrecht-button-subtle-focus-background-color: transparent;
+	--utrecht-button-subtle-hover-background-color: transparent;
+
+	/* The click area stays large; the focus ring goes around the visible icon. */
+	&:focus-visible {
+		box-shadow: none;
+		outline: none;
+
+		.utrecht-icon {
+			border-radius: var(--rhc-border-radius-sm);
+			outline: var(--utrecht-focus-outline-width)
+				var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+			outline-offset: var(--utrecht-focus-outline-offset);
+		}
 	}
 }
 
@@ -916,11 +971,6 @@ small,
 }
 
 .rhc-mox-site-search__input {
-	flex: 1;
-	position: relative;
-}
-
-.rhc-mox-site-search__input {
 	display: flex;
 	flex: 1;
 	position: relative;
@@ -982,7 +1032,6 @@ small,
 	}
 
 	.utrecht-listbox__group-label {
-		background-color: transparent;
 		color: var(--rhc-color-foreground-subtle);
 		font-weight: var(--rhc-text-font-weight-semi-bold);
 		padding-inline: var(--rhc-space-lg);
@@ -990,8 +1039,10 @@ small,
 }
 
 .rhc-mox-site-search__option {
+	border-radius: var(--rhc-border-radius-md);
 	cursor: pointer;
 	gap: var(--rhc-space-sm);
+	max-inline-size: none;
 	padding: var(--rhc-space-sm) var(--rhc-space-lg);
 
 	strong {
@@ -1640,8 +1691,22 @@ small,
 	}
 
 	.rhc-mox-range-slider__value {
+		display: inline-block;
 		font-weight: var(--rhc-text-font-weight-semi-bold);
+		transform-origin: right center;
 		white-space: nowrap;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition: transform 150ms var(--rhc-mox-transition-easing);
+		}
+	}
+
+	/* Same emphasis as a changed value, for as long as the thumb is dragged. */
+	@media (prefers-reduced-motion: no-preference) {
+		.rhc-mox-range-slider__value--dragging {
+			font-weight: var(--rhc-text-font-weight-bold);
+			transform: scale(1.15);
+		}
 	}
 
 	.rhc-mox-range-slider__input {
@@ -1652,8 +1717,18 @@ small,
 		appearance: none;
 		background: transparent;
 		block-size: var(--rhc-space-2xl);
+		cursor: grab;
 		inline-size: 100%;
 		margin: 0;
+
+		&:active {
+			cursor: grabbing;
+		}
+
+		&:disabled,
+		&[aria-disabled="true"] {
+			cursor: not-allowed;
+		}
 
 		&::-webkit-slider-thumb {
 			appearance: none;
@@ -1923,17 +1998,6 @@ small,
 	list-style: none;
 	margin: 0;
 	padding: 0;
-
-	> li {
-		border-block-start: var(--rhc-border-width-sm) solid
-			var(--rhc-color-cool-grey-200);
-		display: grid;
-		padding-block: var(--rhc-space-lg);
-	}
-
-	> li:last-child {
-		padding-block-end: 0;
-	}
 }
 
 /* --- Icon list: rows with an icon, a title and one line of text --- */
@@ -2018,47 +2082,6 @@ small,
 	.rhc-data-summary__item-value {
 		font-weight: var(--rhc-text-font-weight-bold);
 	}
-}
-
-/* --- Step navigation: Terug on the left, Verder on the right --- */
-.rhc-mox-step-navigation {
-	align-items: center;
-	border-block-start: var(--rhc-border-width-sm) solid
-		var(--rhc-color-cool-grey-200);
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--rhc-space-md);
-	justify-content: space-between;
-	padding-block-start: var(--rhc-space-lg);
-
-	/* Without Terug, Verder still sits on the right. */
-	> :only-child {
-		margin-inline-start: auto;
-	}
-}
-
-/* The last action of a task: green with a check mark, so it stands apart from Verder. */
-.rhc-mox-step-navigation__final {
-	--utrecht-button-primary-action-background-color: var(--rhc-color-groen-600);
-	--utrecht-button-primary-action-border-color: var(--rhc-color-groen-600);
-	--utrecht-button-primary-action-hover-background-color: var(
-		--rhc-color-groen-700
-	);
-	--utrecht-button-primary-action-hover-border-color: var(
-		--rhc-color-groen-700
-	);
-	--utrecht-button-primary-action-active-background-color: var(
-		--rhc-color-groen-700
-	);
-	--utrecht-button-primary-action-active-border-color: var(
-		--rhc-color-groen-700
-	);
-	--utrecht-button-primary-action-focus-background-color: var(
-		--rhc-color-groen-700
-	);
-	--utrecht-button-primary-action-focus-border-color: var(
-		--rhc-color-groen-700
-	);
 }
 
 /* --- Step indicator --- */
@@ -2454,7 +2477,7 @@ small,
 	gap: var(--rhc-space-md);
 	padding: var(--rhc-space-md);
 	scroll-margin-inline: var(--rhc-mox-tabs-fade);
-	text-decoration: none;
+	text-decoration: none !important;
 	white-space: nowrap;
 
 	&:focus-visible {
@@ -2669,6 +2692,25 @@ small,
 	--rhc-toggletip-focus-color: var(--rhc-color-wit);
 	--rhc-toggletip-active-color: var(--rhc-color-wit);
 	--rhc-toggletip-border-width: 0;
+	.rhc-toggletip__icon {
+		background-color: var(--rhc-color-info-500);
+		border-radius: var(--rhc-border-radius-md);
+		inset-block-start: 0;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition-duration: var(--rhc-mox-transition-duration);
+			transition-property: background-color, color;
+			transition-timing-function: var(--rhc-mox-transition-easing);
+		}
+	}
+	/* The focus is on the summary inside, so :focus-within, not :focus. */
+	&:hover,
+	&:focus-within,
+	&:active {
+		.rhc-toggletip__icon {
+			background-color: var(--utrecht-icon-color);
+		}
+	}
 }
 
 .rhc-toggletip__summary {
@@ -2677,14 +2719,23 @@ small,
 	box-sizing: content-box;
 	justify-content: space-around;
 	margin-block-end: 0;
+	position: relative;
 
 	svg {
 		display: block;
 	}
-}
 
-.rhc-toggletip__icon {
-	inset-block-start: 0;
+	/* A larger click area (WCAG 2.5.8) around the small icon, without
+	   taking up space in the layout. */
+	&::after {
+		block-size: var(--rhc-mox-target-size-min);
+		content: "";
+		inline-size: var(--rhc-mox-target-size-min);
+		inset-block-start: 50%;
+		inset-inline-start: 50%;
+		position: absolute;
+		translate: -50% -50%;
+	}
 }
 
 @position-try --rhc-mox-toggletip-full {
@@ -2717,8 +2768,9 @@ small,
 		inline-size: var(--rhc-space-2xl);
 	}
 
-	.utrecht-icon {
-		background-color: var(--rhc-color-lintblauw-500);
+	/* Only the (i): the close button looks the same as in an Alert. */
+	.utrecht-alert__icon .utrecht-icon {
+		background-color: var(--rhc-color-info-500);
 		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-wit);
 	}
