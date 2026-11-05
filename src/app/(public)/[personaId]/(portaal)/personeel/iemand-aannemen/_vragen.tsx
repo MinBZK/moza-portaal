@@ -5,7 +5,6 @@ import { useState } from "react";
 import {
   ActionGroup,
   Fieldset,
-  FormFieldCheckboxOption,
   FormFieldRadio,
   FormFieldTextInput,
   Heading,
@@ -18,17 +17,11 @@ import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
+import Vraag1 from "./_vraag1";
 import { type Overig } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
-import {
-  DOELGROEPEN,
-  WML_UUR_EUROCENT,
-  kiesDoelgroep,
-  registerVast,
-  useAannemen,
-  type Antwoorden,
-} from "./_useAannemen";
+import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
 
 /** Bovengrens van "anders, namelijk" bij het uurloon: € 200 per uur. */
 const MAX_UURLOON_EUROCENT = 20000;
@@ -145,7 +138,6 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
-  const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
   const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
   // Vraag 4: het minimumloon, of een eigen bedrag dat pas telt als het klopt.
@@ -185,32 +177,7 @@ const VragenMetStaat = ({
         </Heading>
         <div className="rhc-grid">
           <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-            <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
-              {DOELGROEPEN.map(([waarde, label]) => (
-                <FormFieldCheckboxOption
-                  key={waarde}
-                  name="doelgroepen"
-                  value={waarde}
-                  label={label}
-                  checked={a.doelgroepen.includes(waarde)}
-                  disabled={waarde === "register" && vast}
-                  description={
-                    waarde === "register" && vast
-                      ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
-                      : undefined
-                  }
-                  onChange={(event) =>
-                    zet({
-                      doelgroepen: kiesDoelgroep(
-                        a.doelgroepen,
-                        waarde,
-                        event.target.checked,
-                      ),
-                    })
-                  }
-                />
-              ))}
-            </Fieldset>
+            <Vraag1 a={a} zet={zet} />
             <RangeSlider
               label="2. Hoeveel uur per week gaat de kandidaat werken?"
               min={8}

@@ -29,6 +29,7 @@ import {
   type Feiten,
 } from "../_uitkomsten";
 import {
+  aangevinktVan,
   bronBevestigd,
   BRONNEN,
   useAannemen,
@@ -269,7 +270,7 @@ const OverzichtInhoud = ({
             <DataSummaryItem
               itemKey="Uw antwoorden"
               itemValue={`${
-                DOELGROEPEN.filter(([d]) => a.doelgroepen.includes(d))
+                DOELGROEPEN.filter(([d]) => aangevinktVan(a).includes(d))
                   .map(([, label]) => label)
                   .join(", ") || "Niets gekozen"
               }; ${a.uren} uur per week; loonwaarde ${a.loonwaarde} procent; ${euro(a.uurloon)} per uur`}

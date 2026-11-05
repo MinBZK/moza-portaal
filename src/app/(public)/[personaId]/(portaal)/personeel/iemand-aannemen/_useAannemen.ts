@@ -2,7 +2,13 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { eigenaarUit, isVanEigenaar } from "./_eigenaar";
-import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
+import {
+  DOELGROEPEN,
+  doelgroepenUit,
+  vinkDoelgroep,
+  vraag1Botst,
+  type Doelgroep,
+} from "./_uitkomsten";
 import {
   migreerZaken,
   type PaneelId,
@@ -36,19 +42,47 @@ export const BRONNEN = [
 ] as const;
 export type BronId = (typeof BRONNEN)[number];
 
-export { DOELGROEPEN, kiesDoelgroep, type Doelgroep };
+export { DOELGROEPEN, vraag1Botst, type Doelgroep };
 
-/** Het register staat vast aangevinkt bij Wajong zonder beschut werk. */
-export const registerVast = (a: Antwoorden) =>
-  a.doelgroepen.includes("wajong") && !a.doelgroepen.includes("beschut");
+/**
+ * De vinkjes van vraag 1 zoals de gebruiker ze zette. Zonder eigen vinkjes, of
+ * als doelgroepen er niet uit volgt, gelden de doelgroepen zelf.
+ */
+export const aangevinktVan = (a: Antwoorden): Doelgroep[] =>
+  a.aangevinkt &&
+  (vraag1Botst(a.aangevinkt) ||
+    doelgroepenUit(a.aangevinkt).join() === a.doelgroepen.join())
+    ? a.aangevinkt
+    : a.doelgroepen;
+
+/**
+ * Eén vinkje van vraag 1 aan of uit; de doelgroepen volgen eruit. Botsen de
+ * vinkjes, dan blijft de berekening bij de vorige doelgroepen, zoals een
+ * uurloon bij vraag 4 pas telt als het klopt.
+ */
+export const vinkVraag1 = (
+  a: Antwoorden,
+  waarde: Doelgroep,
+  aan: boolean,
+): Pick<Antwoorden, "aangevinkt" | "doelgroepen"> => {
+  const aangevinkt = vinkDoelgroep(aangevinktVan(a), waarde, aan);
+  return {
+    aangevinkt,
+    doelgroepen: vraag1Botst(aangevinkt)
+      ? a.doelgroepen
+      : doelgroepenUit(aangevinkt),
+  };
+};
 
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;
 
 /** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
-  /** Meerkeuze; leeg betekent dat er niets is gekozen. */
+  /** Meerkeuze; leeg betekent dat er niets is gekozen. Hiermee rekent de engine. */
   doelgroepen: Doelgroep[];
+  /** De vinkjes zelf; doelgroepen volgt eruit (doelgroepenUit). */
+  aangevinkt?: Doelgroep[];
   /** Uren per week, 8 tot 40. */
   uren: number;
   /** Geschatte loonwaarde in procent, 30 tot 100; 100 is geen verminderde loonwaarde. */
@@ -155,7 +189,7 @@ const lees = (): AannemenStaat => {
       const oud = g.antwoorden as { doelgroep?: Doelgroep } | undefined;
       const antwoorden = { ...STANDAARD_ANTWOORDEN, ...(g.antwoorden ?? {}) };
       if (oud?.doelgroep && !g.antwoorden?.doelgroepen)
-        antwoorden.doelgroepen = kiesDoelgroep([], oud.doelgroep, true);
+        antwoorden.doelgroepen = doelgroepenUit([oud.doelgroep]);
       // Eerdere versies kenden "weet ik nog niet"; die keuze bestaat niet meer.
       antwoorden.doelgroepen = antwoorden.doelgroepen.filter((d) =>
         DOELGROEPEN.some(([id]) => id === d),

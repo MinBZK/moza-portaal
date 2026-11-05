@@ -17,33 +17,35 @@ export const DOELGROEPEN = [
 ] as const;
 export type Doelgroep = (typeof DOELGROEPEN)[number][0];
 
-/** "Geen van deze" sluit de andere keuzes uit. */
-const ALLEEN: Doelgroep[] = ["geen"];
+const VOLGORDE = DOELGROEPEN.map(([d]) => d);
+const geordend = (d: Doelgroep[]) => VOLGORDE.filter((v) => d.includes(v));
 
-/**
- * Vraag 1 is meerkeuze. Wajong vinkt het register aan (Wfsv 38b lid 1 c).
- * Beschut werk sluit alleen het register uit (aanhef 38b lid 1); Pwet 10b
- * lid 1 noemt de Wajong juist. Wajong met beschut werk blijft dus zonder register.
- */
-export const kiesDoelgroep = (
-  huidig: Doelgroep[],
+/** Vraag 1 is meerkeuze: elk vinkje gaat aan of uit en raakt de andere niet. */
+export const vinkDoelgroep = (
+  aangevinkt: Doelgroep[],
   waarde: Doelgroep,
   aan: boolean,
 ): Doelgroep[] => {
-  if (aan && ALLEEN.includes(waarde)) return [waarde];
-  let nieuw = huidig.filter((d) => d !== waarde && !ALLEEN.includes(d));
-  if (aan) {
-    if (waarde === "beschut") nieuw = nieuw.filter((d) => d !== "register");
-    if (waarde === "register") nieuw = nieuw.filter((d) => d !== "beschut");
-    nieuw.push(waarde);
-  }
-  if (
-    nieuw.includes("wajong") &&
-    !nieuw.includes("beschut") &&
-    !nieuw.includes("register")
-  )
-    nieuw.push("register");
-  return DOELGROEPEN.map(([d]) => d).filter((d) => nieuw.includes(d));
+  const nieuw = aangevinkt.filter((d) => d !== waarde);
+  return geordend(aan ? [...nieuw, waarde] : nieuw);
+};
+
+/** "Geen van deze" kan niet samen met een andere keuze. */
+export const vraag1Botst = (aangevinkt: Doelgroep[]) =>
+  aangevinkt.includes("geen") && aangevinkt.length > 1;
+
+/**
+ * Van de vinkjes naar de situatie waarmee de engine rekent. Wajong hoort bij
+ * het register (Wfsv 38b lid 1 c). Beschut werk sluit alleen het register uit
+ * (aanhef 38b lid 1); Pwet 10b lid 1 noemt de Wajong juist. Wajong met beschut
+ * werk blijft dus zonder register.
+ */
+export const doelgroepenUit = (aangevinkt: Doelgroep[]): Doelgroep[] => {
+  if (aangevinkt.includes("geen")) return ["geen"];
+  const d = new Set(aangevinkt);
+  if (d.has("beschut")) d.delete("register");
+  else if (d.has("wajong")) d.add("register");
+  return geordend([...d]);
 };
 
 /** De antwoorden op de vier vragen (zie Antwoorden in _useAannemen.ts). */

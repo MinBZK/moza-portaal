@@ -29,9 +29,18 @@ actor en wetsgrond van het verhaal via de gemeente staat in
 | `/lopendezaken/iemand-aannemen/[situatie]/besluit`                        | Besluit (gemeente: college; wajong: UWV), dezelfde berekening als vooraf, "Waarom" met engine-stappen, "Klopt dit niet?". WIA heeft geen besluitpagina                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `/lopendezaken/loonkostensubsidie-koen` en `.../besluit`                  | Oude links; verwijzen door naar de zaak en het besluit van de gemeente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
+## Vraag 1: vinkjes en doelgroepen
+
+Elk vinkje van vraag 1 zet alleen zichzelf aan of uit (`aangevinkt`). De
+koppelingen uit de wet zitten in `doelgroepenUit` (`_uitkomsten.ts`): Wajong
+rekent met het register, beschut werk zonder register. Daarmee rekent de engine
+(`doelgroepen`). "Geen van deze" samen met een ander vinkje geeft een melding;
+de bedragen blijven dan bij het vorige antwoord. Zo kan de engine dezelfde 21
+combinaties krijgen als toen de vinkjes elkaar nog aan- en uitzetten.
+
 ## Route per situatie
 
-`situatieVan` in `_route.ts` kiest uit de vinkjes van vraag 1 de eerste die
+`situatieVan` in `_route.ts` kiest uit de doelgroepen van vraag 1 de eerste die
 past: Wajong, WIA, bijstand of register, anders uitleg (beschut werk,
 geen van deze of niets gekozen). `routeVoor` maakt daarvan de route met de uitkomsten van
 de engine: welke panelen er zijn per organisatie, welke taken de werknemer

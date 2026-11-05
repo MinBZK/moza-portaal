@@ -29,51 +29,79 @@ test("basis: elk doel rekent en alle routes staan dicht", () => {
 
 const U = await import("../" + MAP + "_uitkomsten.ts");
 
-test("vraag 1: Wajong vinkt het register aan", () => {
-  assert.deepEqual(U.kiesDoelgroep([], "wajong", true), ["register", "wajong"]);
+test("vraag 1: elk vinkje staat los van de andere", () => {
+  assert.deepEqual(U.vinkDoelgroep([], "wajong", true), ["wajong"]);
+  assert.deepEqual(U.vinkDoelgroep(["register"], "beschut", true), [
+    "register",
+    "beschut",
+  ]);
+  assert.deepEqual(U.vinkDoelgroep(["wajong", "beschut"], "beschut", false), [
+    "wajong",
+  ]);
+  assert.deepEqual(U.vinkDoelgroep(["register", "wia"], "geen", true), [
+    "register",
+    "wia",
+    "geen",
+  ]);
+});
+
+test("vraag 1: geen van deze botst met een andere keuze", () => {
+  assert.equal(U.vraag1Botst(["register", "geen"]), true);
+  assert.equal(U.vraag1Botst(["geen"]), false);
+  assert.equal(U.vraag1Botst(["register", "wia"]), false);
+});
+
+test("vraag 1: Wajong rekent met het register", () => {
+  assert.deepEqual(U.doelgroepenUit(["wajong"]), ["register", "wajong"]);
 });
 
 // Beschut werk sluit het register uit (Wfsv 38b lid 1 aanhef), de Wajong
 // niet: Pwet 10b lid 1 noemt de Wajong juist.
-test("vraag 1: beschut werk haalt alleen register weg", () => {
-  assert.deepEqual(U.kiesDoelgroep(["register", "wajong"], "beschut", true), [
+test("vraag 1: beschut werk rekent zonder register, wel met Wajong", () => {
+  assert.deepEqual(U.doelgroepenUit(["register", "wajong", "beschut"]), [
     "wajong",
     "beschut",
   ]);
-});
-
-test("vraag 1: Wajong vinkt het register niet aan bij beschut werk", () => {
-  assert.deepEqual(U.kiesDoelgroep(["beschut"], "wajong", true), [
-    "wajong",
-    "beschut",
-  ]);
-});
-
-test("vraag 1: beschut werk uit bij Wajong vinkt het register weer aan", () => {
-  assert.deepEqual(U.kiesDoelgroep(["wajong", "beschut"], "beschut", false), [
-    "register",
-    "wajong",
-  ]);
-});
-
-test("vraag 1: register bij Wajong haalt beschut werk weg", () => {
-  assert.deepEqual(U.kiesDoelgroep(["wajong", "beschut"], "register", true), [
-    "register",
-    "wajong",
-  ]);
-});
-
-test("vraag 1: register haalt beschut werk weg", () => {
-  assert.deepEqual(U.kiesDoelgroep(["beschut", "bijstand"], "register", true), [
-    "register",
+  assert.deepEqual(U.doelgroepenUit(["register", "bijstand", "beschut"]), [
     "bijstand",
+    "beschut",
   ]);
 });
 
-test("vraag 1: geen van deze sluit de rest uit", () => {
-  assert.deepEqual(U.kiesDoelgroep(["register", "wia"], "geen", true), [
+// Dezelfde 21 combinaties als met de gekoppelde vinkjes van eerder; de
+// tabel in regelrecht-corpus-FCV (uitkomsten.feature) rekent ze allemaal.
+test("vraag 1: alle vinkjes samen geven precies de 21 combinaties", () => {
+  const ids = U.DOELGROEPEN.map(([id]) => id);
+  const uit = new Set();
+  for (let m = 0; m < 1 << ids.length; m++) {
+    const vinkjes = ids.filter((_, i) => m & (1 << i));
+    // Botsende vinkjes gaan niet naar de engine (vinkVraag1).
+    if (!U.vraag1Botst(vinkjes)) uit.add(U.doelgroepenUit(vinkjes).join());
+  }
+  const verwacht = [
+    "",
     "geen",
-  ]);
+    "register",
+    "register,bijstand",
+    "register,wajong",
+    "register,wajong,bijstand",
+    "register,wajong,wia",
+    "register,wajong,wia,bijstand",
+    "register,wia",
+    "register,wia,bijstand",
+    "wia",
+    "wia,bijstand",
+    "bijstand",
+    "beschut",
+    "bijstand,beschut",
+    "wia,beschut",
+    "wia,bijstand,beschut",
+    "wajong,beschut",
+    "wajong,bijstand,beschut",
+    "wajong,wia,beschut",
+    "wajong,wia,bijstand,beschut",
+  ];
+  assert.deepEqual([...uit].sort(), verwacht.sort());
 });
 
 test("vraag 1: zes opties, WIA zonder WAO, geen Wsw of weet ik nog niet", () => {
