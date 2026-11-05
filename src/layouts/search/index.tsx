@@ -39,7 +39,6 @@ const PageSearch = ({
   const assistent = useFlag("mox_digitaleAssistent");
   return (
     <SiteSearch
-      label={assistent ? undefined : "Zoeken"}
       assistant={assistent}
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
