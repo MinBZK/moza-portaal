@@ -197,7 +197,7 @@ const Balans = ({
         ? `${min}${euro(r.bedrag)}`
         : r.status === "niet_meegeteld"
           ? "niet meegeteld"
-          : euro(0);
+          : `${min}${euro(0)}`;
 
   // Rekenen en fouten blijven zichtbaar; de herkomst staat in de toggletip.
   const bron =
@@ -273,7 +273,8 @@ const Balans = ({
       {uitkomsten.aannames.map((id) => (
         <Aanname key={id} id={id} />
       ))}
-      <dl className="rhc-data-summary rhc-data-summary--column">
+      {/* Een optelsom: loonkosten, min elke regeling, en onder de streep de uitkomst. */}
+      <dl className="rhc-data-summary rhc-data-summary--column rhc-mox-sum">
         <div className="rhc-data-summary__item">
           <dt className="rhc-data-summary__item-key">Loonkosten</dt>
           <dd className="rhc-data-summary__item-value">{euro(kosten)}</dd>
@@ -320,6 +321,12 @@ const Balans = ({
             </div>
           );
         })}
+        <div className="rhc-data-summary__item rhc-mox-sum__total">
+          <dt className="rhc-data-summary__item-key">
+            Geschatte loonkosten per jaar
+          </dt>
+          <dd className="rhc-data-summary__item-value">{bedrag(netto)}</dd>
+        </div>
       </dl>
       {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
       {bekend &&
@@ -338,13 +345,6 @@ const Balans = ({
           </Paragraph>
         </Alert>
       )}
-      {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
-      <div className="rhc-mox-highlight">
-        {totaalKop("Geschatte loonkosten per jaar")}
-        <Paragraph purpose="lead">
-          <strong>{bedrag(netto)}</strong>
-        </Paragraph>
-      </div>
       {bron}
     </>
   );

@@ -257,30 +257,33 @@ const VragenMetStaat = ({
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
           <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
-            {DOELGROEPEN.map(([waarde, label]) => (
-              <FormFieldCheckboxOption
-                key={waarde}
-                name="doelgroepen"
-                value={waarde}
-                label={label}
-                checked={a.doelgroepen.includes(waarde)}
-                disabled={waarde === "register" && vast}
-                description={
-                  waarde === "register" && vast
-                    ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
-                    : undefined
-                }
-                onChange={(event) =>
-                  zet({
-                    doelgroepen: kiesDoelgroep(
-                      a.doelgroepen,
-                      waarde,
-                      event.target.checked,
-                    ),
-                  })
-                }
-              />
-            ))}
+            {/* Niets aanvinken telt als "Geen van deze"; die optie staat er niet meer. */}
+            {DOELGROEPEN.filter(([waarde]) => waarde !== "geen").map(
+              ([waarde, label]) => (
+                <FormFieldCheckboxOption
+                  key={waarde}
+                  name="doelgroepen"
+                  value={waarde}
+                  label={label}
+                  checked={a.doelgroepen.includes(waarde)}
+                  disabled={waarde === "register" && vast}
+                  description={
+                    waarde === "register" && vast
+                      ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
+                      : undefined
+                  }
+                  onChange={(event) =>
+                    zet({
+                      doelgroepen: kiesDoelgroep(
+                        a.doelgroepen,
+                        waarde,
+                        event.target.checked,
+                      ),
+                    })
+                  }
+                />
+              ),
+            )}
           </Fieldset>
           <RangeSlider
             label="2. Hoeveel uur per week gaat de kandidaat werken?"

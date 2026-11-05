@@ -1988,6 +1988,38 @@ small,
 	color: var(--rhc-color-foreground-default);
 }
 
+/* --- Sum: amounts under each other on the right, the outcome below a line --- */
+.rhc-mox-sum {
+	.rhc-data-summary__item {
+		align-items: baseline;
+		display: flex;
+		flex-direction: row;
+		gap: var(--rhc-space-md);
+		justify-content: space-between;
+	}
+
+	.rhc-data-summary__item-key {
+		flex: 1;
+	}
+
+	.rhc-data-summary__item-value {
+		font-variant-numeric: tabular-nums;
+		text-align: end;
+		white-space: nowrap;
+	}
+}
+
+.rhc-mox-sum__total {
+	border-block-start: var(--rhc-border-width-md) solid
+		var(--rhc-color-foreground-default);
+	font-weight: var(--rhc-text-font-weight-bold);
+	padding-block-start: var(--rhc-space-md);
+
+	.rhc-data-summary__item-value {
+		font-weight: var(--rhc-text-font-weight-bold);
+	}
+}
+
 /* --- Step navigation: Terug on the left, Verder on the right --- */
 .rhc-mox-step-navigation {
 	align-items: center;
