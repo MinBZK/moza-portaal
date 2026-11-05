@@ -8,7 +8,6 @@ import {
   FormFieldCheckboxOption,
   FormFieldRadio,
   FormFieldTextInput,
-  Heading,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
@@ -17,8 +16,8 @@ import {
 import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
-import Balans, { Uitvoerder, type UitvoerderId } from "./_balans";
-import type { BalansRegel, Overig, Regel } from "./_uitkomsten";
+import Balans from "./_balans";
+import type { BalansRegel, Regel } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -41,54 +40,6 @@ const naarEurocent = (tekst: string) => {
 };
 
 const alsTekst = (cent: number) => (cent / 100).toFixed(2).replace(".", ",");
-
-/** "Regelingen die verder kunnen gelden": naam en uitleg per uitkomst van de engine. */
-const OVERIG: Record<
-  Overig["id"],
-  { naam: string; uitvoerder: UitvoerderId; tekst: (o: Overig) => string }
-> = {
-  nrp: {
-    naam: "No-riskpolis",
-    uitvoerder: "uwv",
-    // ZW 29b lid 1, 2, 5 en 6; de loondoorbetaling blijft.
-    tekst: (o) =>
-      `Wordt uw werknemer ziek? Dan betaalt u het loon door. UWV betaalt u dan ziekengeld: 70 procent van het dagloon. In de eerste 52 weken van de ziekte kunt u UWV vragen om het hele dagloon, maar niet meer dan het loon. ${o.duurJaren === 5 ? "Dit geldt bij ziekte die begint in de eerste vijf jaar na de start van het dienstverband." : "Er is geen einddatum."}`,
-  },
-  pp_pwet: {
-    naam: "Proefplaatsing",
-    uitvoerder: "gemeente",
-    // Pwet 6 h en 8a lid 2 d: onbeloond, vóór de dienstbetrekking, toestemming aan de kandidaat.
-    tekst: () =>
-      "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. De kandidaat vraagt de gemeente om toestemming.",
-  },
-  pp_ww: {
-    naam: "Proefplaatsing met behoud van WW",
-    uitvoerder: "uwv",
-    tekst: () =>
-      "De kandidaat werkt zes maanden bij u terwijl de WW-uitkering doorloopt, als UWV toestemming geeft.",
-  },
-  begeleiding: {
-    naam: "Begeleiding op de werkplek (jobcoach)",
-    uitvoerder: "gemeente",
-    // Pwet 10da: een aanspraak van de werknemer.
-    tekst: () =>
-      "Uw werknemer heeft recht op begeleiding op de werkplek, bijvoorbeeld door een jobcoach. Dit loopt via de gemeente.",
-  },
-  vz_wia: {
-    naam: "Jobcoaching en werkplekaanpassing",
-    uitvoerder: "uwv",
-    // Wet WIA 35 (werknemer vraagt aan) en 36 (subsidie meerkosten voor de werkgever).
-    tekst: () =>
-      "UWV kan uw werknemer een voorziening geven, zoals een jobcoach of een aangepaste werkplek. Uw werknemer vraagt dit zelf aan bij UWV. Maakt u zelf extra kosten voor een aangepaste werkplek? En duurt het dienstverband ten minste zes maanden? Dan kunt u bij UWV subsidie vragen voor die extra kosten. Daarvoor gelden meer voorwaarden. De kosten moeten bijvoorbeeld hoger zijn dan een drempelbedrag. UWV beslist of u de subsidie krijgt.",
-  },
-  vz_wajong: {
-    naam: "Jobcoaching en werkplekaanpassing",
-    uitvoerder: "uwv",
-    // Wajong 2:22: de werknemer vraagt aan.
-    tekst: () =>
-      "Via de Wajong kan UWV uw werknemer een voorziening geven, zoals een jobcoach of een aangepaste werkplek. Uw werknemer vraagt dit zelf aan bij UWV.",
-  },
-};
 
 /** Een termijn uit de wet, met het artikel waar hij staat. */
 type Bron = { tekst: string; url: string };
@@ -325,7 +276,6 @@ const VragenMetStaat = ({
   const resultaat = useUitkomsten(a);
   const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
-  const overige = resultaat.uitkomsten.overige.filter((o) => o.geldt);
   // Vraag 4: het minimumloon, of een eigen bedrag dat pas telt als het klopt.
   const [anders, setAnders] = useState(a.uurloon !== WML_UUR_EUROCENT);
   const [loonTekst, setLoonTekst] = useState(
@@ -509,33 +459,6 @@ const VragenMetStaat = ({
           </StickyInfoBox>
         </div>
       </div>
-
-      <Separator></Separator>
-
-      {overige.length > 0 && (
-        <section className="rhc-mox-stack" aria-labelledby="overige">
-          <Heading level={2} id="overige">
-            Regelingen die verder kunnen gelden
-          </Heading>
-          <UnorderedList>
-            {overige.map((o) => (
-              <UnorderedListItem key={o.id}>
-                <strong>{OVERIG[o.id].naam}</strong>{" "}
-                <InfoToggletip
-                  label={`Toelichting bij ${OVERIG[o.id].naam.toLowerCase()}`}
-                >
-                  <Paragraph>{OVERIG[o.id].tekst(o)}</Paragraph>
-                  <Paragraph>
-                    Of de regeling geldt, beslist de organisatie die haar
-                    uitvoert.
-                  </Paragraph>
-                </InfoToggletip>{" "}
-                <Uitvoerder id={OVERIG[o.id].uitvoerder} />
-              </UnorderedListItem>
-            ))}
-          </UnorderedList>
-        </section>
-      )}
     </>
   );
 };
