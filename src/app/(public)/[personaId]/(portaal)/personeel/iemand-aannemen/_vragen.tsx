@@ -14,7 +14,8 @@ import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans from "./_balans";
-import type { BalansRegel, Regel } from "./_uitkomsten";
+import { loonkostenPerJaar } from "./_engine";
+import { balansRegels, type BalansRegel, type Regel } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro } from "./_werkgever";
 import {
@@ -221,6 +222,14 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
+  // Verder kan pas als de voorbeeldberekening een bedrag oplevert.
+  const geenBedrag =
+    resultaat.bekend &&
+    !resultaat.fout &&
+    balansRegels(resultaat.uitkomsten, loonkostenPerJaar(a)).every(
+      (r) => r.bedrag <= 0,
+    );
+  const kanVerder = resultaat.bekend && !resultaat.fout && !geenBedrag;
   const vast = registerVast(a);
   const wajong = a.doelgroepen.includes("wajong");
   // Vraag 4: het minimumloon, of een eigen bedrag dat pas telt als het klopt.
@@ -256,7 +265,7 @@ const VragenMetStaat = ({
 
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-          <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
+          <Fieldset legend="1. Wie wilt u aannemen?">
             {/* Niets aanvinken telt als "Geen van deze"; die optie staat er niet meer. */}
             {DOELGROEPEN.filter(([waarde]) => waarde !== "geen").map(
               ([waarde, label]) => (
@@ -396,11 +405,13 @@ const VragenMetStaat = ({
           Wij vullen de aanvraag voor u in. U controleert en verstuurt zelf.
         </Paragraph>
         <Paragraph role="status" id="aanvragen-bezig">
-          {resultaat.bekend
-            ? ""
-            : resultaat.fout
-              ? "De berekening is niet gelukt. Laad de pagina opnieuw."
-              : "De berekening is nog bezig."}
+          {resultaat.fout
+            ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+            : !resultaat.bekend
+              ? "De berekening is nog bezig."
+              : geenBedrag
+                ? "Bij deze antwoorden komt er geen bedrag uit. Pas uw antwoorden aan om verder te gaan."
+                : ""}
         </Paragraph>
       </div>
 
@@ -409,8 +420,8 @@ const VragenMetStaat = ({
         back="/personeel/iemand-aannemen"
         next={{
           href: "/personeel/iemand-aannemen/gegevens",
-          disabled: !resultaat.bekend,
-          describedBy: resultaat.bekend ? undefined : "aanvragen-bezig",
+          disabled: !kanVerder,
+          describedBy: kanVerder ? undefined : "aanvragen-bezig",
         }}
       />
     </>
