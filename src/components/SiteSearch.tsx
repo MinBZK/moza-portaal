@@ -2,6 +2,7 @@
 
 import {
   useId,
+  useRef,
   useState,
   type FormEvent,
   type KeyboardEvent,
@@ -42,6 +43,8 @@ const Predictive = ({ text, typed }: { text: string; typed: string }) => {
  */
 const SiteSearch = ({
   label = "Zoeken of een vraag stellen",
+  hideLabel = false,
+  defaultValue = "",
   action = "/zoeken",
   assistantHref = "/digitale-assistent",
   suggestions = [],
@@ -49,6 +52,10 @@ const SiteSearch = ({
   onSearch,
 }: {
   label?: string;
+  /** Hide the label visually; screen readers still read it. */
+  hideLabel?: boolean;
+  /** Text in the field at the start, such as the query on the results page. */
+  defaultValue?: string;
   /** Page with the search results; gets the query as ?q=. */
   action?: string;
   /** Opens the digital assistant with the question as ?vraag=. */
@@ -64,8 +71,9 @@ const SiteSearch = ({
   const id = useId();
   const inputId = `${id}-input`;
   const listId = `${id}-list`;
-  const [typed, setTyped] = useState("");
-  const [value, setValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [typed, setTyped] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
 
@@ -90,6 +98,13 @@ const SiteSearch = ({
   const close = () => {
     setOpen(false);
     setActive(-1);
+  };
+
+  const clear = () => {
+    setValue("");
+    setTyped("");
+    close();
+    inputRef.current?.focus();
   };
 
   const search = (text: string) => {
@@ -183,30 +198,48 @@ const SiteSearch = ({
   return (
     <search className="rhc-mox-site-search">
       <form action={action} method="get" onSubmit={onSubmit}>
-        <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
+        <FieldLabel
+          htmlFor={inputId}
+          className={hideLabel ? "rhc-visually-hidden" : undefined}
+        >
+          {label}
+        </FieldLabel>
         <div className="rhc-mox-site-search__field">
-          <TextInput
-            id={inputId}
-            name="q"
-            type="search"
-            autoComplete="off"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-expanded={expanded}
-            aria-controls={listId}
-            aria-activedescendant={
-              expanded && active >= 0 ? optionId(active) : undefined
-            }
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-              setTyped(event.target.value);
-              setActive(-1);
-              setOpen(true);
-            }}
-            onKeyDown={onKeyDown}
-            onBlur={close}
-          />
+          <div className="rhc-mox-site-search__input">
+            <TextInput
+              ref={inputRef}
+              id={inputId}
+              name="q"
+              type="search"
+              autoComplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={expanded}
+              aria-controls={listId}
+              aria-activedescendant={
+                expanded && active >= 0 ? optionId(active) : undefined
+              }
+              value={value}
+              onChange={(event) => {
+                setValue(event.target.value);
+                setTyped(event.target.value);
+                setActive(-1);
+                setOpen(true);
+              }}
+              onKeyDown={onKeyDown}
+              onBlur={close}
+            />
+            {value && (
+              <button
+                type="button"
+                className="rhc-mox-site-search__clear"
+                aria-label="Zoekterm wissen"
+                onClick={clear}
+              >
+                <Icon icon="kruis" />
+              </button>
+            )}
+          </div>
           <Button type="submit" appearance="primary-action-button">
             Zoeken
           </Button>

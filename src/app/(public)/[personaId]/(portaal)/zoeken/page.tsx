@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Button,
-  FormFieldTextInput,
-  Heading,
-  Paragraph,
-} from "@/components/rhc";
+import { Heading, Paragraph } from "@/components/rhc";
+import SiteSearch from "@/components/SiteSearch";
 
 export const metadata: Metadata = { title: "Zoeken" };
 
@@ -37,42 +33,35 @@ const RESULTATEN = [
   },
 ];
 
+/** Prototype: the query when none is given. */
+const STANDAARD_ZOEKTERM = "afstand tot de arbeidsmarkt";
+
 const ZoekenPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ q?: string | string[] }>;
 }) => {
   const { q } = await searchParams;
-  const zoekterm = (Array.isArray(q) ? q[0] : q)?.trim() ?? "";
+  const zoekterm = (Array.isArray(q) ? q[0] : q)?.trim() || STANDAARD_ZOEKTERM;
 
   return (
     <>
-      <Heading level={1}>Zoeken</Heading>
+      <Heading level={1} className="rhc-visually-hidden">
+        Zoeken
+      </Heading>
 
-      <search className="rhc-mox-card">
-        <form
-          action="/zoeken"
-          method="get"
-          className="rhc-mox-stack rhc-mox-stack--md"
-        >
-          <FormFieldTextInput
-            label="Zoeken in MijnOverheid Zakelijk"
-            name="q"
-            type="search"
-            defaultValue={zoekterm}
-            autoComplete="off"
-          />
-          <Button type="submit" appearance="primary-action-button">
-            Zoeken
-          </Button>
-        </form>
-      </search>
+      <div className="rhc-mox-card">
+        <SiteSearch
+          key={zoekterm}
+          label="Zoeken in MijnOverheid Zakelijk"
+          hideLabel
+          defaultValue={zoekterm}
+        />
+      </div>
 
       <section className="rhc-mox-card" aria-labelledby="zoekresultaten">
         <Heading level={2} id="zoekresultaten">
-          {zoekterm
-            ? `${RESULTATEN.length} resultaten voor “${zoekterm}”`
-            : `${RESULTATEN.length} resultaten`}
+          {`${RESULTATEN.length} resultaten voor “${zoekterm}”`}
         </Heading>
         <ol className="rhc-mox-search-results">
           {RESULTATEN.map((resultaat) => (
