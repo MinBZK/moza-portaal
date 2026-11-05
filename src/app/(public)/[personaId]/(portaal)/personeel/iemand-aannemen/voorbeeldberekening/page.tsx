@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Heading, Paragraph } from "@/components/rhc";
-import PageSearch from "@/layouts/search";
 import Stappen from "../_stappen";
 import { TAAK_TITEL } from "../_taakTitel";
 import Vragen from "../_vragen";
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 const VoorbeeldberekeningPage = () => (
   <>
     <Heading level={1}>{TAAK_TITEL}</Heading>
-    <PageSearch />
     <div className="rhc-mox-card rhc-mox-row-gap">
       <Stappen huidige={2} />
       <Paragraph>

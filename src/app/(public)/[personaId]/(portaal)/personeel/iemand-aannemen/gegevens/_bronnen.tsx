@@ -280,7 +280,7 @@ const Bronnen = ({
                 : `${aantal} van ${BRONNEN.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
         </Paragraph>
         <StepNavigation
-          back="/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt"
+          back="/personeel/iemand-aannemen/voorbeeldberekening"
           next={{
             disabled: !gekozen || !resultaat.bekend,
             onClick: () =>
