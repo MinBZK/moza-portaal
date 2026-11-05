@@ -4,12 +4,16 @@ import {
   AccordionProvider,
   ActionGroup,
   Heading,
+  Icon,
+  OrderedList,
+  OrderedListItem,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
+import { STAPPEN, TAAK_TITEL } from "./iemand-aannemen/_stappen";
 
 export const metadata: Metadata = { title: "Personeel en rollen" };
 
@@ -58,11 +62,11 @@ const PersoneelPage = async () => {
   const situaties = await getDemoIemandAannemenSituaties();
   return (
     <>
-      <Heading level={1}>Personeel</Heading>
+      <Heading level={1}>Personeel en rollen</Heading>
 
       <section className="rhc-mox-card" aria-labelledby="iemand-aannemen">
         <Heading level={2} id="iemand-aannemen">
-          Iemand aannemen met een afstand tot de arbeidsmarkt
+          {TAAK_TITEL}
         </Heading>
         <Paragraph>
           Neemt u iemand aan die niet zelfstandig het minimumloon kan verdienen?
@@ -71,25 +75,23 @@ const PersoneelPage = async () => {
           wat ze opleveren. Wij gebruiken daarvoor wat de overheid al van u en
           van de kandidaat weet.
         </Paragraph>
-        <UnorderedList>
-          <UnorderedListItem>
-            U vult alleen in wat de overheid nog niet weet.
-          </UnorderedListItem>
-          <UnorderedListItem>
-            Per bron ziet u welke gegevens worden gebruikt en vinkt u aan dat ze
-            kloppen.
-          </UnorderedListItem>
-          <UnorderedListItem>
-            Een aanvraag staat daarna klaar als concept; u verstuurt hem pas als
-            u dat wilt.
-          </UnorderedListItem>
-        </UnorderedList>
+        <Paragraph>Dit gaat in {STAPPEN.length} stappen:</Paragraph>
+        <OrderedList>
+          {STAPPEN.map((stap) => (
+            <OrderedListItem key={stap.name}>{stap.name}</OrderedListItem>
+          ))}
+        </OrderedList>
+        <Paragraph>
+          U vult alleen in wat de overheid nog niet weet. Wij versturen niets
+          zonder dat u dat zelf doet.
+        </Paragraph>
         <ActionGroup>
           <Link
-            href="/personeel/iemand-aannemen"
+            href={STAPPEN[0].href}
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Start: iemand aannemen
+            Begin met de {STAPPEN[0].name.toLowerCase()}
+            <Icon icon="chevron-right" />
           </Link>
         </ActionGroup>
       </section>

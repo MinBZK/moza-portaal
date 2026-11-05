@@ -25,6 +25,7 @@ import { useUitkomsten } from "../_useUitkomsten";
 import { useAannemen, uurloonTekst, type AannemenStaat } from "../_useAannemen";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, type Werkgever } from "../_werkgever";
+import { terugNaar } from "../_stappen";
 
 const Loket = ({
   titel,
@@ -35,7 +36,7 @@ const Loket = ({
   label?: string;
   items: ReactNode[];
 }) => (
-  <section className="rhc-mox-card rhc-mox-row-gap" aria-label={titel}>
+  <section className="rhc-mox-stack" aria-label={titel}>
     <div className="rhc-mox-cluster">
       <Heading level={3}>{titel}</Heading>
       {label && <TextBadge variant="info">{label}</TextBadge>}
@@ -111,7 +112,10 @@ const VersturenInhoud = ({
             wat er verder geldt.
           </Paragraph>
         </Alert>
-        <StepNavigation back="/personeel/iemand-aannemen/concept-aanvraag" />
+        <StepNavigation
+          back="/personeel/iemand-aannemen/concept-aanvraag"
+          backLabel={terugNaar(3)}
+        />
       </>
     );
 
@@ -219,6 +223,7 @@ const VersturenInhoud = ({
         {taken}
         <StepNavigation
           back="/personeel/iemand-aannemen/concept-aanvraag"
+          backLabel={terugNaar(3)}
           next={{
             label: "Bekijk het overzicht",
             href: "/personeel/iemand-aannemen/overzicht",
@@ -229,7 +234,9 @@ const VersturenInhoud = ({
 
   const indienen = () => {
     if (!bevestigd) {
+      // Show why, and go to the checkbox the user still has to tick.
       setFout(true);
+      document.querySelector<HTMLInputElement>("#bevestiging input")?.focus();
       return;
     }
     werkZaakBij(
@@ -242,13 +249,6 @@ const VersturenInhoud = ({
 
   return (
     <>
-      {fout && !bevestigd && (
-        <Alert type="error">
-          <Paragraph>
-            Bevestig eerst dat u alles naar waarheid heeft ingevuld.
-          </Paragraph>
-        </Alert>
-      )}
       <Heading level={2}>Wat u verstuurt</Heading>
       <Loket titel={organisatie} label="Aanvraag" items={ingediend} />
       {taken}
@@ -273,10 +273,7 @@ const VersturenInhoud = ({
         </Link>
       </Paragraph>
 
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="wat-gebeurt"
-      >
+      <section className="rhc-mox-stack" aria-labelledby="wat-gebeurt">
         <Heading level={2} id="wat-gebeurt">
           Wat er gebeurt als u de aanvraag verstuurt
         </Heading>
@@ -289,6 +286,13 @@ const VersturenInhoud = ({
           berichtenbox, en u volgt de zaak bij Lopende zaken.
         </Paragraph>
         <FormFieldCheckboxOption
+          id="bevestiging"
+          invalid={fout && !bevestigd}
+          errorMessage={
+            fout && !bevestigd
+              ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+              : undefined
+          }
           label={`Ik heb alles naar waarheid ingevuld${staat.rol === "namens" ? `, namens ${werkgever.onderneming}` : ""}.`}
           name="bevestiging"
           checked={bevestigd}
@@ -296,10 +300,12 @@ const VersturenInhoud = ({
         />
         <StepNavigation
           back="/personeel/iemand-aannemen/concept-aanvraag"
+          backLabel={terugNaar(3)}
           next={{
             label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
             onClick: indienen,
             final: true,
+            sends: true,
           }}
         />
       </section>

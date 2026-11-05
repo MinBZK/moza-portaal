@@ -1,9 +1,9 @@
-import StepIndicator from "@/components/StepIndicator";
+import Voortgang from "./_voortgang";
 
 /** The heading of every step: the task itself. */
 export const TAAK_TITEL = "Iemand aannemen met afstand tot de arbeidsmarkt";
 
-const STAPPEN = [
+export const STAPPEN = [
   {
     name: "Voorbeeldberekening",
     href: "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
@@ -22,14 +22,17 @@ const STAPPEN = [
   },
 ];
 
+/** Text of the forward button: "Verder naar" and the name of the next step. */
+export const verderNaar = (stap: 2 | 3 | 4) =>
+  `Verder naar ${STAPPEN[stap - 1].name}`;
+
+/** Text of the back button: "Terug naar" and the name of the previous step. */
+export const terugNaar = (stap: 1 | 2 | 3) =>
+  `Terug naar ${STAPPEN[stap - 1].name}`;
+
 /** Waar de ondernemer is in Iemand aannemen (1 tot 4). */
 const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 | 4 }) => (
-  <StepIndicator
-    steps={STAPPEN}
-    current={huidige - 1}
-    label="Stappen"
-    hideCount
-  />
+  <Voortgang steps={STAPPEN} huidige={huidige} />
 );
 
 export default Stappen;

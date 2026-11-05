@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import FieldLabel from "./FieldLabel";
+import ChangedValue from "./ChangedValue";
 
 type RangeSliderProps = Omit<
   ComponentProps<"input">,
@@ -70,7 +71,7 @@ const RangeSlider = ({
           {label}
         </FieldLabel>
         <output htmlFor={fieldId} className="rhc-mox-range-slider__value">
-          {formatValue(current)}
+          <ChangedValue>{formatValue(current)}</ChangedValue>
         </output>
       </div>
       <div className="utrecht-form-field__input">
