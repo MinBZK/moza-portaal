@@ -8,8 +8,6 @@ import {
   FormFieldRadio,
   FormFieldTextInput,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
   Separator,
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -50,11 +48,8 @@ type Termijn = {
   tekst: string;
   wanneer: string;
   bronnen: Bron[];
-  /** Uitleg over de regeling op het Digitaal Ondernemersplein. */
-  meer: Bron;
 };
 
-const DOP = "https://ondernemersplein.overheid.nl";
 const PWET = "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d";
 const WTL = "https://wetten.overheid.nl/BWBR0037522/2026-01-01";
 
@@ -87,10 +82,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 url: PWET,
               },
             ],
-            meer: {
-              tekst: "Meer over loonkostensubsidie op Ondernemersplein",
-              url: `${DOP}/personeel/personeelskosten-en-loon/verlaag-uw-loonkosten-met-subsidies-en-tegemoetkomingen/`,
-            },
           },
         ]
       : []),
@@ -112,10 +103,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Artikel4:13",
               },
             ],
-            meer: {
-              tekst: "Meer over loondispensatie op Ondernemersplein",
-              url: `${DOP}/subsidies-en-regelingen/loondispensatie-wajong/`,
-            },
           },
         ]
       : []),
@@ -144,26 +131,11 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 url: `${WTL}#Artikel4.2`,
               },
             ],
-            meer: {
-              tekst: "Meer over het loonkostenvoordeel op Ondernemersplein",
-              url: `${DOP}/subsidies-en-regelingen/loonkostenvoordeel-voor-werkgevers/`,
-            },
           },
         ]
       : []),
   ];
 };
-
-const Extern = ({ bron, wat }: { bron: Bron; wat: string }) => (
-  <a
-    href={bron.url}
-    className="utrecht-link utrecht-link--html-a"
-    target="_blank"
-    rel="external noopener noreferrer"
-  >
-    {bron.tekst} ({wat})
-  </a>
-);
 
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
@@ -188,7 +160,7 @@ const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
   if (r.id === "ld")
     return r.aanspraakPerUur === undefined
       ? `Per jaar betaalt u ongeveer ${euro(bedrag)} minder aan loon.`
-      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Het verschil keer ${a.uren} uur per week keer 52 weken, plus vakantiegeld en werkgeverslasten, is ongeveer ${euro(bedrag)} per jaar. Die laatste stap is een schatting.`;
+      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euro(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
   const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
   return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ${euro(bedrag)} per jaar.`;
 };
@@ -216,15 +188,9 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
       {termijn && (
         <>
           <Paragraph>
-            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer}
+            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer} (
+            {termijn.bronnen.map((b) => b.tekst).join("; ")})
           </Paragraph>
-          <UnorderedList>
-            {[...termijn.bronnen, termijn.meer].map((b) => (
-              <UnorderedListItem key={b.url + b.tekst}>
-                <Extern bron={b} wat="opent in een nieuw tabblad" />
-              </UnorderedListItem>
-            ))}
-          </UnorderedList>
         </>
       )}
     </>
@@ -413,10 +379,6 @@ const VragenMetStaat = ({
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
           <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
-            <Paragraph className="rhc-mox-small-text">
-              Een berekening vooraf met uw antwoorden. De beslissing neemt de
-              organisatie die de regeling uitvoert.
-            </Paragraph>
             <Balans
               antwoorden={a}
               resultaat={resultaat}

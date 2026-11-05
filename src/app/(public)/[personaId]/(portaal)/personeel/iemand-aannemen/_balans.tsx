@@ -102,12 +102,6 @@ export const UITVOERDER = {
 
 export type UitvoerderId = keyof typeof UITVOERDER;
 
-const UITVOERDER_VAN: Record<BalansRegel["id"], UitvoerderId> = {
-  lks: "gemeente",
-  ld: "uwv",
-  lkv: "loonaangifte",
-};
-
 export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
   <TextBadge variant={UITVOERDER[id].variant} icon={false}>
     {UITVOERDER[id].tekst}
@@ -137,14 +131,14 @@ export const duurTekst = (jaren: number | undefined) =>
  * de regeling bij deze antwoorden niet geldt, zodat de ondernemer ziet waarom.
  */
 const WANNEER: Record<BalansRegel["id"], string> = {
-  lks: "Loonkostensubsidie is voor een werknemer die bij de doelgroep van de gemeente hoort, zoals iemand met bijstand, en met een volledige baan niet het minimumloon kan verdienen. De gemeente betaalt u het verschil tussen het minimumloon en wat het werk waard is (de loonwaarde), tot ten hoogste 70 procent van het minimumloon, plus een vergoeding voor werkgeverslasten (Participatiewet, artikel 10d).",
-  ld: "Loondispensatie is voor een werknemer met een Wajong-uitkering die duidelijk minder kan dan het minimumloon rechtvaardigt. U betaalt dan minder loon. UWV stelt vast hoeveel minder (Wajong, artikel 2:20).",
-  lkv: "Loonkostenvoordeel krijgt u voor een werknemer uit het doelgroepregister: € 1,01 per verloond uur, ten hoogste € 2.000 per jaar. Of voor een arbeidsgehandicapte werknemer met een doelgroepverklaring: € 3,05 per uur, ten hoogste € 6.000 per jaar. U vraagt het aan in de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.9 en 2.13).",
+  lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde (Participatiewet, artikel 10d).",
+  ld: "Voor een werknemer met een Wajong-uitkering die duidelijk minder kan. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20).",
+  lkv: "Voor een werknemer uit het doelgroepregister of met een doelgroepverklaring. U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein).",
 };
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
 const LD_UITLEG =
-  "Met loondispensatie mag u uw werknemer minder loon betalen. UWV bepaalt hoeveel minder. U krijgt dit bedrag niet uitbetaald. Het is een schatting van wat u minder betaalt aan loon, vakantiegeld en werkgeverslasten.";
+  "U krijgt dit bedrag niet uitbetaald: het is een schatting van wat u minder betaalt aan loon.";
 
 const LdNotitie = ({ kort }: { kort?: boolean }) => (
   <Paragraph className="rhc-mox-small-text">
@@ -213,7 +207,7 @@ const Balans = ({
         role={bezig ? "status" : undefined}
       >
         {fout
-          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw. Een schatting vooraf. Na uw aanvraag beslist de organisatie die de regeling uitvoert.`
+          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw.`
           : "Wij rekenen uit…"}
       </Paragraph>
     ) : null;
@@ -224,25 +218,9 @@ const Balans = ({
    * bevatten, en de naam van de knop zou dan in de kop komen.
    */
   const totaalKop = (tekst: string) => (
-    <div className="rhc-mox-with-info rhc-mox-with-info--end">
-      <Heading level={3} appearanceLevel={5}>
-        {tekst}
-      </Heading>
-      {!fout && (
-        <>
-          <InfoToggletip label="Toelichting bij de berekening">
-            <Paragraph>
-              Berekend in uw browser: er gaat niets naar een
-              overheidsorganisatie.
-            </Paragraph>
-            <Paragraph>
-              Een schatting vooraf. Na uw aanvraag beslist de organisatie die de
-              regeling uitvoert.
-            </Paragraph>
-          </InfoToggletip>
-        </>
-      )}
-    </div>
+    <Heading level={3} appearanceLevel={5}>
+      {tekst}
+    </Heading>
   );
 
   if (kort)
@@ -265,7 +243,6 @@ const Balans = ({
                     )}
                   </InfoToggletip>
                 </span>
-                <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
               <dd className="rhc-data-summary__item-value">{waarde(r)}</dd>
             </div>
@@ -336,7 +313,6 @@ const Balans = ({
                     </>
                   )}
                 </span>
-                <Uitvoerder id={UITVOERDER_VAN[r.id]} />
               </dt>
               <dd className="rhc-data-summary__item-value">
                 {waarde(r, "− ")}
@@ -364,15 +340,10 @@ const Balans = ({
       )}
       {/* Positief geformuleerd: wat de loonkosten met de regelingen zijn, en het verschil. */}
       <div className="rhc-mox-highlight">
-        {totaalKop("Uw loonkosten met deze regelingen, ongeveer per jaar")}
+        {totaalKop("Uitkomst loonkosten per jaar van de voorbeeldberekening")}
         <Paragraph purpose="lead">
           <strong>{bedrag(netto)}</strong>
         </Paragraph>
-        {bekend && !fout && terug > 0 && (
-          <Paragraph>
-            Dat is ongeveer {euro(terug)} per jaar minder dan zonder regelingen.
-          </Paragraph>
-        )}
       </div>
       {bron}
     </>
