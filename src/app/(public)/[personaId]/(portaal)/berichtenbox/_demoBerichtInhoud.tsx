@@ -14,6 +14,7 @@ import type { DemoBericht } from "@/demo";
 import { formatDatum } from "./_formatDatum";
 import PdfVoorbeeld from "./_pdfVoorbeeld";
 import UitvalBlok from "./_uitvalBlok";
+import PageSearch from "@/layouts/search";
 
 const PDF = "/voorbeeld-bijlage.pdf";
 const TEKST = "/voorbeeld-bijlage.txt";
@@ -38,6 +39,7 @@ const DemoBerichtInhoud = ({
   return (
     <>
       <Heading level={1}>{bericht.onderwerp}</Heading>
+      <PageSearch />
 
       <DataSummary appearance="column">
         <DataSummaryItem itemKey="Afzender" itemValue={bericht.afzender} />

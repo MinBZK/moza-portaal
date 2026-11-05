@@ -8,6 +8,7 @@ import Bronnen from "./_bronnen";
 import Stappen from "../_stappen";
 import { TAAK_TITEL } from "../_taakTitel";
 import { vul, werkgeverVan } from "../_werkgever";
+import PageSearch from "@/layouts/search";
 
 export const metadata: Metadata = {
   title: "Aanvraag invullen - Personeel en rollen",
@@ -38,6 +39,7 @@ const GegevensPage = async () => {
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
+      <PageSearch />
       <Paragraph>
         <Link
           href="/personeel/iemand-aannemen"

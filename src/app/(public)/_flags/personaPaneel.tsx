@@ -62,7 +62,10 @@ const PersonaPaneel = ({
     const maxAge = 60 * 60 * 24 * 30;
     setPersonaId(persona.id, { path: "/", maxAge });
     setOrganisatieId(organisatie.id, { path: "/", maxAge });
-    VAN_DE_PERSONA.forEach((sleutel) => localStorage.removeItem(sleutel));
+    VAN_DE_PERSONA.forEach((sleutel) => {
+      localStorage.removeItem(sleutel);
+      sessionStorage.removeItem(sleutel);
+    });
     if (pathname.startsWith("/berichtenbox/"))
       // A full reload on purpose: all client state belongs to the previous persona.
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination

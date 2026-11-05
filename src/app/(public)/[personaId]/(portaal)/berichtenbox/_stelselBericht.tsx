@@ -29,6 +29,7 @@ import {
   verwijderKetenBerichtVoorgoed,
   zetKetenMap,
 } from "./_useKeten";
+import PageSearch from "@/layouts/search";
 
 /**
  * Eén bericht uit het stelsel. De lijst geeft afzender, onderwerp en datum;
@@ -76,6 +77,7 @@ const StelselBericht = ({
     return (
       <>
         <Heading level={1}>Bericht niet gevonden</Heading>
+        <PageSearch />
         <Paragraph>Dit bericht staat niet (meer) in uw berichtenbox.</Paragraph>
         <Paragraph>
           <Link
@@ -114,6 +116,7 @@ const StelselBericht = ({
         }}
       >
         <Heading level={1}>{bericht.onderwerp}</Heading>
+        <PageSearch />
 
         <DataSummary appearance="column">
           <DataSummaryItem itemKey="Afzender" itemValue={bericht.afzender} />

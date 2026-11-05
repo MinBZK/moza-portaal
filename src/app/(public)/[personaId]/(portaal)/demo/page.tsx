@@ -87,6 +87,7 @@ import { BewaarKnop, NietRelevantKnop } from "@/components/save/saveActions";
 import type { BewaarItem } from "@/components/save/useSaved";
 import NextLink from "next/link";
 import Image from "next/image";
+import SiteSearch from "@/components/SiteSearch";
 import Switch from "@/components/Switch";
 import TextBadge from "@/components/TextBadge";
 import { ArchiveIcon } from "@/components/icons/archiveIcon";
@@ -442,6 +443,38 @@ const BrandSwitch = () => {
         })
       }
     />
+  );
+};
+
+/** SiteSearch with example data; shows the search instead of going there. */
+const DemoSiteSearch = () => {
+  const [searched, setSearched] = useState("");
+  return (
+    <div className="rhc-mox-row-gap">
+      <SiteSearch
+        pageSuggestions={[
+          "Wat is loondispensatie?",
+          "Wie betaalt het loon tijdens de proefplaatsing?",
+          "Hoe lang duurt de beoordeling door UWV?",
+        ]}
+        suggestions={[
+          "loonkostensubsidie",
+          "loondispensatie",
+          "loonaangifte",
+          "btw-aangifte doen",
+          "btw-nummer wijzigen",
+          "KVK-nummer",
+          "subsidie energiebesparing",
+          "personeel aannemen",
+        ]}
+        onSearch={setSearched}
+      />
+      {searched && (
+        <Paragraph role="status">
+          Hier zou de zoekpagina openen met de resultaten voor “{searched}”.
+        </Paragraph>
+      )}
+    </div>
   );
 };
 
@@ -2072,6 +2105,60 @@ const ComponentsDemoPage = () => {
           </StickyInfoBox>
         </div>
       ),
+    },
+    {
+      name: "SiteSearch",
+      file: "src/components/SiteSearch.tsx",
+      description: [
+        <>
+          Eén veld om in het hele portaal te zoeken of een vraag te stellen.
+          Voor het patroon{" "}
+          <NextLink href="/demo/ontwerppatronen/zoeken-en-hulp">
+            Zoeken en hulp op elke pagina
+          </NextLink>
+          .
+        </>,
+        "Tijdens het typen komen eerst vragen over deze pagina, dan zoeksuggesties en als laatste de digitale assistent. Met de pijltjestoetsen komt een suggestie in het veld; Enter kiest, Escape sluit de lijst. Werkt ook zonder JavaScript, als gewoon formulier.",
+      ],
+      options: [
+        [
+          "label",
+          "string",
+          "Zoeken of een vraag stellen",
+          "Zichtbaar label boven het veld; op elke pagina hetzelfde",
+        ],
+        [
+          "pageSuggestions",
+          "string[]",
+          "[]",
+          "Vragen over de pagina waar de gebruiker is; staan bovenaan, ook bij een leeg veld (pijltje omlaag)",
+        ],
+        [
+          "suggestions",
+          "string[]",
+          "[]",
+          "Zoeksuggesties voor het hele portaal",
+        ],
+        [
+          "action",
+          "string",
+          "/zoeken",
+          "Pagina met de zoekresultaten, krijgt ?q=",
+        ],
+        [
+          "assistantHref",
+          "string",
+          "/digitale-assistent",
+          "Digitale assistent, krijgt de vraag als ?vraag=",
+        ],
+        [
+          "onSearch",
+          "(query) => void",
+          "–",
+          "In plaats van naar de zoekpagina te gaan, bijvoorbeeld in een demo",
+        ],
+      ],
+      example: <DemoSiteSearch />,
     },
     {
       name: "Switch",

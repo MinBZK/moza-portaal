@@ -42,6 +42,7 @@ import {
 } from "../_useAannemen";
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
+import PageSearch from "@/layouts/search";
 
 type Gegeven = { label: string; waarde: string; bron: string };
 
@@ -597,6 +598,7 @@ const AanvraagInhoud = ({
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <Stappen huidige={3} />
         <Paragraph role={bekend ? undefined : "status"}>
@@ -684,7 +686,8 @@ const AanvraagInhoud = ({
                 gegevens van die uitkomst naar de digitale assistent.
               </Paragraph>
               <Paragraph className="rhc-mox-small-text">
-                Uw aanvraag is opgeslagen in deze browser. U kunt later verder.
+                Uw antwoorden worden niet bewaard. Sluit u de browser, dan
+                begint u opnieuw.
               </Paragraph>
             </Alert>
             {bekend &&

@@ -14,6 +14,7 @@ import { getKvkFromCookie } from "@/utils/kvknummer";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import Link from "next/link";
+import PageSearch from "@/layouts/search";
 
 const Zaken = async () => {
   const kvk = await getKvkFromCookie();
@@ -27,6 +28,7 @@ const Zaken = async () => {
   return (
     <>
       <Heading level={1}>Lopende zaken</Heading>
+      <PageSearch />
       <section className="rhc-mox-card" aria-labelledby="nieuwe-aanvraag">
         <Heading level={2} id="nieuwe-aanvraag">
           Nieuwe aanvraag

@@ -13,11 +13,11 @@ import {
   type Zaken,
 } from "./_route";
 import { euro } from "./_werkgever";
-import { heropenAanvraag } from "../../lopendezaken/_afgerondeAanvragen";
 
 /**
- * Stand van het scenario "Iemand aannemen" in deze browser: welke bronnen zijn
- * bevestigd, of de aanvraag is verstuurd, op welk moment de zaak staat en de
+ * Stand van het scenario "Iemand aannemen" in deze browsersessie
+ * (sessionStorage), dus geen bewaard concept: een nieuwe sessie begint
+ * opnieuw. Houdt bij welke bronnen zijn bevestigd, of de aanvraag is verstuurd, op welk moment de zaak staat en de
  * vraag bij het besluit. Het script rekent niets: alle uitkomsten staan in de
  * demo-data en komen uit de regelrecht-engine. Een persona-wissel wist deze
  * sleutel (zie _flags/personaPaneel.tsx); de opslag onthoudt ook van welke
@@ -136,7 +136,7 @@ const huidigeEigenaar = () => eigenaarUit(document.cookie);
 const lees = (): AannemenStaat => {
   let rauw: string | null = null;
   try {
-    rauw = window.localStorage.getItem(SLEUTEL);
+    rauw = window.sessionStorage.getItem(SLEUTEL);
   } catch {
     // Geen opslag: elke pagina werkt los.
   }
@@ -192,7 +192,7 @@ const subscribe = (luisteraar: () => void) => {
 
 const schrijf = (staat: AannemenStaat) => {
   try {
-    window.localStorage.setItem(
+    window.sessionStorage.setItem(
       SLEUTEL,
       JSON.stringify({ ...staat, eigenaar: huidigeEigenaar() }),
     );
@@ -203,10 +203,8 @@ const schrijf = (staat: AannemenStaat) => {
 };
 
 export const wisAannemen = () => {
-  // Opnieuw beginnen: de bewaarde aanvraag staat weer open.
-  heropenAanvraag("iemand-aannemen-met-afstand-tot-de-arbeidsmarkt");
   try {
-    window.localStorage.removeItem(SLEUTEL);
+    window.sessionStorage.removeItem(SLEUTEL);
   } catch {
     return;
   }
