@@ -34,7 +34,6 @@
 **Files:** Create `_route.ts`; Test `scripts/iemand-aannemen-uitkomsten.test.mjs` (uitbreiden).
 
 **Interfaces:**
-
 - Consumes: `Doelgroep`, `Uitkomsten`, `Regel`, `Overig` uit `_uitkomsten.ts`.
 - Produces:
   - `type Situatie = "gemeente" | "wajong" | "wia" | "register" | "uitleg" | "weetniet"`
@@ -61,7 +60,6 @@
 **Files:** Create `src/demo/iemand-aannemen-wajong.json`, `src/demo/iemand-aannemen-wia.json`; Modify `src/demo/iemandAannemen.ts`, `src/demo/index.ts`; Test (uitbreiden).
 
 **Interfaces:**
-
 - Produces: `getDemoIemandAannemenSituaties(): Promise<Record<"gemeente" | "wajong" | "wia", DemoAannemen>>` (gemeente = het bestaande `iemand-aannemen-koen.json`). `DemoAannemenFase.id` en `DemoAannemenGebeurtenis.stap` worden `string`; `DemoAannemen.zaak.url` wordt `/lopendezaken/iemand-aannemen/<situatie>`. Nieuw optioneel veld `DemoAannemen.besluit: { organisatie: string; datum: string; bezwaar: string }`.
 - Sjabloon-plaatshouders (naast `{onderneming}` en `{iban}`): `{uren}`, `{loonwaarde}`, `{lksPerMaand}`, `{lksTweeMaanden}`, `{aanspraakPerUur}`, `{lkvPerJaar}`.
 
@@ -76,7 +74,6 @@
 **Files:** Modify `_useAannemen.ts`, `src/app/(public)/_flags/personaPaneel.tsx` (alleen als er een nieuwe sleutel komt); Test (uitbreiden; pure delen in `_route.ts`).
 
 **Interfaces:**
-
 - Produces: `AannemenStaat.zaken: Partial<Record<Situatie, { ingediend: boolean; verstuurdOp?: string; fase: string; vraag?: string }>>` en `AannemenStaat.taken: Partial<Record<TaakId, "open" | "aangevraagd" | "verstrekt">>`; migratie: oude `ingediend/verstuurdOp/fase/vraag` → `zaken.gemeente`. Pure helper in `_route.ts`: `migreerZaken(oud: { ingediend?: boolean; verstuurdOp?: string; fase?: string; vraag?: string; zaken?: … }): AannemenStaat["zaken"]`. `faseIndex(fase: string, fasen: { id: string }[]): number`.
 - [ ] Tests: migratie van oude opslag (ingediend true, fase "besluit") → `{ gemeente: { ingediend: true, fase: "besluit", … } }`; nieuwe opslag ongewijzigd; `faseIndex` onbekend → 0.
 - [ ] Alle lezers van `ingediend`, `fase`, `vraag` gaan via `zaken[situatie]` (zie de kaart in de bouwerscheck: `_personeelZaak.tsx`, `_zaakKoen.tsx`, `_besluit.tsx`, `_indienen.tsx`). Sleutel blijft `moza-iemand-aannemen`, dus de persona-wissel wist alles al.

@@ -50,14 +50,14 @@ oriëntatie volgen wat de werkgever koos.
 
 Uit de vinkjes van vraag 1, in deze volgorde (eerste die past):
 
-| Vinkjes bevatten                  | Situatie                 | Route                                      |
-| --------------------------------- | ------------------------ | ------------------------------------------ |
-| `wajong`                          | Wajong                   | volledig                                   |
-| `wia`                             | WIA                      | volledig                                   |
-| `bijstand` (zonder Wajong of WIA) | via de gemeente          | volledig (de route van nu)                 |
-| `register`                        | alleen doelgroepregister | overzicht                                  |
-| `beschut`, `wsw`, `geen`          | uitleg                   | uitlegpagina                               |
-| `weetniet` of leeg                | weet niet                | gegevens ophalen, terug naar de oriëntatie |
+| Vinkjes bevatten | Situatie | Route |
+|---|---|---|
+| `wajong` | Wajong | volledig |
+| `wia` | WIA | volledig |
+| `bijstand` (zonder Wajong of WIA) | via de gemeente | volledig (de route van nu) |
+| `register` | alleen doelgroepregister | overzicht |
+| `beschut`, `wsw`, `geen` | uitleg | uitlegpagina |
+| `weetniet` of leeg | weet niet | gegevens ophalen, terug naar de oriëntatie |
 
 Wajong gaat voor WIA: wie beide heeft, krijgt de voorzieningen via de Wajong
 (WIA 35 lid 4 a) en de loondispensatie via UWV. Bij WIA + register telt het
@@ -65,16 +65,16 @@ hoogste loonkostenvoordeel (fase 1); de route is die van WIA.
 
 ## Wie vraagt wat aan (letter van de wet)
 
-| Regeling                                      | Uitvoerder               | Wie vraagt aan                                                                                  | Grond                                                        |
-| --------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Loonkostensubsidie                            | gemeente                 | werkgever                                                                                       | Pwet 10d                                                     |
-| Proefplaatsing, begeleiding                   | gemeente                 | werkgever (met de gemeente)                                                                     | Pwet 8a, 10da                                                |
-| Loondispensatie                               | UWV                      | werkgever of werknemer                                                                          | Wajong 2:20 lid 1; Besluit loondispensatie Wajong 1, 2, 3, 5 |
-| Voorzieningen (jobcoach, werkplek) bij Wajong | UWV                      | de werknemer (jonggehandicapte)                                                                 | Wajong 2:22                                                  |
-| Voorzieningen bij WIA                         | UWV                      | de werknemer                                                                                    | WIA 35 lid 1                                                 |
-| Doelgroepverklaring                           | UWV                      | de werknemer, binnen drie maanden na aanvang; de werkgever bewaart hem bij de loonadministratie | Wtl 2.7 lid 1 en 3                                           |
-| Loonkostenvoordeel                            | UWV, via de loonaangifte | werkgever, in de loonaangifte                                                                   | Wtl 2.1                                                      |
-| No-riskpolis, doelgroepregister               | UWV                      | vanzelf                                                                                         | ZW 29b; Wfsv 38b                                             |
+| Regeling | Uitvoerder | Wie vraagt aan | Grond |
+|---|---|---|---|
+| Loonkostensubsidie | gemeente | werkgever | Pwet 10d |
+| Proefplaatsing, begeleiding | gemeente | werkgever (met de gemeente) | Pwet 8a, 10da |
+| Loondispensatie | UWV | werkgever of werknemer | Wajong 2:20 lid 1; Besluit loondispensatie Wajong 1, 2, 3, 5 |
+| Voorzieningen (jobcoach, werkplek) bij Wajong | UWV | de werknemer (jonggehandicapte) | Wajong 2:22 |
+| Voorzieningen bij WIA | UWV | de werknemer | WIA 35 lid 1 |
+| Doelgroepverklaring | UWV | de werknemer, binnen drie maanden na aanvang; de werkgever bewaart hem bij de loonadministratie | Wtl 2.7 lid 1 en 3 |
+| Loonkostenvoordeel | UWV, via de loonaangifte | werkgever, in de loonaangifte | Wtl 2.1 |
+| No-riskpolis, doelgroepregister | UWV | vanzelf | ZW 29b; Wfsv 38b |
 
 Wat de werknemer aanvraagt, staat bij de werkgever als **taak voor de
 werknemer**: uitleg, termijn, en de stand als de werknemer het heeft gedaan. De
@@ -138,12 +138,12 @@ contact op met de gemeente. Geen aanvraag in het portaal.
 De stap gegevens haalt met toestemming van de kandidaat op wat UWV en de
 gemeente weten. Daarna gaat de werkgever terug naar de oriëntatie, met de
 vinkjes ingevuld op basis van die gegevens. In het prototype blijkt de
-kandidaat via de gemeente te gaan (bijstand, in het register) _(keuze van het
-ontwerp: de meest voorkomende situatie)_.
+kandidaat via de gemeente te gaan (bijstand, in het register) *(keuze van het
+ontwerp: de meest voorkomende situatie)*.
 
 ## Keuzes van het ontwerp (na de bouwerscheck)
 
-- **Zaak en besluit rekenen mee met de oriëntatie** _(keuze van het ontwerp)_.
+- **Zaak en besluit rekenen mee met de oriëntatie** *(keuze van het ontwerp)*.
   Bedragen, percentages en uren in de tijdlijn en het besluit komen uit de
   engine met de antwoorden van de oriëntatie; teksten in de demo-bestanden
   worden sjablonen met plaatshouders zoals `{loonwaarde}`, `{uren}`,
@@ -151,14 +151,14 @@ ontwerp: de meest voorkomende situatie)_.
   bij het besluit rekent live. Zo zegt de tijdlijn nooit iets anders dan het
   besluit.
 - **Panelen volgen de uitkomst van de engine, niet alleen de situatie**
-  _(keuze van het ontwerp)_. Geeft de engine geen recht (bijvoorbeeld Wajong met
+  *(keuze van het ontwerp)*. Geeft de engine geen recht (bijvoorbeeld Wajong met
   loonwaarde 100, of loondispensatie niet meegeteld bij een uurloon boven het
   minimumloon), dan is er geen paneel en geen indienen voor die regeling. Blijft
   er niets over om in te dienen, dan volgt de route het overzicht (zoals alleen
   doelgroepregister), met een zin waarom: "Bij deze antwoorden is er niets aan te
   vragen." Geen afwijzend besluit.
-- **Eén zaak per situatie, ook zonder indienen door de werkgever** _(keuze van
-  het ontwerp)_. Bij WIA maakt "Klaar" de zaak "Doelgroepverklaring" aan in
+- **Eén zaak per situatie, ook zonder indienen door de werkgever** *(keuze van
+  het ontwerp)*. Bij WIA maakt "Klaar" de zaak "Doelgroepverklaring" aan in
   Lopende zaken, met als eerste stand "wacht op de aanvraag van de werknemer";
   het blok "Voor de onderzoeker" laat de werknemer aanvragen en UWV verstrekken.
   Taken van de werknemer voor jobcoach of werkplek zijn geen eigen zaak, alleen
