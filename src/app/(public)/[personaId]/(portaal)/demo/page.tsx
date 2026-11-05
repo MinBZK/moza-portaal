@@ -2044,7 +2044,7 @@ const ComponentsDemoPage = () => {
       name: "StepIndicator",
       file: "src/components/StepIndicator.tsx",
       description:
-        'Stappen van een taak op een rij. Op een smal scherm alleen de tekst en de huidige stap. De huidige stap krijgt aria-current="step". Een voltooide stap met een href is een link terug naar die stap.',
+        'Stappen van een taak als bollen op een lijn, met de naam eronder, zoals nldd-step-bar van het NLDD Design System. Een voltooide stap krijgt een vinkje en met een href een link terug. De huidige stap krijgt aria-current="step"; de status van elke stap wordt ook voorgelezen. Op een smal scherm alleen de huidige stap, "Stap 2 van 4" en een balk in delen.',
       options: [
         [
           "steps",

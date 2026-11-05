@@ -150,7 +150,7 @@ const OverzichtInhoud = ({
             href="/personeel/iemand-aannemen/gegevens"
             className="utrecht-link utrecht-link--html-a"
           >
-            Gegevens delen
+            Laat de aanvraag invullen
           </Link>
         </Paragraph>
       ) : (

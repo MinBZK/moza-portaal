@@ -68,7 +68,7 @@ const AanvraagPage = async ({
 
       {flow && (
         <div className="rhc-mox-card rhc-mox-row-gap">
-          <Stappen huidige={1} />
+          <Stappen huidige={2} />
           <Paragraph>
             Beantwoord vier vragen. In de voorbeeldberekening ziet u meteen wat
             het u kan opleveren. Daarna vullen wij de aanvraag voor u in.

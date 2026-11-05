@@ -28,7 +28,8 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { routeVoor } from "../_route";
-import Stappen, { TAAK_TITEL } from "../_stappen";
+import Stappen from "../_stappen";
+import { TAAK_TITEL } from "../_taakTitel";
 import { invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
@@ -599,7 +600,7 @@ const AanvraagInhoud = ({
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <PageSearch />
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
           {resultaat.fout
             ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
