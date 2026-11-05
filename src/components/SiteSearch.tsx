@@ -2,6 +2,7 @@
 
 import {
   useId,
+  useRef,
   useState,
   type FormEvent,
   type KeyboardEvent,
@@ -73,6 +74,7 @@ const SiteSearch = ({
   const id = useId();
   const inputId = `${id}-input`;
   const listId = `${id}-list`;
+  const inputRef = useRef<HTMLInputElement>(null);
   const [typed, setTyped] = useState(defaultValue);
   const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
@@ -154,6 +156,13 @@ const SiteSearch = ({
     }
   };
 
+  const clear = () => {
+    setValue("");
+    setTyped("");
+    close();
+    inputRef.current?.focus();
+  };
+
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     search(value);
@@ -201,28 +210,41 @@ const SiteSearch = ({
           {label}
         </FieldLabel>
         <div className="rhc-mox-site-search__field">
-          <TextInput
-            id={inputId}
-            name="q"
-            type="search"
-            autoComplete="off"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-expanded={expanded}
-            aria-controls={listId}
-            aria-activedescendant={
-              expanded && active >= 0 ? optionId(active) : undefined
-            }
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-              setTyped(event.target.value);
-              setActive(-1);
-              setOpen(true);
-            }}
-            onKeyDown={onKeyDown}
-            onBlur={close}
-          />
+          <div className="rhc-mox-site-search__input">
+            <TextInput
+              ref={inputRef}
+              id={inputId}
+              name="q"
+              type="search"
+              autoComplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={expanded}
+              aria-controls={listId}
+              aria-activedescendant={
+                expanded && active >= 0 ? optionId(active) : undefined
+              }
+              value={value}
+              onChange={(event) => {
+                setValue(event.target.value);
+                setTyped(event.target.value);
+                setActive(-1);
+                setOpen(true);
+              }}
+              onKeyDown={onKeyDown}
+              onBlur={close}
+            />
+            {value && (
+              <button
+                type="button"
+                className="rhc-mox-site-search__clear"
+                aria-label="Zoekterm wissen"
+                onClick={clear}
+              >
+                <Icon icon="kruis" />
+              </button>
+            )}
+          </div>
           <Button type="submit" appearance="primary-action-button">
             Zoeken
           </Button>
