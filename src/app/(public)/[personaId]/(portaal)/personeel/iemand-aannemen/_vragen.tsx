@@ -304,12 +304,11 @@ const AanvraagKnop = ({ bekend }: { bekend: boolean }) => (
  * regelingen opleveren. De berekening blijft op het scherm; er gaat niets naar een
  * overheidsorganisatie.
  */
-const Vragen = ({ onderneming }: { onderneming: string }) => {
+const Vragen = () => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
   return (
     <VragenMetStaat
-      onderneming={onderneming}
       a={staat.antwoorden}
       zet={(deel) => werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })}
     />
@@ -317,11 +316,9 @@ const Vragen = ({ onderneming }: { onderneming: string }) => {
 };
 
 const VragenMetStaat = ({
-  onderneming,
   a,
   zet,
 }: {
-  onderneming: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
@@ -360,167 +357,158 @@ const VragenMetStaat = ({
     <>
       <Separator></Separator>
 
-      <section className="rhc-mox-stack" aria-labelledby="gevolgen">
-        <Heading level={2} id="gevolgen">
-          Gevolgen voor {onderneming}
-        </Heading>
-        <div className="rhc-grid">
-          <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-            <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
-              {DOELGROEPEN.map(([waarde, label]) => (
-                <FormFieldCheckboxOption
-                  key={waarde}
-                  name="doelgroepen"
-                  value={waarde}
-                  label={label}
-                  checked={a.doelgroepen.includes(waarde)}
-                  disabled={waarde === "register" && vast}
-                  description={
-                    waarde === "register" && vast
-                      ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
-                      : undefined
-                  }
-                  onChange={(event) =>
-                    zet({
-                      doelgroepen: kiesDoelgroep(
-                        a.doelgroepen,
-                        waarde,
-                        event.target.checked,
-                      ),
-                    })
-                  }
-                />
-              ))}
-            </Fieldset>
+      <div className="rhc-grid">
+        <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
+          <Fieldset legend="1. Wie wilt u aannemen? Kies wat past.">
+            {DOELGROEPEN.map(([waarde, label]) => (
+              <FormFieldCheckboxOption
+                key={waarde}
+                name="doelgroepen"
+                value={waarde}
+                label={label}
+                checked={a.doelgroepen.includes(waarde)}
+                disabled={waarde === "register" && vast}
+                description={
+                  waarde === "register" && vast
+                    ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
+                    : undefined
+                }
+                onChange={(event) =>
+                  zet({
+                    doelgroepen: kiesDoelgroep(
+                      a.doelgroepen,
+                      waarde,
+                      event.target.checked,
+                    ),
+                  })
+                }
+              />
+            ))}
+          </Fieldset>
+          <RangeSlider
+            label="2. Hoeveel uur per week gaat de kandidaat werken?"
+            min={1}
+            max={40}
+            step={1}
+            value={a.uren}
+            onChange={(uren) => zet({ uren })}
+            formatValue={(uren) => `${uren} uur`}
+            filled
+          />
+          <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label="2. Hoeveel uur per week gaat de kandidaat werken?"
-              min={1}
-              max={40}
-              step={1}
-              value={a.uren}
-              onChange={(uren) => zet({ uren })}
-              formatValue={(uren) => `${uren} uur`}
+              label="3. Welke verminderde loonwaarde verwacht u?"
+              min={30}
+              max={100}
+              step={5}
+              value={a.loonwaarde}
+              onChange={(loonwaarde) => zet({ loonwaarde })}
+              formatValue={(loonwaarde) => `${loonwaarde} procent`}
+              formatValueText={(loonwaarde) =>
+                loonwaarde === 100
+                  ? "100 procent: geen verminderde loonwaarde"
+                  : `${loonwaarde} procent`
+              }
               filled
+              info={
+                <InfoToggletip label="Toelichting bij de loonwaarde">
+                  <Paragraph>
+                    De loonwaarde is wat de kandidaat in het werk presteert, in
+                    vergelijking met een collega zonder beperking in dezelfde
+                    functie.
+                  </Paragraph>
+                  <Paragraph>
+                    Onder 100 procent is de loonwaarde verminderd. Bij 100
+                    procent is er geen loonkostensubsidie. Ook dan kan de
+                    kandidaat begeleiding nodig hebben, zoals een jobcoach.
+                  </Paragraph>
+                  <Paragraph>
+                    De gemeente meet de loonwaarde later op de werkplek.
+                  </Paragraph>
+                  <Paragraph>
+                    Volgens de wet is de loonkostensubsidie altijd het verschil
+                    tussen het minimumloon en de loonwaarde. Betaalt u meer dan
+                    het minimumloon, dan krijgt u dus niet meer subsidie. Het
+                    loonkostenvoordeel is een vast bedrag per verloond uur. Een
+                    hoger uurloon maakt alleen uw loonkosten hoger.
+                  </Paragraph>
+                </InfoToggletip>
+              }
             />
-            <div className="rhc-mox-stack rhc-mox-stack--sm">
-              <RangeSlider
-                label="3. Welke verminderde loonwaarde verwacht u?"
-                min={30}
-                max={100}
-                step={5}
-                value={a.loonwaarde}
-                onChange={(loonwaarde) => zet({ loonwaarde })}
-                formatValue={(loonwaarde) => `${loonwaarde} procent`}
-                formatValueText={(loonwaarde) =>
-                  loonwaarde === 100
-                    ? "100 procent: geen verminderde loonwaarde"
-                    : `${loonwaarde} procent`
-                }
-                filled
-                info={
-                  <InfoToggletip label="Toelichting bij de loonwaarde">
-                    <Paragraph>
-                      De loonwaarde is wat de kandidaat in het werk presteert,
-                      in vergelijking met een collega zonder beperking in
-                      dezelfde functie.
-                    </Paragraph>
-                    <Paragraph>
-                      Onder 100 procent is de loonwaarde verminderd. Bij 100
-                      procent is er geen loonkostensubsidie. Ook dan kan de
-                      kandidaat begeleiding nodig hebben, zoals een jobcoach.
-                    </Paragraph>
-                    <Paragraph>
-                      De gemeente meet de loonwaarde later op de werkplek.
-                    </Paragraph>
-                    <Paragraph>
-                      Volgens de wet is de loonkostensubsidie altijd het
-                      verschil tussen het minimumloon en de loonwaarde. Betaalt
-                      u meer dan het minimumloon, dan krijgt u dus niet meer
-                      subsidie. Het loonkostenvoordeel is een vast bedrag per
-                      verloond uur. Een hoger uurloon maakt alleen uw loonkosten
-                      hoger.
-                    </Paragraph>
-                  </InfoToggletip>
-                }
-              />
-              {wajong && (
-                <Paragraph className="rhc-mox-small-text">
-                  Het percentage van het minimumloon dat de kandidaat aankan.
-                  UWV stelt dit vast.
-                </Paragraph>
-              )}
-            </div>
-            <Fieldset legend="4. Wat wordt het bruto uurloon?">
-              <FormFieldRadio
-                name="uurloon"
-                value="wml"
-                label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
-                description="Voor iemand van 21 jaar of ouder."
-                checked={!anders}
-                onChange={() => {
-                  setAnders(false);
-                  zet({ uurloon: WML_UUR_EUROCENT });
-                }}
-              />
-              <FormFieldRadio
-                name="uurloon"
-                value="anders"
-                label="Anders, namelijk:"
-                checked={anders}
-                onChange={() => {
-                  setAnders(true);
-                  zetLoon(loonTekst);
-                }}
-              />
-              {anders && (
-                <FormFieldTextInput
-                  name="uurloon-anders"
-                  label="Bruto uurloon in euro"
-                  inputMode="decimal"
-                  autoComplete="off"
-                  description="Bijvoorbeeld 16,50"
-                  value={loonTekst}
-                  invalid={loonFout !== undefined}
-                  errorMessage={loonFout}
-                  // Het event komt van de input, maar is getypt op de wrapper-div.
-                  onChange={(e) =>
-                    zetLoon((e.target as HTMLInputElement).value)
-                  }
-                />
-              )}
-            </Fieldset>
-          </div>
-          <div className="rhc-grid__cell rhc-grid__cell-t-5">
-            <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
+            {wajong && (
               <Paragraph className="rhc-mox-small-text">
-                Een berekening vooraf met uw antwoorden. De beslissing neemt de
-                organisatie die de regeling uitvoert.
+                Het percentage van het minimumloon dat de kandidaat aankan. UWV
+                stelt dit vast.
               </Paragraph>
-              <Balans
-                antwoorden={a}
-                resultaat={resultaat}
-                meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
-              />
-              <AanvraagKnop bekend={resultaat.bekend} />
-              <Paragraph className="rhc-mox-small-text">
-                Wij vullen de aanvraag voor u in. U controleert en verstuurt
-                zelf.
-              </Paragraph>
-              <Paragraph
-                role="status"
-                id="aanvragen-bezig"
-                className="rhc-mox-small-text"
-              >
-                {resultaat.bekend
-                  ? ""
-                  : resultaat.fout
-                    ? "De berekening is niet gelukt. Laad de pagina opnieuw."
-                    : "De berekening is nog bezig."}
-              </Paragraph>
-            </StickyInfoBox>
+            )}
           </div>
+          <Fieldset legend="4. Wat wordt het bruto uurloon?">
+            <FormFieldRadio
+              name="uurloon"
+              value="wml"
+              label={`Wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur`}
+              description="Voor iemand van 21 jaar of ouder."
+              checked={!anders}
+              onChange={() => {
+                setAnders(false);
+                zet({ uurloon: WML_UUR_EUROCENT });
+              }}
+            />
+            <FormFieldRadio
+              name="uurloon"
+              value="anders"
+              label="Anders, namelijk:"
+              checked={anders}
+              onChange={() => {
+                setAnders(true);
+                zetLoon(loonTekst);
+              }}
+            />
+            {anders && (
+              <FormFieldTextInput
+                name="uurloon-anders"
+                label="Bruto uurloon in euro"
+                inputMode="decimal"
+                autoComplete="off"
+                description="Bijvoorbeeld 16,50"
+                value={loonTekst}
+                invalid={loonFout !== undefined}
+                errorMessage={loonFout}
+                // Het event komt van de input, maar is getypt op de wrapper-div.
+                onChange={(e) => zetLoon((e.target as HTMLInputElement).value)}
+              />
+            )}
+          </Fieldset>
         </div>
-      </section>
+        <div className="rhc-grid__cell rhc-grid__cell-t-5">
+          <StickyInfoBox title="Voorbeeldberekening: wat het u kan opleveren">
+            <Paragraph className="rhc-mox-small-text">
+              Een berekening vooraf met uw antwoorden. De beslissing neemt de
+              organisatie die de regeling uitvoert.
+            </Paragraph>
+            <Balans
+              antwoorden={a}
+              resultaat={resultaat}
+              meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
+            />
+            <AanvraagKnop bekend={resultaat.bekend} />
+            <Paragraph className="rhc-mox-small-text">
+              Wij vullen de aanvraag voor u in. U controleert en verstuurt zelf.
+            </Paragraph>
+            <Paragraph
+              role="status"
+              id="aanvragen-bezig"
+              className="rhc-mox-small-text"
+            >
+              {resultaat.bekend
+                ? ""
+                : resultaat.fout
+                  ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+                  : "De berekening is nog bezig."}
+            </Paragraph>
+          </StickyInfoBox>
+        </div>
+      </div>
 
       <Separator></Separator>
 

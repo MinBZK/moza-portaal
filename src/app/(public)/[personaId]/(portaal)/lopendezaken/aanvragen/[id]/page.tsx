@@ -84,7 +84,7 @@ const AanvraagPage = async ({
             Beantwoord vier vragen. In de voorbeeldberekening ziet u meteen wat
             het u kan opleveren. Daarna vullen wij de aanvraag voor u in.
           </Paragraph>
-          <Vragen onderneming={flow.werkgever.onderneming} />
+          <Vragen />
         </div>
       )}
       {!flow && (
