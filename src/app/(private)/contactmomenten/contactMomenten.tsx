@@ -6,6 +6,7 @@ import { Heading } from "@/components/rhc";
 import { getContactMomenten } from "@/network/omc/fetchers/getContactMomenten";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
+import PageSearch from "@/layouts/search";
 
 const ContactmomentenPage = ({ kvk }: { kvk: string }) => {
   const queryClient = useQueryClient();
@@ -33,6 +34,7 @@ const ContactmomentenPage = ({ kvk }: { kvk: string }) => {
   return (
     <>
       <Heading level={1}>Contactmomenten</Heading>
+      <PageSearch />
       <div className="rhc-mox-card">
         <CountdownBar onComplete={handleCountdownEnd} ref={countdownRef} />
         <ol className="rhc-mox-timeline">
