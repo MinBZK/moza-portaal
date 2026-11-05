@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -66,14 +65,11 @@ const elfproef = (bsn: string) => {
   return som % 11 === 0;
 };
 
-const VRAGEN =
-  "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt";
-
 /**
  * Wat alleen de werkgever weet: de eerste werkdag, de functie, de uren en het
  * loon. Vooringevuld met de antwoorden van stap 1 waar die er zijn; nu
- * definitief. De loonwaarde blijft een schatting: die stelt de gemeente of
- * UWV vast.
+ * definitief. De loonwaarde staat hier niet: die stelt de gemeente of UWV
+ * vast, niet de werkgever.
  */
 const EigenOpgave = ({
   voornaam,
@@ -111,13 +107,6 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
-    <Paragraph>
-      Loonwaarde: uw schatting is {a.loonwaarde} procent. Die stelt de gemeente
-      of UWV vast op de werkplek.{" "}
-      <Link href={VRAGEN} className="utrecht-link utrecht-link--html-a">
-        Schatting wijzigen
-      </Link>
-    </Paragraph>
   </section>
 );
 
