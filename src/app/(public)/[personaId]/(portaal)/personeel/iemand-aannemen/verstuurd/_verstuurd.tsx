@@ -108,7 +108,7 @@ const Verstuurd = ({
             Bekijk de zaak
           </Link>
           <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-            Terug naar Personeel
+            Terug naar Personeel en rollen
           </Link>
         </ActionGroup>
       </section>

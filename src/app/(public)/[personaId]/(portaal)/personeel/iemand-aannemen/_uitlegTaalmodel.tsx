@@ -163,9 +163,9 @@ const UitlegTaalmodel = ({
           <Paragraph>{stand.tekst}</Paragraph>
           {!stand.toets.geslaagd && (
             <Paragraph className="rhc-mox-small-text" role="status">
-              Let op: deze tekst wijkt af van de afleiding.{" "}
-              {stand.toets.opmerkingen.join(" ")} Ga uit van de afleiding
-              hierboven.
+              Let op: deze tekst wijkt af van de uitleg uit de wet.{" "}
+              {stand.toets.opmerkingen.join(" ")} Ga uit van de uitleg uit de
+              wet hierboven.
             </Paragraph>
           )}
           <Paragraph className="rhc-mox-small-text">
@@ -175,7 +175,7 @@ const UitlegTaalmodel = ({
             {stand.toets.geslaagd &&
               "; bedragen en wetsartikel zijn gecontroleerd tegen die graaf"}
             . Dit is een hulp bij het lezen, geen besluit; bij twijfel geldt de
-            afleiding stap voor stap.
+            uitleg uit de wet.
           </Paragraph>
         </>
       )}

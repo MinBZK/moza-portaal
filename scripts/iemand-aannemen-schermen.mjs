@@ -50,7 +50,7 @@ const zaak = (situatie, fase, extra = {}) => ({
   zaken: {
     [situatie]: {
       ingediend: true,
-      verstuurdOp: "2026-10-05",
+      verstuurdOp: "2026-11-18",
       fase,
       antwoorden: ANTWOORDEN[situatie],
       ...extra,

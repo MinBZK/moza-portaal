@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Accordion,
   AccordionSection,
@@ -36,6 +36,7 @@ const Waarom = ({
   regeling,
   kvk,
   headingLevel = 4,
+  voorAf,
 }: {
   trace?: DemoAannemenTrace;
   /** Nodig bij `trace`, voor de overschrijvingen. */
@@ -49,8 +50,10 @@ const Waarom = ({
   regeling: string;
   /** KVK-nummer van de werkgever: de sessie van de Digitale assistent. */
   kvk: string;
-  /** Kopniveau van "Waarom deze uitkomst?"; de lagen eronder een niveau dieper. */
+  /** Kopniveau van "Waarom deze uitkomst?". */
   headingLevel?: number;
+  /** Bovenaan in de uitklap, zoals hoe de organisatie beslist. */
+  voorAf?: ReactNode;
 }) => {
   const outputs = invoer
     ? [invoer.output, ...(invoer.uitleggen ?? [])]
@@ -117,17 +120,13 @@ const Waarom = ({
         onActivate={() => wissel("waarom")}
       >
         <div className="rhc-mox-stack">
+          {voorAf}
           {stand.status === "laden" && (
             <Paragraph role="status">Wij rekenen de wet na…</Paragraph>
           )}
           {stand.status === "fout" && vooraf}
-          {stand.status === "klaar" && (
+          {stand.status === "klaar" && heeftKort && (
             <>
-              <Paragraph className="rhc-mox-small-text">
-                Deze uitleg volgt stap voor stap uit de wet, zoals die geldt op
-                1 juli 2026. Elke zin komt uit een stap van de wet, niet van een
-                taalmodel.
-              </Paragraph>
               {outputs.map((o) => {
                 const a = stand.waarde.afleidingen[o];
                 if (!a) return null;
@@ -140,43 +139,10 @@ const Waarom = ({
                   </div>
                 );
               })}
-              {!heeftKort && (
-                <Paragraph>
-                  Hieronder staat de afleiding uit de wet, stap voor stap.
-                </Paragraph>
-              )}
-              <Accordion>
-                <AccordionSection
-                  headingLevel={headingLevel + 1}
-                  label="Volledige afleiding, stap voor stap"
-                  body={null}
-                  expanded={open.includes("afleiding")}
-                  onActivate={() => wissel("afleiding")}
-                >
-                  <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
-                    {outputs.flatMap((o) =>
-                      (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                        .filter((r) => !r.technisch)
-                        .map((r, n) => (
-                          <li
-                            key={`${o}-${n}`}
-                            style={{
-                              paddingInlineStart: `${r.diepte * 1.25}rem`,
-                            }}
-                          >
-                            {r.tekst}
-                            {r.bron && (
-                              <small className="rhc-mox-small-text">
-                                {" "}
-                                (bron: {r.bron})
-                              </small>
-                            )}
-                          </li>
-                        )),
-                    )}
-                  </ol>
-                </AccordionSection>
-              </Accordion>
+              <Paragraph className="rhc-mox-small-text">
+                Deze uitleg volgt uit de wet, zoals die geldt op 1 juli 2026.
+                Elke zin komt uit een stap van de wet, niet van een taalmodel.
+              </Paragraph>
               <UitlegTaalmodel
                 berekening={stand.waarde}
                 outputs={outputs}
@@ -184,6 +150,14 @@ const Waarom = ({
                 kvk={kvk}
               />
             </>
+          )}
+          {/* De afleiding stap voor stap is voor de ondernemer niet leesbaar;
+              zonder korte uitleg verwijzen we naar het artikel bij de regeling. */}
+          {stand.status === "klaar" && !heeftKort && !voorAf && (
+            <Paragraph>
+              Voor deze regeling is er nog geen korte uitleg. Het wetsartikel
+              staat hierboven bij de regeling.
+            </Paragraph>
           )}
         </div>
       </AccordionSection>

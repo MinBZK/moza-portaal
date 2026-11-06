@@ -111,9 +111,9 @@ export const zaakRoute = (zaak: AssistentZaak) => {
     zaak.flow === "iemand-aannemen" ? veld(zaak, ["situatie"]) : "";
   if (AANNEMEN_SITUATIES.includes(situatie))
     return `/lopendezaken/iemand-aannemen/${situatie}`;
-  // Zonder aanvraag (alleen register of uitleg): het overzicht van wat geldt.
+  // Zonder aanvraag (alleen register of uitleg): stap 4, met wat geldt.
   if (situatie === "register" || situatie === "uitleg")
-    return "/personeel/iemand-aannemen/overzicht";
+    return "/personeel/iemand-aannemen/concept-aanvraag";
   const oud = AANNEMEN_NUMMERS[veld(zaak, ["referentienummer"])];
   if (oud) return `/lopendezaken/iemand-aannemen/${oud}`;
   const tekst = [

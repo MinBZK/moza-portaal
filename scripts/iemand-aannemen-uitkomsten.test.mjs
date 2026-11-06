@@ -618,7 +618,7 @@ test("demo: WIA heeft geen besluit voor de werkgever, de andere wel", () => {
     JSON.parse(readFileSync("src/demo/" + SITUATIES[s], "utf8"));
   assert.equal(lees("wia").besluit, undefined);
   assert.equal(lees("wajong").besluit.organisatie, "UWV");
-  assert.equal(lees("gemeente").besluit.datum, "2026-11-03");
+  assert.equal(lees("gemeente").besluit.datum, "2026-12-17");
 });
 
 // Parameters in de bronnen zijn feiten uit _basisfeiten.json, uitkomsten van

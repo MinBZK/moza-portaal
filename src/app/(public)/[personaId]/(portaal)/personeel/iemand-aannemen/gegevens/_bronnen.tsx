@@ -28,6 +28,7 @@ import {
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
+  type AannemenStaat,
   type Antwoorden,
   type BronId,
 } from "../_useAannemen";
@@ -84,10 +85,19 @@ const EigenOpgave = ({
   voornaam,
   a,
   zet,
+  keuzes,
+  kies,
+  vraagJc,
+  vraagWpa,
 }: {
   voornaam: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
+  keuzes: AannemenStaat["keuzes"];
+  kies: (deel: AannemenStaat["keuzes"]) => void;
+  /** Alleen als jobcoaching of werkplekaanpassing bij de aanvraag hoort. */
+  vraagJc: boolean;
+  vraagWpa: boolean;
 }) => (
   <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
     <Heading level={3} id="eigen-opgave">
@@ -116,6 +126,50 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
+    {/* Keuzes voor de aanvraag horen hier; stap 4 controleert alleen. */}
+    {vraagJc && (
+      <Fieldset legend="Wilt u jobcoaching aanvragen?">
+        <FormFieldRadio
+          name="jc"
+          value="ja"
+          label="Ja, via de gemeente"
+          checked={keuzes.jc === "ja"}
+          onChange={() => kies({ jc: "ja" })}
+        />
+        <FormFieldRadio
+          name="jc"
+          value="nee"
+          label="Nee, niet nodig"
+          checked={keuzes.jc === "nee"}
+          onChange={() => kies({ jc: "nee" })}
+        />
+      </Fieldset>
+    )}
+    {vraagWpa && (
+      <Fieldset legend="Is er een aanpassing van de werkplek nodig?">
+        <FormFieldRadio
+          name="wpa"
+          value="ja"
+          label="Ja, ik weet wat er nodig is"
+          checked={keuzes.wpa === "ja"}
+          onChange={() => kies({ wpa: "ja" })}
+        />
+        <FormFieldRadio
+          name="wpa"
+          value="later"
+          label="Weet ik nog niet, ik vraag het later aan"
+          checked={keuzes.wpa === "later"}
+          onChange={() => kies({ wpa: "later" })}
+        />
+        <FormFieldRadio
+          name="wpa"
+          value="nee"
+          label="Nee"
+          checked={keuzes.wpa === "nee"}
+          onChange={() => kies({ wpa: "nee" })}
+        />
+      </Fieldset>
+    )}
   </section>
 );
 
@@ -138,9 +192,12 @@ const Bronnen = ({
   // Zonder iets om aan te vragen gaat de route na de gegevens naar het overzicht.
   const antwoorden = staat?.antwoorden ?? STANDAARD_ANTWOORDEN;
   const resultaat = useUitkomsten(antwoorden);
-  const naarOverzicht =
-    resultaat.bekend &&
-    routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten).overzicht;
+  // Zonder aanvraag (alleen register of uitleg) gaat het BSN nergens mee.
+  const route = resultaat.bekend
+    ? routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten)
+    : undefined;
+  const geenAanvraag = !!route?.overzicht;
+  const paneelIds = route?.panelen.flatMap((p) => p.ids) ?? [];
   const { bronnen, kandidaat } =
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
@@ -390,7 +447,7 @@ const Bronnen = ({
         )}
         {gekozen && (
           <Paragraph className="rhc-mox-small-text">
-            {naarOverzicht
+            {geenAanvraag
               ? "U ziet alleen de laatste vier cijfers van het BSN."
               : "Het BSN gaat mee met de aanvraag. U ziet alleen de laatste vier cijfers."}
           </Paragraph>
@@ -513,6 +570,12 @@ const Bronnen = ({
           voornaam={kandidaat.voornaam}
           a={antwoorden}
           zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
+          keuzes={staat?.keuzes ?? {}}
+          kies={(deel) =>
+            werkBij({ keuzes: { ...(staat?.keuzes ?? {}), ...deel } })
+          }
+          vraagJc={paneelIds.includes("jc")}
+          vraagWpa={paneelIds.includes("wpa")}
         />
       )}
 
@@ -549,12 +612,9 @@ const Bronnen = ({
             label: verderNaar(4),
             disabled: !gekozen || !opgave || !resultaat.bekend,
             onBlocked: naarInvoer,
+            // Stap 4 heeft één vorm, ook als er niets te versturen is.
             onClick: () =>
-              router.push(
-                naarOverzicht
-                  ? "/personeel/iemand-aannemen/overzicht"
-                  : "/personeel/iemand-aannemen/concept-aanvraag",
-              ),
+              router.push("/personeel/iemand-aannemen/concept-aanvraag"),
           }}
         />
       </div>

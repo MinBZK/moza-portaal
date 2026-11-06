@@ -318,32 +318,32 @@
     {
       "id": "ontvangst",
       "label": "Aanvraag ontvangen (6 oktober)",
-      "datum": "2026-10-06"
+      "datum": "2026-11-19"
     },
     {
       "id": "meting",
       "label": "Loonwaarde gemeten (20 oktober)",
-      "datum": "2026-10-20"
+      "datum": "2026-12-03"
     },
     {
       "id": "loonwaarde",
       "label": "Loonwaarde vastgesteld (27 oktober)",
-      "datum": "2026-10-27"
+      "datum": "2026-12-10"
     },
     {
       "id": "besluit",
       "label": "Besluit genomen (3 november)",
-      "datum": "2026-11-03"
+      "datum": "2026-12-17"
     },
     {
       "id": "antwoord",
       "label": "Antwoord op uw vraag (6 november)",
-      "datum": "2026-11-06"
+      "datum": "2026-12-20"
     },
     {
       "id": "betaling",
       "label": "Eerste betaling (27 november)",
-      "datum": "2026-11-27"
+      "datum": "2027-01-10"
     }
   ],
   "gebeurtenissen": [
@@ -404,7 +404,7 @@
     },
     {
       "id": "g6",
-      "datum": "2026-10-05",
+      "datum": "2026-11-18",
       "tijd": "16:31",
       "actor": "U",
       "soort": "uitvoering",
@@ -415,7 +415,7 @@
     },
     {
       "id": "g7",
-      "datum": "2026-10-06",
+      "datum": "2026-11-19",
       "tijd": "09:14",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
@@ -426,7 +426,7 @@
     },
     {
       "id": "g8",
-      "datum": "2026-10-09",
+      "datum": "2026-11-22",
       "tijd": "11:40",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
@@ -438,7 +438,7 @@
     },
     {
       "id": "g9",
-      "datum": "2026-10-12",
+      "datum": "2026-11-25",
       "tijd": "08:55",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
@@ -450,7 +450,7 @@
     },
     {
       "id": "g10",
-      "datum": "2026-10-20",
+      "datum": "2026-12-03",
       "tijd": "10:00",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
@@ -461,7 +461,7 @@
     },
     {
       "id": "g11",
-      "datum": "2026-10-27",
+      "datum": "2026-12-10",
       "tijd": "15:20",
       "actor": "College van Rotterdam",
       "soort": "besluit",
@@ -472,7 +472,7 @@
     },
     {
       "id": "g12",
-      "datum": "2026-11-03",
+      "datum": "2026-12-17",
       "tijd": "11:41",
       "actor": "College van Rotterdam",
       "soort": "besluit",
@@ -484,7 +484,7 @@
     },
     {
       "id": "g13",
-      "datum": "2026-11-03",
+      "datum": "2026-12-17",
       "tijd": "17:02",
       "actor": "U",
       "soort": "uitvoering",
@@ -495,19 +495,19 @@
     },
     {
       "id": "g14",
-      "datum": "2026-11-06",
+      "datum": "2026-12-20",
       "tijd": "13:48",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Antwoord op uw vraag",
-      "tekst": "In artikel 10d, vierde lid, staat de vergoeding voor werkgeverslasten in de zin over het maximum van 70 procent. De berekening telt de vergoeding alleen mee voor dat maximum. Of de vergoeding ook bij de subsidie zelf hoort, staat nog niet vast. Dat wordt nagegaan. Verandert het bedrag daardoor, dan hoort u dat. U hoeft daar niet op te wachten. Bent u het niet eens met het besluit? Dan kunt u bezwaar maken binnen zes weken na 3 november 2026.",
+      "tekst": "In artikel 10d, vierde lid, staat de vergoeding voor werkgeverslasten in de zin over het maximum van 70 procent. De berekening telt de vergoeding alleen mee voor dat maximum. Of de vergoeding ook bij de subsidie zelf hoort, staat nog niet vast. Dat wordt nagegaan. Verandert het bedrag daardoor, dan hoort u dat. U hoeft daar niet op te wachten. Bent u het niet eens met het besluit? Dan kunt u bezwaar maken binnen zes weken na 17 december 2026.",
       "grond": "Pwet 10d lid 4; Regeling loonkostensubsidie Participatiewet 2021, artikel 1; Awb 6:7",
       "stap": "antwoord",
       "verwijstNaar": "g13"
     },
     {
       "id": "g15",
-      "datum": "2026-11-27",
+      "datum": "2027-01-10",
       "tijd": "06:00",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
@@ -573,7 +573,7 @@
   },
   "besluit": {
     "organisatie": "College van burgemeester en wethouders van Rotterdam",
-    "datum": "2026-11-03",
+    "datum": "2026-12-17",
     "bezwaar": "zes weken"
   }
 }

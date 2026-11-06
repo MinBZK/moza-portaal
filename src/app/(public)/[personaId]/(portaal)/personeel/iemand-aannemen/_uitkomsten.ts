@@ -115,7 +115,7 @@ export type EngineInvoer = {
  * op de eerste werkdag; de wetsversies zijn die van 1 juli 2026.
  */
 export const AANVANG = "2026-10-01";
-const AANVRAAG = "2026-10-05";
+const AANVRAAG = "2026-11-18";
 export const PEILDATUM = AANVANG;
 /** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
 export const WML_UUR_EUROCENT = 1499;
