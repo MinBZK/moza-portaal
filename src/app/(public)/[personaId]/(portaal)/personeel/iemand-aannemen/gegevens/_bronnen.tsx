@@ -102,7 +102,7 @@ const EigenOpgave = ({
   aanvangFout?: string;
 }) => (
   <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
-    <Heading level={3} id="eigen-opgave">
+    <Heading level={2} id="eigen-opgave">
       Uw eigen opgave
     </Heading>
     <Paragraph>Dit weet alleen u, en het gaat mee in de aanvraag.</Paragraph>
@@ -479,7 +479,7 @@ const Bronnen = ({
               </Paragraph>
               <Paragraph>
                 Tot {wachtend.naam} toestemming geeft, kunt u hier niet verder.
-                Uw antwoorden blijven bewaard tot u de browser sluit.
+                Uw antwoorden blijven bewaard tot u dit tabblad sluit.
               </Paragraph>
             </>
           ) : (

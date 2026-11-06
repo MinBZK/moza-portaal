@@ -43,8 +43,8 @@ const Verstuurd = ({
       <>
         <Heading level={1}>Nog niets verstuurd</Heading>
         <Paragraph>
-          U heeft nog geen aanvraag verstuurd. Controleer de aanvraag en
-          verstuur die.
+          U hebt nog geen aanvraag verstuurd. Controleer de aanvraag en verstuur
+          die.
         </Paragraph>
         <Paragraph>
           <Link
