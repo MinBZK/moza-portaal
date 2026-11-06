@@ -44,13 +44,24 @@ const ANTWOORDEN = {
   },
   uitleg: { doelgroepen: ["beschut"], uren: 32, loonwaarde: 60, uurloon: 1499 },
 };
+// Stap 4 vraagt een gekozen kandidaat (BSN-masker) en een eerste werkdag uit stap 3.
+const KANDIDAAT = {
+  gemeente: "•••••0101",
+  wajong: "•••••0202",
+  wia: "•••••0303",
+};
+const stap3 = (situatie) => ({
+  antwoorden: { ...ANTWOORDEN[situatie], aanvang: "2026-10-01" },
+  kandidaat: KANDIDAAT[situatie],
+  bronnen: alle,
+});
 const zaak = (situatie, fase, extra = {}) => ({
   antwoorden: ANTWOORDEN[situatie],
   bronnen: alle,
   zaken: {
     [situatie]: {
       ingediend: true,
-      verstuurdOp: "2026-10-05",
+      verstuurdOp: "2026-11-18",
       fase,
       antwoorden: ANTWOORDEN[situatie],
       ...extra,
@@ -70,8 +81,7 @@ const PAGINAS = [
     "04-aanvraag",
     "/personeel/iemand-aannemen/concept-aanvraag",
     {
-      antwoorden: ANTWOORDEN.gemeente,
-      bronnen: alle,
+      ...stap3("gemeente"),
       gecontroleerd: { lks: true, lkv: true },
       keuzes: { jc: "ja" },
     },
@@ -80,8 +90,7 @@ const PAGINAS = [
     "05-versturen",
     "/personeel/iemand-aannemen/versturen",
     {
-      antwoorden: ANTWOORDEN.gemeente,
-      bronnen: alle,
+      ...stap3("gemeente"),
       gecontroleerd: { lks: true, jc: true, wpa: true, pp: true },
       keuzes: { jc: "ja", wpa: "later", pp: "nee" },
     },
@@ -113,7 +122,7 @@ const PAGINAS = [
   [
     "12-wajong-aanvraag",
     "/personeel/iemand-aannemen/concept-aanvraag",
-    { antwoorden: ANTWOORDEN.wajong, bronnen: alle },
+    stap3("wajong"),
   ],
   [
     "13-wajong-zaak",
@@ -128,7 +137,7 @@ const PAGINAS = [
   [
     "15-wia-aanvraag",
     "/personeel/iemand-aannemen/concept-aanvraag",
-    { antwoorden: ANTWOORDEN.wia, bronnen: alle },
+    stap3("wia"),
   ],
   [
     "16-wia-zaak",

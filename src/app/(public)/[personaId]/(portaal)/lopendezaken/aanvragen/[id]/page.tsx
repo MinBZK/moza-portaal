@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   Alert,
   DataSummary,
@@ -7,19 +7,9 @@ import {
   Heading,
   Paragraph,
 } from "@/components/rhc";
-import {
-  getActieveOrganisatie,
-  getActievePersona,
-} from "@/app/(public)/_persona";
-import {
-  getDemoConceptAanvraagById,
-  getDemoIemandAannemen,
-  getDemoIemandAannemenTraces,
-} from "@/demo";
+import { getActievePersona } from "@/app/(public)/_persona";
+import { getDemoConceptAanvraagById } from "@/demo";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
-import Vragen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_vragen";
-import Stappen from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_stappen";
-import { werkgeverVan } from "@/app/(public)/[personaId]/(portaal)/personeel/iemand-aannemen/_werkgever";
 import KostenBerekening from "./_kostenBerekening";
 
 export const generateMetadata = async ({
@@ -41,21 +31,9 @@ const AanvraagPage = async ({
   const [{ id }, persona] = await Promise.all([params, getActievePersona()]);
   const aanvraag = await getDemoConceptAanvraagById(persona?.id, id);
   if (!aanvraag) notFound();
-  // De flow "iemand aannemen" rekent met de regelrecht-engine op de antwoorden
-  // van de ondernemer; de werkgever is de actieve organisatie van de persona.
-  const flow =
-    aanvraag.flow === "iemand-aannemen"
-      ? await Promise.all([
-          getDemoIemandAannemen(),
-          getDemoIemandAannemenTraces(),
-          getActieveOrganisatie(persona),
-        ]).then(([aannemen, traces, organisatie]) => ({
-          aannemen,
-          traces,
-          werkgever: werkgeverVan(organisatie),
-        }))
-      : null;
-
+  // Iemand aannemen hoort bij Personeel en rollen; oude links komen daar uit.
+  if (aanvraag.flow === "iemand-aannemen")
+    redirect("/personeel/iemand-aannemen/voorbeeldberekening");
   return (
     <>
       <HuidigeKruimel
@@ -64,57 +42,40 @@ const AanvraagPage = async ({
       />
       <Heading level={1}>{aanvraag.titel}</Heading>
 
-      {flow && (
-        <div className="rhc-mox-card rhc-mox-row-gap">
-          <Stappen huidige={1} />
+      <div className="rhc-mox-card rhc-mox-row-gap">
+        {aanvraag.indienenVoor && (
+          <Alert type="info" closable>
+            Verstuur de aanvraag voor {aanvraag.indienenVoor}.
+          </Alert>
+        )}
+
+        <section className="rhc-mox-stack">
+          <DataSummary appearance="column">
+            <DataSummaryItem
+              itemKey="Organisatie"
+              itemValue={aanvraag.organisatie}
+            />
+            <DataSummaryItem
+              itemKey="Tijdsduur"
+              itemValue={aanvraag.tijdsduur}
+            />
+          </DataSummary>
+          {aanvraag.toelichting?.map((alinea) => (
+            <Paragraph key={alinea}>{alinea}</Paragraph>
+          ))}
+        </section>
+
+        <section className="rhc-mox-stack" aria-labelledby="aanvraag-kosten">
+          <Heading level={2} id="aanvraag-kosten">
+            Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
+          </Heading>
           <Paragraph>
-            Beantwoord vier vragen. Rechts ziet u meteen wat het u kost en
-            oplevert. Daarna vullen wij de aanvraag voor u in.
+            Deze berekening blijft op uw scherm. Er gaat niets naar een
+            overheidsorganisatie.
           </Paragraph>
-          <Vragen
-            onderneming={flow.werkgever.onderneming}
-            toelichting={aanvraag.toelichting}
-          />
-        </div>
-      )}
-      {!flow && (
-        <div className="rhc-mox-card rhc-mox-row-gap">
-          {aanvraag.indienenVoor && (
-            <Alert type="info" closable>
-              Verstuur de aanvraag voor {aanvraag.indienenVoor}.
-            </Alert>
-          )}
-
-          <section className="rhc-mox-stack">
-            <DataSummary appearance="column">
-              <DataSummaryItem
-                itemKey="Organisatie"
-                itemValue={aanvraag.organisatie}
-              />
-              <DataSummaryItem
-                itemKey="Tijdsduur"
-                itemValue={aanvraag.tijdsduur}
-              />
-            </DataSummary>
-            {aanvraag.toelichting?.map((alinea) => (
-              <Paragraph key={alinea}>{alinea}</Paragraph>
-            ))}
-          </section>
-
-          <section className="rhc-mox-stack" aria-labelledby="aanvraag-kosten">
-            <Heading level={2} id="aanvraag-kosten">
-              Wat kost het {aanvraag.onderneming ?? "uw onderneming"}?
-            </Heading>
-            <Paragraph>
-              Deze berekening blijft op uw scherm. Er gaat niets naar een
-              overheidsorganisatie.
-            </Paragraph>
-            {aanvraag.berekening && (
-              <KostenBerekening {...aanvraag.berekening} />
-            )}
-          </section>
-        </div>
-      )}
+          {aanvraag.berekening && <KostenBerekening {...aanvraag.berekening} />}
+        </section>
+      </div>
     </>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
@@ -8,73 +9,92 @@ import {
   AccordionSection,
   Alert,
   DataSummary,
-  DataSummaryItem,
-  Fieldset,
   FormFieldCheckboxOption,
-  FormFieldRadio,
   Heading,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import InfoToggletip from "@/components/InfoToggletip";
-import StickyInfoBox from "@/components/StickyInfoBox";
-import TextBadge from "@/components/TextBadge";
+import ProgressBar from "@/components/ProgressBar";
+import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
-import { Aanname, duurTekst, KorteBalans, LkvVoorbehoud } from "../_balans";
+import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
-import { routeVoor } from "../_route";
-import Stappen, { TAAK_TITEL, terugNaar, verderNaar } from "../_stappen";
-import { invoerVoor, type Feiten } from "../_uitkomsten";
+import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
+import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
+import { loonkostenPerJaar } from "../_engine";
+import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
-  onderMinimumloon,
   useAannemen,
-  uurloonTekst,
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
-import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
+import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
 
-type Gegeven = { label: string; waarde: string; bron: string };
+type Gegeven = {
+  label: string;
+  waarde: string;
+  bron: string;
+  /** Waar de ondernemer dit antwoord kan aanpassen. */
+  wijzig?: string;
+};
 
-const Tag = ({ tekst }: { tekst: string }) => <TextBadge>{tekst}</TextBadge>;
+/** De eigen opgave in stap 3: eerste werkdag en uren. */
+const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
 
+/** De gegevens in twee kolommen, met de bron als label onder de waarde. */
 const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
-  <DataSummary appearance="column">
+  <DataSummary appearance="column" className="rhc-data-summary--columns">
+    {/* Zoals bij Bedrijfsgegevens: de waarde bevat een label, dus geen DataSummaryItem. */}
     {rijen.map((r) => (
-      <DataSummaryItem
-        key={r.label}
-        itemKey={r.label}
-        itemValue={`${r.waarde} (bron: ${r.bron})`}
-      />
+      <div key={r.label} className="rhc-data-summary__item">
+        <dt className="rhc-data-summary__item-key">{r.label}</dt>
+        <dd className="rhc-data-summary__item-value">
+          {r.waarde} <TextBadge>{r.bron}</TextBadge>
+          {r.wijzig && (
+            <Link
+              href={r.wijzig}
+              className="utrecht-link utrecht-link--html-a"
+              aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
+            >
+              Wijzigen
+            </Link>
+          )}
+        </dd>
+      </div>
     ))}
   </DataSummary>
 );
 
-const NAAM: Record<PaneelId, string> = {
+const NAAM: Record<RegelingId, string> = {
   lks: "Loonkostensubsidie",
   ld: "Loondispensatie",
   jc: "Jobcoaching",
   wpa: "Werkplekaanpassing",
+  lkv: "Loonkostenvoordeel",
+  nrp: "No-riskpolis",
+  doelgroepverklaring: "Doelgroepverklaring",
+  vz_wajong: "Jobcoach of werkplekaanpassing",
+  vz_wia: "Jobcoach of werkplekaanpassing",
+  pp: "Proefplaats",
 };
 
-const TAAK: Record<TaakId, string> = {
-  doelgroepverklaring: "Doelgroepverklaring aanvragen",
-  vz_wajong: "Jobcoach of werkplekaanpassing aanvragen",
-  vz_wia: "Jobcoach of werkplekaanpassing aanvragen",
-  pp: "Proefplaats: toestemming vragen aan de gemeente",
-};
+type Status = "aanvullen" | "controleren" | "gecontroleerd" | "gelezen";
 
-const ORGANISATIE = { gemeente: "Naar de gemeente", uwv: "Naar UWV" } as const;
+const STATUS: Record<Status, { tekst: string; variant: TextBadgeVariant }> = {
+  aanvullen: { tekst: "Aanvullen", variant: "warning" },
+  controleren: { tekst: "Controleren", variant: "info" },
+  gecontroleerd: { tekst: "Gecontroleerd", variant: "ok" },
+  gelezen: { tekst: "Gelezen", variant: "ok" },
+};
 
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
   werkgever: Werkgever;
-  ondernemer: string;
 };
 
 /**
@@ -95,12 +115,13 @@ const Aanvraag = (props: Props) => {
 const AanvraagInhoud = ({
   perSituatie,
   werkgever,
-  ondernemer,
   staat,
 }: Props & { staat: AannemenStaat }) => {
   const router = useRouter();
-  const { werkBij } = useAannemen();
+  const { werkBij, werkZaakBij } = useAannemen();
   const [fout, setFout] = useState(false);
+  const [bevestigd, setBevestigd] = useState(false);
+  const [bevestigFout, setBevestigFout] = useState(false);
   const a = staat.antwoorden;
   const g = staat.gecontroleerd;
   const k = staat.keuzes;
@@ -126,47 +147,71 @@ const AanvraagInhoud = ({
       ?.gegevens.find((x) => x.parameter === parameter)?.waarde ?? "";
 
   const paneelIds = route.panelen.flatMap((p) => p.ids);
-  const aantal = paneelIds.filter((id) => g[id]).length;
-  const regelingen =
-    paneelIds.length +
-    route.vanzelf.length +
-    route.taken.filter((t) => t !== "doelgroepverklaring").length;
+  // Alle regelingen in één lijst: eerst wat u indient, dan wat vanzelf gaat,
+  // dan de taken van de werknemer.
+  const rijIds: RegelingId[] = [...paneelIds, ...route.vanzelf, ...route.taken];
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
-  const ld = uitkomsten.regels.find((r) => r.id === "ld");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
-  const controleer = (id: RegelingId, aanvinken: boolean) =>
-    werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
-  const kies = (deel: typeof k) => werkBij({ keuzes: { ...k, ...deel } });
-
-  const mist = (id: PaneelId) =>
+  const isPaneel = (id: RegelingId): id is PaneelId =>
+    (paneelIds as RegelingId[]).includes(id);
+  const mist = (id: RegelingId) =>
     (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
+  // Wat nog een keuze in stap 3 mist, is niet klaar, ook niet met een vinkje.
+  const klaarMet = (id: RegelingId) => !!g[id] && !mist(id);
+  const aantal = rijIds.filter(klaarMet).length;
 
-  const status = (id: PaneelId) =>
-    g[id] ? "gecontroleerd" : mist(id) ? "aanvullen" : "controleren";
+  const status = (id: RegelingId): Status =>
+    mist(id)
+      ? "aanvullen"
+      : g[id]
+        ? isPaneel(id)
+          ? "gecontroleerd"
+          : "gelezen"
+        : "controleren";
 
-  // Het eerste paneel staat open; `omgezet` houdt bij welke de gebruiker
-  // open- of dichtklapte.
-  const [omgezet, setOmgezet] = useState<PaneelId[]>([]);
-  const isOpen = (id: PaneelId) =>
-    (id === paneelIds[0]) !== omgezet.includes(id);
-  const wissel = (id: PaneelId) =>
-    setOmgezet((nu) =>
-      nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
+  // Welke regelingen openstaan. Zolang de gebruiker niets open- of
+  // dichtklapte, staat de eerste die nog niet gecontroleerd is open.
+  const [open, setOpen] = useState<string[] | null>(null);
+  const [melding, setMelding] = useState("");
+  const eerste = rijIds.find((id) => !klaarMet(id));
+  const openIds: string[] = open ?? (eerste ? [eerste] : []);
+  const isOpen = (id: string) => openIds.includes(id);
+  const wissel = (id: string) =>
+    setOpen(isOpen(id) ? openIds.filter((x) => x !== id) : [...openIds, id]);
+
+  // Het vinkje legt alleen vast; de focus verspringt niet (WCAG 3.2.2).
+  const controleer = (id: RegelingId, aanvinken: boolean) => {
+    // Leg vast wat nu open is, anders schuift de standaard mee en klapt deze
+    // regeling dicht terwijl de focus erin staat.
+    setOpen(openIds);
+    werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
+    const wat = isPaneel(id) ? "gecontroleerd" : "gelezen";
+    setMelding(
+      aanvinken ? `${NAAM[id]} is ${wat}.` : `${NAAM[id]} is nog niet ${wat}.`,
     );
-
+  };
   // Een gewone functie, geen component: een component in de render zou bij
   // elke wijziging opnieuw worden aangemaakt.
-  const vinkje = (id: PaneelId) => (
-    <FormFieldCheckboxOption
-      label="Ik heb dit gecontroleerd"
-      name={`ok-${id}`}
-      checked={!!g[id]}
-      onChange={(event) => controleer(id, event.target.checked)}
-    />
-  );
+  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 3.
+  const vinkje = (id: RegelingId) =>
+    mist(id) ? null : (
+      <FormFieldCheckboxOption
+        label={
+          isPaneel(id) ? "Ik heb dit gecontroleerd en het klopt" : "Gelezen"
+        }
+        name={`ok-${id}`}
+        checked={!!g[id]}
+        onChange={(event) => controleer(id, event.target.checked)}
+      />
+    );
 
-  const waarom = (wet: string, output: string, regeling: string) => {
+  const waarom = (
+    wet: string,
+    output: string,
+    regeling: string,
+    voorAf?: ReactNode,
+  ) => {
     const i = invoer(wet, output);
     if (!i) return null;
     return (
@@ -176,6 +221,7 @@ const AanvraagInhoud = ({
         regeling={regeling}
         kvk={werkgever.kvkNummer}
         labels={labels}
+        voorAf={voorAf}
       />
     );
   };
@@ -193,93 +239,90 @@ const AanvraagInhoud = ({
     {
       label: "Werknemer",
       waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
-      bron: inRegister
-        ? "UWV doelgroepregister"
-        : situatie === "wajong" || situatie === "wia"
-          ? "UWV"
-          : "Basisregistratie Personen",
+      bron: "Basisregistratie Personen",
     },
   ];
-  const situatieRij: Gegeven | null =
-    situatie === "wajong"
-      ? {
-          label: "Wajong",
-          waarde: vind("uwv", "heeft_wajong_arbeidsondersteuning_of_uitkering"),
-          bron: "UWV",
-        }
-      : situatie === "wia"
-        ? {
-            label: "WIA-uitkering in de maand voor de start",
-            waarde: vind("uwv", "had_wia_recht_maand_voor_aanvang"),
-            bron: "UWV",
-          }
-        : inRegister
-          ? {
-              label: "In het doelgroepregister",
-              waarde: vind("uwv", "is_arbeidsbeperkte"),
-              bron: "UWV doelgroepregister",
-            }
-          : null;
+  // Uitkeringsgegevens ziet de werkgever niet; die controleert UWV zelf.
+  const situatieRij: Gegeven | null = inRegister
+    ? {
+        label: "In het doelgroepregister",
+        waarde: vind("uwv", "is_arbeidsbeperkte"),
+        bron: "UWV doelgroepregister",
+      }
+    : null;
   if (situatieRij) werknemerRijen.push(situatieRij);
   const woonplaatsRij: Gegeven = {
     label: "Woonplaats werknemer",
-    waarde: `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
+    waarde:
+      kandidaat.woonplaats === kandidaat.gemeente
+        ? kandidaat.woonplaats
+        : `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
     bron: "Basisregistratie Personen",
   };
   const dienstRijen: Gegeven[] = [
-    { label: "Functie", waarde: dienstverband.functie, bron: "Uw opgave" },
     {
       label: "Eerste werkdag",
-      waarde: datumNL(dienstverband.aanvang),
+      waarde: datumNL(a.aanvang ?? dienstverband.aanvang),
       bron: "Uw opgave",
+      wijzig: EIGEN_OPGAVE,
     },
-    { label: "Uren per week", waarde: String(a.uren), bron: "Uw antwoord" },
-    { label: "Loon", waarde: uurloonTekst(a), bron: "Uw antwoord" },
+    {
+      label: "Uren per week",
+      waarde: String(a.uren),
+      bron: "Uw antwoord",
+      wijzig: EIGEN_OPGAVE,
+    },
   ];
 
+  const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
+  const bedragVan = (id: "lks" | "ld" | "lkv") =>
+    balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
+  // Wat niet geldt bij deze antwoorden, los onder de lijst.
+  const geldtNiet = balans.filter((r) => r.status === "geldt_niet");
+
+  // Eén sectie per regeling: de status en wie de regeling uitvoert bovenaan,
+  // dan de inhoud, dan het vinkje.
+  const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
+    <AccordionSection
+      key={id}
+      id={`paneel-${id}`}
+      headingLevel={3}
+      label={`${NAAM[id]}, ${STATUS[status(id)].tekst.toLowerCase()}`}
+      // Het type eist `body`, de component rendert alleen `children`.
+      body={null}
+      expanded={isOpen(id)}
+      onActivate={() => wissel(id)}
+    >
+      <div className="rhc-mox-stack">
+        <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
+        {kind}
+        {vinkje(id)}
+      </div>
+    </AccordionSection>
+  );
+
+  const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
+    const bedrag = bedragVan(id);
+    return bedrag === undefined ? null : (
+      <Paragraph>
+        Voorbeeldbedrag: <strong>{euro(bedrag)}</strong> per jaar.
+      </Paragraph>
+    );
+  };
+
   const paneel = (id: PaneelId): ReactNode => {
-    const kop = (note: string, kind: ReactNode) =>
-      // Loondispensatie is plain text with a heading, not a panel to open.
-      id === "ld" ? (
-        <section
-          key={id}
-          id={`paneel-${id}`}
-          className="rhc-mox-stack"
-          aria-labelledby={`paneel-${id}-kop`}
-        >
-          <Heading level={3} id={`paneel-${id}-kop`}>
-            {NAAM[id]}
-          </Heading>
-          <DataSummary appearance="column">
-            <DataSummaryItem itemKey="Organisatie" itemValue={note} />
-          </DataSummary>
-          {kind}
-          {vinkje(id)}
-        </section>
-      ) : (
-        <AccordionSection
-          key={id}
-          id={`paneel-${id}`}
-          headingLevel={3}
-          label={`${NAAM[id]} ${status(id)}`}
-          // Het type eist `body`, de component rendert alleen `children`.
-          body={null}
-          expanded={isOpen(id)}
-          onActivate={() => wissel(id)}
-        >
-          <div className="rhc-mox-stack">
-            <Paragraph className="rhc-mox-small-text">{note}</Paragraph>
-            {kind}
-            {vinkje(id)}
-          </div>
-        </AccordionSection>
-      );
-    const gemeente = "Gemeente waar de kandidaat woont";
+    const kop = (note: string, kind: ReactNode) => rij(id, note, kind);
+    const gemeente = `Gemeente ${kandidaat.gemeente}, waar ${kandidaat.voornaam} woont`;
 
     if (id === "lks")
       return kop(
         gemeente,
         <>
+          <Paragraph>
+            U vraagt de gemeente {kandidaat.gemeente} om loonkostensubsidie
+            (Participatiewet, artikel 10d).
+          </Paragraph>
+          {voorbeeldbedrag("lks")}
           <Gegevens
             rijen={[
               ...werkgeverRijen,
@@ -288,40 +331,37 @@ const AanvraagInhoud = ({
               ...dienstRijen,
             ]}
           />
-          <Gegevens
-            rijen={[
-              ...(inRegister
-                ? [
-                    {
-                      label: "Regeling werknemer",
-                      waarde: "Doelgroep banenafspraak",
-                      bron: "UWV doelgroepregister",
-                    },
-                  ]
-                : []),
-              {
-                label: "Loonwaarde",
-                waarde: onderMinimumloon(a)
-                  ? `${a.loonwaarde} procent, uw schatting; de gemeente meet op de werkplek`
-                  : "Geen verminderde loonwaarde; geen loonkostensubsidie",
-                bron: "Uw antwoord",
-              },
-            ]}
-          />
           <Paragraph>
-            Is de werknemer al begonnen? Dan vraagt u de loonkostensubsidie aan
-            binnen zes maanden na de eerste werkdag (
-            {datumNL(dienstverband.aanvang)}). Dat staat in de Participatiewet,
-            artikel 10d lid 2. Vraagt u de subsidie aan voordat de werknemer
-            begint? Dan stelt de gemeente eerst de loonwaarde vast. De gemeente
-            kan ook met u afspreken dat dit eerst niet nodig is. Dan stelt de
-            gemeente de loonwaarde na ten hoogste zes maanden vast (artikel 10d
-            lid 1 en lid 5).
+            Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
+            artikel 10d lid 2).
           </Paragraph>
           {waarom(
             "participatiewet",
             "heeft_recht_op_lks",
             "Loonkostensubsidie",
+            <>
+              <Heading level={5}>
+                Hoe de gemeente {kandidaat.gemeente} beslist
+              </Heading>
+              <UnorderedList>
+                <UnorderedListItem>
+                  De gemeente beoordeelt of {kandidaat.voornaam} met een
+                  volledige baan het minimumloon niet kan verdienen
+                  (Participatiewet, artikel 10c).
+                </UnorderedListItem>
+                <UnorderedListItem>
+                  Een deskundige meet de loonwaarde op de werkplek (Besluit
+                  loonkostensubsidie Participatiewet, artikel 2). Daarna weet u
+                  het precieze bedrag.
+                </UnorderedListItem>
+                <UnorderedListItem>
+                  U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
+                  begonnen? Dan binnen acht weken (Algemene wet bestuursrecht,
+                  artikel 4:13). Anders binnen vijf weken na de meting
+                  (Participatiewet, artikel 10d lid 12).
+                </UnorderedListItem>
+              </UnorderedList>
+            </>,
           )}
         </>,
       );
@@ -330,39 +370,18 @@ const AanvraagInhoud = ({
       return kop(
         "UWV",
         <>
-          <Gegevens
-            rijen={[
-              ...werkgeverRijen,
-              ...werknemerRijen,
-              ...dienstRijen,
-              {
-                label: "Percentage",
-                waarde: `${a.loonwaarde} procent, uw schatting; UWV stelt dit vast`,
-                bron: "Uw antwoord",
-              },
-              ...(ld?.aanspraakPerUur !== undefined
-                ? [
-                    {
-                      label: "Aanspraak per uur",
-                      waarde: `${euro(ld.aanspraakPerUur)}, het minimumloon maal het percentage`,
-                      bron: "Berekend door de engine",
-                    },
-                  ]
-                : []),
-            ]}
-          />
-          <div className="rhc-mox-small-text">
-            Het percentage is een schatting.{" "}
-            <InfoToggletip label="Toelichting bij het percentage">
-              UWV stelt het percentage vast na een onderzoek op de werkplek. Dat
-              kan hoger of lager uitvallen dan uw schatting. De aanspraak per
-              uur verandert dan mee.
-            </InfoToggletip>
-          </div>
           <Paragraph>
-            Loondispensatie geldt vanaf de eerste dag van de maand waarin u de
-            aanvraag doet (Besluit loondispensatie Wajong, artikel 4). Vraagt u
-            later aan, dan geldt de loondispensatie ook later.
+            U vraagt UWV om loondispensatie: u betaalt minder loon dan het
+            minimumloon (Wajong, artikel 2:20).
+          </Paragraph>
+          {voorbeeldbedrag("ld")}
+          <Gegevens
+            rijen={[...werkgeverRijen, ...werknemerRijen, ...dienstRijen]}
+          />
+          <Paragraph>
+            Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
+            loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
+            beslist binnen acht weken.
           </Paragraph>
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
@@ -377,27 +396,24 @@ const AanvraagInhoud = ({
         gemeente,
         <>
           <Paragraph>
-            Begeleiding op de werkplek door een jobcoach. Hoort de werknemer bij
-            de doelgroep loonkostensubsidie? Dan heeft de werknemer recht op
-            deze begeleiding (Participatiewet 10da). U kunt de begeleiding voor
-            de werknemer aanvragen bij de gemeente.
+            Begeleiding op de werkplek door een jobcoach. De werknemer heeft
+            daar recht op (Participatiewet, artikel 10da).
           </Paragraph>
-          <Fieldset legend="Wilt u jobcoaching aanvragen?">
-            <FormFieldRadio
-              name="jc"
-              value="ja"
-              label="Ja, via de gemeente"
-              checked={k.jc === "ja"}
-              onChange={() => kies({ jc: "ja" })}
-            />
-            <FormFieldRadio
-              name="jc"
-              value="nee"
-              label="Nee, niet nodig"
-              checked={k.jc === "nee"}
-              onChange={() => kies({ jc: "nee" })}
-            />
-          </Fieldset>
+          <Gegevens
+            rijen={[
+              {
+                label: "Jobcoaching aanvragen",
+                waarde:
+                  k.jc === "ja"
+                    ? "Ja, via de gemeente"
+                    : k.jc === "nee"
+                      ? "Nee, niet nodig"
+                      : "Nog niet gekozen",
+                bron: "Uw opgave",
+                wijzig: EIGEN_OPGAVE,
+              },
+            ]}
+          />
           {waarom(
             "participatiewet",
             "heeft_aanspraak_op_begeleiding_op_de_werkplek",
@@ -411,170 +427,149 @@ const AanvraagInhoud = ({
       <>
         <Paragraph>
           Vergoeding voor een aangepaste werkplek of een hulpmiddel. De gemeente
-          beslist of de aanpassing nodig is (Participatiewet 10). De gemeente
-          heeft daarvoor eigen regels.
-        </Paragraph>
-        <Fieldset legend="Is er een aanpassing nodig?">
-          <FormFieldRadio
-            name="wpa"
-            value="ja"
-            label="Ja, ik weet wat er nodig is"
-            checked={k.wpa === "ja"}
-            onChange={() => kies({ wpa: "ja" })}
-          />
-          <FormFieldRadio
-            name="wpa"
-            value="later"
-            label="Weet ik nog niet, ik vraag het later aan"
-            checked={k.wpa === "later"}
-            onChange={() => kies({ wpa: "later" })}
-          />
-          <FormFieldRadio
-            name="wpa"
-            value="nee"
-            label="Nee"
-            checked={k.wpa === "nee"}
-            onChange={() => kies({ wpa: "nee" })}
-          />
-        </Fieldset>
-      </>,
-    );
-  };
-
-  const taak = (id: TaakId): ReactNode => (
-    <section
-      className="rhc-mox-row-gap"
-      aria-labelledby={`taak-${id}`}
-      key={id}
-    >
-      <Heading level={3} id={`taak-${id}`}>
-        {TAAK[id]}
-      </Heading>
-      {id === "doelgroepverklaring" && (
-        <>
-          <Paragraph>
-            De werknemer vraagt de doelgroepverklaring zelf aan bij UWV, binnen
-            drie maanden na de start. U bewaart de verklaring bij de
-            loonadministratie. Zonder verklaring kunt u het loonkostenvoordeel
-            niet krijgen (Wet tegemoetkomingen loondomein 2.7).
-          </Paragraph>
-        </>
-      )}
-      {id === "vz_wajong" && (
-        <Paragraph>
-          De werknemer vraagt een jobcoach of een aanpassing van de werkplek
-          zelf aan bij UWV, als dat nodig is (Wajong 2:22). U kunt dit niet
-          namens de werknemer aanvragen in dit portaal.
-        </Paragraph>
-      )}
-      {id === "vz_wia" && (
-        <Paragraph>
-          De werknemer vraagt een jobcoach of een aanpassing van de werkplek
-          zelf aan bij UWV, als dat nodig is (Wet WIA 35). U kunt dit niet
-          namens de werknemer aanvragen in dit portaal. Duurt het dienstverband
-          ten minste zes maanden, dan kunt u bij UWV zelf subsidie vragen voor
-          de extra kosten van voorzieningen (Wet WIA 36). Daarvoor gelden meer
-          voorwaarden. De kosten moeten bijvoorbeeld hoger zijn dan een
-          drempelbedrag. UWV beslist of u de subsidie krijgt.
-        </Paragraph>
-      )}
-      {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
-          toestemming gaat naar de kandidaat (8a lid 2 d): geen deel van de
-          aanvraag, die van een vaste eerste werkdag uitgaat. */}
-      {id === "pp" && (
-        <>
-          <Paragraph>
-            Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De
-            proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier
-            maanden (Participatiewet 8a). De gemeente geeft de toestemming aan
-            de kandidaat, omdat de kandidaat bijstand krijgt. De gemeente heeft
-            daarvoor eigen regels.
-          </Paragraph>
-          <Paragraph>
-            Wilt u eerst een proefplaats? Dan vraagt de kandidaat de gemeente om
-            toestemming, vóór de eerste werkdag. Dat gaat buiten deze aanvraag
-            om. Of een proefplaats en loonkostensubsidie samen kunnen, staat nog
-            niet vast.
-          </Paragraph>
-          {waarom(
-            "participatiewet",
-            "mag_proefplaatsing_aangaan",
-            "Proefplaatsing",
-          )}
-        </>
-      )}
-    </section>
-  );
-
-  const vanzelf = (id: VanzelfId): ReactNode =>
-    id === "lkv" ? (
-      <section
-        className="rhc-mox-row-gap"
-        aria-labelledby="vanzelf-lkv"
-        key={id}
-      >
-        <Heading level={3} id="vanzelf-lkv">
-          Loonkostenvoordeel
-        </Heading>
-        {lkv && (
-          <Paragraph purpose="lead">
-            <strong>{euro(lkv.bedragPerJaar)}</strong>{" "}
-            <small className="rhc-mox-small-text">per jaar</small>
-          </Paragraph>
-        )}
-        {lkv?.aanname && <Aanname id={lkv.aanname} />}
-        <LkvVoorbehoud categorie={lkv?.categorie} />
-        <Paragraph>
-          U vraagt het loonkostenvoordeel aan door in de loonaangifte het vakje
-          loonkostenvoordeel aan te zetten; een aparte aanvraag is niet nodig.
-          {lkv?.categorie === "arbeidsgehandicapte_werknemer" &&
-            " Dat kan zodra u de doelgroepverklaring van de werknemer hebt."}{" "}
-          De Belastingdienst rekent het na afloop van het jaar uit.
+          beslist of dat nodig is (Participatiewet, artikel 10).
         </Paragraph>
         <Gegevens
           rijen={[
             {
-              label: "Loonheffingennummer",
-              waarde: werkgever.loonheffingennummer,
-              bron: "Belastingdienst",
-            },
-            {
-              label: "Verloonde uren per jaar",
-              waarde: `${a.uren * 52} (${a.uren} uur per week)`,
-              bron: "Uw antwoord",
+              label: "Aanpassing van de werkplek",
+              waarde:
+                k.wpa === "ja"
+                  ? "Ja, ik weet wat er nodig is"
+                  : k.wpa === "later"
+                    ? "Weet ik nog niet, ik vraag het later aan"
+                    : k.wpa === "nee"
+                      ? "Nee"
+                      : "Nog niet gekozen",
+              bron: "Uw opgave",
+              wijzig: EIGEN_OPGAVE,
             },
           ]}
         />
-        {waarom(
-          "wet_tegemoetkomingen_loondomein",
-          "heeft_recht_op_lkv",
-          "Loonkostenvoordeel",
-        )}
-      </section>
-    ) : (
-      <section
-        className="rhc-mox-row-gap"
-        aria-labelledby="vanzelf-nrp"
-        key={id}
-      >
-        <Heading level={3} id="vanzelf-nrp">
-          No-riskpolis
-        </Heading>
-        <Paragraph>
-          Wordt de werknemer ziek? Dan betaalt u het loon door. UWV betaalt u
-          ziekengeld voor de werknemer: 70 procent van het dagloon (Ziektewet
-          29b). In de eerste 52 weken van de ziekte kunt u UWV vragen om het
-          hele dagloon. Het ziekengeld is dan niet hoger dan het loon. U hoeft
-          de no-riskpolis niet aan te vragen. {duurTekst(nrp?.duurJaren)} Bij
-          ziekte meldt u de werknemer ziek bij UWV.
-        </Paragraph>
-        {waarom("ziektewet", "heeft_recht_op_no_risk_polis", "No-riskpolis")}
-      </section>
+      </>,
     );
+  };
+
+  const TAAK_WIE: Record<TaakId, string> = {
+    doelgroepverklaring: "De werknemer vraagt aan bij UWV",
+    vz_wajong: "De werknemer vraagt aan bij UWV",
+    vz_wia: "De werknemer vraagt aan bij UWV",
+    pp: `De kandidaat vraagt toestemming aan de gemeente ${kandidaat.gemeente}`,
+  };
+
+  const taak = (id: TaakId): ReactNode =>
+    rij(
+      id,
+      TAAK_WIE[id],
+      <>
+        {id === "doelgroepverklaring" && (
+          <Paragraph>
+            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen drie
+            maanden na de start. Zonder verklaring geen loonkostenvoordeel (Wet
+            tegemoetkomingen loondomein, artikel 2.7).
+          </Paragraph>
+        )}
+        {id === "vz_wajong" && (
+          <Paragraph>
+            De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
+            bij UWV (Wajong, artikel 2:22).
+          </Paragraph>
+        )}
+        {id === "vz_wia" && (
+          <Paragraph>
+            De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
+            bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
+            subsidie vragen bij UWV (Wet WIA, artikel 36).
+          </Paragraph>
+        )}
+        {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
+            toestemming gaat naar de kandidaat (8a lid 2 d): geen deel van de
+            aanvraag, die van een vaste eerste werkdag uitgaat. */}
+        {id === "pp" && (
+          <>
+            <Paragraph>
+              Onbetaald werk bij u vóór de eerste werkdag, twee maanden
+              (Participatiewet, artikel 8a). De kandidaat vraagt de gemeente om
+              toestemming; dat gaat buiten deze aanvraag om.
+            </Paragraph>
+            {waarom(
+              "participatiewet",
+              "mag_proefplaatsing_aangaan",
+              "Proefplaatsing",
+            )}
+          </>
+        )}
+      </>,
+    );
+
+  const vanzelf = (id: VanzelfId): ReactNode =>
+    id === "lkv"
+      ? rij(
+          id,
+          "Belastingdienst, via de loonaangifte",
+          <>
+            <Paragraph>
+              U zet het vakje loonkostenvoordeel aan in de loonaangifte; een
+              aparte aanvraag is niet nodig (Wet tegemoetkomingen loondomein).
+            </Paragraph>
+            {voorbeeldbedrag("lkv")}
+            {lkv?.aanname && <Aanname id={lkv.aanname} />}
+            <Gegevens
+              rijen={[
+                {
+                  label: "Loonheffingennummer",
+                  waarde: werkgever.loonheffingennummer,
+                  bron: "Belastingdienst",
+                },
+                {
+                  label: "Verloonde uren per jaar",
+                  waarde: `${a.uren * 52} (${a.uren} uur per week)`,
+                  bron: "Uw antwoord",
+                  wijzig: EIGEN_OPGAVE,
+                },
+              ]}
+            />
+            {waarom(
+              "wet_tegemoetkomingen_loondomein",
+              "heeft_recht_op_lkv",
+              "Loonkostenvoordeel",
+            )}
+          </>,
+        )
+      : rij(
+          id,
+          "UWV, geen aanvraag nodig",
+          <>
+            <Paragraph>
+              U hoeft niets aan te vragen. Wordt de werknemer ziek, dan meldt u
+              dat bij UWV en betaalt UWV u ziekengeld (Ziektewet, artikel 29b).{" "}
+              {duurTekst(nrp?.duurJaren)}
+            </Paragraph>
+            {waarom(
+              "ziektewet",
+              "heeft_recht_op_no_risk_polis",
+              "No-riskpolis",
+            )}
+          </>,
+        );
 
   // Zonder panelen is er niets te versturen. Bij WIA maakt "Klaar" de zaak
   // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
+  // De samenvatting van wat ontbreekt krijgt de focus, zodat die wordt voorgelezen.
+  const toonFout = () => {
+    setFout(true);
+    requestAnimationFrame(() =>
+      document.getElementById("fout-samenvatting")?.focus(),
+    );
+  };
+
   const klaar = () => {
+    // Ook zonder aanvraag: eerst alles gelezen, net als bij versturen.
+    if (aantal < rijIds.length) {
+      toonFout();
+      return;
+    }
+    setFout(false);
     if (route.zaak === "wia") {
       werkBij({
         zaken: {
@@ -596,159 +591,236 @@ const AanvraagInhoud = ({
       router.push(perSituatie.wia.zaak.url);
       return;
     }
-    router.push("/personeel/iemand-aannemen/overzicht");
+    router.push("/personeel");
   };
 
+  // Versturen staat onderaan deze stap: wat erheen gaat, naar wie, en de
+  // bevestiging. Geen aparte pagina en geen nieuwe berekening.
+  const uwv = situatie === "wajong";
+  const demo = perSituatie[uwv ? "wajong" : "gemeente"];
+  const naarWie = uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
+  const bestaand = staat.zaken[situatie];
+  const verstuurt = [
+    paneelIds.includes("lks") && "loonkostensubsidie",
+    paneelIds.includes("ld") && "loondispensatie",
+    paneelIds.includes("jc") && k.jc === "ja" && "jobcoaching",
+    paneelIds.includes("wpa") && k.wpa === "ja" && "werkplekaanpassing",
+  ].filter((x): x is string => !!x);
+  const opsomming =
+    verstuurt.length < 2
+      ? (verstuurt[0] ?? "")
+      : `${verstuurt.slice(0, -1).join(", ")} en ${verstuurt.at(-1)}`;
+
   const indienen = () => {
-    if (aantal < paneelIds.length) {
-      setFout(true);
+    if (aantal < rijIds.length) {
+      toonFout();
       return;
     }
     setFout(false);
-    router.push("/personeel/iemand-aannemen/versturen");
+    if (!bevestigd) {
+      setBevestigFout(true);
+      document.querySelector<HTMLInputElement>("#bevestiging input")?.focus();
+      return;
+    }
+    const onderwerp = onderwerpVoor(
+      situatie,
+      demo.zaak.onderwerp,
+      `${kandidaat.voornaam} ${kandidaat.achternaam}`,
+      uitkomsten,
+    );
+    // De zaak begint bij ontvangst; "indicatie" van de gemeente ligt ervoor.
+    const eersteFase = (
+      demo.fasen.find((f) => f.id === "ontvangst") ?? demo.fasen[0]
+    ).id;
+    werkZaakBij(
+      situatie,
+      nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
+    );
+    zaakAanmaken(situatie, demo.zaak, "In behandeling", onderwerp);
+    router.push("/personeel/iemand-aannemen/verstuurd");
   };
+
+  // Via de stappenbalk kan stap 4 open gaan zonder gekozen kandidaat of eerste
+  // werkdag, zoals na een andere situatie in stap 2. Dan is er niemand met
+  // toestemming om voor aan te vragen: eerst terug naar stap 3.
+  if (
+    bekend &&
+    route.zaak !== null &&
+    !bestaand?.ingediend &&
+    (staat.kandidaat !== kandidaat.bsnMasker || !a.aanvang)
+  )
+    return (
+      <>
+        <Heading level={1}>{TAAK_TITEL}</Heading>
+        <div className="rhc-mox-card">
+          <Stappen huidige={4} />
+          <Paragraph>
+            Kies eerst in stap 3 wie u wilt aannemen en vul de eerste werkdag
+            in. Daarna controleert u hier de aanvraag.
+          </Paragraph>
+          <StepNavigation
+            back="/personeel/iemand-aannemen/gegevens"
+            backLabel={terugNaar(3)}
+          />
+        </div>
+      </>
+    );
 
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={4} />
         <Paragraph role={bekend ? undefined : "status"}>
           {resultaat.fout
-            ? "De engine in de browser kan nu niet rekenen. Laad de pagina opnieuw."
+            ? "De berekening lukt nu niet. Laad de pagina opnieuw."
             : !bekend
-              ? "De regelrecht-engine rekent uit welke regelingen gelden…"
-              : regelingen === 0
+              ? "Wij zoeken in de wet uit welke regelingen gelden…"
+              : rijIds.length === 0
                 ? "Bij deze antwoorden is er niets aan te vragen."
                 : paneelIds.length === 0
-                  ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
-                  : `${regelingen} ${regelingen === 1 ? "regeling geldt" : "regelingen gelden"} voor deze situatie. Controleer per regeling de gegevens en vul aan wat nog ontbreekt.`}
+                  ? overzichtTekst(route)
+                  : "Controleer per regeling de gegevens en vul aan wat ontbreekt."}
         </Paragraph>
+        {paneelIds.length > 0 && (
+          <Paragraph className="rhc-mox-small-text">
+            Alleen u ziet deze aanvraag. Er gaat pas iets naar de gemeente of
+            UWV als u verstuurt.
+          </Paragraph>
+        )}
 
-        <p className="rhc-mox-cluster">
-          <TextBadge variant="info">Vooringevuld</TextBadge>
-          <Tag tekst={werkgever.onderneming} />
-          <Tag
-            tekst={
-              staat.rol === "namens"
-                ? `Ingevuld namens ${werkgever.onderneming}`
-                : `Ingevuld door ${ondernemer}`
-            }
-          />
-          {/* Zonder panelen dient de werkgever niets in: geen tag. */}
-          {paneelIds.length > 0 && (
-            <Tag
-              tekst={
-                staat.zaken[situatie]?.ingediend
-                  ? "Verstuurd"
-                  : "Nog niet verstuurd"
-              }
-            />
-          )}
-        </p>
+        {bekend && rijIds.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
+            <Heading level={2} id="regelingen">
+              Regelingen
+            </Heading>
+            <div className="rhc-mox-stack rhc-mox-stack--sm">
+              <Paragraph>
+                Gecontroleerd of gelezen: {aantal} van {rijIds.length}
+              </Paragraph>
+              <ProgressBar
+                label="Gecontroleerd of gelezen"
+                value={aantal}
+                max={rijIds.length}
+                valueText={`${aantal} van ${rijIds.length}`}
+              />
+              <Paragraph role="status" className="rhc-mox-small-text">
+                {melding}
+              </Paragraph>
+            </div>
 
-        {fout && aantal < paneelIds.length && (
-          <Alert type="error">
-            <Paragraph>
-              Nog niet klaar om te versturen. Controleer eerst:
-            </Paragraph>
+            {fout && aantal < rijIds.length && (
+              <div id="fout-samenvatting" tabIndex={-1}>
+                <Alert type="error">
+                  <Paragraph>
+                    {paneelIds.length > 0
+                      ? "Nog niet klaar om te versturen. Controleer eerst:"
+                      : "Nog niet klaar. Lees eerst:"}
+                  </Paragraph>
+                  <UnorderedList>
+                    {rijIds
+                      .filter((id) => !klaarMet(id))
+                      .map((id) => (
+                        <UnorderedListItem key={id}>
+                          <a
+                            href={`#paneel-${id}`}
+                            className="utrecht-link utrecht-link--html-a"
+                          >
+                            {NAAM[id]}
+                          </a>
+                          {mist(id) && ": kies dit eerst in stap 3"}
+                        </UnorderedListItem>
+                      ))}
+                  </UnorderedList>
+                </Alert>
+              </div>
+            )}
+
+            <Accordion>
+              {paneelIds.map(paneel)}
+              {route.vanzelf.map(vanzelf)}
+              {route.taken.map(taak)}
+            </Accordion>
+          </section>
+        )}
+
+        {bekend && geldtNiet.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="geldt-niet">
+            <Heading level={2} id="geldt-niet">
+              Geldt niet bij uw antwoorden
+            </Heading>
             <UnorderedList>
-              {paneelIds
-                .filter((id) => !g[id])
-                .map((id) => (
-                  <UnorderedListItem key={id}>
-                    <a
-                      href={`#paneel-${id}`}
-                      className="utrecht-link utrecht-link--html-a"
-                    >
-                      {NAAM[id]}
-                    </a>
-                    {mist(id) && ": vul eerst aan wat ontbreekt"}
-                  </UnorderedListItem>
-                ))}
+              {geldtNiet.map((r) => (
+                <UnorderedListItem key={r.id}>
+                  {NAAM[r.id]} <TextBadge>Geldt niet</TextBadge>
+                </UnorderedListItem>
+              ))}
             </UnorderedList>
+          </section>
+        )}
+
+        {bekend && paneelIds.length > 0 && bestaand?.ingediend && (
+          <Alert type="info">
+            <Paragraph>
+              U hebt deze aanvraag al verstuurd
+              {bestaand.verstuurdOp
+                ? ` op ${datumNL(bestaand.verstuurdOp)}`
+                : ""}
+              . U volgt de aanvraag in Lopende zaken.
+            </Paragraph>
           </Alert>
         )}
 
-        <div className="rhc-grid">
-          <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap">
-            <Alert type="info" closable>
+        {bekend &&
+          paneelIds.length > 0 &&
+          !bestaand?.ingediend &&
+          verstuurt.length > 0 && (
+            <section className="rhc-mox-row-gap" aria-labelledby="versturen">
+              <Heading level={2} id="versturen">
+                Versturen
+              </Heading>
               <Paragraph>
-                <strong>Wie kan deze aanvraag zien?</strong>
+                U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
+                {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
+                ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
+                de zaak bij Lopende zaken.
               </Paragraph>
-              <Paragraph>
-                Alleen u. Er is nog niets naar de gemeente of UWV gestuurd.
-              </Paragraph>
-              <Paragraph>
-                Vraagt u bij een regeling om uitleg in gewone taal? Dan gaan de
-                gegevens van die uitkomst naar de digitale assistent.
-              </Paragraph>
-              <Paragraph className="rhc-mox-small-text">
-                Uw antwoorden worden niet bewaard. Sluit u de browser, dan
-                begint u opnieuw.
-              </Paragraph>
-            </Alert>
-            {bekend &&
-              route.panelen.map((groep) => (
-                <section
-                  key={groep.organisatie}
-                  className="rhc-mox-row-gap"
-                  aria-labelledby={`naar-${groep.organisatie}`}
-                >
-                  <Heading level={2} id={`naar-${groep.organisatie}`}>
-                    {ORGANISATIE[groep.organisatie]}
-                  </Heading>
-                  {groep.ids.some((id) => id !== "ld") && (
-                    <Accordion>
-                      {groep.ids.filter((id) => id !== "ld").map(paneel)}
-                    </Accordion>
-                  )}
-                  {groep.ids.includes("ld") && paneel("ld")}
-                </section>
-              ))}
-
-            {bekend && route.taken.length > 0 && (
-              <section
-                className="rhc-mox-row-gap"
-                aria-labelledby="taken-werknemer"
-              >
-                <Heading level={2} id="taken-werknemer">
-                  Taken voor de werknemer
-                </Heading>
-                {route.taken.map(taak)}
-              </section>
-            )}
-
-            {bekend && route.vanzelf.length > 0 && (
-              <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
-                <Heading level={2} id="vanzelf">
-                  Gaat vanzelf of via de loonaangifte
-                </Heading>
-                {route.vanzelf.map(vanzelf)}
-              </section>
-            )}
-
-            {bekend && (
-              <StepNavigation
-                back="/personeel/iemand-aannemen/gegevens"
-                backLabel={terugNaar(2)}
-                next={
-                  paneelIds.length > 0
-                    ? { label: verderNaar(4), onClick: indienen }
-                    : // Niets te versturen: hier rondt de ondernemer af.
-                      { label: "Klaar", onClick: klaar, final: true }
+              <FormFieldCheckboxOption
+                id="bevestiging"
+                invalid={bevestigFout && !bevestigd}
+                errorMessage={
+                  bevestigFout && !bevestigd
+                    ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+                    : undefined
                 }
+                label="Ik heb alles naar waarheid ingevuld."
+                name="bevestiging"
+                checked={bevestigd}
+                onChange={(event) => setBevestigd(event.target.checked)}
               />
-            )}
-          </div>
+            </section>
+          )}
 
-          <div className="rhc-grid__cell rhc-grid__cell-t-5 rhc-mox-row-gap">
-            {/* Alleen de bedragen blijven staan; zo past het paneel op het scherm. */}
-            <StickyInfoBox title="Wat dit u oplevert">
-              <KorteBalans antwoorden={a} resultaat={resultaat} />
-            </StickyInfoBox>
-          </div>
-        </div>
+        {bekend && (
+          <StepNavigation
+            back="/personeel/iemand-aannemen/gegevens"
+            backLabel={terugNaar(3)}
+            later="/personeel"
+            next={
+              paneelIds.length > 0 && bestaand?.ingediend
+                ? { label: "Bekijk de zaak", href: demo.zaak.url }
+                : paneelIds.length > 0 && verstuurt.length > 0
+                  ? {
+                      label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
+                      onClick: indienen,
+                      final: true,
+                      sends: true,
+                    }
+                  : // Niets te versturen: hier rondt de ondernemer af.
+                    { label: "Klaar", onClick: klaar, final: true }
+            }
+          />
+        )}
       </div>
     </>
   );

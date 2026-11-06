@@ -9,7 +9,7 @@ import Aanvraag from "./_aanvraag";
 import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
-  title: "Aanvraag nakijken - Iemand aannemen - Personeel en rollen",
+  title: "Controleren en versturen - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 3: de vooringevulde aanvraag, per organisatie de panelen van de situatie. */
@@ -38,11 +38,6 @@ const ConceptAanvraagPage = async () => {
         wia: gevuld(situaties.wia),
       }}
       werkgever={werkgever}
-      ondernemer={
-        persona
-          ? `${persona.persoon.voornaam} ${persona.persoon.achternaam}`
-          : "u"
-      }
     />
   );
 };

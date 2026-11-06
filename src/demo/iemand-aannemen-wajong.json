@@ -140,23 +140,23 @@
   "fasen": [
     {
       "id": "ontvangst",
-      "label": "Aanvraag ontvangen (6 oktober)",
-      "datum": "2026-10-06"
+      "label": "Aanvraag ontvangen (19 november)",
+      "datum": "2026-11-19"
     },
     {
       "id": "onderzoek",
-      "label": "Onderzoek op de werkplek (19 oktober)",
-      "datum": "2026-10-19"
+      "label": "Onderzoek op de werkplek (2 december)",
+      "datum": "2026-12-02"
     },
     {
       "id": "percentage",
-      "label": "Percentage vastgesteld (27 oktober, aanname)",
-      "datum": "2026-10-27"
+      "label": "Percentage vastgesteld (10 december, aanname)",
+      "datum": "2026-12-10"
     },
     {
       "id": "besluit",
-      "label": "Besluit genomen (10 november, aanname)",
-      "datum": "2026-11-10"
+      "label": "Besluit genomen (24 december, aanname)",
+      "datum": "2026-12-24"
     }
   ],
   "gebeurtenissen": [
@@ -217,7 +217,7 @@
     },
     {
       "id": "v6",
-      "datum": "2026-10-05",
+      "datum": "2026-11-18",
       "tijd": "16:31",
       "actor": "U",
       "soort": "uitvoering",
@@ -228,7 +228,7 @@
     },
     {
       "id": "v7",
-      "datum": "2026-10-06",
+      "datum": "2026-11-19",
       "tijd": "09:14",
       "actor": "UWV",
       "soort": "uitvoering",
@@ -239,18 +239,18 @@
     },
     {
       "id": "v8",
-      "datum": "2026-10-12",
+      "datum": "2026-11-25",
       "tijd": "11:40",
       "actor": "UWV",
       "soort": "uitvoering",
-      "titel": "Afspraak onderzoek op de werkplek: 19 oktober (aanname)",
+      "titel": "Afspraak onderzoek op de werkplek: 2 december (aanname)",
       "tekst": "Een arbeidsdeskundige van UWV komt naar de werkplek. De arbeidsdeskundige onderzoekt of de prestatie van Noor een beloning per uur rechtvaardigt die ten minste 25 procent lager ligt dan de gebruikelijke beloning voor dezelfde arbeid.",
       "grond": "Besluit loondispensatie Wajong 1",
       "stap": "onderzoek"
     },
     {
       "id": "v9",
-      "datum": "2026-10-19",
+      "datum": "2026-12-02",
       "tijd": "10:00",
       "actor": "UWV",
       "soort": "uitvoering",
@@ -261,7 +261,7 @@
     },
     {
       "id": "v10",
-      "datum": "2026-10-27",
+      "datum": "2026-12-10",
       "tijd": "15:20",
       "actor": "UWV",
       "soort": "besluit",
@@ -272,7 +272,7 @@
     },
     {
       "id": "v11",
-      "datum": "2026-11-10",
+      "datum": "2026-12-24",
       "tijd": "11:41",
       "actor": "UWV",
       "soort": "besluit",
@@ -339,7 +339,7 @@
   },
   "besluit": {
     "organisatie": "UWV",
-    "datum": "2026-11-10",
+    "datum": "2026-12-24",
     "bezwaar": "zes weken"
   }
 }

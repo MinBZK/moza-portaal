@@ -43,8 +43,8 @@ const Verstuurd = ({
       <>
         <Heading level={1}>Nog niets verstuurd</Heading>
         <Paragraph>
-          U heeft nog geen aanvraag verstuurd. Controleer de aanvraag en
-          verstuur die.
+          U hebt nog geen aanvraag verstuurd. Controleer de aanvraag en verstuur
+          die.
         </Paragraph>
         <Paragraph>
           <Link
@@ -108,7 +108,7 @@ const Verstuurd = ({
             Bekijk de zaak
           </Link>
           <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-            Terug naar Personeel
+            Terug naar Personeel en rollen
           </Link>
         </ActionGroup>
       </section>

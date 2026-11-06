@@ -4,7 +4,7 @@ import type { Situatie, ZaakStand } from "./_route";
 import type { Antwoorden } from "./_useAannemen";
 
 /** De dag waarop het prototype de aanvraag laat indienen. */
-export const INGEDIEND_OP = "2026-10-05";
+export const INGEDIEND_OP = "2026-11-18";
 
 const REGELING: Partial<Record<Situatie, string>> = {
   gemeente: "loonkostensubsidie",

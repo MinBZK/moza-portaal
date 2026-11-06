@@ -220,6 +220,18 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		padding: var(--rhc-space-xl);
 	}
 
+	.rhc-mox-tile {
+		background-color: var(--rhc-color-wit);
+		border: var(--rhc-border-width-sm) solid
+			var(--rhc-color-light-cool-grey-300);
+		border-radius: var(--rhc-border-radius-md);
+		color: inherit;
+	}
+
+	.rhc-mox-tile:hover .rhc-mox-tile__title {
+		text-decoration-thickness: var(--rhc-border-width-md);
+	}
+
 	.rhc-mox-card,
 	.rhc-mox-sticky-info-box,
 	.mox-faq-card {

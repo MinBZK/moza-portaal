@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Alert, Heading, Paragraph } from "@/components/rhc";
+import { Heading } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
 import Bronnen from "./_bronnen";
-import Stappen, { TAAK_TITEL } from "../_stappen";
+import Stappen from "../_stappen";
+import { TAAK_TITEL } from "../_taakTitel";
 import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
-  title: "Aanvraag invullen - Personeel en rollen",
+  title: "Laat de aanvraag invullen - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 2: aanvraag invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
@@ -37,18 +38,7 @@ const GegevensPage = async () => {
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
-        <Stappen huidige={2} />
-        <Alert type="info" closable>
-          <Paragraph>
-            Om de aanvragen in te vullen, halen wij gegevens op bij de
-            organisaties die ze al hebben. U hoeft ze dan niet zelf op te
-            zoeken.
-          </Paragraph>
-          <Paragraph>
-            Wij versturen nog niets. De ingevulde aanvraag staat alleen in uw
-            omgeving, tot u die zelf verstuurt.
-          </Paragraph>
-        </Alert>
+        <Stappen huidige={3} />
         <Bronnen perSituatie={perSituatie} />
       </div>
     </>

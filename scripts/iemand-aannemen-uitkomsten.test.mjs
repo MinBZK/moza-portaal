@@ -29,6 +29,49 @@ test("basis: elk doel rekent en alle routes staan dicht", () => {
 
 const U = await import("../" + MAP + "_uitkomsten.ts");
 
+// Stap 2 vraagt register, beschut werk en uitkering los; de engine krijgt
+// dezelfde doelgroepen als bij de vinkjes (doelgroepenUit).
+test("vragen: register ja zonder uitkering is register", () => {
+  assert.deepEqual(U.doelgroepenUit("ja", false, "geen"), ["register"]);
+});
+
+test("vragen: beschut werk telt als beschut, niet als register", () => {
+  assert.deepEqual(U.doelgroepenUit("ja", true, "bijstand"), [
+    "bijstand",
+    "beschut",
+  ]);
+});
+
+test("vragen: Wajong zet het register aan, ook bij Nee (Wfsv 38b lid 1 c)", () => {
+  assert.deepEqual(U.doelgroepenUit("nee", false, "wajong"), [
+    "register",
+    "wajong",
+  ]);
+});
+
+test("vragen: Weet ik niet rekent als niet in het register", () => {
+  assert.deepEqual(U.doelgroepenUit("onbekend", false, "bijstand"), [
+    "bijstand",
+  ]);
+});
+
+test("vragen: een andere uitkering geeft geen doelgroep", () => {
+  assert.deepEqual(U.doelgroepenUit("nee", false, "andere"), []);
+});
+
+test("vragen: oudere opslag terug naar de vragen", () => {
+  assert.deepEqual(U.vragenUit(["register", "wia"]), {
+    register: "ja",
+    beschut: false,
+    uitkering: "wia",
+  });
+  assert.deepEqual(U.vragenUit(["bijstand", "beschut"]), {
+    register: "ja",
+    beschut: true,
+    uitkering: "bijstand",
+  });
+});
+
 test("vraag 1: Wajong vinkt het register aan", () => {
   assert.deepEqual(U.kiesDoelgroep([], "wajong", true), ["register", "wajong"]);
 });
@@ -116,6 +159,26 @@ test("gemeente (bijstand, 60)", () => {
   assert.equal(overig(u, "nrp").duurJaren, -1);
   assert.equal(overig(u, "pp_pwet").geldt, true);
   assert.equal(overig(u, "begeleiding").geldt, true);
+});
+
+test("loonwaarde onder 30 procent: loonkostensubsidie groeit door tot het plafond", () => {
+  // Pwet 10d lid 4 en 5: verschil tussen minimumloon en loonwaarde; het
+  // plafond is 70 procent van het minimumloon plus 25 procent werkgeverslasten.
+  const lks = (lw) => regel(reken(["bijstand"], lw), "lks").bedragPerJaar;
+  const op30 = lks(30);
+  assert.ok(op30 > LKS_GEMEENTE_60_JAAR);
+  assert.ok(lks(15) > lks(25));
+  assert.ok(lks(25) > op30);
+  const plafond = Math.round(op30 * 1.25);
+  for (const lw of [0, 5, 10]) assert.equal(lks(lw), plafond);
+});
+
+test("wajong onder 30 procent: loondispensatie groeit door", () => {
+  const ld = (lw) =>
+    regel(reken(["register", "wajong"], lw), "ld").bedragPerJaar;
+  assert.ok(ld(10) > ld(30));
+  assert.ok(ld(30) > ld(60));
+  assert.ok(ld(0) >= ld(10));
 });
 
 test("register op 100 procent: loonkostenvoordeel blijft", () => {
@@ -575,7 +638,7 @@ test("demo: WIA heeft geen besluit voor de werkgever, de andere wel", () => {
     JSON.parse(readFileSync("src/demo/" + SITUATIES[s], "utf8"));
   assert.equal(lees("wia").besluit, undefined);
   assert.equal(lees("wajong").besluit.organisatie, "UWV");
-  assert.equal(lees("gemeente").besluit.datum, "2026-11-03");
+  assert.equal(lees("gemeente").besluit.datum, "2026-12-17");
 });
 
 // Parameters in de bronnen zijn feiten uit _basisfeiten.json, uitkomsten van

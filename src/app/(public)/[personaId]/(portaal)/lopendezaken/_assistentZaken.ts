@@ -98,7 +98,7 @@ const AANNEMEN_SITUATIES = ["gemeente", "wajong", "wia"];
  * blijven aan de bestanden.
  */
 const AANNEMEN_NUMMERS: Record<string, string> = {
-  "LLD-LKS-2026-0417": "gemeente",
+  "RTM-LKS-2026-0417": "gemeente",
   "UWV-LD-2026-0231": "wajong",
   "UWV-DV-2026-0518": "wia",
 };
@@ -111,9 +111,9 @@ export const zaakRoute = (zaak: AssistentZaak) => {
     zaak.flow === "iemand-aannemen" ? veld(zaak, ["situatie"]) : "";
   if (AANNEMEN_SITUATIES.includes(situatie))
     return `/lopendezaken/iemand-aannemen/${situatie}`;
-  // Zonder aanvraag (alleen register of uitleg): het overzicht van wat geldt.
+  // Zonder aanvraag (alleen register of uitleg): stap 4, met wat geldt.
   if (situatie === "register" || situatie === "uitleg")
-    return "/personeel/iemand-aannemen/overzicht";
+    return "/personeel/iemand-aannemen/concept-aanvraag";
   const oud = AANNEMEN_NUMMERS[veld(zaak, ["referentienummer"])];
   if (oud) return `/lopendezaken/iemand-aannemen/${oud}`;
   const tekst = [

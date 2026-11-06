@@ -28,17 +28,21 @@ type Next = {
  * Verder comes first in the HTML, so it gets the keyboard focus first and is
  * at the block start when the buttons wrap; in a row, the CSS shows Terug at
  * the inline start. On the last step the forward button is the final action,
- * with its own icon.
+ * with its own icon. With `later`, "Sla op en ga later verder" sits next to
+ * the forward button.
  */
 const StepNavigation = ({
   back,
   backLabel = "Terug",
   next,
+  later,
 }: {
   back?: string;
   /** Text of the back button; "Terug" by default. */
   backLabel?: string;
   next?: Next;
+  /** Save and leave the task: go to this address. */
+  later?: string;
 }) => {
   const label = (
     <>
@@ -78,6 +82,14 @@ const StepNavigation = ({
             {label}
           </Button>
         ))}
+      {later && (
+        <Link
+          href={later}
+          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
+        >
+          Sla op en ga later verder
+        </Link>
+      )}
       {back && (
         <Link
           href={back}

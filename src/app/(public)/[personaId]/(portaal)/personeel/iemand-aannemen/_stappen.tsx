@@ -1,24 +1,28 @@
 import Voortgang from "./_voortgang";
 
 /** The heading of every step: the task itself. */
-export const TAAK_TITEL = "Iemand aannemen met afstand tot de arbeidsmarkt";
+export { TAAK_TITEL } from "./_taakTitel";
 
+/**
+ * De stappen naar het voorbeeld van het concept-prototype. Stap 4 beslaat
+ * twee schermen: de ingevulde aanvraag controleren en die versturen.
+ */
 export const STAPPEN = [
   {
-    name: "Voorbeeldberekening",
-    href: "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
+    name: "Lees wat er kan",
+    href: "/personeel/iemand-aannemen",
   },
   {
-    name: "Gegevens delen",
+    name: "Voorbeeldberekening",
+    href: "/personeel/iemand-aannemen/voorbeeldberekening",
+  },
+  {
+    name: "Laat de aanvraag invullen",
     href: "/personeel/iemand-aannemen/gegevens",
   },
   {
-    name: "Aanvraag nakijken",
-    href: "/personeel/iemand-aannemen/concept-aanvraag",
-  },
-  {
     name: "Controleren en versturen",
-    href: "/personeel/iemand-aannemen/versturen",
+    href: "/personeel/iemand-aannemen/concept-aanvraag",
   },
 ];
 

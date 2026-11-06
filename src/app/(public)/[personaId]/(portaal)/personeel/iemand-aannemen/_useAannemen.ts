@@ -2,13 +2,20 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { eigenaarUit, isVanEigenaar } from "./_eigenaar";
-import { DOELGROEPEN, kiesDoelgroep, type Doelgroep } from "./_uitkomsten";
+import {
+  DOELGROEPEN,
+  kiesDoelgroep,
+  type Doelgroep,
+  type InRegister,
+  type Uitkering,
+} from "./_uitkomsten";
 import {
   migreerZaken,
   type PaneelId,
   type Situatie,
   type TaakId,
   type TaakStand,
+  type VanzelfId,
   type ZaakStand,
   type Zaken,
 } from "./_route";
@@ -47,21 +54,27 @@ export const WML_UUR_EUROCENT = 1499;
 
 /** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
-  /** Meerkeuze; leeg betekent dat er niets is gekozen. */
+  /** Waarmee de engine rekent; volgt uit register, beschut en uitkering. */
   doelgroepen: Doelgroep[];
-  /** Uren per week, 8 tot 40. */
+  /** Vraag 1, 1a en 2; zonder waarde afgeleid uit de doelgroepen. */
+  register?: InRegister;
+  beschut?: boolean;
+  uitkering?: Uitkering;
+  /** Uren per week, 1 tot 40; de wet kent geen ondergrens. */
   uren: number;
-  /** Geschatte loonwaarde in procent, 30 tot 100; 100 is geen verminderde loonwaarde. */
+  /** Geschatte loonwaarde in procent, 0 tot 100; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
   /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
   uurloon: number;
+  /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 2. */
+  aanvang?: string;
 };
 
 /**
- * De regelingen met een paneel in de aanvraag. De opslag kan nog sleutels
- * voor lkv en nrp hebben (eerdere versies); die tellen niet meer mee.
+ * Elke regeling in de aanvraag: wat de werkgever indient (gecontroleerd), en
+ * wat vanzelf gaat of een taak van de werknemer is (gelezen).
  */
-export type RegelingId = PaneelId;
+export type RegelingId = PaneelId | VanzelfId | TaakId;
 
 export type AannemenStaat = {
   antwoorden: Antwoorden;
@@ -72,11 +85,12 @@ export type AannemenStaat = {
   /** Zelf toegevoegde kandidaten, in afwachting van hun toestemming. */
   kandidatenNieuw?: {
     naam: string;
-    geboortedatum: string;
+    /** Alleen bij kandidaten uit een eerdere versie. */
+    geboortedatum?: string;
+    /** Het BSN, afgeschermd tot de laatste vier cijfers. */
+    bsn?: string;
     gevraagdOp: string;
   }[];
-  /** Namens wie de aanvraag wordt ingevuld. */
-  rol: "eigenaar" | "namens";
   /** Per regeling in de aanvraag: gecontroleerd. */
   gecontroleerd: Partial<Record<RegelingId, boolean>>;
   /** Keuzes bij de regelingen die niet vanzelf gelden. */
@@ -103,7 +117,6 @@ export const STANDAARD_ANTWOORDEN: Antwoorden = {
 const LEEG: AannemenStaat = {
   antwoorden: STANDAARD_ANTWOORDEN,
   bronnen: {},
-  rol: "eigenaar",
   gecontroleerd: {},
   keuzes: {},
   zaken: {},
@@ -118,6 +131,9 @@ export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
 
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
+
+/** De eigen opgave in stap 2 is compleet: de eerste werkdag is ingevuld. */
+export const eigenOpgaveCompleet = (a: Antwoorden) => !!a.aanvang;
 
 export const uurloonTekst = (a: Antwoorden) =>
   a.uurloon === WML_UUR_EUROCENT
@@ -253,7 +269,16 @@ export const useAannemen = () => {
     () => null,
   );
   const werkBij = useCallback((wijziging: Partial<AannemenStaat>) => {
-    schrijf({ ...lees(), ...wijziging });
+    const nu = lees();
+    // Andere antwoorden geven een andere aanvraag: controleer die opnieuw.
+    const anders =
+      wijziging.antwoorden !== undefined &&
+      JSON.stringify(wijziging.antwoorden) !== JSON.stringify(nu.antwoorden);
+    schrijf({
+      ...nu,
+      ...wijziging,
+      ...(anders && !wijziging.gecontroleerd ? { gecontroleerd: {} } : {}),
+    });
   }, []);
   const werkZaakBij = useCallback(
     (situatie: Situatie, wijziging: Partial<ZaakStand>) => {
