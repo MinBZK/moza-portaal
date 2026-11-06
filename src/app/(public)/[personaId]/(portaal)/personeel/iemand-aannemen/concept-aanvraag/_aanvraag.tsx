@@ -21,7 +21,7 @@ import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
-import { onderwerpVoor, routeVoor } from "../_route";
+import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -150,7 +150,6 @@ const AanvraagInhoud = ({
   // Alle regelingen in één lijst: eerst wat u indient, dan wat vanzelf gaat,
   // dan de taken van de werknemer.
   const rijIds: RegelingId[] = [...paneelIds, ...route.vanzelf, ...route.taken];
-  const aantal = rijIds.filter((id) => g[id]).length;
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
@@ -158,21 +157,24 @@ const AanvraagInhoud = ({
     (paneelIds as RegelingId[]).includes(id);
   const mist = (id: RegelingId) =>
     (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
+  // Wat nog een keuze in stap 3 mist, is niet klaar, ook niet met een vinkje.
+  const klaarMet = (id: RegelingId) => !!g[id] && !mist(id);
+  const aantal = rijIds.filter(klaarMet).length;
 
   const status = (id: RegelingId): Status =>
-    g[id]
-      ? isPaneel(id)
-        ? "gecontroleerd"
-        : "gelezen"
-      : mist(id)
-        ? "aanvullen"
+    mist(id)
+      ? "aanvullen"
+      : g[id]
+        ? isPaneel(id)
+          ? "gecontroleerd"
+          : "gelezen"
         : "controleren";
 
   // Welke regelingen openstaan. Zolang de gebruiker niets open- of
   // dichtklapte, staat de eerste die nog niet gecontroleerd is open.
   const [open, setOpen] = useState<string[] | null>(null);
   const [melding, setMelding] = useState("");
-  const eerste = rijIds.find((id) => !g[id]);
+  const eerste = rijIds.find((id) => !klaarMet(id));
   const openIds: string[] = open ?? (eerste ? [eerste] : []);
   const isOpen = (id: string) => openIds.includes(id);
   const wissel = (id: string) =>
@@ -191,8 +193,9 @@ const AanvraagInhoud = ({
   };
   // Een gewone functie, geen component: een component in de render zou bij
   // elke wijziging opnieuw worden aangemaakt.
-  const vinkje = (id: RegelingId) => (
-    <>
+  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 3.
+  const vinkje = (id: RegelingId) =>
+    mist(id) ? null : (
       <FormFieldCheckboxOption
         label={
           isPaneel(id) ? "Ik heb dit gecontroleerd en het klopt" : "Gelezen"
@@ -201,8 +204,7 @@ const AanvraagInhoud = ({
         checked={!!g[id]}
         onChange={(event) => controleer(id, event.target.checked)}
       />
-    </>
-  );
+    );
 
   const waarom = (
     wet: string,
@@ -338,7 +340,7 @@ const AanvraagInhoud = ({
             "heeft_recht_op_lks",
             "Loonkostensubsidie",
             <>
-              <Heading level={4}>
+              <Heading level={5}>
                 Hoe de gemeente {kandidaat.gemeente} beslist
               </Heading>
               <UnorderedList>
@@ -638,6 +640,32 @@ const AanvraagInhoud = ({
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
 
+  // Via de stappenbalk kan stap 4 open gaan zonder gekozen kandidaat of eerste
+  // werkdag, zoals na een andere situatie in stap 2. Dan is er niemand met
+  // toestemming om voor aan te vragen: eerst terug naar stap 3.
+  if (
+    bekend &&
+    route.zaak !== null &&
+    !bestaand?.ingediend &&
+    (staat.kandidaat !== kandidaat.bsnMasker || !a.aanvang)
+  )
+    return (
+      <>
+        <Heading level={1}>{TAAK_TITEL}</Heading>
+        <div className="rhc-mox-card">
+          <Stappen huidige={4} />
+          <Paragraph>
+            Kies eerst in stap 3 wie u wilt aannemen en vul de eerste werkdag
+            in. Daarna controleert u hier de aanvraag.
+          </Paragraph>
+          <StepNavigation
+            back="/personeel/iemand-aannemen/gegevens"
+            backLabel={terugNaar(3)}
+          />
+        </div>
+      </>
+    );
+
   return (
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
@@ -651,7 +679,7 @@ const AanvraagInhoud = ({
               : rijIds.length === 0
                 ? "Bij deze antwoorden is er niets aan te vragen."
                 : paneelIds.length === 0
-                  ? "U hoeft niets te versturen. Hieronder staat wat de werknemer aanvraagt en wat vanzelf gaat."
+                  ? overzichtTekst(route)
                   : "Controleer per regeling de gegevens en vul aan wat ontbreekt."}
         </Paragraph>
         {paneelIds.length > 0 && (
@@ -691,7 +719,7 @@ const AanvraagInhoud = ({
                   </Paragraph>
                   <UnorderedList>
                     {rijIds
-                      .filter((id) => !g[id])
+                      .filter((id) => !klaarMet(id))
                       .map((id) => (
                         <UnorderedListItem key={id}>
                           <a
