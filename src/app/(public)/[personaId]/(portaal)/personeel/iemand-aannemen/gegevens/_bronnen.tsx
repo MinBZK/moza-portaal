@@ -89,6 +89,7 @@ const EigenOpgave = ({
   kies,
   vraagJc,
   vraagWpa,
+  aanvangFout,
 }: {
   voornaam: string;
   a: Antwoorden;
@@ -98,6 +99,7 @@ const EigenOpgave = ({
   /** Alleen als jobcoaching of werkplekaanpassing bij de aanvraag hoort. */
   vraagJc: boolean;
   vraagWpa: boolean;
+  aanvangFout?: string;
 }) => (
   <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
     <Heading level={3} id="eigen-opgave">
@@ -105,9 +107,12 @@ const EigenOpgave = ({
     </Heading>
     <Paragraph>Dit weet alleen u, en het gaat mee in de aanvraag.</Paragraph>
     <FormFieldTextInput
+      id="eerste-werkdag"
       name="aanvang"
       type="date"
       label={`Wat is de eerste werkdag van ${voornaam}?`}
+      invalid={!!aanvangFout}
+      errorMessage={aanvangFout}
       value={a.aanvang ?? ""}
       onChange={(event) =>
         zet({
@@ -270,9 +275,12 @@ const Bronnen = ({
   const zietRegister = overKandidaat.some((b) => zichtbaarVan(b).length > 0);
 
   // The first thing that still stops Verder, in the order of the form.
-  const ontbreekt: "kandidaat" | "naam" | "bsn" | "toestemming" | undefined =
+  const ontbreekt:
+    "kandidaat" | "naam" | "bsn" | "toestemming" | "aanvang" | undefined =
     gekozen
-      ? undefined
+      ? opgave
+        ? undefined
+        : "aanvang"
       : keuze !== NIEUW
         ? "kandidaat"
         : !nieuw.naam.trim()
@@ -293,6 +301,8 @@ const Bronnen = ({
     fout === "naam"
       ? "U hebt nog geen naam van de kandidaat ingevuld."
       : undefined;
+  const aanvangFout =
+    fout === "aanvang" ? "U hebt nog geen eerste werkdag ingevuld." : undefined;
   const bsnVeldFout =
     fout === "bsn" && nieuw.bsn.trim() === ""
       ? "U hebt nog geen BSN ingevuld."
@@ -309,10 +319,12 @@ const Bronnen = ({
           ? document.querySelector<HTMLElement>("#kandidaat-bsn input")
           : ontbreekt === "toestemming"
             ? document.getElementById("toestemming-vragen")
-            : (document.querySelector<HTMLElement>(
-                'input[name="kandidaat"]:checked',
-              ) ??
-              document.querySelector<HTMLElement>('input[name="kandidaat"]'));
+            : ontbreekt === "aanvang"
+              ? document.querySelector<HTMLElement>("#eerste-werkdag input")
+              : (document.querySelector<HTMLElement>(
+                  'input[name="kandidaat"]:checked',
+                ) ??
+                document.querySelector<HTMLElement>('input[name="kandidaat"]'));
     veld?.focus();
   };
 
@@ -572,10 +584,20 @@ const Bronnen = ({
           zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
           keuzes={staat?.keuzes ?? {}}
           kies={(deel) =>
-            werkBij({ keuzes: { ...(staat?.keuzes ?? {}), ...deel } })
+            werkBij({
+              keuzes: { ...(staat?.keuzes ?? {}), ...deel },
+              // Een andere keuze is een andere aanvraag: controleer die opnieuw.
+              gecontroleerd: {
+                ...(staat?.gecontroleerd ?? {}),
+                ...Object.fromEntries(
+                  Object.keys(deel).map((id) => [id, false]),
+                ),
+              },
+            })
           }
           vraagJc={paneelIds.includes("jc")}
           vraagWpa={paneelIds.includes("wpa")}
+          aanvangFout={aanvangFout}
         />
       )}
 
