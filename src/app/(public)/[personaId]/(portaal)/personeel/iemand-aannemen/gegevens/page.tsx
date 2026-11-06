@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Alert, Heading, Paragraph } from "@/components/rhc";
+import { Heading } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import { getActieveOrganisatie } from "@/app/(public)/_persona";
 import type { DemoAannemen } from "@/demo";
@@ -39,15 +39,6 @@ const GegevensPage = async () => {
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
         <Stappen huidige={3} />
-        <Alert type="info" closable>
-          <Paragraph>
-            Wij halen gegevens over uw onderneming op. UWV en de gemeente
-            bekijken zelf de gegevens over de kandidaat.
-          </Paragraph>
-          <Paragraph>
-            De aanvraag versturen wij pas als u dat zelf doet.
-          </Paragraph>
-        </Alert>
         <Bronnen perSituatie={perSituatie} />
       </div>
     </>

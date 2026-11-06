@@ -9,6 +9,7 @@ import {
   Accordion,
   AccordionSection,
   ActionGroup,
+  Alert,
   Button,
   Fieldset,
   FormFieldCheckboxOption,
@@ -22,8 +23,6 @@ import {
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
-  BRONNEN,
-  alleBronnenBevestigd,
   bronBevestigd,
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
@@ -209,21 +208,27 @@ const Bronnen = ({
     ];
   const [nieuw, setNieuw] = useState({ naam: "", bsn: "" });
   // Een BSN heeft negen cijfers en voldoet aan de elfproef.
-  const bsnGoed = elfproef(nieuw.bsn.trim());
+  const bsn = nieuw.bsn.trim();
+  const bsnGoed = elfproef(bsn);
+  // De melding pas na het verlaten van het veld, niet tijdens het typen.
+  const [bsnGezien, setBsnGezien] = useState(false);
   const bsnFout =
-    nieuw.bsn.trim() === "" || bsnGoed
+    bsn === "" || bsnGoed
       ? undefined
-      : "Een BSN heeft negen cijfers. Controleer het nummer.";
+      : /^\d{9}$/.test(bsn)
+        ? "Dit BSN klopt niet. Controleer het nummer."
+        : "Een BSN heeft negen cijfers. Controleer het nummer.";
   const [open, setOpen] = useState<BronId[]>([]);
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
   // Bevestigen gaat over wat de werkgever ziet: niet de eigen opgave (een
-  // formulier) en niet de gemeente (die gegevens ziet de werkgever niet).
-  const teBevestigen = BRONNEN.filter(
-    (id) => id !== "eigen" && id !== "gemeente",
+  // formulier) en geen bron zonder zichtbare gegevens, zoals de gemeente.
+  const getoond = bronnen.filter(
+    (bron) => bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
   );
+  const teBevestigen = getoond.map((bron) => bron.id);
   // De loonwaarde is nog niet gemeten als de gemeente dat zo opgeeft.
   const loonwaardeNogNiet = bronnen.some((b) =>
     b.gegevens.some(
@@ -254,7 +259,8 @@ const Bronnen = ({
   const aantal = staat
     ? teBevestigen.filter((id) => bronBevestigd(staat, id)).length
     : 0;
-  const klaar = gekozen && !!staat && alleBronnenBevestigd(staat);
+  const klaar =
+    gekozen && !!staat && teBevestigen.every((id) => bronBevestigd(staat, id));
   const opgave = eigenOpgaveCompleet(antwoorden);
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
   // Wie in deze situatie gegevens over de kandidaat heeft, uit dezelfde
@@ -304,9 +310,11 @@ const Bronnen = ({
   const aanvangFout =
     fout === "aanvang" ? "U hebt nog geen eerste werkdag ingevuld." : undefined;
   const bsnVeldFout =
-    fout === "bsn" && nieuw.bsn.trim() === ""
+    fout === "bsn" && bsn === ""
       ? "U hebt nog geen BSN ingevuld."
-      : bsnFout;
+      : fout === "bsn" || bsnGezien
+        ? bsnFout
+        : undefined;
 
   // Verder does not work yet: show why, and go to what is still missing.
   const naarInvoer = () => {
@@ -333,7 +341,11 @@ const Bronnen = ({
 
   const voegToe = () => {
     const n = nieuw.naam.trim();
-    if (!n || !bsnGoed) return;
+    // Nog niet compleet: zeg wat ontbreekt en ga naar dat veld.
+    if (!n || !bsnGoed) {
+      naarInvoer();
+      return;
+    }
     werkBij({
       kandidatenNieuw: [
         ...nieuwe.filter((k) => k.naam !== n),
@@ -346,10 +358,21 @@ const Bronnen = ({
       kandidaat: n,
     });
     setNieuw({ naam: "", bsn: "" });
+    setBsnGezien(false);
   };
 
   return (
     <>
+      <Alert type="info" closable>
+        <Paragraph>
+          Wij halen gegevens over uw onderneming op.{" "}
+          {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
+          {meer ? "bekijken" : "bekijkt"} zelf de gegevens over de kandidaat.
+        </Paragraph>
+        <Paragraph>
+          De aanvraag versturen wij pas als u dat zelf doet.
+        </Paragraph>
+      </Alert>
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
@@ -431,6 +454,7 @@ const Bronnen = ({
                   bsn: (event.target as HTMLInputElement).value,
                 })
               }
+              onBlur={() => setBsnGezien(true)}
             />
             <Paragraph className="rhc-mox-small-text">
               Vraag het BSN pas als u de kandidaat wilt aannemen. Gebruik het
@@ -505,78 +529,73 @@ const Bronnen = ({
                 vinkje weg; die gegevens vult u dan zelf aan in de aanvraag.
               </Paragraph>
               <Accordion>
-                {bronnen
-                  .filter(
-                    (bron) =>
-                      bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
-                  )
-                  .map((bron) => {
-                    const aan = !!staat && bronBevestigd(staat, bron.id);
-                    return (
-                      <AccordionSection
-                        key={bron.id}
-                        // Het niveau op Accordion geldt alleen voor diens eigen kop.
-                        headingLevel={3}
-                        label={`${bron.organisatie}: ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
-                        // Het type eist `body`, de component rendert alleen `children`.
-                        body={null}
-                        expanded={open.includes(bron.id)}
-                        onActivate={() =>
-                          setOpen(
-                            open.includes(bron.id)
-                              ? open.filter((id) => id !== bron.id)
-                              : [...open, bron.id],
-                          )
-                        }
-                      >
-                        <div className="rhc-mox-row-gap">
-                          <Paragraph className="rhc-mox-small-text">
-                            {bron.register}, opgehaald op{" "}
-                            {datumNL(bron.opgehaald)}
-                          </Paragraph>
-                          {/* The markup of the RHC DataSummary: its component only
+                {getoond.map((bron) => {
+                  const aan = !!staat && bronBevestigd(staat, bron.id);
+                  return (
+                    <AccordionSection
+                      key={bron.id}
+                      // Het niveau op Accordion geldt alleen voor diens eigen kop.
+                      headingLevel={3}
+                      label={`${bron.organisatie}: ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
+                      // Het type eist `body`, de component rendert alleen `children`.
+                      body={null}
+                      expanded={open.includes(bron.id)}
+                      onActivate={() =>
+                        setOpen(
+                          open.includes(bron.id)
+                            ? open.filter((id) => id !== bron.id)
+                            : [...open, bron.id],
+                        )
+                      }
+                    >
+                      <div className="rhc-mox-row-gap">
+                        <Paragraph className="rhc-mox-small-text">
+                          {bron.register}, opgehaald op{" "}
+                          {datumNL(bron.opgehaald)}
+                        </Paragraph>
+                        {/* The markup of the RHC DataSummary: its component only
                         takes text as value, and the toggletip with the law
                         question belongs in the value. */}
-                          <dl className="rhc-data-summary rhc-data-summary--column">
-                            {zichtbaarVan(bron).map((g) => (
-                              <div
-                                key={g.parameter}
-                                className="rhc-data-summary__item"
-                              >
-                                <dt className="rhc-data-summary__item-key">
-                                  {g.vraag}
-                                </dt>
-                                <dd className="rhc-data-summary__item-value">
-                                  {/* De uren komen uit de antwoorden van stap 1. */}
-                                  {g.waarde.replace(
-                                    "{uren}",
-                                    String(antwoorden.uren),
-                                  )}{" "}
-                                  <InfoToggletip
-                                    label={`Zo vraagt de wet het: ${g.vraag}`}
-                                  >
-                                    {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                                  </InfoToggletip>
-                                </dd>
-                              </div>
-                            ))}
-                          </dl>
-                          <FormFieldCheckboxOption
-                            label={
-                              bron.id === "eigen"
-                                ? "Klopt, gebruik mijn opgave"
-                                : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
-                            }
-                            name={`vinkje-${bron.id}`}
-                            checked={aan}
-                            onChange={(event) =>
-                              vink(bron.id, event.target.checked)
-                            }
-                          />
-                        </div>
-                      </AccordionSection>
-                    );
-                  })}
+                        <dl className="rhc-data-summary rhc-data-summary--column">
+                          {zichtbaarVan(bron).map((g) => (
+                            <div
+                              key={g.parameter}
+                              className="rhc-data-summary__item"
+                            >
+                              <dt className="rhc-data-summary__item-key">
+                                {g.vraag}
+                              </dt>
+                              <dd className="rhc-data-summary__item-value">
+                                {/* De uren komen uit de antwoorden van stap 1. */}
+                                {g.waarde.replace(
+                                  "{uren}",
+                                  String(antwoorden.uren),
+                                )}{" "}
+                                <InfoToggletip
+                                  label={`Zo vraagt de wet het: ${g.vraag}`}
+                                >
+                                  {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
+                                </InfoToggletip>
+                              </dd>
+                            </div>
+                          ))}
+                        </dl>
+                        <FormFieldCheckboxOption
+                          label={
+                            bron.id === "eigen"
+                              ? "Klopt, gebruik mijn opgave"
+                              : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
+                          }
+                          name={`vinkje-${bron.id}`}
+                          checked={aan}
+                          onChange={(event) =>
+                            vink(bron.id, event.target.checked)
+                          }
+                        />
+                      </div>
+                    </AccordionSection>
+                  );
+                })}
               </Accordion>
             </>
           )}
