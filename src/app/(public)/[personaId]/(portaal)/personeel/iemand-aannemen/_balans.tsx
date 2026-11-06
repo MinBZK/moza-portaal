@@ -61,7 +61,7 @@ export const VOORBEHOUD: Record<VoorbehoudId, string> = {
   zes_maanden:
     "Was de kandidaat in de zes maanden voor de start al bij u in dienst? Dan geldt het loonkostenvoordeel niet.",
   samenloop:
-    "U krijgt het loonkostenvoordeel naast de andere regelingen. Samen zijn ze nooit meer dan de loonkosten.",
+    "U krijgt het loonkostenvoordeel naast de andere regelingen. In deze voorbeeldberekening zijn ze samen nooit meer dan de loonkosten.",
 };
 
 /**
@@ -136,7 +136,7 @@ export const duurTekst = (jaren: number | undefined) =>
 const WANNEER: Record<BalansRegel["id"], string> = {
   lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde (Participatiewet, artikel 10d).",
   ld: "Voor een werknemer met een Wajong-uitkering die duidelijk minder kan. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20).",
-  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring. Iemand met bijstand hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wfsv, artikel 38b). U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein, artikel 2.10).",
+  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring. Iemand met bijstand hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wfsv, artikel 38b). U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
 };
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
