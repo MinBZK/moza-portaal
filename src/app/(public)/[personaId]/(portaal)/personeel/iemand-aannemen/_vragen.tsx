@@ -59,6 +59,11 @@ type Termijn = {
 
 const PWET = "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d";
 const WTL = "https://wetten.overheid.nl/BWBR0037522/2026-01-01";
+/** De beslistermijn van acht weken als de wet zelf geen termijn noemt. */
+const AWB_4_13: Bron = {
+  tekst: "Algemene wet bestuursrecht, artikel 4:13",
+  url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Artikel4:13",
+};
 
 /**
  * De termijnen die bij de uitkomsten horen. Elke zin volgt uit de genoemde
@@ -101,10 +106,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                 tekst: "Besluit loondispensatie Wajong, artikel 4",
                 url: "https://wetten.overheid.nl/BWBR0020119/2010-08-19#Artikel4",
               },
-              {
-                tekst: "Algemene wet bestuursrecht, artikel 4:13",
-                url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Artikel4:13",
-              },
+              AWB_4_13,
             ],
           },
         ]
@@ -127,6 +129,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                       tekst: "Wet tegemoetkomingen loondomein, artikel 2.7",
                       url: `${WTL}#Artikel2.7`,
                     },
+                    AWB_4_13,
                   ]
                 : []),
               {
@@ -391,8 +394,8 @@ const VragenMetStaat = ({
                     functie. De gemeente of UWV meet die later op de werkplek.
                   </Paragraph>
                   <Paragraph>
-                    Wij rekenen met het midden van wat u kiest. Het echte bedrag
-                    kan daardoor hoger of lager uitvallen.
+                    Wij rekenen met het percentage dat u kiest. Het echte bedrag
+                    kan hoger of lager uitvallen.
                   </Paragraph>
                   <Paragraph>
                     De loonkostensubsidie is het verschil tussen het minimumloon
