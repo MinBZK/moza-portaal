@@ -317,32 +317,32 @@
     },
     {
       "id": "ontvangst",
-      "label": "Aanvraag ontvangen (6 oktober)",
+      "label": "Aanvraag ontvangen (19 november)",
       "datum": "2026-11-19"
     },
     {
       "id": "meting",
-      "label": "Loonwaarde gemeten (20 oktober)",
+      "label": "Loonwaarde gemeten (3 december)",
       "datum": "2026-12-03"
     },
     {
       "id": "loonwaarde",
-      "label": "Loonwaarde vastgesteld (27 oktober)",
+      "label": "Loonwaarde vastgesteld (10 december)",
       "datum": "2026-12-10"
     },
     {
       "id": "besluit",
-      "label": "Besluit genomen (3 november)",
+      "label": "Besluit genomen (17 december)",
       "datum": "2026-12-17"
     },
     {
       "id": "antwoord",
-      "label": "Antwoord op uw vraag (6 november)",
+      "label": "Antwoord op uw vraag (20 december)",
       "datum": "2026-12-20"
     },
     {
       "id": "betaling",
-      "label": "Eerste betaling (27 november)",
+      "label": "Eerste betaling (10 januari)",
       "datum": "2027-01-10"
     }
   ],
@@ -430,7 +430,7 @@
       "tijd": "11:40",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
-      "titel": "Afspraak loonwaardemeting op de werkplek: 13 oktober",
+      "titel": "Afspraak loonwaardemeting op de werkplek: 26 november",
       "tekst": "Een loonwaardedeskundige meet de loonwaarde van Koen op de werkvloer.",
       "grond": "Regeling loonkostensubsidie Participatiewet 2021, artikel 3",
       "stap": "meting",
@@ -442,8 +442,8 @@
       "tijd": "08:55",
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
-      "titel": "Correctie: afspraak verzet naar 20 oktober",
-      "tekst": "De loonwaardedeskundige is 13 oktober niet beschikbaar. De afspraak van 13 oktober vervalt.",
+      "titel": "Correctie: afspraak verzet naar 3 december",
+      "tekst": "De loonwaardedeskundige is 26 november niet beschikbaar. De afspraak van 26 november vervalt.",
       "grond": "",
       "stap": "meting",
       "herstelt": "g8"

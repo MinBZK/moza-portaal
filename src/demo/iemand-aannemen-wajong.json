@@ -140,22 +140,22 @@
   "fasen": [
     {
       "id": "ontvangst",
-      "label": "Aanvraag ontvangen (6 oktober)",
+      "label": "Aanvraag ontvangen (19 november)",
       "datum": "2026-11-19"
     },
     {
       "id": "onderzoek",
-      "label": "Onderzoek op de werkplek (19 oktober)",
+      "label": "Onderzoek op de werkplek (2 december)",
       "datum": "2026-12-02"
     },
     {
       "id": "percentage",
-      "label": "Percentage vastgesteld (27 oktober, aanname)",
+      "label": "Percentage vastgesteld (10 december, aanname)",
       "datum": "2026-12-10"
     },
     {
       "id": "besluit",
-      "label": "Besluit genomen (10 november, aanname)",
+      "label": "Besluit genomen (24 december, aanname)",
       "datum": "2026-12-24"
     }
   ],
@@ -243,7 +243,7 @@
       "tijd": "11:40",
       "actor": "UWV",
       "soort": "uitvoering",
-      "titel": "Afspraak onderzoek op de werkplek: 19 oktober (aanname)",
+      "titel": "Afspraak onderzoek op de werkplek: 2 december (aanname)",
       "tekst": "Een arbeidsdeskundige van UWV komt naar de werkplek. De arbeidsdeskundige onderzoekt of de prestatie van Noor een beloning per uur rechtvaardigt die ten minste 25 procent lager ligt dan de gebruikelijke beloning voor dezelfde arbeid.",
       "grond": "Besluit loondispensatie Wajong 1",
       "stap": "onderzoek"
