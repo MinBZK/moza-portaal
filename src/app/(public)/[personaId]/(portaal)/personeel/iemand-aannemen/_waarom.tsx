@@ -100,6 +100,12 @@ const Waarom = ({
     </Paragraph>
   );
 
+  const heeftKort =
+    stand.status === "klaar" &&
+    outputs.some((o) =>
+      (stand.waarde.afleidingen[o]?.tekst.kort ?? []).some((r) => !r.technisch),
+    );
+
   return (
     <Accordion>
       <AccordionSection
@@ -117,6 +123,11 @@ const Waarom = ({
           {stand.status === "fout" && vooraf}
           {stand.status === "klaar" && (
             <>
+              <Paragraph className="rhc-mox-small-text">
+                Deze uitleg volgt stap voor stap uit de wet, zoals die geldt op
+                1 juli 2026. Elke zin komt uit een stap van de wet, niet van een
+                taalmodel.
+              </Paragraph>
               {outputs.map((o) => {
                 const a = stand.waarde.afleidingen[o];
                 if (!a) return null;
@@ -129,43 +140,64 @@ const Waarom = ({
                   </div>
                 );
               })}
-              <Accordion>
-                <AccordionSection
-                  headingLevel={headingLevel + 1}
-                  label="Volledige afleiding, stap voor stap"
-                  body={null}
-                  expanded={open.includes("afleiding")}
-                  onActivate={() => wissel("afleiding")}
-                >
-                  <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
-                    {outputs.flatMap((o) =>
-                      (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                        .filter((r) => !r.technisch)
-                        .map((r, n) => (
-                          <li
-                            key={`${o}-${n}`}
-                            style={{
-                              paddingInlineStart: `${r.diepte * 1.25}rem`,
-                            }}
-                          >
-                            {r.tekst}
-                            {r.bron && (
-                              <small className="rhc-mox-small-text">
-                                {" "}
-                                (bron: {r.bron})
-                              </small>
-                            )}
-                          </li>
-                        )),
-                    )}
-                  </ol>
-                </AccordionSection>
-              </Accordion>
-              <Paragraph className="rhc-mox-small-text">
-                Deze uitleg volgt stap voor stap uit de wet, zoals die geldt op
-                1 juli 2026. RegelRecht rekent de wet na in uw browser. Elke zin
-                komt uit een stap van de wet, niet van een taalmodel.
-              </Paragraph>
+              {/* Zonder korte uitleg staat de afleiding meteen open. */}
+              {heeftKort ? (
+                <Accordion>
+                  <AccordionSection
+                    headingLevel={headingLevel + 1}
+                    label="Volledige afleiding, stap voor stap"
+                    body={null}
+                    expanded={open.includes("afleiding")}
+                    onActivate={() => wissel("afleiding")}
+                  >
+                    <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                      {outputs.flatMap((o) =>
+                        (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                          .filter((r) => !r.technisch)
+                          .map((r, n) => (
+                            <li
+                              key={`${o}-${n}`}
+                              style={{
+                                paddingInlineStart: `${r.diepte * 1.25}rem`,
+                              }}
+                            >
+                              {r.tekst}
+                              {r.bron && (
+                                <small className="rhc-mox-small-text">
+                                  {" "}
+                                  (bron: {r.bron})
+                                </small>
+                              )}
+                            </li>
+                          )),
+                      )}
+                    </ol>
+                  </AccordionSection>
+                </Accordion>
+              ) : (
+                <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                  {outputs.flatMap((o) =>
+                    (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                      .filter((r) => !r.technisch)
+                      .map((r, n) => (
+                        <li
+                          key={`${o}-${n}`}
+                          style={{
+                            paddingInlineStart: `${r.diepte * 1.25}rem`,
+                          }}
+                        >
+                          {r.tekst}
+                          {r.bron && (
+                            <small className="rhc-mox-small-text">
+                              {" "}
+                              (bron: {r.bron})
+                            </small>
+                          )}
+                        </li>
+                      )),
+                  )}
+                </ol>
+              )}
               <UitlegTaalmodel
                 berekening={stand.waarde}
                 outputs={outputs}

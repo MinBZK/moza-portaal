@@ -9,7 +9,6 @@ import {
   Paragraph,
   Separator,
 } from "@/components/rhc";
-import { Fieldset as InfoFieldset } from "@/components/Fieldset";
 import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
@@ -33,22 +32,6 @@ import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
 /** De check bij UWV of iemand in het doelgroepregister staat. */
 const UWV_REGISTER =
   "https://www.uwv.nl/nl/doelgroepregister/staat-werknemer-in-doelgroepregister";
-
-/**
- * Vraag 4 in blokjes, met de loonwaarde in procent waarmee de engine rekent:
- * het midden van het blokje. Loondispensatie vraagt ten minste 25 procent
- * minder (Besluit loondispensatie Wajong); vanaf driekwart geldt die niet.
- */
-const WERKVERMOGEN = [
-  [40, "Minder dan de helft"],
-  [60, "De helft tot driekwart"],
-  [85, "Meer dan driekwart"],
-  [100, "Evenveel"],
-] as const;
-
-/** Welk blokje bij een opgeslagen loonwaarde hoort (ook oude waarden van de schuif). */
-const blokVan = (loonwaarde: number) =>
-  loonwaarde < 50 ? 40 : loonwaarde < 75 ? 60 : loonwaarde < 100 ? 85 : 100;
 
 /** Bovengrens van "anders, namelijk" bij het uurloon: € 200 per uur. */
 const MAX_UURLOON_EUROCENT = 20000;
@@ -386,8 +369,20 @@ const VragenMetStaat = ({
             filled
           />
           <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <InfoFieldset
-              legend="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?"
+            <RangeSlider
+              label="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?"
+              min={30}
+              max={100}
+              step={5}
+              value={a.loonwaarde}
+              onChange={(loonwaarde) => zet({ loonwaarde })}
+              formatValue={(loonwaarde) => `${loonwaarde} procent`}
+              formatValueText={(loonwaarde) =>
+                loonwaarde === 100
+                  ? "100 procent: evenveel als een collega"
+                  : `${loonwaarde} procent`
+              }
+              filled
               info={
                 <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
                   <Paragraph>
@@ -406,18 +401,7 @@ const VragenMetStaat = ({
                   </Paragraph>
                 </InfoToggletip>
               }
-            >
-              {WERKVERMOGEN.map(([waarde, label]) => (
-                <FormFieldRadio
-                  key={waarde}
-                  name="werkvermogen"
-                  value={String(waarde)}
-                  label={label}
-                  checked={blokVan(a.loonwaarde) === waarde}
-                  onChange={() => zet({ loonwaarde: waarde })}
-                />
-              ))}
-            </InfoFieldset>
+            />
             {wajong && (
               <Paragraph className="rhc-mox-small-text">
                 Bij een Wajong-uitkering stelt UWV vast welk deel van het

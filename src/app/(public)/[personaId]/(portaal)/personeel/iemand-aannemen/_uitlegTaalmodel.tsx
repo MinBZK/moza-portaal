@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button, Paragraph, Separator } from "@/components/rhc";
 import { leesAssistentInstellingen } from "@/app/(public)/_flags/assistentInstellingen";
+import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import type { Berekening } from "./_useRegelrecht";
 
 /**
@@ -29,7 +30,9 @@ type Stand =
   | { status: "rust" }
   | { status: "bezig" }
   | { status: "klaar"; tekst: string; toets: Toets; mode: string }
-  | { status: "fout"; tekst: string };
+  | { status: "fout"; tekst: string }
+  /** De dienst bestaat hier niet: geen knop meer, alleen de melding. */
+  | { status: "onbeschikbaar"; tekst: string };
 
 /** Wat de dienst nodig heeft: de graaf van de laatste output en de korte samenvatting. */
 export const uitlegVerzoek = (
@@ -82,8 +85,10 @@ const UitlegTaalmodel = ({
   kvk: string;
 }) => {
   const [stand, setStand] = useState<Stand>({ status: "rust" });
+  // Net als de zoekbalk: zonder de digitale assistent geen knop (#201).
+  const assistent = useFlag("mox_digitaleAssistent");
   const verzoek = uitlegVerzoek(berekening, outputs, regeling);
-  if (!verzoek) return null;
+  if (!verzoek || !assistent) return null;
 
   const vraag = async () => {
     const ingesteld = leesAssistentInstellingen();
@@ -108,7 +113,10 @@ const UitlegTaalmodel = ({
           ? String((json as { tekst: unknown }).tekst)
           : "";
       if (!antwoord.ok || !tekst) {
-        setStand({ status: "fout", tekst: foutTekst(antwoord.status, json) });
+        setStand({
+          status: antwoord.status === 404 ? "onbeschikbaar" : "fout",
+          tekst: foutTekst(antwoord.status, json),
+        });
         return;
       }
       const { toets, mode } = json as { toets: Toets; mode: string };
@@ -125,7 +133,9 @@ const UitlegTaalmodel = ({
   return (
     <div className="rhc-mox-stack">
       <Separator />
-      {stand.status !== "klaar" && (
+      {(stand.status === "rust" ||
+        stand.status === "bezig" ||
+        stand.status === "fout") && (
         <Button
           appearance="secondary-action-button"
           onClick={vraag}
@@ -136,14 +146,14 @@ const UitlegTaalmodel = ({
             : "Leg dit uit in gewone taal"}
         </Button>
       )}
-      {stand.status !== "klaar" && (
+      {(stand.status === "rust" || stand.status === "bezig") && (
         <Paragraph className="rhc-mox-small-text">
           Drukt u op deze knop? Dan gaan de gegevens van deze uitkomst en uw
           KVK-nummer naar de digitale assistent. Het taalmodel van de digitale
           assistent schrijft daarmee de uitleg.
         </Paragraph>
       )}
-      {stand.status === "fout" && (
+      {(stand.status === "fout" || stand.status === "onbeschikbaar") && (
         <Paragraph className="rhc-mox-small-text" role="status">
           {stand.tekst}
         </Paragraph>
