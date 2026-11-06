@@ -284,14 +284,24 @@ const OverzichtInhoud = ({
             Zo is dit berekend
           </Heading>
           <DataSummary appearance="column">
-            <DataSummaryItem
-              itemKey="Uw antwoorden"
-              itemValue={`${
-                DOELGROEPEN.filter(([d]) => a.doelgroepen.includes(d))
-                  .map(([, label]) => label)
-                  .join(", ") || "Niets gekozen"
-              }; ${a.uren} uur per week; loonwaarde ${a.loonwaarde} procent; ${euro(a.uurloon)} per uur`}
-            />
+            {/* Een eigen item: de waarde heeft een link om te wijzigen. */}
+            <div className="rhc-data-summary__item">
+              <dt className="rhc-data-summary__item-key">Uw antwoorden</dt>
+              <dd className="rhc-data-summary__item-value">
+                {`${
+                  DOELGROEPEN.filter(([d]) => a.doelgroepen.includes(d))
+                    .map(([, label]) => label)
+                    .join(", ") || "Niets gekozen"
+                }; ${a.uren} uur per week; loonwaarde ${a.loonwaarde} procent; ${euro(a.uurloon)} per uur`}{" "}
+                <Link
+                  href="/personeel/iemand-aannemen/voorbeeldberekening"
+                  className="utrecht-link utrecht-link--html-a"
+                  aria-label="Wijzigen: uw antwoorden"
+                >
+                  Wijzigen
+                </Link>
+              </dd>
+            </div>
             <DataSummaryItem
               itemKey="Gegevens die u deelde"
               itemValue={

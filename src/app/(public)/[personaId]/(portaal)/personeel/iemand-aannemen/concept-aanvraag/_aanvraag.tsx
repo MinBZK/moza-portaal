@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
@@ -38,7 +39,16 @@ import {
 import { nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euro, type Werkgever } from "../_werkgever";
 
-type Gegeven = { label: string; waarde: string; bron: string };
+type Gegeven = {
+  label: string;
+  waarde: string;
+  bron: string;
+  /** Waar de ondernemer dit antwoord kan aanpassen. */
+  wijzig?: string;
+};
+
+/** De eigen opgave in stap 3: eerste werkdag en uren. */
+const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
 
 /** De gegevens in twee kolommen, met de bron als label onder de waarde. */
 const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
@@ -49,6 +59,15 @@ const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
         <dt className="rhc-data-summary__item-key">{r.label}</dt>
         <dd className="rhc-data-summary__item-value">
           {r.waarde} <TextBadge>{r.bron}</TextBadge>
+          {r.wijzig && (
+            <Link
+              href={r.wijzig}
+              className="utrecht-link utrecht-link--html-a"
+              aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
+            >
+              Wijzigen
+            </Link>
+          )}
         </dd>
       </div>
     ))}
@@ -308,8 +327,14 @@ const AanvraagInhoud = ({
       label: "Eerste werkdag",
       waarde: datumNL(a.aanvang ?? dienstverband.aanvang),
       bron: "Uw opgave",
+      wijzig: EIGEN_OPGAVE,
     },
-    { label: "Uren per week", waarde: String(a.uren), bron: "Uw antwoord" },
+    {
+      label: "Uren per week",
+      waarde: String(a.uren),
+      bron: "Uw antwoord",
+      wijzig: EIGEN_OPGAVE,
+    },
   ];
 
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
@@ -576,6 +601,7 @@ const AanvraagInhoud = ({
                   label: "Verloonde uren per jaar",
                   waarde: `${a.uren * 52} (${a.uren} uur per week)`,
                   bron: "Uw antwoord",
+                  wijzig: EIGEN_OPGAVE,
                 },
               ]}
             />
