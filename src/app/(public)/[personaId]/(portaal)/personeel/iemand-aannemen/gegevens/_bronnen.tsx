@@ -242,7 +242,7 @@ const Bronnen = ({
   const duur = [
     ...(situatie === "gemeente" && loonwaardeNogNiet
       ? [
-          `De loonwaarde van ${kandidaat.voornaam} is nog niet gemeten. Een deskundige van de gemeente meet die op de werkplek, als ${kandidaat.voornaam} is ingewerkt. Een vaste wachttijd daarvoor is er niet. Daarna beslist de gemeente binnen vijf weken (Participatiewet, artikel 10d lid 12).`,
+          `De loonwaarde van ${kandidaat.voornaam} is nog niet gemeten. Een deskundige van de gemeente meet die op de werkplek, als ${kandidaat.voornaam} is ingewerkt. Een vaste wachttijd daarvoor is er niet. Daarna beslist de gemeente uiterlijk acht weken na uw aanvraag (Algemene wet bestuursrecht, artikel 4:13).`,
         ]
       : []),
     ...(situatie === "wajong"

@@ -62,7 +62,7 @@ export type Antwoorden = {
   uitkering?: Uitkering;
   /** Uren per week, 1 tot 40; de wet kent geen ondergrens. */
   uren: number;
-  /** Geschatte loonwaarde in procent, 30 tot 100; 100 is geen verminderde loonwaarde. */
+  /** Geschatte loonwaarde in procent, 0 tot 100; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
   /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
   uurloon: number;

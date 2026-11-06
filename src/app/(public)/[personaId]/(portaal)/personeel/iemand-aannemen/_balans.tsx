@@ -26,7 +26,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   lks_lid4: {
     kort: "Gerekend met een loonwaarde die de gemeente vaststelt.",
     uitleg:
-      "Gerekend met een loonwaarde die de gemeente vaststelt. De gemeente kan ook met u afspreken dat zij de loonwaarde eerst niet vaststelt. Dan krijgt u ten hoogste de eerste zes maanden 50 procent van het minimumloon met vakantiebijslag, plus een vergoeding voor werkgeverslasten. Werkt de kandidaat minder dan 36 uur, dan is het bedrag naar rato lager. Daarna stelt de gemeente de loonwaarde alsnog vast. Hoe de vergoeding voor werkgeverslasten wordt berekend, staat nog niet vast.",
+      "Gerekend met een loonwaarde die de gemeente vaststelt. De gemeente kan ook met u afspreken dat zij de loonwaarde eerst niet vaststelt. Dan krijgt u ten hoogste de eerste zes maanden 50 procent van het minimumloon met vakantiebijslag, plus een vergoeding voor werkgeverslasten. Werkt de kandidaat minder of meer dan 36 uur, dan is het bedrag naar rato lager of hoger, tot ten hoogste de volledige werkweek in uw sector. Daarna stelt de gemeente de loonwaarde alsnog vast. Hoe de vergoeding voor werkgeverslasten wordt berekend, staat nog niet vast.",
   },
   ld_cao: {
     kort: "Loondispensatie niet meegeteld.",
@@ -37,12 +37,6 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
     kort: "Gerekend als nieuwe werkgever.",
     uitleg:
       "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Het loonkostenvoordeel geldt dan ten hoogste drie jaar vanaf de start. Werkt de kandidaat al bij u en heeft die een WIA-uitkering? En gaat die weer aan het werk in het eigen werk of in een andere functie? Dan geldt een ander loonkostenvoordeel, ten hoogste één jaar.",
-  },
-  // Wajong 2:20 met Pwet 10b lid 9: de samenloop is niet getoetst.
-  ld_beschut: {
-    kort: "Loondispensatie bij beschut werk onder voorbehoud.",
-    uitleg:
-      "Bij beschut werk kan de gemeente ook loonkostensubsidie geven. Of loondispensatie en loonkostensubsidie samen kunnen, staat nog niet vast. Het bedrag voor loondispensatie is daarom onder voorbehoud.",
   },
   beschut_lks: {
     kort: "Loonkostensubsidie bij beschut werk niet meegeteld.",
@@ -374,14 +368,19 @@ const Balans = ({
           <dd className="rhc-data-summary__item-value">{bedrag(netto)}</dd>
         </div>
       </dl>
-      {/* Pwet 7 lid 3 c: een UWV-uitkering sluit de Pwet-doelgroep uit; loondispensatie is alleen Wajong (2:20). */}
+      {/* Loondispensatie is alleen Wajong (2:20); loonkostensubsidie alleen via Pwet 7 lid 3 c of 10d lid 2. */}
       {bekend &&
         !fout &&
         antwoorden.doelgroepen.includes("wia") &&
         !antwoorden.doelgroepen.includes("wajong") && (
           <Paragraph className="rhc-mox-small-text">
-            Bij een WIA-uitkering zijn loonkostensubsidie en loondispensatie
-            niet mogelijk.
+            Bij een WIA-uitkering is loondispensatie niet mogelijk; die bestaat
+            alleen bij de Wajong (Wajong, artikel 2:20). Loonkostensubsidie kan
+            alleen als de gemeente al eerder loonkostensubsidie voor de
+            kandidaat verleende, of als de kandidaat in de zes maanden voor de
+            start praktijkonderwijs, voortgezet speciaal onderwijs of een
+            entreeopleiding volgde (Participatiewet, artikelen 7 lid 3 onder c
+            en 10d lid 2).
           </Paragraph>
         )}
       {bekend && !fout && terug === 0 && (

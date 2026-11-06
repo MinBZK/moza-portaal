@@ -161,6 +161,26 @@ test("gemeente (bijstand, 60)", () => {
   assert.equal(overig(u, "begeleiding").geldt, true);
 });
 
+test("loonwaarde onder 30 procent: loonkostensubsidie groeit door tot het plafond", () => {
+  // Pwet 10d lid 4 en 5: verschil tussen minimumloon en loonwaarde; het
+  // plafond is 70 procent van het minimumloon plus 25 procent werkgeverslasten.
+  const lks = (lw) => regel(reken(["bijstand"], lw), "lks").bedragPerJaar;
+  const op30 = lks(30);
+  assert.ok(op30 > LKS_GEMEENTE_60_JAAR);
+  assert.ok(lks(15) > lks(25));
+  assert.ok(lks(25) > op30);
+  const plafond = Math.round(op30 * 1.25);
+  for (const lw of [0, 5, 10]) assert.equal(lks(lw), plafond);
+});
+
+test("wajong onder 30 procent: loondispensatie groeit door", () => {
+  const ld = (lw) =>
+    regel(reken(["register", "wajong"], lw), "ld").bedragPerJaar;
+  assert.ok(ld(10) > ld(30));
+  assert.ok(ld(30) > ld(60));
+  assert.ok(ld(0) >= ld(10));
+});
+
 test("register op 100 procent: loonkostenvoordeel blijft", () => {
   const u = reken(["register"], 100);
   assert.equal(regel(u, "lks"), undefined);

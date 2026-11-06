@@ -311,12 +311,7 @@ export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
 };
 
 export type AannameId =
-  | "lks_lid4"
-  | "ld_cao"
-  | "ld_beschut"
-  | "wia_nieuw"
-  | "beschut_lks"
-  | "geen";
+  "lks_lid4" | "ld_cao" | "wia_nieuw" | "beschut_lks" | "geen";
 
 export type Regel = {
   id: "lks" | "ld" | "lkv";
@@ -427,8 +422,6 @@ export const uitkomstenUit = (
       bedragPerJaar: Math.round(
         (WML_UUR_EUROCENT - perUur) * a.uren * 52 * OPSLAG,
       ),
-      // Samen met loonkostensubsidie bij beschut werk (Pwet 10b lid 9) is niet getoetst.
-      aanname: d.has("beschut") ? "ld_beschut" : undefined,
     });
   }
   const lkvJaar = Number(lkv.hoogte_lkv_per_jaar_eurocent ?? 0);

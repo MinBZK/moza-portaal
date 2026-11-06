@@ -83,12 +83,13 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
             tekst:
               "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag.",
             wanneer:
-              "De gemeente beslist binnen vijf weken nadat zij de loonwaarde heeft vastgesteld.",
+              "Is de werknemer nog niet begonnen? Dan beslist de gemeente binnen vijf weken nadat zij de loonwaarde heeft vastgesteld. Is de werknemer al begonnen? Dan beslist de gemeente uiterlijk acht weken na uw aanvraag.",
             bronnen: [
               {
                 tekst: "Participatiewet, artikel 10d lid 2 en lid 12",
                 url: PWET,
               },
+              AWB_4_13,
             ],
           },
         ]
@@ -377,7 +378,7 @@ const VragenMetStaat = ({
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
               label="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?"
-              min={30}
+              min={0}
               max={100}
               step={5}
               value={a.loonwaarde}
@@ -403,7 +404,9 @@ const VragenMetStaat = ({
                   <Paragraph>
                     De loonkostensubsidie is het verschil tussen het minimumloon
                     en de loonwaarde, ten hoogste 70 procent van het
-                    minimumloon. Een hoger uurloon geeft geen hogere subsidie.
+                    minimumloon, vermeerderd met een vergoeding voor
+                    werkgeverslasten. Een hoger uurloon geeft geen hogere
+                    subsidie.
                   </Paragraph>
                 </InfoToggletip>
               }
