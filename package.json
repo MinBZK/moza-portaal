@@ -33,6 +33,7 @@
     "@tanstack/react-form": "^1.11.1",
     "@tanstack/react-query": "^5.90.20",
     "date-fns": "^4.1.0",
+    "dompurify": "^3.4.17",
     "fast-xml-parser": "^5.5.0",
     "msw": "^3.0.3",
     "next": "^16.4.3",
