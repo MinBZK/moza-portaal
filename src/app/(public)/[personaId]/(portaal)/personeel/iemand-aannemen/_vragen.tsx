@@ -9,6 +9,7 @@ import {
   Paragraph,
   Separator,
 } from "@/components/rhc";
+import { Fieldset as InfoFieldset } from "@/components/Fieldset";
 import InfoToggletip from "@/components/InfoToggletip";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
@@ -385,7 +386,27 @@ const VragenMetStaat = ({
             filled
           />
           <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <Fieldset legend="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?">
+            <InfoFieldset
+              legend="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?"
+              info={
+                <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
+                  <Paragraph>
+                    Dit heet de loonwaarde: wat de werknemer presteert,
+                    vergeleken met een collega zonder beperking in dezelfde
+                    functie. De gemeente of UWV meet die later op de werkplek.
+                  </Paragraph>
+                  <Paragraph>
+                    Wij rekenen met het midden van wat u kiest. Het echte bedrag
+                    kan daardoor hoger of lager uitvallen.
+                  </Paragraph>
+                  <Paragraph>
+                    De loonkostensubsidie is het verschil tussen het minimumloon
+                    en de loonwaarde, ten hoogste 70 procent van het
+                    minimumloon. Een hoger uurloon geeft geen hogere subsidie.
+                  </Paragraph>
+                </InfoToggletip>
+              }
+            >
               {WERKVERMOGEN.map(([waarde, label]) => (
                 <FormFieldRadio
                   key={waarde}
@@ -396,23 +417,7 @@ const VragenMetStaat = ({
                   onChange={() => zet({ loonwaarde: waarde })}
                 />
               ))}
-            </Fieldset>
-            <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
-              <Paragraph>
-                Dit heet de loonwaarde: wat de werknemer presteert, vergeleken
-                met een collega zonder beperking in dezelfde functie. De
-                gemeente of UWV meet die later op de werkplek.
-              </Paragraph>
-              <Paragraph>
-                Wij rekenen met het midden van wat u kiest. Het echte bedrag kan
-                daardoor hoger of lager uitvallen.
-              </Paragraph>
-              <Paragraph>
-                De loonkostensubsidie is het verschil tussen het minimumloon en
-                de loonwaarde, ten hoogste 70 procent van het minimumloon. Een
-                hoger uurloon geeft geen hogere subsidie.
-              </Paragraph>
-            </InfoToggletip>
+            </InfoFieldset>
             {wajong && (
               <Paragraph className="rhc-mox-small-text">
                 Bij een Wajong-uitkering stelt UWV vast welk deel van het
