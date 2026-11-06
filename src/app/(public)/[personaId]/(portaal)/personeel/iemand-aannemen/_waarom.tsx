@@ -140,64 +140,43 @@ const Waarom = ({
                   </div>
                 );
               })}
-              {/* Zonder korte uitleg staat de afleiding meteen open. */}
-              {heeftKort ? (
-                <Accordion>
-                  <AccordionSection
-                    headingLevel={headingLevel + 1}
-                    label="Volledige afleiding, stap voor stap"
-                    body={null}
-                    expanded={open.includes("afleiding")}
-                    onActivate={() => wissel("afleiding")}
-                  >
-                    <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
-                      {outputs.flatMap((o) =>
-                        (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                          .filter((r) => !r.technisch)
-                          .map((r, n) => (
-                            <li
-                              key={`${o}-${n}`}
-                              style={{
-                                paddingInlineStart: `${r.diepte * 1.25}rem`,
-                              }}
-                            >
-                              {r.tekst}
-                              {r.bron && (
-                                <small className="rhc-mox-small-text">
-                                  {" "}
-                                  (bron: {r.bron})
-                                </small>
-                              )}
-                            </li>
-                          )),
-                      )}
-                    </ol>
-                  </AccordionSection>
-                </Accordion>
-              ) : (
-                <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
-                  {outputs.flatMap((o) =>
-                    (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                      .filter((r) => !r.technisch)
-                      .map((r, n) => (
-                        <li
-                          key={`${o}-${n}`}
-                          style={{
-                            paddingInlineStart: `${r.diepte * 1.25}rem`,
-                          }}
-                        >
-                          {r.tekst}
-                          {r.bron && (
-                            <small className="rhc-mox-small-text">
-                              {" "}
-                              (bron: {r.bron})
-                            </small>
-                          )}
-                        </li>
-                      )),
-                  )}
-                </ol>
+              {!heeftKort && (
+                <Paragraph>
+                  Hieronder staat de afleiding uit de wet, stap voor stap.
+                </Paragraph>
               )}
+              <Accordion>
+                <AccordionSection
+                  headingLevel={headingLevel + 1}
+                  label="Volledige afleiding, stap voor stap"
+                  body={null}
+                  expanded={open.includes("afleiding")}
+                  onActivate={() => wissel("afleiding")}
+                >
+                  <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                    {outputs.flatMap((o) =>
+                      (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                        .filter((r) => !r.technisch)
+                        .map((r, n) => (
+                          <li
+                            key={`${o}-${n}`}
+                            style={{
+                              paddingInlineStart: `${r.diepte * 1.25}rem`,
+                            }}
+                          >
+                            {r.tekst}
+                            {r.bron && (
+                              <small className="rhc-mox-small-text">
+                                {" "}
+                                (bron: {r.bron})
+                              </small>
+                            )}
+                          </li>
+                        )),
+                    )}
+                  </ol>
+                </AccordionSection>
+              </Accordion>
               <UitlegTaalmodel
                 berekening={stand.waarde}
                 outputs={outputs}
