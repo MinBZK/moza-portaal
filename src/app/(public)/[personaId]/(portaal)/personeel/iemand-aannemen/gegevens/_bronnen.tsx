@@ -488,10 +488,16 @@ const Bronnen = ({
                 {zietRegister
                   ? `Over ${kandidaat.voornaam} ziet u alleen of die in het doelgroepregister staat, en sinds wanneer.`
                   : `Over ${kandidaat.voornaam} ziet u hier geen gegevens.`}{" "}
-                {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
-                {meer ? "gebruiken hun" : "gebruikt de"} eigen gegevens over{" "}
-                {kandidaat.voornaam} bij de beoordeling; die ziet u niet. U
-                krijgt wel het besluit.
+                {/* Zonder aanvraag is er geen beoordeling; bij WIA gaat het
+                    besluit (de doelgroepverklaring) naar de werknemer. */}
+                {!geenAanvraag && (
+                  <>
+                    {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
+                    {meer ? "gebruiken hun" : "gebruikt de"} eigen gegevens over{" "}
+                    {kandidaat.voornaam} bij de beoordeling; die ziet u niet.
+                    {paneelIds.length > 0 && " U krijgt wel het besluit."}
+                  </>
+                )}
               </Paragraph>
               <Paragraph>
                 Per organisatie staat aangevinkt dat de gegevens kloppen. Open
