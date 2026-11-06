@@ -319,7 +319,10 @@ const VragenMetStaat = ({
                   Controleer bij UWV of de persoon in het doelgroepregister
                   staat (opent in een nieuw tabblad)
                 </a>
-                . Tot dan rekenen wij alsof de persoon er niet in staat.
+                .
+                {/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
+                {uitkering !== "wajong" &&
+                  " Tot dan rekenen wij alsof de persoon er niet in staat."}
               </Paragraph>
             )}
           </div>
