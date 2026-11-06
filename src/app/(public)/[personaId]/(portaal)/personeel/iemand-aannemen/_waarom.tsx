@@ -77,10 +77,10 @@ const Waarom = ({
   const vooraf = trace ? (
     <>
       <Paragraph className="rhc-mox-small-text">
-        Vooraf berekend door de regelrecht-engine op peildatum{" "}
-        {datumNL(trace.peildatum)}, wetsversie 1 juli 2026
+        Vooraf berekend met RegelRecht op peildatum {datumNL(trace.peildatum)},
+        wetsversie 1 juli 2026
         {stand.status === "fout" &&
-          ` (de engine in de browser is niet beschikbaar: ${stand.fout})`}
+          ` (de berekening in uw browser lukt nu niet: ${stand.fout})`}
         . Tussenstappen:
       </Paragraph>
       <DataSummary appearance="column">
@@ -95,11 +95,16 @@ const Waarom = ({
     </>
   ) : (
     <Paragraph className="rhc-mox-small-text">
-      De engine in de browser is niet beschikbaar
-      {stand.status === "fout" && `: ${stand.fout}`}. Probeer de pagina opnieuw
-      te laden.
+      De berekening in uw browser lukt nu niet
+      {stand.status === "fout" && `: ${stand.fout}`}. Laad de pagina opnieuw.
     </Paragraph>
   );
+
+  const heeftKort =
+    stand.status === "klaar" &&
+    outputs.some((o) =>
+      (stand.waarde.afleidingen[o]?.tekst.kort ?? []).some((r) => !r.technisch),
+    );
 
   return (
     <Accordion>
@@ -113,11 +118,16 @@ const Waarom = ({
       >
         <div className="rhc-mox-stack">
           {stand.status === "laden" && (
-            <Paragraph role="status">De regelrecht-engine rekent…</Paragraph>
+            <Paragraph role="status">Wij rekenen de wet na…</Paragraph>
           )}
           {stand.status === "fout" && vooraf}
           {stand.status === "klaar" && (
             <>
+              <Paragraph className="rhc-mox-small-text">
+                Deze uitleg volgt stap voor stap uit de wet, zoals die geldt op
+                1 juli 2026. Elke zin komt uit een stap van de wet, niet van een
+                taalmodel.
+              </Paragraph>
               {outputs.map((o) => {
                 const a = stand.waarde.afleidingen[o];
                 if (!a) return null;
@@ -130,43 +140,64 @@ const Waarom = ({
                   </div>
                 );
               })}
-              <Accordion>
-                <AccordionSection
-                  headingLevel={headingLevel + 1}
-                  label="Volledige afleiding, stap voor stap"
-                  body={null}
-                  expanded={open.includes("afleiding")}
-                  onActivate={() => wissel("afleiding")}
-                >
-                  <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
-                    {outputs.flatMap((o) =>
-                      (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
-                        .filter((r) => !r.technisch)
-                        .map((r, n) => (
-                          <li
-                            key={`${o}-${n}`}
-                            style={{
-                              paddingInlineStart: `${r.diepte * 1.25}rem`,
-                            }}
-                          >
-                            {r.tekst}
-                            {r.bron && (
-                              <small className="rhc-mox-small-text">
-                                {" "}
-                                (bron: {r.bron})
-                              </small>
-                            )}
-                          </li>
-                        )),
-                    )}
-                  </ol>
-                </AccordionSection>
-              </Accordion>
-              <Paragraph className="rhc-mox-small-text">
-                Afgeleid uit de uitvoering door de regelrecht-engine in uw
-                browser, wetsversie 1 juli 2026. De tekst hierboven komt niet
-                van een taalmodel: elke zin komt uit een stap van de wet.
-              </Paragraph>
+              {/* Zonder korte uitleg staat de afleiding meteen open. */}
+              {heeftKort ? (
+                <Accordion>
+                  <AccordionSection
+                    headingLevel={headingLevel + 1}
+                    label="Volledige afleiding, stap voor stap"
+                    body={null}
+                    expanded={open.includes("afleiding")}
+                    onActivate={() => wissel("afleiding")}
+                  >
+                    <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                      {outputs.flatMap((o) =>
+                        (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                          .filter((r) => !r.technisch)
+                          .map((r, n) => (
+                            <li
+                              key={`${o}-${n}`}
+                              style={{
+                                paddingInlineStart: `${r.diepte * 1.25}rem`,
+                              }}
+                            >
+                              {r.tekst}
+                              {r.bron && (
+                                <small className="rhc-mox-small-text">
+                                  {" "}
+                                  (bron: {r.bron})
+                                </small>
+                              )}
+                            </li>
+                          )),
+                      )}
+                    </ol>
+                  </AccordionSection>
+                </Accordion>
+              ) : (
+                <ol className="rhc-mox-stack rhc-mox-stack--sm rhc-mox-small-text">
+                  {outputs.flatMap((o) =>
+                    (stand.waarde.afleidingen[o]?.tekst.volledig ?? [])
+                      .filter((r) => !r.technisch)
+                      .map((r, n) => (
+                        <li
+                          key={`${o}-${n}`}
+                          style={{
+                            paddingInlineStart: `${r.diepte * 1.25}rem`,
+                          }}
+                        >
+                          {r.tekst}
+                          {r.bron && (
+                            <small className="rhc-mox-small-text">
+                              {" "}
+                              (bron: {r.bron})
+                            </small>
+                          )}
+                        </li>
+                      )),
+                  )}
+                </ol>
+              )}
               <UitlegTaalmodel
                 berekening={stand.waarde}
                 outputs={outputs}
