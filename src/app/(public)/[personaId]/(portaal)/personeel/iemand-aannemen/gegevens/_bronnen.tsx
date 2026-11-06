@@ -525,8 +525,7 @@ const Bronnen = ({
               </Paragraph>
               <Paragraph>
                 Per organisatie staat aangevinkt dat de gegevens kloppen. Open
-                een organisatie om ze te bekijken. Klopt iets niet, haal het
-                vinkje weg; die gegevens vult u dan zelf aan in de aanvraag.
+                een organisatie om ze te bekijken.
               </Paragraph>
               <Accordion>
                 {getoond.map((bron) => {
