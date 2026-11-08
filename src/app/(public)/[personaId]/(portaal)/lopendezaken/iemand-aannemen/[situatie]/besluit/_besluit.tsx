@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -157,11 +158,13 @@ const Besluit = ({
       </DataSummary>
 
       {!bekend ? (
-        <Paragraph role="status">
-          {fout
-            ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
-            : "Wij berekenen de bedragen…"}
-        </Paragraph>
+        fout ? (
+          <Paragraph role="status">
+            Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw.
+          </Paragraph>
+        ) : (
+          <LoadingStatus>Wij berekenen de bedragen…</LoadingStatus>
+        )
       ) : !heeftRegel ? (
         <Alert type="warning">
           <Paragraph>

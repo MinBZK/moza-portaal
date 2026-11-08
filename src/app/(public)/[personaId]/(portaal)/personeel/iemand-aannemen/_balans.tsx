@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
@@ -225,17 +226,15 @@ const Balans = ({
   );
 
   // Rekenen en fouten blijven zichtbaar; de herkomst staat in de toggletip.
-  const bron =
-    bezig || fout ? (
-      <Paragraph
-        className="rhc-mox-small-text"
-        role={bezig ? "status" : undefined}
-      >
-        {fout
-          ? `De berekening lukt nu niet (${fout}). Laad de pagina opnieuw.`
-          : "Wij rekenen uit…"}
-      </Paragraph>
-    ) : null;
+  const bron = fout ? (
+    <Paragraph className="rhc-mox-small-text">
+      {`De berekening lukt nu niet (${fout}). Laad de pagina opnieuw.`}
+    </Paragraph>
+  ) : bezig ? (
+    <LoadingStatus className="rhc-mox-small-text">
+      Wij rekenen uit…
+    </LoadingStatus>
+  ) : null;
 
   /**
    * Kop van het totaal, met de herkomst van de berekening in een toggletip.

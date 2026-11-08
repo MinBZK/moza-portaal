@@ -1,7 +1,7 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import { focusAtTop } from "@/utils/focusAtTop";
-import Spinner from "@/components/Spinner";
 import Link from "next/link";
 import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
@@ -688,26 +688,21 @@ const AanvraagInhoud = ({
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
         <Stappen huidige={4} />
-        <Paragraph
-          role={bekend ? undefined : "status"}
-          className={!bekend && !resultaat.fout ? "rhc-mox-cluster" : undefined}
-        >
-          {resultaat.fout ? (
-            "De berekening lukt nu niet. Laad de pagina opnieuw."
-          ) : !bekend ? (
-            <>
-              {/* The text already says it is busy: no extra label. */}
-              <Spinner label="" />
-              Wij zoeken in de wet uit welke regelingen gelden…
-            </>
-          ) : rijIds.length === 0 ? (
-            "Bij deze antwoorden is er niets aan te vragen."
-          ) : paneelIds.length === 0 ? (
-            overzichtTekst(route)
-          ) : (
-            "Controleer per regeling de gegevens en vul aan wat ontbreekt."
-          )}
-        </Paragraph>
+        {!bekend && !resultaat.fout ? (
+          <LoadingStatus>
+            Wij zoeken in de wet uit welke regelingen gelden…
+          </LoadingStatus>
+        ) : (
+          <Paragraph>
+            {resultaat.fout
+              ? "De berekening lukt nu niet. Laad de pagina opnieuw."
+              : rijIds.length === 0
+                ? "Bij deze antwoorden is er niets aan te vragen."
+                : paneelIds.length === 0
+                  ? overzichtTekst(route)
+                  : "Controleer per regeling de gegevens en vul aan wat ontbreekt."}
+          </Paragraph>
+        )}
         {paneelIds.length > 0 && (
           <Paragraph className="rhc-mox-small-text">
             Alleen u ziet deze aanvraag. Er gaat pas iets naar de gemeente of

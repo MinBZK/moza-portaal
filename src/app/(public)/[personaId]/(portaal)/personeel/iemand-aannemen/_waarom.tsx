@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import { useState, type ReactNode } from "react";
 import {
   Accordion,
@@ -122,7 +123,7 @@ const Waarom = ({
         <div className="rhc-mox-stack">
           {voorAf}
           {stand.status === "laden" && (
-            <Paragraph role="status">Wij rekenen de wet na…</Paragraph>
+            <LoadingStatus>Wij rekenen de wet na…</LoadingStatus>
           )}
           {stand.status === "fout" && vooraf}
           {stand.status === "klaar" && heeftKort && (
