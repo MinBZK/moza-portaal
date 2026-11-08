@@ -1,5 +1,6 @@
 "use client";
 
+import { focusAtTop } from "@/utils/focusAtTop";
 import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
@@ -218,7 +219,9 @@ const Bronnen = ({
       : /^\d{9}$/.test(bsn)
         ? "Dit BSN klopt niet. Controleer het nummer."
         : "Een BSN heeft negen cijfers. Controleer het nummer.";
-  const [open, setOpen] = useState<BronId[]>([]);
+  // Which organisations are open. Until the user opens or closes one, the
+  // first is open.
+  const [openGekozen, setOpen] = useState<BronId[] | null>(null);
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
@@ -229,6 +232,7 @@ const Bronnen = ({
     (bron) => bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
   );
   const teBevestigen = getoond.map((bron) => bron.id);
+  const open: BronId[] = openGekozen ?? (getoond[0] ? [getoond[0].id] : []);
   // De loonwaarde is nog niet gemeten als de gemeente dat zo opgeeft.
   const loonwaardeNogNiet = bronnen.some((b) =>
     b.gegevens.some(
@@ -282,18 +286,22 @@ const Bronnen = ({
 
   // The first thing that still stops Verder, in the order of the form.
   const ontbreekt:
-    "kandidaat" | "naam" | "bsn" | "toestemming" | "aanvang" | undefined =
-    gekozen
-      ? opgave
-        ? undefined
-        : "aanvang"
-      : keuze !== NIEUW
-        ? "kandidaat"
-        : !nieuw.naam.trim()
-          ? "naam"
-          : !bsnGoed
-            ? "bsn"
-            : "toestemming";
+    | "kandidaat"
+    | "naam"
+    | "bsn"
+    | "toestemming"
+    | "aanvang"
+    | undefined = gekozen
+    ? opgave
+      ? undefined
+      : "aanvang"
+    : keuze !== NIEUW
+      ? "kandidaat"
+      : !nieuw.naam.trim()
+        ? "naam"
+        : !bsnGoed
+          ? "bsn"
+          : "toestemming";
   // Set when Verder is clicked; the message shows while that part is missing.
   const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
   const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
@@ -336,8 +344,26 @@ const Bronnen = ({
     veld?.focus();
   };
 
-  const vink = (id: BronId, aan: boolean) =>
+  // Ticking an organisation closes it and opens the next one. The focus goes
+  // to the heading of that next one, so it is not lost in a closed panel, and scrolls it to the top so its content can be read; the
+  // text above the list says this will happen (WCAG 3.2.2).
+  const vink = (id: BronId, aan: boolean) => {
+    const volgende = aan
+      ? teBevestigen[teBevestigen.indexOf(id) + 1]
+      : undefined;
     werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
+    if (!volgende) return;
+    setOpen([volgende]);
+    requestAnimationFrame(() =>
+      focusAtTop(
+        document.querySelector<HTMLElement>(
+          `#bron-${volgende} .utrecht-accordion__button`,
+        ),
+        // The panels open and close in 250 ms (rhc.css).
+        { waitMs: 260 },
+      ),
+    );
+  };
 
   const voegToe = () => {
     const n = nieuw.naam.trim();
@@ -525,7 +551,8 @@ const Bronnen = ({
               </Paragraph>
               <Paragraph>
                 Per organisatie staat aangevinkt dat de gegevens kloppen. Open
-                een organisatie om ze te bekijken.
+                een organisatie om ze te bekijken. Vinkt u een organisatie aan,
+                dan gaat de volgende open.
               </Paragraph>
               <Accordion>
                 {getoond.map((bron) => {
@@ -533,6 +560,7 @@ const Bronnen = ({
                   return (
                     <AccordionSection
                       key={bron.id}
+                      id={`bron-${bron.id}`}
                       // Het niveau op Accordion geldt alleen voor diens eigen kop.
                       headingLevel={3}
                       label={`${bron.organisatie}: ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
@@ -630,11 +658,9 @@ const Bronnen = ({
           <Heading level={2} id="hoe-lang">
             Hoe lang het kan duren
           </Heading>
-          <UnorderedList>
-            {duur.map((zin) => (
-              <UnorderedListItem key={zin}>{zin}</UnorderedListItem>
-            ))}
-          </UnorderedList>
+          {duur.map((zin) => (
+            <Paragraph key={zin}>{zin}</Paragraph>
+          ))}
         </section>
       )}
 

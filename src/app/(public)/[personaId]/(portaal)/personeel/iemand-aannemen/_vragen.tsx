@@ -423,6 +423,7 @@ const VragenMetStaat = ({
             label="5. Wat wordt het bruto uurloon in euro?"
             inputMode="decimal"
             autoComplete="off"
+            className="rhc-mox-textbox--sm rhc-mox-textbox--prefix rhc-mox-textbox--euro"
             description={`Vooringevuld met het wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur, voor iemand van 21 jaar of ouder. Betaalt u meer? Vul dan uw bedrag in, bijvoorbeeld 16,50.`}
             value={loonTekst}
             invalid={loonFout !== undefined}

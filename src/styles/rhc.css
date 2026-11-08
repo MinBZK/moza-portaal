@@ -117,9 +117,68 @@ dd {
 }
 
 /* ==== Forms ============================================================== */
+.utrecht-textbox[type="date"] {
+	max-inline-size: 20ch;
+}
 
 .utrecht-textbox {
 	max-inline-size: 100%;
+}
+
+/* Width that fits the expected answer. On the text input itself, or on the
+   form field around it (className of FormFieldTextInput): then only the
+   input gets narrower, not the label, description or error message. */
+:is(
+	.utrecht-textbox.rhc-mox-textbox--sm,
+	.rhc-mox-textbox--sm .utrecht-textbox
+) {
+	max-inline-size: 12ch;
+}
+
+:is(
+	.utrecht-textbox.rhc-mox-textbox--md,
+	.rhc-mox-textbox--md .utrecht-textbox
+) {
+	max-inline-size: 24ch;
+}
+
+:is(
+	.utrecht-textbox.rhc-mox-textbox--lg,
+	.rhc-mox-textbox--lg .utrecht-textbox
+) {
+	max-inline-size: 48ch;
+}
+
+/* Fixed text before the value, such as € for an amount. Only visual: the
+   label names the unit, so a screen reader does not read it out. */
+.rhc-mox-textbox--prefix {
+	--_rhc-mox-textbox-padding: var(
+		--utrecht-textbox-padding-inline-start,
+		var(--utrecht-form-control-padding-inline-start, var(--rhc-space-md))
+	);
+
+	.utrecht-form-field__input {
+		position: relative;
+	}
+
+	.utrecht-form-field__input::before {
+		align-items: center;
+		color: var(--rhc-color-foreground-subtle);
+		content: var(--rhc-mox-textbox-prefix) / "";
+		display: flex;
+		inset-block: 0;
+		inset-inline-start: var(--_rhc-mox-textbox-padding);
+		pointer-events: none;
+		position: absolute;
+	}
+
+	.utrecht-textbox {
+		padding-inline-start: calc(var(--_rhc-mox-textbox-padding) + 1.5ch);
+	}
+}
+
+.rhc-mox-textbox--euro {
+	--rhc-mox-textbox-prefix: "€";
 }
 
 .utrecht-form-label:not(
@@ -616,6 +675,11 @@ small,
 .utrecht-accordion__panel:not([hidden]) {
 	display: grid;
 	gap: var(--rhc-space-lg);
+}
+
+/* Some space above a button that is scrolled to the top of the screen. */
+.utrecht-accordion__button {
+	scroll-margin-block-start: var(--rhc-space-xl);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1680,6 +1744,9 @@ small,
 }
 
 /* --- Range slider --- */
+.rhc-mox-range-slider {
+	max-inline-size: 24rem;
+}
 .rhc-theme.mox-theme {
 	.rhc-mox-range-slider__header {
 		align-items: baseline;
@@ -2073,12 +2140,11 @@ small,
 
 .rhc-mox-sum__total {
 	border-block-start: var(--rhc-border-width-md) solid
-		var(--rhc-color-foreground-default);
-	font-weight: var(--rhc-text-font-weight-bold);
-	padding-block-start: var(--rhc-space-md);
+		var(--rhc-color-cool-grey-300);
+	font-weight: var(--rhc-text-font-weight-semi-bold);
 
 	.rhc-data-summary__item-value {
-		font-weight: var(--rhc-text-font-weight-bold);
+		font-weight: var(--rhc-text-font-weight-semi-bold);
 	}
 }
 
@@ -2290,6 +2356,11 @@ small,
 .rhc-theme.mox-theme {
 	.utrecht-table__header-cell {
 		vertical-align: bottom;
+	}
+
+	/* A row header lines up with the cells next to it. */
+	.utrecht-table__header--cell-row {
+		vertical-align: top;
 	}
 }
 

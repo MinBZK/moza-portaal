@@ -1,5 +1,7 @@
 "use client";
 
+import { focusAtTop } from "@/utils/focusAtTop";
+import Spinner from "@/components/Spinner";
 import Link from "next/link";
 import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
@@ -180,11 +182,26 @@ const AanvraagInhoud = ({
   const wissel = (id: string) =>
     setOpen(isOpen(id) ? openIds.filter((x) => x !== id) : [...openIds, id]);
 
-  // Het vinkje legt alleen vast; de focus verspringt niet (WCAG 3.2.2).
+  // Het vinkje legt vast, klapt deze regeling dicht en de volgende die nog
+  // niet klaar is open.
   const controleer = (id: RegelingId, aanvinken: boolean) => {
-    // Leg vast wat nu open is, anders schuift de standaard mee en klapt deze
-    // regeling dicht terwijl de focus erin staat.
-    setOpen(openIds);
+    const volgende = aanvinken
+      ? rijIds.slice(rijIds.indexOf(id) + 1).find((x) => !klaarMet(x))
+      : undefined;
+    // With a next one: only that one open, and the focus on its heading, so
+    // it is not lost in the panel that closes, at the top of the screen. The text above the list says
+    // this will happen (WCAG 3.2.2).
+    setOpen(volgende ? [volgende] : openIds);
+    if (volgende)
+      requestAnimationFrame(() =>
+        focusAtTop(
+          document.querySelector<HTMLElement>(
+            `#paneel-${volgende} .utrecht-accordion__button`,
+          ),
+          // The panels open and close in 250 ms (rhc.css).
+          { waitMs: 260 },
+        ),
+      );
     werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
     const wat = isPaneel(id) ? "gecontroleerd" : "gelezen";
     setMelding(
@@ -671,16 +688,25 @@ const AanvraagInhoud = ({
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
         <Stappen huidige={4} />
-        <Paragraph role={bekend ? undefined : "status"}>
-          {resultaat.fout
-            ? "De berekening lukt nu niet. Laad de pagina opnieuw."
-            : !bekend
-              ? "Wij zoeken in de wet uit welke regelingen gelden…"
-              : rijIds.length === 0
-                ? "Bij deze antwoorden is er niets aan te vragen."
-                : paneelIds.length === 0
-                  ? overzichtTekst(route)
-                  : "Controleer per regeling de gegevens en vul aan wat ontbreekt."}
+        <Paragraph
+          role={bekend ? undefined : "status"}
+          className={!bekend && !resultaat.fout ? "rhc-mox-cluster" : undefined}
+        >
+          {resultaat.fout ? (
+            "De berekening lukt nu niet. Laad de pagina opnieuw."
+          ) : !bekend ? (
+            <>
+              {/* The text already says it is busy: no extra label. */}
+              <Spinner label="" />
+              Wij zoeken in de wet uit welke regelingen gelden…
+            </>
+          ) : rijIds.length === 0 ? (
+            "Bij deze antwoorden is er niets aan te vragen."
+          ) : paneelIds.length === 0 ? (
+            overzichtTekst(route)
+          ) : (
+            "Controleer per regeling de gegevens en vul aan wat ontbreekt."
+          )}
         </Paragraph>
         {paneelIds.length > 0 && (
           <Paragraph className="rhc-mox-small-text">
@@ -694,7 +720,10 @@ const AanvraagInhoud = ({
             <Heading level={2} id="regelingen">
               Regelingen
             </Heading>
-            <div className="rhc-mox-stack rhc-mox-stack--sm">
+            <Paragraph>
+              Vinkt u een regeling aan, dan gaat de volgende open.
+            </Paragraph>
+            {/* <div className="rhc-mox-stack rhc-mox-stack--sm">
               <Paragraph>
                 Gecontroleerd of gelezen: {aantal} van {rijIds.length}
               </Paragraph>
@@ -707,7 +736,7 @@ const AanvraagInhoud = ({
               <Paragraph role="status" className="rhc-mox-small-text">
                 {melding}
               </Paragraph>
-            </div>
+            </div> */}
 
             {fout && aantal < rijIds.length && (
               <div id="fout-samenvatting" tabIndex={-1}>
@@ -751,9 +780,7 @@ const AanvraagInhoud = ({
             </Heading>
             <UnorderedList>
               {geldtNiet.map((r) => (
-                <UnorderedListItem key={r.id}>
-                  {NAAM[r.id]} <TextBadge>Geldt niet</TextBadge>
-                </UnorderedListItem>
+                <UnorderedListItem key={r.id}>{NAAM[r.id]}</UnorderedListItem>
               ))}
             </UnorderedList>
           </section>

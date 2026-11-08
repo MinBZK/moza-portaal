@@ -3031,12 +3031,37 @@ const ComponentsDemoPage = () => {
         ],
         ["status", "ReactNode", "–", "Extra informatie onder het veld"],
         ["inputRef", "Ref", "–", "Om de focus te zetten"],
+        [
+          "className",
+          '"rhc-mox-textbox--sm" | "--md" | "--lg"',
+          "volle breedte",
+          "Breedte die past bij het antwoord: sm (12 tekens, zoals een postcode of KVK-nummer), md (24 tekens, zoals een telefoonnummer of datum), lg (48 tekens, zoals een naam of e-mailadres)",
+        ],
+        [
+          "className",
+          '"rhc-mox-textbox--prefix rhc-mox-textbox--euro"',
+          "–",
+          "Vast teken vóór de waarde, zoals € bij een bedrag. Alleen visueel: noem de eenheid ook in het label. Een ander teken zet u met --rhc-mox-textbox-prefix.",
+        ],
       ],
       example: (
         <div className="rhc-mox-row-gap">
           <FormFieldTextInput
             label="Naam"
             description="Zoals in uw paspoort."
+            className="rhc-mox-textbox--lg"
+          />
+          <FormFieldTextInput
+            label="Postcode"
+            className="rhc-mox-textbox--sm"
+          />
+          <FormFieldTextInput
+            label="Bedrag in euro"
+            className="rhc-mox-textbox--sm rhc-mox-textbox--prefix rhc-mox-textbox--euro"
+          />
+          <FormFieldTextInput
+            label="Telefoonnummer"
+            className="rhc-mox-textbox--md"
           />
           <FormFieldTextInput
             label="E-mailadres"
