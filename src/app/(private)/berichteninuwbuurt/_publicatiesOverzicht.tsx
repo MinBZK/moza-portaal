@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import { Fragment, useEffect, useState } from "react";
 import {
   ActionGroup,
@@ -42,7 +43,7 @@ const PublicatiesOverzicht = () => {
   return postcodes.length === 0 ? (
     <Paragraph>Voeg een postcode toe om publicaties te zien.</Paragraph>
   ) : pubStatus === "pending" ? (
-    <Paragraph>Publicaties laden…</Paragraph>
+    <LoadingStatus>Wij halen de publicaties op…</LoadingStatus>
   ) : pubStatus === "error" ? (
     <Alert type="error">
       Wij kunnen de berichten nu niet ophalen. Probeer het later opnieuw.

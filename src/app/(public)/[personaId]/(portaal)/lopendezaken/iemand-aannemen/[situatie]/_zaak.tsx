@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import { PageTools } from "@/app/(public)/_flags/pageTools";
 import Link from "next/link";
 import {
@@ -337,7 +338,7 @@ const Zaak = ({
           </Alert>
         )}
         {!bekend && !fout ? (
-          <Paragraph role="status">Wij berekenen de bedragen…</Paragraph>
+          <LoadingStatus>Wij berekenen de bedragen…</LoadingStatus>
         ) : (
           <>
             <section className="rhc-mox-stack" aria-labelledby="zaak-voortgang">
