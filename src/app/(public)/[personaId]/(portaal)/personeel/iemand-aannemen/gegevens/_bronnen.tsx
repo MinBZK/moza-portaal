@@ -4,6 +4,7 @@ import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BegripInfo } from "../_begrippen";
 import { overKandidaat } from "../_opgehaald";
 import {
   ActionGroup,
@@ -20,6 +21,7 @@ import {
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
+  type AannemenStaat,
   type Antwoorden,
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
@@ -49,11 +51,20 @@ const EigenOpgave = ({
   voornaam,
   a,
   zet,
+  keuzes,
+  kies,
+  vraagJc,
+  vraagWpa,
   aanvangFout,
 }: {
   voornaam: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
+  keuzes: AannemenStaat["keuzes"];
+  kies: (deel: AannemenStaat["keuzes"]) => void;
+  /** Alleen als jobcoaching of werkplekaanpassing bij de aanvraag hoort. */
+  vraagJc: boolean;
+  vraagWpa: boolean;
   aanvangFout?: string;
 }) => (
   // Onder de gekozen kandidaat, ingesprongen: deze vragen gaan over die persoon.
@@ -88,7 +99,6 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
-  </section>
     {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
     {vraagJc && (
       <Fieldset
@@ -166,6 +176,7 @@ const Bronnen = ({
     ? routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten)
     : undefined;
   const geenAanvraag = !!route?.overzicht;
+  const paneelIds = route?.panelen.flatMap((p) => p.ids) ?? [];
   const { bronnen, kandidaat } =
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
@@ -219,18 +230,22 @@ const Bronnen = ({
 
   // The first thing that still stops Verder, in the order of the form.
   const ontbreekt:
-    "kandidaat" | "naam" | "bsn" | "toestemming" | "aanvang" | undefined =
-    gekozen
-      ? opgave
-        ? undefined
-        : "aanvang"
-      : keuze !== NIEUW
-        ? "kandidaat"
-        : !nieuw.naam.trim()
-          ? "naam"
-          : !bsnGoed
-            ? "bsn"
-            : "toestemming";
+    | "kandidaat"
+    | "naam"
+    | "bsn"
+    | "toestemming"
+    | "aanvang"
+    | undefined = gekozen
+    ? opgave
+      ? undefined
+      : "aanvang"
+    : keuze !== NIEUW
+      ? "kandidaat"
+      : !nieuw.naam.trim()
+        ? "naam"
+        : !bsnGoed
+          ? "bsn"
+          : "toestemming";
   // Set when Verder is clicked; the message shows while that part is missing.
   const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
   const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
@@ -456,15 +471,6 @@ const Bronnen = ({
             antwoorden blijven bewaard tot u dit tabblad sluit.
           </Paragraph>
         </section>
-      )}
-
-      {gekozen && (
-        <EigenOpgave
-          voornaam={kandidaat.voornaam}
-          a={antwoorden}
-          zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
-          aanvangFout={aanvangFout}
-        />
       )}
 
       {gekozen && duur.length > 0 && (
