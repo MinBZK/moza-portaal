@@ -18,7 +18,7 @@ import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
 import { BegripInfo, type BegripId } from "../_begrippen";
-import Controleer from "../_opgehaald";
+import { AanvragerEnKandidaat, GebruikteGegevens } from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -26,7 +26,6 @@ import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
   useAannemen,
-  vraagEerderInDienst,
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
@@ -174,6 +173,12 @@ const AanvraagInhoud = ({
       </div>
       <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
       {kind}
+      <GebruikteGegevens
+        id={id}
+        bronnen={bronnen}
+        kandidaat={kandidaat}
+        antwoorden={a}
+      />
       {/* De naam van de regeling alleen voor schermlezers: elk vinkje heet
           anders, ook buiten de kaart, zoals in een lijst met formuliervelden. */}
       <FormFieldCheckboxOption
@@ -537,13 +542,10 @@ const AanvraagInhoud = ({
         )}
 
         {bekend && rijIds.length > 0 && (
-          <Controleer
+          <AanvragerEnKandidaat
             bronnen={bronnen}
             kandidaat={kandidaat}
-            aanvang={a.aanvang}
-            uren={a.uren}
-            vraagEerder={vraagEerderInDienst(a)}
-            eerderInDienst={a.eerderInDienst}
+            antwoorden={a}
           />
         )}
 

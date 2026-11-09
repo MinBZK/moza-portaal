@@ -2973,6 +2973,30 @@ small,
 	gap: var(--rhc-space-sm);
 }
 
+/* A disclosure whose summary reads as a link, such as "Klopt dit niet?" under a value. */
+.rhc-mox-disclosure-link {
+	display: grid;
+	gap: var(--rhc-space-xs);
+
+	> summary {
+		color: var(--utrecht-link-color);
+		cursor: pointer;
+		inline-size: fit-content;
+		list-style: none;
+		text-decoration-line: underline;
+		text-decoration-thickness: var(--rhc-border-width-sm);
+		text-underline-offset: 0.2em;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		&:hover {
+			text-decoration-thickness: var(--rhc-border-width-md);
+		}
+	}
+}
+
 .rhc-mox-summary-rows {
 	@media not (max-width: 768px) {
 		.rhc-data-summary__item-key {

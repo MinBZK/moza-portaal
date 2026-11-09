@@ -1,11 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
-import { Heading, Separator } from "@/components/rhc";
+import TextBadge from "@/components/TextBadge";
+import { Heading, Paragraph, Separator } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import { BegripInfo, type BegripId } from "./_begrippen";
-import { datumNL } from "./_werkgever";
+import { AANVRAGER, GEBRUIKT, type GegevenId } from "./_gegevensPerRegeling";
+import {
+  vraagEerderInDienst,
+  type Antwoorden,
+  type RegelingId,
+} from "./_useAannemen";
+import { datumNL, euro } from "./_werkgever";
 
 type Bron = DemoAannemen["bronnen"][number];
 
@@ -57,32 +65,10 @@ export const overKandidaat = (bronnen: Bron[], situatie: string) => {
   };
 };
 
-type Rij = {
-  label: string;
-  waarde: string;
-  /** Een tweede, kleinere regel onder de waarde, zoals de geboortedatum. */
-  extra?: string;
-  /** Alleen bij opgehaalde gegevens: "UWV, opgehaald 7 september 2026". */
-  bron?: string;
-  /** Waar de ondernemer het kan wijzigen. */
-  wijzig?: string;
-  /** Een begrip met uitleg: de (i) staat naast de naam van het gegeven. */
-  begrip?: BegripId;
-  /** Hoe de wet de vraag stelt, achter een (i). */
-  wet?: { vraag: string; wetsvraag: string; grond: string };
-};
-
-/** Waar de eigen opgave staat: onder de gekozen kandidaat in stap 1. */
+/** Waar de ondernemer een eigen opgave wijzigt: onder de gekozen kandidaat in stap 1. */
 const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
-
-/** Korte namen voor gegevens die de overheid ophaalt. */
-const LABEL: Record<string, string> = {
-  kvk_nummer: "Bedrijfsgegevens",
-  aantal_werknemers_loonaangifte: "Aantal werknemers",
-};
-
-/** Over de onderneming en de kandidaat samen. */
-const BEIDE: readonly string[] = ["heeft_loonaangifte_verzoek_ingediend"];
+const KANDIDAAT_KIEZEN = "/personeel/iemand-aannemen/gegevens";
+const VOORBEELDBEREKENING = "/personeel/iemand-aannemen/voorbeeldberekening";
 
 const hoofdletter = (tekst: string) => tekst[0].toUpperCase() + tekst.slice(1);
 
@@ -103,12 +89,50 @@ const splits = (waarde: string): { waarde: string; extra?: string } => {
 };
 
 /**
- * Per gegeven één rij: het label, de waarde (met eventueel een tweede regel
- * en de bron), en rechts Wijzigen. De markup van de RHC DataSummary, omdat
- * de waarde een toggletip bevat.
+ * Waar een gegeven vandaan komt. Uit een register (KVK, UWV, Belastingdienst),
+ * van de ondernemer zelf in stap 1, of een schatting uit de voorbeeldberekening
+ * die de gemeente of UWV nog vaststelt.
+ */
+type Herkomst =
+  | { soort: "register"; bron: Bron }
+  | { soort: "opgave"; wijzig: string }
+  | { soort: "schatting"; wijzig: string };
+
+type Rij = {
+  label: string;
+  waarde: string;
+  extra?: string;
+  herkomst: Herkomst;
+  /** Wat de ondernemer kan doen als een gegeven uit een register niet klopt. */
+  klopt?: ReactNode;
+  begrip?: BegripId;
+  /** Hoe de wet de vraag stelt, achter een (i). */
+  wet?: { vraag: string; wetsvraag: string; grond: string };
+};
+
+const HerkomstBadge = ({ herkomst }: { herkomst: Herkomst }) =>
+  herkomst.soort === "register" ? (
+    <TextBadge>
+      <span className="rhc-visually-hidden">Bron: </span>
+      {herkomst.bron.organisatie}
+    </TextBadge>
+  ) : herkomst.soort === "opgave" ? (
+    <TextBadge variant="info" icon={false}>
+      Uw opgave
+    </TextBadge>
+  ) : (
+    <TextBadge variant="warning" icon={false}>
+      Uw schatting
+    </TextBadge>
+  );
+
+/**
+ * Per gegeven: het label, de waarde met de herkomst als badge, eventueel een
+ * tweede regel, en wat de ondernemer kan doen: Wijzigen bij een eigen opgave,
+ * "Klopt dit niet?" bij een gegeven uit een register.
  */
 const Rijen = ({ rijen }: { rijen: Rij[] }) => (
-  <dl className="rhc-data-summary rhc-data-summary--row rhc-mox-summary-rows">
+  <dl className="rhc-data-summary rhc-data-summary--column rhc-mox-summary-rows">
     {rijen.map((r) => (
       <div key={r.label} className="rhc-data-summary__item">
         <dt className="rhc-data-summary__item-key">
@@ -133,163 +157,219 @@ const Rijen = ({ rijen }: { rijen: Rij[] }) => (
                   {`Zo vraagt de wet het: “${r.wet.wetsvraag}” (${r.wet.grond})`}
                 </InfoToggletip>
               </>
-            )}
+            )}{" "}
+            <HerkomstBadge herkomst={r.herkomst} />
           </span>
           {r.extra && <span className="rhc-mox-small-text">{r.extra}</span>}
-          {r.bron && <span className="rhc-mox-small-text">Bron: {r.bron}</span>}
+          {r.herkomst.soort !== "register" && (
+            <span className="rhc-mox-small-text">
+              <Link
+                href={r.herkomst.wijzig}
+                className="utrecht-link utrecht-link--html-a"
+                aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
+              >
+                Wijzigen
+              </Link>
+            </span>
+          )}
+          {r.klopt && (
+            <details className="rhc-mox-disclosure-link rhc-mox-small-text">
+              <summary>Klopt dit niet?</summary>
+              {r.klopt}
+            </details>
+          )}
         </dd>
-        {r.wijzig && (
-          <dd className="rhc-data-summary__item-action">
-            <Link
-              href={r.wijzig}
-              className="utrecht-link utrecht-link--html-a"
-              aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
-            >
-              Wijzigen
-            </Link>
-          </dd>
-        )}
       </div>
     ))}
   </dl>
 );
 
-/**
- * Controleer: wat de aanvraag over de kandidaat en de onderneming zegt, met
- * per gegeven de bron. Geordend naar onderwerp, niet naar organisatie.
- * Controleren is lezen; kiezen gebeurt bij de regelingen eronder.
- */
-const Controleer = ({
-  bronnen,
-  kandidaat,
-  aanvang,
-  uren,
-  vraagEerder = false,
-  eerderInDienst,
-}: {
+type Context = {
   bronnen: Bron[];
-  kandidaat: {
-    voornaam: string;
-    achternaam: string;
-    geboortedatum: string;
-    bsnMasker: string;
+  kandidaat: { voornaam: string; achternaam: string; bsnMasker: string };
+  antwoorden: Antwoorden;
+};
+
+/** Per gegeven een rij met de waarde en de herkomst; wat er niet is, valt weg. */
+const maakRijen = (
+  ids: GegevenId[],
+  { bronnen, kandidaat, antwoorden: a }: Context,
+  regeling?: RegelingId,
+): Rij[] => {
+  const gegeven = (bronId: Bron["id"], parameter: string) => {
+    const b = bronnen.find((x) => x.id === bronId);
+    const g = b && zichtbaarVan(b).find((x) => x.parameter === parameter);
+    return b && g ? { b, g } : undefined;
   };
-  /** De eerste werkdag (jjjj-mm-dd) uit stap 1. */
-  aanvang?: string;
-  uren: number;
-  /** Alleen bij WIA: de vraag of de kandidaat al eerder bij de werkgever werkte. */
-  vraagEerder?: boolean;
-  eerderInDienst?: boolean;
-}) => {
-  const bronTekst = (b: Bron) =>
-    `${b.organisatie}, opgehaald ${datumNL(b.opgehaald)}`;
-  const opgehaald = bronnen
-    .filter((b) => b.id !== "eigen")
-    .flatMap((b) => zichtbaarVan(b).map((g) => ({ b, g })));
-
-  // Het doelgroepregister in één regel: staat erin sinds, en loopt nog.
-  const register = opgehaald.find(
-    ({ g }) => g.parameter === "is_arbeidsbeperkte",
+  const register = gegeven("uwv", "is_arbeidsbeperkte");
+  const loopt = gegeven("uwv", "registratie_nog_niet_geeindigd");
+  const kvk = gegeven("kvk", "kvk_nummer");
+  const verzoek = gegeven(
+    "belastingdienst",
+    "heeft_loonaangifte_verzoek_ingediend",
   );
-  const loopt = opgehaald.find(
-    ({ g }) => g.parameter === "registratie_nog_niet_geeindigd",
-  );
-  const kandidaatRijen: Rij[] = [
-    {
-      label: "Naam",
-      waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
-      extra: `${datumNL(kandidaat.geboortedatum)} · BSN ${kandidaat.bsnMasker}`,
-      wijzig: "/personeel/iemand-aannemen/gegevens",
-    },
-    {
-      label: "Eerste werkdag",
-      waarde: aanvang ? datumNL(aanvang) : "Nog niet ingevuld",
-      wijzig: EIGEN_OPGAVE,
-    },
-    {
-      label: "Uren per week",
-      waarde: `${uren} uur`,
-      wijzig: EIGEN_OPGAVE,
-    },
-    ...(vraagEerder
-      ? [
-          {
-            label: "Eerder bij u in dienst",
-            waarde:
-              eerderInDienst === undefined
-                ? "Nog niet ingevuld"
-                : eerderInDienst
-                  ? "Ja"
-                  : "Nee",
-            extra: "In de zes maanden voor de eerste werkdag",
-            wijzig: EIGEN_OPGAVE,
-          },
-        ]
-      : []),
-    ...(register
-      ? [
-          {
-            label: "Doelgroepregister",
-            begrip: "doelgroepregister" as const,
-            waarde: register.g.waarde,
-            extra: loopt?.g.waarde.startsWith("Ja")
-              ? "De registratie loopt."
-              : undefined,
-            bron: bronTekst(register.b),
-            wet: register.g,
-          },
-        ]
-      : []),
-  ];
+  const { voornaam } = kandidaat;
 
-  const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => {
-    const waarde = g.waarde.replace("{uren}", String(uren));
-    // Bedrijfsgegevens: de naam op de eerste regel, KVK en adres eronder.
-    const [naam, ...rest] = waarde.split(", ");
-    return {
-      label: LABEL[g.parameter] ?? g.vraag,
-      ...(g.parameter === "kvk_nummer"
-        ? { waarde: naam, extra: rest.join(" · ") }
-        : splits(waarde)),
-      bron: bronTekst(b),
-      wet: g,
-    };
+  const rijVoor = (gebruikt: GegevenId): Rij | undefined => {
+    switch (gebruikt) {
+      case "werkgever": {
+        if (!kvk) return undefined;
+        // De naam op de eerste regel, KVK-nummer en adres eronder.
+        const [naam, ...rest] = kvk.g.waarde.split(", ");
+        return {
+          label: "Werkgever",
+          waarde: naam,
+          extra: rest.join(" · "),
+          herkomst: { soort: "register", bron: kvk.b },
+          klopt: (
+            <Paragraph>
+              Deze gegevens komen uit het Handelsregister. Geef een wijziging
+              door aan de KVK. Daarna gebruikt de aanvraag de nieuwe gegevens.{" "}
+              <Link
+                href="/bedrijfsgegevens"
+                className="utrecht-link utrecht-link--html-a"
+              >
+                Bekijk uw bedrijfsgegevens
+              </Link>
+            </Paragraph>
+          ),
+        };
+      }
+      case "kandidaat":
+        return {
+          label: "Kandidaat",
+          waarde: `${voornaam} ${kandidaat.achternaam}`,
+          extra: `BSN ${kandidaat.bsnMasker}`,
+          herkomst: { soort: "opgave", wijzig: KANDIDAAT_KIEZEN },
+        };
+      case "aanvang":
+        return {
+          label: "Eerste werkdag",
+          waarde: a.aanvang ? datumNL(a.aanvang) : "Nog niet ingevuld",
+          herkomst: { soort: "opgave", wijzig: EIGEN_OPGAVE },
+        };
+      case "uren":
+        return {
+          label: "Uren per week",
+          waarde: `${a.uren} uur`,
+          herkomst: { soort: "opgave", wijzig: EIGEN_OPGAVE },
+        };
+      case "uurloon":
+        return {
+          label: "Bruto uurloon",
+          waarde: euro(a.uurloon),
+          herkomst: { soort: "opgave", wijzig: VOORBEELDBEREKENING },
+        };
+      case "loonwaarde":
+        return {
+          label: "Loonwaarde",
+          waarde: `${a.loonwaarde} procent`,
+          extra:
+            regeling === "ld"
+              ? "UWV stelt vast hoeveel minder de werknemer kan."
+              : "De gemeente meet de loonwaarde op de werkplek.",
+          herkomst: { soort: "schatting", wijzig: VOORBEELDBEREKENING },
+        };
+      case "register":
+        if (!register) return undefined;
+        return {
+          label: "Doelgroepregister",
+          begrip: "doelgroepregister",
+          waarde: register.g.waarde,
+          extra: loopt?.g.waarde.startsWith("Ja")
+            ? "De registratie loopt."
+            : undefined,
+          herkomst: { soort: "register", bron: register.b },
+          wet: register.g,
+          klopt: (
+            <Paragraph>
+              Dit gegeven gaat over {voornaam}. Alleen {voornaam} kan UWV vragen
+              het aan te passen.
+            </Paragraph>
+          ),
+        };
+      case "eerder":
+        if (!vraagEerderInDienst(a)) return undefined;
+        return {
+          label: "Eerder bij u in dienst",
+          waarde:
+            a.eerderInDienst === undefined
+              ? "Nog niet ingevuld"
+              : a.eerderInDienst
+                ? "Ja"
+                : "Nee",
+          extra: "In de zes maanden voor de eerste werkdag",
+          herkomst: { soort: "opgave", wijzig: EIGEN_OPGAVE },
+        };
+      case "verzoekLkv":
+        if (!verzoek) return undefined;
+        return {
+          label: "Verzoek in de loonaangifte",
+          ...splits(verzoek.g.waarde),
+          herkomst: { soort: "register", bron: verzoek.b },
+          wet: verzoek.g,
+          klopt: (
+            <Paragraph>
+              Dit staat in uw loonaangifte. Klopt het niet? Pas het aan in uw
+              volgende loonaangifte bij de Belastingdienst.
+            </Paragraph>
+          ),
+        };
+    }
   };
-  const overig = opgehaald.filter(({ g }) => !REGISTER.includes(g.parameter));
-  const ondernemingRijen = overig
-    .filter(
-      ({ b, g }) =>
-        !OVER_KANDIDAAT.includes(b.id) && !BEIDE.includes(g.parameter),
-    )
-    .map(rij);
-  const beideRijen = overig
-    .filter(({ g }) => BEIDE.includes(g.parameter))
-    .map((x) => ({
-      ...rij(x),
-      label: "Verzoek loonkostenvoordeel",
-    }));
 
-  const groep = (id: string, kop: string, rijen: Rij[]) =>
-    rijen.length > 0 && (
-      <section className="rhc-mox-summary-group" aria-labelledby={id}>
-        <Heading level={3} id={id}>
-          {kop}
-        </Heading>
-        <Rijen rijen={rijen} />
-      </section>
-    );
+  return ids.map(rijVoor).filter((r): r is Rij => r !== undefined);
+};
 
+/** "Opgehaald op …": de registers geven hun gegevens op één dag. */
+const Opgehaald = ({ rijen }: { rijen: Rij[] }) => {
+  const r = rijen.find((x) => x.herkomst.soort === "register");
+  return r?.herkomst.soort === "register" ? (
+    <Paragraph className="rhc-mox-small-text">
+      Opgehaald op {datumNL(r.herkomst.bron.opgehaald)}.
+    </Paragraph>
+  ) : null;
+};
+
+/**
+ * De gegevens die een regeling gebruikt, op de kaart van die regeling, met
+ * per gegeven de herkomst (GEBRUIKT in _gegevensPerRegeling.ts).
+ */
+export const GebruikteGegevens = ({
+  id,
+  ...context
+}: Context & { id: RegelingId }) => {
+  const rijen = maakRijen(
+    GEBRUIKT[id].map((x) => x.id),
+    context,
+    id,
+  );
+  if (rijen.length === 0) return null;
   return (
-    <section className="rhc-mox-row-gap" aria-labelledby="controleer">
-      <Separator></Separator>
-      <Heading level={2} id="controleer">
-        Controleer gegevens
+    <section
+      className="rhc-mox-summary-group"
+      aria-labelledby={`gegevens-${id}`}
+    >
+      <Heading level={4} id={`gegevens-${id}`}>
+        Gebruikte gegevens
       </Heading>
-      {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
-      {groep("controleer-onderneming", "Onderneming", ondernemingRijen)}
-      {groep("controleer-beide", "Kandidaat en onderneming", beideRijen)}
+      <Rijen rijen={rijen} />
+      <Opgehaald rijen={rijen} />
     </section>
   );
 };
 
-export default Controleer;
+/** Wie aanvraagt en voor wie: één keer, onder de regelingen. */
+export const AanvragerEnKandidaat = (context: Context) => {
+  const rijen = maakRijen(AANVRAGER, context);
+  return (
+    <section className="rhc-mox-row-gap" aria-labelledby="aanvrager">
+      <Separator></Separator>
+      <Heading level={2} id="aanvrager">
+        Aanvrager en kandidaat
+      </Heading>
+      <Rijen rijen={rijen} />
+      <Opgehaald rijen={rijen} />
+    </section>
+  );
+};

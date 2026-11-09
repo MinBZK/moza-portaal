@@ -824,3 +824,42 @@ test("lkv: WIA in het register valt bij eerder in dienst terug op de banenafspra
   assert.equal(ja.categorie_lkv, "banenafspraak");
   assert.equal(ja.hoogte_lkv_per_jaar_eurocent, 168064);
 });
+
+// Stap 2 toont per regeling de gegevens die die regeling gebruikt. Een
+// gegeven met een parameter moet echt invoer zijn van de wet van die regeling.
+const G = await import("../" + MAP + "_gegevensPerRegeling.ts");
+const { gegevens: gegevensVan } = await import("./regelrecht-node.mjs");
+
+test("gegevens per regeling: elke parameter is invoer van de wet van die regeling", () => {
+  for (const [id, lijst] of Object.entries(G.GEBRUIKT)) {
+    const met = lijst.filter((x) => x.parameter);
+    if (met.length === 0) continue;
+    const doel = G.DOEL_VAN[id];
+    assert.ok(doel, `${id}: geen wet bij een gegeven met parameter`);
+    const invoer = JSON.stringify(
+      gegevensVan(doel.wet, doel.output, U.PEILDATUM),
+    );
+    for (const { parameter } of met)
+      assert.ok(
+        invoer.includes(`"naam":"${parameter}"`),
+        `${id}: ${parameter}`,
+      );
+  }
+});
+
+test("gegevens per regeling: de parameters zijn feiten uit de antwoorden", () => {
+  // Elke situatie zet andere feiten; samen dekken ze alle regelingen.
+  const feiten = Object.assign(
+    {},
+    ...[["register"], ["wajong", "register"], ["wia"], ["bijstand"]].map(
+      (doelgroepen) =>
+        U.feitenVoor({ doelgroepen, uren: 32, loonwaarde: 60, uurloon: 1499 }),
+    ),
+  );
+  for (const [id, lijst] of Object.entries(G.GEBRUIKT))
+    for (const { parameter } of lijst.filter((x) => x.parameter))
+      assert.ok(
+        parameter in feiten,
+        `${id}: ${parameter} komt niet uit feitenVoor`,
+      );
+});
