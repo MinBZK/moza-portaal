@@ -34,7 +34,7 @@ export default async function RootLayout({
   const huisstijl = flags.mox_nieuweHuisstijl ? "" : " mox-current-brand";
 
   return (
-    <html lang="nl">
+    <html lang="nl" data-hash="26a9dcfc7f3c8d738163ec48fcddb777253558d5">
       <body className={`rhc-theme mox-theme${huisstijl}`}>
         <SkipLink href="#hoofd-inhoud">Naar de hoofdinhoud</SkipLink>
         {children}
