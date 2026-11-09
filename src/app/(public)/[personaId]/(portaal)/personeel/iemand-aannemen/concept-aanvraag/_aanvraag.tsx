@@ -377,7 +377,7 @@ const AanvraagInhoud = ({
           </>,
         );
 
-  // Zonder panelen is er niets te versturen. Bij WIA maakt "Klaar" de zaak
+  // Zonder panelen is er niets te versturen. Bij WIA maakt "Dossier indienen" de zaak
   // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
   const klaar = () => {
     // Minimaal één regeling, ook als er niets te versturen is.
@@ -596,7 +596,12 @@ const AanvraagInhoud = ({
                       sends: true,
                     }
                   : // Niets te versturen: hier rondt de ondernemer af.
-                    { label: "Klaar", onClick: klaar, final: true }
+                    {
+                      label: "Dossier indienen",
+                      onClick: klaar,
+                      final: true,
+                      noIcon: true,
+                    }
             }
           />
         )}
