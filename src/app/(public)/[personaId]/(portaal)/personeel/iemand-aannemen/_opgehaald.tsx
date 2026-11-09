@@ -60,8 +60,10 @@ export const overKandidaat = (bronnen: Bron[], situatie: string) => {
 type Rij = {
   label: string;
   waarde: string;
-  /** Waar het gegeven vandaan komt, zoals "Handelsregister, KVK, opgehaald op …". */
-  bron: string;
+  /** Een tweede, kleinere regel onder de waarde, zoals de geboortedatum. */
+  extra?: string;
+  /** Alleen bij opgehaalde gegevens: "UWV, opgehaald 7 september 2026". */
+  bron?: string;
   /** Waar de ondernemer het kan wijzigen. */
   wijzig?: string;
   /** Een begrip met uitleg: de (i) staat naast de naam van het gegeven. */
@@ -82,9 +84,31 @@ const LABEL: Record<string, string> = {
 /** Over de onderneming en de kandidaat samen. */
 const BEIDE: readonly string[] = ["heeft_loonaangifte_verzoek_ingediend"];
 
+const hoofdletter = (tekst: string) => tekst[0].toUpperCase() + tekst.slice(1);
+
+/**
+ * De waarde kort, de toelichting op een tweede regel: "Nog niet; dat doet u
+ * …" en "1 fulltime … (loonaangifte augustus 2026)" worden twee regels.
+ */
+const splits = (waarde: string): { waarde: string; extra?: string } => {
+  const puntkomma = waarde.indexOf("; ");
+  if (puntkomma > 0)
+    return {
+      waarde: waarde.slice(0, puntkomma),
+      extra: `${hoofdletter(waarde.slice(puntkomma + 2))}.`,
+    };
+  const haakjes = /^(.*) \((.*)\)$/.exec(waarde);
+  if (haakjes) return { waarde: haakjes[1], extra: hoofdletter(haakjes[2]) };
+  return { waarde };
+};
+
+/**
+ * Per gegeven één rij: het label, de waarde (met eventueel een tweede regel
+ * en de bron), en rechts Wijzigen. De markup van de RHC DataSummary, omdat
+ * de waarde een toggletip bevat.
+ */
 const Rijen = ({ rijen }: { rijen: Rij[] }) => (
-  // The markup of the RHC DataSummary: the value holds a link and a toggletip.
-  <dl className="rhc-data-summary rhc-data-summary--column rhc-data-summary--columns">
+  <dl className="rhc-data-summary rhc-data-summary--row rhc-mox-summary-rows">
     {rijen.map((r) => (
       <div key={r.label} className="rhc-data-summary__item">
         <dt className="rhc-data-summary__item-key">
@@ -99,7 +123,7 @@ const Rijen = ({ rijen }: { rijen: Rij[] }) => (
             )}
           </span>
         </dt>
-        <dd className="rhc-data-summary__item-value rhc-mox-stack rhc-mox-stack--sm">
+        <dd className="rhc-data-summary__item-value">
           <span>
             {r.waarde}
             {r.wet && (
@@ -111,8 +135,11 @@ const Rijen = ({ rijen }: { rijen: Rij[] }) => (
               </>
             )}
           </span>
-          <span className="rhc-mox-small-text">Bron: {r.bron}</span>
-          {r.wijzig && (
+          {r.extra && <span className="rhc-mox-small-text">{r.extra}</span>}
+          {r.bron && <span className="rhc-mox-small-text">Bron: {r.bron}</span>}
+        </dd>
+        {r.wijzig && (
+          <dd className="rhc-data-summary__item-action">
             <Link
               href={r.wijzig}
               className="utrecht-link utrecht-link--html-a"
@@ -120,8 +147,8 @@ const Rijen = ({ rijen }: { rijen: Rij[] }) => (
             >
               Wijzigen
             </Link>
-          )}
-        </dd>
+          </dd>
+        )}
       </div>
     ))}
   </dl>
@@ -150,7 +177,7 @@ const Controleer = ({
   uren: number;
 }) => {
   const bronTekst = (b: Bron) =>
-    `${b.register}, ${b.organisatie}, opgehaald op ${datumNL(b.opgehaald)}`;
+    `${b.organisatie}, opgehaald ${datumNL(b.opgehaald)}`;
   const opgehaald = bronnen
     .filter((b) => b.id !== "eigen")
     .flatMap((b) => zichtbaarVan(b).map((g) => ({ b, g })));
@@ -164,21 +191,19 @@ const Controleer = ({
   );
   const kandidaatRijen: Rij[] = [
     {
-      label: "Kandidaat",
-      waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}, geboren ${datumNL(kandidaat.geboortedatum)}, BSN ${kandidaat.bsnMasker}`,
-      bron: "uw keuze in stap 1",
+      label: "Naam",
+      waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
+      extra: `${datumNL(kandidaat.geboortedatum)} · BSN ${kandidaat.bsnMasker}`,
       wijzig: "/personeel/iemand-aannemen/gegevens",
     },
     {
       label: "Eerste werkdag",
       waarde: aanvang ? datumNL(aanvang) : "Nog niet ingevuld",
-      bron: "uw opgave",
       wijzig: EIGEN_OPGAVE,
     },
     {
       label: "Uren per week",
       waarde: `${uren} uur`,
-      bron: "uw opgave",
       wijzig: EIGEN_OPGAVE,
     },
     ...(register
@@ -186,7 +211,10 @@ const Controleer = ({
           {
             label: "Doelgroepregister",
             begrip: "doelgroepregister" as const,
-            waarde: `${register.g.waarde}${loopt?.g.waarde.startsWith("Ja") ? ". De registratie loopt." : ""}`,
+            waarde: register.g.waarde,
+            extra: loopt?.g.waarde.startsWith("Ja")
+              ? "De registratie loopt."
+              : undefined,
             bron: bronTekst(register.b),
             wet: register.g,
           },
@@ -194,12 +222,19 @@ const Controleer = ({
       : []),
   ];
 
-  const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => ({
-    label: LABEL[g.parameter] ?? g.vraag,
-    waarde: g.waarde.replace("{uren}", String(uren)),
-    bron: bronTekst(b),
-    wet: g,
-  });
+  const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => {
+    const waarde = g.waarde.replace("{uren}", String(uren));
+    // Bedrijfsgegevens: de naam op de eerste regel, KVK en adres eronder.
+    const [naam, ...rest] = waarde.split(", ");
+    return {
+      label: LABEL[g.parameter] ?? g.vraag,
+      ...(g.parameter === "kvk_nummer"
+        ? { waarde: naam, extra: rest.join(" · ") }
+        : splits(waarde)),
+      bron: bronTekst(b),
+      wet: g,
+    };
+  };
   const overig = opgehaald.filter(({ g }) => !REGISTER.includes(g.parameter));
   const ondernemingRijen = overig
     .filter(
@@ -211,12 +246,12 @@ const Controleer = ({
     .filter(({ g }) => BEIDE.includes(g.parameter))
     .map((x) => ({
       ...rij(x),
-      label: `Verzoek om loonkostenvoordeel voor ${kandidaat.voornaam} in de loonaangifte`,
+      label: "Verzoek loonkostenvoordeel",
     }));
 
   const groep = (id: string, kop: string, rijen: Rij[]) =>
     rijen.length > 0 && (
-      <section className="rhc-mox-row-gap" aria-labelledby={id}>
+      <section className="rhc-mox-summary-group" aria-labelledby={id}>
         <Heading level={3} id={id}>
           {kop}
         </Heading>

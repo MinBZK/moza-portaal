@@ -2988,6 +2988,38 @@ small,
 	text-decoration: none;
 }
 
+/* Gegevens om te controleren: per groep een kop met een lijn, en per gegeven
+   één rij met het label, de waarde en rechts de actie (RHC DataSummary row). */
+.rhc-mox-summary-group {
+	display: grid;
+	gap: var(--rhc-space-sm);
+
+	> :is(h1, h2, h3, h4, h5, h6) {
+		border-block-end: var(--rhc-border-width-sm) solid
+			var(--rhc-color-cool-grey-300);
+		padding-block-end: var(--rhc-space-sm);
+	}
+}
+
+.rhc-mox-summary-rows {
+	/* Alleen naast elkaar een vaste breedte voor het label; onder elkaar
+	   (zelfde grens als RHC) zou die een hoogte worden. */
+	@media not (max-width: 768px) {
+		.rhc-data-summary__item-key {
+			flex: 0 0 12rem;
+		}
+	}
+
+	.rhc-data-summary__item-value {
+		display: grid;
+		gap: var(--rhc-space-2xs);
+	}
+
+	.rhc-data-summary__item-action {
+		text-align: end;
+	}
+}
+
 /* Bredere tegels, voor tegels met meer inhoud dan een titel en een regel. */
 .rhc-mox-tile-grid--wide {
 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
