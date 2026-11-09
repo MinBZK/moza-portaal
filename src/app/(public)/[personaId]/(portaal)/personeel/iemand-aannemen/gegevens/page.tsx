@@ -9,7 +9,7 @@ import { TAAK_TITEL } from "../_taakTitel";
 import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
-  title: "Laat de aanvraag invullen - Iemand aannemen - Personeel en rollen",
+  title: "Kandidaat selecteren - Iemand aannemen - Personeel en rollen",
 };
 
 /** Scherm 2: aanvraag invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */
@@ -38,7 +38,7 @@ const GegevensPage = async () => {
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={2} />
         <Bronnen perSituatie={perSituatie} />
       </div>
     </>

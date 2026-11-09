@@ -9,6 +9,7 @@ import {
   Separator,
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
+import { BegripInfo } from "./_begrippen";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans from "./_balans";
@@ -25,7 +26,7 @@ import {
 } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
-import { terugNaar, verderNaar } from "./_stappen";
+import { verderNaar } from "./_stappen";
 import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
 
 /** De check bij UWV of iemand in het doelgroepregister staat. */
@@ -287,18 +288,7 @@ const VragenMetStaat = ({
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <Fieldset
               legend="1. Staat de persoon in het doelgroepregister?"
-              info={
-                <InfoToggletip label="Toelichting bij het doelgroepregister">
-                  <Paragraph>
-                    Het doelgroepregister is een lijst van UWV. Daarin staan
-                    mensen die onder de banenafspraak vallen.
-                  </Paragraph>
-                  <Paragraph>
-                    Staat uw werknemer in het register? Dan kunt u
-                    loonkostenvoordeel krijgen.
-                  </Paragraph>
-                </InfoToggletip>
-              }
+              info={<BegripInfo id="doelgroepregister" />}
             >
               {(
                 [
@@ -500,10 +490,8 @@ const VragenMetStaat = ({
 
       {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
       <StepNavigation
-        back="/personeel/iemand-aannemen"
-        backLabel={terugNaar(1)}
         next={{
-          label: verderNaar(3),
+          label: verderNaar(2),
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !kanVerder,
           describedBy: kanVerder ? undefined : "aanvragen-bezig",

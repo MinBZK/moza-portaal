@@ -23,6 +23,8 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
+import { Begrip, BegripInfo, type BegripId } from "../_begrippen";
+import Opgehaald from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -44,7 +46,7 @@ type Gegeven = {
   wijzig?: string;
 };
 
-/** De eigen opgave in stap 3: eerste werkdag en uren. */
+/** De eigen opgave in stap 2: eerste werkdag en uren. */
 const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
 
 /** De gegevens in twee kolommen, met de bron als label onder de waarde. */
@@ -82,6 +84,20 @@ const NAAM: Record<RegelingId, string> = {
   vz_wajong: "Jobcoach of werkplekaanpassing",
   vz_wia: "Jobcoach of werkplekaanpassing",
   pp: "Proefplaats",
+};
+
+/** Welke begrippen bij een paneel horen; die krijgen een (i) in het paneel. */
+const BEGRIP: Record<RegelingId, BegripId[]> = {
+  lks: ["loonkostensubsidie"],
+  ld: ["loondispensatie"],
+  jc: ["jobcoaching"],
+  wpa: ["werkplekaanpassing"],
+  lkv: ["loonkostenvoordeel"],
+  nrp: ["noRiskpolis"],
+  doelgroepverklaring: ["doelgroepverklaring"],
+  vz_wajong: ["jobcoaching", "werkplekaanpassing"],
+  vz_wia: ["jobcoaching", "werkplekaanpassing"],
+  pp: ["proefplaatsing"],
 };
 
 type Status = "aanvullen" | "controleren" | "gecontroleerd" | "gelezen";
@@ -142,11 +158,6 @@ const AanvraagInhoud = ({
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
     ];
-  const vind = (bronId: string, parameter: string) =>
-    bronnen
-      .find((b) => b.id === bronId)
-      ?.gegevens.find((x) => x.parameter === parameter)?.waarde ?? "";
-
   const paneelIds = route.panelen.flatMap((p) => p.ids);
   // Alle regelingen in één lijst: eerst wat u indient, dan wat vanzelf gaat,
   // dan de taken van de werknemer.
@@ -158,7 +169,7 @@ const AanvraagInhoud = ({
     (paneelIds as RegelingId[]).includes(id);
   const mist = (id: RegelingId) =>
     (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
-  // Wat nog een keuze in stap 3 mist, is niet klaar, ook niet met een vinkje.
+  // Wat nog een keuze in stap 2 mist, is niet klaar, ook niet met een vinkje.
   const klaarMet = (id: RegelingId) => !!g[id] && !mist(id);
   const aantal = rijIds.filter(klaarMet).length;
 
@@ -209,7 +220,7 @@ const AanvraagInhoud = ({
   };
   // Een gewone functie, geen component: een component in de render zou bij
   // elke wijziging opnieuw worden aangemaakt.
-  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 3.
+  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 2.
   const vinkje = (id: RegelingId) =>
     mist(id) ? null : (
       <FormFieldCheckboxOption
@@ -242,15 +253,8 @@ const AanvraagInhoud = ({
     );
   };
 
-  const werkgeverRijen: Gegeven[] = [
-    {
-      label: "Werkgever",
-      waarde: `${werkgever.onderneming}, KVK ${werkgever.kvkNummer}`,
-      bron: "KVK Handelsregister",
-    },
-  ];
-  // Gegevens uit het doelgroepregister alleen als het register bij de antwoorden hoort.
-  const inRegister = a.doelgroepen.includes("register");
+  // Werkgever en doelgroepregister staan bij Gegevens die de overheid heeft
+  // opgehaald, boven de regelingen; hier niet nog een keer.
   const werknemerRijen: Gegeven[] = [
     {
       label: "Werknemer",
@@ -258,15 +262,6 @@ const AanvraagInhoud = ({
       bron: "Basisregistratie Personen",
     },
   ];
-  // Uitkeringsgegevens ziet de werkgever niet; die controleert UWV zelf.
-  const situatieRij: Gegeven | null = inRegister
-    ? {
-        label: "In het doelgroepregister",
-        waarde: vind("uwv", "is_arbeidsbeperkte"),
-        bron: "UWV doelgroepregister",
-      }
-    : null;
-  if (situatieRij) werknemerRijen.push(situatieRij);
   const woonplaatsRij: Gegeven = {
     label: "Woonplaats werknemer",
     waarde:
@@ -311,6 +306,9 @@ const AanvraagInhoud = ({
     >
       <div className="rhc-mox-stack">
         <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
+        {BEGRIP[id].map((b) => (
+          <Begrip key={b} id={b} />
+        ))}
         {kind}
         {vinkje(id)}
       </div>
@@ -340,12 +338,7 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Gegevens
-            rijen={[
-              ...werkgeverRijen,
-              ...werknemerRijen,
-              woonplaatsRij,
-              ...dienstRijen,
-            ]}
+            rijen={[...werknemerRijen, woonplaatsRij, ...dienstRijen]}
           />
           <Paragraph>
             Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
@@ -391,9 +384,7 @@ const AanvraagInhoud = ({
             minimumloon (Wajong, artikel 2:20).
           </Paragraph>
           {voorbeeldbedrag("ld")}
-          <Gegevens
-            rijen={[...werkgeverRijen, ...werknemerRijen, ...dienstRijen]}
-          />
+          <Gegevens rijen={[...werknemerRijen, ...dienstRijen]} />
           <Paragraph>
             Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
             loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
@@ -656,9 +647,9 @@ const AanvraagInhoud = ({
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
 
-  // Via de stappenbalk kan stap 4 open gaan zonder gekozen kandidaat of eerste
-  // werkdag, zoals na een andere situatie in stap 2. Dan is er niemand met
-  // toestemming om voor aan te vragen: eerst terug naar stap 3.
+  // Via de stappenbalk kan stap 3 open gaan zonder gekozen kandidaat of eerste
+  // werkdag, zoals na een andere situatie in stap 1. Dan is er niemand met
+  // toestemming om voor aan te vragen: eerst terug naar stap 2.
   if (
     bekend &&
     route.zaak !== null &&
@@ -669,14 +660,14 @@ const AanvraagInhoud = ({
       <>
         <Heading level={1}>{TAAK_TITEL}</Heading>
         <div className="rhc-mox-card">
-          <Stappen huidige={4} />
+          <Stappen huidige={3} />
           <Paragraph>
-            Kies eerst in stap 3 wie u wilt aannemen en vul de eerste werkdag
+            Kies eerst in stap 2 wie u wilt aannemen en vul de eerste werkdag
             in. Daarna controleert u hier de aanvraag.
           </Paragraph>
           <StepNavigation
             back="/personeel/iemand-aannemen/gegevens"
-            backLabel={terugNaar(3)}
+            backLabel={terugNaar(2)}
           />
         </div>
       </>
@@ -686,7 +677,7 @@ const AanvraagInhoud = ({
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
-        <Stappen huidige={4} />
+        <Stappen huidige={3} />
         {!bekend && !resultaat.fout ? (
           <LoadingStatus>
             Wij zoeken in de wet uit welke regelingen gelden…
@@ -707,6 +698,16 @@ const AanvraagInhoud = ({
             Alleen u ziet deze aanvraag. Er gaat pas iets naar de gemeente of
             UWV als u verstuurt.
           </Paragraph>
+        )}
+
+        {bekend && rijIds.length > 0 && (
+          <Opgehaald
+            bronnen={bronnen}
+            situatie={situatie}
+            voornaam={kandidaat.voornaam}
+            uren={a.uren}
+            aanvraag={paneelIds.length > 0}
+          />
         )}
 
         {bekend && rijIds.length > 0 && (
@@ -751,7 +752,7 @@ const AanvraagInhoud = ({
                           >
                             {NAAM[id]}
                           </a>
-                          {mist(id) && ": kies dit eerst in stap 3"}
+                          {mist(id) && ": kies dit eerst in stap 2"}
                         </UnorderedListItem>
                       ))}
                   </UnorderedList>
@@ -774,7 +775,9 @@ const AanvraagInhoud = ({
             </Heading>
             <UnorderedList>
               {geldtNiet.map((r) => (
-                <UnorderedListItem key={r.id}>{NAAM[r.id]}</UnorderedListItem>
+                <UnorderedListItem key={r.id}>
+                  {NAAM[r.id]} <BegripInfo id={BEGRIP[r.id][0]} />
+                </UnorderedListItem>
               ))}
             </UnorderedList>
           </section>
@@ -825,7 +828,7 @@ const AanvraagInhoud = ({
         {bekend && (
           <StepNavigation
             back="/personeel/iemand-aannemen/gegevens"
-            backLabel={terugNaar(3)}
+            backLabel={terugNaar(2)}
             later="/personeel"
             next={
               paneelIds.length > 0 && bestaand?.ingediend

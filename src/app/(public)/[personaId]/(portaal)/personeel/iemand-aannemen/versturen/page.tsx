@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 /**
- * Versturen staat onderaan stap 4 (Controleren en versturen), zonder aparte
+ * Versturen staat onderaan stap 3 (Controleren en dossier indienen), zonder aparte
  * pagina. Oude links komen daar uit.
  */
 const VersturenPage = () => {
