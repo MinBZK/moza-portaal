@@ -5,7 +5,6 @@ import {
   DataSummary,
   DataSummaryItem,
   Heading,
-  Icon,
   Paragraph,
 } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
@@ -68,10 +67,9 @@ const PersoneelPage = async () => {
           <ActionGroup>
             <Link
               href="/personeel/iemand-aannemen/voorbeeldberekening"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
             >
               Begin met de voorbeeldberekening
-              <Icon icon="chevron-right" />
             </Link>
           </ActionGroup>
         </section>
