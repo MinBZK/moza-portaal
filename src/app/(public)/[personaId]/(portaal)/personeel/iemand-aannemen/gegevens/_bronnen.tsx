@@ -481,13 +481,18 @@ const Bronnen = ({
                 appearance="secondary-action-button"
                 aria-disabled={!nieuw.naam.trim() || !bsnGoed}
                 aria-describedby={
-                  fout === "toestemming" ? "toestemming-fout" : undefined
+                  fout === "toestemming"
+                    ? "toestemming-fout toestemming-melding"
+                    : "toestemming-melding"
                 }
                 onClick={voegToe}
               >
                 Toestemming vragen
               </Button>
             </ActionGroup>
+            <Paragraph id="toestemming-melding" className="rhc-mox-small-text">
+              U krijgt een melding zodra de kandidaat toestemming heeft gegeven.
+            </Paragraph>
           </div>
         )}
         {gekozen && (

@@ -72,6 +72,8 @@ const StepNavigation = ({
         ) : (
           <Button
             appearance="primary-action-button"
+            // Utrecht only greys out :disabled; aria-disabled needs the class.
+            className={next.disabled ? "utrecht-button--disabled" : undefined}
             aria-disabled={next.disabled || undefined}
             aria-describedby={next.describedBy}
             onClick={() => {
