@@ -10,7 +10,6 @@ import {
   Accordion,
   AccordionSection,
   ActionGroup,
-  Alert,
   Button,
   Fieldset,
   FormFieldCheckboxOption,
@@ -286,22 +285,18 @@ const Bronnen = ({
 
   // The first thing that still stops Verder, in the order of the form.
   const ontbreekt:
-    | "kandidaat"
-    | "naam"
-    | "bsn"
-    | "toestemming"
-    | "aanvang"
-    | undefined = gekozen
-    ? opgave
-      ? undefined
-      : "aanvang"
-    : keuze !== NIEUW
-      ? "kandidaat"
-      : !nieuw.naam.trim()
-        ? "naam"
-        : !bsnGoed
-          ? "bsn"
-          : "toestemming";
+    "kandidaat" | "naam" | "bsn" | "toestemming" | "aanvang" | undefined =
+    gekozen
+      ? opgave
+        ? undefined
+        : "aanvang"
+      : keuze !== NIEUW
+        ? "kandidaat"
+        : !nieuw.naam.trim()
+          ? "naam"
+          : !bsnGoed
+            ? "bsn"
+            : "toestemming";
   // Set when Verder is clicked; the message shows while that part is missing.
   const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
   const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
@@ -389,16 +384,6 @@ const Bronnen = ({
 
   return (
     <>
-      <Alert type="info" closable>
-        <Paragraph>
-          Wij halen gegevens over uw onderneming op.{" "}
-          {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
-          {meer ? "bekijken" : "bekijkt"} zelf de gegevens over de kandidaat.
-        </Paragraph>
-        <Paragraph>
-          De aanvraag versturen wij pas als u dat zelf doet.
-        </Paragraph>
-      </Alert>
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
