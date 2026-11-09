@@ -94,30 +94,6 @@ const PersoneelPage = async () => {
     <>
       <Heading level={1}>Personeel en rollen</Heading>
 
-      <section className="rhc-mox-card" aria-labelledby="uw-personeel">
-        <Heading level={2} id="uw-personeel">
-          Uw personeel
-        </Heading>
-        <DataSummary appearance="column" className="rhc-data-summary--columns">
-          <DataSummaryItem
-            itemKey="Werkzame personen"
-            itemValue={aantalTekst(
-              organisatie?.werkzamePersonenFulltime,
-              organisatie?.werkzamePersonenParttime,
-            )}
-          />
-          <DataSummaryItem
-            itemKey="Loonheffingennummer"
-            itemValue={organisatie?.loonheffingennummer || "Nog niet bekend"}
-          />
-        </DataSummary>
-        <Paragraph className="rhc-mox-small-text">
-          Het aantal werkzame personen komt uit het Handelsregister van de Kamer
-          van Koophandel (KVK). Het loonheffingennummer komt van de
-          Belastingdienst.
-        </Paragraph>
-      </section>
-
       <PersoneelZaak
         zaken={{
           gemeente: situaties.gemeente.zaak,
@@ -215,6 +191,30 @@ const PersoneelPage = async () => {
           </Paragraph>
         </section>
       </div>
+
+      <section className="rhc-mox-card" aria-labelledby="uw-personeel">
+        <Heading level={2} id="uw-personeel">
+          Uw personeel
+        </Heading>
+        <DataSummary appearance="column" className="rhc-data-summary--columns">
+          <DataSummaryItem
+            itemKey="Werkzame personen"
+            itemValue={aantalTekst(
+              organisatie?.werkzamePersonenFulltime,
+              organisatie?.werkzamePersonenParttime,
+            )}
+          />
+          <DataSummaryItem
+            itemKey="Loonheffingennummer"
+            itemValue={organisatie?.loonheffingennummer || "Nog niet bekend"}
+          />
+        </DataSummary>
+        <Paragraph className="rhc-mox-small-text">
+          Het aantal werkzame personen komt uit het Handelsregister van de Kamer
+          van Koophandel (KVK). Het loonheffingennummer komt van de
+          Belastingdienst.
+        </Paragraph>
+      </section>
 
       <section className="rhc-mox-card" aria-labelledby="rollen">
         <Heading level={2} id="rollen">
