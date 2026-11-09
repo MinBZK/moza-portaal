@@ -68,6 +68,7 @@ const PersonaPaneel = ({
     });
     if (pathname.startsWith("/berichtenbox/"))
       // A full reload on purpose: all client state belongs to the previous persona.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.assign("/berichtenbox");
     else location.reload();
   };
