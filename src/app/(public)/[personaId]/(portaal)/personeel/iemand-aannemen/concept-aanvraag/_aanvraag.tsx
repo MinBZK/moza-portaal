@@ -385,7 +385,7 @@ const AanvraagInhoud = ({
         );
 
   // Zonder panelen is er niets te versturen. Bij WIA maakt "Dossier indienen" de zaak
-  // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
+  // aan (de werknemer vraagt de verklaring aan). Daarna altijd de bedankpagina.
   const klaar = () => {
     // Minimaal één regeling, ook als er niets te versturen is.
     if (aantalGekozen === 0) {
@@ -410,10 +410,9 @@ const AanvraagInhoud = ({
         perSituatie.wia.zaak,
         "Wacht op de aanvraag van de werknemer",
       );
-      router.push(perSituatie.wia.zaak.url);
-      return;
     }
-    router.push("/personeel");
+    werkBij({ afgerond: true });
+    router.push("/personeel/iemand-aannemen/verstuurd");
   };
 
   // Versturen staat onderaan deze stap: wat erheen gaat, naar wie, en de
@@ -595,20 +594,14 @@ const AanvraagInhoud = ({
             next={
               paneelIds.length > 0 && bestaand?.ingediend
                 ? { label: "Bekijk de zaak", href: demo.zaak.url }
-                : verstuurt.length > 0
-                  ? {
-                      label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
-                      onClick: indienen,
-                      final: true,
-                      sends: true,
-                    }
-                  : // Niets te versturen: hier rondt de ondernemer af.
-                    {
-                      label: "Dossier indienen",
-                      onClick: klaar,
-                      final: true,
-                      noIcon: true,
-                    }
+                : // Altijd dezelfde knop; zonder iets te versturen rondt de
+                  // ondernemer hier af. Beide gaan naar de bedankpagina.
+                  {
+                    label: "Dossier indienen",
+                    onClick: verstuurt.length > 0 ? indienen : klaar,
+                    final: true,
+                    noIcon: true,
+                  }
             }
           />
         )}

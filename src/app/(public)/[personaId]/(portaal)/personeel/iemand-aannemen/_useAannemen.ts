@@ -105,6 +105,8 @@ export type AannemenStaat = {
   taken: Partial<Record<TaakId, TaakStand>>;
   /** The furthest step (1 to 4) the user has reached in this session. */
   verstStap?: number;
+  /** Dossier ingediend zonder iets te versturen; de bedankpagina zegt wat er nu gebeurt. */
+  afgerond?: boolean;
 };
 
 export const STANDAARD_ANTWOORDEN: Antwoorden = {

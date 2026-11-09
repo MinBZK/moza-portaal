@@ -1010,8 +1010,7 @@ small,
 	}
 
 	.rhc-mox-card.rhc-mox-card--selected {
-		box-shadow: inset 0 0 0 var(--rhc-border-width-md)
-			var(--rhc-color-lintblauw-500);
+		border-color: var(--rhc-color-core-500);
 	}
 }
 
@@ -2972,12 +2971,6 @@ small,
 .rhc-mox-summary-group {
 	display: grid;
 	gap: var(--rhc-space-sm);
-
-	> :is(h1, h2, h3, h4, h5, h6) {
-		border-block-end: var(--rhc-border-width-sm) solid
-			var(--rhc-color-cool-grey-300);
-		padding-block-end: var(--rhc-space-sm);
-	}
 }
 
 .rhc-mox-summary-rows {

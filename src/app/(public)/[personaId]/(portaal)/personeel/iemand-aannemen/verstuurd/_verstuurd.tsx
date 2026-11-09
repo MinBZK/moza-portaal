@@ -10,7 +10,7 @@ import {
   OrderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
-import { situatieVan } from "../_route";
+import { situatieVan, type TaakId, type VanzelfId } from "../_route";
 import { useAannemen, zaakVan } from "../_useAannemen";
 import { datumNL } from "../_werkgever";
 
@@ -21,11 +21,30 @@ const BESLUIT = {
     "Bij het besluit ziet u dezelfde berekening als vooraf, met het percentage dat UWV heeft vastgesteld.",
 } as const;
 
+/** Wat er gebeurt bij een regeling zonder aanvraag van de werkgever. */
+const ZONDER_AANVRAAG: Record<
+  VanzelfId | TaakId,
+  (voornaam: string) => string
+> = {
+  lkv: () =>
+    "U zet in de loonaangifte het vakje loonkostenvoordeel aan. Een aparte aanvraag is niet nodig.",
+  nrp: (voornaam) =>
+    `Wordt ${voornaam} ziek? Meld dat bij UWV. UWV betaalt u dan ziekengeld.`,
+  doelgroepverklaring: (voornaam) =>
+    `${voornaam} vraagt binnen drie maanden na de start een doelgroepverklaring aan bij UWV. Zonder die verklaring krijgt u geen loonkostenvoordeel.`,
+  vz_wajong: (voornaam) =>
+    `${voornaam} vraagt een jobcoach of een aangepaste werkplek zelf aan bij UWV.`,
+  vz_wia: (voornaam) =>
+    `${voornaam} vraagt een jobcoach of een aangepaste werkplek zelf aan bij UWV.`,
+  pp: (voornaam) =>
+    `${voornaam} vraagt de gemeente om toestemming voor de proefplaatsing.`,
+};
+
 /** Organisatie en datum komen uit de zaak van de situatie. */
 const Verstuurd = ({
   perSituatie,
 }: {
-  perSituatie: Record<"gemeente" | "wajong", DemoAannemen>;
+  perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
 }) => {
   const { staat } = useAannemen();
   if (!staat) return null;
@@ -38,13 +57,63 @@ const Verstuurd = ({
   const organisatie =
     situatie === "wajong" ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
 
+  // Dossier ingediend zonder iets te versturen.
+  if (!stand.ingediend && staat.afgerond) {
+    const wia = situatieVan(staat.antwoorden.doelgroepen) === "wia";
+    const { voornaam } = perSituatie[wia ? "wia" : situatie].kandidaat;
+    const gekozen = (Object.keys(ZONDER_AANVRAAG) as (VanzelfId | TaakId)[])
+      .filter((id) => staat.gecontroleerd[id])
+      .map((id) => ZONDER_AANVRAAG[id](voornaam));
+    return (
+      <>
+        <Heading level={1}>Bedankt, uw dossier is ingediend</Heading>
+        <Alert type="ok">
+          <Paragraph>
+            U hoeft niets te versturen. Hieronder staat wat er nu gebeurt.
+          </Paragraph>
+        </Alert>
+        <div className="rhc-mox-card rhc-mox-row-gap">
+          <section
+            className="rhc-mox-row-gap"
+            aria-labelledby="wat-er-nu-gebeurt"
+          >
+            <Heading level={2} id="wat-er-nu-gebeurt">
+              Wat er nu gebeurt
+            </Heading>
+            <OrderedList>
+              {gekozen.map((tekst) => (
+                <OrderedListItem key={tekst}>{tekst}</OrderedListItem>
+              ))}
+            </OrderedList>
+          </section>
+          <ActionGroup>
+            {wia && (
+              <Link
+                href={perSituatie.wia.zaak.url}
+                className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+              >
+                Bekijk uw dossier bij Lopende zaken
+              </Link>
+            )}
+            <Link
+              href="/personeel"
+              className="utrecht-link utrecht-link--html-a"
+            >
+              Terug naar Personeel en rollen
+            </Link>
+          </ActionGroup>
+        </div>
+      </>
+    );
+  }
+
   if (!stand.ingediend)
     return (
       <>
-        <Heading level={1}>Nog niets verstuurd</Heading>
+        <Heading level={1}>Nog niets ingediend</Heading>
         <Paragraph>
-          U hebt nog geen aanvraag verstuurd. Controleer de aanvraag en verstuur
-          die.
+          U hebt uw dossier nog niet ingediend. Controleer uw gegevens en kies{" "}
+          <strong>Dossier indienen</strong>.
         </Paragraph>
         <Paragraph>
           <Link

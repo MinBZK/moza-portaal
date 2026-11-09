@@ -42,7 +42,7 @@ const breadcrumbLabels: Record<string, string> = {
   versturen: "Controleren en dossier indienen",
   overzicht: "Overzicht",
   "concept-aanvraag": "Controleren en dossier indienen",
-  verstuurd: "Aanvraag verstuurd",
+  verstuurd: "Dossier ingediend",
   gemeente: "Loonkostensubsidie",
   wajong: "Loondispensatie",
   wia: "Doelgroepverklaring",

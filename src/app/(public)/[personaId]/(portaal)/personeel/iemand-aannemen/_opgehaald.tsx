@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import InfoToggletip from "@/components/InfoToggletip";
-import { Heading } from "@/components/rhc";
+import { Heading, Separator } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import { BegripInfo, type BegripId } from "./_begrippen";
 import { datumNL } from "./_werkgever";
@@ -261,6 +261,7 @@ const Controleer = ({
 
   return (
     <section className="rhc-mox-row-gap" aria-labelledby="controleer">
+      <Separator></Separator>
       <Heading level={2} id="controleer">
         Controleer gegevens
       </Heading>
