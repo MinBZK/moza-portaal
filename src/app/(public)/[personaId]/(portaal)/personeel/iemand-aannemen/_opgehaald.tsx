@@ -60,7 +60,7 @@ export const overKandidaat = (bronnen: Bron[], situatie: string) => {
 type Rij = {
   label: string;
   waarde: string;
-  /** Een tweede, kleinere regel onder de waarde, zoals de geboortedatum. */
+  /** Een tweede, kleinere regel onder de waarde, zoals het BSN. */
   extra?: string;
   /** Alleen bij opgehaalde gegevens: "UWV, opgehaald 7 september 2026". */
   bron?: string;
@@ -169,7 +169,6 @@ const Controleer = ({
   kandidaat: {
     voornaam: string;
     achternaam: string;
-    geboortedatum: string;
     bsnMasker: string;
   };
   /** De eerste werkdag (jjjj-mm-dd) uit stap 1. */
@@ -193,7 +192,7 @@ const Controleer = ({
     {
       label: "Naam",
       waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
-      extra: `${datumNL(kandidaat.geboortedatum)} · BSN ${kandidaat.bsnMasker}`,
+      extra: `BSN ${kandidaat.bsnMasker}`,
       wijzig: "/personeel/iemand-aannemen/gegevens",
     },
     {
