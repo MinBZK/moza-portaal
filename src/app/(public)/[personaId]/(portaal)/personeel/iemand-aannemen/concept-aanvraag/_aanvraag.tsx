@@ -24,6 +24,7 @@ import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
 import { Begrip, BegripInfo, type BegripId } from "../_begrippen";
+import Opgehaald from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -157,11 +158,6 @@ const AanvraagInhoud = ({
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
     ];
-  const vind = (bronId: string, parameter: string) =>
-    bronnen
-      .find((b) => b.id === bronId)
-      ?.gegevens.find((x) => x.parameter === parameter)?.waarde ?? "";
-
   const paneelIds = route.panelen.flatMap((p) => p.ids);
   // Alle regelingen in één lijst: eerst wat u indient, dan wat vanzelf gaat,
   // dan de taken van de werknemer.
@@ -257,15 +253,8 @@ const AanvraagInhoud = ({
     );
   };
 
-  const werkgeverRijen: Gegeven[] = [
-    {
-      label: "Werkgever",
-      waarde: `${werkgever.onderneming}, KVK ${werkgever.kvkNummer}`,
-      bron: "KVK Handelsregister",
-    },
-  ];
-  // Gegevens uit het doelgroepregister alleen als het register bij de antwoorden hoort.
-  const inRegister = a.doelgroepen.includes("register");
+  // Werkgever en doelgroepregister staan bij Gegevens die de overheid heeft
+  // opgehaald, boven de regelingen; hier niet nog een keer.
   const werknemerRijen: Gegeven[] = [
     {
       label: "Werknemer",
@@ -273,15 +262,6 @@ const AanvraagInhoud = ({
       bron: "Basisregistratie Personen",
     },
   ];
-  // Uitkeringsgegevens ziet de werkgever niet; die controleert UWV zelf.
-  const situatieRij: Gegeven | null = inRegister
-    ? {
-        label: "In het doelgroepregister",
-        waarde: vind("uwv", "is_arbeidsbeperkte"),
-        bron: "UWV doelgroepregister",
-      }
-    : null;
-  if (situatieRij) werknemerRijen.push(situatieRij);
   const woonplaatsRij: Gegeven = {
     label: "Woonplaats werknemer",
     waarde:
@@ -358,12 +338,7 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Gegevens
-            rijen={[
-              ...werkgeverRijen,
-              ...werknemerRijen,
-              woonplaatsRij,
-              ...dienstRijen,
-            ]}
+            rijen={[...werknemerRijen, woonplaatsRij, ...dienstRijen]}
           />
           <Paragraph>
             Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
@@ -409,9 +384,7 @@ const AanvraagInhoud = ({
             minimumloon (Wajong, artikel 2:20).
           </Paragraph>
           {voorbeeldbedrag("ld")}
-          <Gegevens
-            rijen={[...werkgeverRijen, ...werknemerRijen, ...dienstRijen]}
-          />
+          <Gegevens rijen={[...werknemerRijen, ...dienstRijen]} />
           <Paragraph>
             Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
             loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
@@ -725,6 +698,16 @@ const AanvraagInhoud = ({
             Alleen u ziet deze aanvraag. Er gaat pas iets naar de gemeente of
             UWV als u verstuurt.
           </Paragraph>
+        )}
+
+        {bekend && rijIds.length > 0 && (
+          <Opgehaald
+            bronnen={bronnen}
+            situatie={situatie}
+            voornaam={kandidaat.voornaam}
+            uren={a.uren}
+            aanvraag={paneelIds.length > 0}
+          />
         )}
 
         {bekend && rijIds.length > 0 && (

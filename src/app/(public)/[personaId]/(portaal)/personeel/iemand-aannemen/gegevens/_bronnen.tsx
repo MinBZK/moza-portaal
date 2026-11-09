@@ -1,19 +1,15 @@
 "use client";
 
-import { focusAtTop } from "@/utils/focusAtTop";
 import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import InfoToggletip from "@/components/InfoToggletip";
-import { Begrip, BegripInfo } from "../_begrippen";
+import { BegripInfo } from "../_begrippen";
+import { overKandidaat } from "../_opgehaald";
 import {
-  Accordion,
-  AccordionSection,
   ActionGroup,
   Button,
   Fieldset,
-  FormFieldCheckboxOption,
   FormFieldErrorMessage,
   FormFieldRadio,
   FormFieldTextInput,
@@ -22,13 +18,11 @@ import {
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
-  bronBevestigd,
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
   type AannemenStaat,
   type Antwoorden,
-  type BronId,
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
@@ -36,32 +30,6 @@ import { datumNL } from "../_werkgever";
 import { terugNaar, verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
-
-/** Bronnen met gegevens over de kandidaat; de rest gaat over de werkgever. */
-const OVER_KANDIDAAT: readonly string[] = ["uwv", "gemeente"];
-
-/**
- * Over de kandidaat ziet de werkgever alleen het doelgroepregister: staat
- * erin, ja of nee, en loopt de registratie nog. Zo geeft UWV het ook in het
- * werkgeversportaal. Uitkering, bijstand en de grond van registratie zijn
- * gegevens over gezondheid en inkomen; die gebruiken de gemeente en UWV zelf
- * bij de beoordeling (AVG art. 5, 6 en 9).
- */
-const REGISTER: readonly string[] = [
-  "is_arbeidsbeperkte",
-  "registratie_nog_niet_geeindigd",
-];
-
-const zichtbaarVan = (bron: DemoAannemen["bronnen"][number]) =>
-  OVER_KANDIDAAT.includes(bron.id)
-    ? bron.gegevens.filter((g) => REGISTER.includes(g.parameter))
-    : bron.gegevens;
-
-/** "UWV", "UWV en de gemeente": wie gegevens over de kandidaat heeft. */
-const opsomming = (namen: string[]) =>
-  namen.length < 2
-    ? (namen[0] ?? "")
-    : `${namen.slice(0, -1).join(", ")} en ${namen[namen.length - 1]}`;
 
 /** Negen cijfers en de elfproef van het BSN. */
 const elfproef = (bsn: string) => {
@@ -223,20 +191,10 @@ const Bronnen = ({
       : /^\d{9}$/.test(bsn)
         ? "Dit BSN klopt niet. Controleer het nummer."
         : "Een BSN heeft negen cijfers. Controleer het nummer.";
-  // Which organisations are open. Until the user opens or closes one, the
-  // first is open.
-  const [openGekozen, setOpen] = useState<BronId[] | null>(null);
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
-  // Bevestigen gaat over wat de werkgever ziet: niet de eigen opgave (een
-  // formulier) en geen bron zonder zichtbare gegevens, zoals de gemeente.
-  const getoond = bronnen.filter(
-    (bron) => bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
-  );
-  const teBevestigen = getoond.map((bron) => bron.id);
-  const open: BronId[] = openGekozen ?? (getoond[0] ? [getoond[0].id] : []);
   // De loonwaarde is nog niet gemeten als de gemeente dat zo opgeeft.
   const loonwaardeNogNiet = bronnen.some((b) =>
     b.gegevens.some(
@@ -264,29 +222,9 @@ const Bronnen = ({
         ]
       : []),
   ];
-  const aantal = staat
-    ? teBevestigen.filter((id) => bronBevestigd(staat, id)).length
-    : 0;
-  const klaar =
-    gekozen && !!staat && teBevestigen.every((id) => bronBevestigd(staat, id));
   const opgave = eigenOpgaveCompleet(antwoorden);
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
-  // Wie in deze situatie gegevens over de kandidaat heeft, uit dezelfde
-  // bronnen als de lijst hieronder; zo klopt de tekst met wat er gebeurt.
-  const overKandidaat = bronnen.filter(
-    (b) =>
-      OVER_KANDIDAAT.includes(b.id) &&
-      // Zonder aanvraag bij de gemeente kijkt de gemeente nergens naar.
-      !(b.id === "gemeente" && situatie === "register"),
-  );
-  const meer = overKandidaat.length > 1;
-  const wie = opsomming(
-    overKandidaat.map((b) =>
-      b.id === "gemeente" ? "de gemeente" : b.organisatie,
-    ),
-  );
-  const eigen = meer ? "hun eigen gegevens" : "de eigen gegevens";
-  const zietRegister = overKandidaat.some((b) => zichtbaarVan(b).length > 0);
+  const { wie, meer, eigen } = overKandidaat(bronnen, situatie);
 
   // The first thing that still stops Verder, in the order of the form.
   const ontbreekt:
@@ -342,27 +280,6 @@ const Bronnen = ({
                 ) ??
                 document.querySelector<HTMLElement>('input[name="kandidaat"]'));
     veld?.focus();
-  };
-
-  // Ticking an organisation closes it and opens the next one. The focus goes
-  // to the heading of that next one, so it is not lost in a closed panel, and scrolls it to the top so its content can be read; the
-  // text above the list says this will happen (WCAG 3.2.2).
-  const vink = (id: BronId, aan: boolean) => {
-    const volgende = aan
-      ? teBevestigen[teBevestigen.indexOf(id) + 1]
-      : undefined;
-    werkBij({ bronnen: { ...(staat?.bronnen ?? {}), [id]: aan } });
-    if (!volgende) return;
-    setOpen([volgende]);
-    requestAnimationFrame(() =>
-      focusAtTop(
-        document.querySelector<HTMLElement>(
-          `#bron-${volgende} .utrecht-accordion__button`,
-        ),
-        // The panels open and close in 250 ms (rhc.css).
-        { waitMs: 260 },
-      ),
-    );
   };
 
   const voegToe = () => {
@@ -511,117 +428,19 @@ const Bronnen = ({
         )}
       </section>
 
-      {(gekozen || wachtend) && (
+      {wachtend && (
         <section className="rhc-mox-stack" aria-labelledby="overheid-weet">
           <Heading level={2} id="overheid-weet">
             Gegevens die de overheid kan ophalen voor de berekening
           </Heading>
-          {wachtend ? (
-            <>
-              <Paragraph>
-                Wij vragen {wachtend.naam} eerst om toestemming. Daarna{" "}
-                {meer ? "kijken" : "kijkt"} {wie} met het BSN in {eigen}.
-              </Paragraph>
-              <Paragraph>
-                Tot {wachtend.naam} toestemming geeft, kunt u hier niet verder.
-                Uw antwoorden blijven bewaard tot u dit tabblad sluit.
-              </Paragraph>
-            </>
-          ) : (
-            <>
-              <Paragraph>
-                {zietRegister
-                  ? `Over ${kandidaat.voornaam} ziet u alleen of die in het doelgroepregister staat, en sinds wanneer.`
-                  : `Over ${kandidaat.voornaam} ziet u hier geen gegevens.`}{" "}
-                {/* Zonder aanvraag is er geen beoordeling; bij WIA gaat het
-                    besluit (de doelgroepverklaring) naar de werknemer. */}
-                {!geenAanvraag && (
-                  <>
-                    {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
-                    {meer ? "gebruiken hun" : "gebruikt de"} eigen gegevens over{" "}
-                    {kandidaat.voornaam} bij de beoordeling; die ziet u niet.
-                    {paneelIds.length > 0 && " U krijgt wel het besluit."}
-                  </>
-                )}
-              </Paragraph>
-              {zietRegister && <Begrip id="doelgroepregister" />}
-              <Paragraph>
-                Per organisatie staat aangevinkt dat de gegevens kloppen. Open
-                een organisatie om ze te bekijken. Vinkt u een organisatie aan,
-                dan gaat de volgende open.
-              </Paragraph>
-              <Accordion>
-                {getoond.map((bron) => {
-                  const aan = !!staat && bronBevestigd(staat, bron.id);
-                  return (
-                    <AccordionSection
-                      key={bron.id}
-                      id={`bron-${bron.id}`}
-                      // Het niveau op Accordion geldt alleen voor diens eigen kop.
-                      headingLevel={3}
-                      label={`${bron.organisatie}: ${zichtbaarVan(bron).length} ${zichtbaarVan(bron).length === 1 ? "gegeven" : "gegevens"}, ${aan ? "bevestigd" : "niet bevestigd"}`}
-                      // Het type eist `body`, de component rendert alleen `children`.
-                      body={null}
-                      expanded={open.includes(bron.id)}
-                      onActivate={() =>
-                        setOpen(
-                          open.includes(bron.id)
-                            ? open.filter((id) => id !== bron.id)
-                            : [...open, bron.id],
-                        )
-                      }
-                    >
-                      <div className="rhc-mox-row-gap">
-                        <Paragraph className="rhc-mox-small-text">
-                          {bron.register}, opgehaald op{" "}
-                          {datumNL(bron.opgehaald)}
-                        </Paragraph>
-                        {/* The markup of the RHC DataSummary: its component only
-                        takes text as value, and the toggletip with the law
-                        question belongs in the value. */}
-                        <dl className="rhc-data-summary rhc-data-summary--column">
-                          {zichtbaarVan(bron).map((g) => (
-                            <div
-                              key={g.parameter}
-                              className="rhc-data-summary__item"
-                            >
-                              <dt className="rhc-data-summary__item-key">
-                                {g.vraag}
-                              </dt>
-                              <dd className="rhc-data-summary__item-value">
-                                {/* De uren komen uit de antwoorden van stap 1. */}
-                                {g.waarde.replace(
-                                  "{uren}",
-                                  String(antwoorden.uren),
-                                )}{" "}
-                                <InfoToggletip
-                                  label={`Zo vraagt de wet het: ${g.vraag}`}
-                                >
-                                  {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                                </InfoToggletip>
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                        <FormFieldCheckboxOption
-                          label={
-                            bron.id === "eigen"
-                              ? "Klopt, gebruik mijn opgave"
-                              : `Klopt, gebruik deze gegevens van ${bron.organisatie}`
-                          }
-                          name={`vinkje-${bron.id}`}
-                          checked={aan}
-                          onChange={(event) =>
-                            vink(bron.id, event.target.checked)
-                          }
-                        />
-                      </div>
-                    </AccordionSection>
-                  );
-                })}
-              </Accordion>
-            </>
-          )}
+          <Paragraph>
+            Wij vragen {wachtend.naam} eerst om toestemming. Daarna{" "}
+            {meer ? "kijken" : "kijkt"} {wie} met het BSN in {eigen}.
+          </Paragraph>
+          <Paragraph>
+            Tot {wachtend.naam} toestemming geeft, kunt u hier niet verder. Uw
+            antwoorden blijven bewaard tot u dit tabblad sluit.
+          </Paragraph>
         </section>
       )}
 
@@ -668,9 +487,7 @@ const Bronnen = ({
               ? ""
               : !opgave
                 ? "Vul uw eigen opgave in: de eerste werkdag."
-                : klaar
-                  ? "Alle bronnen bevestigd. Wij kunnen de aanvraag voor u invullen."
-                  : `${aantal} van ${teBevestigen.length} bronnen bevestigd. Wat u niet bevestigt, vult u zelf aan in de aanvraag.`}
+                : "Wij vullen de aanvraag voor u in. In de volgende stap controleert u die."}
         </Paragraph>
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
