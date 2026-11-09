@@ -4,38 +4,34 @@ import Voortgang from "./_voortgang";
 export { TAAK_TITEL } from "./_taakTitel";
 
 /**
- * De stappen naar het voorbeeld van het concept-prototype. Stap 4 beslaat
- * twee schermen: de ingevulde aanvraag controleren en die versturen.
+ * De drie stappen van Iemand aannemen. Na stap 3 volgt de bedankpagina
+ * (verstuurd), buiten de stappen.
  */
 export const STAPPEN = [
-  {
-    name: "Lees wat er kan",
-    href: "/personeel/iemand-aannemen",
-  },
   {
     name: "Voorbeeldberekening",
     href: "/personeel/iemand-aannemen/voorbeeldberekening",
   },
   {
-    name: "Laat de aanvraag invullen",
+    name: "Kandidaat selecteren",
     href: "/personeel/iemand-aannemen/gegevens",
   },
   {
-    name: "Controleren en versturen",
+    name: "Controleren en dossier indienen",
     href: "/personeel/iemand-aannemen/concept-aanvraag",
   },
 ];
 
 /** Text of the forward button: "Verder naar" and the name of the next step. */
-export const verderNaar = (stap: 2 | 3 | 4) =>
+export const verderNaar = (stap: 2 | 3) =>
   `Verder naar ${STAPPEN[stap - 1].name}`;
 
 /** Text of the back button: "Terug naar" and the name of the previous step. */
-export const terugNaar = (stap: 1 | 2 | 3) =>
+export const terugNaar = (stap: 1 | 2) =>
   `Terug naar ${STAPPEN[stap - 1].name}`;
 
-/** Waar de ondernemer is in Iemand aannemen (1 tot 4). */
-const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 | 4 }) => (
+/** Waar de ondernemer is in Iemand aannemen (1 tot 3). */
+const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 }) => (
   <Voortgang steps={STAPPEN} huidige={huidige} />
 );
 

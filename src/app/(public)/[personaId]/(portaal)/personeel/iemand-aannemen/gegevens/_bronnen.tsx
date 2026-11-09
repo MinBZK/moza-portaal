@@ -131,7 +131,7 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
-    {/* Keuzes voor de aanvraag horen hier; stap 4 controleert alleen. */}
+    {/* Keuzes voor de aanvraag horen hier; stap 3 controleert alleen. */}
     {vraagJc && (
       <Fieldset legend="Wilt u jobcoaching aanvragen?">
         <FormFieldRadio
@@ -286,22 +286,18 @@ const Bronnen = ({
 
   // The first thing that still stops Verder, in the order of the form.
   const ontbreekt:
-    | "kandidaat"
-    | "naam"
-    | "bsn"
-    | "toestemming"
-    | "aanvang"
-    | undefined = gekozen
-    ? opgave
-      ? undefined
-      : "aanvang"
-    : keuze !== NIEUW
-      ? "kandidaat"
-      : !nieuw.naam.trim()
-        ? "naam"
-        : !bsnGoed
-          ? "bsn"
-          : "toestemming";
+    "kandidaat" | "naam" | "bsn" | "toestemming" | "aanvang" | undefined =
+    gekozen
+      ? opgave
+        ? undefined
+        : "aanvang"
+      : keuze !== NIEUW
+        ? "kandidaat"
+        : !nieuw.naam.trim()
+          ? "naam"
+          : !bsnGoed
+            ? "bsn"
+            : "toestemming";
   // Set when Verder is clicked; the message shows while that part is missing.
   const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
   const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
@@ -678,13 +674,13 @@ const Bronnen = ({
         </Paragraph>
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
-          backLabel={terugNaar(2)}
+          backLabel={terugNaar(1)}
           later={wachtend ? "/personeel" : undefined}
           next={{
-            label: verderNaar(4),
+            label: verderNaar(3),
             disabled: !gekozen || !opgave || !resultaat.bekend,
             onBlocked: naarInvoer,
-            // Stap 4 heeft één vorm, ook als er niets te versturen is.
+            // Stap 3 heeft één vorm, ook als er niets te versturen is.
             onClick: () =>
               router.push("/personeel/iemand-aannemen/concept-aanvraag"),
           }}

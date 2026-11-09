@@ -13,10 +13,14 @@ const Voortgang = ({
   huidige,
 }: {
   steps: { name: string; href: string }[];
-  huidige: 1 | 2 | 3 | 4;
+  huidige: 1 | 2 | 3;
 }) => {
   const { staat, werkBij } = useAannemen();
-  const verst = Math.max(staat?.verstStap ?? 0, huidige);
+  // Een sessie van voor de drie stappen kan nog 4 bewaard hebben.
+  const verst = Math.min(
+    Math.max(staat?.verstStap ?? 0, huidige),
+    steps.length,
+  );
   useEffect(() => {
     if (staat && (staat.verstStap ?? 0) < huidige)
       werkBij({ verstStap: huidige });

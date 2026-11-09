@@ -6,8 +6,8 @@ import {
   Alert,
   Heading,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
+  OrderedList,
+  OrderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import { situatieVan } from "../_route";
@@ -66,7 +66,7 @@ const Verstuurd = ({
     : klein;
   return (
     <>
-      <Heading level={1}>Uw aanvraag is verstuurd</Heading>
+      <Heading level={1}>Bedankt, uw aanvraag is verstuurd</Heading>
       <Alert type="ok">
         <Paragraph>
           De aanvraag {onderwerp} is verstuurd naar {organisatie}
@@ -75,21 +75,14 @@ const Verstuurd = ({
       </Alert>
       <section
         className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="wat-u-nu-ziet"
+        aria-labelledby="wat-er-nu-gebeurt"
       >
-        <Heading level={2} id="wat-u-nu-ziet">
-          Wat u nu ziet
+        <Heading level={2} id="wat-er-nu-gebeurt">
+          Wat er nu gebeurt
         </Heading>
-        <UnorderedList>
-          <UnorderedListItem>
-            <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
-              De zaak bij Lopende zaken
-            </Link>
-            : elke stap van {situatie === "wajong" ? "UWV" : "de gemeente"}, met
-            datum en afzender, tot en met het besluit.
-          </UnorderedListItem>
-          <UnorderedListItem>
-            De ontvangstbevestiging met het zaaknummer komt in uw{" "}
+        <OrderedList>
+          <OrderedListItem>
+            U krijgt een ontvangstbevestiging met het zaaknummer in uw{" "}
             <Link
               href="/berichtenbox"
               className="utrecht-link utrecht-link--html-a"
@@ -97,15 +90,35 @@ const Verstuurd = ({
               berichtenbox
             </Link>
             .
-          </UnorderedListItem>
-          <UnorderedListItem>{BESLUIT[situatie]}</UnorderedListItem>
-        </UnorderedList>
+          </OrderedListItem>
+          <OrderedListItem>
+            {situatie === "wajong" ? "UWV" : "De gemeente"} beoordeelt uw
+            aanvraag. Is er iets nodig, dan neemt{" "}
+            {situatie === "wajong" ? "UWV" : "de gemeente"} contact met u op.
+          </OrderedListItem>
+          <OrderedListItem>
+            U krijgt het besluit in uw berichtenbox. {BESLUIT[situatie]}
+          </OrderedListItem>
+        </OrderedList>
+      </section>
+      <section
+        className="rhc-mox-card rhc-mox-row-gap"
+        aria-labelledby="uw-dossier"
+      >
+        <Heading level={2} id="uw-dossier">
+          Uw dossier
+        </Heading>
+        <Paragraph>
+          In uw dossier bij Lopende zaken ziet u elke stap van{" "}
+          {situatie === "wajong" ? "UWV" : "de gemeente"}, met datum en
+          afzender, tot en met het besluit.
+        </Paragraph>
         <ActionGroup>
           <Link
             href={zaak.url}
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Bekijk de zaak
+            Bekijk uw dossier bij Lopende zaken
           </Link>
           <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
             Terug naar Personeel en rollen
