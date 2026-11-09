@@ -4,7 +4,7 @@ import Link from "next/link";
 import InfoToggletip from "@/components/InfoToggletip";
 import { Heading } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
-import { Begrip } from "./_begrippen";
+import { BegripInfo, type BegripId } from "./_begrippen";
 import { datumNL } from "./_werkgever";
 
 type Bron = DemoAannemen["bronnen"][number];
@@ -64,6 +64,8 @@ type Rij = {
   bron: string;
   /** Waar de ondernemer het kan wijzigen. */
   wijzig?: string;
+  /** Een begrip met uitleg: de (i) staat naast de naam van het gegeven. */
+  begrip?: BegripId;
   /** Hoe de wet de vraag stelt, achter een (i). */
   wet?: { vraag: string; wetsvraag: string; grond: string };
 };
@@ -85,7 +87,18 @@ const Rijen = ({ rijen }: { rijen: Rij[] }) => (
   <dl className="rhc-data-summary rhc-data-summary--column rhc-data-summary--columns">
     {rijen.map((r) => (
       <div key={r.label} className="rhc-data-summary__item">
-        <dt className="rhc-data-summary__item-key">{r.label}</dt>
+        <dt className="rhc-data-summary__item-key">
+          {/* Een span: de dt is een flexbox, daarin valt de spatie weg. */}
+          <span>
+            {r.label}
+            {r.begrip && (
+              <>
+                {" "}
+                <BegripInfo id={r.begrip} />
+              </>
+            )}
+          </span>
+        </dt>
         <dd className="rhc-data-summary__item-value rhc-mox-stack rhc-mox-stack--sm">
           <span>
             {r.waarde}
@@ -172,6 +185,7 @@ const Controleer = ({
       ? [
           {
             label: "Doelgroepregister",
+            begrip: "doelgroepregister" as const,
             waarde: `${register.g.waarde}${loopt?.g.waarde.startsWith("Ja") ? ". De registratie loopt." : ""}`,
             bron: bronTekst(register.b),
             wet: register.g,
@@ -216,7 +230,6 @@ const Controleer = ({
         Controleer uw gegevens
       </Heading>
       {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
-      {register && <Begrip id="doelgroepregister" />}
       {groep("controleer-onderneming", "Onderneming", ondernemingRijen)}
       {groep("controleer-beide", "Kandidaat en onderneming", beideRijen)}
     </section>
