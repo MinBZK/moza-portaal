@@ -49,7 +49,7 @@ export const BEGRIPPEN = {
   doelgroepregister: {
     vraag: "Wat is het doelgroepregister?",
     uitleg:
-      "Een lijst van UWV met mensen die onder de banenafspraak vallen. Staat uw werknemer in het register? Dan kunt u loonkostenvoordeel krijgen.",
+      "UWV houdt een lijst bij van mensen die door een ziekte of beperking niet zelfstandig het minimumloon kunnen verdienen. Staat uw werknemer op deze lijst? Dan kunt u loonkostenvoordeel krijgen.",
     door: "UWV",
   },
   doelgroepverklaring: {

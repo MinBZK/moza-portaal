@@ -186,7 +186,7 @@ dialog.prototype-side-overlay[open] {
 .prototype-persona-card--active {
 	border-color: var(--rhc-color-groen-500);
 	border-width: var(--rhc-border-width-md);
-	box-shadow: 0;
+	box-shadow: none;
 }
 
 /* Schuine banner "Concept" over de hoek van een kaart, voor persona's die nog

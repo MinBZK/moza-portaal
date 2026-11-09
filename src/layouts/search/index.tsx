@@ -43,7 +43,6 @@ const PageSearch = ({
   return (
     <SiteSearch
       assistant={assistent}
-      hideLabel
       suggestions={SUGGESTIONS}
       pageSuggestions={pageSuggestions}
       recentSearches={RECENT_SEARCHES}

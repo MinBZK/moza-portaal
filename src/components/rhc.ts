@@ -1,7 +1,6 @@
 "use client";
 
 export {
-  ActionGroup,
   Accordion,
   AccordionSection,
   Article,
@@ -74,6 +73,7 @@ export {
 // RHC Alert with an optional close button.
 export { Alert } from "./Alert";
 // RHC Fieldset with optional info (such as an InfoToggletip) next to the legend.
+export { ActionGroup } from "./ActionGroup";
 export { Fieldset } from "./Fieldset";
 // RHC AccordionProvider with a decorative chevron without ids.
 export { AccordionProvider } from "./AccordionProvider";

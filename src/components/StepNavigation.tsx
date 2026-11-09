@@ -26,6 +26,21 @@ type Next = {
 };
 
 /**
+ * "Terug naar" and "Verder naar" only for screen readers: the arrow already
+ * shows the direction, the step name stays visible.
+ */
+const withHiddenPrefix = (text: string) => {
+  const match = /^((?:Terug|Verder) naar )(.+)$/.exec(text);
+  if (!match) return text;
+  return (
+    <>
+      <span className="rhc-visually-hidden">{match[1]}</span>
+      {match[2]}
+    </>
+  );
+};
+
+/**
  * Back and forward at the end of a step in a task, in an action group.
  * Verder comes first in the HTML, so it gets the keyboard focus first and is
  * at the block start when the buttons wrap; in a row, the CSS shows Terug at
@@ -51,7 +66,7 @@ const StepNavigation = ({
       {next?.final &&
         !next.noIcon &&
         (next.sends ? <Icon icon="verzenden" /> : <CheckIcon />)}
-      {next?.label ?? "Verder"}
+      {withHiddenPrefix(next?.label ?? "Verder")}
       {!next?.final && !next?.noIcon && <Icon icon="chevron-right" />}
     </>
   );
@@ -93,7 +108,7 @@ const StepNavigation = ({
           href={later}
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
-          Sla op en ga later verder
+          Opslaan en later verder gaan
         </Link>
       )}
       {back && (
@@ -102,7 +117,7 @@ const StepNavigation = ({
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
           <Icon icon="chevron-left" />
-          {backLabel}
+          {withHiddenPrefix(backLabel)}
         </Link>
       )}
     </ActionGroup>

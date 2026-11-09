@@ -157,28 +157,36 @@ const AanvraagInhoud = ({
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
-  // Eén tegel per regeling: wie de regeling uitvoert, wat het is, en bij wat u
-  // zelf aanvraagt een vinkje om te kiezen.
+  // Eén tegel per regeling: de naam als kop, wie de regeling uitvoert, wat het
+  // is, en onderaan een vinkje om te kiezen.
   const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
     <li key={id}>
       <div
         id={`regeling-${id}`}
         className={`rhc-mox-tile${gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
       >
-        {/* Het vinkje met de naam is de titel van de tegel; de (i) ernaast. */}
-        <div className="rhc-mox-cluster rhc-mox-tile__choice">
-          <FormFieldCheckboxOption
-            label={NAAM[id]}
-            name={`kies-${id}`}
-            checked={gekozen(id)}
-            onChange={(event) => kies(id, event.target.checked)}
-          />
+        <div className="rhc-mox-cluster">
+          <Heading level={3}>{NAAM[id]}</Heading>
           {BEGRIP[id].map((b) => (
             <BegripInfo key={b} id={b} />
           ))}
         </div>
         <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
         {kind}
+        {/* De naam van de regeling alleen voor schermlezers: elk vinkje heet
+            anders, ook buiten de tegel, zoals in een lijst met formuliervelden. */}
+        <FormFieldCheckboxOption
+          className="rhc-mox-tile__action"
+          label={
+            <>
+              Kies deze regeling
+              <span className="rhc-visually-hidden">: {NAAM[id]}</span>
+            </>
+          }
+          name={`kies-${id}`}
+          checked={gekozen(id)}
+          onChange={(event) => kies(id, event.target.checked)}
+        />
       </div>
     </li>
   );

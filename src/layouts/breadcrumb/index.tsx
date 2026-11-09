@@ -36,7 +36,7 @@ const breadcrumbLabels: Record<string, string> = {
   belastingen: "Belastingen",
   "zakelijk-vervoer": "Zakelijk vervoer",
   personeel: "Personeel en rollen",
-  "iemand-aannemen": "Iemand aannemen",
+  "iemand-aannemen": "Iemand aannemen met afstand tot de arbeidsmarkt",
   gegevens: "Kandidaat selecteren",
   voorbeeldberekening: "Voorbeeldberekening",
   versturen: "Controleren en dossier indienen",
@@ -60,6 +60,9 @@ const breadcrumbLabels: Record<string, string> = {
 const breadcrumbPaths: Record<string, string> = {
   // Step 1 of Iemand aannemen lives at the requests, but is part of Personeel.
   "/lopendezaken/aanvragen/iemand-aannemen-met-afstand-tot-de-arbeidsmarkt":
+    "/personeel/iemand-aannemen",
+  // The first step is the start of the task: the breadcrumb ends at the task.
+  "/personeel/iemand-aannemen/voorbeeldberekening":
     "/personeel/iemand-aannemen",
 };
 

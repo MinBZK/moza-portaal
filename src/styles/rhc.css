@@ -557,6 +557,10 @@ small,
 	font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
+.rhc-mox-regular {
+	font-weight: var(--rhc-text-font-weight-regular);
+}
+
 /* --- Data summary --- */
 .rhc-data-summary__item-value:has(> .rhc-mox-text-badge) {
 	align-items: center;
@@ -737,7 +741,7 @@ small,
 
 .utrecht-form-fieldset.rhc-mox-fieldset--info {
 	.utrecht-form-fieldset__fieldset {
-		align-items: center;
+		align-items: first baseline;
 		grid-template-columns: minmax(0, max-content) 1fr;
 	}
 
@@ -767,7 +771,7 @@ small,
 }
 
 .rhc-mox-with-info--end {
-	align-items: start;
+	align-items: first baseline;
 	display: flex;
 	gap: var(--rhc-space-md);
 	justify-content: space-between;
@@ -814,7 +818,7 @@ small,
 .rhc-mox-alert-closable-content {
 	display: grid;
 	gap: var(--utrecht-alert-message-row-gap);
-	padding-inline-end: var(--rhc-space-5xl);
+	padding-inline-end: var(--rhc-space-2xl);
 }
 
 .rhc-mox-alert-close-button {
@@ -1765,6 +1769,9 @@ small,
 			transition: transform 150ms var(--rhc-mox-transition-easing);
 		}
 	}
+	.rhc-mox-range-slider__limits {
+		margin-block-start: calc(-1 * var(--rhc-space-sm));
+	}
 
 	/* Same emphasis as a changed value, for as long as the thumb is dragged. */
 	@media (prefers-reduced-motion: no-preference) {
@@ -2148,14 +2155,6 @@ small,
 	}
 }
 
-/* Inhoud die bij een gekozen optie hoort, zoals vragen over de gekozen
-   kandidaat: ingesprongen, met een lijn die laat zien waar die bij hoort. */
-.rhc-mox-reveal {
-	border-inline-start: var(--rhc-border-width-md) solid
-		var(--rhc-color-cool-grey-400);
-	padding-inline-start: var(--rhc-space-lg);
-}
-
 /* --- Step indicator --- */
 .rhc-mox-step-indicator {
 	--rhc-mox-step-indicator-size: var(--rhc-size-icon-lg);
@@ -2366,7 +2365,6 @@ small,
 		vertical-align: bottom;
 	}
 
-	/* A row header lines up with the cells next to it. */
 	.utrecht-table__header--cell-row {
 		vertical-align: top;
 	}
@@ -2648,36 +2646,23 @@ small,
 	anchor-scope: --rhc-mox-toggletip;
 	position: relative;
 	vertical-align: -0.15em;
-	--rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
-	--rhc-toggletip-hover-background-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-focus-background-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-active-background-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-border-color: var(--rhc-color-lintblauw-500);
-	--rhc-toggletip-hover-border-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-focus-border-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-active-border-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-color: var(--rhc-color-wit);
-	--rhc-toggletip-hover-color: var(--rhc-color-wit);
-	--rhc-toggletip-focus-color: var(--rhc-color-wit);
-	--rhc-toggletip-active-color: var(--rhc-color-wit);
+	/* The info icon of the info alert, without a button background. */
+	--rhc-toggletip-background-color: transparent;
+	--rhc-toggletip-hover-background-color: transparent;
+	--rhc-toggletip-focus-background-color: transparent;
+	--rhc-toggletip-active-background-color: transparent;
 	--rhc-toggletip-border-width: 0;
+	--rhc-toggletip-color: var(--rhc-color-info-500);
+	--rhc-toggletip-hover-color: var(--rhc-color-lintblauw-700);
+	--rhc-toggletip-focus-color: var(--rhc-color-lintblauw-700);
+	--rhc-toggletip-active-color: var(--rhc-color-lintblauw-700);
 	.rhc-toggletip__icon {
-		background-color: var(--rhc-color-info-500);
-		border-radius: var(--rhc-border-radius-md);
 		inset-block-start: 0;
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition-duration: var(--rhc-mox-transition-duration);
-			transition-property: background-color, color;
+			transition-property: color;
 			transition-timing-function: var(--rhc-mox-transition-easing);
-		}
-	}
-	/* The focus is on the summary inside, so :focus-within, not :focus. */
-	&:hover,
-	&:focus-within,
-	&:active {
-		.rhc-toggletip__icon {
-			background-color: var(--utrecht-icon-color);
 		}
 	}
 }
@@ -2694,8 +2679,6 @@ small,
 		display: block;
 	}
 
-	/* A larger click area (WCAG 2.5.8) around the small icon, without
-	   taking up space in the layout. */
 	&::after {
 		block-size: var(--rhc-mox-target-size-min);
 		content: "";
@@ -2723,10 +2706,11 @@ small,
 
 	@supports (position-anchor: --a) {
 		inset-block-start: calc(anchor(bottom) + var(--rhc-space-sm));
-		/* Never past the end of the viewport, also when a long text fits no fallback. */
 		inset-inline-start: min(
 			anchor(start),
-			calc(100% - min(24rem, 100% - 2 * var(--rhc-space-lg)) - var(--rhc-space-lg))
+			calc(
+				100% - min(24rem, 100% - 2 * var(--rhc-space-lg)) - var(--rhc-space-lg)
+			)
 		);
 		position: fixed;
 		position-anchor: --rhc-mox-toggletip;
@@ -2736,17 +2720,6 @@ small,
 
 .rhc-toggletip__alert {
 	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
-
-	.utrecht-alert__icon {
-		inline-size: var(--rhc-space-2xl);
-	}
-
-	/* Only the (i): the close button looks the same as in an Alert. */
-	.utrecht-alert__icon .utrecht-icon {
-		background-color: var(--rhc-color-info-500);
-		border-radius: var(--rhc-border-radius-md);
-		color: var(--rhc-color-wit);
-	}
 }
 
 .rhc-toggletip__content {
@@ -2906,7 +2879,6 @@ small,
 	}
 
 	.rhc-mox-landing-hero {
-		/* align-items: start; */
 		background: var(--rhc-mox-landing-info-background);
 		block-size: calc(var(--rhc-size-lint) * 10);
 		display: grid;
@@ -2977,7 +2949,7 @@ small,
 	padding-inline: var(--rhc-hero-message-padding-inline-start);
 }
 
-/* --- Tegels: een raster van gelijke vakken, elk een link naar zijn onderdeel --- */
+/* --- Tegels --- */
 .rhc-mox-tile-grid {
 	display: grid;
 	gap: var(--rhc-space-lg);
@@ -2996,8 +2968,6 @@ small,
 	text-decoration: none;
 }
 
-/* Gegevens om te controleren: per groep een kop met een lijn, en per gegeven
-   één rij met het label, de waarde en rechts de actie (RHC DataSummary row). */
 .rhc-mox-summary-group {
 	display: grid;
 	gap: var(--rhc-space-sm);
@@ -3010,8 +2980,6 @@ small,
 }
 
 .rhc-mox-summary-rows {
-	/* Alleen naast elkaar een vaste breedte voor het label; onder elkaar
-	   (zelfde grens als RHC) zou die een hoogte worden. */
 	@media not (max-width: 768px) {
 		.rhc-data-summary__item-key {
 			flex: 0 0 12rem;
@@ -3028,33 +2996,18 @@ small,
 	}
 }
 
-/* Bredere tegels, voor tegels met meer inhoud dan een titel en een regel. */
 .rhc-mox-tile-grid--wide {
 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 }
 
-/* Een tegel om te kiezen: het vinkje met de naam is de titel. */
-.rhc-mox-tile__choice .utrecht-form-label {
-	font-weight: var(--rhc-text-font-weight-bold);
-}
-
-/* Een tegel die de gebruiker heeft gekozen, zoals een regeling om aan te vragen. */
 .rhc-mox-tile--selected {
 	border-color: var(--rhc-color-lintblauw-500);
 	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
 		var(--rhc-color-lintblauw-500);
 }
 
-/* Bredere tegels, voor tegels met meer inhoud dan een titel en een regel. */
 .rhc-mox-tile-grid--wide {
 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-}
-
-/* Een tegel die de gebruiker heeft gekozen, zoals een regeling om aan te vragen. */
-.rhc-mox-tile--selected {
-	border-color: var(--rhc-color-lintblauw-500);
-	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
-		var(--rhc-color-lintblauw-500);
 }
 
 .rhc-mox-tile__title {
@@ -3066,6 +3019,8 @@ small,
 	font-weight: var(--rhc-text-font-weight-bold);
 }
 
+/* At the block end of the tile, also when the tiles in a row differ in length. */
+.rhc-mox-tile__action,
 .rhc-mox-tile__status {
 	margin-block-start: auto;
 }

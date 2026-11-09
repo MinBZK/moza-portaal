@@ -2,12 +2,7 @@
 
 import StepNavigation from "@/components/StepNavigation";
 import type { ReactNode } from "react";
-import {
-  Fieldset,
-  FormFieldRadio,
-  Paragraph,
-  Separator,
-} from "@/components/rhc";
+import { Fieldset, FormFieldRadio, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { BegripInfo } from "./_begrippen";
 import RangeSlider from "@/components/RangeSlider";
@@ -280,8 +275,6 @@ const VragenMetStaat = ({
 
   return (
     <>
-      <Separator></Separator>
-
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
           <div className="rhc-mox-stack rhc-mox-stack--sm">
@@ -330,14 +323,12 @@ const VragenMetStaat = ({
               info={
                 <InfoToggletip label="Toelichting bij beschut werk">
                   <Paragraph>
-                    Beschut werk is werk in een beschutte omgeving, onder
-                    aangepaste omstandigheden. Het is voor iemand die alleen zo
-                    kan werken.
+                    Beschut werk is werk met veel begeleiding en aangepaste
+                    omstandigheden. Het is voor iemand die alleen zo kan werken.
                   </Paragraph>
                   <Paragraph>
-                    De gemeente stelt vast of iemand op beschut werk is
-                    aangewezen. UWV geeft de gemeente daarover advies
-                    (Participatiewet, artikel 10b).
+                    De gemeente beslist of iemand beschut werk nodig heeft. UWV
+                    geeft daarover advies (Participatiewet, artikel 10b).
                   </Paragraph>
                 </InfoToggletip>
               }
@@ -387,7 +378,7 @@ const VragenMetStaat = ({
           />
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label={`${nr(4)}. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?`}
+              label={`${nr(4)}. Hoeveel procent van het werk van een collega in dezelfde functie kan de persoon doen?`}
               min={0}
               max={100}
               step={5}
@@ -403,20 +394,20 @@ const VragenMetStaat = ({
               info={
                 <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
                   <Paragraph>
-                    Dit heet de loonwaarde: wat de werknemer presteert,
-                    vergeleken met een collega zonder beperking in dezelfde
-                    functie. De gemeente of UWV meet die later op de werkplek.
+                    Dit heet de loonwaarde: hoeveel de persoon kan doen,
+                    vergeleken met een collega in dezelfde functie. De gemeente
+                    of UWV meet de loonwaarde later op de werkplek.
                   </Paragraph>
                   <Paragraph>
                     Wij rekenen met het percentage dat u kiest. Het echte bedrag
-                    kan hoger of lager uitvallen.
+                    kan hoger of lager zijn.
                   </Paragraph>
                   <Paragraph>
-                    De loonkostensubsidie is het verschil tussen het minimumloon
-                    en de loonwaarde, ten hoogste 70 procent van het
-                    minimumloon, vermeerderd met een vergoeding voor
-                    werkgeverslasten. Een hoger uurloon geeft geen hogere
-                    subsidie.
+                    De gemeente betaalt u het verschil tussen het minimumloon en
+                    de loonwaarde. Dat heet loonkostensubsidie. U krijgt
+                    hoogstens 70 procent van het minimumloon, plus een
+                    vergoeding voor werkgeverslasten. Betaalt u meer dan het
+                    minimumloon? Dan wordt de subsidie niet hoger.
                   </Paragraph>
                 </InfoToggletip>
               }
@@ -490,7 +481,7 @@ const VragenMetStaat = ({
       {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
       <StepNavigation
         next={{
-          label: "Regeling indienen",
+          label: "Kandidaat selecteren",
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !kanVerder,
           describedBy: kanVerder ? undefined : "aanvragen-bezig",

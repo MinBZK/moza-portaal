@@ -13,7 +13,7 @@ export const STAPPEN = [
     href: "/personeel/iemand-aannemen/gegevens",
   },
   {
-    name: "Controleren en dossier indienen",
+    name: "Controleren en indienen",
     href: "/personeel/iemand-aannemen/concept-aanvraag",
   },
 ];
