@@ -2,12 +2,7 @@
 
 import StepNavigation from "@/components/StepNavigation";
 import type { ReactNode } from "react";
-import {
-  Fieldset,
-  FormFieldRadio,
-  Paragraph,
-  Separator,
-} from "@/components/rhc";
+import { Fieldset, FormFieldRadio, Paragraph } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import { BegripInfo } from "./_begrippen";
 import RangeSlider from "@/components/RangeSlider";
@@ -280,8 +275,6 @@ const VragenMetStaat = ({
 
   return (
     <>
-      <Separator></Separator>
-
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
           <div className="rhc-mox-stack rhc-mox-stack--sm">
