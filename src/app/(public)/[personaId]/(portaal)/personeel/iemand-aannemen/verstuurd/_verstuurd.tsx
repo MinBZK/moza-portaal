@@ -73,58 +73,61 @@ const Verstuurd = ({
           {stand.verstuurdOp && ` op ${datumNL(stand.verstuurdOp)}`}.
         </Paragraph>
       </Alert>
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="wat-er-nu-gebeurt"
-      >
-        <Heading level={2} id="wat-er-nu-gebeurt">
-          Wat er nu gebeurt
-        </Heading>
-        <OrderedList>
-          <OrderedListItem>
-            U krijgt een ontvangstbevestiging met het zaaknummer in uw{" "}
+      {/* Eén witte kaart; de secties blijven, elk met een eigen kop. */}
+      <div className="rhc-mox-card rhc-mox-row-gap">
+        <section
+          className="rhc-mox-row-gap"
+          aria-labelledby="wat-er-nu-gebeurt"
+        >
+          <Heading level={2} id="wat-er-nu-gebeurt">
+            Wat er nu gebeurt
+          </Heading>
+          <OrderedList>
+            <OrderedListItem>
+              U krijgt een ontvangstbevestiging met het zaaknummer in uw{" "}
+              <Link
+                href="/berichtenbox"
+                className="utrecht-link utrecht-link--html-a"
+              >
+                berichtenbox
+              </Link>
+              .
+            </OrderedListItem>
+            <OrderedListItem>
+              {situatie === "wajong" ? "UWV" : "De gemeente"} beoordeelt uw
+              aanvraag. Is er iets nodig, dan neemt{" "}
+              {situatie === "wajong" ? "UWV" : "de gemeente"} contact met u op.
+            </OrderedListItem>
+            <OrderedListItem>
+              U krijgt het besluit in uw berichtenbox. {BESLUIT[situatie]}
+            </OrderedListItem>
+          </OrderedList>
+        </section>
+        <section className="rhc-mox-row-gap" aria-labelledby="uw-dossier">
+          <Heading level={2} id="uw-dossier">
+            Uw dossier
+          </Heading>
+          <Paragraph>
+            In uw dossier bij Lopende zaken ziet u elke stap van{" "}
+            {situatie === "wajong" ? "UWV" : "de gemeente"}, met datum en
+            afzender, tot en met het besluit.
+          </Paragraph>
+          <ActionGroup>
             <Link
-              href="/berichtenbox"
+              href={zaak.url}
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Bekijk uw dossier bij Lopende zaken
+            </Link>
+            <Link
+              href="/personeel"
               className="utrecht-link utrecht-link--html-a"
             >
-              berichtenbox
+              Terug naar Personeel en rollen
             </Link>
-            .
-          </OrderedListItem>
-          <OrderedListItem>
-            {situatie === "wajong" ? "UWV" : "De gemeente"} beoordeelt uw
-            aanvraag. Is er iets nodig, dan neemt{" "}
-            {situatie === "wajong" ? "UWV" : "de gemeente"} contact met u op.
-          </OrderedListItem>
-          <OrderedListItem>
-            U krijgt het besluit in uw berichtenbox. {BESLUIT[situatie]}
-          </OrderedListItem>
-        </OrderedList>
-      </section>
-      <section
-        className="rhc-mox-card rhc-mox-row-gap"
-        aria-labelledby="uw-dossier"
-      >
-        <Heading level={2} id="uw-dossier">
-          Uw dossier
-        </Heading>
-        <Paragraph>
-          In uw dossier bij Lopende zaken ziet u elke stap van{" "}
-          {situatie === "wajong" ? "UWV" : "de gemeente"}, met datum en
-          afzender, tot en met het besluit.
-        </Paragraph>
-        <ActionGroup>
-          <Link
-            href={zaak.url}
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-          >
-            Bekijk uw dossier bij Lopende zaken
-          </Link>
-          <Link href="/personeel" className="utrecht-link utrecht-link--html-a">
-            Terug naar Personeel en rollen
-          </Link>
-        </ActionGroup>
-      </section>
+          </ActionGroup>
+        </section>
+      </div>
     </>
   );
 };
