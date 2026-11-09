@@ -737,7 +737,7 @@ small,
 
 .utrecht-form-fieldset.rhc-mox-fieldset--info {
 	.utrecht-form-fieldset__fieldset {
-		align-items: center;
+		align-items: first baseline;
 		grid-template-columns: minmax(0, max-content) 1fr;
 	}
 
@@ -767,7 +767,7 @@ small,
 }
 
 .rhc-mox-with-info--end {
-	align-items: start;
+	align-items: first baseline;
 	display: flex;
 	gap: var(--rhc-space-md);
 	justify-content: space-between;

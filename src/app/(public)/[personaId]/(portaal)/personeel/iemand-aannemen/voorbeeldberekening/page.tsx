@@ -13,9 +13,9 @@ const VoorbeeldberekeningPage = () => (
     <Heading level={1}>{TAAK_TITEL}</Heading>
     <div className="rhc-mox-card rhc-mox-row-gap">
       <Paragraph>
-        Deze berekening is een voorbeeld. Na uw aanvraag berekenen de gemeente,
-        UWV en de Belastingdienst het echte bedrag. Er kunnen ook regelingen
-        voor u gelden die hier niet staan.
+        Deze berekening is een voorbeeld. Na uw aanvraag berekenen gemeente, UWV
+        en Belastingdienst het echte bedrag. Er kunnen ook regelingen voor u
+        gelden die hier niet staan.
       </Paragraph>
       <Vragen />
     </div>
