@@ -2,6 +2,7 @@
 
 import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
+import InfoToggletip from "@/components/InfoToggletip";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BegripInfo } from "../_begrippen";
@@ -21,6 +22,7 @@ import {
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
+  vraagEerderInDienst,
   type AannemenStaat,
   type Antwoorden,
 } from "../_useAannemen";
@@ -42,8 +44,8 @@ const elfproef = (bsn: string) => {
 };
 
 /**
- * Wat alleen de werkgever weet: de eerste werkdag, de functie, de uren en het
- * loon. Vooringevuld met de antwoorden van de voorbeeldberekening waar die er zijn; nu
+ * Wat alleen de werkgever weet: de eerste werkdag, de functie, de uren, het
+ * loon en, bij WIA, of de kandidaat al eerder bij de werkgever werkte. Vooringevuld met de antwoorden van de voorbeeldberekening waar die er zijn; nu
  * definitief. De loonwaarde staat hier niet: die stelt de gemeente of UWV
  * vast, niet de werkgever.
  */
@@ -56,6 +58,7 @@ const EigenOpgave = ({
   vraagJc,
   vraagWpa,
   aanvangFout,
+  eerderFout,
 }: {
   voornaam: string;
   a: Antwoorden;
@@ -66,6 +69,7 @@ const EigenOpgave = ({
   vraagJc: boolean;
   vraagWpa: boolean;
   aanvangFout?: string;
+  eerderFout?: string;
 }) => (
   // Onder de gekozen kandidaat: deze vragen gaan over die persoon.
   <div
@@ -99,6 +103,43 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
+    {vraagEerderInDienst(a) && (
+      <Fieldset
+        id="eerder-in-dienst"
+        legend={`Was ${voornaam} in de zes maanden voor de eerste werkdag al bij u in dienst?`}
+        info={
+          <InfoToggletip label="Toelichting bij eerder in dienst">
+            <Paragraph>
+              Werkte {voornaam} in de zes maanden voor de eerste werkdag bij u?
+              Dan krijgt u geen loonkostenvoordeel voor een arbeidsgehandicapte
+              werknemer (Wet tegemoetkomingen loondomein, artikel 2.6).
+            </Paragraph>
+          </InfoToggletip>
+        }
+        invalid={!!eerderFout}
+        aria-describedby={eerderFout ? "eerder-in-dienst-fout" : undefined}
+      >
+        {eerderFout && (
+          <FormFieldErrorMessage id="eerder-in-dienst-fout">
+            {eerderFout}
+          </FormFieldErrorMessage>
+        )}
+        <FormFieldRadio
+          name="eerder-in-dienst"
+          value="ja"
+          label="Ja"
+          checked={a.eerderInDienst === true}
+          onChange={() => zet({ eerderInDienst: true })}
+        />
+        <FormFieldRadio
+          name="eerder-in-dienst"
+          value="nee"
+          label="Nee"
+          checked={a.eerderInDienst === false}
+          onChange={() => zet({ eerderInDienst: false })}
+        />
+      </Fieldset>
+    )}
     {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
     {vraagJc && (
       <Fieldset
@@ -235,10 +276,13 @@ const Bronnen = ({
     | "bsn"
     | "toestemming"
     | "aanvang"
+    | "eerder"
     | undefined = gekozen
     ? opgave
       ? undefined
-      : "aanvang"
+      : !antwoorden.aanvang
+        ? "aanvang"
+        : "eerder"
     : keuze !== NIEUW
       ? "kandidaat"
       : !nieuw.naam.trim()
@@ -261,6 +305,10 @@ const Bronnen = ({
       : undefined;
   const aanvangFout =
     fout === "aanvang" ? "U hebt nog geen eerste werkdag ingevuld." : undefined;
+  const eerderFout =
+    fout === "eerder"
+      ? `Kies of ${kandidaat.voornaam} de afgelopen zes maanden al bij u in dienst was.`
+      : undefined;
   const bsnVeldFout =
     fout === "bsn" && bsn === ""
       ? "U hebt nog geen BSN ingevuld."
@@ -281,10 +329,16 @@ const Bronnen = ({
             ? document.getElementById("toestemming-vragen")
             : ontbreekt === "aanvang"
               ? document.querySelector<HTMLElement>("#eerste-werkdag input")
-              : (document.querySelector<HTMLElement>(
-                  'input[name="kandidaat"]:checked',
-                ) ??
-                document.querySelector<HTMLElement>('input[name="kandidaat"]'));
+              : ontbreekt === "eerder"
+                ? document.querySelector<HTMLElement>(
+                    'input[name="eerder-in-dienst"]',
+                  )
+                : (document.querySelector<HTMLElement>(
+                    'input[name="kandidaat"]:checked',
+                  ) ??
+                  document.querySelector<HTMLElement>(
+                    'input[name="kandidaat"]',
+                  ));
     veld?.focus();
   };
 
@@ -466,6 +520,7 @@ const Bronnen = ({
             vraagJc={paneelIds.includes("jc")}
             vraagWpa={paneelIds.includes("wpa")}
             aanvangFout={aanvangFout}
+            eerderFout={eerderFout}
           />
         )}
       </section>
@@ -504,7 +559,9 @@ const Bronnen = ({
             : !gekozen
               ? ""
               : !opgave
-                ? "Vul uw eigen opgave in: de eerste werkdag."
+                ? vraagEerderInDienst(antwoorden)
+                  ? `Vul uw eigen opgave in: de eerste werkdag en of ${kandidaat.voornaam} al eerder bij u werkte.`
+                  : "Vul uw eigen opgave in: de eerste werkdag."
                 : "Wij vullen de aanvraag voor u in. In de volgende stap controleert u die."}
         </Paragraph>
         <StepNavigation

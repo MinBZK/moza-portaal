@@ -164,6 +164,8 @@ const Controleer = ({
   kandidaat,
   aanvang,
   uren,
+  vraagEerder = false,
+  eerderInDienst,
 }: {
   bronnen: Bron[];
   kandidaat: {
@@ -175,6 +177,9 @@ const Controleer = ({
   /** De eerste werkdag (jjjj-mm-dd) uit stap 1. */
   aanvang?: string;
   uren: number;
+  /** Alleen bij WIA: de vraag of de kandidaat al eerder bij de werkgever werkte. */
+  vraagEerder?: boolean;
+  eerderInDienst?: boolean;
 }) => {
   const bronTekst = (b: Bron) =>
     `${b.organisatie}, opgehaald ${datumNL(b.opgehaald)}`;
@@ -206,6 +211,21 @@ const Controleer = ({
       waarde: `${uren} uur`,
       wijzig: EIGEN_OPGAVE,
     },
+    ...(vraagEerder
+      ? [
+          {
+            label: "Eerder bij u in dienst",
+            waarde:
+              eerderInDienst === undefined
+                ? "Nog niet ingevuld"
+                : eerderInDienst
+                  ? "Ja"
+                  : "Nee",
+            extra: "In de zes maanden voor de eerste werkdag",
+            wijzig: EIGEN_OPGAVE,
+          },
+        ]
+      : []),
     ...(register
       ? [
           {
