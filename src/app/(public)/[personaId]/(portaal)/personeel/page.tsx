@@ -211,40 +211,6 @@ const PersoneelPage = async () => {
         </Paragraph>
       </section>
 
-      <section className="rhc-mox-card" aria-labelledby="rollen">
-        <Heading level={2} id="rollen">
-          Rollen en bevoegdheden
-        </Heading>
-        <DataSummary appearance="column" className="rhc-data-summary--columns">
-          {naam && (
-            <DataSummaryItem
-              itemKey={naam}
-              itemValue={
-                organisatie?.functies ?? organisatie?.rol ?? "Onbekend"
-              }
-            />
-          )}
-          {organisatie?.rechtsvorm && (
-            <DataSummaryItem
-              itemKey="Rechtsvorm"
-              itemValue={organisatie.rechtsvorm}
-            />
-          )}
-        </DataSummary>
-        <Paragraph className="rhc-mox-small-text">
-          Uw functie komt uit het Handelsregister van de KVK.
-        </Paragraph>
-        <Paragraph>
-          Wilt u dat een medewerker of uw boekhouder namens {onderneming} zaken
-          regelt bij de overheid? Geef die dan een machtiging met eHerkenning.
-        </Paragraph>
-        <Paragraph>
-          <ExternalLink href={EHERKENNING}>
-            Machtigen met eHerkenning
-          </ExternalLink>
-        </Paragraph>
-      </section>
-
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">
         <AccordionProvider
