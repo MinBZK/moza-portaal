@@ -6,8 +6,6 @@ import {
   DataSummaryItem,
   Heading,
   Icon,
-  OrderedList,
-  OrderedListItem,
   Paragraph,
 } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
@@ -17,7 +15,7 @@ import {
 } from "@/app/(public)/_persona";
 import { ExternalLink } from "@/app/(footer)/_article";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
-import { STAPPEN, TAAK_TITEL } from "./iemand-aannemen/_stappen";
+import { TAAK_TITEL } from "./iemand-aannemen/_stappen";
 
 export const metadata: Metadata = { title: "Personeel en rollen" };
 
@@ -55,42 +53,28 @@ const PersoneelPage = async () => {
       />
 
       <Heading level={2}>Wat u kunt regelen</Heading>
-      <section className="rhc-mox-card" aria-labelledby="iemand-aannemen">
-        <Heading level={3} id="iemand-aannemen">
-          {TAAK_TITEL}
-        </Heading>
-        <Paragraph>
-          Neemt u iemand aan die niet zelfstandig het minimumloon kan verdienen?
-          Bijvoorbeeld omdat die in het doelgroepregister staat of een uitkering
-          heeft. Dan ziet u vooraf welke regelingen voor u kunnen gelden en wat
-          ze opleveren. Wij gebruiken daarvoor wat de overheid al van u en van
-          de kandidaat weet.
-        </Paragraph>
-        <Paragraph>
-          Begin met een voorbeeldberekening. Wilt u daarna een regeling
-          indienen, dan gaat dat in {STAPPEN.length} stappen:
-        </Paragraph>
-        <OrderedList>
-          {STAPPEN.map((stap) => (
-            <OrderedListItem key={stap.name}>{stap.name}</OrderedListItem>
-          ))}
-        </OrderedList>
-        <Paragraph>
-          U vult alleen in wat de overheid nog niet weet. Wij versturen niets
-          zonder dat u dat zelf doet.
-        </Paragraph>
-        <ActionGroup>
-          <Link
-            href="/personeel/iemand-aannemen/voorbeeldberekening"
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-          >
-            Begin met de voorbeeldberekening
-            <Icon icon="chevron-right" />
-          </Link>
-        </ActionGroup>
-      </section>
-
       <div className="rhc-grid">
+        <section
+          className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
+          aria-labelledby="iemand-aannemen"
+        >
+          <Heading level={3} id="iemand-aannemen">
+            {TAAK_TITEL}
+          </Heading>
+          <Paragraph>
+            Neemt u iemand aan die niet zelfstandig het minimumloon kan
+            verdienen? Zie vooraf welke regelingen gelden en wat ze opleveren.
+          </Paragraph>
+          <ActionGroup>
+            <Link
+              href="/personeel/iemand-aannemen/voorbeeldberekening"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Begin met de voorbeeldberekening
+              <Icon icon="chevron-right" />
+            </Link>
+          </ActionGroup>
+        </section>
         <section
           className="rhc-mox-card rhc-grid__cell rhc-grid__cell-t-6"
           aria-labelledby="ziekte-verlof"
