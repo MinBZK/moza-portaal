@@ -487,13 +487,6 @@ const VragenMetStaat = ({
       </div>
 
       <div className="rhc-mox-stack">
-        <Paragraph>
-          Deze voorbeeldberekening is een vereenvoudigde weergave van de
-          werkelijkheid. Het echte bedrag stellen de gemeente, UWV en de
-          Belastingdienst vast na uw aanvraag. De voorbeeldberekening laat niet
-          alle mogelijkheden zien. Er kunnen meer regelingen gelden dan hier
-          staan.
-        </Paragraph>
         <Paragraph role="status" id="aanvragen-bezig">
           {resultaat.fout
             ? "De berekening is niet gelukt. Laad de pagina opnieuw."

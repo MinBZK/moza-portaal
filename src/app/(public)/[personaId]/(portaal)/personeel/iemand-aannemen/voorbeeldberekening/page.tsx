@@ -15,8 +15,11 @@ const VoorbeeldberekeningPage = () => (
     <div className="rhc-mox-card rhc-mox-row-gap">
       <Stappen huidige={2} />
       <Paragraph>
-        Beantwoord de vragen. In de voorbeeldberekening ziet u meteen uw
-        geschatte loonkosten.
+        Deze voorbeeldberekening is een vereenvoudigde weergave van de
+        werkelijkheid. Het echte bedrag stellen de gemeente, UWV en de
+        Belastingdienst vast na uw aanvraag. De voorbeeldberekening laat niet
+        alle mogelijkheden zien. Er kunnen meer regelingen gelden dan hier
+        staan.
       </Paragraph>
       <Vragen />
     </div>
