@@ -1,30 +1,24 @@
 "use client";
 
 import LoadingStatus from "@/components/LoadingStatus";
-import { focusAtTop } from "@/utils/focusAtTop";
-import Link from "next/link";
 import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
-  Accordion,
-  AccordionSection,
   Alert,
-  DataSummary,
   FormFieldCheckboxOption,
   Heading,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
-import { Begrip, BegripInfo, type BegripId } from "../_begrippen";
-import Opgehaald from "../_opgehaald";
+import { Begrip, type BegripId } from "../_begrippen";
+import Controleer from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -37,41 +31,6 @@ import {
 } from "../_useAannemen";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
-
-type Gegeven = {
-  label: string;
-  waarde: string;
-  bron: string;
-  /** Waar de ondernemer dit antwoord kan aanpassen. */
-  wijzig?: string;
-};
-
-/** De eigen opgave in stap 1: eerste werkdag en uren. */
-const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
-
-/** De gegevens in twee kolommen, met de bron als label onder de waarde. */
-const Gegevens = ({ rijen }: { rijen: Gegeven[] }) => (
-  <DataSummary appearance="column" className="rhc-data-summary--columns">
-    {/* Zoals bij Bedrijfsgegevens: de waarde bevat een label, dus geen DataSummaryItem. */}
-    {rijen.map((r) => (
-      <div key={r.label} className="rhc-data-summary__item">
-        <dt className="rhc-data-summary__item-key">{r.label}</dt>
-        <dd className="rhc-data-summary__item-value">
-          {r.waarde} <TextBadge>{r.bron}</TextBadge>
-          {r.wijzig && (
-            <Link
-              href={r.wijzig}
-              className="utrecht-link utrecht-link--html-a"
-              aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
-            >
-              Wijzigen
-            </Link>
-          )}
-        </dd>
-      </div>
-    ))}
-  </DataSummary>
-);
 
 const NAAM: Record<RegelingId, string> = {
   lks: "Loonkostensubsidie",
@@ -98,15 +57,6 @@ const BEGRIP: Record<RegelingId, BegripId[]> = {
   vz_wajong: ["jobcoaching", "werkplekaanpassing"],
   vz_wia: ["jobcoaching", "werkplekaanpassing"],
   pp: ["proefplaatsing"],
-};
-
-type Status = "aanvullen" | "controleren" | "gecontroleerd" | "gelezen";
-
-const STATUS: Record<Status, { tekst: string; variant: TextBadgeVariant }> = {
-  aanvullen: { tekst: "Aanvullen", variant: "warning" },
-  controleren: { tekst: "Controleren", variant: "info" },
-  gecontroleerd: { tekst: "Gecontroleerd", variant: "ok" },
-  gelezen: { tekst: "Gelezen", variant: "ok" },
 };
 
 type Props = {
@@ -136,7 +86,6 @@ const AanvraagInhoud = ({
 }: Props & { staat: AannemenStaat }) => {
   const router = useRouter();
   const { werkBij, werkZaakBij } = useAannemen();
-  const [fout, setFout] = useState(false);
   const [bevestigd, setBevestigd] = useState(false);
   const [bevestigFout, setBevestigFout] = useState(false);
   const a = staat.antwoorden;
@@ -154,7 +103,7 @@ const AanvraagInhoud = ({
     invoeren.find((i) => i.wet === wet && i.output === output);
 
   const { situatie } = route;
-  const { kandidaat, dienstverband, labels, bronnen } =
+  const { kandidaat, labels, bronnen } =
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
     ];
@@ -167,71 +116,24 @@ const AanvraagInhoud = ({
 
   const isPaneel = (id: RegelingId): id is PaneelId =>
     (paneelIds as RegelingId[]).includes(id);
-  const mist = (id: RegelingId) =>
-    (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
-  // Wat nog een keuze in stap 1 mist, is niet klaar, ook niet met een vinkje.
-  const klaarMet = (id: RegelingId) => !!g[id] && !mist(id);
-  const aantal = rijIds.filter(klaarMet).length;
-
-  const status = (id: RegelingId): Status =>
-    mist(id)
-      ? "aanvullen"
-      : g[id]
-        ? isPaneel(id)
-          ? "gecontroleerd"
-          : "gelezen"
-        : "controleren";
-
-  // Welke regelingen openstaan. Zolang de gebruiker niets open- of
-  // dichtklapte, staat de eerste die nog niet gecontroleerd is open.
-  const [open, setOpen] = useState<string[] | null>(null);
-  const [_, setMelding] = useState("");
-  const eerste = rijIds.find((id) => !klaarMet(id));
-  const openIds: string[] = open ?? (eerste ? [eerste] : []);
-  const isOpen = (id: string) => openIds.includes(id);
-  const wissel = (id: string) =>
-    setOpen(isOpen(id) ? openIds.filter((x) => x !== id) : [...openIds, id]);
-
-  // Het vinkje legt vast, klapt deze regeling dicht en de volgende die nog
-  // niet klaar is open.
-  const controleer = (id: RegelingId, aanvinken: boolean) => {
-    const volgende = aanvinken
-      ? rijIds.slice(rijIds.indexOf(id) + 1).find((x) => !klaarMet(x))
-      : undefined;
-    // With a next one: only that one open, and the focus on its heading, so
-    // it is not lost in the panel that closes, at the top of the screen. The text above the list says
-    // this will happen (WCAG 3.2.2).
-    setOpen(volgende ? [volgende] : openIds);
-    if (volgende)
-      requestAnimationFrame(() =>
-        focusAtTop(
-          document.querySelector<HTMLElement>(
-            `#paneel-${volgende} .utrecht-accordion__button`,
-          ),
-          // The panels open and close in 250 ms (rhc.css).
-          { waitMs: 260 },
-        ),
-      );
-    werkBij({ gecontroleerd: { ...g, [id]: aanvinken } });
-    const wat = isPaneel(id) ? "gecontroleerd" : "gelezen";
-    setMelding(
-      aanvinken ? `${NAAM[id]} is ${wat}.` : `${NAAM[id]} is nog niet ${wat}.`,
-    );
+  // Welke regelingen de ondernemer aanvraagt: de tegels met een vinkje.
+  const gekozen = (id: PaneelId) => !!g[id];
+  // Hoe vaak versturen zonder keuze is geprobeerd: elke poging zet de focus
+  // op de melding, zodat die wordt voorgelezen.
+  const [kiesFout, setKiesFout] = useState(0);
+  useEffect(() => {
+    if (kiesFout) document.getElementById("kies-fout")?.focus();
+  }, [kiesFout]);
+  const kies = (id: PaneelId, aan: boolean) => {
+    werkBij({
+      gecontroleerd: { ...g, [id]: aan },
+      // Jobcoaching en werkplekaanpassing gaan mee als de keuze "ja" is.
+      ...(id === "jc" || id === "wpa"
+        ? { keuzes: { ...k, [id]: aan ? "ja" : "nee" } }
+        : {}),
+    });
+    if (aan) setKiesFout(0);
   };
-  // Een gewone functie, geen component: een component in de render zou bij
-  // elke wijziging opnieuw worden aangemaakt.
-  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 1.
-  const vinkje = (id: RegelingId) =>
-    mist(id) ? null : (
-      <FormFieldCheckboxOption
-        label={
-          isPaneel(id) ? "Ik heb dit gecontroleerd en het klopt" : "Gelezen"
-        }
-        name={`ok-${id}`}
-        checked={!!g[id]}
-        onChange={(event) => controleer(id, event.target.checked)}
-      />
-    );
 
   const waarom = (
     wet: string,
@@ -253,66 +155,35 @@ const AanvraagInhoud = ({
     );
   };
 
-  // Werkgever en doelgroepregister staan bij Gegevens die de overheid heeft
-  // opgehaald, boven de regelingen; hier niet nog een keer.
-  const werknemerRijen: Gegeven[] = [
-    {
-      label: "Werknemer",
-      waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
-      bron: "Basisregistratie Personen",
-    },
-  ];
-  const woonplaatsRij: Gegeven = {
-    label: "Woonplaats werknemer",
-    waarde:
-      kandidaat.woonplaats === kandidaat.gemeente
-        ? kandidaat.woonplaats
-        : `${kandidaat.woonplaats}, gemeente ${kandidaat.gemeente}`,
-    bron: "Basisregistratie Personen",
-  };
-  const dienstRijen: Gegeven[] = [
-    {
-      label: "Eerste werkdag",
-      waarde: datumNL(a.aanvang ?? dienstverband.aanvang),
-      bron: "Uw opgave",
-      wijzig: EIGEN_OPGAVE,
-    },
-    {
-      label: "Uren per week",
-      waarde: String(a.uren),
-      bron: "Uw antwoord",
-      wijzig: EIGEN_OPGAVE,
-    },
-  ];
-
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
-  // Wat niet geldt bij deze antwoorden, los onder de lijst.
-  const geldtNiet = balans.filter((r) => r.status === "geldt_niet");
-
-  // Eén sectie per regeling: de status en wie de regeling uitvoert bovenaan,
-  // dan de inhoud, dan het vinkje.
+  // Eén tegel per regeling: wie de regeling uitvoert, wat het is, en bij wat u
+  // zelf aanvraagt een vinkje om te kiezen.
   const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
-    <AccordionSection
-      key={id}
-      id={`paneel-${id}`}
-      headingLevel={3}
-      label={`${NAAM[id]}, ${STATUS[status(id)].tekst.toLowerCase()}`}
-      // Het type eist `body`, de component rendert alleen `children`.
-      body={null}
-      expanded={isOpen(id)}
-      onActivate={() => wissel(id)}
-    >
-      <div className="rhc-mox-stack">
+    <li key={id}>
+      <div
+        id={`regeling-${id}`}
+        className={`rhc-mox-tile${isPaneel(id) && gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
+      >
+        <Heading level={3} appearanceLevel={5}>
+          {NAAM[id]}
+        </Heading>
         <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
         {BEGRIP[id].map((b) => (
           <Begrip key={b} id={b} />
         ))}
         {kind}
-        {vinkje(id)}
+        {isPaneel(id) && (
+          <FormFieldCheckboxOption
+            label={`${NAAM[id]} aanvragen`}
+            name={`kies-${id}`}
+            checked={gekozen(id)}
+            onChange={(event) => kies(id, event.target.checked)}
+          />
+        )}
       </div>
-    </AccordionSection>
+    </li>
   );
 
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
@@ -337,9 +208,6 @@ const AanvraagInhoud = ({
             (Participatiewet, artikel 10d).
           </Paragraph>
           {voorbeeldbedrag("lks")}
-          <Gegevens
-            rijen={[...werknemerRijen, woonplaatsRij, ...dienstRijen]}
-          />
           <Paragraph>
             Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
             artikel 10d lid 2).
@@ -384,7 +252,6 @@ const AanvraagInhoud = ({
             minimumloon (Wajong, artikel 2:20).
           </Paragraph>
           {voorbeeldbedrag("ld")}
-          <Gegevens rijen={[...werknemerRijen, ...dienstRijen]} />
           <Paragraph>
             Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
             loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
@@ -406,21 +273,6 @@ const AanvraagInhoud = ({
             Begeleiding op de werkplek door een jobcoach. De werknemer heeft
             daar recht op (Participatiewet, artikel 10da).
           </Paragraph>
-          <Gegevens
-            rijen={[
-              {
-                label: "Jobcoaching aanvragen",
-                waarde:
-                  k.jc === "ja"
-                    ? "Ja, via de gemeente"
-                    : k.jc === "nee"
-                      ? "Nee, niet nodig"
-                      : "Nog niet gekozen",
-                bron: "Uw opgave",
-                wijzig: EIGEN_OPGAVE,
-              },
-            ]}
-          />
           {waarom(
             "participatiewet",
             "heeft_aanspraak_op_begeleiding_op_de_werkplek",
@@ -436,23 +288,6 @@ const AanvraagInhoud = ({
           Vergoeding voor een aangepaste werkplek of een hulpmiddel. De gemeente
           beslist of dat nodig is (Participatiewet, artikel 10).
         </Paragraph>
-        <Gegevens
-          rijen={[
-            {
-              label: "Aanpassing van de werkplek",
-              waarde:
-                k.wpa === "ja"
-                  ? "Ja, ik weet wat er nodig is"
-                  : k.wpa === "later"
-                    ? "Weet ik nog niet, ik vraag het later aan"
-                    : k.wpa === "nee"
-                      ? "Nee"
-                      : "Nog niet gekozen",
-              bron: "Uw opgave",
-              wijzig: EIGEN_OPGAVE,
-            },
-          ]}
-        />
       </>,
     );
   };
@@ -521,21 +356,6 @@ const AanvraagInhoud = ({
             </Paragraph>
             {voorbeeldbedrag("lkv")}
             {lkv?.aanname && <Aanname id={lkv.aanname} />}
-            <Gegevens
-              rijen={[
-                {
-                  label: "Loonheffingennummer",
-                  waarde: werkgever.loonheffingennummer,
-                  bron: "Belastingdienst",
-                },
-                {
-                  label: "Verloonde uren per jaar",
-                  waarde: `${a.uren * 52} (${a.uren} uur per week)`,
-                  bron: "Uw antwoord",
-                  wijzig: EIGEN_OPGAVE,
-                },
-              ]}
-            />
             {waarom(
               "wet_tegemoetkomingen_loondomein",
               "heeft_recht_op_lkv",
@@ -562,21 +382,7 @@ const AanvraagInhoud = ({
 
   // Zonder panelen is er niets te versturen. Bij WIA maakt "Klaar" de zaak
   // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
-  // De samenvatting van wat ontbreekt krijgt de focus, zodat die wordt voorgelezen.
-  const toonFout = () => {
-    setFout(true);
-    requestAnimationFrame(() =>
-      document.getElementById("fout-samenvatting")?.focus(),
-    );
-  };
-
   const klaar = () => {
-    // Ook zonder aanvraag: eerst alles gelezen, net als bij versturen.
-    if (aantal < rijIds.length) {
-      toonFout();
-      return;
-    }
-    setFout(false);
     if (route.zaak === "wia") {
       werkBij({
         zaken: {
@@ -607,23 +413,20 @@ const AanvraagInhoud = ({
   const demo = perSituatie[uwv ? "wajong" : "gemeente"];
   const naarWie = uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
   const bestaand = staat.zaken[situatie];
-  const verstuurt = [
-    paneelIds.includes("lks") && "loonkostensubsidie",
-    paneelIds.includes("ld") && "loondispensatie",
-    paneelIds.includes("jc") && k.jc === "ja" && "jobcoaching",
-    paneelIds.includes("wpa") && k.wpa === "ja" && "werkplekaanpassing",
-  ].filter((x): x is string => !!x);
+  const verstuurt = paneelIds
+    .filter(gekozen)
+    .map((id) => NAAM[id].toLowerCase());
   const opsomming =
     verstuurt.length < 2
       ? (verstuurt[0] ?? "")
       : `${verstuurt.slice(0, -1).join(", ")} en ${verstuurt.at(-1)}`;
 
   const indienen = () => {
-    if (aantal < rijIds.length) {
-      toonFout();
+    // Minimaal één regeling.
+    if (verstuurt.length === 0) {
+      setKiesFout((keer) => keer + 1);
       return;
     }
-    setFout(false);
     if (!bevestigd) {
       setBevestigFout(true);
       document.querySelector<HTMLInputElement>("#bevestiging input")?.focus();
@@ -690,7 +493,7 @@ const AanvraagInhoud = ({
                 ? "Bij deze antwoorden is er niets aan te vragen."
                 : paneelIds.length === 0
                   ? overzichtTekst(route)
-                  : "Controleer per regeling de gegevens en vul aan wat ontbreekt."}
+                  : "Controleer uw gegevens en kies welke regelingen u aanvraagt."}
           </Paragraph>
         )}
         {paneelIds.length > 0 && (
@@ -701,85 +504,47 @@ const AanvraagInhoud = ({
         )}
 
         {bekend && rijIds.length > 0 && (
-          <Opgehaald
+          <Controleer
             bronnen={bronnen}
-            situatie={situatie}
-            voornaam={kandidaat.voornaam}
+            kandidaat={kandidaat}
+            aanvang={a.aanvang}
             uren={a.uren}
-            aanvraag={paneelIds.length > 0}
           />
         )}
 
-        {bekend && rijIds.length > 0 && (
+        {bekend && paneelIds.length > 0 && (
           <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
             <Heading level={2} id="regelingen">
-              Regelingen
+              Kies de regelingen die u aanvraagt
             </Heading>
-            <Paragraph>
-              Vinkt u een regeling aan, dan gaat de volgende open.
-            </Paragraph>
-            {/* <div className="rhc-mox-stack rhc-mox-stack--sm">
-              <Paragraph>
-                Gecontroleerd of gelezen: {aantal} van {rijIds.length}
-              </Paragraph>
-              <ProgressBar
-                label="Gecontroleerd of gelezen"
-                value={aantal}
-                max={rijIds.length}
-                valueText={`${aantal} van ${rijIds.length}`}
-              />
-              <Paragraph role="status" className="rhc-mox-small-text">
-                {melding}
-              </Paragraph>
-            </div> */}
-
-            {fout && aantal < rijIds.length && (
-              <div id="fout-samenvatting" tabIndex={-1}>
+            <Paragraph>Kies ten minste één regeling.</Paragraph>
+            {kiesFout > 0 && verstuurt.length === 0 && (
+              <div id="kies-fout" tabIndex={-1}>
                 <Alert type="error">
                   <Paragraph>
-                    {paneelIds.length > 0
-                      ? "Nog niet klaar om te versturen. Controleer eerst:"
-                      : "Nog niet klaar. Lees eerst:"}
+                    U hebt nog geen regeling gekozen. Vink ten minste één
+                    regeling aan.
                   </Paragraph>
-                  <UnorderedList>
-                    {rijIds
-                      .filter((id) => !klaarMet(id))
-                      .map((id) => (
-                        <UnorderedListItem key={id}>
-                          <a
-                            href={`#paneel-${id}`}
-                            className="utrecht-link utrecht-link--html-a"
-                          >
-                            {NAAM[id]}
-                          </a>
-                          {mist(id) && ": kies dit eerst in stap 1"}
-                        </UnorderedListItem>
-                      ))}
-                  </UnorderedList>
                 </Alert>
               </div>
             )}
-
-            <Accordion>
+            <ul className="rhc-mox-tile-grid rhc-mox-tile-grid--wide">
               {paneelIds.map(paneel)}
-              {route.vanzelf.map(vanzelf)}
-              {route.taken.map(taak)}
-            </Accordion>
+            </ul>
           </section>
         )}
 
-        {bekend && geldtNiet.length > 0 && (
-          <section className="rhc-mox-row-gap" aria-labelledby="geldt-niet">
-            <Heading level={2} id="geldt-niet">
-              Geldt niet bij uw antwoorden
+        {bekend && route.vanzelf.length + route.taken.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
+            <Heading level={2} id="vanzelf">
+              {paneelIds.length > 0
+                ? "Hiervoor hoeft u niets aan te vragen"
+                : "Regelingen"}
             </Heading>
-            <UnorderedList>
-              {geldtNiet.map((r) => (
-                <UnorderedListItem key={r.id}>
-                  {NAAM[r.id]} <BegripInfo id={BEGRIP[r.id][0]} />
-                </UnorderedListItem>
-              ))}
-            </UnorderedList>
+            <ul className="rhc-mox-tile-grid rhc-mox-tile-grid--wide">
+              {route.vanzelf.map(vanzelf)}
+              {route.taken.map(taak)}
+            </ul>
           </section>
         )}
 
@@ -833,7 +598,7 @@ const AanvraagInhoud = ({
             next={
               paneelIds.length > 0 && bestaand?.ingediend
                 ? { label: "Bekijk de zaak", href: demo.zaak.url }
-                : paneelIds.length > 0 && verstuurt.length > 0
+                : paneelIds.length > 0
                   ? {
                       label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
                       onClick: indienen,

@@ -2988,6 +2988,30 @@ small,
 	text-decoration: none;
 }
 
+/* Bredere tegels, voor tegels met meer inhoud dan een titel en een regel. */
+.rhc-mox-tile-grid--wide {
+	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+
+/* Een tegel die de gebruiker heeft gekozen, zoals een regeling om aan te vragen. */
+.rhc-mox-tile--selected {
+	border-color: var(--rhc-color-lintblauw-500);
+	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
+		var(--rhc-color-lintblauw-500);
+}
+
+/* Bredere tegels, voor tegels met meer inhoud dan een titel en een regel. */
+.rhc-mox-tile-grid--wide {
+	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+
+/* Een tegel die de gebruiker heeft gekozen, zoals een regeling om aan te vragen. */
+.rhc-mox-tile--selected {
+	border-color: var(--rhc-color-lintblauw-500);
+	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
+		var(--rhc-color-lintblauw-500);
+}
+
 .rhc-mox-tile__title {
 	font-weight: var(--rhc-text-font-weight-bold);
 	text-decoration: underline;

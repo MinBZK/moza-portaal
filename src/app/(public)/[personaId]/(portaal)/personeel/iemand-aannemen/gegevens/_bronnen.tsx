@@ -4,7 +4,6 @@ import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BegripInfo } from "../_begrippen";
 import { overKandidaat } from "../_opgehaald";
 import {
   ActionGroup,
@@ -21,7 +20,6 @@ import {
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
-  type AannemenStaat,
   type Antwoorden,
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
@@ -51,20 +49,11 @@ const EigenOpgave = ({
   voornaam,
   a,
   zet,
-  keuzes,
-  kies,
-  vraagJc,
-  vraagWpa,
   aanvangFout,
 }: {
   voornaam: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
-  keuzes: AannemenStaat["keuzes"];
-  kies: (deel: AannemenStaat["keuzes"]) => void;
-  /** Alleen als jobcoaching of werkplekaanpassing bij de aanvraag hoort. */
-  vraagJc: boolean;
-  vraagWpa: boolean;
   aanvangFout?: string;
 }) => (
   <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
@@ -97,56 +86,6 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
-    {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
-    {vraagJc && (
-      <Fieldset
-        legend="Wilt u jobcoaching aanvragen?"
-        info={<BegripInfo id="jobcoaching" />}
-      >
-        <FormFieldRadio
-          name="jc"
-          value="ja"
-          label="Ja, via de gemeente"
-          checked={keuzes.jc === "ja"}
-          onChange={() => kies({ jc: "ja" })}
-        />
-        <FormFieldRadio
-          name="jc"
-          value="nee"
-          label="Nee, niet nodig"
-          checked={keuzes.jc === "nee"}
-          onChange={() => kies({ jc: "nee" })}
-        />
-      </Fieldset>
-    )}
-    {vraagWpa && (
-      <Fieldset
-        legend="Is er een aanpassing van de werkplek nodig?"
-        info={<BegripInfo id="werkplekaanpassing" />}
-      >
-        <FormFieldRadio
-          name="wpa"
-          value="ja"
-          label="Ja, ik weet wat er nodig is"
-          checked={keuzes.wpa === "ja"}
-          onChange={() => kies({ wpa: "ja" })}
-        />
-        <FormFieldRadio
-          name="wpa"
-          value="later"
-          label="Weet ik nog niet, ik vraag het later aan"
-          checked={keuzes.wpa === "later"}
-          onChange={() => kies({ wpa: "later" })}
-        />
-        <FormFieldRadio
-          name="wpa"
-          value="nee"
-          label="Nee"
-          checked={keuzes.wpa === "nee"}
-          onChange={() => kies({ wpa: "nee" })}
-        />
-      </Fieldset>
-    )}
   </section>
 );
 
@@ -174,7 +113,6 @@ const Bronnen = ({
     ? routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten)
     : undefined;
   const geenAanvraag = !!route?.overzicht;
-  const paneelIds = route?.panelen.flatMap((p) => p.ids) ?? [];
   const { bronnen, kandidaat } =
     perSituatie[
       situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
@@ -449,21 +387,6 @@ const Bronnen = ({
           voornaam={kandidaat.voornaam}
           a={antwoorden}
           zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
-          keuzes={staat?.keuzes ?? {}}
-          kies={(deel) =>
-            werkBij({
-              keuzes: { ...(staat?.keuzes ?? {}), ...deel },
-              // Een andere keuze is een andere aanvraag: controleer die opnieuw.
-              gecontroleerd: {
-                ...(staat?.gecontroleerd ?? {}),
-                ...Object.fromEntries(
-                  Object.keys(deel).map((id) => [id, false]),
-                ),
-              },
-            })
-          }
-          vraagJc={paneelIds.includes("jc")}
-          vraagWpa={paneelIds.includes("wpa")}
           aanvangFout={aanvangFout}
         />
       )}
