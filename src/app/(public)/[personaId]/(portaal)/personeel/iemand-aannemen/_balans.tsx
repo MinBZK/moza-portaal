@@ -292,9 +292,8 @@ const Balans = ({
         )}
         <Paragraph className="rhc-mox-small-text">
           Bij <ChangedValue>{`${antwoorden.uren} uur`}</ChangedValue> per week
-          en <ChangedValue>{euro(antwoorden.uurloon)}</ChangedValue> per uur. De
-          loonkosten zijn dan ongeveer{" "}
-          <ChangedValue>{euroHeel(kosten)}</ChangedValue> per jaar.
+          en ongeveer <ChangedValue>{euroHeel(kosten)}</ChangedValue> loonkosten
+          per jaar.
         </Paragraph>
         {bron}
         {statusmelding}

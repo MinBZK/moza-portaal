@@ -274,6 +274,9 @@ const VragenMetStaat = ({
     });
   };
   const wajong = uitkering === "wajong";
+  // De laatste vraag toont loonkosten; daaronder ligt het uurloon (UURLONEN).
+  const loonkostenBij = (stand: number) =>
+    loonkostenPerJaar({ ...a, uurloon: UURLONEN[stand] });
 
   return (
     <>
@@ -438,24 +441,37 @@ const VragenMetStaat = ({
           </div>
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label={`${nr(5)}. Wat wordt het bruto uurloon?`}
+              label={`${nr(5)}. Wat worden de loonkosten per jaar?`}
               min={0}
               max={UURLONEN.length - 1}
               step={1}
               value={standVan(a.uurloon)}
               onChange={(stand) => zet({ uurloon: UURLONEN[stand] })}
-              formatValue={(stand) => euro(UURLONEN[stand])}
+              formatValue={(stand) => euroHeel(loonkostenBij(stand))}
               formatValueText={(stand) =>
                 UURLONEN[stand] === WML_UUR_EUROCENT
-                  ? `${euro(UURLONEN[stand])} per uur: het wettelijk minimumloon voor 21 jaar en ouder`
-                  : `${euro(UURLONEN[stand])} per uur`
+                  ? `${euroHeel(loonkostenBij(stand))} per jaar: loonkosten bij het wettelijk minimumloon`
+                  : `${euroHeel(loonkostenBij(stand))} per jaar`
               }
               filled
+              info={
+                <InfoToggletip label="Toelichting bij de loonkosten">
+                  <Paragraph>
+                    Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
+                    en ongeveer 20 procent werkgeverslasten.
+                  </Paragraph>
+                  <Paragraph>
+                    Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per
+                    uur, voor iemand van 21 jaar of ouder. Voor een jongere
+                    werknemer is het minimumloon lager.
+                  </Paragraph>
+                </InfoToggletip>
+              }
             />
             <Paragraph className="rhc-mox-small-text">
-              Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per uur,
-              voor iemand van 21 jaar of ouder. Voor een jongere werknemer is
-              het minimumloon lager.
+              Bij {a.uren} uur per week is dat een bruto uurloon van{" "}
+              {euro(a.uurloon)}
+              {a.uurloon === WML_UUR_EUROCENT && ": het wettelijk minimumloon"}.
             </Paragraph>
           </div>
         </div>
