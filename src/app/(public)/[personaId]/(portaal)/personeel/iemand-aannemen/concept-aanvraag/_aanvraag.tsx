@@ -165,23 +165,20 @@ const AanvraagInhoud = ({
         id={`regeling-${id}`}
         className={`rhc-mox-tile${gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
       >
-        {/* De (i) staat naast de naam, zoals bij Controleer uw gegevens. */}
-        <div className="rhc-mox-with-info">
-          <Heading level={3} appearanceLevel={5}>
-            {NAAM[id]}
-          </Heading>
+        {/* Het vinkje met de naam is de titel van de tegel; de (i) ernaast. */}
+        <div className="rhc-mox-cluster rhc-mox-tile__choice">
+          <FormFieldCheckboxOption
+            label={NAAM[id]}
+            name={`kies-${id}`}
+            checked={gekozen(id)}
+            onChange={(event) => kies(id, event.target.checked)}
+          />
           {BEGRIP[id].map((b) => (
             <BegripInfo key={b} id={b} />
           ))}
         </div>
         <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
         {kind}
-        <FormFieldCheckboxOption
-          label={`Kies ${NAAM[id].toLowerCase()}`}
-          name={`kies-${id}`}
-          checked={gekozen(id)}
-          onChange={(event) => kies(id, event.target.checked)}
-        />
       </div>
     </li>
   );
@@ -498,7 +495,7 @@ const AanvraagInhoud = ({
                 ? "Bij deze antwoorden is er niets aan te vragen."
                 : paneelIds.length === 0
                   ? overzichtTekst(route)
-                  : "Controleer uw gegevens en kies de regelingen."}
+                  : "Controleer de gegevens en kies de regelingen."}
           </Paragraph>
         )}
         {paneelIds.length > 0 && (

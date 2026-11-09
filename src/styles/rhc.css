@@ -3025,6 +3025,11 @@ small,
 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 }
 
+/* Een tegel om te kiezen: het vinkje met de naam is de titel. */
+.rhc-mox-tile__choice .utrecht-form-label {
+	font-weight: var(--rhc-text-font-weight-bold);
+}
+
 /* Een tegel die de gebruiker heeft gekozen, zoals een regeling om aan te vragen. */
 .rhc-mox-tile--selected {
 	border-color: var(--rhc-color-lintblauw-500);

@@ -262,7 +262,7 @@ const Controleer = ({
   return (
     <section className="rhc-mox-row-gap" aria-labelledby="controleer">
       <Heading level={2} id="controleer">
-        Controleer uw gegevens
+        Controleer gegevens
       </Heading>
       {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
       {groep("controleer-onderneming", "Onderneming", ondernemingRijen)}
