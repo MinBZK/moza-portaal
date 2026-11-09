@@ -67,12 +67,12 @@ const EigenOpgave = ({
   vraagWpa: boolean;
   aanvangFout?: string;
 }) => (
-  // Onder de gekozen kandidaat, ingesprongen: deze vragen gaan over die persoon.
+  // Onder de gekozen kandidaat: deze vragen gaan over die persoon.
   <div
     id="eigen-opgave"
     role="group"
     aria-label={`Over ${voornaam}`}
-    className="rhc-mox-stack rhc-mox-reveal"
+    className="rhc-mox-stack"
   >
     <FormFieldTextInput
       id="eerste-werkdag"
@@ -317,17 +317,14 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
-          Wij vragen de kandidaat eerst om toestemming; dat is de werkwijze van
-          dit portaal. {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
+          Wij dienen de kandidaat eerst om te vragen.{" "}
+          {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
           {meer ? "zoeken" : "zoekt"} de kandidaat op met het
-          burgerservicenummer (BSN).
-        </Paragraph>
-        <Paragraph>
-          Werkt de kandidaat al bij u? Dan staat het BSN in uw
-          loonadministratie. Anders vraagt u het aan de kandidaat.
+          burgerservicenummer (BSN). Werkt de kandidaat al bij u? Dan staat het
+          BSN in uw loonadministratie.
         </Paragraph>
         <Fieldset
-          legend="Kandidaten"
+          legend="Kandidaat"
           invalid={!!kandidaatFout}
           aria-describedby={kandidaatFout ? "kandidaat-fout" : undefined}
         >
@@ -339,7 +336,15 @@ const Bronnen = ({
           <FormFieldRadio
             name="kandidaat"
             value={kandidaat.bsnMasker}
-            label={`${naam}, geboren ${datumNL(kandidaat.geboortedatum)}, BSN ${kandidaat.bsnMasker}`}
+            label={
+              <>
+                {naam}
+                <span className="rhc-mox-regular">
+                  , geboren {datumNL(kandidaat.geboortedatum)}, BSN{" "}
+                  {kandidaat.bsnMasker}
+                </span>
+              </>
+            }
             checked={gekozen}
             onChange={() => werkBij({ kandidaat: kandidaat.bsnMasker })}
           />
@@ -348,7 +353,15 @@ const Bronnen = ({
               key={k.naam}
               name="kandidaat"
               value={k.naam}
-              label={`${k.naam}${k.geboortedatum ? `, geboren ${k.geboortedatum}` : ""}${k.bsn ? `, BSN ${k.bsn}` : ""}`}
+              label={
+                <>
+                  {k.naam}
+                  <span className="rhc-mox-regular">
+                    {k.geboortedatum && `, geboren ${k.geboortedatum}`}
+                    {k.bsn && `, BSN ${k.bsn}`}
+                  </span>
+                </>
+              }
               checked={keuze === k.naam}
               onChange={() => werkBij({ kandidaat: k.naam })}
             />
@@ -356,7 +369,7 @@ const Bronnen = ({
           <FormFieldRadio
             name="kandidaat"
             value={NIEUW}
-            label="Iemand anders: werknemer toevoegen"
+            label="Andere kandidaat toevoegen"
             checked={keuze === NIEUW}
             onChange={() => werkBij({ kandidaat: NIEUW })}
           />

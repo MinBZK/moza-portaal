@@ -108,7 +108,7 @@ const StepNavigation = ({
           href={later}
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
-          Sla op en ga later verder
+          Opslaan en later verder gaan
         </Link>
       )}
       {back && (

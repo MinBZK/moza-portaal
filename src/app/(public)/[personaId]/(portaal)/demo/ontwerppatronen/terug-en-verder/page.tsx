@@ -53,12 +53,12 @@ const Page = () => (
         rows={[
           [
             "Verder",
-            "“Verder naar” en de naam van de volgende stap, zoals “Verder naar Aanvraag nakijken”",
+            "De naam van de volgende stap, zoals “Aanvraag nakijken”. Een schermlezer leest “Verder naar Aanvraag nakijken”.",
             "Primaire knop met een pijl vooruit",
           ],
           [
             "Terug",
-            "“Terug naar” en de naam van de vorige stap, zoals “Terug naar Voorbeeldberekening”",
+            "De naam van de vorige stap, zoals “Voorbeeldberekening”. Een schermlezer leest “Terug naar Voorbeeldberekening”.",
             "Secundaire knop met een pijl terug",
           ],
           [
@@ -84,6 +84,12 @@ const Page = () => (
         De naam van de stap komt uit dezelfde lijst als de stappenindicator. Zo
         zijn de knop en de indicator altijd gelijk. De ondernemer weet vooraf
         waar de knop heen gaat (WCAG 2.4.4).
+      </Paragraph>
+      <Paragraph>
+        “Verder naar” en “Terug naar” zijn niet zichtbaar: de pijl laat de
+        richting al zien. Een schermlezer leest ze wel voor, zodat de knop ook
+        zonder de pijl duidelijk is. De zichtbare tekst staat in de naam van de
+        knop, zodat spraakbediening werkt (WCAG 2.5.3).
       </Paragraph>
       <Paragraph>
         De eerste stap heeft geen Terug-knop. De ondernemer gaat dan terug met

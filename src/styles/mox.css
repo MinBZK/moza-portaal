@@ -123,10 +123,6 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		z-index: 1;
 	}
 
-	.rhc-logo__caption {
-		margin-block-start: calc(-1 * var(--rhc-space-sm));
-	}
-
 	.utrecht-page-header__content {
 		position: relative;
 	}
