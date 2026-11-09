@@ -2,7 +2,7 @@
 
 import LoadingStatus from "@/components/LoadingStatus";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
 import { useSliderDragging } from "@/components/RangeSlider";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
@@ -325,48 +325,59 @@ const Balans = ({
             <ChangedValue>{euroHeel(kosten)}</ChangedValue>
           </dd>
         </div>
-        {regels.map((r) => {
-          // Altijd wanneer de regeling geldt; daarna de aanname, en bij een
-          // bedrag de uitleg bij loondispensatie of de duur en het voorbehoud
-          // bij het loonkostenvoordeel.
-          const metBedrag = bekend && !fout && r.bedrag > 0;
-          const toelichting = [
-            WANNEER[r.id],
-            ...(bekend && !fout && r.status === "geldt_niet"
-              ? ["Bij uw antwoorden geldt deze regeling niet."]
-              : []),
-            ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
-            ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
-            ...(metBedrag && r.id === "lkv"
-              ? lkvToelichting(r.regel?.categorie)
-              : []),
-          ];
-          return (
-            <div key={r.id} className="rhc-data-summary__item">
-              <dt className="rhc-data-summary__item-key">
-                <span>
-                  {naam(r)}
-                  {toelichting.length > 0 && (
-                    <>
-                      {" "}
-                      <InfoToggletip
-                        label={`Toelichting bij ${naam(r).toLowerCase()}`}
-                      >
-                        {toelichting.map((zin) => (
-                          <Paragraph key={zin}>{zin}</Paragraph>
-                        ))}
-                        {bekend && !fout && meer?.(r)}
-                      </InfoToggletip>
-                    </>
-                  )}
-                </span>
-              </dt>
-              <dd className="rhc-data-summary__item-value">
-                {waarde(r, "− ")}
-              </dd>
-            </div>
-          );
-        })}
+        {/* De regelingen samen op één regel; per regeling de uitleg in de (i). */}
+        <div className="rhc-data-summary__item">
+          <dt className="rhc-data-summary__item-key">
+            <span>
+              Regelingen{" "}
+              <InfoToggletip label="Toelichting bij de regelingen">
+                {regels.map((r) => {
+                  // Kop met het bedrag en wanneer de regeling geldt; daarna de
+                  // aanname, en bij een bedrag de uitleg bij loondispensatie of
+                  // de duur en het voorbehoud bij het loonkostenvoordeel.
+                  const klaar = bekend && !fout;
+                  const metBedrag = klaar && r.bedrag > 0;
+                  const uitkomst = !klaar
+                    ? ""
+                    : r.status === "bedrag"
+                      ? `: ${euroHeel(r.bedrag)}`
+                      : r.status === "niet_meegeteld"
+                        ? ": niet meegeteld"
+                        : ": geldt niet bij uw antwoorden";
+                  const toelichting = [
+                    ...(r.regel?.aanname
+                      ? [AANNAMES[r.regel.aanname].uitleg]
+                      : []),
+                    ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
+                    ...(metBedrag && r.id === "lkv"
+                      ? lkvToelichting(r.regel?.categorie)
+                      : []),
+                  ];
+                  return (
+                    <Fragment key={r.id}>
+                      <Paragraph>
+                        <strong>
+                          {naam(r)}
+                          {uitkomst}.
+                        </strong>{" "}
+                        {WANNEER[r.id]}
+                      </Paragraph>
+                      {toelichting.map((zin) => (
+                        <Paragraph key={zin}>{zin}</Paragraph>
+                      ))}
+                      {klaar && meer?.(r)}
+                    </Fragment>
+                  );
+                })}
+              </InfoToggletip>
+            </span>
+          </dt>
+          <dd className="rhc-data-summary__item-value">
+            <ChangedValue>
+              {bekend && !fout ? `− ${euroHeel(terug)}` : bezigOfFout}
+            </ChangedValue>
+          </dd>
+        </div>
         <div className="rhc-data-summary__item rhc-mox-sum__total">
           <dt className="rhc-data-summary__item-key">
             Geschatte loonkosten per jaar

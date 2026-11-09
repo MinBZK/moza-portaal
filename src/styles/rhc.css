@@ -2715,7 +2715,11 @@ small,
 
 	@supports (position-anchor: --a) {
 		inset-block-start: calc(anchor(bottom) + var(--rhc-space-sm));
-		inset-inline-start: anchor(start);
+		/* Never past the end of the viewport, also when a long text fits no fallback. */
+		inset-inline-start: min(
+			anchor(start),
+			calc(100% - min(24rem, 100% - 2 * var(--rhc-space-lg)) - var(--rhc-space-lg))
+		);
 		position: fixed;
 		position-anchor: --rhc-mox-toggletip;
 		position-try-fallbacks: flip-inline, --rhc-mox-toggletip-full;
