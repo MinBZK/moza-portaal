@@ -2312,7 +2312,6 @@ const ComponentsDemoPage = () => {
           "Zoeken of een vraag stellen",
           "Zichtbaar label boven het veld; op elke pagina hetzelfde",
         ],
-        ["hideLabel", "boolean", "false", "Label alleen voor schermlezers"],
         [
           "recentSearches",
           "string[]",
