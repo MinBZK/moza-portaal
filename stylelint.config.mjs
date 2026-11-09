@@ -7,6 +7,8 @@ const config = {
     "csstools/use-logical": "always",
     // Declaraties op alfabet. Custom properties (--*) blijven waar ze staan.
     "order/properties-alphabetical-order": true,
+    // Onbekende waarden, zoals een classnaam die per ongeluk in een waarde staat.
+    "declaration-property-value-no-unknown": true,
   },
 };
 
