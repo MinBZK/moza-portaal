@@ -17,7 +17,6 @@ import { getDemoIemandAannemenSituaties } from "@/demo";
 import {
   getActieveOrganisatie,
   getActievePersona,
-  getIngelogdeNaam,
 } from "@/app/(public)/_persona";
 import { ExternalLink } from "@/app/(footer)/_article";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
@@ -69,7 +68,6 @@ const ONDERNEMERSPLEIN_AANNEMEN =
   "https://ondernemersplein.overheid.nl/personeel/aannemen/stappenplan-personeel-aannemen/";
 const BELASTINGDIENST_LOON =
   "https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/personeel-en-loon";
-const EHERKENNING = "https://www.eherkenning.nl/";
 
 const aantalTekst = (voltijd = 0, deeltijd = 0) =>
   voltijd + deeltijd === 0
@@ -78,17 +76,14 @@ const aantalTekst = (voltijd = 0, deeltijd = 0) =>
 
 /**
  * Personeel en rollen: het personeel van de onderneming, wat de ondernemer
- * daarvoor kan regelen (met de ingang naar Iemand aannemen), en wie namens
- * de onderneming mag handelen.
+ * daarvoor kan regelen (met de ingang naar Iemand aannemen).
  */
 const PersoneelPage = async () => {
   const persona = await getActievePersona();
-  const [situaties, organisatie, naam] = await Promise.all([
+  const [situaties, organisatie] = await Promise.all([
     getDemoIemandAannemenSituaties(),
     getActieveOrganisatie(persona),
-    getIngelogdeNaam(persona),
   ]);
-  const onderneming = organisatie?.handelsnaam ?? "uw onderneming";
 
   return (
     <>
@@ -215,40 +210,6 @@ const PersoneelPage = async () => {
           </Paragraph>
         </section>
       </div>
-
-      <section className="rhc-mox-card" aria-labelledby="rollen">
-        <Heading level={2} id="rollen">
-          Rollen en bevoegdheden
-        </Heading>
-        <DataSummary appearance="column" className="rhc-data-summary--columns">
-          {naam && (
-            <DataSummaryItem
-              itemKey={naam}
-              itemValue={
-                organisatie?.functies ?? organisatie?.rol ?? "Onbekend"
-              }
-            />
-          )}
-          {organisatie?.rechtsvorm && (
-            <DataSummaryItem
-              itemKey="Rechtsvorm"
-              itemValue={organisatie.rechtsvorm}
-            />
-          )}
-        </DataSummary>
-        <Paragraph className="rhc-mox-small-text">
-          Uw functie komt uit het Handelsregister van de KVK.
-        </Paragraph>
-        <Paragraph>
-          Wilt u dat een medewerker of uw boekhouder namens {onderneming} zaken
-          regelt bij de overheid? Geef die dan een machtiging met eHerkenning.
-        </Paragraph>
-        <Paragraph>
-          <ExternalLink href={EHERKENNING}>
-            Machtigen met eHerkenning
-          </ExternalLink>
-        </Paragraph>
-      </section>
 
       <Heading level={2}>Veelgestelde vragen</Heading>
       <div className="mox-faq-card">

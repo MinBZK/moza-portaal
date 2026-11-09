@@ -17,7 +17,6 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import ProgressBar from "@/components/ProgressBar";
 import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import type { DemoAannemen } from "@/demo";
 import basis from "../_basisfeiten.json";
@@ -175,7 +174,7 @@ const AanvraagInhoud = ({
   // Welke regelingen openstaan. Zolang de gebruiker niets open- of
   // dichtklapte, staat de eerste die nog niet gecontroleerd is open.
   const [open, setOpen] = useState<string[] | null>(null);
-  const [melding, setMelding] = useState("");
+  const [_, setMelding] = useState("");
   const eerste = rijIds.find((id) => !klaarMet(id));
   const openIds: string[] = open ?? (eerste ? [eerste] : []);
   const isOpen = (id: string) => openIds.includes(id);
