@@ -2,13 +2,15 @@ name: Deploy preview
 
 # Elke pull request krijgt een eigen preview-omgeving op ZAD (project "MOZa demo").
 # Bij het sluiten van de PR wordt de omgeving weer opgeruimd.
-# Een push naar ux-fork zet die branch op een vaste omgeving "ux-fork". Die
-# blijft staan; er is geen PR die sluit.
+# Een push naar main zet main op de vaste omgeving "ux-fork": daar wijst
+# proef.moza.rijksapp.nl naar (publish-on-web in ZAD). De naam stamt uit de
+# tijd dat het team op de branch ux-fork werkte; die branch bestaat niet meer.
+# De omgeving blijft staan; er is geen PR die sluit.
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
   push:
-    branches: [ux-fork]
+    branches: [main]
 
 permissions: {}
 
@@ -16,13 +18,13 @@ env:
   REGISTRY: ghcr.io
   ZAD_PROJECT_ID: md-a8y
   ZAD_COMPONENT: proef
-  # pr-<nr> bij een pull request, de branchnaam bij een push.
-  DEPLOYMENT_NAME: ${{ github.event_name == 'push' && github.ref_name || format('pr-{0}', github.event.number) }}
+  # pr-<nr> bij een pull request, de vaste omgeving ux-fork bij een push naar main.
+  DEPLOYMENT_NAME: ${{ github.event_name == 'push' && 'ux-fork' || format('pr-{0}', github.event.number) }}
 
 # Twee pushes kort na elkaar: de tweede wacht, zodat een oudere build niet als
 # laatste online komt.
 concurrency:
-  group: deploy-${{ github.event_name == 'push' && github.ref_name || format('pr-{0}', github.event.number) }}
+  group: deploy-${{ github.event_name == 'push' && 'ux-fork' || format('pr-{0}', github.event.number) }}
 
 jobs:
   build:
@@ -80,7 +82,7 @@ jobs:
       pull-requests: write # URL van de preview als PR-comment plaatsen
     environment:
       # De env-context is hier niet beschikbaar, vandaar dezelfde expressie.
-      name: ${{ github.event_name == 'push' && github.ref_name || format('pr-{0}', github.event.number) }}
+      name: ${{ github.event_name == 'push' && 'ux-fork' || format('pr-{0}', github.event.number) }}
       url: ${{ steps.deploy.outputs.url }}
     steps:
       - name: Deploy to ZAD
@@ -97,7 +99,7 @@ jobs:
           clone-from: proef
           comment-on-pr: ${{ github.event_name == 'pull_request' }}
           # Alleen bij een PR wachten tot de preview antwoordt. Bij een push
-          # naar ux-fork hangt de deployment via publish-on-web aan
+          # naar main hangt de deployment via publish-on-web aan
           # proef.moza.rijksapp.nl; de action controleert dan een zelf
           # samengesteld adres dat niet bestaat (404) en faalt na 300 s.
           wait-for-ready: ${{ github.event_name == 'pull_request' }}
