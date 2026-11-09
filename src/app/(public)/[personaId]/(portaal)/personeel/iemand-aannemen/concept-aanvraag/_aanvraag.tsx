@@ -17,7 +17,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
-import { Begrip, type BegripId } from "../_begrippen";
+import { BegripInfo, type BegripId } from "../_begrippen";
 import Controleer from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
@@ -165,13 +165,16 @@ const AanvraagInhoud = ({
         id={`regeling-${id}`}
         className={`rhc-mox-tile${gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
       >
-        <Heading level={3} appearanceLevel={5}>
-          {NAAM[id]}
-        </Heading>
+        {/* De (i) staat naast de naam, zoals bij Controleer uw gegevens. */}
+        <div className="rhc-mox-with-info">
+          <Heading level={3} appearanceLevel={5}>
+            {NAAM[id]}
+          </Heading>
+          {BEGRIP[id].map((b) => (
+            <BegripInfo key={b} id={b} />
+          ))}
+        </div>
         <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
-        {BEGRIP[id].map((b) => (
-          <Begrip key={b} id={b} />
-        ))}
         {kind}
         <FormFieldCheckboxOption
           label={`Kies ${NAAM[id].toLowerCase()}`}

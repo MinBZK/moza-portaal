@@ -3,7 +3,7 @@ import { Paragraph } from "@/components/rhc";
 
 /**
  * Begrippen van Iemand aannemen, met een korte uitleg. Een begrip krijgt een
- * (i) waar het in een stap voor het eerst voorkomt.
+ * (i) naast de naam of titel waar het in een stap voorkomt.
  */
 export const BEGRIPPEN = {
   loonkostensubsidie: {
@@ -72,11 +72,3 @@ export const BegripInfo = ({ id }: { id: BegripId }) => {
     </InfoToggletip>
   );
 };
-
-/** Een korte regel "Wat is …?" met de (i), onder een vraag of in een paneel. */
-export const Begrip = ({ id }: { id: BegripId }) => (
-  // Een div: de Toggletip is een <details> en mag niet in een <p>.
-  <div className="rhc-mox-small-text">
-    {BEGRIPPEN[id].vraag} <BegripInfo id={id} />
-  </div>
-);
