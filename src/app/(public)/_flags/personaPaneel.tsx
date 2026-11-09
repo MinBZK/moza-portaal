@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Icon, LinkButton, VisuallyHidden } from "@/components/rhc";
 import SideOverlay from "@/components/SideOverlay";
 import { useCookie } from "@/utils/useCookie";
+import { useRouter } from "next/navigation";
 
 export type PersonaKeuze = {
   id: string;
@@ -51,6 +52,7 @@ const PersonaPaneel = ({
   actievePersonaId?: string;
 }) => {
   const pathname = usePathname();
+  const router = useRouter();
   const { set: setPersonaId } = useCookie("personaId");
   const { set: setOrganisatieId } = useCookie("organisatieId");
 
@@ -68,9 +70,8 @@ const PersonaPaneel = ({
     });
     if (pathname.startsWith("/berichtenbox/"))
       // A full reload on purpose: all client state belongs to the previous persona.
-      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.assign("/berichtenbox");
-    else location.reload();
+      router.push("/berichtenbox");
+    else router.refresh();
   };
 
   // Uitgewerkte persona's per doelgroep, zoals op cx-moza. Daarna de
