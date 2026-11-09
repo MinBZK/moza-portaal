@@ -68,6 +68,8 @@ export type Antwoorden = {
   uurloon: number;
   /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 1. */
   aanvang?: string;
+  /** Alleen bij WIA: in de zes maanden voor de eerste werkdag al bij de werkgever in dienst (Wtl 2.6 lid 1 b). */
+  eerderInDienst?: boolean;
 };
 
 /**
@@ -134,8 +136,13 @@ export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
 
-/** De eigen opgave in stap 1 is compleet: de eerste werkdag is ingevuld. */
-export const eigenOpgaveCompleet = (a: Antwoorden) => !!a.aanvang;
+/** Alleen het loonkostenvoordeel bij WIA hangt af van een eerder dienstverband (Wtl 2.6 lid 1 b). */
+export const vraagEerderInDienst = (a: Antwoorden) =>
+  a.doelgroepen.includes("wia");
+
+/** De eigen opgave in stap 1 is compleet: de eerste werkdag en, bij WIA, het eerdere dienstverband. */
+export const eigenOpgaveCompleet = (a: Antwoorden) =>
+  !!a.aanvang && (!vraagEerderInDienst(a) || a.eerderInDienst !== undefined);
 
 export const uurloonTekst = (a: Antwoorden) =>
   a.uurloon === WML_UUR_EUROCENT

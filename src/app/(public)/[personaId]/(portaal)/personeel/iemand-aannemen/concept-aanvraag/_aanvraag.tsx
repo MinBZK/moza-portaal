@@ -26,6 +26,7 @@ import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
   useAannemen,
+  vraagEerderInDienst,
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
@@ -541,6 +542,8 @@ const AanvraagInhoud = ({
             kandidaat={kandidaat}
             aanvang={a.aanvang}
             uren={a.uren}
+            vraagEerder={vraagEerderInDienst(a)}
+            eerderInDienst={a.eerderInDienst}
           />
         )}
 

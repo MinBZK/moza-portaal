@@ -94,6 +94,8 @@ export type Keuzes = {
   loonwaarde: number;
   /** Bruto uurloon in eurocent. */
   uurloon: number;
+  /** Zonder antwoord (de voorbeeldberekening): nee, met het voorbehoud zes_maanden. */
+  eerderInDienst?: boolean;
 };
 
 export type Feiten = Record<string, boolean | number | string | null>;
@@ -201,6 +203,7 @@ export const feitenVoor = (a: Keuzes): Feiten => {
     ),
     datum_aanvang_dienstbetrekking: AANVANG,
     datum_aanvang_eerste_dienstbetrekking_2_6: AANVANG,
+    was_in_dienst_bij_werkgever_binnen_zes_maanden: a.eerderInDienst === true,
     overeengekomen_arbeidsduur_uren_per_week: a.uren,
     loonwaarde_percentage: a.loonwaarde,
     verloonde_uren: verloond,

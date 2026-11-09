@@ -784,3 +784,43 @@ test("eigenaar: opslag van een ander telt als leeg, oude opslag zonder eigenaar 
   assert.equal(E.isVanEigenaar({ eigenaar: "karin:1" }, "bilal:1"), false);
   assert.equal(E.isVanEigenaar({}, "karin:1"), true);
 });
+
+// Wtl 2.6 lid 1 b: wie in de zes maanden voor de start al bij de werkgever in
+// dienst was, geeft geen loonkostenvoordeel arbeidsgehandicapte werknemer. De
+// banenafspraak (Wtl 2.10) kent die voorwaarde niet.
+const lkvMet = (doelgroepen, extra) => {
+  const a = { doelgroepen, uren: 32, loonwaarde: 100, uurloon: 1499, ...extra };
+  const invoer = U.invoerVoor(a, basis).find(
+    (i) => i.output === "heeft_recht_op_lkv",
+  );
+  return bereken(invoer).outputs;
+};
+
+test("lkv: WIA zonder antwoord of met nee rekent het voordeel arbeidsgehandicapte", () => {
+  for (const extra of [{}, { eerderInDienst: false }]) {
+    const o = lkvMet(["wia"], extra);
+    assert.equal(o.categorie_lkv, "arbeidsgehandicapte_werknemer");
+    assert.equal(o.hoogte_lkv_per_jaar_eurocent, 507520);
+  }
+});
+
+test("lkv: WIA en eerder in dienst geeft geen loonkostenvoordeel (Wtl 2.6 lid 1 b)", () => {
+  const o = lkvMet(["wia"], { eerderInDienst: true });
+  assert.equal(o.heeft_recht_op_lkv, false);
+  assert.equal(o.hoogte_lkv_per_jaar_eurocent, 0);
+});
+
+test("lkv: banenafspraak blijft gelden bij eerder in dienst (Wtl 2.10)", () => {
+  const o = lkvMet(["register"], { eerderInDienst: true });
+  assert.equal(o.categorie_lkv, "banenafspraak");
+  assert.equal(o.hoogte_lkv_per_jaar_eurocent, 168064);
+});
+
+test("lkv: WIA in het register valt bij eerder in dienst terug op de banenafspraak", () => {
+  const nee = lkvMet(["register", "wia"], { eerderInDienst: false });
+  assert.equal(nee.categorie_lkv, "arbeidsgehandicapte_werknemer");
+  assert.equal(nee.hoogte_lkv_per_jaar_eurocent, 507520);
+  const ja = lkvMet(["register", "wia"], { eerderInDienst: true });
+  assert.equal(ja.categorie_lkv, "banenafspraak");
+  assert.equal(ja.hoogte_lkv_per_jaar_eurocent, 168064);
+});
