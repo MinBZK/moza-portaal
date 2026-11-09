@@ -17,7 +17,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
-import { BegripInfo, type BegripId } from "../_begrippen";
+import { BegripInfo, BEGRIP, NAAM } from "../_begrippen";
 import Controleer from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
@@ -33,45 +33,17 @@ import {
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
 
-const NAAM: Record<RegelingId, string> = {
-  lks: "Loonkostensubsidie",
-  ld: "Loondispensatie",
-  jc: "Jobcoaching",
-  wpa: "Werkplekaanpassing",
-  lkv: "Loonkostenvoordeel",
-  nrp: "No-riskpolis",
-  doelgroepverklaring: "Doelgroepverklaring",
-  vz_wajong: "Jobcoach of werkplekaanpassing",
-  vz_wia: "Jobcoach of werkplekaanpassing",
-  pp: "Proefplaats",
-};
-
-/** Welke begrippen bij een paneel horen; die krijgen een (i) in het paneel. */
-const BEGRIP: Record<RegelingId, BegripId[]> = {
-  lks: ["loonkostensubsidie"],
-  ld: ["loondispensatie"],
-  jc: ["jobcoaching"],
-  wpa: ["werkplekaanpassing"],
-  lkv: ["loonkostenvoordeel"],
-  nrp: ["noRiskpolis"],
-  doelgroepverklaring: ["doelgroepverklaring"],
-  vz_wajong: ["jobcoaching", "werkplekaanpassing"],
-  vz_wia: ["jobcoaching", "werkplekaanpassing"],
-  pp: ["proefplaatsing"],
-};
-
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
   werkgever: Werkgever;
 };
 
 /**
- * De vooringevulde aanvraag volgt de route van de situatie: per organisatie
- * de panelen voor wat de werkgever zelf indient (met de gegevens en hun bron,
- * "Waarom deze uitkomst?" en een vinkje "gecontroleerd"), daaronder de taken
- * voor de werknemer en wat vanzelf of via de loonaangifte gaat. Rechts wat
- * het oplevert, live uit de engine. Indienen kan pas als alle panelen
- * gecontroleerd zijn; zonder panelen is er niets te versturen.
+ * De vooringevulde aanvraag volgt de route van de situatie: een kaart per
+ * regeling, eerst wat de werkgever zelf indient, dan wat vanzelf of via de
+ * loonaangifte gaat en de taken van de werknemer. Met iets om te versturen
+ * kiest de ondernemer de regelingen met een vinkje; zonder panelen is er
+ * niets te versturen en tonen de kaarten wat er geldt, met Afronden.
  */
 const Aanvraag = (props: Props) => {
   const { staat } = useAannemen();
@@ -115,6 +87,9 @@ const AanvraagInhoud = ({
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
+  // Zonder iets om te versturen is er niets te kiezen: de kaarten tonen wat
+  // er geldt, zonder vinkje.
+  const zonderAanvraag = paneelIds.length === 0;
   // Welke regelingen de ondernemer kiest: de kaarten met een vinkje.
   const gekozen = (id: RegelingId) => !!g[id];
   const aantalGekozen = rijIds.filter(gekozen).length;
@@ -159,12 +134,12 @@ const AanvraagInhoud = ({
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
   // Eén kaart per regeling: de naam als kop, wie de regeling uitvoert, wat het
-  // is, en onderaan een vinkje om te kiezen.
+  // is, en onderaan een vinkje om te kiezen (niet zonder aanvraag).
   const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
     <li
       key={id}
       id={`regeling-${id}`}
-      className={`rhc-mox-card${gekozen(id) ? " rhc-mox-card--selected" : ""}`}
+      className={`rhc-mox-card${!zonderAanvraag && gekozen(id) ? " rhc-mox-card--selected" : ""}`}
     >
       <div className="rhc-mox-cluster">
         <Heading level={3}>{NAAM[id]}</Heading>
@@ -176,18 +151,20 @@ const AanvraagInhoud = ({
       {kind}
       {/* De naam van de regeling alleen voor schermlezers: elk vinkje heet
           anders, ook buiten de kaart, zoals in een lijst met formuliervelden. */}
-      <FormFieldCheckboxOption
-        className="rhc-mox-card__action"
-        label={
-          <>
-            Kies deze regeling
-            <span className="rhc-visually-hidden">: {NAAM[id]}</span>
-          </>
-        }
-        name={`kies-${id}`}
-        checked={gekozen(id)}
-        onChange={(event) => kies(id, event.target.checked)}
-      />
+      {!zonderAanvraag && (
+        <FormFieldCheckboxOption
+          className="rhc-mox-card__action"
+          label={
+            <>
+              Kies deze regeling
+              <span className="rhc-visually-hidden">: {NAAM[id]}</span>
+            </>
+          }
+          name={`kies-${id}`}
+          checked={gekozen(id)}
+          onChange={(event) => kies(id, event.target.checked)}
+        />
+      )}
     </li>
   );
 
@@ -385,11 +362,11 @@ const AanvraagInhoud = ({
           </>,
         );
 
-  // Zonder panelen is er niets te versturen. Bij WIA maakt "Dossier indienen" de zaak
-  // aan (de werknemer vraagt de verklaring aan). Daarna altijd de bedankpagina.
+  // Afronden zonder iets te versturen. Bij WIA maakt dat de zaak aan (de
+  // werknemer vraagt de verklaring aan). Daarna altijd de bedankpagina.
   const klaar = () => {
-    // Minimaal één regeling, ook als er niets te versturen is.
-    if (aantalGekozen === 0) {
+    // Met iets om te versturen kiest de ondernemer ten minste één regeling.
+    if (!zonderAanvraag && aantalGekozen === 0) {
       setKiesFout((keer) => keer + 1);
       return;
     }
@@ -412,7 +389,18 @@ const AanvraagInhoud = ({
         "Wacht op de aanvraag van de werknemer",
       );
     }
-    werkBij({ afgerond: true });
+    // Zonder keuze gelden alle regelingen: de bedankpagina noemt ze allemaal.
+    werkBij({
+      afgerond: true,
+      ...(zonderAanvraag
+        ? {
+            gecontroleerd: {
+              ...g,
+              ...Object.fromEntries(rijIds.map((id) => [id, true])),
+            },
+          }
+        : {}),
+    });
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
 
@@ -515,9 +503,11 @@ const AanvraagInhoud = ({
         {bekend && rijIds.length > 0 && (
           <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
             <Heading level={2} id="regelingen">
-              Kies de regelingen
+              {zonderAanvraag ? "Wat er geldt" : "Kies de regelingen"}
             </Heading>
-            <Paragraph>Kies ten minste één regeling.</Paragraph>
+            {!zonderAanvraag && (
+              <Paragraph>Kies ten minste één regeling.</Paragraph>
+            )}
             {kiesFout > 0 && aantalGekozen === 0 && (
               <div id="kies-fout" tabIndex={-1}>
                 <Alert type="error">
@@ -597,10 +587,15 @@ const AanvraagInhoud = ({
             next={
               paneelIds.length > 0 && bestaand?.ingediend
                 ? { label: "Bekijk de zaak", href: demo.zaak.url }
-                : // Altijd dezelfde knop; zonder iets te versturen rondt de
-                  // ondernemer hier af. Beide gaan naar de bedankpagina.
+                : // Afronden als er niets naar de gemeente of UWV gaat: zonder
+                  // aanvraag, of met alleen regelingen zonder aanvraag gekozen.
+                  // Beide gaan naar de bedankpagina.
                   {
-                    label: "Dossier indienen",
+                    label:
+                      verstuurt.length > 0 ||
+                      (!zonderAanvraag && aantalGekozen === 0)
+                        ? "Dossier indienen"
+                        : "Afronden",
                     onClick: verstuurt.length > 0 ? indienen : klaar,
                     final: true,
                     noIcon: true,
