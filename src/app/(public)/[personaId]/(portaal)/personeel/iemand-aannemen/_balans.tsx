@@ -2,7 +2,7 @@
 
 import LoadingStatus from "@/components/LoadingStatus";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
 import { useSliderDragging } from "@/components/RangeSlider";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
@@ -105,6 +105,9 @@ export const Uitvoerder = ({ id }: { id: UitvoerderId }) => (
     {UITVOERDER[id].tekst}
   </TextBadge>
 );
+
+/** Loonkostensubsidie, loondispensatie en loonkostenvoordeel samen. */
+const SAMEN = "Tegemoetkoming in de loonkosten";
 
 /** De naam van de regeling, overal dezelfde. */
 const naam = (r: BalansRegel) =>
@@ -318,48 +321,60 @@ const Balans = ({
             <ChangedValue>{euro(kosten)}</ChangedValue>
           </dd>
         </div>
-        {regels.map((r) => {
-          // Altijd wanneer de regeling geldt; daarna de aanname, en bij een
-          // bedrag de uitleg bij loondispensatie of de duur en het voorbehoud
-          // bij het loonkostenvoordeel.
-          const metBedrag = bekend && !fout && r.bedrag > 0;
-          const toelichting = [
-            WANNEER[r.id],
-            ...(bekend && !fout && r.status === "geldt_niet"
-              ? ["Bij uw antwoorden geldt deze regeling niet."]
-              : []),
-            ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
-            ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
-            ...(metBedrag && r.id === "lkv"
-              ? lkvToelichting(r.regel?.categorie)
-              : []),
-          ];
-          return (
-            <div key={r.id} className="rhc-data-summary__item">
-              <dt className="rhc-data-summary__item-key">
-                <span>
-                  {naam(r)}
-                  {toelichting.length > 0 && (
-                    <>
-                      {" "}
-                      <InfoToggletip
-                        label={`Toelichting bij ${naam(r).toLowerCase()}`}
-                      >
-                        {toelichting.map((zin) => (
-                          <Paragraph key={zin}>{zin}</Paragraph>
-                        ))}
-                        {bekend && !fout && meer?.(r)}
-                      </InfoToggletip>
-                    </>
-                  )}
-                </span>
-              </dt>
-              <dd className="rhc-data-summary__item-value">
-                {waarde(r, "− ")}
-              </dd>
-            </div>
-          );
-        })}
+        {/* Eén regel voor alle regelingen samen; per regeling staat in de (i). */}
+        <div className="rhc-data-summary__item">
+          <dt className="rhc-data-summary__item-key">
+            <span>
+              {SAMEN}{" "}
+              <InfoToggletip label={`Toelichting bij ${SAMEN.toLowerCase()}`}>
+                {regels.map((r) => {
+                  // Wanneer de regeling geldt; daarna de aanname, en bij een
+                  // bedrag de uitleg bij loondispensatie of de duur en het
+                  // voorbehoud bij het loonkostenvoordeel.
+                  const metBedrag = bekend && !fout && r.bedrag > 0;
+                  const toelichting = [
+                    WANNEER[r.id],
+                    ...(bekend && !fout && r.status === "geldt_niet"
+                      ? ["Bij uw antwoorden geldt deze regeling niet."]
+                      : []),
+                    ...(r.regel?.aanname
+                      ? [AANNAMES[r.regel.aanname].uitleg]
+                      : []),
+                    ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
+                    ...(metBedrag && r.id === "lkv"
+                      ? lkvToelichting(r.regel?.categorie)
+                      : []),
+                  ];
+                  return (
+                    <Fragment key={r.id}>
+                      <Paragraph>
+                        <strong>
+                          {naam(r)}:{" "}
+                          {!bekend || fout
+                            ? "…"
+                            : r.status === "bedrag"
+                              ? euro(r.bedrag)
+                              : r.status === "niet_meegeteld"
+                                ? "niet meegeteld"
+                                : euro(0)}
+                        </strong>
+                      </Paragraph>
+                      {toelichting.map((zin) => (
+                        <Paragraph key={zin}>{zin}</Paragraph>
+                      ))}
+                      {bekend && !fout && meer?.(r)}
+                    </Fragment>
+                  );
+                })}
+              </InfoToggletip>
+            </span>
+          </dt>
+          <dd className="rhc-data-summary__item-value">
+            <ChangedValue>
+              {bekend && !fout ? `− ${euro(terug)}` : bezigOfFout}
+            </ChangedValue>
+          </dd>
+        </div>
         <div className="rhc-data-summary__item rhc-mox-sum__total">
           <dt className="rhc-data-summary__item-key">
             Geschatte loonkosten per jaar
