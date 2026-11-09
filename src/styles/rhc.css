@@ -3000,10 +3000,6 @@ small,
 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 }
 
-.rhc-mox-tile__choice .utrecht-form-label {
-	font-weight: var(--rhc-text-font-weight-bold);
-}
-
 .rhc-mox-tile--selected {
 	border-color: var(--rhc-color-lintblauw-500);
 	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
@@ -3012,12 +3008,6 @@ small,
 
 .rhc-mox-tile-grid--wide {
 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-}
-
-.rhc-mox-tile--selected {
-	border-color: var(--rhc-color-lintblauw-500);
-	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
-		var(--rhc-color-lintblauw-500);
 }
 
 .rhc-mox-tile__title {
@@ -3029,6 +3019,8 @@ small,
 	font-weight: var(--rhc-text-font-weight-bold);
 }
 
+/* At the block end of the tile, also when the tiles in a row differ in length. */
+.rhc-mox-tile__action,
 .rhc-mox-tile__status {
 	margin-block-start: auto;
 }
