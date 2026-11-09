@@ -18,8 +18,6 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
