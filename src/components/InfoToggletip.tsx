@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { IconButton, Paragraph } from "@/components/rhc";
-import { InfoSquareIcon } from "@/components/icons/infoSquareIcon";
+import { Icon, IconButton, Paragraph } from "@/components/rhc";
 
 /**
  * The RHC Toggletip (same markup and classes), with an accessible name of our
@@ -59,16 +58,15 @@ const InfoToggletip = ({
         aria-label={label}
         className="rhc-toggletip__summary rhc-toggletip__button"
       >
-        <InfoSquareIcon className="rhc-toggletip__icon" />
+        <Icon icon="info-circle" className="rhc-toggletip__icon" />
       </summary>
       <div className="rhc-toggletip__content">
-        {/* The markup of the RHC Alert (info): its icon prop only takes an
-            RHC icon id, and this one shows the same icon as the button.
-            Without role="status": the user opens it, so a screen reader
-            reads it after "expanded", as with any disclosure. */}
+        {/* The markup of the RHC Alert (info), with the same icon as the
+            button. Without role="status": the user opens it, so a screen
+            reader reads it after "expanded", as with any disclosure. */}
         <div className="utrecht-alert utrecht-alert--info rhc-alert rhc-mox-alert-closable rhc-toggletip__alert">
           <div className="utrecht-alert__icon">
-            <InfoSquareIcon />
+            <Icon icon="info-circle" />
           </div>
           <div className="utrecht-alert__content">
             <div className="utrecht-alert__message">

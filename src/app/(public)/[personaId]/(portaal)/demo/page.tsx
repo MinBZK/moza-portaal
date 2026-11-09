@@ -1903,8 +1903,9 @@ const ComponentsDemoPage = () => {
         <>
           De knop is 18 bij 18 pixels, maar het klikvlak is 24 bij 24 pixels
           (WCAG 2.5.8), zonder dat de layout verandert. Bij hover, focus en
-          indrukken wordt de knop donkerder, met een korte overgang. Het i-icoon
-          in de uitleg zelf heeft de info-kleur.
+          indrukken wordt de knop donkerder, met een korte overgang. De knop en
+          de uitleg hebben hetzelfde info-icoon als een melding van het type
+          info.
         </>,
         <>
           De sluitknop houdt een klikvlak van 48 bij 48 pixels; de focusring

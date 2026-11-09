@@ -2646,35 +2646,23 @@ small,
 	anchor-scope: --rhc-mox-toggletip;
 	position: relative;
 	vertical-align: -0.15em;
-	--rhc-toggletip-background-color: var(--rhc-color-lintblauw-500);
-	--rhc-toggletip-hover-background-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-focus-background-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-active-background-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-border-color: var(--rhc-color-lintblauw-500);
-	--rhc-toggletip-hover-border-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-focus-border-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-active-border-color: var(--rhc-color-lintblauw-700);
-	--rhc-toggletip-color: var(--rhc-color-wit);
-	--rhc-toggletip-hover-color: var(--rhc-color-wit);
-	--rhc-toggletip-focus-color: var(--rhc-color-wit);
-	--rhc-toggletip-active-color: var(--rhc-color-wit);
+	/* The info icon of the info alert, without a button background. */
+	--rhc-toggletip-background-color: transparent;
+	--rhc-toggletip-hover-background-color: transparent;
+	--rhc-toggletip-focus-background-color: transparent;
+	--rhc-toggletip-active-background-color: transparent;
 	--rhc-toggletip-border-width: 0;
+	--rhc-toggletip-color: var(--rhc-color-info-500);
+	--rhc-toggletip-hover-color: var(--rhc-color-lintblauw-700);
+	--rhc-toggletip-focus-color: var(--rhc-color-lintblauw-700);
+	--rhc-toggletip-active-color: var(--rhc-color-lintblauw-700);
 	.rhc-toggletip__icon {
-		background-color: var(--rhc-color-info-500);
-		border-radius: var(--rhc-border-radius-md);
 		inset-block-start: 0;
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition-duration: var(--rhc-mox-transition-duration);
-			transition-property: background-color, color;
+			transition-property: color;
 			transition-timing-function: var(--rhc-mox-transition-easing);
-		}
-	}
-	&:hover,
-	&:focus-within,
-	&:active {
-		.rhc-toggletip__icon {
-			background-color: var(--utrecht-icon-color);
 		}
 	}
 }
@@ -2732,16 +2720,6 @@ small,
 
 .rhc-toggletip__alert {
 	box-shadow: 0 0 6px 0 var(--rhc-color-light-cool-grey-200);
-
-	.utrecht-alert__icon {
-		inline-size: var(--rhc-space-2xl);
-	}
-
-	.utrecht-alert__icon .utrecht-icon {
-		background-color: var(--rhc-color-info-500);
-		border-radius: var(--rhc-border-radius-md);
-		color: var(--rhc-color-wit);
-	}
 }
 
 .rhc-toggletip__content {
