@@ -999,9 +999,25 @@ small,
 		gap: var(--rhc-space-lg);
 	}
 
-	.rhc-mox-card > .utrecht-action-group:last-child {
+	/* At the block end, also when the cards in a row differ in length. */
+	.rhc-mox-card > .utrecht-action-group:last-child,
+	.rhc-mox-card__action {
 		margin-block-start: auto;
 	}
+
+	.rhc-mox-card.rhc-mox-card--selected {
+		box-shadow: inset 0 0 0 var(--rhc-border-width-md)
+			var(--rhc-color-lintblauw-500);
+	}
+}
+
+.rhc-mox-card-grid {
+	display: grid;
+	gap: var(--rhc-space-lg);
+	grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .mox-card-topic-list {
@@ -2949,25 +2965,6 @@ small,
 	padding-inline: var(--rhc-hero-message-padding-inline-start);
 }
 
-/* --- Tegels --- */
-.rhc-mox-tile-grid {
-	display: grid;
-	gap: var(--rhc-space-lg);
-	grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.rhc-mox-tile {
-	block-size: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: var(--rhc-space-sm);
-	padding: var(--rhc-space-lg);
-	text-decoration: none;
-}
-
 .rhc-mox-summary-group {
 	display: grid;
 	gap: var(--rhc-space-sm);
@@ -2994,33 +2991,4 @@ small,
 	.rhc-data-summary__item-action {
 		text-align: end;
 	}
-}
-
-.rhc-mox-tile-grid--wide {
-	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-}
-
-.rhc-mox-tile--selected {
-	border-color: var(--rhc-color-lintblauw-500);
-	box-shadow: inset 0 0 0 var(--rhc-border-width-sm)
-		var(--rhc-color-lintblauw-500);
-}
-
-.rhc-mox-tile-grid--wide {
-	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-}
-
-.rhc-mox-tile__title {
-	font-weight: var(--rhc-text-font-weight-bold);
-	text-decoration: underline;
-}
-
-.rhc-mox-tile__amount {
-	font-weight: var(--rhc-text-font-weight-bold);
-}
-
-/* At the block end of the tile, also when the tiles in a row differ in length. */
-.rhc-mox-tile__action,
-.rhc-mox-tile__status {
-	margin-block-start: auto;
 }
