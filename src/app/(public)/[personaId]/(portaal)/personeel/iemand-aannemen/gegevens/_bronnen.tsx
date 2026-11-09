@@ -56,11 +56,13 @@ const EigenOpgave = ({
   zet: (deel: Partial<Antwoorden>) => void;
   aanvangFout?: string;
 }) => (
-  <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
-    <Heading level={2} id="eigen-opgave">
-      Uw eigen opgave
-    </Heading>
-    <Paragraph>Dit weet alleen u, en het gaat mee in de aanvraag.</Paragraph>
+  // Onder de gekozen kandidaat, ingesprongen: deze vragen gaan over die persoon.
+  <div
+    id="eigen-opgave"
+    role="group"
+    aria-label={`Over ${voornaam}`}
+    className="rhc-mox-stack rhc-mox-reveal"
+  >
     <FormFieldTextInput
       id="eerste-werkdag"
       name="aanvang"
@@ -87,6 +89,57 @@ const EigenOpgave = ({
       filled
     />
   </section>
+    {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
+    {vraagJc && (
+      <Fieldset
+        legend="Wilt u jobcoaching aanvragen?"
+        info={<BegripInfo id="jobcoaching" />}
+      >
+        <FormFieldRadio
+          name="jc"
+          value="ja"
+          label="Ja, via de gemeente"
+          checked={keuzes.jc === "ja"}
+          onChange={() => kies({ jc: "ja" })}
+        />
+        <FormFieldRadio
+          name="jc"
+          value="nee"
+          label="Nee, niet nodig"
+          checked={keuzes.jc === "nee"}
+          onChange={() => kies({ jc: "nee" })}
+        />
+      </Fieldset>
+    )}
+    {vraagWpa && (
+      <Fieldset
+        legend="Is er een aanpassing van de werkplek nodig?"
+        info={<BegripInfo id="werkplekaanpassing" />}
+      >
+        <FormFieldRadio
+          name="wpa"
+          value="ja"
+          label="Ja, ik weet wat er nodig is"
+          checked={keuzes.wpa === "ja"}
+          onChange={() => kies({ wpa: "ja" })}
+        />
+        <FormFieldRadio
+          name="wpa"
+          value="later"
+          label="Weet ik nog niet, ik vraag het later aan"
+          checked={keuzes.wpa === "later"}
+          onChange={() => kies({ wpa: "later" })}
+        />
+        <FormFieldRadio
+          name="wpa"
+          value="nee"
+          label="Nee"
+          checked={keuzes.wpa === "nee"}
+          onChange={() => kies({ wpa: "nee" })}
+        />
+      </Fieldset>
+    )}
+  </div>
 );
 
 /**
@@ -363,6 +416,29 @@ const Bronnen = ({
               ? "U ziet alleen de laatste vier cijfers van het BSN."
               : "Het BSN gaat mee met de aanvraag. U ziet alleen de laatste vier cijfers."}
           </Paragraph>
+        )}
+        {gekozen && (
+          <EigenOpgave
+            voornaam={kandidaat.voornaam}
+            a={antwoorden}
+            zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
+            keuzes={staat?.keuzes ?? {}}
+            kies={(deel) =>
+              werkBij({
+                keuzes: { ...(staat?.keuzes ?? {}), ...deel },
+                // Een andere keuze is een andere aanvraag: controleer die opnieuw.
+                gecontroleerd: {
+                  ...(staat?.gecontroleerd ?? {}),
+                  ...Object.fromEntries(
+                    Object.keys(deel).map((id) => [id, false]),
+                  ),
+                },
+              })
+            }
+            vraagJc={paneelIds.includes("jc")}
+            vraagWpa={paneelIds.includes("wpa")}
+            aanvangFout={aanvangFout}
+          />
         )}
       </section>
 
