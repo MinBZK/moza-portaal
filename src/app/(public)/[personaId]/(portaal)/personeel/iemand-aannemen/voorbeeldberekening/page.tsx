@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Heading, Paragraph } from "@/components/rhc";
-import Stappen from "../_stappen";
 import { TAAK_TITEL } from "../_taakTitel";
 import Vragen from "../_vragen";
 
@@ -13,7 +12,6 @@ const VoorbeeldberekeningPage = () => (
   <>
     <Heading level={1}>{TAAK_TITEL}</Heading>
     <div className="rhc-mox-card rhc-mox-row-gap">
-      <Stappen huidige={1} />
       <Paragraph>
         Neemt u iemand aan die moeilijk aan werk komt, bijvoorbeeld door een
         arbeidsbeperking? Dan kunt u een deel van de loonkosten terugkrijgen en

@@ -38,7 +38,7 @@ const GegevensPage = async () => {
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
-        <Stappen huidige={2} />
+        <Stappen huidige={1} />
         <Bronnen perSituatie={perSituatie} />
       </div>
     </>

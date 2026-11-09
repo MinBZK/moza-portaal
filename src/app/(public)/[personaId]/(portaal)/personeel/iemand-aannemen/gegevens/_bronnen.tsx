@@ -27,7 +27,7 @@ import {
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { datumNL } from "../_werkgever";
-import { terugNaar, verderNaar } from "../_stappen";
+import { verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
 
@@ -43,7 +43,7 @@ const elfproef = (bsn: string) => {
 
 /**
  * Wat alleen de werkgever weet: de eerste werkdag, de functie, de uren en het
- * loon. Vooringevuld met de antwoorden van stap 1 waar die er zijn; nu
+ * loon. Vooringevuld met de antwoorden van de voorbeeldberekening waar die er zijn; nu
  * definitief. De loonwaarde staat hier niet: die stelt de gemeente of UWV
  * vast, niet de werkgever.
  */
@@ -86,7 +86,7 @@ const EigenOpgave = ({
         })
       }
     />
-    {/* Dezelfde vraag als in stap 1, nu definitief. */}
+    {/* Dezelfde vraag als in de voorbeeldberekening, nu definitief. */}
     <RangeSlider
       label={`Hoeveel uur per week gaat ${voornaam} werken?`}
       min={1}
@@ -97,7 +97,7 @@ const EigenOpgave = ({
       formatValue={(uren) => `${uren} uur`}
       filled
     />
-    {/* Keuzes voor de aanvraag horen hier; stap 3 controleert alleen. */}
+    {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
     {vraagJc && (
       <Fieldset
         legend="Wilt u jobcoaching aanvragen?"
@@ -491,13 +491,13 @@ const Bronnen = ({
         </Paragraph>
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
-          backLabel={terugNaar(1)}
+          backLabel="Terug naar Voorbeeldberekening"
           later={wachtend ? "/personeel" : undefined}
           next={{
-            label: verderNaar(3),
+            label: verderNaar(2),
             disabled: !gekozen || !opgave || !resultaat.bekend,
             onBlocked: naarInvoer,
-            // Stap 3 heeft één vorm, ook als er niets te versturen is.
+            // Stap 2 heeft één vorm, ook als er niets te versturen is.
             onClick: () =>
               router.push("/personeel/iemand-aannemen/concept-aanvraag"),
           }}

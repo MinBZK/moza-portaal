@@ -4,14 +4,10 @@ import Voortgang from "./_voortgang";
 export { TAAK_TITEL } from "./_taakTitel";
 
 /**
- * De drie stappen van Iemand aannemen. Na stap 3 volgt de bedankpagina
- * (verstuurd), buiten de stappen.
+ * De stappen om een regeling in te dienen. De voorbeeldberekening gaat
+ * eraan vooraf en is geen stap; na stap 2 volgt de bedankpagina (verstuurd).
  */
 export const STAPPEN = [
-  {
-    name: "Voorbeeldberekening",
-    href: "/personeel/iemand-aannemen/voorbeeldberekening",
-  },
   {
     name: "Kandidaat selecteren",
     href: "/personeel/iemand-aannemen/gegevens",
@@ -23,15 +19,13 @@ export const STAPPEN = [
 ];
 
 /** Text of the forward button: "Verder naar" and the name of the next step. */
-export const verderNaar = (stap: 2 | 3) =>
-  `Verder naar ${STAPPEN[stap - 1].name}`;
+export const verderNaar = (stap: 2) => `Verder naar ${STAPPEN[stap - 1].name}`;
 
 /** Text of the back button: "Terug naar" and the name of the previous step. */
-export const terugNaar = (stap: 1 | 2) =>
-  `Terug naar ${STAPPEN[stap - 1].name}`;
+export const terugNaar = (stap: 1) => `Terug naar ${STAPPEN[stap - 1].name}`;
 
-/** Waar de ondernemer is in Iemand aannemen (1 tot 3). */
-const Stappen = ({ huidige }: { huidige: 1 | 2 | 3 }) => (
+/** Waar de ondernemer is in Iemand aannemen (1 of 2). */
+const Stappen = ({ huidige }: { huidige: 1 | 2 }) => (
   <Voortgang steps={STAPPEN} huidige={huidige} />
 );
 
