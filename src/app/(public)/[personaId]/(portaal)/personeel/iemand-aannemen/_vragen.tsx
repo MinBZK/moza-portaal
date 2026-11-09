@@ -26,7 +26,6 @@ import {
 } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
-import { verderNaar } from "./_stappen";
 import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
 
 /** De check bij UWV of iemand in het doelgroepregister staat. */
@@ -491,7 +490,7 @@ const VragenMetStaat = ({
       {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
       <StepNavigation
         next={{
-          label: verderNaar(2),
+          label: "Regeling indienen",
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !kanVerder,
           describedBy: kanVerder ? undefined : "aanvragen-bezig",

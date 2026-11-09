@@ -13,7 +13,7 @@ const Voortgang = ({
   huidige,
 }: {
   steps: { name: string; href: string }[];
-  huidige: 1 | 2 | 3;
+  huidige: 1 | 2;
 }) => {
   const { staat, werkBij } = useAannemen();
   // Een sessie van voor de drie stappen kan nog 4 bewaard hebben.

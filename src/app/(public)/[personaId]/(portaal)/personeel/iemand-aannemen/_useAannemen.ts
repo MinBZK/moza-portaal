@@ -66,7 +66,7 @@ export type Antwoorden = {
   loonwaarde: number;
   /** Bruto uurloon in eurocent, €4,50 tot €30 (schuifregelaar in _vragen.tsx). */
   uurloon: number;
-  /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 2. */
+  /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 1. */
   aanvang?: string;
 };
 
@@ -132,7 +132,7 @@ export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
 /** Onder 100 procent is de loonwaarde verminderd. */
 export const onderMinimumloon = (a: Antwoorden) => a.loonwaarde < 100;
 
-/** De eigen opgave in stap 2 is compleet: de eerste werkdag is ingevuld. */
+/** De eigen opgave in stap 1 is compleet: de eerste werkdag is ingevuld. */
 export const eigenOpgaveCompleet = (a: Antwoorden) => !!a.aanvang;
 
 export const uurloonTekst = (a: Antwoorden) =>
