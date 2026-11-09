@@ -818,7 +818,7 @@ small,
 .rhc-mox-alert-closable-content {
 	display: grid;
 	gap: var(--utrecht-alert-message-row-gap);
-	padding-inline-end: var(--rhc-space-5xl);
+	padding-inline-end: var(--rhc-space-2xl);
 }
 
 .rhc-mox-alert-close-button {
