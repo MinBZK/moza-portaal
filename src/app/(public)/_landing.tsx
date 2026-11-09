@@ -242,7 +242,6 @@ const PublicPage = () => {
           </section>
         </div>
       </details>
-      <code>hash: fd56283526f0e41dacd90da912afaa065fa32f5f</code>
     </div>
   );
 };
