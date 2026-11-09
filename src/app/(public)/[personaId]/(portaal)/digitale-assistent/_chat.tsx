@@ -626,6 +626,7 @@ const Chat = ({
       // De sessie van toen bestaat niet meer; een vervolgvraag start een nieuwe.
       zetSessie(comboRef.current);
       // sessionStorage en de URL zijn pas na de hydratie te lezen.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setItems(bewaardItem.gesprek as Item[]);
       setBewaard("ja");
     } else if (startvraag) {
@@ -653,6 +654,7 @@ const Chat = ({
     setBewaard("nee");
     if (historie?.length) {
       // Het gesprek voor de nieuwe combinatie staat in sessionStorage.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setItems(historie);
       return;
     }
