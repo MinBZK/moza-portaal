@@ -67,11 +67,13 @@ const EigenOpgave = ({
   vraagWpa: boolean;
   aanvangFout?: string;
 }) => (
-  <section className="rhc-mox-stack" aria-labelledby="eigen-opgave">
-    <Heading level={2} id="eigen-opgave">
-      Uw eigen opgave
-    </Heading>
-    <Paragraph>Dit weet alleen u, en het gaat mee in de aanvraag.</Paragraph>
+  // Onder de gekozen kandidaat, ingesprongen: deze vragen gaan over die persoon.
+  <div
+    id="eigen-opgave"
+    role="group"
+    aria-label={`Over ${voornaam}`}
+    className="rhc-mox-stack rhc-mox-reveal"
+  >
     <FormFieldTextInput
       id="eerste-werkdag"
       name="aanvang"
@@ -147,7 +149,7 @@ const EigenOpgave = ({
         />
       </Fieldset>
     )}
-  </section>
+  </div>
 );
 
 /**
@@ -426,6 +428,29 @@ const Bronnen = ({
               : "Het BSN gaat mee met de aanvraag. U ziet alleen de laatste vier cijfers."}
           </Paragraph>
         )}
+        {gekozen && (
+          <EigenOpgave
+            voornaam={kandidaat.voornaam}
+            a={antwoorden}
+            zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
+            keuzes={staat?.keuzes ?? {}}
+            kies={(deel) =>
+              werkBij({
+                keuzes: { ...(staat?.keuzes ?? {}), ...deel },
+                // Een andere keuze is een andere aanvraag: controleer die opnieuw.
+                gecontroleerd: {
+                  ...(staat?.gecontroleerd ?? {}),
+                  ...Object.fromEntries(
+                    Object.keys(deel).map((id) => [id, false]),
+                  ),
+                },
+              })
+            }
+            vraagJc={paneelIds.includes("jc")}
+            vraagWpa={paneelIds.includes("wpa")}
+            aanvangFout={aanvangFout}
+          />
+        )}
       </section>
 
       {wachtend && (
@@ -442,30 +467,6 @@ const Bronnen = ({
             antwoorden blijven bewaard tot u dit tabblad sluit.
           </Paragraph>
         </section>
-      )}
-
-      {gekozen && (
-        <EigenOpgave
-          voornaam={kandidaat.voornaam}
-          a={antwoorden}
-          zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
-          keuzes={staat?.keuzes ?? {}}
-          kies={(deel) =>
-            werkBij({
-              keuzes: { ...(staat?.keuzes ?? {}), ...deel },
-              // Een andere keuze is een andere aanvraag: controleer die opnieuw.
-              gecontroleerd: {
-                ...(staat?.gecontroleerd ?? {}),
-                ...Object.fromEntries(
-                  Object.keys(deel).map((id) => [id, false]),
-                ),
-              },
-            })
-          }
-          vraagJc={paneelIds.includes("jc")}
-          vraagWpa={paneelIds.includes("wpa")}
-          aanvangFout={aanvangFout}
-        />
       )}
 
       {gekozen && duur.length > 0 && (
