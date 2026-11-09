@@ -66,7 +66,10 @@ const PersoneelPage = async () => {
           ze opleveren. Wij gebruiken daarvoor wat de overheid al van u en van
           de kandidaat weet.
         </Paragraph>
-        <Paragraph>Dit gaat in {STAPPEN.length} stappen:</Paragraph>
+        <Paragraph>
+          Begin met een voorbeeldberekening. Wilt u daarna een regeling
+          indienen, dan gaat dat in {STAPPEN.length} stappen:
+        </Paragraph>
         <OrderedList>
           {STAPPEN.map((stap) => (
             <OrderedListItem key={stap.name}>{stap.name}</OrderedListItem>
@@ -78,10 +81,10 @@ const PersoneelPage = async () => {
         </Paragraph>
         <ActionGroup>
           <Link
-            href={STAPPEN[0].href}
+            href="/personeel/iemand-aannemen/voorbeeldberekening"
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Begin met de {STAPPEN[0].name.toLowerCase()}
+            Begin met de voorbeeldberekening
             <Icon icon="chevron-right" />
           </Link>
         </ActionGroup>

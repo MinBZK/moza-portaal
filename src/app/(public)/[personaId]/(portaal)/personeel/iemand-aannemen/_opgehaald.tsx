@@ -76,7 +76,7 @@ const Opgehaald = ({
   bronnen: Bron[];
   situatie: string;
   voornaam: string;
-  /** De uren uit de antwoorden van stap 1, voor gegevens met "{uren}". */
+  /** De uren uit de antwoorden van de voorbeeldberekening, voor gegevens met "{uren}". */
   uren: number;
   /** Er gaat een aanvraag naar een organisatie (niet alleen uitleg). */
   aanvraag: boolean;

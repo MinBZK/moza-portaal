@@ -46,7 +46,7 @@ type Gegeven = {
   wijzig?: string;
 };
 
-/** De eigen opgave in stap 2: eerste werkdag en uren. */
+/** De eigen opgave in stap 1: eerste werkdag en uren. */
 const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
 
 /** De gegevens in twee kolommen, met de bron als label onder de waarde. */
@@ -169,7 +169,7 @@ const AanvraagInhoud = ({
     (paneelIds as RegelingId[]).includes(id);
   const mist = (id: RegelingId) =>
     (id === "jc" && !k.jc) || (id === "wpa" && !k.wpa);
-  // Wat nog een keuze in stap 2 mist, is niet klaar, ook niet met een vinkje.
+  // Wat nog een keuze in stap 1 mist, is niet klaar, ook niet met een vinkje.
   const klaarMet = (id: RegelingId) => !!g[id] && !mist(id);
   const aantal = rijIds.filter(klaarMet).length;
 
@@ -220,7 +220,7 @@ const AanvraagInhoud = ({
   };
   // Een gewone functie, geen component: een component in de render zou bij
   // elke wijziging opnieuw worden aangemaakt.
-  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 2.
+  // Zonder keuze valt er niets te controleren: eerst kiezen in stap 1.
   const vinkje = (id: RegelingId) =>
     mist(id) ? null : (
       <FormFieldCheckboxOption
@@ -647,9 +647,9 @@ const AanvraagInhoud = ({
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
 
-  // Via de stappenbalk kan stap 3 open gaan zonder gekozen kandidaat of eerste
-  // werkdag, zoals na een andere situatie in stap 1. Dan is er niemand met
-  // toestemming om voor aan te vragen: eerst terug naar stap 2.
+  // Via de stappenbalk kan stap 2 open gaan zonder gekozen kandidaat of eerste
+  // werkdag, zoals na een andere situatie in de voorbeeldberekening. Dan is er
+  // niemand met toestemming om voor aan te vragen: eerst terug naar stap 1.
   if (
     bekend &&
     route.zaak !== null &&
@@ -660,14 +660,14 @@ const AanvraagInhoud = ({
       <>
         <Heading level={1}>{TAAK_TITEL}</Heading>
         <div className="rhc-mox-card">
-          <Stappen huidige={3} />
+          <Stappen huidige={2} />
           <Paragraph>
-            Kies eerst in stap 2 wie u wilt aannemen en vul de eerste werkdag
+            Kies eerst in stap 1 wie u wilt aannemen en vul de eerste werkdag
             in. Daarna controleert u hier de aanvraag.
           </Paragraph>
           <StepNavigation
             back="/personeel/iemand-aannemen/gegevens"
-            backLabel={terugNaar(2)}
+            backLabel={terugNaar(1)}
           />
         </div>
       </>
@@ -677,7 +677,7 @@ const AanvraagInhoud = ({
     <>
       <Heading level={1}>{TAAK_TITEL}</Heading>
       <div className="rhc-mox-card">
-        <Stappen huidige={3} />
+        <Stappen huidige={2} />
         {!bekend && !resultaat.fout ? (
           <LoadingStatus>
             Wij zoeken in de wet uit welke regelingen gelden…
@@ -752,7 +752,7 @@ const AanvraagInhoud = ({
                           >
                             {NAAM[id]}
                           </a>
-                          {mist(id) && ": kies dit eerst in stap 2"}
+                          {mist(id) && ": kies dit eerst in stap 1"}
                         </UnorderedListItem>
                       ))}
                   </UnorderedList>
@@ -828,7 +828,7 @@ const AanvraagInhoud = ({
         {bekend && (
           <StepNavigation
             back="/personeel/iemand-aannemen/gegevens"
-            backLabel={terugNaar(2)}
+            backLabel={terugNaar(1)}
             later="/personeel"
             next={
               paneelIds.length > 0 && bestaand?.ingediend
