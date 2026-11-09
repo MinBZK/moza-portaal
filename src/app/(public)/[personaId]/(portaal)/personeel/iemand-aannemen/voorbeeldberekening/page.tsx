@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { AccordionProvider, Heading, Paragraph } from "@/components/rhc";
-import Regelingen from "../_regelingen";
+import { Heading, Paragraph } from "@/components/rhc";
 import Stappen from "../_stappen";
 import { TAAK_TITEL } from "../_taakTitel";
 import Vragen from "../_vragen";
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
   title: "Voorbeeldberekening - Iemand aannemen - Personeel en rollen",
 };
 
-/** Stap 1: wat er kan, vier vragen en de voorbeeldberekening. */
+/** Stap 1: wat er kan, vier vragen en de voorbeeldberekening. Begrippen hebben een (i). */
 const VoorbeeldberekeningPage = () => (
   <>
     <Heading level={1}>{TAAK_TITEL}</Heading>
@@ -28,12 +27,6 @@ const VoorbeeldberekeningPage = () => (
         voor iemand die alleen zo kan werken. De gemeente stelt vast wie op
         beschut werk is aangewezen.
       </Paragraph>
-      <AccordionProvider
-        headingLevel={2}
-        sections={[
-          { label: "Regelingen die kunnen gelden", body: <Regelingen /> },
-        ]}
-      />
       <Paragraph>
         Deze voorbeeldberekening is een vereenvoudigde weergave van de
         werkelijkheid. Het echte bedrag stellen de gemeente, UWV en de

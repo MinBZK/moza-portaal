@@ -23,6 +23,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
+import { Begrip, BegripInfo, type BegripId } from "../_begrippen";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
 import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
@@ -82,6 +83,20 @@ const NAAM: Record<RegelingId, string> = {
   vz_wajong: "Jobcoach of werkplekaanpassing",
   vz_wia: "Jobcoach of werkplekaanpassing",
   pp: "Proefplaats",
+};
+
+/** Welke begrippen bij een paneel horen; die krijgen een (i) in het paneel. */
+const BEGRIP: Record<RegelingId, BegripId[]> = {
+  lks: ["loonkostensubsidie"],
+  ld: ["loondispensatie"],
+  jc: ["jobcoaching"],
+  wpa: ["werkplekaanpassing"],
+  lkv: ["loonkostenvoordeel"],
+  nrp: ["noRiskpolis"],
+  doelgroepverklaring: ["doelgroepverklaring"],
+  vz_wajong: ["jobcoaching", "werkplekaanpassing"],
+  vz_wia: ["jobcoaching", "werkplekaanpassing"],
+  pp: ["proefplaatsing"],
 };
 
 type Status = "aanvullen" | "controleren" | "gecontroleerd" | "gelezen";
@@ -311,6 +326,9 @@ const AanvraagInhoud = ({
     >
       <div className="rhc-mox-stack">
         <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
+        {BEGRIP[id].map((b) => (
+          <Begrip key={b} id={b} />
+        ))}
         {kind}
         {vinkje(id)}
       </div>
@@ -774,7 +792,9 @@ const AanvraagInhoud = ({
             </Heading>
             <UnorderedList>
               {geldtNiet.map((r) => (
-                <UnorderedListItem key={r.id}>{NAAM[r.id]}</UnorderedListItem>
+                <UnorderedListItem key={r.id}>
+                  {NAAM[r.id]} <BegripInfo id={BEGRIP[r.id][0]} />
+                </UnorderedListItem>
               ))}
             </UnorderedList>
           </section>

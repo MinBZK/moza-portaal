@@ -9,6 +9,7 @@ import {
   Separator,
 } from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
+import { BegripInfo } from "./_begrippen";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans from "./_balans";
@@ -287,18 +288,7 @@ const VragenMetStaat = ({
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <Fieldset
               legend="1. Staat de persoon in het doelgroepregister?"
-              info={
-                <InfoToggletip label="Toelichting bij het doelgroepregister">
-                  <Paragraph>
-                    Het doelgroepregister is een lijst van UWV. Daarin staan
-                    mensen die onder de banenafspraak vallen.
-                  </Paragraph>
-                  <Paragraph>
-                    Staat uw werknemer in het register? Dan kunt u
-                    loonkostenvoordeel krijgen.
-                  </Paragraph>
-                </InfoToggletip>
-              }
+              info={<BegripInfo id="doelgroepregister" />}
             >
               {(
                 [

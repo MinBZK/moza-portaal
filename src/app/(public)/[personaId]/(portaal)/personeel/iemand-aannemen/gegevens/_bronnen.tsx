@@ -6,6 +6,7 @@ import RangeSlider from "@/components/RangeSlider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import InfoToggletip from "@/components/InfoToggletip";
+import { Begrip, BegripInfo } from "../_begrippen";
 import {
   Accordion,
   AccordionSection,
@@ -130,7 +131,10 @@ const EigenOpgave = ({
     />
     {/* Keuzes voor de aanvraag horen hier; stap 3 controleert alleen. */}
     {vraagJc && (
-      <Fieldset legend="Wilt u jobcoaching aanvragen?">
+      <Fieldset
+        legend="Wilt u jobcoaching aanvragen?"
+        info={<BegripInfo id="jobcoaching" />}
+      >
         <FormFieldRadio
           name="jc"
           value="ja"
@@ -148,7 +152,10 @@ const EigenOpgave = ({
       </Fieldset>
     )}
     {vraagWpa && (
-      <Fieldset legend="Is er een aanpassing van de werkplek nodig?">
+      <Fieldset
+        legend="Is er een aanpassing van de werkplek nodig?"
+        info={<BegripInfo id="werkplekaanpassing" />}
+      >
         <FormFieldRadio
           name="wpa"
           value="ja"
@@ -537,6 +544,7 @@ const Bronnen = ({
                   </>
                 )}
               </Paragraph>
+              {zietRegister && <Begrip id="doelgroepregister" />}
               <Paragraph>
                 Per organisatie staat aangevinkt dat de gegevens kloppen. Open
                 een organisatie om ze te bekijken. Vinkt u een organisatie aan,
