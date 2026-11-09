@@ -114,7 +114,7 @@ const AanvraagInhoud = ({
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
-  // Welke regelingen de ondernemer kiest: de tegels met een vinkje.
+  // Welke regelingen de ondernemer kiest: de kaarten met een vinkje.
   const gekozen = (id: RegelingId) => !!g[id];
   const aantalGekozen = rijIds.filter(gekozen).length;
   // Hoe vaak versturen zonder keuze is geprobeerd: elke poging zet de focus
@@ -157,37 +157,36 @@ const AanvraagInhoud = ({
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
-  // Eén tegel per regeling: de naam als kop, wie de regeling uitvoert, wat het
+  // Eén kaart per regeling: de naam als kop, wie de regeling uitvoert, wat het
   // is, en onderaan een vinkje om te kiezen.
   const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
-    <li key={id}>
-      <div
-        id={`regeling-${id}`}
-        className={`rhc-mox-tile${gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
-      >
-        <div className="rhc-mox-cluster">
-          <Heading level={3}>{NAAM[id]}</Heading>
-          {BEGRIP[id].map((b) => (
-            <BegripInfo key={b} id={b} />
-          ))}
-        </div>
-        <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
-        {kind}
-        {/* De naam van de regeling alleen voor schermlezers: elk vinkje heet
-            anders, ook buiten de tegel, zoals in een lijst met formuliervelden. */}
-        <FormFieldCheckboxOption
-          className="rhc-mox-tile__action"
-          label={
-            <>
-              Kies deze regeling
-              <span className="rhc-visually-hidden">: {NAAM[id]}</span>
-            </>
-          }
-          name={`kies-${id}`}
-          checked={gekozen(id)}
-          onChange={(event) => kies(id, event.target.checked)}
-        />
+    <li
+      key={id}
+      id={`regeling-${id}`}
+      className={`rhc-mox-card${gekozen(id) ? " rhc-mox-card--selected" : ""}`}
+    >
+      <div className="rhc-mox-cluster">
+        <Heading level={3}>{NAAM[id]}</Heading>
+        {BEGRIP[id].map((b) => (
+          <BegripInfo key={b} id={b} />
+        ))}
       </div>
+      <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
+      {kind}
+      {/* De naam van de regeling alleen voor schermlezers: elk vinkje heet
+          anders, ook buiten de kaart, zoals in een lijst met formuliervelden. */}
+      <FormFieldCheckboxOption
+        className="rhc-mox-card__action"
+        label={
+          <>
+            Kies deze regeling
+            <span className="rhc-visually-hidden">: {NAAM[id]}</span>
+          </>
+        }
+        name={`kies-${id}`}
+        checked={gekozen(id)}
+        onChange={(event) => kies(id, event.target.checked)}
+      />
     </li>
   );
 
@@ -514,15 +513,6 @@ const AanvraagInhoud = ({
         )}
 
         {bekend && rijIds.length > 0 && (
-          <Controleer
-            bronnen={bronnen}
-            kandidaat={kandidaat}
-            aanvang={a.aanvang}
-            uren={a.uren}
-          />
-        )}
-
-        {bekend && rijIds.length > 0 && (
           <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
             <Heading level={2} id="regelingen">
               Kies de regelingen
@@ -538,12 +528,21 @@ const AanvraagInhoud = ({
                 </Alert>
               </div>
             )}
-            <ul className="rhc-mox-tile-grid rhc-mox-tile-grid--wide">
+            <ul className="rhc-mox-card-grid">
               {paneelIds.map(paneel)}
               {route.vanzelf.map(vanzelf)}
               {route.taken.map(taak)}
             </ul>
           </section>
+        )}
+
+        {bekend && rijIds.length > 0 && (
+          <Controleer
+            bronnen={bronnen}
+            kandidaat={kandidaat}
+            aanvang={a.aanvang}
+            uren={a.uren}
+          />
         )}
 
         {bekend && paneelIds.length > 0 && bestaand?.ingediend && (
