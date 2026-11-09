@@ -17,7 +17,6 @@ import { getDemoIemandAannemenSituaties } from "@/demo";
 import {
   getActieveOrganisatie,
   getActievePersona,
-  getIngelogdeNaam,
 } from "@/app/(public)/_persona";
 import { ExternalLink } from "@/app/(footer)/_article";
 import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
@@ -69,7 +68,6 @@ const ONDERNEMERSPLEIN_AANNEMEN =
   "https://ondernemersplein.overheid.nl/personeel/aannemen/stappenplan-personeel-aannemen/";
 const BELASTINGDIENST_LOON =
   "https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/personeel-en-loon";
-const EHERKENNING = "https://www.eherkenning.nl/";
 
 const aantalTekst = (voltijd = 0, deeltijd = 0) =>
   voltijd + deeltijd === 0
@@ -78,17 +76,14 @@ const aantalTekst = (voltijd = 0, deeltijd = 0) =>
 
 /**
  * Personeel en rollen: het personeel van de onderneming, wat de ondernemer
- * daarvoor kan regelen (met de ingang naar Iemand aannemen), en wie namens
- * de onderneming mag handelen.
+ * daarvoor kan regelen (met de ingang naar Iemand aannemen).
  */
 const PersoneelPage = async () => {
   const persona = await getActievePersona();
-  const [situaties, organisatie, naam] = await Promise.all([
+  const [situaties, organisatie] = await Promise.all([
     getDemoIemandAannemenSituaties(),
     getActieveOrganisatie(persona),
-    getIngelogdeNaam(persona),
   ]);
-  const onderneming = organisatie?.handelsnaam ?? "uw onderneming";
 
   return (
     <>
