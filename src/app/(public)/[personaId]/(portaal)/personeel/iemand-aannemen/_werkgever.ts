@@ -62,6 +62,16 @@ export const euro = (eurocent: unknown) => {
     : `€${n.toLocaleString("nl-NL", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
+/** Eurocenten op hele euro's, voor schattingen: 89740.8 wordt 89700. */
+export const opHeleEuros = (eurocent: number) =>
+  Math.round(eurocent / 100) * 100;
+
+/** Eurocenten als bedrag in hele euro's: 89740.8 wordt "€897". */
+export const euroHeel = (eurocent: unknown) => {
+  const n = Math.round(Number(eurocent) / 100);
+  return Number.isNaN(n) ? "" : `€${n.toLocaleString("nl-NL")}`;
+};
+
 /** Een engine-waarde leesbaar: bedragen, ja/nee, of de tekst. */
 export const waarde = (naam: string, w: unknown) => {
   if (w === true) return "ja";

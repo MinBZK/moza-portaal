@@ -22,6 +22,12 @@ const VoorbeeldberekeningPage = () => (
         gelden, hangt af van de kandidaat, bijvoorbeeld of die in het
         doelgroepregister staat.
       </Paragraph>
+      <Paragraph>
+        Het doelgroepregister is een lijst van UWV met mensen die onder de
+        banenafspraak vallen. Beschut werk is werk in een beschutte omgeving,
+        voor iemand die alleen zo kan werken. De gemeente stelt vast wie op
+        beschut werk is aangewezen.
+      </Paragraph>
       <AccordionProvider
         headingLevel={2}
         sections={[
@@ -29,8 +35,11 @@ const VoorbeeldberekeningPage = () => (
         ]}
       />
       <Paragraph>
-        Beantwoord de vragen. In de voorbeeldberekening ziet u meteen uw
-        geschatte loonkosten.
+        Deze voorbeeldberekening is een vereenvoudigde weergave van de
+        werkelijkheid. Het echte bedrag stellen de gemeente, UWV en de
+        Belastingdienst vast na uw aanvraag. De voorbeeldberekening laat niet
+        alle mogelijkheden zien. Er kunnen meer regelingen gelden dan hier
+        staan.
       </Paragraph>
       <Vragen />
     </div>

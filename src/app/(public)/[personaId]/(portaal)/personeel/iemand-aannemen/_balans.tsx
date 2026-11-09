@@ -2,7 +2,7 @@
 
 import LoadingStatus from "@/components/LoadingStatus";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
 import { useSliderDragging } from "@/components/RangeSlider";
 import { Alert, Heading, Paragraph } from "@/components/rhc";
@@ -19,7 +19,7 @@ import {
   type VoorbehoudId,
 } from "./_uitkomsten";
 import type { Resultaat } from "./_useUitkomsten";
-import { euro } from "./_werkgever";
+import { euro, euroHeel, opHeleEuros } from "./_werkgever";
 
 /** Wat bij een aanname in de (i) staat (ontwerp-orientatie-alle-uitkomsten-v1.md). */
 export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
@@ -176,8 +176,12 @@ const Balans = ({
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   // Values that follow a slider light up when the user lets go of it.
   const slepen = useSliderDragging();
-  const kosten = loonkostenPerJaar(antwoorden);
-  const regels = balansRegels(uitkomsten, kosten);
+  // Een schatting: in hele euro's, en de som klopt met de bedragen erboven.
+  const kosten = opHeleEuros(loonkostenPerJaar(antwoorden));
+  const regels = balansRegels(uitkomsten, kosten).map((r) => ({
+    ...r,
+    bedrag: opHeleEuros(r.bedrag),
+  }));
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
   const netto = Math.max(0, kosten - terug);
 
@@ -186,8 +190,8 @@ const Balans = ({
   const totaal =
     bekend && !bezig && !fout
       ? kort
-        ? `Samen ongeveer ${euro(terug)} per jaar.`
-        : `Uw loonkosten met deze regelingen: ongeveer ${euro(netto)} per jaar.`
+        ? `Samen ongeveer ${euroHeel(terug)} per jaar.`
+        : `Uw loonkosten met deze regelingen: ongeveer ${euroHeel(netto)} per jaar.`
       : undefined;
   const [vorigTotaal, setVorigTotaal] = useState(totaal);
   const [melding, setMelding] = useState("");
@@ -211,17 +215,19 @@ const Balans = ({
   const bezigOfFout = fout ? "…" : <Spinner />;
   // ChangedValue stays mounted during the spinner, so it still sees the change.
   const bedrag = (cent: number) => (
-    <ChangedValue>{bekend && !fout ? euro(cent) : bezigOfFout}</ChangedValue>
+    <ChangedValue>
+      {bekend && !fout ? euroHeel(cent) : bezigOfFout}
+    </ChangedValue>
   );
   const waarde = (r: BalansRegel, min = "") => (
     <ChangedValue>
       {!bekend || fout
         ? bezigOfFout
         : r.status === "bedrag"
-          ? `${min}${euro(r.bedrag)}`
+          ? `${min}${euroHeel(r.bedrag)}`
           : r.status === "niet_meegeteld"
             ? "niet meegeteld"
-            : `${min}${euro(0)}`}
+            : `${min}${euroHeel(0)}`}
     </ChangedValue>
   );
 
@@ -286,9 +292,8 @@ const Balans = ({
         )}
         <Paragraph className="rhc-mox-small-text">
           Bij <ChangedValue>{`${antwoorden.uren} uur`}</ChangedValue> per week
-          en <ChangedValue>{euro(antwoorden.uurloon)}</ChangedValue> per uur. De
-          loonkosten zijn dan <ChangedValue>{euro(kosten)}</ChangedValue> per
-          jaar.
+          en ongeveer <ChangedValue>{euroHeel(kosten)}</ChangedValue> loonkosten
+          per jaar.
         </Paragraph>
         {bron}
         {statusmelding}
@@ -304,62 +309,75 @@ const Balans = ({
       <dl className="rhc-data-summary rhc-data-summary--column rhc-mox-sum">
         <div className="rhc-data-summary__item">
           <dt className="rhc-data-summary__item-key">
-            <span className="rhc-mox-stack rhc-mox-stack--sm">
-              <span>Loonkosten</span>
+            <span>
+              Loonkosten{" "}
               {/* Zo volgt het bedrag uit de uren en het uurloon (loonkostenPerJaar). */}
-              <span className="rhc-mox-small-text">
-                {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
-                plus 8 procent vakantiegeld en ongeveer 20 procent
-                werkgeverslasten
-              </span>
+              <InfoToggletip label="Toelichting bij de loonkosten">
+                <Paragraph>
+                  {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
+                  plus 8 procent vakantiegeld en ongeveer 20 procent
+                  werkgeverslasten.
+                </Paragraph>
+              </InfoToggletip>
             </span>
           </dt>
           <dd className="rhc-data-summary__item-value">
-            <ChangedValue>{euro(kosten)}</ChangedValue>
+            <ChangedValue>{euroHeel(kosten)}</ChangedValue>
           </dd>
         </div>
-        {regels.map((r) => {
-          // Altijd wanneer de regeling geldt; daarna de aanname, en bij een
-          // bedrag de uitleg bij loondispensatie of de duur en het voorbehoud
-          // bij het loonkostenvoordeel.
-          const metBedrag = bekend && !fout && r.bedrag > 0;
-          const toelichting = [
-            WANNEER[r.id],
-            ...(bekend && !fout && r.status === "geldt_niet"
-              ? ["Bij uw antwoorden geldt deze regeling niet."]
-              : []),
-            ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
-            ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
-            ...(metBedrag && r.id === "lkv"
-              ? lkvToelichting(r.regel?.categorie)
-              : []),
-          ];
-          return (
-            <div key={r.id} className="rhc-data-summary__item">
-              <dt className="rhc-data-summary__item-key">
-                <span>
-                  {naam(r)}
-                  {toelichting.length > 0 && (
-                    <>
-                      {" "}
-                      <InfoToggletip
-                        label={`Toelichting bij ${naam(r).toLowerCase()}`}
-                      >
-                        {toelichting.map((zin) => (
-                          <Paragraph key={zin}>{zin}</Paragraph>
-                        ))}
-                        {bekend && !fout && meer?.(r)}
-                      </InfoToggletip>
-                    </>
-                  )}
-                </span>
-              </dt>
-              <dd className="rhc-data-summary__item-value">
-                {waarde(r, "− ")}
-              </dd>
-            </div>
-          );
-        })}
+        {/* De regelingen samen op één regel; per regeling de uitleg in de (i). */}
+        <div className="rhc-data-summary__item">
+          <dt className="rhc-data-summary__item-key">
+            <span>
+              Regelingen{" "}
+              <InfoToggletip label="Toelichting bij de regelingen">
+                {regels.map((r) => {
+                  // Kop met het bedrag en wanneer de regeling geldt; daarna de
+                  // aanname, en bij een bedrag de uitleg bij loondispensatie of
+                  // de duur en het voorbehoud bij het loonkostenvoordeel.
+                  const klaar = bekend && !fout;
+                  const metBedrag = klaar && r.bedrag > 0;
+                  const uitkomst = !klaar
+                    ? ""
+                    : r.status === "bedrag"
+                      ? `: ${euroHeel(r.bedrag)}`
+                      : r.status === "niet_meegeteld"
+                        ? ": niet meegeteld"
+                        : ": geldt niet bij uw antwoorden";
+                  const toelichting = [
+                    ...(r.regel?.aanname
+                      ? [AANNAMES[r.regel.aanname].uitleg]
+                      : []),
+                    ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
+                    ...(metBedrag && r.id === "lkv"
+                      ? lkvToelichting(r.regel?.categorie)
+                      : []),
+                  ];
+                  return (
+                    <Fragment key={r.id}>
+                      <Paragraph>
+                        <strong>
+                          {naam(r)}
+                          {uitkomst}.
+                        </strong>{" "}
+                        {WANNEER[r.id]}
+                      </Paragraph>
+                      {toelichting.map((zin) => (
+                        <Paragraph key={zin}>{zin}</Paragraph>
+                      ))}
+                      {klaar && meer?.(r)}
+                    </Fragment>
+                  );
+                })}
+              </InfoToggletip>
+            </span>
+          </dt>
+          <dd className="rhc-data-summary__item-value">
+            <ChangedValue>
+              {bekend && !fout ? `− ${euroHeel(terug)}` : bezigOfFout}
+            </ChangedValue>
+          </dd>
+        </div>
         <div className="rhc-data-summary__item rhc-mox-sum__total">
           <dt className="rhc-data-summary__item-key">
             Geschatte loonkosten per jaar

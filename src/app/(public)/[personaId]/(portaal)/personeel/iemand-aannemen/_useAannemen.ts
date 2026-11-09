@@ -56,7 +56,7 @@ export const WML_UUR_EUROCENT = 1499;
 export type Antwoorden = {
   /** Waarmee de engine rekent; volgt uit register, beschut en uitkering. */
   doelgroepen: Doelgroep[];
-  /** Vraag 1, 1a en 2; zonder waarde afgeleid uit de doelgroepen. */
+  /** De vragen naar register, beschut werk en uitkering; zonder waarde afgeleid uit de doelgroepen. */
   register?: InRegister;
   beschut?: boolean;
   uitkering?: Uitkering;
@@ -64,7 +64,7 @@ export type Antwoorden = {
   uren: number;
   /** Geschatte loonwaarde in procent, 0 tot 100; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
-  /** Bruto uurloon in eurocent, niet lager dan het minimumloon. */
+  /** Bruto uurloon in eurocent, €4,50 tot €30 (schuifregelaar in _vragen.tsx). */
   uurloon: number;
   /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 2. */
   aanvang?: string;

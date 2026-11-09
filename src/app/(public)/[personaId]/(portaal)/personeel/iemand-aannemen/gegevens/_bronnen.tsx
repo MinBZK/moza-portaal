@@ -10,7 +10,6 @@ import {
   Accordion,
   AccordionSection,
   ActionGroup,
-  Alert,
   Button,
   Fieldset,
   FormFieldCheckboxOption,
@@ -383,16 +382,6 @@ const Bronnen = ({
 
   return (
     <>
-      <Alert type="info" closable>
-        <Paragraph>
-          Wij halen gegevens over uw onderneming op.{" "}
-          {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
-          {meer ? "bekijken" : "bekijkt"} zelf de gegevens over de kandidaat.
-        </Paragraph>
-        <Paragraph>
-          De aanvraag versturen wij pas als u dat zelf doet.
-        </Paragraph>
-      </Alert>
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
@@ -492,13 +481,18 @@ const Bronnen = ({
                 appearance="secondary-action-button"
                 aria-disabled={!nieuw.naam.trim() || !bsnGoed}
                 aria-describedby={
-                  fout === "toestemming" ? "toestemming-fout" : undefined
+                  fout === "toestemming"
+                    ? "toestemming-fout toestemming-melding"
+                    : "toestemming-melding"
                 }
                 onClick={voegToe}
               >
                 Toestemming vragen
               </Button>
             </ActionGroup>
+            <Paragraph id="toestemming-melding" className="rhc-mox-small-text">
+              U krijgt een melding zodra de kandidaat toestemming heeft gegeven.
+            </Paragraph>
           </div>
         )}
         {gekozen && (
