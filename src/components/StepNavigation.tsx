@@ -21,6 +21,8 @@ type Next = {
   final?: boolean;
   /** The final action sends something: a paper plane instead of the check mark. */
   sends?: boolean;
+  /** Text only, without an icon. */
+  noIcon?: boolean;
 };
 
 /**
@@ -46,9 +48,11 @@ const StepNavigation = ({
 }) => {
   const label = (
     <>
-      {next?.final && (next.sends ? <Icon icon="verzenden" /> : <CheckIcon />)}
+      {next?.final &&
+        !next.noIcon &&
+        (next.sends ? <Icon icon="verzenden" /> : <CheckIcon />)}
       {next?.label ?? "Verder"}
-      {!next?.final && <Icon icon="chevron-right" />}
+      {!next?.final && !next?.noIcon && <Icon icon="chevron-right" />}
     </>
   );
 

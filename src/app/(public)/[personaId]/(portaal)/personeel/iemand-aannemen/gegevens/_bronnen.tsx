@@ -492,7 +492,7 @@ const Bronnen = ({
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
           backLabel="Terug naar Voorbeeldberekening"
-          later={wachtend ? "/personeel" : undefined}
+          later="/personeel"
           next={{
             label: verderNaar(2),
             disabled: !gekozen || !opgave || !resultaat.bekend,
