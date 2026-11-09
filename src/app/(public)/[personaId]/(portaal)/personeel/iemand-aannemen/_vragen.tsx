@@ -1,11 +1,10 @@
 "use client";
 
 import StepNavigation from "@/components/StepNavigation";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import {
   Fieldset,
   FormFieldRadio,
-  FormFieldTextInput,
   Paragraph,
   Separator,
 } from "@/components/rhc";
@@ -25,7 +24,7 @@ import {
   type Uitkering,
 } from "./_uitkomsten";
 import { useUitkomsten } from "./_useUitkomsten";
-import { euro } from "./_werkgever";
+import { euro, euroHeel } from "./_werkgever";
 import { terugNaar, verderNaar } from "./_stappen";
 import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
 
@@ -33,17 +32,24 @@ import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
 const UWV_REGISTER =
   "https://www.uwv.nl/nl/doelgroepregister/staat-werknemer-in-doelgroepregister";
 
-/** Bovengrens van "anders, namelijk" bij het uurloon: € 200 per uur. */
-const MAX_UURLOON_EUROCENT = 20000;
+/**
+ * De standen van de schuifregelaar voor het uurloon, in eurocent: van €4,50
+ * (het minimumjeugdloon voor 15 jaar, 30 procent van het minimumloon) tot
+ * €30, per 50 cent. De stand het dichtst bij het minimumloon is het
+ * minimumloon zelf, zodat de vooringevulde waarde een stand is.
+ */
+const UURLONEN = Array.from({ length: (3000 - 450) / 50 + 1 }, (_, i) => {
+  const cent = 450 + i * 50;
+  return Math.abs(cent - WML_UUR_EUROCENT) < 25 ? WML_UUR_EUROCENT : cent;
+});
 
-/** "15,50" of "15.50" naar eurocent; null als het geen bedrag is. */
-const naarEurocent = (tekst: string) => {
-  const schoon = tekst.trim().replace(/^€\s*/, "").replace(",", ".");
-  if (!/^\d+(\.\d{1,2})?$/.test(schoon)) return null;
-  return Math.round(Number(schoon) * 100);
-};
-
-const alsTekst = (cent: number) => (cent / 100).toFixed(2).replace(".", ",");
+/** De stand van de schuifregelaar die het dichtst bij een uurloon ligt. */
+const standVan = (cent: number) =>
+  UURLONEN.reduce(
+    (beste, waarde, i) =>
+      Math.abs(waarde - cent) < Math.abs(UURLONEN[beste] - cent) ? i : beste,
+    0,
+  );
 
 /** Een termijn uit de wet, met het artikel waar hij staat. */
 type Bron = { tekst: string; url: string };
@@ -163,13 +169,13 @@ const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
  */
 const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
   if (r.id === "lks")
-    return `De gemeente betaalt per maand ${euro(Math.round(r.bedragPerJaar / 12))}. Per jaar is dat ${euro(bedrag)}.`;
+    return `De gemeente betaalt per maand ongeveer ${euroHeel(r.bedragPerJaar / 12)}. Per jaar is dat ongeveer ${euroHeel(bedrag)}.`;
   if (r.id === "ld")
     return r.aanspraakPerUur === undefined
-      ? `Per jaar betaalt u ongeveer ${euro(bedrag)} minder aan loon.`
-      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euro(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
+      ? `Per jaar betaalt u ongeveer ${euroHeel(bedrag)} minder aan loon.`
+      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euroHeel(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
   const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
-  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ${euro(bedrag)} per jaar.`;
+  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ongeveer ${euroHeel(bedrag)} per jaar.`;
 };
 
 /**
@@ -242,11 +248,16 @@ const VragenMetStaat = ({
       (r) => r.bedrag <= 0,
     );
   const kanVerder = resultaat.bekend && !resultaat.fout && !geenBedrag;
-  // Vraag 1, 1a en 2; oudere opslag kent alleen de doelgroepen.
+  // Register, beschut werk en uitkering; oudere opslag kent alleen de
+  // doelgroepen, of nog de uitkering "andere" (die rekende als geen).
   const afgeleid = vragenUit(a.doelgroepen);
   const register = a.register ?? afgeleid.register;
   const beschut = a.beschut ?? afgeleid.beschut;
-  const uitkering = a.uitkering ?? afgeleid.uitkering;
+  const uitkering =
+    UITKERINGEN.find(([w]) => w === a.uitkering)?.[0] ?? afgeleid.uitkering;
+  // De vraag naar beschut werk staat er alleen bij Ja; de nummers erna schuiven mee.
+  const metBeschut = register === "ja";
+  const nr = (n: number) => (metBeschut ? n + 1 : n);
   const zetVraag = (deel: {
     register?: InRegister;
     beschut?: boolean;
@@ -263,29 +274,6 @@ const VragenMetStaat = ({
     });
   };
   const wajong = uitkering === "wajong";
-  // Vraag 5: vooringevuld met het minimumloon; een eigen bedrag telt pas als het klopt.
-  const [loonTekst, setLoonTekst] = useState(alsTekst(a.uurloon));
-  const loonCent = naarEurocent(loonTekst);
-  const loonFout =
-    loonTekst.trim() === ""
-      ? "Vul het bruto uurloon in, bijvoorbeeld 16,50."
-      : loonCent === null
-        ? "Vul een bedrag in, bijvoorbeeld 16,50."
-        : loonCent < WML_UUR_EUROCENT
-          ? `Vul ten minste het minimumloon in: ${euro(WML_UUR_EUROCENT)}.`
-          : loonCent > MAX_UURLOON_EUROCENT
-            ? `Vul een bedrag in tot ${euro(MAX_UURLOON_EUROCENT)}.`
-            : undefined;
-  const zetLoon = (tekst: string) => {
-    setLoonTekst(tekst);
-    const cent = naarEurocent(tekst);
-    if (
-      cent !== null &&
-      cent >= WML_UUR_EUROCENT &&
-      cent <= MAX_UURLOON_EUROCENT
-    )
-      zet({ uurloon: cent });
-  };
 
   return (
     <>
@@ -294,7 +282,21 @@ const VragenMetStaat = ({
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
           <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <Fieldset legend="1. Staat de persoon in het doelgroepregister?">
+            <Fieldset
+              legend="1. Staat de persoon in het doelgroepregister?"
+              info={
+                <InfoToggletip label="Toelichting bij het doelgroepregister">
+                  <Paragraph>
+                    Het doelgroepregister is een lijst van UWV. Daarin staan
+                    mensen die onder de banenafspraak vallen.
+                  </Paragraph>
+                  <Paragraph>
+                    Staat uw werknemer in het register? Dan kunt u
+                    loonkostenvoordeel krijgen.
+                  </Paragraph>
+                </InfoToggletip>
+              }
+            >
               {(
                 [
                   ["ja", "Ja"],
@@ -330,8 +332,24 @@ const VragenMetStaat = ({
               </Paragraph>
             )}
           </div>
-          {register === "ja" && (
-            <Fieldset legend="1a. Is de persoon door de gemeente aangewezen op beschut werk?">
+          {metBeschut && (
+            <Fieldset
+              legend="2. Is de persoon door de gemeente aangewezen op beschut werk?"
+              info={
+                <InfoToggletip label="Toelichting bij beschut werk">
+                  <Paragraph>
+                    Beschut werk is werk in een beschutte omgeving, onder
+                    aangepaste omstandigheden. Het is voor iemand die alleen zo
+                    kan werken.
+                  </Paragraph>
+                  <Paragraph>
+                    De gemeente stelt vast of iemand op beschut werk is
+                    aangewezen. UWV geeft de gemeente daarover advies
+                    (Participatiewet, artikel 10b).
+                  </Paragraph>
+                </InfoToggletip>
+              }
+            >
               <FormFieldRadio
                 name="beschut"
                 value="ja"
@@ -348,7 +366,7 @@ const VragenMetStaat = ({
               />
             </Fieldset>
           )}
-          <Fieldset legend="2. Heeft de persoon een uitkering?">
+          <Fieldset legend={`${nr(2)}. Heeft de persoon een uitkering?`}>
             {UITKERINGEN.map(([waarde, label]) => (
               <FormFieldRadio
                 key={waarde}
@@ -366,7 +384,7 @@ const VragenMetStaat = ({
             ))}
           </Fieldset>
           <RangeSlider
-            label="3. Hoeveel uur per week gaat de persoon werken?"
+            label={`${nr(3)}. Hoeveel uur per week gaat de persoon werken?`}
             min={1}
             max={40}
             step={1}
@@ -377,7 +395,7 @@ const VragenMetStaat = ({
           />
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label="4. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?"
+              label={`${nr(4)}. Hoeveel werk kan uw werknemer doen, vergeleken met een collega die volledig inzetbaar is?`}
               min={0}
               max={100}
               step={5}
@@ -418,19 +436,28 @@ const VragenMetStaat = ({
               </Paragraph>
             )}
           </div>
-          <FormFieldTextInput
-            name="uurloon"
-            label="5. Wat wordt het bruto uurloon in euro?"
-            inputMode="decimal"
-            autoComplete="off"
-            className="rhc-mox-textbox--sm rhc-mox-textbox--prefix rhc-mox-textbox--euro"
-            description={`Vooringevuld met het wettelijk minimumloon: ${euro(WML_UUR_EUROCENT)} per uur, voor iemand van 21 jaar of ouder. Betaalt u meer? Vul dan uw bedrag in, bijvoorbeeld 16,50.`}
-            value={loonTekst}
-            invalid={loonFout !== undefined}
-            errorMessage={loonFout}
-            // Het event komt van de input, maar is getypt op de wrapper-div.
-            onChange={(e) => zetLoon((e.target as HTMLInputElement).value)}
-          />
+          <div className="rhc-mox-stack rhc-mox-stack--sm">
+            <RangeSlider
+              label={`${nr(5)}. Wat wordt het bruto uurloon?`}
+              min={0}
+              max={UURLONEN.length - 1}
+              step={1}
+              value={standVan(a.uurloon)}
+              onChange={(stand) => zet({ uurloon: UURLONEN[stand] })}
+              formatValue={(stand) => euro(UURLONEN[stand])}
+              formatValueText={(stand) =>
+                UURLONEN[stand] === WML_UUR_EUROCENT
+                  ? `${euro(UURLONEN[stand])} per uur: het wettelijk minimumloon voor 21 jaar en ouder`
+                  : `${euro(UURLONEN[stand])} per uur`
+              }
+              filled
+            />
+            <Paragraph className="rhc-mox-small-text">
+              Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per uur,
+              voor iemand van 21 jaar of ouder. Voor een jongere werknemer is
+              het minimumloon lager.
+            </Paragraph>
+          </div>
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
           <StickyInfoBox title="Voorbeeldberekening">
@@ -445,8 +472,11 @@ const VragenMetStaat = ({
 
       <div className="rhc-mox-stack">
         <Paragraph>
-          Deze voorbeeldberekening laat niet alle mogelijkheden zien. Er kunnen
-          meer regelingen gelden dan hier staan.
+          Deze voorbeeldberekening is een vereenvoudigde weergave van de
+          werkelijkheid. Het echte bedrag stellen de gemeente, UWV en de
+          Belastingdienst vast na uw aanvraag. De voorbeeldberekening laat niet
+          alle mogelijkheden zien. Er kunnen meer regelingen gelden dan hier
+          staan.
         </Paragraph>
         <Paragraph role="status" id="aanvragen-bezig">
           {resultaat.fout

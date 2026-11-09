@@ -74,6 +74,12 @@ const IemandAannemenPage = () => (
         gelden, hangt af van de kandidaat, bijvoorbeeld of die in het
         doelgroepregister staat.
       </Paragraph>
+      <Paragraph>
+        Het doelgroepregister is een lijst van UWV met mensen die onder de
+        banenafspraak vallen. Beschut werk is werk in een beschutte omgeving,
+        voor iemand die alleen zo kan werken. De gemeente stelt vast wie op
+        beschut werk is aangewezen.
+      </Paragraph>
 
       <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
         <Heading level={2} id="regelingen">

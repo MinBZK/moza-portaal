@@ -19,7 +19,7 @@ import {
   type VoorbehoudId,
 } from "./_uitkomsten";
 import type { Resultaat } from "./_useUitkomsten";
-import { euro } from "./_werkgever";
+import { euro, euroHeel, opHeleEuros } from "./_werkgever";
 
 /** Wat bij een aanname in de (i) staat (ontwerp-orientatie-alle-uitkomsten-v1.md). */
 export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
@@ -176,8 +176,12 @@ const Balans = ({
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   // Values that follow a slider light up when the user lets go of it.
   const slepen = useSliderDragging();
-  const kosten = loonkostenPerJaar(antwoorden);
-  const regels = balansRegels(uitkomsten, kosten);
+  // Een schatting: in hele euro's, en de som klopt met de bedragen erboven.
+  const kosten = opHeleEuros(loonkostenPerJaar(antwoorden));
+  const regels = balansRegels(uitkomsten, kosten).map((r) => ({
+    ...r,
+    bedrag: opHeleEuros(r.bedrag),
+  }));
   const terug = regels.reduce((som, r) => som + r.bedrag, 0);
   const netto = Math.max(0, kosten - terug);
 
@@ -186,8 +190,8 @@ const Balans = ({
   const totaal =
     bekend && !bezig && !fout
       ? kort
-        ? `Samen ongeveer ${euro(terug)} per jaar.`
-        : `Uw loonkosten met deze regelingen: ongeveer ${euro(netto)} per jaar.`
+        ? `Samen ongeveer ${euroHeel(terug)} per jaar.`
+        : `Uw loonkosten met deze regelingen: ongeveer ${euroHeel(netto)} per jaar.`
       : undefined;
   const [vorigTotaal, setVorigTotaal] = useState(totaal);
   const [melding, setMelding] = useState("");
@@ -211,17 +215,19 @@ const Balans = ({
   const bezigOfFout = fout ? "…" : <Spinner />;
   // ChangedValue stays mounted during the spinner, so it still sees the change.
   const bedrag = (cent: number) => (
-    <ChangedValue>{bekend && !fout ? euro(cent) : bezigOfFout}</ChangedValue>
+    <ChangedValue>
+      {bekend && !fout ? euroHeel(cent) : bezigOfFout}
+    </ChangedValue>
   );
   const waarde = (r: BalansRegel, min = "") => (
     <ChangedValue>
       {!bekend || fout
         ? bezigOfFout
         : r.status === "bedrag"
-          ? `${min}${euro(r.bedrag)}`
+          ? `${min}${euroHeel(r.bedrag)}`
           : r.status === "niet_meegeteld"
             ? "niet meegeteld"
-            : `${min}${euro(0)}`}
+            : `${min}${euroHeel(0)}`}
     </ChangedValue>
   );
 
@@ -287,8 +293,8 @@ const Balans = ({
         <Paragraph className="rhc-mox-small-text">
           Bij <ChangedValue>{`${antwoorden.uren} uur`}</ChangedValue> per week
           en <ChangedValue>{euro(antwoorden.uurloon)}</ChangedValue> per uur. De
-          loonkosten zijn dan <ChangedValue>{euro(kosten)}</ChangedValue> per
-          jaar.
+          loonkosten zijn dan ongeveer{" "}
+          <ChangedValue>{euroHeel(kosten)}</ChangedValue> per jaar.
         </Paragraph>
         {bron}
         {statusmelding}
@@ -304,18 +310,20 @@ const Balans = ({
       <dl className="rhc-data-summary rhc-data-summary--column rhc-mox-sum">
         <div className="rhc-data-summary__item">
           <dt className="rhc-data-summary__item-key">
-            <span className="rhc-mox-stack rhc-mox-stack--sm">
-              <span>Loonkosten</span>
+            <span>
+              Loonkosten{" "}
               {/* Zo volgt het bedrag uit de uren en het uurloon (loonkostenPerJaar). */}
-              <span className="rhc-mox-small-text">
-                {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
-                plus 8 procent vakantiegeld en ongeveer 20 procent
-                werkgeverslasten
-              </span>
+              <InfoToggletip label="Toelichting bij de loonkosten">
+                <Paragraph>
+                  {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
+                  plus 8 procent vakantiegeld en ongeveer 20 procent
+                  werkgeverslasten.
+                </Paragraph>
+              </InfoToggletip>
             </span>
           </dt>
           <dd className="rhc-data-summary__item-value">
-            <ChangedValue>{euro(kosten)}</ChangedValue>
+            <ChangedValue>{euroHeel(kosten)}</ChangedValue>
           </dd>
         </div>
         {regels.map((r) => {

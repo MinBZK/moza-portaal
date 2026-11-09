@@ -35,7 +35,7 @@ import {
   type RegelingId,
 } from "../_useAannemen";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
-import { datumNL, euro, type Werkgever } from "../_werkgever";
+import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
 
 type Gegeven = {
   label: string;
@@ -322,7 +322,7 @@ const AanvraagInhoud = ({
     const bedrag = bedragVan(id);
     return bedrag === undefined ? null : (
       <Paragraph>
-        Voorbeeldbedrag: <strong>{euro(bedrag)}</strong> per jaar.
+        Voorbeeldbedrag: <strong>{euroHeel(bedrag)}</strong> per jaar.
       </Paragraph>
     );
   };

@@ -54,7 +54,6 @@ export const UITKERINGEN = [
   ["wajong", "Wajong"],
   ["wia", "WIA"],
   ["bijstand", "Bijstand"],
-  ["andere", "Een andere uitkering"],
   ["geen", "Geen uitkering"],
 ] as const;
 export type Uitkering = (typeof UITKERINGEN)[number][0];
