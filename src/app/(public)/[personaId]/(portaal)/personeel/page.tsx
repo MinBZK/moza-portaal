@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  AccordionProvider,
   ActionGroup,
   DataSummary,
   DataSummaryItem,
@@ -10,8 +9,6 @@ import {
   OrderedList,
   OrderedListItem,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
 import { getDemoIemandAannemenSituaties } from "@/demo";
 import {
@@ -24,46 +21,6 @@ import PersoneelZaak from "./iemand-aannemen/_personeelZaak";
 import { STAPPEN, TAAK_TITEL } from "./iemand-aannemen/_stappen";
 
 export const metadata: Metadata = { title: "Personeel en rollen" };
-
-const vragen = [
-  {
-    vraag: "Welke gegevens van de kandidaat worden gebruikt?",
-    antwoord: (
-      <>
-        <Paragraph>
-          Alleen wat de wet nodig heeft om te bepalen of een regeling geldt:
-        </Paragraph>
-        <UnorderedList>
-          <UnorderedListItem>
-            van UWV: of de kandidaat in het doelgroepregister staat
-          </UnorderedListItem>
-          <UnorderedListItem>
-            van de gemeente: of die de kandidaat ondersteunt en wat de
-            loonwaarde is
-          </UnorderedListItem>
-          <UnorderedListItem>
-            van u: de uren, de startdatum en het loon
-          </UnorderedListItem>
-        </UnorderedList>
-        <Paragraph>
-          De kandidaat geeft daarvoor toestemming. U ziet per gegeven de bron en
-          de datum waarop het is opgehaald.
-        </Paragraph>
-      </>
-    ),
-  },
-  {
-    vraag: "Is de uitkomst een besluit?",
-    antwoord: (
-      <Paragraph>
-        Nee. Wat u vooraf ziet is een berekening met dezelfde regels als de
-        organisatie later gebruikt. Het besluit neemt de gemeente, UWV of de
-        Belastingdienst nadat u een aanvraag heeft verstuurd. Bij het besluit
-        ziet u dezelfde berekening terug.
-      </Paragraph>
-    ),
-  },
-];
 
 const ONDERNEMERSPLEIN_AANNEMEN =
   "https://ondernemersplein.overheid.nl/personeel/aannemen/stappenplan-personeel-aannemen/";
@@ -249,17 +206,6 @@ const PersoneelPage = async () => {
           </ExternalLink>
         </Paragraph>
       </section>
-
-      <Heading level={2}>Veelgestelde vragen</Heading>
-      <div className="mox-faq-card">
-        <AccordionProvider
-          headingLevel={3}
-          sections={vragen.map(({ vraag, antwoord }) => ({
-            label: vraag,
-            body: antwoord,
-          }))}
-        />
-      </div>
     </>
   );
 };
