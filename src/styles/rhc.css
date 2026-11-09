@@ -183,6 +183,10 @@ dd {
 
 .utrecht-form-label:not(
 	:where(.utrecht-form-label--checkbox, .utrecht-form-label--radio)
+),
+/* A single checkbox is a question in itself, unlike an option in a group. */
+.utrecht-form-label--checkbox:not(
+	:where(fieldset, [role="group"], .rhc-checkbox-group) *
 ) {
 	font-weight: var(--rhc-mox-font-weight-medium);
 }

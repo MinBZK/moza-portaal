@@ -513,15 +513,6 @@ const AanvraagInhoud = ({
         )}
 
         {bekend && rijIds.length > 0 && (
-          <Controleer
-            bronnen={bronnen}
-            kandidaat={kandidaat}
-            aanvang={a.aanvang}
-            uren={a.uren}
-          />
-        )}
-
-        {bekend && rijIds.length > 0 && (
           <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
             <Heading level={2} id="regelingen">
               Kies de regelingen
@@ -543,6 +534,15 @@ const AanvraagInhoud = ({
               {route.taken.map(taak)}
             </ul>
           </section>
+        )}
+
+        {bekend && rijIds.length > 0 && (
+          <Controleer
+            bronnen={bronnen}
+            kandidaat={kandidaat}
+            aanvang={a.aanvang}
+            uren={a.uren}
+          />
         )}
 
         {bekend && paneelIds.length > 0 && bestaand?.ingediend && (
