@@ -114,17 +114,16 @@ const AanvraagInhoud = ({
   const lkv = uitkomsten.regels.find((r) => r.id === "lkv");
   const nrp = uitkomsten.overige.find((o) => o.id === "nrp");
 
-  const isPaneel = (id: RegelingId): id is PaneelId =>
-    (paneelIds as RegelingId[]).includes(id);
-  // Welke regelingen de ondernemer aanvraagt: de tegels met een vinkje.
-  const gekozen = (id: PaneelId) => !!g[id];
+  // Welke regelingen de ondernemer kiest: de tegels met een vinkje.
+  const gekozen = (id: RegelingId) => !!g[id];
+  const aantalGekozen = rijIds.filter(gekozen).length;
   // Hoe vaak versturen zonder keuze is geprobeerd: elke poging zet de focus
   // op de melding, zodat die wordt voorgelezen.
   const [kiesFout, setKiesFout] = useState(0);
   useEffect(() => {
     if (kiesFout) document.getElementById("kies-fout")?.focus();
   }, [kiesFout]);
-  const kies = (id: PaneelId, aan: boolean) => {
+  const kies = (id: RegelingId, aan: boolean) => {
     werkBij({
       gecontroleerd: { ...g, [id]: aan },
       // Jobcoaching en werkplekaanpassing gaan mee als de keuze "ja" is.
@@ -164,7 +163,7 @@ const AanvraagInhoud = ({
     <li key={id}>
       <div
         id={`regeling-${id}`}
-        className={`rhc-mox-tile${isPaneel(id) && gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
+        className={`rhc-mox-tile${gekozen(id) ? " rhc-mox-tile--selected" : ""}`}
       >
         <Heading level={3} appearanceLevel={5}>
           {NAAM[id]}
@@ -174,14 +173,12 @@ const AanvraagInhoud = ({
           <Begrip key={b} id={b} />
         ))}
         {kind}
-        {isPaneel(id) && (
-          <FormFieldCheckboxOption
-            label={`${NAAM[id]} aanvragen`}
-            name={`kies-${id}`}
-            checked={gekozen(id)}
-            onChange={(event) => kies(id, event.target.checked)}
-          />
-        )}
+        <FormFieldCheckboxOption
+          label={`Kies ${NAAM[id].toLowerCase()}`}
+          name={`kies-${id}`}
+          checked={gekozen(id)}
+          onChange={(event) => kies(id, event.target.checked)}
+        />
       </div>
     </li>
   );
@@ -383,6 +380,11 @@ const AanvraagInhoud = ({
   // Zonder panelen is er niets te versturen. Bij WIA maakt "Klaar" de zaak
   // aan (de werknemer vraagt de verklaring aan); anders volgt het overzicht.
   const klaar = () => {
+    // Minimaal één regeling, ook als er niets te versturen is.
+    if (aantalGekozen === 0) {
+      setKiesFout((keer) => keer + 1);
+      return;
+    }
     if (route.zaak === "wia") {
       werkBij({
         zaken: {
@@ -423,7 +425,7 @@ const AanvraagInhoud = ({
 
   const indienen = () => {
     // Minimaal één regeling.
-    if (verstuurt.length === 0) {
+    if (aantalGekozen === 0) {
       setKiesFout((keer) => keer + 1);
       return;
     }
@@ -493,7 +495,7 @@ const AanvraagInhoud = ({
                 ? "Bij deze antwoorden is er niets aan te vragen."
                 : paneelIds.length === 0
                   ? overzichtTekst(route)
-                  : "Controleer uw gegevens en kies welke regelingen u aanvraagt."}
+                  : "Controleer uw gegevens en kies de regelingen."}
           </Paragraph>
         )}
         {paneelIds.length > 0 && (
@@ -512,13 +514,13 @@ const AanvraagInhoud = ({
           />
         )}
 
-        {bekend && paneelIds.length > 0 && (
+        {bekend && rijIds.length > 0 && (
           <section className="rhc-mox-row-gap" aria-labelledby="regelingen">
             <Heading level={2} id="regelingen">
-              Kies de regelingen die u aanvraagt
+              Kies de regelingen
             </Heading>
             <Paragraph>Kies ten minste één regeling.</Paragraph>
-            {kiesFout > 0 && verstuurt.length === 0 && (
+            {kiesFout > 0 && aantalGekozen === 0 && (
               <div id="kies-fout" tabIndex={-1}>
                 <Alert type="error">
                   <Paragraph>
@@ -530,18 +532,6 @@ const AanvraagInhoud = ({
             )}
             <ul className="rhc-mox-tile-grid rhc-mox-tile-grid--wide">
               {paneelIds.map(paneel)}
-            </ul>
-          </section>
-        )}
-
-        {bekend && route.vanzelf.length + route.taken.length > 0 && (
-          <section className="rhc-mox-row-gap" aria-labelledby="vanzelf">
-            <Heading level={2} id="vanzelf">
-              {paneelIds.length > 0
-                ? "Hiervoor hoeft u niets aan te vragen"
-                : "Regelingen"}
-            </Heading>
-            <ul className="rhc-mox-tile-grid rhc-mox-tile-grid--wide">
               {route.vanzelf.map(vanzelf)}
               {route.taken.map(taak)}
             </ul>
@@ -598,7 +588,7 @@ const AanvraagInhoud = ({
             next={
               paneelIds.length > 0 && bestaand?.ingediend
                 ? { label: "Bekijk de zaak", href: demo.zaak.url }
-                : paneelIds.length > 0
+                : verstuurt.length > 0
                   ? {
                       label: `Versturen naar ${uwv ? "UWV" : `gemeente ${kandidaat.gemeente}`}`,
                       onClick: indienen,
