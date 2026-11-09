@@ -21,7 +21,7 @@ type Option = {
 
 const MAX_SUGGESTIONS = 8;
 
-/** The last search in this tab, so the field keeps it on other pages. */
+/** The last search in this tab, first under Laatst gezocht on every page. */
 const LAST_SEARCH_KEY = "mox-laatste-zoekterm";
 const subscribe = () => () => {};
 const readLastSearch = () => sessionStorage.getItem(LAST_SEARCH_KEY) ?? "";
@@ -109,18 +109,16 @@ const SiteSearch = ({
   const listId = `${id}-list`;
   const inputRef = useRef<HTMLInputElement>(null);
   const lastSearch = useSyncExternalStore(subscribe, readLastSearch, () => "");
-  // Null until the user types: then the field shows the last search.
-  const [ownTyped, setTyped] = useState<string | null>(defaultValue || null);
-  const [ownValue, setValue] = useState<string | null>(defaultValue || null);
-  const typed = ownTyped ?? lastSearch;
-  const value = ownValue ?? lastSearch;
+  const [typed, setTyped] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
 
   const page = pageSuggestions
     .filter((text) => matches(text, typed))
     .slice(0, MAX_SUGGESTIONS);
-  const recent = recentSearches
+  const recent = [lastSearch, ...recentSearches]
+    .filter((text, index, all) => text && all.indexOf(text) === index)
     .filter((text) => !page.includes(text))
     .slice(0, Math.max(0, MAX_SUGGESTIONS - page.length));
   const ask: Option[] =
@@ -175,6 +173,12 @@ const SiteSearch = ({
     }
     setValue(option.text);
     setTyped(option.text);
+    // A recent search only fills the field; the user searches with the button.
+    if (option.kind === "recent") {
+      close();
+      inputRef.current?.focus();
+      return;
+    }
     search(option.text);
   };
 
