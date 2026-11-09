@@ -1,15 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import InfoToggletip from "@/components/InfoToggletip";
-import {
-  Accordion,
-  AccordionSection,
-  Heading,
-  Paragraph,
-} from "@/components/rhc";
+import { Heading } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
-import { Begrip } from "./_begrippen";
+import { BegripInfo, type BegripId } from "./_begrippen";
 import { datumNL } from "./_werkgever";
 
 type Bron = DemoAannemen["bronnen"][number];
@@ -62,100 +57,218 @@ export const overKandidaat = (bronnen: Bron[], situatie: string) => {
   };
 };
 
+type Rij = {
+  label: string;
+  waarde: string;
+  /** Een tweede, kleinere regel onder de waarde, zoals de geboortedatum. */
+  extra?: string;
+  /** Alleen bij opgehaalde gegevens: "UWV, opgehaald 7 september 2026". */
+  bron?: string;
+  /** Waar de ondernemer het kan wijzigen. */
+  wijzig?: string;
+  /** Een begrip met uitleg: de (i) staat naast de naam van het gegeven. */
+  begrip?: BegripId;
+  /** Hoe de wet de vraag stelt, achter een (i). */
+  wet?: { vraag: string; wetsvraag: string; grond: string };
+};
+
+/** Waar de eigen opgave staat: onder de gekozen kandidaat in stap 1. */
+const EIGEN_OPGAVE = "/personeel/iemand-aannemen/gegevens#eigen-opgave";
+
+/** Korte namen voor gegevens die de overheid ophaalt. */
+const LABEL: Record<string, string> = {
+  kvk_nummer: "Bedrijfsgegevens",
+  aantal_werknemers_loonaangifte: "Aantal werknemers",
+};
+
+/** Over de onderneming en de kandidaat samen. */
+const BEIDE: readonly string[] = ["heeft_loonaangifte_verzoek_ingediend"];
+
+const hoofdletter = (tekst: string) => tekst[0].toUpperCase() + tekst.slice(1);
+
 /**
- * Wat de overheid al weet, per organisatie, om te lezen. Controleren gebeurt
- * per regeling, in de panelen eronder; hier staat geen eigen vinkje.
+ * De waarde kort, de toelichting op een tweede regel: "Nog niet; dat doet u
+ * …" en "1 fulltime … (loonaangifte augustus 2026)" worden twee regels.
  */
-const Opgehaald = ({
+const splits = (waarde: string): { waarde: string; extra?: string } => {
+  const puntkomma = waarde.indexOf("; ");
+  if (puntkomma > 0)
+    return {
+      waarde: waarde.slice(0, puntkomma),
+      extra: `${hoofdletter(waarde.slice(puntkomma + 2))}.`,
+    };
+  const haakjes = /^(.*) \((.*)\)$/.exec(waarde);
+  if (haakjes) return { waarde: haakjes[1], extra: hoofdletter(haakjes[2]) };
+  return { waarde };
+};
+
+/**
+ * Per gegeven één rij: het label, de waarde (met eventueel een tweede regel
+ * en de bron), en rechts Wijzigen. De markup van de RHC DataSummary, omdat
+ * de waarde een toggletip bevat.
+ */
+const Rijen = ({ rijen }: { rijen: Rij[] }) => (
+  <dl className="rhc-data-summary rhc-data-summary--row rhc-mox-summary-rows">
+    {rijen.map((r) => (
+      <div key={r.label} className="rhc-data-summary__item">
+        <dt className="rhc-data-summary__item-key">
+          {/* Een span: de dt is een flexbox, daarin valt de spatie weg. */}
+          <span>
+            {r.label}
+            {r.begrip && (
+              <>
+                {" "}
+                <BegripInfo id={r.begrip} />
+              </>
+            )}
+          </span>
+        </dt>
+        <dd className="rhc-data-summary__item-value">
+          <span>
+            {r.waarde}
+            {r.wet && (
+              <>
+                {" "}
+                <InfoToggletip label={`Zo vraagt de wet het: ${r.wet.vraag}`}>
+                  {`Zo vraagt de wet het: “${r.wet.wetsvraag}” (${r.wet.grond})`}
+                </InfoToggletip>
+              </>
+            )}
+          </span>
+          {r.extra && <span className="rhc-mox-small-text">{r.extra}</span>}
+          {r.bron && <span className="rhc-mox-small-text">Bron: {r.bron}</span>}
+        </dd>
+        {r.wijzig && (
+          <dd className="rhc-data-summary__item-action">
+            <Link
+              href={r.wijzig}
+              className="utrecht-link utrecht-link--html-a"
+              aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
+            >
+              Wijzigen
+            </Link>
+          </dd>
+        )}
+      </div>
+    ))}
+  </dl>
+);
+
+/**
+ * Controleer: wat de aanvraag over de kandidaat en de onderneming zegt, met
+ * per gegeven de bron. Geordend naar onderwerp, niet naar organisatie.
+ * Controleren is lezen; kiezen gebeurt bij de regelingen eronder.
+ */
+const Controleer = ({
   bronnen,
-  situatie,
-  voornaam,
+  kandidaat,
+  aanvang,
   uren,
-  aanvraag,
 }: {
   bronnen: Bron[];
-  situatie: string;
-  voornaam: string;
-  /** De uren uit de antwoorden van de voorbeeldberekening, voor gegevens met "{uren}". */
+  kandidaat: {
+    voornaam: string;
+    achternaam: string;
+    geboortedatum: string;
+    bsnMasker: string;
+  };
+  /** De eerste werkdag (jjjj-mm-dd) uit stap 1. */
+  aanvang?: string;
   uren: number;
-  /** Er gaat een aanvraag naar een organisatie (niet alleen uitleg). */
-  aanvraag: boolean;
 }) => {
-  const getoond = bronnen.filter(
-    (bron) => bron.id !== "eigen" && zichtbaarVan(bron).length > 0,
+  const bronTekst = (b: Bron) =>
+    `${b.organisatie}, opgehaald ${datumNL(b.opgehaald)}`;
+  const opgehaald = bronnen
+    .filter((b) => b.id !== "eigen")
+    .flatMap((b) => zichtbaarVan(b).map((g) => ({ b, g })));
+
+  // Het doelgroepregister in één regel: staat erin sinds, en loopt nog.
+  const register = opgehaald.find(
+    ({ g }) => g.parameter === "is_arbeidsbeperkte",
   );
-  const [open, setOpen] = useState<string[]>([]);
-  const { wie, meer, zietRegister } = overKandidaat(bronnen, situatie);
-  if (getoond.length === 0) return null;
+  const loopt = opgehaald.find(
+    ({ g }) => g.parameter === "registratie_nog_niet_geeindigd",
+  );
+  const kandidaatRijen: Rij[] = [
+    {
+      label: "Naam",
+      waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
+      extra: `${datumNL(kandidaat.geboortedatum)} · BSN ${kandidaat.bsnMasker}`,
+      wijzig: "/personeel/iemand-aannemen/gegevens",
+    },
+    {
+      label: "Eerste werkdag",
+      waarde: aanvang ? datumNL(aanvang) : "Nog niet ingevuld",
+      wijzig: EIGEN_OPGAVE,
+    },
+    {
+      label: "Uren per week",
+      waarde: `${uren} uur`,
+      wijzig: EIGEN_OPGAVE,
+    },
+    ...(register
+      ? [
+          {
+            label: "Doelgroepregister",
+            begrip: "doelgroepregister" as const,
+            waarde: register.g.waarde,
+            extra: loopt?.g.waarde.startsWith("Ja")
+              ? "De registratie loopt."
+              : undefined,
+            bron: bronTekst(register.b),
+            wet: register.g,
+          },
+        ]
+      : []),
+  ];
+
+  const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => {
+    const waarde = g.waarde.replace("{uren}", String(uren));
+    // Bedrijfsgegevens: de naam op de eerste regel, KVK en adres eronder.
+    const [naam, ...rest] = waarde.split(", ");
+    return {
+      label: LABEL[g.parameter] ?? g.vraag,
+      ...(g.parameter === "kvk_nummer"
+        ? { waarde: naam, extra: rest.join(" · ") }
+        : splits(waarde)),
+      bron: bronTekst(b),
+      wet: g,
+    };
+  };
+  const overig = opgehaald.filter(({ g }) => !REGISTER.includes(g.parameter));
+  const ondernemingRijen = overig
+    .filter(
+      ({ b, g }) =>
+        !OVER_KANDIDAAT.includes(b.id) && !BEIDE.includes(g.parameter),
+    )
+    .map(rij);
+  const beideRijen = overig
+    .filter(({ g }) => BEIDE.includes(g.parameter))
+    .map((x) => ({
+      ...rij(x),
+      label: "Verzoek loonkostenvoordeel",
+    }));
+
+  const groep = (id: string, kop: string, rijen: Rij[]) =>
+    rijen.length > 0 && (
+      <section className="rhc-mox-summary-group" aria-labelledby={id}>
+        <Heading level={3} id={id}>
+          {kop}
+        </Heading>
+        <Rijen rijen={rijen} />
+      </section>
+    );
 
   return (
-    <section className="rhc-mox-row-gap" aria-labelledby="opgehaald">
-      <Heading level={2} id="opgehaald">
-        Gegevens die de overheid heeft opgehaald
+    <section className="rhc-mox-row-gap" aria-labelledby="controleer">
+      <Heading level={2} id="controleer">
+        Controleer gegevens
       </Heading>
-      <Paragraph>
-        {zietRegister
-          ? `Over ${voornaam} ziet u alleen of die in het doelgroepregister staat, en sinds wanneer.`
-          : `Over ${voornaam} ziet u hier geen gegevens.`}{" "}
-        {aanvraag && (
-          <>
-            {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
-            {meer ? "gebruiken hun" : "gebruikt de"} eigen gegevens over{" "}
-            {voornaam} bij de beoordeling; die ziet u niet. U krijgt wel het
-            besluit.
-          </>
-        )}
-      </Paragraph>
-      {zietRegister && <Begrip id="doelgroepregister" />}
-      <Accordion>
-        {getoond.map((bron) => {
-          const aantal = zichtbaarVan(bron).length;
-          return (
-            <AccordionSection
-              key={bron.id}
-              id={`bron-${bron.id}`}
-              headingLevel={3}
-              label={`${bron.organisatie}: ${aantal} ${aantal === 1 ? "gegeven" : "gegevens"}`}
-              // Het type eist `body`, de component rendert alleen `children`.
-              body={null}
-              expanded={open.includes(bron.id)}
-              onActivate={() =>
-                setOpen(
-                  open.includes(bron.id)
-                    ? open.filter((id) => id !== bron.id)
-                    : [...open, bron.id],
-                )
-              }
-            >
-              <div className="rhc-mox-row-gap">
-                <Paragraph className="rhc-mox-small-text">
-                  {bron.register}, opgehaald op {datumNL(bron.opgehaald)}
-                </Paragraph>
-                {/* The markup of the RHC DataSummary: its component only
-                takes text as value, and the toggletip with the law
-                question belongs in the value. */}
-                <dl className="rhc-data-summary rhc-data-summary--column">
-                  {zichtbaarVan(bron).map((g) => (
-                    <div key={g.parameter} className="rhc-data-summary__item">
-                      <dt className="rhc-data-summary__item-key">{g.vraag}</dt>
-                      <dd className="rhc-data-summary__item-value">
-                        {g.waarde.replace("{uren}", String(uren))}{" "}
-                        <InfoToggletip
-                          label={`Zo vraagt de wet het: ${g.vraag}`}
-                        >
-                          {`Zo vraagt de wet het: “${g.wetsvraag}” (${g.grond})`}
-                        </InfoToggletip>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </AccordionSection>
-          );
-        })}
-      </Accordion>
+      {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
+      {groep("controleer-onderneming", "Onderneming", ondernemingRijen)}
+      {groep("controleer-beide", "Kandidaat en onderneming", beideRijen)}
     </section>
   );
 };
 
-export default Opgehaald;
+export default Controleer;
