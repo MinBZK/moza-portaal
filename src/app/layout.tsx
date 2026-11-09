@@ -14,6 +14,7 @@ import { Footer } from "@/layouts/footer";
 
 import { SkipLink } from "@/components/rhc";
 import { getFlagsFromServerCookie } from "@/app/actions";
+import MovedNotice from "@/app/_movedNotice";
 
 export const metadata: Metadata = {
   // Each page sets its own title; it comes before the name of the site.
@@ -39,6 +40,7 @@ export default async function RootLayout({
         <SkipLink href="#hoofd-inhoud">Naar de hoofdinhoud</SkipLink>
         {children}
         <Footer />
+        <MovedNotice />
       </body>
     </html>
   );
