@@ -392,6 +392,10 @@ body {
 		margin-inline-start: auto;
 	}
 
+	.rhc-language-navigation__link {
+		text-decoration: none;
+	}
+
 	.utrecht-page-header .rhc-nav-bar > :has(> .rhc-language-navigation) {
 		margin-inline-start: auto;
 	}
@@ -1259,8 +1263,18 @@ small,
 
 	&:hover,
 	&.utrecht-listbox__option--active {
-		background-color: var(--rhc-color-lintblauw-50);
+		background-color: var(
+			--rhc-mox-hover-background-color,
+			var(--rhc-color-lintblauw-50)
+		);
 		color: inherit;
+	}
+
+	&:active {
+		background-color: var(
+			--rhc-mox-active-background-color,
+			var(--rhc-color-lintblauw-100)
+		);
 	}
 
 	&.utrecht-listbox__option--active {
@@ -1608,6 +1622,13 @@ small,
 		);
 	}
 
+	&:active {
+		background-color: var(
+			--rhc-mox-dropdown-item-active-background,
+			var(--rhc-color-cool-grey-200)
+		);
+	}
+
 	&:focus-visible {
 		outline: var(--utrecht-focus-outline-width)
 			var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
@@ -1626,11 +1647,6 @@ small,
 		);
 		font-weight: var(--rhc-text-font-weight-semi-bold);
 	}
-}
-
-.rhc-mox-dropdown__icon-space {
-	flex-shrink: 0;
-	inline-size: var(--utrecht-icon-size, 1em);
 }
 
 /* --- Icons and links --- */
@@ -2897,7 +2913,17 @@ small,
 		position: relative;
 
 		&:hover {
-			background-color: var(--rhc-color-cool-grey-50);
+			background-color: var(
+				--rhc-mox-hover-background-color,
+				var(--rhc-color-cool-grey-50)
+			);
+		}
+
+		&:active {
+			background-color: var(
+				--rhc-mox-active-background-color,
+				var(--rhc-color-cool-grey-100)
+			);
 		}
 
 		:is(button, .rhc-mox-dropdown__trigger) {

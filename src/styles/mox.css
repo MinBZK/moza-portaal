@@ -14,6 +14,36 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
 	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
 	--rhc-mox-color-page-background: var(--rhc-color-cool-grey-100);
+	--rhc-mox-hover-background-color: var(--rhc-color-cool-grey-200);
+	--rhc-mox-active-background-color: var(--rhc-color-cool-grey-300);
+	--rhc-mox-selected-background-color: var(--rhc-color-cool-grey-200);
+	--utrecht-button-secondary-action-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-button-secondary-action-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
+	--utrecht-button-subtle-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-button-subtle-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
+	--rhc-mox-dropdown-item-hover-background: var(
+		--rhc-mox-hover-background-color
+	);
+	--rhc-mox-dropdown-item-active-background: var(
+		--rhc-mox-active-background-color
+	);
+	--rhc-mox-dropdown-item-selected-background: var(
+		--rhc-mox-selected-background-color
+	);
+	--utrecht-accordion-button-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-accordion-button-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
 
 	/* ==== Typografie ========================================================= */
 
@@ -127,11 +157,48 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		position: relative;
 	}
 
+	.rhc-mox-header-organizations__trigger:not(
+		.rhc-mox-header-organizations__trigger--static
+	),
+	.rhc-language-navigation__trigger {
+		border-radius: var(--rhc-border-radius-md);
+
+		&:hover {
+			background-color: var(--rhc-mox-hover-background-color);
+		}
+
+		&:active {
+			background-color: var(--rhc-mox-active-background-color);
+		}
+
+		&[aria-expanded="true"],
+		&:has(+ :popover-open) {
+			background-color: var(--rhc-mox-selected-background-color);
+		}
+	}
+
 	.rhc-language-navigation {
 		inset-block-start: var(--rhc-space-2xl);
 		inset-inline-end: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 2;
+
+		--utrecht-listbox-option-hover-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-hover-color: inherit;
+		--utrecht-listbox-option-active-background-color: var(
+			--rhc-mox-active-background-color
+		);
+		--utrecht-listbox-option-active-color: inherit;
+		--utrecht-listbox-option-selected-background-color: var(
+			--rhc-mox-selected-background-color
+		);
+		--utrecht-listbox-option-selected-color: inherit;
+		--utrecht-listbox-option-selected-hover-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-selected-hover-color: inherit;
 
 		button {
 			text-decoration: none;
@@ -157,11 +224,15 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		text-decoration: none;
 
 		&:hover {
-			background-color: var(--rhc-color-cool-grey-200);
+			background-color: var(--rhc-mox-hover-background-color);
 		}
 
 		&[aria-current="page"] {
-			background-color: var(--rhc-color-cool-grey-200);
+			background-color: var(--rhc-mox-selected-background-color);
+		}
+
+		&:active {
+			background-color: var(--rhc-mox-active-background-color);
 		}
 	}
 

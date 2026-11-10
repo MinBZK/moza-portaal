@@ -1740,7 +1740,7 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "DropdownItem selected",
           "boolean",
           "–",
-          "Keuze uit meerdere: vinkje en aria-current bij de gekozen optie",
+          "Keuze uit meerdere: aria-current bij de gekozen optie, met een achtergrond en halfvette tekst",
         ],
         [
           "DropdownItem keepOpen",
