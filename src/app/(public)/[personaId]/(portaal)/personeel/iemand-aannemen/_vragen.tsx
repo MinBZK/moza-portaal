@@ -410,7 +410,7 @@ const VragenMetStaat = ({
               }
               filled
               info={
-                <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
+                <InfoToggletip label="Toelichting bij hoeveel werk de kandidaat kan doen">
                   <Paragraph>
                     Dit heet de loonwaarde: hoeveel de kandidaat kan doen,
                     vergeleken met een collega in dezelfde functie. De gemeente
@@ -434,7 +434,7 @@ const VragenMetStaat = ({
             {wajong && (
               <Paragraph className="rhc-mox-small-text">
                 Bij een Wajong-uitkering stelt UWV vast welk deel van het
-                minimumloon de werknemer aankan.
+                minimumloon de kandidaat aankan.
               </Paragraph>
             )}
           </div>
@@ -462,7 +462,7 @@ const VragenMetStaat = ({
                   <Paragraph>
                     Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per
                     uur, voor iemand van 21 jaar of ouder. Voor een jongere
-                    werknemer is het minimumloon lager.
+                    kandidaat is het minimumloon lager.
                   </Paragraph>
                   <Paragraph>
                     Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
@@ -483,7 +483,7 @@ const VragenMetStaat = ({
                 <Paragraph>
                   Dit uurloon is lager dan het wettelijk minimumloon van{" "}
                   {euro(WML_UUR_EUROCENT)} voor iemand van 21 jaar of ouder. Is
-                  de werknemer jonger? Dan geldt een lager minimumloon.
+                  de kandidaat jonger? Dan geldt een lager minimumloon.
                   {wajong
                     ? " Bij loondispensatie stelt UWV vast hoeveel u minder mag betalen."
                     : " Anders mag u niet minder betalen dan het minimumloon."}

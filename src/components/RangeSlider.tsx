@@ -80,6 +80,7 @@ const RangeSlider = ({
   className,
   style,
   onPointerDown,
+  "aria-describedby": describedBy,
   ...props
 }: RangeSliderProps) => {
   const ownId = useId();
@@ -129,7 +130,11 @@ const RangeSlider = ({
       <div className="utrecht-form-field__input">
         <input
           id={fieldId}
-          aria-describedby={description ? `${fieldId}-description` : undefined}
+          aria-describedby={
+            [describedBy, description ? `${fieldId}-description` : undefined]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
           type="range"
           min={min}
           max={max}

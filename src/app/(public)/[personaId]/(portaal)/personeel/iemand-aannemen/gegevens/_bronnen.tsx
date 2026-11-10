@@ -32,7 +32,6 @@ import {
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
-import { datumNL } from "../_werkgever";
 import Stappen, { verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
@@ -83,6 +82,7 @@ const EigenOpgave = ({
   bezig: boolean;
 }) => {
   // Zonder ingevulde naam heet de kandidaat "de kandidaat".
+  // Die variant is in de huidige flow niet te zien.
   const wie = voornaam.trim() || "de kandidaat";
   return (
     // Onder de gekozen kandidaat: deze vragen gaan over die persoon.
@@ -97,7 +97,6 @@ const EigenOpgave = ({
         name="aanvang"
         type="date"
         label={`Wat is de eerste werkdag van ${wie}?`}
-        description="Bijvoorbeeld: 1-12-2026"
         invalid={!!aanvangFout}
         errorMessage={aanvangFout}
         value={a.aanvang ?? ""}
@@ -111,7 +110,7 @@ const EigenOpgave = ({
         waarde komt uit dezelfde antwoorden (a.uren). */}
       <RangeSlider
         label={`Hoeveel uur per week gaat ${wie} werken?`}
-        description="Dit hebt u ingevuld bij de voorbeeldberekening."
+        description="Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
         min={1}
         max={40}
         step={1}
@@ -487,6 +486,7 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
+          Wij vragen de kandidaat eerst om toestemming.{" "}
           {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
           {meer ? "zoeken" : "zoekt"} de kandidaat op met het
           burgerservicenummer (BSN).
@@ -508,8 +508,7 @@ const Bronnen = ({
               <>
                 {naam}
                 <span className="rhc-mox-regular">
-                  , geboren {datumNL(kandidaat.geboortedatum)}, BSN eindigt op{" "}
-                  {kandidaat.bsnMasker.slice(-4)}
+                  , BSN eindigt op {kandidaat.bsnMasker.slice(-4)}
                 </span>
               </>
             }
@@ -576,9 +575,9 @@ const Bronnen = ({
               onBlur={() => setBsnGezien(true)}
             />
             <Paragraph className="rhc-mox-small-text">
-              Werkt de kandidaat al bij u? Dan staat het BSN in uw
-              loonadministratie. Vraag het BSN pas als u de kandidaat echt wilt
-              aannemen. Gebruik het alleen voor deze aanvraag.
+              Vraag het BSN pas als u de kandidaat wilt aannemen. Werkt de
+              kandidaat al bij u? Dan staat het BSN in uw loonadministratie.
+              Gebruik het alleen voor deze aanvraag.
             </Paragraph>
             {fout("toestemming") && (
               <FormFieldErrorMessage id="toestemming-fout">
@@ -586,10 +585,6 @@ const Bronnen = ({
                 <strong>Toestemming vragen aan kandidaat</strong>.
               </FormFieldErrorMessage>
             )}
-            <Paragraph>
-              Voordat u de aanvraag indient, moet de kandidaat toestemming
-              geven.
-            </Paragraph>
             {/* TODO: uitleggen hoe en waar de kandidaat het toestemmingsverzoek
                 krijgt. Tekst nog te bepalen door het team. */}
             <ActionGroup>
@@ -679,7 +674,7 @@ const Bronnen = ({
           {wachtend
             ? `Wacht op toestemming van ${wachtend.naam}.`
             : keuze === NIEUW
-              ? "U kunt de aanvraag indienen als de kandidaat toestemming heeft gegeven."
+              ? "U kunt verder als de kandidaat toestemming heeft gegeven."
               : !gekozen
                 ? ""
                 : !opgave
