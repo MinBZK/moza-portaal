@@ -14,6 +14,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
 	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
 	--rhc-mox-color-page-background: var(--rhc-color-cool-grey-100);
+	--utrecht-button-secondary-action-hover-background-color: var(
+		--rhc-color-cool-grey-200
+	);
+	--utrecht-button-subtle-hover-background-color: var(
+		--rhc-color-cool-grey-200
+	);
 
 	/* ==== Typografie ========================================================= */
 
