@@ -184,7 +184,6 @@ dd {
 .utrecht-form-label:not(
 	:where(.utrecht-form-label--checkbox, .utrecht-form-label--radio)
 ),
-/* A single checkbox is a question in itself, unlike an option in a group. */
 .utrecht-form-label--checkbox:not(
 	:where(fieldset, [role="group"], .rhc-checkbox-group) *
 ) {
@@ -691,7 +690,7 @@ small,
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.rhc-theme.mox-theme .utrecht-accordion {
+	.rhc-theme.mox-theme :is(.utrecht-accordion, .rhc-mox-card--collapsible) {
 		interpolate-size: allow-keywords;
 
 		.utrecht-accordion__button-icon {
@@ -1003,10 +1002,26 @@ small,
 		gap: var(--rhc-space-lg);
 	}
 
-	/* At the block end, also when the cards in a row differ in length. */
 	.rhc-mox-card > .utrecht-action-group:last-child,
 	.rhc-mox-card__action {
 		margin-block-start: auto;
+	}
+
+	.rhc-mox-card--collapsible {
+		.nl-heading {
+			margin-inline-end: calc(-1 * var(--rhc-space-3xl));
+			margin-inline-start: calc(-1 * var(--rhc-space-3xl));
+		}
+		.utrecht-accordion__button {
+			font: inherit;
+			gap: var(--rhc-space-lg);
+		}
+	}
+
+	.rhc-mox-card__content:not([hidden]) {
+		display: flex;
+		flex-direction: column;
+		gap: inherit;
 	}
 
 	.rhc-mox-card.rhc-mox-card--selected {
@@ -1033,16 +1048,6 @@ small,
 		gap: var(--rhc-space-md);
 		justify-items: start;
 	}
-}
-
-/* --- Code block --- */
-.rhc-mox-code-block {
-	background-color: var(--rhc-color-cool-grey-100);
-	border-radius: var(--rhc-border-radius-md);
-	font-size: var(--rhc-text-font-size-sm);
-	line-height: var(--rhc-text-line-height-md);
-	overflow-x: auto;
-	padding: var(--rhc-space-lg);
 }
 
 /* --- Site search --- */
@@ -2665,7 +2670,6 @@ small,
 	anchor-scope: --rhc-mox-toggletip;
 	position: relative;
 	vertical-align: -0.15em;
-	/* The info icon of the info alert, without a button background. */
 	--rhc-toggletip-background-color: transparent;
 	--rhc-toggletip-hover-background-color: transparent;
 	--rhc-toggletip-focus-background-color: transparent;

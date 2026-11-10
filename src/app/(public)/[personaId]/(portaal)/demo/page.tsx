@@ -77,6 +77,7 @@ import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
 import ChangedValue from "@/components/ChangedValue";
+import Card from "@/components/Card";
 import StepNavigation from "@/components/StepNavigation";
 import Spinner from "@/components/Spinner";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -3414,24 +3415,65 @@ const ComponentsDemoPage = () => {
           "–",
           "Geef de sectie een toegankelijke naam via de koptekst",
         ],
+        [
+          "<Card>",
+          "component",
+          "–",
+          "Dezelfde kaart met heading en headingLevel; de sectie krijgt de kop als naam",
+        ],
+        [
+          "collapsible",
+          "boolean",
+          "false",
+          "De kop wordt een knop die de inhoud toont en verbergt (aria-expanded)",
+        ],
+        ["defaultOpen", "boolean", "true", "Bij collapsible: eerst open"],
+        [
+          "action",
+          "ReactNode",
+          "–",
+          "Altijd onderaan, open en dicht, zoals een ActionGroup",
+        ],
       ],
       example: (
-        <section className="rhc-mox-card" aria-labelledby="demo-card-kop">
-          <Heading level={4} id="demo-card-kop">
-            Subsidies en financiering
-          </Heading>
-          <Paragraph>
-            Er is 1 nieuwe subsidie die interessant kan zijn.
-          </Paragraph>
-          <ActionGroup>
-            <NextLink
-              href="/subsidies"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-            >
-              Naar Subsidies en financiering
-            </NextLink>
-          </ActionGroup>
-        </section>
+        <>
+          <Card
+            heading="Lopende aanvraag"
+            headingLevel={4}
+            collapsible
+            defaultOpen={false}
+            action={
+              <ActionGroup>
+                <NextLink
+                  href="/lopendezaken"
+                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
+                >
+                  Naar Lopende zaken
+                </NextLink>
+              </ActionGroup>
+            }
+          >
+            <Paragraph>
+              De gemeente beoordeelt uw aanvraag voor loonkostensubsidie.
+            </Paragraph>
+          </Card>
+          <section className="rhc-mox-card" aria-labelledby="demo-card-kop">
+            <Heading level={4} id="demo-card-kop">
+              Subsidies en financiering
+            </Heading>
+            <Paragraph>
+              Er is 1 nieuwe subsidie die interessant kan zijn.
+            </Paragraph>
+            <ActionGroup>
+              <NextLink
+                href="/subsidies"
+                className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+              >
+                Naar Subsidies en financiering
+              </NextLink>
+            </ActionGroup>
+          </section>
+        </>
       ),
     },
     {

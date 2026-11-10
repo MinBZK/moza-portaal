@@ -162,7 +162,7 @@ const Page = () => (
         Het toont alle contexten waarin de ingelogde persoon kan handelen,
         gegroepeerd op soort:
       </Paragraph>
-      <pre className="rhc-mox-code-block">{SWITCHER}</pre>
+      <pre className="prototype-code-block">{SWITCHER}</pre>
 
       <PatternSection id="ontwerpkeuzes" title="Ontwerpkeuzes" level={3}>
         <UnorderedList>
