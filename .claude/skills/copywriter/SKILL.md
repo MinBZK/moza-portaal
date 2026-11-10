@@ -45,7 +45,7 @@ Lees de schrijfwijzer en de terminologietabel vóór elke review. Vertrouw niet 
 
 ### 2. Aanspreking: genderneutraal en inclusief
 
-- "u" en "uw", nooit "je" of "jij". "U hebt", niet "u heeft". De organisatie spreekt als "wij", niet "we".
+- "u" en "uw", nooit "je" of "jij". "U heeft", niet "u hebt"; ook "Heeft u …?". De organisatie spreekt als "wij", niet "we".
 - Geen "hij", "zij", "hem", "haar", "hij/zij" of "zijn/haar" voor een onbekend persoon. Gebruik "de ondernemer", "de kandidaat", "die", "diegene", de voornaam, of herschrijf de zin.
 - Leid geen geslacht af uit een voornaam, ook niet in voorbeelddata.
 - Neutrale functienamen: "medewerker", niet "medewerkster"; geen "-ster"/"-es" als het geslacht er niet toe doet.
@@ -70,7 +70,7 @@ Lees de schrijfwijzer en de terminologietabel vóór elke review. Vertrouw niet 
 - **Verwijzen naar een knop** in lopende tekst: de naam in `<strong>`, zonder aanhalingstekens: "Kies **Archiveren**".
 - **Apparaatneutraal**: "kies" of "selecteer", niet "klik" of "tik".
 - **Koppen**: zelfstandige naamwoorden, zonder punt. Uitzonderingen: een begroeting als H1, een vraag als FAQ-kop.
-- **Foutmeldingen**: zeg wat nodig is om het te herstellen, bij het veld zelf. "U hebt nog geen eerste werkdag ingevuld", niet "Ongeldige invoer".
+- **Foutmeldingen**: zeg wat nodig is om het te herstellen, bij het veld zelf. "U heeft nog geen eerste werkdag ingevuld", niet "Ongeldige invoer".
 - **Lege staten**: zeg wat er nog niet is én wat de gebruiker kan doen.
 - **Statusmeldingen** (`role="status"`, `LoadingStatus`): kort, en ze kloppen ook voorgelezen zonder het scherm erbij. Een melding die alleen via kleur of een icoon werkt, is een bevinding.
 - **Bevestigingen**: noem de actie en het gevolg: "Aanvraag intrekken? U kunt die daarna niet meer wijzigen."
