@@ -68,9 +68,12 @@ type Termijn = {
 
 const PWET = "https://wetten.overheid.nl/BWBR0015703/2026-07-01#Artikel10d";
 const WTL = "https://wetten.overheid.nl/BWBR0037522/2026-01-01";
-/** De beslistermijn van acht weken als de wet zelf geen termijn noemt. */
+/**
+ * De beslistermijn als de wet zelf geen termijn noemt: een redelijke termijn,
+ * na acht weken voorbij tenzij de organisatie meldt dat het langer duurt.
+ */
 const AWB_4_13: Bron = {
-  tekst: "Algemene wet bestuursrecht, artikel 4:13",
+  tekst: "Algemene wet bestuursrecht, artikelen 4:13 en 4:14",
   url: "https://wetten.overheid.nl/BWBR0005537/2024-01-01#Artikel4:13",
 };
 
@@ -90,9 +93,9 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
             id: "lks",
             regeling: "Loonkostensubsidie",
             tekst:
-              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de eerste werkdag.",
+              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de start van het dienstverband.",
             wanneer:
-              "Is de werknemer nog niet begonnen? Dan beslist de gemeente binnen vijf weken nadat zij de loonwaarde heeft vastgesteld. Is de werknemer al begonnen? Dan beslist de gemeente uiterlijk acht weken na uw aanvraag.",
+              "Is de werknemer nog niet begonnen? Dan beslist de gemeente binnen vijf weken nadat zij de loonwaarde heeft vastgesteld, of nadat zij heeft besloten die later vast te stellen. Is de werknemer al begonnen? Dan beslist de gemeente binnen acht weken na uw aanvraag, tenzij zij u laat weten dat het langer duurt.",
             bronnen: [
               {
                 tekst: "Participatiewet, artikel 10d lid 2 en lid 12",
@@ -110,13 +113,17 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
             regeling: "Loondispensatie",
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
-            wanneer: "UWV beslist binnen acht weken na uw aanvraag.",
+            wanneer:
+              "UWV beslist binnen 14 weken na uw aanvraag, tenzij UWV u laat weten dat het langer duurt. Volgens UWV krijgt u meestal binnen acht weken een brief.",
             bronnen: [
               {
                 tekst: "Besluit loondispensatie Wajong, artikel 4",
                 url: "https://wetten.overheid.nl/BWBR0020119/2010-08-19#Artikel4",
               },
-              AWB_4_13,
+              {
+                tekst: "Wajong, artikel 6:1",
+                url: "https://wetten.overheid.nl/BWBR0008657#Artikel6:1",
+              },
             ],
           },
         ]
@@ -130,8 +137,8 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
               ? "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
               : "U vraagt het loonkostenvoordeel aan in de loonaangifte.",
             wanneer: arbeidsgehandicapt
-              ? "UWV beslist binnen acht weken over de doelgroepverklaring. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus."
-              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus.",
+              ? "UWV beslist binnen acht weken over de doelgroepverklaring, tenzij UWV laat weten dat het langer duurt. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen zes weken na dat besluit."
+              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen zes weken na dat besluit.",
             bronnen: [
               ...(arbeidsgehandicapt
                 ? [
@@ -143,7 +150,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
                   ]
                 : []),
               {
-                tekst: "Wet tegemoetkomingen loondomein, artikel 4.2",
+                tekst: "Wet tegemoetkomingen loondomein, artikelen 4.2 en 4.4",
                 url: `${WTL}#Artikel4.2`,
               },
             ],
@@ -156,7 +163,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
   lks: () =>
-    "De gemeente spreekt met u en de werknemer af wanneer zij de loonwaarde opnieuw meet. Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
+    "De gemeente bepaalt in overleg met u en de werknemer wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
   ld: () =>
     "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, ten hoogste vijf jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>
@@ -339,12 +346,17 @@ const VragenMetStaat = ({
               info={
                 <InfoToggletip label="Toelichting bij beschut werk">
                   <Paragraph>
-                    Beschut werk is werk met veel begeleiding en aangepaste
-                    omstandigheden. Het is voor iemand die alleen zo kan werken.
+                    Beschut werk is werk in een beschutte omgeving, onder
+                    aangepaste omstandigheden. Het is voor iemand die alleen zo
+                    kan werken.
                   </Paragraph>
                   <Paragraph>
                     De gemeente beslist of iemand beschut werk nodig heeft. UWV
                     geeft daarover advies (Participatiewet, artikel 10b).
+                  </Paragraph>
+                  <Paragraph>
+                    Wie beschut werkt, telt niet mee voor de banenafspraak (Wet
+                    financiering sociale verzekeringen, artikel 38b lid 1).
                   </Paragraph>
                 </InfoToggletip>
               }

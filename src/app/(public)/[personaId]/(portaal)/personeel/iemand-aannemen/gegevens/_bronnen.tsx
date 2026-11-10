@@ -250,17 +250,17 @@ const Bronnen = ({
   const duur = [
     ...(situatie === "gemeente" && loonwaardeNogNiet
       ? [
-          `De loonwaarde van ${kandidaat.voornaam} is nog niet gemeten. Een deskundige van de gemeente meet die op de werkplek, als ${kandidaat.voornaam} is ingewerkt. Een vaste wachttijd daarvoor is er niet. Daarna beslist de gemeente uiterlijk acht weken na uw aanvraag (Algemene wet bestuursrecht, artikel 4:13).`,
+          `De loonwaarde van ${kandidaat.voornaam} is nog niet vastgesteld. Een loonwaardedeskundige beoordeelt het werk op de werkplek. De wet noemt daarvoor geen termijn. Over uw aanvraag beslist de gemeente binnen acht weken, tenzij zij u laat weten dat het langer duurt (Algemene wet bestuursrecht, artikelen 4:13 en 4:14).`,
         ]
       : []),
     ...(situatie === "wajong"
       ? [
-          "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen acht weken na uw aanvraag.",
+          "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen 14 weken na uw aanvraag (Wajong, artikel 6:1). Volgens UWV krijgt u meestal binnen acht weken een brief.",
         ]
       : []),
     ...(situatie === "wia"
       ? [
-          "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+          "De werknemer vraagt de doelgroepverklaring aan bij UWV. Volgens UWV beslist UWV binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
         ]
       : []),
   ];
