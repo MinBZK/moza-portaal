@@ -464,7 +464,7 @@ body {
 	}
 	.rhc-side-nav__link {
 		align-items: flex-start;
-
+		text-decoration: none;
 		.utrecht-icon {
 			svg {
 				block-size: var(--rhc-size-icon-md);

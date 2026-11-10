@@ -481,7 +481,7 @@ const VragenMetStaat = ({
       {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
       <StepNavigation
         next={{
-          label: "Kandidaat selecteren",
+          label: "Ja, ik wil doorgaan",
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !kanVerder,
           describedBy: kanVerder ? undefined : "aanvragen-bezig",
