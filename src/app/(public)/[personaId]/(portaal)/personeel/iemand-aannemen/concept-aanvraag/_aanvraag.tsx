@@ -514,21 +514,29 @@ const AanvraagInhoud = ({
             {!zonderAanvraag && (
               <Paragraph>Kies ten minste één regeling.</Paragraph>
             )}
-            {kiesFout > 0 && aantalGekozen === 0 && (
-              <div id="kies-fout" tabIndex={-1}>
-                <Alert type="error">
-                  <Paragraph>
-                    U hebt nog geen regeling gekozen. Vink ten minste één
-                    regeling aan.
-                  </Paragraph>
-                </Alert>
-              </div>
-            )}
-            <ul className="rhc-mox-card-grid">
-              {paneelIds.map(paneel)}
-              {route.vanzelf.map(vanzelf)}
-              {route.taken.map(taak)}
-            </ul>
+            <div
+              className={
+                kiesFout > 0 && aantalGekozen === 0
+                  ? "rhc-mox-row-gap utrecht-form-field--invalid"
+                  : "rhc-mox-row-gap"
+              }
+            >
+              {kiesFout > 0 && aantalGekozen === 0 && (
+                <div id="kies-fout" tabIndex={-1}>
+                  <Alert type="error">
+                    <Paragraph>
+                      U hebt nog geen regeling gekozen. Vink ten minste één
+                      regeling aan.
+                    </Paragraph>
+                  </Alert>
+                </div>
+              )}
+              <ul className="rhc-mox-card-grid">
+                {paneelIds.map(paneel)}
+                {route.vanzelf.map(vanzelf)}
+                {route.taken.map(taak)}
+              </ul>
+            </div>
           </section>
         )}
 

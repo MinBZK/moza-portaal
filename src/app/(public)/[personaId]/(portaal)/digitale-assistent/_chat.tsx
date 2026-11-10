@@ -919,22 +919,24 @@ const Chat = ({
           >
             Vraag stellen
           </Button>
-          <Button
-            appearance="secondary-action-button"
-            aria-disabled={!heeftGesprek || bezig || undefined}
-            onClick={nieuwGesprek}
-          >
-            Nieuw gesprek starten
-          </Button>
-          <Button
-            appearance="secondary-action-button"
-            aria-disabled={
-              !heeftGesprek || bezig || bewaard === "ja" || undefined
-            }
-            onClick={bewaarGesprek}
-          >
-            {bewaard === "ja" ? "Gesprek bewaard" : "Gesprek bewaren"}
-          </Button>
+          {heeftGesprek && (
+            <>
+              <Button
+                appearance="secondary-action-button"
+                aria-disabled={bezig || undefined}
+                onClick={nieuwGesprek}
+              >
+                Nieuw gesprek starten
+              </Button>
+              <Button
+                appearance="secondary-action-button"
+                aria-disabled={bezig || bewaard === "ja" || undefined}
+                onClick={bewaarGesprek}
+              >
+                {bewaard === "ja" ? "Gesprek bewaard" : "Gesprek bewaren"}
+              </Button>
+            </>
+          )}
         </ActionGroup>
         <p className="rhc-visually-hidden" role="status">
           {bewaard === "ja"

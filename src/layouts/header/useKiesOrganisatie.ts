@@ -14,6 +14,9 @@ export type KeuzeOrganisatie = {
   ingelogd?: boolean;
 };
 
+/** The answers of Iemand aannemen (see _useAannemen.ts). */
+const AANNEMEN = "moza-iemand-aannemen";
+
 /** Inloggen met een wallet voor nog een onderneming, en daarna terug. */
 const inlogAdres = () =>
   `/inloggen/zakelijk?onderneming=toevoegen&vervolg=${encodeURIComponent(
@@ -22,7 +25,8 @@ const inlogAdres = () =>
 
 /**
  * Wisselt van organisatie (de context): zet het cookie en laadt de pagina
- * opnieuw, zodat alles de gegevens van die organisatie toont. Is iemand voor
+ * opnieuw, zodat alles de gegevens van die organisatie toont. Een begonnen
+ * Iemand aannemen begint opnieuw. Is iemand voor
  * die organisatie niet ingelogd, dan eerst naar inloggen. Gedeeld door de
  * header en het menu op een smal scherm.
  */
@@ -35,6 +39,8 @@ export const useKiesOrganisatie = (actieveOrganisatieId?: string) => {
       return true;
     }
     set(organisatie.id, { path: "/", maxAge: 60 * 60 * 24 * 30 });
+    // A task that was started belongs to the previous organisation.
+    sessionStorage.removeItem(AANNEMEN);
     window.location.reload();
     return true;
   };
