@@ -2920,6 +2920,13 @@ small,
 			);
 		}
 
+		&:active {
+			background-color: var(
+				--rhc-mox-active-background-color,
+				var(--rhc-color-cool-grey-100)
+			);
+		}
+
 		:is(button, .rhc-mox-dropdown__trigger) {
 			position: relative;
 			z-index: 1;
