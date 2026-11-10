@@ -64,7 +64,7 @@ We gebruiken overal dezelfde termen voor dezelfde begrippen.
 | Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
 | Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
 | Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
-| De gebruiker als werkgever            | u, uw                   | De werkgever, De ondernemer         |
+| De gebruiker als werkgever            | u, uw                   | De werkgever                        |
 | Wie u wilt aannemen, tot de start     | Kandidaat               | De persoon, Iemand, Medewerker      |
 | Wie bij u in dienst is                | Werknemer               | Medewerker, Personeelslid           |
 | Onbetaald werk op proef               | Proefplaats             | Proefplaatsing                      |
