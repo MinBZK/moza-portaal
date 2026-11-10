@@ -176,9 +176,19 @@ Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ruim t
 ## Wat vastligt en wat niet
 
 - Bedragen: loonkostensubsidie € 897,41 per maand bij loonwaarde 60 procent en
-  32 uur (vergoeding werkgeverslasten in de grondslag van het 70-procentmaximum,
-  letter van Pwet 10d lid 4; de vraag of de uitvoering afwijkt ligt bij UWV),
-  loonkostenvoordeel banenafspraak € 1.680,64 per jaar.
+  32 uur, loonkostenvoordeel banenafspraak € 1.680,64 per jaar.
+- Vergoeding werkgeverslasten (jurist, 10 november 2026, zie
+  `feedback-jurist-lks-2026-11-10.md`): de loonkostensubsidie is hoogstens 70
+  procent van het minimumloon met vakantiebijslag; de vergoeding komt daar
+  bovenop en valt buiten dat maximum. Ze is 25 procent van de loonkosten
+  waarover loonkostensubsidie wordt verstrekt (Regeling loonkostensubsidie
+  Participatiewet 2021, artikel 1, sinds 1 januari 2025). Het portaal toont
+  haar nog niet als bedrag: de gebundelde engine en het corpus (regelrecht-corpus
+  `42054d7d`) rekenen de vergoeding alleen mee in de grondslag van het maximum.
+  Bij Koen zou ze € 224,35 per maand zijn als ze over de loonkostensubsidie
+  wordt berekend; of het over dat bedrag gaat of over het hele minimumloon met
+  vakantiebijslag, ligt als afstempunt bij de jurist (regelrecht-corpus-FCV,
+  actieregister 5.2).
 - Het besluit is van het college; de engine onderbouwt.
 - Loonwaarde 60 procent is een aangeleverd feit van het college
   (juristfeedback 24 en 25 september 2026).

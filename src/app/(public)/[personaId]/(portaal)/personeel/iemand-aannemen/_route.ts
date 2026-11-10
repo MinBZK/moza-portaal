@@ -35,12 +35,15 @@ export type Route = {
   overzicht: boolean;
 };
 
-/** Volgorde: wajong, wia, bijstand, register, anders uitleg (beschut, geen of niets gekozen). */
+/**
+ * Volgorde: wajong, wia, bijstand of geen uitkering (gemeente), register,
+ * anders uitleg (beschut zonder gemeente, geen of niets gekozen).
+ */
 export const situatieVan = (doelgroepen: Doelgroep[]): Situatie => {
   const heeft = (d: Doelgroep) => doelgroepen.includes(d);
   if (heeft("wajong")) return "wajong";
   if (heeft("wia")) return "wia";
-  if (heeft("bijstand")) return "gemeente";
+  if (heeft("bijstand") || heeft("nug")) return "gemeente";
   if (heeft("register")) return "register";
   return "uitleg";
 };

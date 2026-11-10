@@ -51,12 +51,15 @@ const withHiddenPrefix = (text: string) => {
 const StepNavigation = ({
   back,
   backLabel = "Terug",
+  backIcon = true,
   next,
   later,
 }: {
   back?: string;
   /** Text of the back button; "Terug" by default. */
   backLabel?: string;
+  /** Arrow on the back button; off for a button that leaves the task, such as "Afsluiten". */
+  backIcon?: boolean;
   next?: Next;
   /** Save and leave the task: go to this address. */
   later?: string;
@@ -108,7 +111,8 @@ const StepNavigation = ({
           href={later}
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
-          Opslaan en later verder gaan
+          <Icon icon="save" />
+          Opslaan en later verder
         </Link>
       )}
       {back && (
@@ -116,7 +120,7 @@ const StepNavigation = ({
           href={back}
           className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
         >
-          <Icon icon="chevron-left" />
+          {backIcon && <Icon icon="chevron-left" />}
           {withHiddenPrefix(backLabel)}
         </Link>
       )}

@@ -2,9 +2,16 @@
 
 import StepNavigation from "@/components/StepNavigation";
 import type { ReactNode } from "react";
-import { Fieldset, FormFieldRadio, Paragraph } from "@/components/rhc";
+import {
+  Alert,
+  Fieldset,
+  FormFieldRadio,
+  Paragraph,
+  UnorderedList,
+  UnorderedListItem,
+} from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
-import { BegripInfo } from "./_begrippen";
+import { BEGRIP, BegripInfo, NAAM } from "./_begrippen";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans from "./_balans";
@@ -19,6 +26,7 @@ import {
   type Regel,
   type Uitkering,
 } from "./_uitkomsten";
+import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
 import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
@@ -229,9 +237,9 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
-  // Verder kan pas als de voorbeeldberekening een bedrag oplevert, of als een
-  // regeling geldt die we niet meetellen: loonkostensubsidie bij beschut werk
-  // (de gemeente beoordeelt die) en loondispensatie boven het minimumloon.
+  // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
+  // we niet meetellen (loonkostensubsidie bij beschut werk, die de gemeente
+  // beoordeelt, en loondispensatie boven het minimumloon).
   const nietMeegeteld = resultaat.uitkomsten.aannames.some(
     (id) => id === "beschut_lks" || id === "ld_cao",
   );
@@ -242,7 +250,13 @@ const VragenMetStaat = ({
     balansRegels(resultaat.uitkomsten, loonkostenPerJaar(a)).every(
       (r) => r.bedrag <= 0,
     );
-  const kanVerder = resultaat.bekend && !resultaat.fout && !geenBedrag;
+  // Verder kan als er een bedrag uitkomt of als er iets aan te vragen is.
+  // Anders staat onder de berekening wat zonder aanvraag wel geldt (zoals de
+  // no-riskpolis), en kan de ondernemer terug naar Personeel en rollen.
+  const route = routeVoor(a.doelgroepen, resultaat.uitkomsten);
+  const nietsAanTeVragen = geenBedrag && route.panelen.length === 0;
+  const watGeldt = nietsAanTeVragen ? [...route.vanzelf, ...route.taken] : [];
+  const kanVerder = resultaat.bekend && !resultaat.fout && !nietsAanTeVragen;
   // Register, beschut werk en uitkering; oudere opslag kent alleen de
   // doelgroepen, of nog de uitkering "andere" (die rekende als geen).
   const afgeleid = vragenUit(a.doelgroepen);
@@ -250,8 +264,9 @@ const VragenMetStaat = ({
   const beschut = a.beschut ?? afgeleid.beschut;
   const uitkering =
     UITKERINGEN.find(([w]) => w === a.uitkering)?.[0] ?? afgeleid.uitkering;
-  // De vraag naar beschut werk staat er alleen bij Ja; de nummers erna schuiven mee.
-  const metBeschut = register === "ja";
+  // Beschut werk en het register sluiten elkaar uit (Wfsv 38b lid 1 aanhef):
+  // de vraag naar beschut werk staat er niet bij Ja. De nummers erna schuiven mee.
+  const metBeschut = register !== "ja";
   const nr = (n: number) => (metBeschut ? n + 1 : n);
   const zetVraag = (deel: {
     register?: InRegister;
@@ -259,7 +274,7 @@ const VragenMetStaat = ({
     uitkering?: Uitkering;
   }) => {
     const r = deel.register ?? register;
-    const b = (deel.beschut ?? beschut) && r === "ja";
+    const b = (deel.beschut ?? beschut) && r !== "ja";
     const u = deel.uitkering ?? uitkering;
     zet({
       register: r,
@@ -269,9 +284,10 @@ const VragenMetStaat = ({
     });
   };
   const wajong = uitkering === "wajong";
-  // De laatste vraag toont loonkosten; daaronder ligt het uurloon (UURLONEN).
-  const loonkostenBij = (stand: number) =>
-    loonkostenPerJaar({ ...a, uurloon: UURLONEN[stand] });
+  // Werkgevers denken in uurloon of maandloon: de vraag gaat over het uurloon,
+  // het maandloon en de loonkosten staan eronder.
+  const maandloon = (a.uurloon * a.uren * 52) / 12;
+  const onderWml = a.uurloon < WML_UUR_EUROCENT;
 
   return (
     <>
@@ -358,7 +374,7 @@ const VragenMetStaat = ({
                 label={label}
                 checked={uitkering === waarde}
                 description={
-                  waarde === "wajong" && register !== "ja"
+                  waarde === "wajong" && register !== "ja" && !beschut
                     ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
                     : undefined
                 }
@@ -405,9 +421,10 @@ const VragenMetStaat = ({
                   <Paragraph>
                     De gemeente betaalt u het verschil tussen het minimumloon en
                     de loonwaarde. Dat heet loonkostensubsidie. U krijgt
-                    hoogstens 70 procent van het minimumloon, plus een
-                    vergoeding voor werkgeverslasten. Betaalt u meer dan het
-                    minimumloon? Dan wordt de subsidie niet hoger.
+                    hoogstens 70 procent van het minimumloon met vakantiegeld.
+                    Daarbovenop krijgt u een vergoeding voor werkgeverslasten.
+                    Betaalt u meer dan het minimumloon? Dan wordt de subsidie
+                    niet hoger.
                   </Paragraph>
                 </InfoToggletip>
               }
@@ -421,38 +438,56 @@ const VragenMetStaat = ({
           </div>
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label={`${nr(5)}. Wat worden de loonkosten per jaar?`}
+              label={`${nr(5)}. Wat wordt het bruto uurloon?`}
               min={0}
               max={UURLONEN.length - 1}
               step={1}
               value={standVan(a.uurloon)}
               onChange={(stand) => zet({ uurloon: UURLONEN[stand] })}
-              formatValue={(stand) => euroHeel(loonkostenBij(stand))}
+              formatValue={(stand) => euro(UURLONEN[stand])}
               formatValueText={(stand) =>
                 UURLONEN[stand] === WML_UUR_EUROCENT
-                  ? `${euroHeel(loonkostenBij(stand))} per jaar: loonkosten bij het wettelijk minimumloon`
-                  : `${euroHeel(loonkostenBij(stand))} per jaar`
+                  ? `${euro(UURLONEN[stand])} per uur: het wettelijk minimumloon`
+                  : `${euro(UURLONEN[stand])} per uur`
               }
               filled
               info={
-                <InfoToggletip label="Toelichting bij de loonkosten">
+                <InfoToggletip label="Toelichting bij het uurloon">
                   <Paragraph>
-                    Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
-                    en ongeveer 20 procent werkgeverslasten.
+                    Het bruto uurloon is het loon per uur vóór belasting, zonder
+                    vakantiegeld.
                   </Paragraph>
                   <Paragraph>
                     Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per
                     uur, voor iemand van 21 jaar of ouder. Voor een jongere
                     werknemer is het minimumloon lager.
                   </Paragraph>
+                  <Paragraph>
+                    Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
+                    en ongeveer 20 procent werkgeverslasten.
+                  </Paragraph>
                 </InfoToggletip>
               }
             />
             <Paragraph className="rhc-mox-small-text">
-              Bij {a.uren} uur per week is dat een bruto uurloon van{" "}
-              {euro(a.uurloon)}
-              {a.uurloon === WML_UUR_EUROCENT && ": het wettelijk minimumloon"}.
+              {a.uurloon === WML_UUR_EUROCENT &&
+                "Dit is het wettelijk minimumloon. "}
+              Bij {a.uren} uur per week is dat ongeveer {euroHeel(maandloon)}{" "}
+              bruto per maand. De loonkosten zijn ongeveer{" "}
+              {euroHeel(loonkostenPerJaar(a))} per jaar.
             </Paragraph>
+            {onderWml && (
+              <Alert type="warning">
+                <Paragraph>
+                  Dit uurloon is lager dan het wettelijk minimumloon van{" "}
+                  {euro(WML_UUR_EUROCENT)} voor iemand van 21 jaar of ouder. Is
+                  de werknemer jonger? Dan geldt een lager minimumloon.
+                  {wajong
+                    ? " Bij loondispensatie stelt UWV vast hoeveel u minder mag betalen."
+                    : " Anders mag u niet minder betalen dan het minimumloon."}
+                </Paragraph>
+              </Alert>
+            )}
           </div>
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
@@ -472,14 +507,32 @@ const VragenMetStaat = ({
             ? "De berekening is niet gelukt. Laad de pagina opnieuw."
             : !resultaat.bekend
               ? "De berekening is nog bezig."
-              : geenBedrag
-                ? "Bij deze antwoorden komt er geen bedrag uit. Pas uw antwoorden aan om verder te gaan."
+              : nietsAanTeVragen
+                ? "Bij deze antwoorden komt er geen bedrag uit. U hoeft niets aan te vragen."
                 : ""}
         </Paragraph>
+        {watGeldt.length > 0 && (
+          <>
+            <Paragraph>Wel gelden deze regelingen:</Paragraph>
+            <UnorderedList>
+              {watGeldt.map((id) => (
+                <UnorderedListItem key={id}>
+                  {NAAM[id]}{" "}
+                  {BEGRIP[id].map((b) => (
+                    <BegripInfo key={b} id={b} />
+                  ))}
+                </UnorderedListItem>
+              ))}
+            </UnorderedList>
+          </>
+        )}
       </div>
 
-      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al
+          weet. Zonder iets aan te vragen kan de ondernemer hier stoppen. */}
       <StepNavigation
+        back={nietsAanTeVragen ? "/personeel" : undefined}
+        backLabel="Terug naar Personeel en rollen"
         next={{
           label: "Regelingen aanvragen",
           href: "/personeel/iemand-aannemen/gegevens",

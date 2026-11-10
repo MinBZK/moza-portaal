@@ -60,7 +60,7 @@ export const overKandidaat = (bronnen: Bron[], situatie: string) => {
 type Rij = {
   label: string;
   waarde: string;
-  /** Een tweede, kleinere regel onder de waarde, zoals de geboortedatum. */
+  /** Een tweede, kleinere regel onder de waarde, zoals het BSN. */
   extra?: string;
   /** Alleen bij opgehaalde gegevens: "UWV, opgehaald 7 september 2026". */
   bron?: string;
@@ -171,7 +171,6 @@ const Controleer = ({
   kandidaat: {
     voornaam: string;
     achternaam: string;
-    geboortedatum: string;
     bsnMasker: string;
   };
   /** De eerste werkdag (jjjj-mm-dd) uit stap 1. */
@@ -198,7 +197,7 @@ const Controleer = ({
     {
       label: "Naam",
       waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
-      extra: `${datumNL(kandidaat.geboortedatum)} · BSN ${kandidaat.bsnMasker}`,
+      extra: `BSN ${kandidaat.bsnMasker}`,
       wijzig: "/personeel/iemand-aannemen/gegevens",
     },
     {
@@ -244,24 +243,14 @@ const Controleer = ({
 
   const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => {
     const waarde = g.waarde.replace("{uren}", String(uren));
-    // Bedrijfsgegevens: de naam op de eerste regel, KVK en adres eronder.
-    const [naam, ...rest] = waarde.split(", ");
     return {
       label: LABEL[g.parameter] ?? g.vraag,
-      ...(g.parameter === "kvk_nummer"
-        ? { waarde: naam, extra: rest.join(" · ") }
-        : splits(waarde)),
+      ...splits(waarde),
       bron: bronTekst(b),
       wet: g,
     };
   };
   const overig = opgehaald.filter(({ g }) => !REGISTER.includes(g.parameter));
-  const ondernemingRijen = overig
-    .filter(
-      ({ b, g }) =>
-        !OVER_KANDIDAAT.includes(b.id) && !BEIDE.includes(g.parameter),
-    )
-    .map(rij);
   const beideRijen = overig
     .filter(({ g }) => BEIDE.includes(g.parameter))
     .map((x) => ({
@@ -286,7 +275,6 @@ const Controleer = ({
         Controleer gegevens
       </Heading>
       {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
-      {groep("controleer-onderneming", "Onderneming", ondernemingRijen)}
       {groep("controleer-beide", "Kandidaat en onderneming", beideRijen)}
     </section>
   );
