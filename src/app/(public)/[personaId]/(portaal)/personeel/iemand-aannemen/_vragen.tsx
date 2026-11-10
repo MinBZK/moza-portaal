@@ -135,7 +135,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
   lks: () =>
-    "De gemeente bepaalt in overleg met u wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Wijzigingen geeft u door zoals uw gemeente dat vraagt.",
+    "De gemeente bepaalt in overleg met u wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
   ld: () =>
     "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, hoogstens 5 jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>

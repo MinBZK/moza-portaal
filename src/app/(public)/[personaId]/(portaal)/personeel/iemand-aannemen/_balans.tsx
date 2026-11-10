@@ -139,7 +139,7 @@ export const duurTekst = (jaren: number | undefined) =>
 const WANNEER: Record<BalansRegel["id"], string> = {
   lks: "Voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen. De gemeente betaalt het verschil met de loonwaarde, hoogstens 70 procent van het minimumloon met vakantiegeld (Participatiewet, artikel 10d).",
   ld: "Voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk, voor ten minste 6 maanden. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20; Besluit loondispensatie Wajong, artikelen 1 en 2).",
-  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10). Iemand die bij de gemeente hoort, telt mee als de gemeente een loonwaarde onder het minimumloon vaststelt (Wet financiering sociale verzekeringen, artikel 38b).",
+  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10). Iemand die bij de gemeente hoort, hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wet financiering sociale verzekeringen, artikel 38b).",
 };
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
