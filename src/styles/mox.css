@@ -17,8 +17,14 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--utrecht-button-secondary-action-hover-background-color: var(
 		--rhc-color-cool-grey-200
 	);
+	--utrecht-button-secondary-action-active-background-color: var(
+		--rhc-color-cool-grey-300
+	);
 	--utrecht-button-subtle-hover-background-color: var(
 		--rhc-color-cool-grey-200
+	);
+	--utrecht-button-subtle-active-background-color: var(
+		--rhc-color-cool-grey-300
 	);
 
 	/* ==== Typografie ========================================================= */
