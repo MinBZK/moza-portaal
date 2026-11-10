@@ -34,6 +34,12 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--rhc-mox-dropdown-item-active-background: var(
 		--rhc-mox-active-background-color
 	);
+	--utrecht-accordion-button-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-accordion-button-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
 
 	/* ==== Typografie ========================================================= */
 
@@ -147,11 +153,43 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		position: relative;
 	}
 
+	.rhc-mox-header-organizations__trigger:not(
+		.rhc-mox-header-organizations__trigger--static
+	),
+	.rhc-language-navigation__trigger {
+		border-radius: var(--rhc-border-radius-md);
+
+		&:hover {
+			background-color: var(--rhc-mox-hover-background-color);
+		}
+
+		&:active {
+			background-color: var(--rhc-mox-active-background-color);
+		}
+	}
+
 	.rhc-language-navigation {
 		inset-block-start: var(--rhc-space-2xl);
 		inset-inline-end: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 2;
+
+		--utrecht-listbox-option-hover-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-hover-color: inherit;
+		--utrecht-listbox-option-active-background-color: var(
+			--rhc-mox-active-background-color
+		);
+		--utrecht-listbox-option-active-color: inherit;
+		--utrecht-listbox-option-selected-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-selected-color: inherit;
+		--utrecht-listbox-option-selected-hover-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-selected-hover-color: inherit;
 
 		button {
 			text-decoration: none;

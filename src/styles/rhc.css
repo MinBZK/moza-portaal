@@ -1259,8 +1259,18 @@ small,
 
 	&:hover,
 	&.utrecht-listbox__option--active {
-		background-color: var(--rhc-color-lintblauw-50);
+		background-color: var(
+			--rhc-mox-hover-background-color,
+			var(--rhc-color-lintblauw-50)
+		);
 		color: inherit;
+	}
+
+	&:active {
+		background-color: var(
+			--rhc-mox-active-background-color,
+			var(--rhc-color-lintblauw-100)
+		);
 	}
 
 	&.utrecht-listbox__option--active {
@@ -2904,7 +2914,10 @@ small,
 		position: relative;
 
 		&:hover {
-			background-color: var(--rhc-color-cool-grey-50);
+			background-color: var(
+				--rhc-mox-hover-background-color,
+				var(--rhc-color-cool-grey-50)
+			);
 		}
 
 		:is(button, .rhc-mox-dropdown__trigger) {
