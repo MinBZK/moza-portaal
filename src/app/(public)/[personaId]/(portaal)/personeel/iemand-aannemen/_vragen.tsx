@@ -3,6 +3,7 @@
 import StepNavigation from "@/components/StepNavigation";
 import type { ReactNode } from "react";
 import {
+  Alert,
   Fieldset,
   FormFieldRadio,
   Paragraph,
@@ -263,8 +264,9 @@ const VragenMetStaat = ({
   const beschut = a.beschut ?? afgeleid.beschut;
   const uitkering =
     UITKERINGEN.find(([w]) => w === a.uitkering)?.[0] ?? afgeleid.uitkering;
-  // De vraag naar beschut werk staat er alleen bij Ja; de nummers erna schuiven mee.
-  const metBeschut = register === "ja";
+  // Beschut werk en het register sluiten elkaar uit (Wfsv 38b lid 1 aanhef):
+  // de vraag naar beschut werk staat er niet bij Ja. De nummers erna schuiven mee.
+  const metBeschut = register !== "ja";
   const nr = (n: number) => (metBeschut ? n + 1 : n);
   const zetVraag = (deel: {
     register?: InRegister;
@@ -272,7 +274,7 @@ const VragenMetStaat = ({
     uitkering?: Uitkering;
   }) => {
     const r = deel.register ?? register;
-    const b = (deel.beschut ?? beschut) && r === "ja";
+    const b = (deel.beschut ?? beschut) && r !== "ja";
     const u = deel.uitkering ?? uitkering;
     zet({
       register: r,
@@ -282,9 +284,10 @@ const VragenMetStaat = ({
     });
   };
   const wajong = uitkering === "wajong";
-  // De laatste vraag toont loonkosten; daaronder ligt het uurloon (UURLONEN).
-  const loonkostenBij = (stand: number) =>
-    loonkostenPerJaar({ ...a, uurloon: UURLONEN[stand] });
+  // Werkgevers denken in uurloon of maandloon: de vraag gaat over het uurloon,
+  // het maandloon en de loonkosten staan eronder.
+  const maandloon = (a.uurloon * a.uren * 52) / 12;
+  const onderWml = a.uurloon < WML_UUR_EUROCENT;
 
   return (
     <>
@@ -371,7 +374,7 @@ const VragenMetStaat = ({
                 label={label}
                 checked={uitkering === waarde}
                 description={
-                  waarde === "wajong" && register !== "ja"
+                  waarde === "wajong" && register !== "ja" && !beschut
                     ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
                     : undefined
                 }
@@ -418,9 +421,10 @@ const VragenMetStaat = ({
                   <Paragraph>
                     De gemeente betaalt u het verschil tussen het minimumloon en
                     de loonwaarde. Dat heet loonkostensubsidie. U krijgt
-                    hoogstens 70 procent van het minimumloon, plus een
-                    vergoeding voor werkgeverslasten. Betaalt u meer dan het
-                    minimumloon? Dan wordt de subsidie niet hoger.
+                    hoogstens 70 procent van het minimumloon met vakantiegeld.
+                    Daarbovenop krijgt u een vergoeding voor werkgeverslasten.
+                    Betaalt u meer dan het minimumloon? Dan wordt de subsidie
+                    niet hoger.
                   </Paragraph>
                 </InfoToggletip>
               }
@@ -434,38 +438,56 @@ const VragenMetStaat = ({
           </div>
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label={`${nr(5)}. Wat worden de loonkosten per jaar?`}
+              label={`${nr(5)}. Wat wordt het bruto uurloon?`}
               min={0}
               max={UURLONEN.length - 1}
               step={1}
               value={standVan(a.uurloon)}
               onChange={(stand) => zet({ uurloon: UURLONEN[stand] })}
-              formatValue={(stand) => euroHeel(loonkostenBij(stand))}
+              formatValue={(stand) => euro(UURLONEN[stand])}
               formatValueText={(stand) =>
                 UURLONEN[stand] === WML_UUR_EUROCENT
-                  ? `${euroHeel(loonkostenBij(stand))} per jaar: loonkosten bij het wettelijk minimumloon`
-                  : `${euroHeel(loonkostenBij(stand))} per jaar`
+                  ? `${euro(UURLONEN[stand])} per uur: het wettelijk minimumloon`
+                  : `${euro(UURLONEN[stand])} per uur`
               }
               filled
               info={
-                <InfoToggletip label="Toelichting bij de loonkosten">
+                <InfoToggletip label="Toelichting bij het uurloon">
                   <Paragraph>
-                    Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
-                    en ongeveer 20 procent werkgeverslasten.
+                    Het bruto uurloon is het loon per uur vóór belasting, zonder
+                    vakantiegeld.
                   </Paragraph>
                   <Paragraph>
                     Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per
                     uur, voor iemand van 21 jaar of ouder. Voor een jongere
                     werknemer is het minimumloon lager.
                   </Paragraph>
+                  <Paragraph>
+                    Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
+                    en ongeveer 20 procent werkgeverslasten.
+                  </Paragraph>
                 </InfoToggletip>
               }
             />
             <Paragraph className="rhc-mox-small-text">
-              Bij {a.uren} uur per week is dat een bruto uurloon van{" "}
-              {euro(a.uurloon)}
-              {a.uurloon === WML_UUR_EUROCENT && ": het wettelijk minimumloon"}.
+              {a.uurloon === WML_UUR_EUROCENT &&
+                "Dit is het wettelijk minimumloon. "}
+              Bij {a.uren} uur per week is dat ongeveer {euroHeel(maandloon)}{" "}
+              bruto per maand. De loonkosten zijn ongeveer{" "}
+              {euroHeel(loonkostenPerJaar(a))} per jaar.
             </Paragraph>
+            {onderWml && (
+              <Alert type="warning">
+                <Paragraph>
+                  Dit uurloon is lager dan het wettelijk minimumloon van{" "}
+                  {euro(WML_UUR_EUROCENT)} voor iemand van 21 jaar of ouder. Is
+                  de werknemer jonger? Dan geldt een lager minimumloon.
+                  {wajong
+                    ? " Bij loondispensatie stelt UWV vast hoeveel u minder mag betalen."
+                    : " Anders mag u niet minder betalen dan het minimumloon."}
+                </Paragraph>
+              </Alert>
+            )}
           </div>
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">

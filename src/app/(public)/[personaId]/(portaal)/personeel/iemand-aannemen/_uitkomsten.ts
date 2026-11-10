@@ -12,6 +12,7 @@ export const DOELGROEPEN = [
   ["wajong", "Iemand met een Wajong-uitkering"],
   ["wia", "Iemand met een WIA-uitkering"],
   ["bijstand", "Iemand met een bijstandsuitkering"],
+  ["nug", "Iemand zonder uitkering"],
   ["beschut", "Is door de gemeente aangewezen op beschut werk"],
   ["geen", "Geen van deze"],
 ] as const;
@@ -60,9 +61,11 @@ export type Uitkering = (typeof UITKERINGEN)[number][0];
 
 /**
  * Van de losse vragen naar de doelgroepen waarmee de engine rekent. "Weet ik
- * niet" rekent als niet in het register. Beschut werk telt als beschut, niet
- * als register (aanhef 38b lid 1); Wajong zonder beschut werk zet het
- * register aan, net als kiesDoelgroep.
+ * niet" rekent als niet in het register. Beschut werk en het register sluiten
+ * elkaar uit (aanhef 38b lid 1): beschut werk telt alleen buiten het register.
+ * Wajong zonder beschut werk zet het register aan, net als kiesDoelgroep.
+ * Zonder uitkering is de persoon niet-uitkeringsgerechtigd: de gemeente
+ * ondersteunt (Pwet 7 lid 1 a, 10 lid 1), ook met loonkostensubsidie (6 lid 1 e).
  */
 export const doelgroepenUit = (
   register: InRegister,
@@ -70,17 +73,14 @@ export const doelgroepenUit = (
   uitkering: Uitkering,
 ): Doelgroep[] => {
   let d: Doelgroep[] = [];
-  if (register === "ja") d = [beschut ? "beschut" : "register"];
-  if (uitkering === "wajong" || uitkering === "wia" || uitkering === "bijstand")
-    d = kiesDoelgroep(d, uitkering, true);
-  return d;
+  if (register === "ja") d = ["register"];
+  else if (beschut) d = ["beschut"];
+  return kiesDoelgroep(d, uitkering === "geen" ? "nug" : uitkering, true);
 };
 
 /** Van de opgeslagen doelgroepen terug naar de losse vragen (oudere opslag). */
 export const vragenUit = (doelgroepen: Doelgroep[]) => ({
-  register: (doelgroepen.includes("register") || doelgroepen.includes("beschut")
-    ? "ja"
-    : "nee") as InRegister,
+  register: (doelgroepen.includes("register") ? "ja" : "nee") as InRegister,
   beschut: doelgroepen.includes("beschut"),
   uitkering: ((["wajong", "wia", "bijstand"] as const).find((x) =>
     doelgroepen.includes(x),
@@ -126,8 +126,10 @@ type Doel = Omit<EngineInvoer, "peildatum" | "parameters"> & {
   nodig: (d: Set<Doelgroep>) => boolean;
 };
 
+/** Bijstand of geen uitkering: de gemeente ondersteunt (Pwet 7 lid 1 a). */
+const bijGemeente = (d: Set<Doelgroep>) => d.has("bijstand") || d.has("nug");
 const viaGemeente = (d: Set<Doelgroep>) =>
-  d.has("bijstand") && !d.has("wajong") && !d.has("wia");
+  bijGemeente(d) && !d.has("wajong") && !d.has("wia");
 const iets = (d: Set<Doelgroep>) => d.size > 0 && !d.has("geen");
 
 /**
@@ -221,17 +223,18 @@ export const feitenVoor = (a: Keuzes): Feiten => {
       datum_eerste_opname_doelgroepregister: "2025-11-03",
     };
   // Wie een UWV-uitkering heeft, valt niet onder de Pwet-doelgroep (Pwet 7 lid 3 c).
-  if (d.has("bijstand") && !uwvUitkering) {
+  // Zonder uitkering ook de Pwet-doelgroep, alleen zonder bijstand.
+  if (bijGemeente(d) && !uwvUitkering) {
     f = {
       ...f,
       ...aan(
         "was_persoon_7_lid_1_a_of_7a_in_zes_maanden_voorafgaand",
         "behoort_tot_doelgroep_artikel_7_lid_1_a",
-        "ontvangt_algemene_bijstand",
         "college_verleent_toestemming_proefplaatsing",
         "is_pwet_toegeleid_naar_dienstbetrekking",
         "is_pwet_toegeleid_of_lks_lid_2",
       ),
+      ontvangt_algemene_bijstand: d.has("bijstand"),
     };
     if (onderWml)
       f = {
@@ -474,7 +477,9 @@ export const uitkomstenUit = (
 
   const aannames: AannameId[] = [];
   if (ldBovenWml) aannames.push("ld_cao");
-  if (d.has("beschut") && !d.has("bijstand")) aannames.push("beschut_lks");
+  // Rekent de gemeente niet mee (Wajong of WIA), dan telt de engine de
+  // loonkostensubsidie bij beschut werk niet: de gemeente beoordeelt die.
+  if (d.has("beschut") && !viaGemeente(d)) aannames.push("beschut_lks");
   if (d.has("geen")) aannames.push("geen");
   return { regels, overige, aannames };
 };

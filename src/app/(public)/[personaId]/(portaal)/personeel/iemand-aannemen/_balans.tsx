@@ -2,10 +2,16 @@
 
 import LoadingStatus from "@/components/LoadingStatus";
 import type { ReactNode } from "react";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import ChangedValue, { ChangedValueGroup } from "@/components/ChangedValue";
 import { useSliderDragging } from "@/components/RangeSlider";
-import { Alert, Heading, Paragraph } from "@/components/rhc";
+import {
+  Accordion,
+  AccordionSection,
+  Alert,
+  Heading,
+  Paragraph,
+} from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
 import Spinner from "@/components/Spinner";
 import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
@@ -23,11 +29,15 @@ import { euro, euroHeel, opHeleEuros } from "./_werkgever";
 
 /** Wat bij een aanname in de (i) staat (ontwerp-orientatie-alle-uitkomsten-v1.md). */
 export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
-  // Pwet 10d lid 1 onder b en lid 5; de werkgeverslasten staan nog open, dus geen bedrag.
+  // Pwet 10d lid 1 onder b en lid 5. De vergoeding voor werkgeverslasten komt
+  // bovenop de loonkostensubsidie en valt buiten het maximum van 70 procent
+  // (jurist, 10 november 2026); 25 procent volgens de Regeling
+  // loonkostensubsidie Participatiewet 2021, artikel 1. De gebundelde engine
+  // rekent haar niet als eigen bedrag, dus de voorbeeldberekening telt haar niet mee.
   lks_lid4: {
     kort: "Gerekend met een loonwaarde die de gemeente vaststelt.",
     uitleg:
-      "Gerekend met een loonwaarde die de gemeente vaststelt. De gemeente kan ook met u afspreken dat zij de loonwaarde eerst niet vaststelt. Dan krijgt u ten hoogste de eerste zes maanden 50 procent van het minimumloon met vakantiebijslag, plus een vergoeding voor werkgeverslasten. Werkt de kandidaat minder of meer dan 36 uur, dan is het bedrag naar rato lager of hoger, tot ten hoogste de volledige werkweek in uw sector. Daarna stelt de gemeente de loonwaarde alsnog vast. Hoe de vergoeding voor werkgeverslasten wordt berekend, staat nog niet vast.",
+      "Gerekend met een loonwaarde die de gemeente vaststelt. De gemeente kan ook met u afspreken dat zij de loonwaarde eerst niet vaststelt. Dan krijgt u ten hoogste de eerste zes maanden 50 procent van het minimumloon met vakantiegeld. Werkt de kandidaat minder of meer dan 36 uur, dan is het bedrag naar rato lager of hoger, tot ten hoogste de volledige werkweek in uw sector. Daarna stelt de gemeente de loonwaarde alsnog vast. Bovenop de loonkostensubsidie krijgt u een vergoeding voor werkgeverslasten. Die is 25 procent van de loonkosten waarover u loonkostensubsidie krijgt. De vergoeding is niet meegeteld in deze voorbeeldberekening.",
   },
   ld_cao: {
     kort: "Loondispensatie niet meegeteld.",
@@ -129,9 +139,9 @@ export const duurTekst = (jaren: number | undefined) =>
  * de regeling bij deze antwoorden niet geldt, zodat de ondernemer ziet waarom.
  */
 const WANNEER: Record<BalansRegel["id"], string> = {
-  lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde (Participatiewet, artikel 10d).",
+  lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde, hoogstens 70 procent van het minimumloon met vakantiegeld. Daarbovenop betaalt de gemeente een vergoeding voor werkgeverslasten (Participatiewet, artikel 10d).",
   ld: "Voor een werknemer met een Wajong-uitkering die duidelijk minder kan. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20).",
-  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring. Iemand met bijstand hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wfsv, artikel 38b). U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
+  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring. Iemand met bijstand of zonder uitkering hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wfsv, artikel 38b). U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
 };
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */
@@ -176,6 +186,12 @@ const Balans = ({
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   // Values that follow a slider light up when the user lets go of it.
   const slepen = useSliderDragging();
+  // De open uitklappen van de regelingen.
+  const [open, setOpen] = useState<string[]>([]);
+  const wissel = (id: string) =>
+    setOpen((nu) =>
+      nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
+    );
   // Een schatting: in hele euro's, en de som klopt met de bedragen erboven.
   const kosten = opHeleEuros(loonkostenPerJaar(antwoorden));
   const regels = balansRegels(uitkomsten, kosten).map((r) => ({
@@ -325,53 +341,9 @@ const Balans = ({
             <ChangedValue>{euroHeel(kosten)}</ChangedValue>
           </dd>
         </div>
-        {/* De regelingen samen op één regel; per regeling de uitleg in de (i). */}
+        {/* De regelingen samen op één regel; per regeling de uitleg in een uitklap eronder. */}
         <div className="rhc-data-summary__item">
-          <dt className="rhc-data-summary__item-key">
-            <span>
-              Regelingen{" "}
-              <InfoToggletip label="Toelichting bij de regelingen">
-                {regels.map((r) => {
-                  // Kop met het bedrag en wanneer de regeling geldt; daarna de
-                  // aanname, en bij een bedrag de uitleg bij loondispensatie of
-                  // de duur en het voorbehoud bij het loonkostenvoordeel.
-                  const klaar = bekend && !fout;
-                  const metBedrag = klaar && r.bedrag > 0;
-                  const uitkomst = !klaar
-                    ? ""
-                    : r.status === "bedrag"
-                      ? `: ${euroHeel(r.bedrag)}`
-                      : r.status === "niet_meegeteld"
-                        ? ": niet meegeteld"
-                        : ": geldt niet bij uw antwoorden";
-                  const toelichting = [
-                    ...(r.regel?.aanname
-                      ? [AANNAMES[r.regel.aanname].uitleg]
-                      : []),
-                    ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
-                    ...(metBedrag && r.id === "lkv"
-                      ? lkvToelichting(r.regel?.categorie)
-                      : []),
-                  ];
-                  return (
-                    <Fragment key={r.id}>
-                      <Paragraph>
-                        <strong>
-                          {naam(r)}
-                          {uitkomst}.
-                        </strong>{" "}
-                        {WANNEER[r.id]}
-                      </Paragraph>
-                      {toelichting.map((zin) => (
-                        <Paragraph key={zin}>{zin}</Paragraph>
-                      ))}
-                      {klaar && meer?.(r)}
-                    </Fragment>
-                  );
-                })}
-              </InfoToggletip>
-            </span>
-          </dt>
+          <dt className="rhc-data-summary__item-key">Regelingen</dt>
           <dd className="rhc-data-summary__item-value">
             <ChangedValue>
               {bekend && !fout ? `− ${euroHeel(terug)}` : bezigOfFout}
@@ -385,6 +357,55 @@ const Balans = ({
           <dd className="rhc-data-summary__item-value">{bedrag(netto)}</dd>
         </div>
       </dl>
+      {/* Een uitklap per regeling: de uitleg staat in de kolom, niet in een laag
+          erover, zodat die altijd helemaal leesbaar is. */}
+      <Accordion>
+        {regels.map((r) => {
+          // Kop met het bedrag; daarin wanneer de regeling geldt, de aanname,
+          // en bij een bedrag de uitleg bij loondispensatie of de duur en het
+          // voorbehoud bij het loonkostenvoordeel.
+          const klaar = bekend && !fout;
+          const metBedrag = klaar && r.bedrag > 0;
+          const uitkomst = !klaar
+            ? ""
+            : r.status === "bedrag"
+              ? `: ${euroHeel(r.bedrag)}`
+              : r.status === "niet_meegeteld"
+                ? ": niet meegeteld"
+                : ": geldt niet";
+          const toelichting = [
+            ...(r.regel?.aanname ? [AANNAMES[r.regel.aanname].uitleg] : []),
+            ...(metBedrag && r.id === "ld" ? [LD_UITLEG] : []),
+            ...(metBedrag && r.id === "lkv"
+              ? lkvToelichting(r.regel?.categorie)
+              : []),
+          ];
+          return (
+            <AccordionSection
+              key={r.id}
+              headingLevel={3}
+              label={`${naam(r)}${uitkomst}`}
+              // Het type eist `body`, de component rendert alleen `children`.
+              body={null}
+              expanded={open.includes(r.id)}
+              onActivate={() => wissel(r.id)}
+            >
+              <div className="rhc-mox-stack">
+                <Paragraph>{WANNEER[r.id]}</Paragraph>
+                {klaar && r.status === "geldt_niet" && (
+                  <Paragraph>
+                    Bij uw antwoorden geldt deze regeling niet.
+                  </Paragraph>
+                )}
+                {toelichting.map((zin) => (
+                  <Paragraph key={zin}>{zin}</Paragraph>
+                ))}
+                {klaar && meer?.(r)}
+              </div>
+            </AccordionSection>
+          );
+        })}
+      </Accordion>
       {/* Loondispensatie is alleen Wajong (2:20); loonkostensubsidie alleen via Pwet 7 lid 3 c of 10d lid 2. */}
       {bekend &&
         !fout &&
