@@ -392,6 +392,10 @@ body {
 		margin-inline-start: auto;
 	}
 
+	.rhc-language-navigation__link {
+		text-decoration: none;
+	}
+
 	.utrecht-page-header .rhc-nav-bar > :has(> .rhc-language-navigation) {
 		margin-inline-start: auto;
 	}
@@ -1154,6 +1158,14 @@ small,
 	list-style: none;
 	margin: 0;
 	padding: 0;
+
+	> li > .rhc-mox-card {
+		block-size: 100%;
+	}
+}
+
+.rhc-mox-card-grid--stacked {
+	grid-template-columns: minmax(0, 1fr);
 }
 
 .mox-card-topic-list {

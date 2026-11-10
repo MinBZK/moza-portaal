@@ -1,5 +1,6 @@
 "use client";
 
+import Card from "@/components/Card";
 import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
 import { useRouter } from "next/navigation";
@@ -133,38 +134,46 @@ const AanvraagInhoud = ({
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
-  // Eén kaart per regeling: de naam als kop, wie de regeling uitvoert, wat het
-  // is, en onderaan een vinkje om te kiezen (niet zonder aanvraag).
+  // Eén inklapbare kaart per regeling: de naam als kop, wie de regeling
+  // uitvoert en wat het is, en onderaan altijd een vinkje om te kiezen (niet
+  // zonder aanvraag).
   const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
-    <li
-      key={id}
-      id={`regeling-${id}`}
-      className={`rhc-mox-card${!zonderAanvraag && gekozen(id) ? " rhc-mox-card--selected" : ""}`}
-    >
-      <div className="rhc-mox-cluster">
-        <Heading level={3}>{NAAM[id]}</Heading>
-        {BEGRIP[id].map((b) => (
-          <BegripInfo key={b} id={b} />
-        ))}
-      </div>
-      <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
-      {kind}
-      {/* De naam van de regeling alleen voor schermlezers: elk vinkje heet
-          anders, ook buiten de kaart, zoals in een lijst met formuliervelden. */}
-      {!zonderAanvraag && (
-        <FormFieldCheckboxOption
-          className="rhc-mox-card__action"
-          label={
-            <>
-              Kies deze regeling
-              <span className="rhc-visually-hidden">: {NAAM[id]}</span>
-            </>
-          }
-          name={`kies-${id}`}
-          checked={gekozen(id)}
-          onChange={(event) => kies(id, event.target.checked)}
-        />
-      )}
+    <li key={id} id={`regeling-${id}`}>
+      <Card
+        heading={NAAM[id]}
+        headingLevel={3}
+        collapsible
+        defaultOpen={false}
+        className={
+          !zonderAanvraag && gekozen(id) ? "rhc-mox-card--selected" : undefined
+        }
+        action={
+          // De naam van de regeling alleen voor schermlezers: elk vinkje heet
+          // anders, ook buiten de kaart, zoals in een lijst met formuliervelden.
+          !zonderAanvraag && (
+            <FormFieldCheckboxOption
+              className="rhc-mox-card__action"
+              label={
+                <>
+                  Kies deze regeling
+                  <span className="rhc-visually-hidden">: {NAAM[id]}</span>
+                </>
+              }
+              name={`kies-${id}`}
+              checked={gekozen(id)}
+              onChange={(event) => kies(id, event.target.checked)}
+            />
+          )
+        }
+      >
+        <div className="rhc-mox-cluster">
+          <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
+          {BEGRIP[id].map((b) => (
+            <BegripInfo key={b} id={b} />
+          ))}
+        </div>
+        {kind}
+      </Card>
     </li>
   );
 
@@ -524,7 +533,7 @@ const AanvraagInhoud = ({
                 </Alert>
               </div>
             )}
-            <ul className="rhc-mox-card-grid">
+            <ul className="rhc-mox-card-grid rhc-mox-card-grid--stacked">
               {paneelIds.map(paneel)}
               {route.vanzelf.map(vanzelf)}
               {route.taken.map(taak)}

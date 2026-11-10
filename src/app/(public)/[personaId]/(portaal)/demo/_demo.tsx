@@ -3448,6 +3448,18 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
         ],
         ["defaultOpen", "boolean", "true", "Bij collapsible: eerst open"],
         [
+          "rhc-mox-card-grid",
+          "class op <ul>",
+          "–",
+          "Cards naast elkaar in kolommen van minimaal 20rem, elk in een <li>",
+        ],
+        [
+          "rhc-mox-card-grid--stacked",
+          "class erbij",
+          "–",
+          "Cards onder elkaar, over de volle breedte",
+        ],
+        [
           "rhc-mox-card--compact / compact",
           "class / boolean",
           "false",
