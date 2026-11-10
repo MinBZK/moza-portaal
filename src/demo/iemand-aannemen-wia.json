@@ -100,7 +100,7 @@
           "grond": "Wtl 2.9"
         },
         {
-          "vraag": "Wanneer begint de dienstbetrekking?",
+          "vraag": "Wanneer begint het dienstverband?",
           "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
           "parameter": "datum_aanvang_dienstbetrekking",
           "waarde": "1 oktober 2026",
@@ -173,7 +173,7 @@
       "tijd": "09:00",
       "actor": "U",
       "soort": "uitvoering",
-      "titel": "Dienstbetrekking begonnen",
+      "titel": "Dienstverband begonnen",
       "tekst": "Robin is gestart voor {uren} uur per week tegen het wettelijk minimumloon. Robin had in september 2026 recht op een WIA-uitkering. Voor het loonkostenvoordeel is een doelgroepverklaring nodig.",
       "grond": "Wtl 2.6",
       "stap": "wacht"
@@ -185,7 +185,7 @@
       "actor": "Wetgever",
       "soort": "regelgeving",
       "titel": "Doelgroepverklaring: de werknemer vraagt aan",
-      "tekst": "De doelgroepverklaring wordt op verzoek van de werknemer afgegeven. Robin kan die aanvragen binnen drie maanden na de start van de dienstbetrekking. U dient de aanvraag niet in.",
+      "tekst": "De doelgroepverklaring wordt op verzoek van de werknemer afgegeven. Robin kan die aanvragen binnen 3 maanden na de start van het dienstverband. U dient de aanvraag niet in.",
       "grond": "Wtl 2.7 lid 1",
       "stap": "wacht"
     },
@@ -196,7 +196,7 @@
       "actor": "Werknemer",
       "soort": "uitvoering",
       "titel": "Robin heeft de doelgroepverklaring aangevraagd bij UWV",
-      "tekst": "De aanvraag is binnen drie maanden na de start gedaan.",
+      "tekst": "De aanvraag is binnen 3 maanden na de start gedaan.",
       "grond": "Wtl 2.7 lid 1",
       "stap": "aangevraagd"
     },
@@ -254,7 +254,7 @@
     "is_uitgesloten_lid_3": "Uitgesloten: Wsw-dienstbetrekking (lid 3)",
     "heeft_recht_op_lks_lid_1": "Recht via lid 1 (loonwaarde vooraf vastgesteld)",
     "voorafgaand_relevante_onderwijsroute_of_doelgroep": "Kwam uit de doelgroep of een onderwijsroute (lid 2 a tot en met c)",
-    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen zes maanden na de eerste werkdag (lid 2)",
+    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen 6 maanden na de eerste werkdag (lid 2)",
     "heeft_recht_op_lks_lid_2": "Recht via lid 2",
     "heeft_recht_op_lks": "Recht op loonkostensubsidie",
     "volgt_de_vijftig_procent_route": "Vijftigprocentroute (lid 5)",

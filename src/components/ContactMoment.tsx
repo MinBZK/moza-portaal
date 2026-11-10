@@ -13,9 +13,9 @@ const MEDIUM: Record<components["schemas"]["NotificationTypes"], string> = {
 const STATUS_LABEL: Record<components["schemas"]["DeliveryStatuses"], string> =
   {
     Unknown: "Onbekend",
-    Created: "Verstuurd",
-    Sending: "Verstuurd",
-    Pending: "Verstuurd",
+    Created: "Wordt verstuurd",
+    Sending: "Wordt verstuurd",
+    Pending: "Wordt verstuurd",
     Sent: "Verstuurd",
     Accepted: "Verstuurd",
     Delivered: "Afgeleverd",
