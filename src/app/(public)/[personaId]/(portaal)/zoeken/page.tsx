@@ -14,10 +14,10 @@ type SearchParams = Promise<{ q?: string | string[] }>;
 const RESULTATEN = [
   {
     href: "/personeel/iemand-aannemen",
-    titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+    titel: "Regelingen bij het aannemen van personeel",
     soort: "Aanvragen",
     tekst:
-      "Beantwoord vier vragen en zie wat het u kost en oplevert. Daarna vullen wij de aanvragen bij UWV, de Belastingdienst en de gemeente voor u in.",
+      "Neemt u iemand aan met een arbeidsbeperking of een afstand tot de arbeidsmarkt? Beantwoord vier vragen en zie wat het u kost en oplevert. Daarna vullen wij de aanvragen bij UWV, de Belastingdienst en de gemeente voor u in.",
   },
   {
     href: "/subsidies/praktijkleren",

@@ -8,7 +8,8 @@ import { TAAK_TITEL } from "../_taakTitel";
 import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
-  title: "Kandidaat kiezen - Iemand aannemen - Personeel en rollen",
+  title:
+    "Kandidaat kiezen - Regelingen bij het aannemen van personeel - Personeel en rollen",
 };
 
 /** Scherm 2: aanvraag invullen. De kandidaat, en per bron bevestigen. Wie invult weten we al uit de inlog. */

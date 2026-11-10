@@ -3,7 +3,8 @@ import { getDemoIemandAannemenSituaties } from "@/demo";
 import Verstuurd from "./_verstuurd";
 
 export const metadata: Metadata = {
-  title: "Bevestiging - Iemand aannemen - Personeel en rollen",
+  title:
+    "Bevestiging - Regelingen bij het aannemen van personeel - Personeel en rollen",
 };
 
 /** Bevestiging na Dossier indienen of Afronden, met of zonder iets te versturen. */

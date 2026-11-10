@@ -10,7 +10,7 @@ import { vul, werkgeverVan } from "../_werkgever";
 
 export const metadata: Metadata = {
   title:
-    "Controleren en dossier indienen - Iemand aannemen - Personeel en rollen",
+    "Controleren en dossier indienen - Regelingen bij het aannemen van personeel - Personeel en rollen",
 };
 
 /** Scherm 3: de vooringevulde aanvraag, per organisatie de panelen van de situatie. */
