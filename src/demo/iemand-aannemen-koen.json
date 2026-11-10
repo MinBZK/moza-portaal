@@ -231,7 +231,7 @@
     },
     {
       "id": "proefplaatsing",
-      "naam": "Proefplaats",
+      "naam": "Proefplaatsing",
       "organisatie": "Gemeente Rotterdam",
       "soort": "optioneel",
       "soortLabel": "Mogelijk, vóór de eerste werkdag",
@@ -239,8 +239,8 @@
       "bedragLabel": "Twee maanden onbetaald werk, vóór de eerste werkdag",
       "bedragToelichting": "Verlengen kan met ten hoogste vier maanden. Alleen vóór de dienstbetrekking begint; in dit verhaal is daar geen gebruik van gemaakt.",
       "bedragEurocent": null,
-      "tekst": "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. Koen vraagt de gemeente om toestemming.",
-      "tekstAlgemeen": "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. De kandidaat vraagt de gemeente om toestemming.",
+      "tekst": "Een proefplaatsing is onbetaald werk bij u, vóór de eerste werkdag. De proefplaatsing duurt twee maanden. Verlengen kan met ten hoogste vier maanden. Koen vraagt de gemeente om toestemming.",
+      "tekstAlgemeen": "Een proefplaatsing is onbetaald werk bij u, vóór de eerste werkdag. De proefplaatsing duurt twee maanden. Verlengen kan met ten hoogste vier maanden. De kandidaat vraagt de gemeente om toestemming.",
       "grond": "Participatiewet 8a, tweede lid, onderdeel d",
       "trace": "participatiewet:mag_proefplaatsing_aangaan",
       "actie": null

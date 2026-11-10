@@ -38,7 +38,7 @@ const ZONDER_AANVRAAG: Record<
   vz_wia: (voornaam) =>
     `${voornaam} vraagt een jobcoach of een aangepaste werkplek zelf aan bij UWV.`,
   pp: (voornaam) =>
-    `${voornaam} vraagt de gemeente om toestemming voor de proefplaats.`,
+    `${voornaam} vraagt de gemeente om toestemming voor de proefplaatsing.`,
 };
 
 /** Organisatie en datum komen uit de zaak van de situatie. */
@@ -81,7 +81,7 @@ const Verstuurd = ({
       .map((id) => ZONDER_AANVRAAG[id](voornaam));
     return (
       <>
-        <Heading level={1}>Iemand aannemen afgerond</Heading>
+        <Heading level={1}>Dossier ingediend</Heading>
         <Alert type="ok">
           <Paragraph>
             U hoeft niets te versturen.

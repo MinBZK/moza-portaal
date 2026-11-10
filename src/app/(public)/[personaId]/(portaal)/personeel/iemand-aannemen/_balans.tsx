@@ -57,7 +57,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   geen: {
     kort: "Geen regeling met een bedrag.",
     uitleg:
-      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaats gelden.",
+      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
   },
 };
 

@@ -42,7 +42,7 @@ export const BEGRIPPEN = {
     door: "de gemeente of UWV",
   },
   proefplaatsing: {
-    vraag: "Wat is een proefplaats?",
+    vraag: "Wat is een proefplaatsing?",
     uitleg:
       "De kandidaat werkt eerst op proef bij u, zonder dat u loon betaalt.",
     door: "de gemeente of UWV",
