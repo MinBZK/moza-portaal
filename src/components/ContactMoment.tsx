@@ -57,8 +57,8 @@ const ContactMoment = ({
     <TimelineItem
       title={
         notification.type && notification.type !== "Unknown"
-          ? `Bericht van UWV via ${MEDIUM[notification.type].toLowerCase()}`
-          : "Bericht van UWV"
+          ? `Bericht via ${MEDIUM[notification.type].toLowerCase()}`
+          : "Bericht"
       }
       open={open}
       date={<time dateTime={notification.createdAt}>{sendAt}</time>}
