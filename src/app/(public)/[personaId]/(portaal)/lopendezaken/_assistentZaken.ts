@@ -89,6 +89,19 @@ export const voegZaakToe = (gegevens: Record<string, unknown>) => {
   luisteraars.forEach((luisteraar) => luisteraar());
 };
 
+/** Haalt de zaken van een flow weg, zoals bij Interactie-flow herstellen. */
+export const verwijderZakenVan = (flow: string) => {
+  const zaken = getSnapshot();
+  const over = zaken.filter((zaak) => zaak.flow !== flow);
+  if (over.length === zaken.length) return;
+  try {
+    window.localStorage.setItem(SLEUTEL, JSON.stringify(over));
+  } catch {
+    return;
+  }
+  luisteraars.forEach((luisteraar) => luisteraar());
+};
+
 /** De situaties van "Iemand aannemen" met een eigen zaakpagina. */
 const AANNEMEN_SITUATIES = ["gemeente", "wajong", "wia"];
 

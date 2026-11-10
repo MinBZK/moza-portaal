@@ -42,6 +42,8 @@ export const zaakAanmaken = (
   zaak: DemoAannemen["zaak"],
   status: string,
   onderwerp: string = zaak.onderwerp,
+  /** Het BSN-masker van de kandidaat: zo ziet een nieuwe aanvraag dat er al een loopt. */
+  kandidaat?: string,
 ) =>
   voegZaakToe({
     referentienummer: zaak.nummer,
@@ -52,4 +54,5 @@ export const zaakAanmaken = (
     regeling: REGELING[situatie],
     flow: "iemand-aannemen",
     situatie,
+    ...(kandidaat ? { kandidaat } : {}),
   });
