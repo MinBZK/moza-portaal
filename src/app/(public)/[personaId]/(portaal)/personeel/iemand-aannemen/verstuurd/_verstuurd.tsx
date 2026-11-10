@@ -10,8 +10,9 @@ import {
   OrderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
+import Controleer from "../_opgehaald";
 import { situatieVan, type TaakId, type VanzelfId } from "../_route";
-import { useAannemen, zaakVan } from "../_useAannemen";
+import { useAannemen, vraagEerderInDienst, zaakVan } from "../_useAannemen";
 import { datumNL } from "../_werkgever";
 
 const BESLUIT = {
@@ -56,6 +57,20 @@ const Verstuurd = ({
   const stand = zaakVan(staat, situatie);
   const organisatie =
     situatie === "wajong" ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
+  const a = staat.antwoorden;
+  // Wat de ondernemer heeft ingevuld en wat de overheid ophaalde.
+  const gegevens = (demo: DemoAannemen, kop: string) => (
+    <Controleer
+      bronnen={demo.bronnen}
+      kandidaat={demo.kandidaat}
+      aanvang={a.aanvang}
+      uren={a.uren}
+      vraagEerder={vraagEerderInDienst(a)}
+      eerderInDienst={a.eerderInDienst}
+      kop={kop}
+      wijzigbaar={false}
+    />
+  );
 
   // Afgerond zonder iets te versturen.
   if (!stand.ingediend && staat.afgerond) {
@@ -66,7 +81,7 @@ const Verstuurd = ({
       .map((id) => ZONDER_AANVRAAG[id](voornaam));
     return (
       <>
-        <Heading level={1}>Iemand aannemen afgerond</Heading>
+        <Heading level={1}>Dossier ingediend</Heading>
         <Alert type="ok">
           <Paragraph>
             U hoeft niets te versturen.
@@ -91,13 +106,17 @@ const Verstuurd = ({
               </OrderedList>
             </section>
           )}
+          {gegevens(
+            perSituatie[wia ? "wia" : situatie],
+            "Gegevens in uw dossier",
+          )}
           <ActionGroup>
             {wia && (
               <Link
                 href={perSituatie.wia.zaak.url}
                 className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
               >
-                Bekijk uw dossier bij Lopende zaken
+                Bekijk dit dossier in Lopende zaken
               </Link>
             )}
             <Link
@@ -177,6 +196,7 @@ const Verstuurd = ({
             </OrderedListItem>
           </OrderedList>
         </section>
+        {gegevens(perSituatie[situatie], "Verstuurde gegevens")}
         <section className="rhc-mox-row-gap" aria-labelledby="uw-dossier">
           <Heading level={2} id="uw-dossier">
             Uw dossier
@@ -191,7 +211,7 @@ const Verstuurd = ({
               href={zaak.url}
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Bekijk uw dossier bij Lopende zaken
+              Bekijk dit dossier in Lopende zaken
             </Link>
             <Link
               href="/personeel"
