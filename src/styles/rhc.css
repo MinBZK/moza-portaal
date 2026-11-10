@@ -1608,6 +1608,13 @@ small,
 		);
 	}
 
+	&:active {
+		background-color: var(
+			--rhc-mox-dropdown-item-active-background,
+			var(--rhc-color-cool-grey-200)
+		);
+	}
+
 	&:focus-visible {
 		outline: var(--utrecht-focus-outline-width)
 			var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);

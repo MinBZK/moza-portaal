@@ -14,17 +14,25 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
 	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
 	--rhc-mox-color-page-background: var(--rhc-color-cool-grey-100);
+	--rhc-mox-hover-background-color: var(--rhc-color-cool-grey-200);
+	--rhc-mox-active-background-color: var(--rhc-color-cool-grey-300);
 	--utrecht-button-secondary-action-hover-background-color: var(
-		--rhc-color-cool-grey-200
+		--rhc-mox-hover-background-color
 	);
 	--utrecht-button-secondary-action-active-background-color: var(
-		--rhc-color-cool-grey-300
+		--rhc-mox-active-background-color
 	);
 	--utrecht-button-subtle-hover-background-color: var(
-		--rhc-color-cool-grey-200
+		--rhc-mox-hover-background-color
 	);
 	--utrecht-button-subtle-active-background-color: var(
-		--rhc-color-cool-grey-300
+		--rhc-mox-active-background-color
+	);
+	--rhc-mox-dropdown-item-hover-background: var(
+		--rhc-mox-hover-background-color
+	);
+	--rhc-mox-dropdown-item-active-background: var(
+		--rhc-mox-active-background-color
 	);
 
 	/* ==== Typografie ========================================================= */
@@ -168,12 +176,13 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		padding-inline-start: var(--rhc-sidenav-link-padding-inline-start);
 		text-decoration: none;
 
-		&:hover {
-			background-color: var(--rhc-color-cool-grey-200);
+		&:hover,
+		&[aria-current="page"] {
+			background-color: var(--rhc-mox-hover-background-color);
 		}
 
-		&[aria-current="page"] {
-			background-color: var(--rhc-color-cool-grey-200);
+		&:active {
+			background-color: var(--rhc-mox-active-background-color);
 		}
 	}
 
