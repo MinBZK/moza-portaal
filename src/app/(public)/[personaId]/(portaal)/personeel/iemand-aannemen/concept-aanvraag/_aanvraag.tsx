@@ -33,6 +33,8 @@ import {
 } from "../_useAannemen";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
+import SourceLinks from "@/components/SourceLinks";
+import { BRON } from "../_wetsbronnen";
 
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
@@ -200,8 +202,8 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Paragraph>
-            Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
-            artikel 10d lid 2).
+            Vraag aan binnen zes maanden na de start van het dienstverband
+            (Participatiewet, artikel 10d lid 2).
           </Paragraph>
           {waarom(
             "participatiewet",
@@ -214,21 +216,28 @@ const AanvraagInhoud = ({
               <UnorderedList>
                 <UnorderedListItem>
                   De gemeente beoordeelt of {kandidaat.voornaam} met een
-                  volledige baan het minimumloon niet kan verdienen
-                  (Participatiewet, artikel 10c).
+                  volledige baan het minimumloon niet kan verdienen.
                 </UnorderedListItem>
                 <UnorderedListItem>
-                  Een deskundige meet de loonwaarde op de werkplek (Besluit
-                  loonkostensubsidie Participatiewet, artikel 2). Daarna weet u
-                  het precieze bedrag.
+                  Een loonwaardedeskundige beoordeelt het werk op de werkplek.
+                  Met dat rapport stelt de gemeente de loonwaarde vast. Daarna
+                  weet u het precieze bedrag.
                 </UnorderedListItem>
                 <UnorderedListItem>
                   U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
-                  begonnen? Dan binnen acht weken (Algemene wet bestuursrecht,
-                  artikel 4:13). Anders binnen vijf weken na de meting
-                  (Participatiewet, artikel 10d lid 12).
+                  begonnen? Dan binnen acht weken, tenzij de gemeente laat weten
+                  dat het langer duurt. Anders binnen vijf weken nadat de
+                  gemeente de loonwaarde heeft vastgesteld.
                 </UnorderedListItem>
               </UnorderedList>
+              <SourceLinks
+                sources={[
+                  BRON.pwet10c,
+                  BRON.besluitLks3,
+                  BRON.awb,
+                  BRON.pwet10dLid12,
+                ]}
+              />
             </>,
           )}
         </>,
@@ -244,10 +253,11 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("ld")}
           <Paragraph>
-            Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
-            loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
-            beslist binnen acht weken.
+            Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
+            het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
+            meestal binnen acht weken een brief.
           </Paragraph>
+          <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
             "heeft_recht_op_loondispensatie",
@@ -313,7 +323,8 @@ const AanvraagInhoud = ({
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
             bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
-            subsidie vragen bij UWV (Wet WIA, artikel 36).
+            subsidie vragen bij UWV, als het dienstverband ten minste zes
+            maanden duurt (Wet WIA, artikel 36).
           </Paragraph>
         )}
         {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
@@ -322,9 +333,11 @@ const AanvraagInhoud = ({
         {id === "pp" && (
           <>
             <Paragraph>
-              Onbetaald werk bij u vóór de eerste werkdag, twee maanden
-              (Participatiewet, artikel 8a). De kandidaat vraagt de gemeente om
-              toestemming; dat gaat buiten deze aanvraag om.
+              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt twee
+              maanden; de gemeente kan dat met ten hoogste vier maanden
+              verlengen (Participatiewet, artikel 8a lid 2 onder d). De
+              kandidaat vraagt de gemeente om toestemming; dat gaat buiten deze
+              aanvraag om.
             </Paragraph>
             {waarom(
               "participatiewet",
@@ -360,9 +373,10 @@ const AanvraagInhoud = ({
           "UWV, geen aanvraag nodig",
           <>
             <Paragraph>
-              U hoeft niets aan te vragen. Wordt de werknemer ziek, dan meldt u
-              dat bij UWV en betaalt UWV u ziekengeld (Ziektewet, artikel 29b).{" "}
-              {duurTekst(nrp?.duurJaren)}
+              U hoeft niets aan te vragen. Wordt de werknemer ziek? Meld dat bij
+              UWV, uiterlijk op de eerste dag na zes weken ziekte (Ziektewet,
+              artikel 38a lid 3). UWV betaalt dan ziekengeld (Ziektewet, artikel
+              29b). {duurTekst(nrp?.duurJaren)}
             </Paragraph>
             {waarom(
               "ziektewet",
@@ -523,21 +537,29 @@ const AanvraagInhoud = ({
             {!zonderAanvraag && (
               <Paragraph>Kies ten minste één regeling.</Paragraph>
             )}
-            {kiesFout > 0 && aantalGekozen === 0 && (
-              <div id="kies-fout" tabIndex={-1}>
-                <Alert type="error">
-                  <Paragraph>
-                    U hebt nog geen regeling gekozen. Vink ten minste één
-                    regeling aan.
-                  </Paragraph>
-                </Alert>
-              </div>
-            )}
-            <ul className="rhc-mox-card-grid rhc-mox-card-grid--stacked">
-              {paneelIds.map(paneel)}
-              {route.vanzelf.map(vanzelf)}
-              {route.taken.map(taak)}
-            </ul>
+            <div
+              className={
+                kiesFout > 0 && aantalGekozen === 0
+                  ? "rhc-mox-row-gap utrecht-form-field--invalid"
+                  : "rhc-mox-row-gap"
+              }
+            >
+              {kiesFout > 0 && aantalGekozen === 0 && (
+                <div id="kies-fout" tabIndex={-1}>
+                  <Alert type="error">
+                    <Paragraph>
+                      U hebt nog geen regeling gekozen. Vink ten minste één
+                      regeling aan.
+                    </Paragraph>
+                  </Alert>
+                </div>
+              )}
+              <ul className="rhc-mox-card-grid rhc-mox-card-grid--stacked">
+                {paneelIds.map(paneel)}
+                {route.vanzelf.map(vanzelf)}
+                {route.taken.map(taak)}
+              </ul>
+            </div>
           </section>
         )}
 

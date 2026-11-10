@@ -113,7 +113,8 @@ h4,
 h5,
 p,
 li,
-dd {
+dd,
+.rhc-mox-range-slider {
 	max-inline-size: 75ch;
 }
 
@@ -275,7 +276,7 @@ body {
 	grid-template-columns: minmax(0, 1fr);
 }
 
-/* --- Stacks --- */
+/* ==== Stacks ============================================================= */
 .rhc-mox-stack,
 .rhc-mox-row-gap {
 	align-content: start;
@@ -348,7 +349,7 @@ body {
 	order: 0;
 }
 
-/* --- Header --- */
+/* ==== Header ============================================================= */
 .rhc-theme.mox-theme {
 	.rhc-mox-header-organizations__trigger {
 		background: transparent;
@@ -440,7 +441,7 @@ body {
 	}
 }
 
-/* --- Navigation --- */
+/* ==== Navigation ========================================================= */
 .utrecht-breadcrumb-nav__item + .utrecht-breadcrumb-nav__item {
 	align-items: center;
 	display: inline-flex;
@@ -544,7 +545,7 @@ body {
 	}
 }
 
-/* --- Footer --- */
+/* ==== Footer ============================================================= */
 .rhc-page-footer {
 	:is(h2, h3, h4, h5, h6) {
 		color: inherit;
@@ -564,7 +565,7 @@ body {
 	}
 }
 
-/* --- Text --- */
+/* ==== Text =============================================================== */
 small,
 .rhc-theme .rhc-mox-small-text {
 	color: var(--rhc-color-foreground-subtle);
@@ -579,7 +580,7 @@ small,
 	font-weight: var(--rhc-text-font-weight-regular);
 }
 
-/* --- Data summary --- */
+/* ==== Data summary ======================================================= */
 .rhc-data-summary__item-value:has(> .rhc-mox-text-badge) {
 	align-items: center;
 	display: flex;
@@ -610,7 +611,7 @@ small,
 	}
 }
 
-/* --- Spinner --- */
+/* ==== Spinner ============================================================ */
 .rhc-mox-spinner {
 	animation: rhc-mox-spin 1s linear infinite;
 	block-size: 1em;
@@ -626,13 +627,29 @@ small,
 	}
 }
 
+:is(.utrecht-button, .utrecht-button-link)[aria-busy="true"]::before {
+	align-self: center;
+	animation: rhc-mox-spin 1s linear infinite;
+	block-size: 1em;
+	border: 0.15em solid currentcolor;
+	border-block-start-color: transparent;
+	border-radius: var(--rhc-border-radius-round);
+	content: "";
+	flex: none;
+	inline-size: 1em;
+
+	@media (prefers-reduced-motion: reduce) {
+		animation-duration: 3s;
+	}
+}
+
 @keyframes rhc-mox-spin {
 	to {
 		transform: rotate(1turn);
 	}
 }
 
-/* --- Cluster --- */
+/* ==== Cluster ============================================================ */
 /* Short items in a row that can wrap onto several lines, such as badges. */
 .rhc-mox-cluster {
 	align-items: center;
@@ -641,7 +658,7 @@ small,
 	gap: var(--rhc-space-md);
 }
 
-/* --- Highlight --- */
+/* ==== Highlight ========================================================== */
 .rhc-mox-highlight {
 	background-color: color-mix(
 		in srgb,
@@ -655,7 +672,7 @@ small,
 	padding: var(--rhc-space-xl);
 }
 
-/* --- Changed value --- */
+/* ==== Changed value ====================================================== */
 @media (prefers-reduced-motion: no-preference) {
 	.rhc-mox-changed-value {
 		animation:
@@ -687,7 +704,7 @@ small,
 
 /* ==== Components ========================================================= */
 
-/* --- Accordion --- */
+/* ==== Accordion ========================================================== */
 .utrecht-accordion {
 	h1 {
 		margin-block-end: 0;
@@ -804,7 +821,7 @@ small,
 	}
 }
 
-/* --- Action group --- */
+/* ==== Action group ======================================================= */
 /* Centred instead of baseline: an icon at the start would move the baseline. */
 .rhc-theme.mox-theme .utrecht-action-group {
 	align-items: center;
@@ -875,7 +892,7 @@ small,
 	}
 }
 
-/* --- Alert --- */
+/* ==== Alert ============================================================== */
 :where(.rhc-theme.mox-theme)
 	:where([role="status"], [role="alert"], [aria-live]):empty {
 	position: absolute;
@@ -969,7 +986,7 @@ small,
 	}
 }
 
-/* --- Bar graph --- */
+/* ==== Bar graph ========================================================== */
 .rhc-mox-bar-graph {
 	display: grid;
 	gap: var(--rhc-space-md);
@@ -1077,7 +1094,13 @@ small,
 	--rhc-mox-bar-graph-border-color: var(--rhc-color-rood-400);
 }
 
-/* --- Cards --- */
+/* ==== Button ============================================================== */
+.utrecht-button--disabled {
+	background-color: var(--rhc-color-cool-grey-200);
+	color: var(--rhc-color-cool-grey-500);
+}
+
+/* ==== Card ============================================================== */
 .rhc-theme.mox-theme {
 	.rhc-mox-card {
 		display: flex;
@@ -1186,7 +1209,7 @@ small,
 	}
 }
 
-/* --- Site search --- */
+/* ==== Site search ======================================================== */
 .rhc-mox-site-search form {
 	display: flex;
 	flex-direction: column;
@@ -1277,8 +1300,18 @@ small,
 
 	&:hover,
 	&.utrecht-listbox__option--active {
-		background-color: var(--rhc-color-lintblauw-50);
+		background-color: var(
+			--rhc-mox-hover-background-color,
+			var(--rhc-color-lintblauw-50)
+		);
 		color: inherit;
+	}
+
+	&:active {
+		background-color: var(
+			--rhc-mox-active-background-color,
+			var(--rhc-color-lintblauw-100)
+		);
 	}
 
 	&.utrecht-listbox__option--active {
@@ -1287,7 +1320,7 @@ small,
 	}
 }
 
-/* --- Dialog --- */
+/* ==== Dialog ============================================================= */
 .rhc-mox-dialog {
 	background: var(--rhc-color-wit);
 	border: 0;
@@ -1322,7 +1355,7 @@ small,
 	}
 }
 
-/* --- Digital assistant --- */
+/* ==== Digital assistant ================================================== */
 .rhc-mox-chat {
 	display: grid;
 	gap: var(--rhc-space-lg);
@@ -1560,7 +1593,7 @@ small,
 	}
 }
 
-/* --- Dropdown --- */
+/* ==== Dropdown =========================================================== */
 .rhc-mox-dropdown__trigger {
 	anchor-name: var(--rhc-mox-dropdown-anchor);
 }
@@ -1626,6 +1659,13 @@ small,
 		);
 	}
 
+	&:active {
+		background-color: var(
+			--rhc-mox-dropdown-item-active-background,
+			var(--rhc-color-cool-grey-200)
+		);
+	}
+
 	&:focus-visible {
 		outline: var(--utrecht-focus-outline-width)
 			var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
@@ -1646,12 +1686,7 @@ small,
 	}
 }
 
-.rhc-mox-dropdown__icon-space {
-	flex-shrink: 0;
-	inline-size: var(--utrecht-icon-size, 1em);
-}
-
-/* --- Icons and links --- */
+/* ==== Icons and links ==================================================== */
 .utrecht-icon {
 	block-size: var(--rhc-size-icon-md);
 	flex-shrink: 0;
@@ -1678,7 +1713,7 @@ small,
 	stroke: var(--rhc-color-robijnrood-400);
 }
 
-/* --- Interaction --- */
+/* ==== Interaction ======================================================== */
 @media (prefers-reduced-motion: no-preference) {
 	:where(.rhc-theme.mox-theme)
 		:where(
@@ -1736,7 +1771,7 @@ small,
 	}
 }
 
-/* --- Link button --- */
+/* ==== Link button ======================================================== */
 .rhc-theme.mox-theme {
 	.utrecht-button-link {
 		align-items: flex-start;
@@ -1754,7 +1789,7 @@ small,
 	}
 }
 
-/* --- Navigation list --- */
+/* ==== Navigation list ==================================================== */
 .rhc-theme.mox-theme {
 	.rhc-navigation-list__item-content {
 		align-items: flex-start;
@@ -1810,7 +1845,7 @@ small,
 	}
 }
 
-/* --- Number input --- */
+/* ==== Number input ======================================================= */
 .rhc-theme.mox-theme {
 	.rhc-number-input {
 		align-items: stretch;
@@ -1840,7 +1875,7 @@ small,
 	}
 }
 
-/* --- Pagination --- */
+/* ==== Pagination ========================================================= */
 .rhc-theme.mox-theme {
 	.ams-icon {
 		align-self: center;
@@ -1853,7 +1888,7 @@ small,
 	}
 }
 
-/* --- Progress bar --- */
+/* ==== Progress bar ======================================================= */
 .rhc-mox-progressbar {
 	background-color: var(--rhc-color-cool-grey-50);
 	block-size: var(--rhc-space-xl);
@@ -1907,10 +1942,7 @@ small,
 	}
 }
 
-/* --- Range slider --- */
-.rhc-mox-range-slider {
-	max-inline-size: 24rem;
-}
+/* ==== Range slider ======================================================= */
 .rhc-theme.mox-theme {
 	.rhc-mox-range-slider__header {
 		align-items: baseline;
@@ -2093,7 +2125,7 @@ small,
 	}
 }
 
-/* --- Status track --- */
+/* ==== Status track ======================================================= */
 .rhc-mox-status-track {
 	display: grid;
 	gap: var(--rhc-mox-step-gap);
@@ -2224,7 +2256,7 @@ small,
 	gap: var(--rhc-space-sm);
 }
 
-/* --- Search results --- */
+/* ==== Search results ===================================================== */
 .rhc-mox-search-results {
 	display: grid;
 	list-style: none;
@@ -2232,7 +2264,7 @@ small,
 	padding: 0;
 }
 
-/* --- Icon list: rows with an icon, a title and one line of text --- */
+/* ==== Icon list: rows with an icon, a title and one line of text ========= */
 .rhc-mox-icon-list {
 	border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
 	border-radius: var(--rhc-border-radius-md);
@@ -2284,7 +2316,7 @@ small,
 	color: var(--rhc-color-foreground-default);
 }
 
-/* --- Sum: amounts under each other on the right, the outcome below a line --- */
+/* ==== Sum ================================================================ */
 .rhc-mox-sum {
 	.rhc-data-summary__item {
 		align-items: baseline;
@@ -2315,7 +2347,7 @@ small,
 	}
 }
 
-/* --- Step indicator --- */
+/* ==== Step indicator ===================================================== */
 .rhc-mox-step-indicator {
 	--rhc-mox-step-indicator-size: var(--rhc-size-icon-lg);
 
@@ -2378,7 +2410,7 @@ small,
 	}
 }
 
-/* --- Sticky info box --- */
+/* ==== Sticky info box ==================================================== */
 .rhc-mox-sticky-info-box {
 	align-self: start;
 	background-color: var(--rhc-color-hemelblauw-50);
@@ -2393,7 +2425,7 @@ small,
 	}
 }
 
-/* --- Switch --- */
+/* ==== Switch ============================================================= */
 .rhc-mox-switch {
 	align-items: flex-start;
 	display: flex;
@@ -2519,7 +2551,7 @@ small,
 	font-weight: var(--rhc-text-font-weight-semi-bold);
 }
 
-/* --- Table --- */
+/* ==== Table ============================================================== */
 .rhc-theme.mox-theme {
 	.utrecht-table__header-cell {
 		vertical-align: bottom;
@@ -2560,7 +2592,7 @@ small,
 	--utrecht-table-cell-padding-block-start: var(--rhc-space-sm);
 }
 
-/* --- Tabs --- */
+/* ==== Tabs =============================================================== */
 .rhc-mox-tabs {
 	--rhc-mox-tabs-fade: calc(2 * var(--rhc-space-max-5xl));
 	box-shadow: inset 0 calc(-1 * var(--rhc-border-width-md)) 0
@@ -2650,7 +2682,7 @@ small,
 	}
 }
 
-/* --- Text badge --- */
+/* ==== Text badge ========================================================= */
 .rhc-mox-text-badge {
 	--utrecht-icon-size: 1em;
 
@@ -2716,7 +2748,7 @@ small,
 	}
 }
 
-/* --- Timeline --- */
+/* ==== Timeline =========================================================== */
 .rhc-mox-timeline {
 	display: grid;
 	gap: var(--rhc-mox-step-gap);
@@ -2801,7 +2833,7 @@ small,
 	text-decoration-thickness: var(--rhc-border-width-sm);
 }
 
-/* --- Tooltip --- */
+/* ==== Tooltip ============================================================ */
 .rhc-toggletip {
 	anchor-scope: --rhc-mox-toggletip;
 	position: relative;
@@ -2893,7 +2925,7 @@ small,
 
 /* ==== Pages and features ================================================= */
 
-/* --- Message box --- */
+/* ==== Message box ======================================================== */
 .rhc-theme.mox-theme {
 	/* Variant B: het bericht als pdf in de pagina. */
 	.rhc-mox-pdf-preview {
@@ -2915,7 +2947,17 @@ small,
 		position: relative;
 
 		&:hover {
-			background-color: var(--rhc-color-cool-grey-50);
+			background-color: var(
+				--rhc-mox-hover-background-color,
+				var(--rhc-color-cool-grey-50)
+			);
+		}
+
+		&:active {
+			background-color: var(
+				--rhc-mox-active-background-color,
+				var(--rhc-color-cool-grey-100)
+			);
 		}
 
 		:is(button, .rhc-mox-dropdown__trigger) {
@@ -3020,7 +3062,7 @@ small,
 	}
 }
 
-/* --- Landing page --- */
+/* ==== Landing page ======================================================= */
 .rhc-theme.mox-theme {
 	.header-landing .rhc-nav-bar__container {
 		border-block-end: none;
@@ -3090,6 +3132,10 @@ small,
 .mox-landing-quicklinks {
 	padding-block-end: var(--rhc-hero-message-padding-block-end);
 	padding-inline: var(--rhc-hero-message-padding-inline-start);
+
+	div.rhc-navigation-list__item:hover {
+		background-color: inherit;
+	}
 }
 
 .mox-landing-quicklinks-heading {

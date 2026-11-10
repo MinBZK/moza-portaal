@@ -68,9 +68,6 @@ const Organisaties = ({
   const [melding, setMelding] = useState<"opgeslagen" | "fout" | null>(null);
   const meldingRef = useRef<HTMLDivElement>(null);
   const gekozen = keuze ?? opgeslagen;
-  const gewijzigd =
-    keuze !== null &&
-    [...keuze].sort().join() !== [...opgeslagen].sort().join();
 
   useEffect(() => {
     if (melding) meldingRef.current?.focus();
@@ -150,9 +147,7 @@ const Organisaties = ({
         </Button>
         <Button
           appearance="secondary-action-button"
-          aria-disabled={!gewijzigd || undefined}
           onClick={() => {
-            if (!gewijzigd) return;
             setKeuze(null);
             setMelding(null);
           }}

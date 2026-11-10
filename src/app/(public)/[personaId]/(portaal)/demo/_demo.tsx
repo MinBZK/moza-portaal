@@ -1740,7 +1740,7 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "DropdownItem selected",
           "boolean",
           "–",
-          "Keuze uit meerdere: vinkje en aria-current bij de gekozen optie",
+          "Keuze uit meerdere: aria-current bij de gekozen optie, met een achtergrond en halfvette tekst",
         ],
         [
           "DropdownItem keepOpen",
@@ -2761,7 +2761,10 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
     {
       name: "Button, IconButton en ActionGroup",
       file: "@/components/rhc",
-      description: "Knoppen voor een actie, gegroepeerd in een <ActionGroup>.",
+      description: [
+        "Knoppen voor een actie, gegroepeerd in een <ActionGroup>.",
+        "Vermijd een uitgeschakelde knop. Die heeft weinig contrast, en de gebruiker ziet vaak niet waarom de knop niet werkt. Laat de knop werken en zeg na een klik wat er nog nodig is, zoals een foutmelding bij het veld dat ontbreekt. Moet een knop toch even niet werken, gebruik dan aria-disabled en zeg ernaast waarom.",
+      ],
       options: [
         [
           "Button appearance",
@@ -2779,7 +2782,7 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "Button disabled / busy",
           "boolean",
           "false",
-          "Niet te bedienen / bezig",
+          "Niet te bedienen / bezig. Gebruik aria-disabled in plaats van disabled, zodat de knop focusbaar blijft; zet dan ook de class utrecht-button--disabled, want Utrecht maakt alleen :disabled grijs. Met busy staat er een spinner voor de tekst (aria-busy).",
         ],
         ["Button pressed", "boolean", "–", "Ingedrukt (aria-pressed)"],
         [
@@ -2803,6 +2806,16 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
             Destructieve actie
           </Button>
           <Button appearance="subtle-button">Subtiele knop</Button>
+          <Button
+            appearance="primary-action-button"
+            aria-disabled
+            className="utrecht-button--disabled"
+          >
+            Uitgeschakelde actie
+          </Button>
+          <Button appearance="primary-action-button" aria-disabled busy>
+            Actie in laadstaat
+          </Button>
           <IconButton icon="kruis" label="Sluiten" />
         </ActionGroup>
       ),
@@ -3016,23 +3029,73 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "1 (!)",
           "Kopniveau van de labels; zet dit altijd, anders worden het h1's",
         ],
+        [
+          "exclusive",
+          "boolean",
+          "false",
+          "Hoogstens één onderdeel open: een ander openen sluit het vorige",
+        ],
       ],
       example: (
-        <AccordionProvider
-          headingLevel={5}
-          sections={[
-            {
-              label: "Wat is MijnOverheid Zakelijk?",
-              body: (
-                <Paragraph>De plek voor uw zaken met de overheid.</Paragraph>
-              ),
-            },
-            {
-              label: "Hoe log ik in?",
-              body: <Paragraph>Met eHerkenning.</Paragraph>,
-            },
-          ]}
-        />
+        <>
+          <Heading level={3}>Standaard: meerdere onderdelen open</Heading>
+          <AccordionProvider
+            headingLevel={4}
+            sections={[
+              {
+                label: "Wat is MijnOverheid Zakelijk?",
+                body: (
+                  <Paragraph>De plek voor uw zaken met de overheid.</Paragraph>
+                ),
+              },
+              {
+                label: "Hoe log ik in?",
+                body: <Paragraph>Met eHerkenning.</Paragraph>,
+              },
+              {
+                label: "Wie kan mijn gegevens zien?",
+                body: (
+                  <Paragraph>
+                    Alleen u en de organisaties die u toestemming geeft.
+                  </Paragraph>
+                ),
+              },
+            ]}
+          />
+          <Heading level={3}>Met exclusive: één onderdeel tegelijk</Heading>
+          <AccordionProvider
+            headingLevel={4}
+            exclusive
+            sections={[
+              {
+                label: "Loonkostensubsidie",
+                expanded: true,
+                body: (
+                  <Paragraph>
+                    De gemeente betaalt u het verschil tussen het minimumloon en
+                    de loonwaarde.
+                  </Paragraph>
+                ),
+              },
+              {
+                label: "Loondispensatie",
+                body: (
+                  <Paragraph>
+                    U betaalt minder loon dan het minimumloon. UWV vult het aan.
+                  </Paragraph>
+                ),
+              },
+              {
+                label: "No-riskpolis",
+                body: (
+                  <Paragraph>
+                    Wordt de werknemer ziek, dan betaalt UWV u ziekengeld.
+                  </Paragraph>
+                ),
+              },
+            ]}
+          />
+        </>
       ),
     },
     {

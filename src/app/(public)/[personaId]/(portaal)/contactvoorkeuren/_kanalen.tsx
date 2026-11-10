@@ -88,8 +88,6 @@ const Formulier = ({
 
   const gekozenKanaal = kanaal ?? opgeslagenKanaal;
   const gekozenBellen = bellen ?? opgeslagenBellen;
-  const gewijzigd =
-    gekozenKanaal !== opgeslagenKanaal || gekozenBellen !== opgeslagenBellen;
   const serviceWerkt = status === "success" && data.status < 500;
 
   const opslaan = async (event: FormEvent) => {
@@ -202,14 +200,13 @@ const Formulier = ({
           type="submit"
           appearance="primary-action-button"
           aria-disabled={bezig || undefined}
+          busy={bezig}
         >
           Opslaan
         </Button>
         <Button
           appearance="secondary-action-button"
-          aria-disabled={!gewijzigd || undefined}
           onClick={() => {
-            if (!gewijzigd) return;
             setKanaal(null);
             setBellen(null);
             setMelding(null);

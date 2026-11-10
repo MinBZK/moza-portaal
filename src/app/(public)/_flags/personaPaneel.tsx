@@ -68,6 +68,8 @@ const PersonaPaneel = ({
       localStorage.removeItem(sleutel);
       sessionStorage.removeItem(sleutel);
     });
+    // Open pages that read this storage start again right away.
+    window.dispatchEvent(new StorageEvent("storage"));
     if (pathname.startsWith("/berichtenbox/"))
       // A full reload on purpose: all client state belongs to the previous persona.
       router.push("/berichtenbox");
