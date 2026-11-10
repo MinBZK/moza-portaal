@@ -132,8 +132,35 @@ const vraag = <T>(
     pomp();
   });
 
-export const bereken = (invoer: Invoer, geldig?: () => boolean) =>
-  vraag<Berekening>({ soort: "bereken", invoer }, geldig);
+/**
+ * Uitkomsten die al berekend zijn, per invoer. De engine geeft bij dezelfde
+ * invoer altijd dezelfde uitkomst, dus een volgende stap met dezelfde
+ * antwoorden hoeft niet opnieuw te rekenen. Het geheugen blijft zolang de
+ * pagina niet herlaadt; de oudste uitkomst gaat eruit boven MAX_BEWAARD.
+ */
+const bewaard = new Map<string, Berekening>();
+const MAX_BEWAARD = 200;
+
+const bewaarde = (sleutel: string) => bewaard.get(sleutel);
+
+const bewaar = (sleutel: string, waarde: Berekening) => {
+  bewaard.delete(sleutel);
+  bewaard.set(sleutel, waarde);
+  if (bewaard.size > MAX_BEWAARD)
+    bewaard.delete(bewaard.keys().next().value as string);
+};
+
+export const bereken = (invoer: Invoer, geldig?: () => boolean) => {
+  const sleutel = JSON.stringify(invoer);
+  const al = bewaarde(sleutel);
+  if (al) return Promise.resolve(al);
+  return vraag<Berekening>({ soort: "bereken", invoer }, geldig).then(
+    (waarde) => {
+      bewaar(sleutel, waarde);
+      return waarde;
+    },
+  );
+};
 
 export type Stand<T> =
   | { status: "laden"; vorige?: T }
@@ -184,6 +211,8 @@ export const useBerekening = (invoer: Invoer | null): Stand<Berekening> => {
     };
   }, [sleutel]);
   if (uitkomst && uitkomst.sleutel === sleutel) return uitkomst.stand;
+  const al = sleutel ? bewaarde(sleutel) : undefined;
+  if (al) return { status: "klaar", waarde: al };
   return {
     status: "laden",
     vorige:
@@ -259,7 +288,17 @@ export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
   }, [sleutel]);
 
   const ids = invoeren.map((i) => `${i.wet}:${i.output}`);
-  const nu = stand?.sleutel === sleutel ? stand.uit : {};
+  // Al berekend (bijvoorbeeld in de vorige stap): meteen bekend, zonder wachten.
+  const alBerekend = Object.fromEntries(
+    invoeren.flatMap((i) => {
+      const al = bewaarde(JSON.stringify(i));
+      return al ? [[`${i.wet}:${i.output}`, al.outputs]] : [];
+    }),
+  );
+  const nu = {
+    ...alBerekend,
+    ...(stand?.sleutel === sleutel ? stand.uit : {}),
+  };
   return {
     ...samenvoegen(ids, nu, stand?.alle ?? {}),
     fout: stand?.sleutel === sleutel ? stand.fout : undefined,
