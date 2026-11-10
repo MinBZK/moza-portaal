@@ -154,6 +154,10 @@ const PublicPage = () => {
                   <Paragraph className="rhc-navigation-list__item__description">
                     {description}
                   </Paragraph>
+                  <Icon
+                    icon="chevron-right"
+                    className="rhc-navigation-list__item__end-icon"
+                  />
                 </span>
               </div>
             </li>
