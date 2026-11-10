@@ -11,9 +11,12 @@ import { useAannemen } from "./_useAannemen";
 const Voortgang = ({
   steps,
   huidige,
+  volgendeBereikbaar = true,
 }: {
   steps: { name: string; href: string }[];
   huidige: 1 | 2;
+  /** Kan de volgende stap nu? Zo niet, dan is die geen link. */
+  volgendeBereikbaar?: boolean;
 }) => {
   const { staat, werkBij } = useAannemen();
   // Een sessie van voor de drie stappen kan nog 4 bewaard hebben.
@@ -30,7 +33,7 @@ const Voortgang = ({
     <StepIndicator
       steps={steps}
       current={huidige - 1}
-      reached={verst - 1}
+      reached={volgendeBereikbaar ? verst - 1 : huidige - 1}
       label="Stappen"
       hideCount
     />

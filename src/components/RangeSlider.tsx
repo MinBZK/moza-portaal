@@ -40,6 +40,8 @@ type RangeSliderProps = Omit<
   label: string;
   /** Next to the label, for example an InfoToggletip. */
   info?: ReactNode;
+  /** A hint below the label, like the description of an RHC form field. */
+  description?: string;
   min: number;
   max: number;
   /** With value and onChange the parent keeps track of the value. */
@@ -65,6 +67,7 @@ type RangeSliderProps = Omit<
 const RangeSlider = ({
   label,
   info,
+  description,
   id,
   min,
   max,
@@ -115,9 +118,18 @@ const RangeSlider = ({
           <ChangedValue quiet={dragging}>{formatValue(current)}</ChangedValue>
         </output>
       </div>
+      {description && (
+        <div
+          id={`${fieldId}-description`}
+          className="utrecht-form-field__description utrecht-form-field-description"
+        >
+          {description}
+        </div>
+      )}
       <div className="utrecht-form-field__input">
         <input
           id={fieldId}
+          aria-describedby={description ? `${fieldId}-description` : undefined}
           type="range"
           min={min}
           max={max}

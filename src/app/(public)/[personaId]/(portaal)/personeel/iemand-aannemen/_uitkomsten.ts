@@ -46,10 +46,10 @@ export const kiesDoelgroep = (
   return DOELGROEPEN.map(([d]) => d).filter((d) => nieuw.includes(d));
 };
 
-/** Vraag 1: staat de persoon in het doelgroepregister? */
+/** Vraag 1: staat de kandidaat in het doelgroepregister? */
 export type InRegister = "ja" | "nee" | "onbekend";
 
-/** Vraag 2: welke uitkering de persoon heeft. */
+/** Vraag 2: welke uitkering de kandidaat heeft. */
 export const UITKERINGEN = [
   ["wajong", "Wajong"],
   ["wia", "WIA"],
