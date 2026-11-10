@@ -534,7 +534,7 @@ const VragenMetStaat = ({
         back={nietsAanTeVragen ? "/personeel" : undefined}
         backLabel="Terug naar Personeel en rollen"
         next={{
-          label: "Regelingen aanvragen",
+          label: "Ja, ik wil doorgaan",
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !kanVerder,
           describedBy: kanVerder ? undefined : "aanvragen-bezig",
