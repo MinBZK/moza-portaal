@@ -31,6 +31,9 @@ const ActiveFilters = () => {
           appearance="secondary-action-button"
           onClick={() => handleDelete(v.id)}
           disabled={deleteMutation.isPending}
+          busy={
+            deleteMutation.isPending && deleteMutation.variables?.id === v.id
+          }
         >
           {v.onderwerp}
           <VisuallyHidden>verwijderen</VisuallyHidden>

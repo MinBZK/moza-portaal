@@ -5,7 +5,7 @@
 
 /* ==== Hulpmiddelen voor het prototype ==================================== */
 
-/* --- Flags- en persona-paneel --- */
+/* ==== Flags- en persona-paneel =========================================== */
 
 /* Knoppen rechtsonder die het Flags- en persona-paneel openen. */
 .prototype-options {
@@ -269,7 +269,7 @@ dialog.prototype-side-overlay[open] {
 	margin-block-start: var(--rhc-space-sm);
 }
 
-/* --- PoC-banner --- */
+/* ==== PoC-banner ========================================================= */
 
 .prototype-temp-poc-banner {
 	/* Top right, over the header. Note: it covers part of the language
@@ -444,3 +444,12 @@ kbd {
 
 /* Card with tools for the researcher, such as starting a scenario again. The
   orange edge sets it apart from the content of the product. */
+
+.prototype-code-block {
+	background-color: var(--rhc-color-cool-grey-100);
+	border-radius: var(--rhc-border-radius-md);
+	font-size: var(--rhc-text-font-size-sm);
+	line-height: var(--rhc-text-line-height-md);
+	overflow-x: auto;
+	padding: var(--rhc-space-lg);
+}

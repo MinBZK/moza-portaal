@@ -88,6 +88,10 @@ const PostcodesBeheer = () => {
                 appearance="subtle-button"
                 onClick={() => handleDelete(v.id)}
                 disabled={deleteMutation.isPending}
+                busy={
+                  deleteMutation.isPending &&
+                  deleteMutation.variables?.id === v.id
+                }
               >
                 <Icon icon="kruis" />
                 <VisuallyHidden>Verwijder postcode {v.postcode}</VisuallyHidden>
@@ -122,6 +126,7 @@ const PostcodesBeheer = () => {
             appearance="secondary-action-button"
             type="submit"
             disabled={addMutation.isPending}
+            busy={addMutation.isPending}
           >
             <Icon icon="plus" />
             Toevoegen

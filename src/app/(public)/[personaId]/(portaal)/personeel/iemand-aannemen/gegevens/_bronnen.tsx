@@ -1,14 +1,16 @@
 "use client";
 
+import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import InfoToggletip from "@/components/InfoToggletip";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BegripInfo } from "../_begrippen";
 import { overKandidaat } from "../_opgehaald";
 import {
   ActionGroup,
+  Alert,
   Button,
   Fieldset,
   FormFieldErrorMessage,
@@ -16,6 +18,8 @@ import {
   FormFieldTextInput,
   Heading,
   Paragraph,
+  UnorderedList,
+  UnorderedListItem,
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
@@ -59,6 +63,9 @@ const EigenOpgave = ({
   vraagWpa,
   aanvangFout,
   eerderFout,
+  jcFout,
+  wpaFout,
+  bezig,
 }: {
   voornaam: string;
   a: Antwoorden;
@@ -70,6 +77,10 @@ const EigenOpgave = ({
   vraagWpa: boolean;
   aanvangFout?: string;
   eerderFout?: string;
+  jcFout?: string;
+  wpaFout?: string;
+  /** The calculation is still running: the questions for the request follow. */
+  bezig: boolean;
 }) => {
   // Zonder ingevulde naam heet de kandidaat "de kandidaat".
   const wie = voornaam.trim() || "de kandidaat";
@@ -147,11 +158,24 @@ const EigenOpgave = ({
         </Fieldset>
       )}
       {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
+      {bezig && (
+        <LoadingStatus>
+          Wij rekenen uit welke regelingen voor u kunnen gelden…
+        </LoadingStatus>
+      )}
       {vraagJc && (
         <Fieldset
+          id="jobcoaching-vraag"
           legend="Wilt u jobcoaching aanvragen?"
           info={<BegripInfo id="jobcoaching" />}
+          invalid={!!jcFout}
+          aria-describedby={jcFout ? "jobcoaching-fout" : undefined}
         >
+          {jcFout && (
+            <FormFieldErrorMessage id="jobcoaching-fout">
+              {jcFout}
+            </FormFieldErrorMessage>
+          )}
           <FormFieldRadio
             name="jc"
             value="ja"
@@ -170,9 +194,17 @@ const EigenOpgave = ({
       )}
       {vraagWpa && (
         <Fieldset
+          id="werkplek-vraag"
           legend="Is er een aanpassing van de werkplek nodig?"
           info={<BegripInfo id="werkplekaanpassing" />}
+          invalid={!!wpaFout}
+          aria-describedby={wpaFout ? "werkplek-fout" : undefined}
         >
+          {wpaFout && (
+            <FormFieldErrorMessage id="werkplek-fout">
+              {wpaFout}
+            </FormFieldErrorMessage>
+          )}
           <FormFieldRadio
             name="wpa"
             value="ja"
@@ -276,78 +308,129 @@ const Bronnen = ({
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
   const { wie, meer, eigen } = overKandidaat(bronnen, situatie);
 
-  // The first thing that still stops Verder, in the order of the form.
-  const ontbreekt:
+  // Everything that still stops Verder, in the order of the form.
+  type Veld =
     | "kandidaat"
     | "naam"
     | "bsn"
     | "toestemming"
     | "aanvang"
     | "eerder"
-    | undefined = gekozen
-    ? opgave
-      ? undefined
-      : !antwoorden.aanvang
-        ? "aanvang"
-        : "eerder"
+    | "jc"
+    | "wpa";
+  const keuzes = staat?.keuzes ?? {};
+  const ontbrekend: Veld[] = gekozen
+    ? [
+        ...(antwoorden.aanvang ? [] : (["aanvang"] as const)),
+        ...(vraagEerderInDienst(antwoorden) &&
+        antwoorden.eerderInDienst === undefined
+          ? (["eerder"] as const)
+          : []),
+        ...(paneelIds.includes("jc") && !keuzes.jc ? (["jc"] as const) : []),
+        ...(paneelIds.includes("wpa") && !keuzes.wpa ? (["wpa"] as const) : []),
+      ]
     : keuze !== NIEUW
-      ? "kandidaat"
-      : !nieuw.naam.trim()
-        ? "naam"
-        : !bsnGoed
-          ? "bsn"
-          : "toestemming";
-  // Set when Verder is clicked; the message shows while that part is missing.
-  const [foutBij, setFoutBij] = useState<typeof ontbreekt>();
-  const fout = foutBij && foutBij === ontbreekt ? foutBij : undefined;
-  const kandidaatFout =
-    fout === "kandidaat"
-      ? wachtend
-        ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
-        : "U hebt nog geen kandidaat gekozen."
-      : undefined;
-  const naamFout =
-    fout === "naam"
-      ? "U hebt nog geen naam van de kandidaat ingevuld."
-      : undefined;
-  const aanvangFout =
-    fout === "aanvang" ? "U hebt nog geen eerste werkdag ingevuld." : undefined;
-  const eerderFout =
-    fout === "eerder"
-      ? `Kies of ${kandidaat.voornaam} de afgelopen zes maanden al bij u in dienst was.`
-      : undefined;
+      ? ["kandidaat"]
+      : !nieuw.naam.trim() || !bsnGoed
+        ? [
+            ...(nieuw.naam.trim() ? [] : (["naam"] as const)),
+            ...(bsnGoed ? [] : (["bsn"] as const)),
+          ]
+        : ["toestemming"];
+  const ontbreekt = ontbrekend[0];
+  // Set when Verder is clicked: every field missing then gets its message,
+  // until it is filled in. A new message only comes with the next click.
+  const [foutBij, setFoutBij] = useState<Veld[]>([]);
+  const fout = (veld: Veld) =>
+    foutBij.includes(veld) && ontbrekend.includes(veld);
+  const kandidaatFout = fout("kandidaat")
+    ? wachtend
+      ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
+      : "U hebt nog geen kandidaat gekozen."
+    : undefined;
+  const naamFout = fout("naam")
+    ? "U hebt nog geen naam van de kandidaat ingevuld."
+    : undefined;
+  const aanvangFout = fout("aanvang")
+    ? "U hebt nog geen eerste werkdag ingevuld."
+    : undefined;
+  const eerderFout = fout("eerder")
+    ? `Kies of ${kandidaat.voornaam} de afgelopen zes maanden al bij u in dienst was.`
+    : undefined;
+  const jcFout = fout("jc")
+    ? "Kies of u jobcoaching wilt aanvragen."
+    : undefined;
+  const wpaFout = fout("wpa")
+    ? "Kies of er een aanpassing van de werkplek nodig is."
+    : undefined;
   const bsnVeldFout =
-    fout === "bsn" && bsn === ""
+    fout("bsn") && bsn === ""
       ? "U hebt nog geen BSN ingevuld."
-      : fout === "bsn" || bsnGezien
+      : fout("bsn") || bsnGezien
         ? bsnFout
         : undefined;
 
-  // Verder does not work yet: show why, and go to what is still missing.
+  const ANKER: Record<Veld, string> = {
+    kandidaat: "kandidaat",
+    naam: "kandidaat-naam",
+    bsn: "kandidaat-bsn",
+    toestemming: "toestemming-vragen",
+    aanvang: "eerste-werkdag",
+    eerder: "eerder-in-dienst",
+    jc: "jobcoaching-vraag",
+    wpa: "werkplek-vraag",
+  };
+  const veldVan = (veld: Veld) =>
+    veld === "naam"
+      ? document.querySelector<HTMLElement>("#kandidaat-naam input")
+      : veld === "bsn"
+        ? document.querySelector<HTMLElement>("#kandidaat-bsn input")
+        : veld === "toestemming"
+          ? document.getElementById("toestemming-vragen")
+          : veld === "aanvang"
+            ? document.querySelector<HTMLElement>("#eerste-werkdag input")
+            : veld === "eerder" || veld === "jc" || veld === "wpa"
+              ? document.querySelector<HTMLElement>(
+                  `input[name="${veld === "eerder" ? "eerder-in-dienst" : veld}"]`,
+                )
+              : (document.querySelector<HTMLElement>(
+                  'input[name="kandidaat"]:checked',
+                ) ??
+                document.querySelector<HTMLElement>('input[name="kandidaat"]'));
+
+  // Something is still missing: show every message, and put the focus on
+  // the first link in the summary at the top. Each try moves the focus again.
+  const [poging, setPoging] = useState(0);
   const naarInvoer = () => {
     if (!ontbreekt) return;
-    setFoutBij(ontbreekt);
-    const veld =
-      ontbreekt === "naam"
-        ? document.querySelector<HTMLElement>("#kandidaat-naam input")
-        : ontbreekt === "bsn"
-          ? document.querySelector<HTMLElement>("#kandidaat-bsn input")
-          : ontbreekt === "toestemming"
-            ? document.getElementById("toestemming-vragen")
-            : ontbreekt === "aanvang"
-              ? document.querySelector<HTMLElement>("#eerste-werkdag input")
-              : ontbreekt === "eerder"
-                ? document.querySelector<HTMLElement>(
-                    'input[name="eerder-in-dienst"]',
-                  )
-                : (document.querySelector<HTMLElement>(
-                    'input[name="kandidaat"]:checked',
-                  ) ??
-                  document.querySelector<HTMLElement>(
-                    'input[name="kandidaat"]',
-                  ));
-    veld?.focus();
+    setFoutBij(ontbrekend);
+    setPoging((keer) => keer + 1);
   };
+  useEffect(() => {
+    if (poging)
+      document.querySelector<HTMLElement>("#fout-samenvatting a")?.focus();
+  }, [poging]);
+
+  // The messages, in the order of the form, for the summary at the top.
+  const meldingen = ontbrekend.filter(fout).map((veld) => ({
+    veld,
+    tekst:
+      veld === "kandidaat"
+        ? kandidaatFout
+        : veld === "naam"
+          ? naamFout
+          : veld === "bsn"
+            ? (bsnVeldFout ?? "U hebt nog geen geldig BSN ingevuld.")
+            : veld === "toestemming"
+              ? "U hebt nog geen toestemming gevraagd."
+              : veld === "aanvang"
+                ? aanvangFout
+                : veld === "eerder"
+                  ? eerderFout
+                  : veld === "jc"
+                    ? jcFout
+                    : wpaFout,
+  }));
 
   const voegToe = () => {
     const n = nieuw.naam.trim();
@@ -377,6 +460,28 @@ const Bronnen = ({
         huidige={1}
         volgendeBereikbaar={gekozen && opgave && resultaat.bekend}
       />
+      {meldingen.length > 0 && (
+        <div id="fout-samenvatting">
+          <Alert type="error">
+            <Paragraph>Er ontbreekt nog iets:</Paragraph>
+            <UnorderedList>
+              {meldingen.map(({ veld, tekst }) => (
+                <UnorderedListItem key={veld}>
+                  <a
+                    href={`#${ANKER[veld]}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      veldVan(veld)?.focus();
+                    }}
+                  >
+                    {tekst}
+                  </a>
+                </UnorderedListItem>
+              ))}
+            </UnorderedList>
+          </Alert>
+        </div>
+      )}
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
@@ -475,7 +580,7 @@ const Bronnen = ({
               loonadministratie. Vraag het BSN pas als u de kandidaat echt wilt
               aannemen. Gebruik het alleen voor deze aanvraag.
             </Paragraph>
-            {fout === "toestemming" && (
+            {fout("toestemming") && (
               <FormFieldErrorMessage id="toestemming-fout">
                 U hebt nog geen toestemming gevraagd. Kies{" "}
                 <strong>Toestemming vragen aan kandidaat</strong>.
@@ -491,9 +596,8 @@ const Bronnen = ({
               <Button
                 id="toestemming-vragen"
                 appearance="secondary-action-button"
-                aria-disabled={!nieuw.naam.trim() || !bsnGoed}
                 aria-describedby={
-                  fout === "toestemming"
+                  fout("toestemming")
                     ? "toestemming-fout toestemming-melding"
                     : "toestemming-melding"
                 }
@@ -536,6 +640,9 @@ const Bronnen = ({
             vraagWpa={paneelIds.includes("wpa")}
             aanvangFout={aanvangFout}
             eerderFout={eerderFout}
+            jcFout={jcFout}
+            wpaFout={wpaFout}
+            bezig={!resultaat.bekend && !resultaat.fout}
           />
         )}
       </section>
@@ -587,11 +694,16 @@ const Bronnen = ({
           later="/personeel"
           next={{
             label: verderNaar(2),
-            disabled: !gekozen || !opgave || !resultaat.bekend,
-            onBlocked: naarInvoer,
+            // Verder werkt altijd: ontbreekt er iets, dan wijst de stap het
+            // veld aan. Is alles ingevuld maar rekent de stap nog (welke
+            // regelingen er vragen nodig hebben), dan wacht Verder zichtbaar.
             // Stap 2 heeft één vorm, ook als er niets te versturen is.
-            onClick: () =>
-              router.push("/personeel/iemand-aannemen/concept-aanvraag"),
+            busy: !ontbreekt && !resultaat.bekend && !resultaat.fout,
+            onClick: () => {
+              if (ontbreekt) naarInvoer();
+              else if (resultaat.bekend || resultaat.fout)
+                router.push("/personeel/iemand-aannemen/concept-aanvraag");
+            },
           }}
         />
       </div>

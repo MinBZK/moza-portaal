@@ -14,8 +14,8 @@ export type DemoMenu = {
 const PATTERNS_PATH = "/demo/ontwerppatronen";
 
 /**
- * Side navigation on the demo pages. On /demo: to each component. On the
- * design patterns: to each pattern.
+ * Side navigation on the demo pages. On /demo: to the page of each
+ * component. On the design patterns: to each pattern.
  */
 const DemoNavigation = ({
   pathname,
@@ -72,6 +72,12 @@ const DemoNavigation = ({
         <>
           <SideNavList>
             <SideNavItem>
+              <SideNavLink current={pathname === "/demo"} href="/demo">
+                <PuzzleIcon />
+                Componenten
+              </SideNavLink>
+            </SideNavItem>
+            <SideNavItem>
               <SideNavLink href={PATTERNS_PATH}>
                 <PackagesIcon />
                 Ontwerppatronen
@@ -81,7 +87,10 @@ const DemoNavigation = ({
           <SideNavList>
             {menu.components.map(({ id, name }) => (
               <SideNavItem key={id}>
-                <SideNavLink href={`/demo#${id}`}>
+                <SideNavLink
+                  current={pathname === `/demo/${id}`}
+                  href={`/demo/${id}`}
+                >
                   <PuzzleIcon />
                   {name}
                 </SideNavLink>
@@ -91,7 +100,11 @@ const DemoNavigation = ({
           <SideNavList>
             {menu.lists.map(({ id, name }) => (
               <SideNavItem key={id}>
-                <SideNavLink href={`/demo#${id}`} icon="menu">
+                <SideNavLink
+                  current={pathname === `/demo/${id}`}
+                  href={`/demo/${id}`}
+                  icon="menu"
+                >
                   {name}
                 </SideNavLink>
               </SideNavItem>

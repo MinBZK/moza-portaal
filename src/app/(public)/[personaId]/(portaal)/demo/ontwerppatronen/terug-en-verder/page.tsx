@@ -138,19 +138,19 @@ const Page = () => (
     >
       <UnorderedList>
         <UnorderedListItem>
-          De Verder-knop krijgt <code>aria-disabled</code>, niet{" "}
-          <code>disabled</code>. Zo blijft de knop bereikbaar met het
-          toetsenbord en leest een schermlezer hem voor.
+          De Verder-knop blijft gewoon werken en ziet er niet uitgeschakeld uit.
+          Een uitgeschakelde knop heeft weinig contrast, en de ondernemer ziet
+          niet waarom die niet werkt.
         </UnorderedListItem>
         <UnorderedListItem>
-          Kiest de ondernemer toch Verder, dan gaat de focus naar het eerste
-          veld dat nog ontbreekt. Onder het label komt een foutmelding, zoals “U
-          hebt nog geen geboortedatum ingevuld.”
+          Kiest de ondernemer Verder terwijl er iets ontbreekt, dan staat
+          bovenaan een foutmelding met een lijst van alles wat ontbreekt of niet
+          klopt. Elke regel is een link naar het veld. De focus gaat naar de
+          eerste link.
         </UnorderedListItem>
         <UnorderedListItem>
-          Is dat veld ingevuld en ontbreekt er nog iets, dan gaat de focus bij
-          de volgende keer Verder naar dat veld. Dat herhaalt zich tot alles wat
-          verplicht is, is ingevuld.
+          Elk veld met een fout krijgt ook een foutmelding onder het label,
+          zoals “U hebt nog geen geboortedatum ingevuld.”
         </UnorderedListItem>
         <UnorderedListItem>
           De foutmelding verdwijnt zodra het veld goed is ingevuld. Een nieuwe

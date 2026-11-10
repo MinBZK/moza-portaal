@@ -53,10 +53,7 @@ const DemoBerichtInhoud = ({
         ))}
 
         {variant === "c" && bericht.acties && (
-          <section
-            aria-labelledby="wat-kunt-u-doen"
-            className="rhc-mox-message-actions"
-          >
+          <section aria-labelledby="wat-kunt-u-doen" className="rhc-mox-card">
             <Heading level={2} id="wat-kunt-u-doen">
               Wat kunt u doen?
             </Heading>

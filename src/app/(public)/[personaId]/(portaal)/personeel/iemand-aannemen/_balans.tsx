@@ -186,12 +186,9 @@ const Balans = ({
   const { uitkomsten, bekend, bezig, fout } = resultaat;
   // Values that follow a slider light up when the user lets go of it.
   const slepen = useSliderDragging();
-  // De open uitklappen van de regelingen.
-  const [open, setOpen] = useState<string[]>([]);
-  const wissel = (id: string) =>
-    setOpen((nu) =>
-      nu.includes(id) ? nu.filter((x) => x !== id) : [...nu, id],
-    );
+  // De open uitklap van de regelingen: hoogstens één tegelijk (exclusive).
+  const [open, setOpen] = useState<string>();
+  const wissel = (id: string) => setOpen((nu) => (nu === id ? undefined : id));
   // Een schatting: in hele euro's, en de som klopt met de bedragen erboven.
   const kosten = opHeleEuros(loonkostenPerJaar(antwoorden));
   const regels = balansRegels(uitkomsten, kosten).map((r) => ({
@@ -387,7 +384,7 @@ const Balans = ({
               label={`${naam(r)}${uitkomst}`}
               // Het type eist `body`, de component rendert alleen `children`.
               body={null}
-              expanded={open.includes(r.id)}
+              expanded={open === r.id}
               onActivate={() => wissel(r.id)}
             >
               <div className="rhc-mox-stack">

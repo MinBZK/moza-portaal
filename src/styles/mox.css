@@ -14,6 +14,36 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 	--rhc-navigation-list-item-content-column-gap: var(--rhc-space-xl);
 	--rhc-color-zwart: var(--rhc-color-cool-grey-900);
 	--rhc-mox-color-page-background: var(--rhc-color-cool-grey-100);
+	--rhc-mox-hover-background-color: var(--rhc-color-cool-grey-200);
+	--rhc-mox-active-background-color: var(--rhc-color-cool-grey-300);
+	--rhc-mox-selected-background-color: var(--rhc-color-cool-grey-200);
+	--utrecht-button-secondary-action-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-button-secondary-action-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
+	--utrecht-button-subtle-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-button-subtle-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
+	--rhc-mox-dropdown-item-hover-background: var(
+		--rhc-mox-hover-background-color
+	);
+	--rhc-mox-dropdown-item-active-background: var(
+		--rhc-mox-active-background-color
+	);
+	--rhc-mox-dropdown-item-selected-background: var(
+		--rhc-mox-selected-background-color
+	);
+	--utrecht-accordion-button-hover-background-color: var(
+		--rhc-mox-hover-background-color
+	);
+	--utrecht-accordion-button-active-background-color: var(
+		--rhc-mox-active-background-color
+	);
 
 	/* ==== Typografie ========================================================= */
 
@@ -33,7 +63,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* ==== Layout ============================================================= */
 
-	/* --- Pagina --- */
+	/* ==== Pagina ============================================================= */
 	& {
 		row-gap: 0;
 	}
@@ -61,7 +91,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		gap: var(--rhc-space-xl);
 	}
 
-	/* --- Header --- */
+	/* ==== Header ============================================================= */
 	.rhc-nav-bar__container {
 		border-block-end-width: 0;
 	}
@@ -127,11 +157,48 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		position: relative;
 	}
 
+	.rhc-mox-header-organizations__trigger:not(
+		.rhc-mox-header-organizations__trigger--static
+	),
+	.rhc-language-navigation__trigger {
+		border-radius: var(--rhc-border-radius-md);
+
+		&:hover {
+			background-color: var(--rhc-mox-hover-background-color);
+		}
+
+		&:active {
+			background-color: var(--rhc-mox-active-background-color);
+		}
+
+		&[aria-expanded="true"],
+		&:has(+ :popover-open) {
+			background-color: var(--rhc-mox-selected-background-color);
+		}
+	}
+
 	.rhc-language-navigation {
 		inset-block-start: var(--rhc-space-2xl);
 		inset-inline-end: var(--rhc-mox-page-margin, 0);
 		position: absolute;
 		z-index: 2;
+
+		--utrecht-listbox-option-hover-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-hover-color: inherit;
+		--utrecht-listbox-option-active-background-color: var(
+			--rhc-mox-active-background-color
+		);
+		--utrecht-listbox-option-active-color: inherit;
+		--utrecht-listbox-option-selected-background-color: var(
+			--rhc-mox-selected-background-color
+		);
+		--utrecht-listbox-option-selected-color: inherit;
+		--utrecht-listbox-option-selected-hover-background-color: var(
+			--rhc-mox-hover-background-color
+		);
+		--utrecht-listbox-option-selected-hover-color: inherit;
 
 		button {
 			text-decoration: none;
@@ -149,7 +216,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Navigatie --- */
+	/* ==== Navigatie ========================================================== */
 	.rhc-side-nav__link {
 		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-light-cool-grey-900);
@@ -157,22 +224,26 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		text-decoration: none;
 
 		&:hover {
-			background-color: var(--rhc-color-cool-grey-200);
+			background-color: var(--rhc-mox-hover-background-color);
 		}
 
 		&[aria-current="page"] {
-			background-color: var(--rhc-color-cool-grey-200);
+			background-color: var(--rhc-mox-selected-background-color);
+		}
+
+		&:active {
+			background-color: var(--rhc-mox-active-background-color);
 		}
 	}
 
-	/* --- Footer --- */
+	/* ==== Footer ============================================================= */
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
 	}
 
 	/* ==== Componenten ======================================================== */
 
-	/* --- Accordion --- */
+	/* ==== Accordion ========================================================== */
 	.utrecht-accordion {
 		padding: var(--rhc-space-max-xl);
 	}
@@ -186,7 +257,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		padding-inline-start: var(--rhc-space-4xl);
 	}
 
-	/* --- Badges --- */
+	/* ==== Badges ============================================================= */
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-600);
 		font-size: var(--rhc-text-font-size-xs);
@@ -199,7 +270,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		line-height: 0;
 	}
 
-	/* --- Kaarten --- */
+	/* ==== Kaarten ============================================================ */
 	.rhc-mox-card,
 	.mox-faq-card,
 	.rhc-table {
@@ -260,7 +331,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		);
 	}
 
-	/* --- Meldingen --- */
+	/* ==== Meldingen ========================================================== */
 	.utrecht-alert {
 		border-color: var(--rhc-color-hemelblauw-100);
 		border-width: var(--rhc-border-width-sm);
@@ -282,7 +353,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		inline-size: 95%;
 	}
 
-	/* --- Paginering --- */
+	/* ==== Paginering ========================================================= */
 	.ams-pagination__link {
 		align-items: center;
 		background-color: var(--rhc-color-wit);
@@ -308,7 +379,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Tekst --- */
+	/* ==== Tekst ============================================================== */
 	.mox-line-clamp {
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
@@ -357,7 +428,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Toggletip --- */
+	/* ==== Toggletip ========================================================== */
 	.mox-toggletip {
 		--rhc-toggletip-icon-size: 1.125rem;
 		--rhc-toggletip-size: 1.125rem;

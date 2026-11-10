@@ -24,7 +24,7 @@ export const DEMO_COMPONENTS = {
   Card: "custom",
   "ChangedValue en ChangedValueGroup": "custom",
   CountdownBar: "custom",
-  "DataSummary en DataSummaryItem": "rhc",
+  DataSummary: "rhc-adapted",
   Deelverzoek: "custom",
   Denkt: "custom",
   Dialoog: "custom",
@@ -75,9 +75,9 @@ export const DEMO_COMPONENTS = {
   Table: "rhc",
   Tabs: "custom",
   TextBadge: "custom",
+  TimelineItem: "custom",
   "UnorderedList en OrderedList": "rhc",
   VisuallyHidden: "rhc",
-  "Wat kunt u doen?": "custom",
 } satisfies Record<string, ComponentKind>;
 
 export type DemoComponentName = keyof typeof DEMO_COMPONENTS;

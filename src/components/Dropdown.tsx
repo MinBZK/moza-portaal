@@ -10,7 +10,6 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { CheckIcon } from "@/components/icons/checkIcon";
 
 const DropdownContext = createContext<() => void>(() => {});
 
@@ -85,9 +84,8 @@ export const Dropdown = ({
 
 /**
  * One choice in a Dropdown. Closes the menu and then runs onSelect. With
- * `selected` the item is a choice out of several: the chosen one gets a
- * check mark and aria-current, the others keep the space for it, so the
- * texts line up.
+ * `selected` the item is a choice out of several: the chosen one gets
+ * aria-current, which the CSS shows with a background and semi-bold text.
  */
 export const DropdownItem = ({
   icon,
@@ -116,13 +114,7 @@ export const DropdownItem = ({
           onSelect?.();
         }}
       >
-        {selected === undefined ? (
-          icon
-        ) : selected ? (
-          <CheckIcon />
-        ) : (
-          <span className="rhc-mox-dropdown__icon-space" aria-hidden="true" />
-        )}
+        {icon}
         {children}
       </button>
     </li>
