@@ -28,7 +28,6 @@ import {
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
-import { datumNL } from "../_werkgever";
 import { verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
@@ -394,8 +393,7 @@ const Bronnen = ({
               <>
                 {naam}
                 <span className="rhc-mox-regular">
-                  , geboren {datumNL(kandidaat.geboortedatum)}, BSN{" "}
-                  {kandidaat.bsnMasker}
+                  , BSN {kandidaat.bsnMasker}
                 </span>
               </>
             }
@@ -411,7 +409,6 @@ const Bronnen = ({
                 <>
                   {k.naam}
                   <span className="rhc-mox-regular">
-                    {k.geboortedatum && `, geboren ${k.geboortedatum}`}
                     {k.bsn && `, BSN ${k.bsn}`}
                   </span>
                 </>
