@@ -75,6 +75,7 @@ export const DEMO_COMPONENTS = {
   Table: "rhc",
   Tabs: "custom",
   TextBadge: "custom",
+  TimelineItem: "custom",
   "UnorderedList en OrderedList": "rhc",
   VisuallyHidden: "rhc",
   "Wat kunt u doen?": "custom",

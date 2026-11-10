@@ -64,6 +64,7 @@
 	--rhc-sidenav-link-color: var(--rhc-color-foreground-default);
 	--utrecht-separator-color: var(--rhc-color-transparent);
 	--utrecht-focus-outline-color: var(--rhc-color-core-500);
+	--rhc-color-warning-500: var(--rhc-color-oranje-500);
 
 	--rhc-mox-landing-hero-background: var(--rhc-color-core-50);
 	--rhc-mox-landing-info-background: var(--rhc-color-core-500);
@@ -150,7 +151,7 @@ dd {
 }
 
 /* Fixed text before the value, such as € for an amount. Only visual: the
-   label names the unit, so a screen reader does not read it out. */
+   label names the unit, so a screen reader does not announce it. */
 .rhc-mox-textbox--prefix {
 	--_rhc-mox-textbox-padding: var(
 		--utrecht-textbox-padding-inline-start,
@@ -236,6 +237,15 @@ dd {
 
 .utrecht-checkbox {
 	background-color: var(--rhc-color-wit);
+}
+
+.rhc-checkbox-group {
+	> div,
+	.rhc-expandable-checkbox-group__extra-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--rhc-space-md);
+	}
 }
 
 /* ==== Layout ============================================================= */
@@ -721,6 +731,70 @@ small,
 	}
 }
 
+.rhc-expandable-checkbox-group__summary,
+.rhc-mox-disclosure > summary {
+	align-items: center;
+	display: flex;
+	gap: var(--rhc-space-sm);
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&::before {
+		background-color: currentcolor;
+		block-size: 0.5rem;
+		content: "";
+		flex: none;
+		inline-size: 0.875rem;
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'%3E%3Cpath d='m7,8c-.26,0-.51-.1-.71-.29L.29,1.71C-.1,1.32-.1.68.29.29S1.32-.1,1.71.29l5.29,5.29L12.29.29c.39-.39,1.02-.39,1.41,0s.39,1.02,0,1.41l-6,6c-.2.2-.45.29-.71.29Z'/%3E%3C/svg%3E")
+			center / contain no-repeat;
+	}
+}
+
+.rhc-expandable-checkbox-group__details {
+	margin-block-start: 0;
+	summary {
+		display: flex;
+		gap: var(--rhc-space-lg);
+		margin-block-end: var(--rhc-space-lg);
+		margin-inline-start: var(--rhc-space-sm);
+	}
+}
+
+:is(.rhc-expandable-checkbox-group__details, .rhc-mox-disclosure)[open]
+	> summary::before {
+	rotate: 180deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.rhc-expandable-checkbox-group__summary::before,
+	.rhc-mox-disclosure > summary::before {
+		transition: rotate 250ms ease;
+	}
+
+	.rhc-expandable-checkbox-group__details,
+	.rhc-mox-disclosure {
+		interpolate-size: allow-keywords;
+
+		&::details-content {
+			block-size: 0;
+			opacity: 0;
+			overflow: clip;
+			transition:
+				block-size 250ms ease,
+				opacity 250ms ease,
+				content-visibility 250ms allow-discrete;
+		}
+
+		&[open]::details-content {
+			block-size: auto;
+			opacity: 1;
+		}
+	}
+}
+
 /* --- Action group --- */
 /* Centred instead of baseline: an icon at the start would move the baseline. */
 .rhc-theme.mox-theme .utrecht-action-group {
@@ -1009,12 +1083,37 @@ small,
 
 	.rhc-mox-card--collapsible {
 		.nl-heading {
+			margin-block-end: calc(-1 * var(--rhc-space-xl));
+			margin-block-start: calc(-1 * var(--rhc-space-xl));
 			margin-inline-end: calc(-1 * var(--rhc-space-3xl));
 			margin-inline-start: calc(-1 * var(--rhc-space-3xl));
 		}
 		.utrecht-accordion__button {
+			--utrecht-button-subtle-active-background-color: transparent;
+			--utrecht-button-subtle-focus-background-color: transparent;
+			--utrecht-button-subtle-hover-background-color: transparent;
+
 			font: inherit;
 			gap: var(--rhc-space-lg);
+
+			&:focus-visible {
+				box-shadow: none;
+				outline: none;
+			}
+		}
+
+		&:has(.utrecht-accordion__button:hover) {
+			background-color: var(--utrecht-accordion-button-hover-background-color);
+		}
+
+		&:has(.utrecht-accordion__button:active) {
+			background-color: var(--utrecht-accordion-button-active-background-color);
+		}
+
+		&:has(.utrecht-accordion__button:focus-visible) {
+			outline: var(--utrecht-focus-outline-width)
+				var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
+			outline-offset: var(--utrecht-focus-outline-offset);
 		}
 	}
 
