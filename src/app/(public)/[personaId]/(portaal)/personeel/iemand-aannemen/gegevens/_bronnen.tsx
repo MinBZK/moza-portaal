@@ -129,8 +129,8 @@ const EigenOpgave = ({
             <InfoToggletip label="Toelichting bij eerder in dienst">
               <Paragraph>
                 Werkte {wie} in de 6 maanden voor de eerste werkdag bij u? Dan
-                krijgt u geen loonkostenvoordeel voor een werknemer met een
-                arbeidsbeperking (Wet tegemoetkomingen loondomein, artikel 2.6).
+                krijgt u geen loonkostenvoordeel voor een arbeidsgehandicapte
+                werknemer (Wet tegemoetkomingen loondomein, artikel 2.6).
               </Paragraph>
             </InfoToggletip>
           }

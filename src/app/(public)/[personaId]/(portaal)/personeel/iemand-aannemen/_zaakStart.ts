@@ -3,15 +3,12 @@ import { voegZaakToe } from "../../lopendezaken/_assistentZaken";
 import type { Situatie, ZaakStand } from "./_route";
 import type { Antwoorden } from "./_useAannemen";
 
-/** Vaste datum voor zaken van vóór de echte datum van indienen (zie vandaag). */
+/**
+ * De dag waarop deze proef de aanvraag laat indienen: vast, zodat de
+ * aanvraag klopt met de rest van de demo (de engine rekent met 18 november
+ * 2026, zie AANVRAAG in _uitkomsten.ts, en de besluiten hebben vaste datums).
+ */
 export const INGEDIEND_OP = "2026-11-18";
-
-/** De datum van vandaag (jjjj-mm-dd, lokale tijd): de dag van indienen. */
-export const vandaag = () => {
-  const nu = new Date();
-  const twee = (n: number) => String(n).padStart(2, "0");
-  return `${nu.getFullYear()}-${twee(nu.getMonth() + 1)}-${twee(nu.getDate())}`;
-};
 
 const REGELING: Partial<Record<Situatie, string>> = {
   gemeente: "loonkostensubsidie",
@@ -51,7 +48,7 @@ export const zaakAanmaken = (
     onderwerp,
     organisatie: zaak.organisatie,
     status,
-    ingediend_op: vandaag(),
+    ingediend_op: INGEDIEND_OP,
     regeling: REGELING[situatie],
     flow: "iemand-aannemen",
     situatie,

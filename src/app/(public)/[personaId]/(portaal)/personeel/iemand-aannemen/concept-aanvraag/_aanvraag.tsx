@@ -31,7 +31,7 @@ import {
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
-import { nieuweZaakStand, vandaag, zaakAanmaken } from "../_zaakStart";
+import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
 import SourceLinks from "@/components/SourceLinks";
 import { BRON } from "../_wetsbronnen";
@@ -462,7 +462,10 @@ const AanvraagInhoud = ({
     const eersteFase = (
       demo.fasen.find((f) => f.id === "ontvangst") ?? demo.fasen[0]
     ).id;
-    werkZaakBij(situatie, nieuweZaakStand(eersteFase, a, onderwerp, vandaag()));
+    werkZaakBij(
+      situatie,
+      nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
+    );
     zaakAanmaken(situatie, demo.zaak, "In behandeling", onderwerp);
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
