@@ -333,7 +333,7 @@ const AanvraagInhoud = ({
             {waarom(
               "participatiewet",
               "mag_proefplaatsing_aangaan",
-              "Proefplaatsing",
+              "Proefplaats",
             )}
           </>
         )}

@@ -45,7 +45,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
       "U betaalt meer dan het minimumloon. Of loondispensatie dan uw loonkosten verlaagt, hangt af van uw cao. Daarom staat het bedrag er niet in.",
   },
   wia_nieuw: {
-    kort: "Gerekend als nieuwe werkgever.",
+    kort: "Gerekend alsof de kandidaat nieuw bij u in dienst komt.",
     uitleg:
       "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Het loonkostenvoordeel geldt dan ten hoogste drie jaar vanaf de start. Werkt de kandidaat al bij u en heeft die een WIA-uitkering? En gaat die weer aan het werk in het eigen werk of in een andere functie? Dan geldt een ander loonkostenvoordeel, ten hoogste één jaar.",
   },
@@ -57,7 +57,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   geen: {
     kort: "Geen regeling met een bedrag.",
     uitleg:
-      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
+      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaats gelden.",
   },
 };
 

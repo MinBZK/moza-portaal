@@ -71,7 +71,7 @@
       "opgehaald": "2026-09-08",
       "gegevens": [
         {
-          "vraag": "Hoeveel werknemers heeft u nu in de loonaangifte?",
+          "vraag": "Hoeveel werknemers hebt u nu in de loonaangifte?",
           "wetsvraag": "Aantal werknemers in de laatste loonaangifte",
           "parameter": "aantal_werknemers_loonaangifte",
           "waarde": "{fulltime} fulltime en {parttime} parttime (loonaangifte augustus 2026)",

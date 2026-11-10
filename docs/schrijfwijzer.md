@@ -64,6 +64,12 @@ We gebruiken overal dezelfde termen voor dezelfde begrippen.
 | Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
 | Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
 | Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
+| De gebruiker als werkgever            | u, uw                   | De werkgever, De ondernemer         |
+| Wie u wilt aannemen, tot de start     | Kandidaat               | De persoon, Iemand, Medewerker      |
+| Wie bij u in dienst is                | Werknemer               | Medewerker, Personeelslid           |
+| Onbetaald werk op proef               | Proefplaats             | Proefplaatsing                      |
+
+**Kandidaat of werknemer?** Tot de eerste werkdag heet de persoon **kandidaat**, daarna **werknemer**: “Staat de kandidaat in het doelgroepregister?”, “Wordt de werknemer ziek? Meld dat bij UWV.” Gaat een tekst over wat na de start gebeurt, dan is het ook vóór de start al “werknemer”: “Is de werknemer al begonnen?” In de wettelijke omschrijving van een regeling blijft het “werknemer”: “Voor een werknemer uit de doelgroep banenafspraak.” Zo doet UWV het ook. “Iemand” gebruiken we alleen in de naam van een taak.
 
 **Bewaren, Opslaan of Versturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
 
