@@ -26,11 +26,13 @@ import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
+  isIngediend,
   useAannemen,
   vraagEerderInDienst,
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
+import AlIngediend from "../_alIngediend";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
 
@@ -397,6 +399,8 @@ const AanvraagInhoud = ({
         "wia",
         perSituatie.wia.zaak,
         "Wacht op de aanvraag van de werknemer",
+        undefined,
+        perSituatie.wia.kandidaat.bsnMasker,
       );
     }
     // Zonder keuze gelden alle regelingen: de bedankpagina noemt ze allemaal.
@@ -453,9 +457,26 @@ const AanvraagInhoud = ({
       situatie,
       nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
     );
-    zaakAanmaken(situatie, demo.zaak, "In behandeling", onderwerp);
+    zaakAanmaken(
+      situatie,
+      demo.zaak,
+      "In behandeling",
+      onderwerp,
+      kandidaat.bsnMasker,
+    );
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
+
+  if (isIngediend(staat))
+    return (
+      <>
+        <Heading level={1}>{TAAK_TITEL}</Heading>
+        <div className="rhc-mox-card">
+          <Stappen huidige={2} />
+          <AlIngediend />
+        </div>
+      </>
+    );
 
   // Via de stappenbalk kan stap 2 open gaan zonder gekozen kandidaat of eerste
   // werkdag, zoals na een andere situatie in de voorbeeldberekening. Dan is er

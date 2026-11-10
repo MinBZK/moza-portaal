@@ -30,7 +30,13 @@ import {
 import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
-import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
+import {
+  WML_UUR_EUROCENT,
+  isIngediend,
+  useAannemen,
+  type Antwoorden,
+} from "./_useAannemen";
+import AlIngediend from "./_alIngediend";
 
 /** De check bij UWV of iemand in het doelgroepregister staat. */
 const UWV_REGISTER =
@@ -222,6 +228,7 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
 const Vragen = () => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
+  if (isIngediend(staat)) return <AlIngediend />;
   return (
     <VragenMetStaat
       a={staat.antwoorden}

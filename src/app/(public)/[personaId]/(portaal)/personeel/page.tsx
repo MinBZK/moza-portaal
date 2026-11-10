@@ -66,7 +66,7 @@ const PersoneelPage = async () => {
           </Paragraph>
           <ActionGroup>
             <Link
-              href="/personeel/iemand-aannemen/voorbeeldberekening"
+              href="/personeel/iemand-aannemen"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
             >
               Begin met de voorbeeldberekening

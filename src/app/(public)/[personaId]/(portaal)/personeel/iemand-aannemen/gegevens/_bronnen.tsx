@@ -4,7 +4,13 @@ import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import InfoToggletip from "@/components/InfoToggletip";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  useAssistentZaken,
+  veld as zaakVeld,
+  zaakRoute,
+} from "../../../lopendezaken/_assistentZaken";
 import { useEffect, useState } from "react";
 import { BegripInfo } from "../_begrippen";
 import { overKandidaat } from "../_opgehaald";
@@ -23,6 +29,7 @@ import {
 } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import {
+  isIngediend,
   eigenOpgaveCompleet,
   STANDAARD_ANTWOORDEN,
   useAannemen,
@@ -30,6 +37,7 @@ import {
   type AannemenStaat,
   type Antwoorden,
 } from "../_useAannemen";
+import AlIngediend from "../_alIngediend";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import { verderNaar } from "../_stappen";
@@ -249,10 +257,10 @@ const Bronnen = ({
     : undefined;
   const geenAanvraag = !!route?.overzicht;
   const paneelIds = route?.panelen.flatMap((p) => p.ids) ?? [];
-  const { bronnen, kandidaat } =
-    perSituatie[
-      situatie === "wajong" || situatie === "wia" ? situatie : "gemeente"
-    ];
+  const situatieSleutel =
+    situatie === "wajong" || situatie === "wia" ? situatie : "gemeente";
+  const { bronnen, kandidaat } = perSituatie[situatieSleutel];
+  const zaken = useAssistentZaken();
   const [nieuw, setNieuw] = useState({ naam: "", bsn: "" });
   // Een BSN heeft negen cijfers en voldoet aan de elfproef.
   const bsn = nieuw.bsn.trim();
@@ -268,6 +276,19 @@ const Bronnen = ({
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
+  // Loopt er voor deze kandidaat al een aanvraag? Oudere zaken zonder
+  // kandidaat herkennen we aan de situatie: die hoort bij één kandidaat.
+  const lopend = gekozen
+    ? zaken?.find(
+        (zaak) =>
+          zaak.flow === "iemand-aannemen" &&
+          (zaak.kandidaat
+            ? zaak.kandidaat === kandidaat.bsnMasker
+            : zaakVeld(zaak, ["situatie"]) === situatieSleutel),
+      )
+    : undefined;
+  const [dubbelOk, setDubbelOk] = useState<string>();
+  const dubbel = !!lopend && dubbelOk !== kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
   // De loonwaarde is nog niet gemeten als de gemeente dat zo opgeeft.
   const loonwaardeNogNiet = bronnen.some((b) =>
@@ -302,6 +323,7 @@ const Bronnen = ({
 
   // Everything that still stops Verder, in the order of the form.
   type Veld =
+    | "dubbel"
     | "kandidaat"
     | "naam"
     | "bsn"
@@ -313,6 +335,7 @@ const Bronnen = ({
   const keuzes = staat?.keuzes ?? {};
   const ontbrekend: Veld[] = gekozen
     ? [
+        ...(dubbel ? (["dubbel"] as const) : []),
         ...(antwoorden.aanvang ? [] : (["aanvang"] as const)),
         ...(vraagEerderInDienst(antwoorden) &&
         antwoorden.eerderInDienst === undefined
@@ -335,6 +358,9 @@ const Bronnen = ({
   const [foutBij, setFoutBij] = useState<Veld[]>([]);
   const fout = (veld: Veld) =>
     foutBij.includes(veld) && ontbrekend.includes(veld);
+  const dubbelFout = fout("dubbel")
+    ? "Kies of u toch een nieuwe aanvraag wilt doen."
+    : undefined;
   const kandidaatFout = fout("kandidaat")
     ? wachtend
       ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
@@ -363,6 +389,7 @@ const Bronnen = ({
         : undefined;
 
   const ANKER: Record<Veld, string> = {
+    dubbel: "dubbel-doorgaan",
     kandidaat: "kandidaat",
     naam: "kandidaat-naam",
     bsn: "kandidaat-bsn",
@@ -373,22 +400,26 @@ const Bronnen = ({
     wpa: "werkplek-vraag",
   };
   const veldVan = (veld: Veld) =>
-    veld === "naam"
-      ? document.querySelector<HTMLElement>("#kandidaat-naam input")
-      : veld === "bsn"
-        ? document.querySelector<HTMLElement>("#kandidaat-bsn input")
-        : veld === "toestemming"
-          ? document.getElementById("toestemming-vragen")
-          : veld === "aanvang"
-            ? document.querySelector<HTMLElement>("#eerste-werkdag input")
-            : veld === "eerder" || veld === "jc" || veld === "wpa"
-              ? document.querySelector<HTMLElement>(
-                  `input[name="${veld === "eerder" ? "eerder-in-dienst" : veld}"]`,
-                )
-              : (document.querySelector<HTMLElement>(
-                  'input[name="kandidaat"]:checked',
-                ) ??
-                document.querySelector<HTMLElement>('input[name="kandidaat"]'));
+    veld === "dubbel"
+      ? document.getElementById("dubbel-doorgaan")
+      : veld === "naam"
+        ? document.querySelector<HTMLElement>("#kandidaat-naam input")
+        : veld === "bsn"
+          ? document.querySelector<HTMLElement>("#kandidaat-bsn input")
+          : veld === "toestemming"
+            ? document.getElementById("toestemming-vragen")
+            : veld === "aanvang"
+              ? document.querySelector<HTMLElement>("#eerste-werkdag input")
+              : veld === "eerder" || veld === "jc" || veld === "wpa"
+                ? document.querySelector<HTMLElement>(
+                    `input[name="${veld === "eerder" ? "eerder-in-dienst" : veld}"]`,
+                  )
+                : (document.querySelector<HTMLElement>(
+                    'input[name="kandidaat"]:checked',
+                  ) ??
+                  document.querySelector<HTMLElement>(
+                    'input[name="kandidaat"]',
+                  ));
 
   // Something is still missing: show every message, and put the focus on
   // the first link in the summary at the top. Each try moves the focus again.
@@ -407,21 +438,23 @@ const Bronnen = ({
   const meldingen = ontbrekend.filter(fout).map((veld) => ({
     veld,
     tekst:
-      veld === "kandidaat"
-        ? kandidaatFout
-        : veld === "naam"
-          ? naamFout
-          : veld === "bsn"
-            ? (bsnVeldFout ?? "U hebt nog geen geldig BSN ingevuld.")
-            : veld === "toestemming"
-              ? "U hebt nog geen toestemming gevraagd."
-              : veld === "aanvang"
-                ? aanvangFout
-                : veld === "eerder"
-                  ? eerderFout
-                  : veld === "jc"
-                    ? jcFout
-                    : wpaFout,
+      veld === "dubbel"
+        ? dubbelFout
+        : veld === "kandidaat"
+          ? kandidaatFout
+          : veld === "naam"
+            ? naamFout
+            : veld === "bsn"
+              ? (bsnVeldFout ?? "U hebt nog geen geldig BSN ingevuld.")
+              : veld === "toestemming"
+                ? "U hebt nog geen toestemming gevraagd."
+                : veld === "aanvang"
+                  ? aanvangFout
+                  : veld === "eerder"
+                    ? eerderFout
+                    : veld === "jc"
+                      ? jcFout
+                      : wpaFout,
   }));
 
   const voegToe = () => {
@@ -445,6 +478,8 @@ const Bronnen = ({
     setNieuw({ naam: "", bsn: "" });
     setBsnGezien(false);
   };
+
+  if (staat && isIngediend(staat)) return <AlIngediend />;
 
   return (
     <>
@@ -530,6 +565,40 @@ const Bronnen = ({
             onChange={() => werkBij({ kandidaat: NIEUW })}
           />
         </Fieldset>
+        {gekozen && dubbel && lopend && (
+          <Alert type="warning">
+            <Paragraph>
+              Voor {naam} loopt al een aanvraag
+              {zaakVeld(lopend, ["onderwerp"])
+                ? `: ${zaakVeld(lopend, ["onderwerp"])}`
+                : ""}
+              . Weet u zeker dat u een nieuwe aanvraag wilt doen?
+            </Paragraph>
+            {dubbelFout && (
+              <FormFieldErrorMessage id="dubbel-fout">
+                {dubbelFout}
+              </FormFieldErrorMessage>
+            )}
+            <ActionGroup>
+              <Button
+                id="dubbel-doorgaan"
+                appearance="secondary-action-button"
+                aria-describedby={dubbelFout ? "dubbel-fout" : undefined}
+                onClick={() => setDubbelOk(kandidaat.bsnMasker)}
+              >
+                Ja, toch een nieuwe aanvraag doen
+              </Button>
+              {zaakRoute(lopend) && (
+                <Link
+                  href={zaakRoute(lopend)}
+                  className="utrecht-link utrecht-link--html-a"
+                >
+                  Bekijk de aanvraag die al loopt
+                </Link>
+              )}
+            </ActionGroup>
+          </Alert>
+        )}
         {keuze === NIEUW && (
           <div className="rhc-mox-row-gap">
             <FormFieldTextInput

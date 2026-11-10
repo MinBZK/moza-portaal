@@ -132,6 +132,11 @@ const LEEG: AannemenStaat = {
 const NIEUWE_ZAAK: ZaakStand = { ingediend: false, fase: "ontvangst" };
 
 /** De zaak van een situatie; zonder zaak is de aanvraag nog niet verstuurd. */
+/** De aanvraag is ingediend of afgerond: de stappen zijn dan niet meer te wijzigen. */
+export const isIngediend = (staat: AannemenStaat) =>
+  !!staat.afgerond ||
+  Object.values(staat.zaken).some((zaak) => zaak?.ingediend);
+
 export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
   staat.zaken[situatie] ?? NIEUWE_ZAAK;
 
