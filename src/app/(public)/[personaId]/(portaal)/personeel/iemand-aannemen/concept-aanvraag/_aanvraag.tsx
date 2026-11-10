@@ -32,6 +32,8 @@ import {
 } from "../_useAannemen";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
+import SourceLinks from "@/components/SourceLinks";
+import { BRON } from "../_wetsbronnen";
 
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
@@ -205,25 +207,28 @@ const AanvraagInhoud = ({
               <UnorderedList>
                 <UnorderedListItem>
                   De gemeente beoordeelt of {kandidaat.voornaam} met een
-                  volledige baan het minimumloon niet kan verdienen
-                  (Participatiewet, artikel 10c).
+                  volledige baan het minimumloon niet kan verdienen.
                 </UnorderedListItem>
                 <UnorderedListItem>
                   Een loonwaardedeskundige beoordeelt het werk op de werkplek.
-                  Met dat rapport stelt de gemeente de loonwaarde vast (Besluit
-                  loonkostensubsidie en minimumbedragen studietoeslag
-                  Participatiewet 2021, artikel 3). Daarna weet u het precieze
-                  bedrag.
+                  Met dat rapport stelt de gemeente de loonwaarde vast. Daarna
+                  weet u het precieze bedrag.
                 </UnorderedListItem>
                 <UnorderedListItem>
                   U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
                   begonnen? Dan binnen acht weken, tenzij de gemeente laat weten
-                  dat het langer duurt (Algemene wet bestuursrecht, artikelen
-                  4:13 en 4:14). Anders binnen vijf weken nadat de gemeente de
-                  loonwaarde heeft vastgesteld (Participatiewet, artikel 10d lid
-                  12).
+                  dat het langer duurt. Anders binnen vijf weken nadat de
+                  gemeente de loonwaarde heeft vastgesteld.
                 </UnorderedListItem>
               </UnorderedList>
+              <SourceLinks
+                sources={[
+                  BRON.pwet10c,
+                  BRON.besluitLks3,
+                  BRON.awb,
+                  BRON.pwet10dLid12,
+                ]}
+              />
             </>,
           )}
         </>,
@@ -239,11 +244,11 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("ld")}
           <Paragraph>
-            Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
-            loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
-            beslist binnen 14 weken (Wajong, artikel 6:1). Volgens UWV krijgt u
+            Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
+            het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
             meestal binnen acht weken een brief.
           </Paragraph>
+          <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
             "heeft_recht_op_loondispensatie",
