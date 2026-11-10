@@ -30,7 +30,7 @@ const ZONDER_AANVRAAG: Record<
   lkv: () =>
     "U zet in de loonaangifte het vakje loonkostenvoordeel aan. Een aparte aanvraag is niet nodig.",
   nrp: (voornaam) =>
-    `Wordt ${voornaam} ziek? Meld dat bij UWV. UWV betaalt u dan ziekengeld.`,
+    `Wordt ${voornaam} ziek? Meld dat bij UWV, uiterlijk op de eerste dag na zes weken ziekte. UWV betaalt dan ziekengeld.`,
   doelgroepverklaring: (voornaam) =>
     `${voornaam} vraagt binnen drie maanden na de start een doelgroepverklaring aan bij UWV. Zonder die verklaring krijgt u geen loonkostenvoordeel.`,
   vz_wajong: (voornaam) =>
