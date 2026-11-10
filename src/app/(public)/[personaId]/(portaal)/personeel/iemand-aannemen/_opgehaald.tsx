@@ -224,24 +224,14 @@ const Controleer = ({
 
   const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => {
     const waarde = g.waarde.replace("{uren}", String(uren));
-    // Bedrijfsgegevens: de naam op de eerste regel, KVK en adres eronder.
-    const [naam, ...rest] = waarde.split(", ");
     return {
       label: LABEL[g.parameter] ?? g.vraag,
-      ...(g.parameter === "kvk_nummer"
-        ? { waarde: naam, extra: rest.join(" · ") }
-        : splits(waarde)),
+      ...splits(waarde),
       bron: bronTekst(b),
       wet: g,
     };
   };
   const overig = opgehaald.filter(({ g }) => !REGISTER.includes(g.parameter));
-  const ondernemingRijen = overig
-    .filter(
-      ({ b, g }) =>
-        !OVER_KANDIDAAT.includes(b.id) && !BEIDE.includes(g.parameter),
-    )
-    .map(rij);
   const beideRijen = overig
     .filter(({ g }) => BEIDE.includes(g.parameter))
     .map((x) => ({
@@ -266,7 +256,6 @@ const Controleer = ({
         Controleer gegevens
       </Heading>
       {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
-      {groep("controleer-onderneming", "Onderneming", ondernemingRijen)}
       {groep("controleer-beide", "Kandidaat en onderneming", beideRijen)}
     </section>
   );
