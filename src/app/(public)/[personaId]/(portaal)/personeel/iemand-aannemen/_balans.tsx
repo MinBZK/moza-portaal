@@ -45,7 +45,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
       "U betaalt meer dan het minimumloon. Of loondispensatie dan uw loonkosten verlaagt, hangt af van uw cao. Daarom staat het bedrag er niet in.",
   },
   wia_nieuw: {
-    kort: "Gerekend als nieuwe werkgever.",
+    kort: "Gerekend alsof de kandidaat nieuw bij u in dienst komt.",
     uitleg:
       "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Het loonkostenvoordeel geldt dan ten hoogste drie jaar vanaf de start. Werkt de kandidaat al bij u en heeft die een WIA-uitkering? En gaat die weer aan het werk in het eigen werk of in een andere functie? Dan geldt een ander loonkostenvoordeel, ten hoogste één jaar.",
   },
@@ -57,7 +57,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   geen: {
     kort: "Geen regeling met een bedrag.",
     uitleg:
-      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaatsing gelden.",
+      "Is de kandidaat gekeurd voor de WIA, of heeft de kandidaat een WAO- of WW-uitkering? Dan kunnen een no-riskpolis, loonkostenvoordeel of een proefplaats gelden.",
   },
 };
 
@@ -129,7 +129,7 @@ export const duurTekst = (jaren: number | undefined) =>
   jaren === undefined || jaren === 0
     ? ""
     : jaren < 0
-      ? "De no-riskpolis heeft geen einddatum."
+      ? "De no-riskpolis geldt zolang de werknemer bij u in dienst is."
       : jaren === 5
         ? "De no-riskpolis geldt bij ziekte die begint in de eerste vijf jaar na de start van het dienstverband."
         : `De no-riskpolis geldt bij ziekte die begint in de eerste ${jaren} jaar na de start van het dienstverband.`;
@@ -140,7 +140,7 @@ export const duurTekst = (jaren: number | undefined) =>
  */
 const WANNEER: Record<BalansRegel["id"], string> = {
   lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde, hoogstens 70 procent van het minimumloon met vakantiegeld. Daarbovenop betaalt de gemeente een vergoeding voor werkgeverslasten (Participatiewet, artikel 10d).",
-  ld: "Voor een werknemer met een Wajong-uitkering die duidelijk minder kan. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20).",
+  ld: "Voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk, voor ten minste zes maanden. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20; Besluit loondispensatie Wajong, artikelen 1 en 2).",
   lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring. Iemand met bijstand of zonder uitkering hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wfsv, artikel 38b). U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
 };
 

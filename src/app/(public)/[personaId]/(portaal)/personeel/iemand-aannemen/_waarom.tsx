@@ -11,6 +11,7 @@ import {
 } from "@/components/rhc";
 import type { DemoAannemenTrace } from "@/demo";
 import { invoerVan } from "./_engine";
+import { PEILDATUM } from "./_uitkomsten";
 import type { Antwoorden } from "./_useAannemen";
 import UitlegTaalmodel from "./_uitlegTaalmodel";
 import { useBerekening, type Invoer } from "./_useRegelrecht";
@@ -141,8 +142,11 @@ const Waarom = ({
                 );
               })}
               <Paragraph className="rhc-mox-small-text">
-                Deze uitleg volgt uit de wet, zoals die geldt op 1 juli 2026.
-                Elke zin komt uit een stap van de wet, niet van een taalmodel.
+                Deze uitleg volgt uit de wetten zoals die gelden op{" "}
+                {datumNL(PEILDATUM)}, de eerste werkdag in dit voorbeeld. Elke
+                zin komt uit een stap van de wet, niet van een taalmodel. Wat de
+                gemeente of UWV nog moet vaststellen, staat hier als ‘ja’: zo
+                rekent het voorbeeld.
               </Paragraph>
               <UitlegTaalmodel
                 berekening={stand.waarde}

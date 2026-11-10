@@ -351,10 +351,12 @@ const Zaak = ({
                 <div className="rhc-mox-small-text">
                   Een deel van de momenten is een aanname.{" "}
                   <InfoToggletip label="Toelichting bij de aanname over de termijn">
-                    UWV beslist binnen een redelijke termijn. Die termijn is ten
-                    hoogste acht weken. Lukt dat niet, dan laat UWV weten
-                    wanneer het besluit komt. De momenten met
-                    &ldquo;aanname&rdquo; zijn voor dit prototype aangenomen.
+                    {situatie === "wajong"
+                      ? "UWV beslist binnen een redelijke termijn. Die termijn is ten hoogste 14 weken (Wajong, artikel 6:1)."
+                      : `${situatie === "gemeente" ? "De gemeente" : "UWV"} beslist binnen een redelijke termijn. Na acht weken is die voorbij (Algemene wet bestuursrecht, artikel 4:13).`}{" "}
+                    Lukt dat niet, dan krijgt u bericht wanneer het besluit
+                    komt. De momenten met &ldquo;aanname&rdquo; zijn voor dit
+                    prototype aangenomen.
                   </InfoToggletip>
                 </div>
               )}

@@ -37,7 +37,7 @@ const breadcrumbLabels: Record<string, string> = {
   "zakelijk-vervoer": "Zakelijk vervoer",
   personeel: "Personeel en rollen",
   "iemand-aannemen": "Iemand aannemen met afstand tot de arbeidsmarkt",
-  gegevens: "Kandidaat selecteren",
+  gegevens: "Kandidaat kiezen",
   voorbeeldberekening: "Voorbeeldberekening",
   versturen: "Controleren en dossier indienen",
   overzicht: "Overzicht",

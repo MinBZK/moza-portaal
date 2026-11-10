@@ -11,7 +11,7 @@ import {
   veld as zaakVeld,
   zaakRoute,
 } from "../../../lopendezaken/_assistentZaken";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { BegripInfo } from "../_begrippen";
 import { overKandidaat } from "../_opgehaald";
 import {
@@ -40,7 +40,9 @@ import {
 import AlIngediend from "../_alIngediend";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
-import { verderNaar } from "../_stappen";
+import Stappen, { verderNaar } from "../_stappen";
+import SourceLinks, { type Source } from "@/components/SourceLinks";
+import { BRON } from "../_wetsbronnen";
 
 const NIEUW = "nieuw";
 
@@ -88,149 +90,156 @@ const EigenOpgave = ({
   wpaFout?: string;
   /** The calculation is still running: the questions for the request follow. */
   bezig: boolean;
-}) => (
-  // Onder de gekozen kandidaat: deze vragen gaan over die persoon.
-  <div
-    id="eigen-opgave"
-    role="group"
-    aria-label={`Over ${voornaam}`}
-    className="rhc-mox-stack"
-  >
-    <FormFieldTextInput
-      id="eerste-werkdag"
-      name="aanvang"
-      type="date"
-      label={`Wat is de eerste werkdag van ${voornaam}?`}
-      invalid={!!aanvangFout}
-      errorMessage={aanvangFout}
-      value={a.aanvang ?? ""}
-      onChange={(event) =>
-        zet({
-          aanvang: (event.target as HTMLInputElement).value || undefined,
-        })
-      }
-    />
-    {/* Dezelfde vraag als in de voorbeeldberekening, nu definitief. */}
-    <RangeSlider
-      label={`Hoeveel uur per week gaat ${voornaam} werken?`}
-      min={1}
-      max={40}
-      step={1}
-      value={a.uren}
-      onChange={(uren) => zet({ uren })}
-      formatValue={(uren) => `${uren} uur`}
-      filled
-    />
-    {vraagEerderInDienst(a) && (
-      <Fieldset
-        id="eerder-in-dienst"
-        legend={`Was ${voornaam} in de zes maanden voor de eerste werkdag al bij u in dienst?`}
-        info={
-          <InfoToggletip label="Toelichting bij eerder in dienst">
-            <Paragraph>
-              Werkte {voornaam} in de zes maanden voor de eerste werkdag bij u?
-              Dan krijgt u geen loonkostenvoordeel voor een arbeidsgehandicapte
-              werknemer (Wet tegemoetkomingen loondomein, artikel 2.6).
-            </Paragraph>
-          </InfoToggletip>
+}) => {
+  // Zonder ingevulde naam heet de kandidaat "de kandidaat".
+  // Die variant is in de huidige flow niet te zien.
+  const wie = voornaam.trim() || "de kandidaat";
+  return (
+    // Onder de gekozen kandidaat: deze vragen gaan over die persoon.
+    <div
+      id="eigen-opgave"
+      role="group"
+      aria-label={`Over ${wie}`}
+      className="rhc-mox-stack"
+    >
+      <FormFieldTextInput
+        id="eerste-werkdag"
+        name="aanvang"
+        type="date"
+        label={`Wat is de eerste werkdag van ${wie}?`}
+        invalid={!!aanvangFout}
+        errorMessage={aanvangFout}
+        value={a.aanvang ?? ""}
+        onChange={(event) =>
+          zet({
+            aanvang: (event.target as HTMLInputElement).value || undefined,
+          })
         }
-        invalid={!!eerderFout}
-        aria-describedby={eerderFout ? "eerder-in-dienst-fout" : undefined}
-      >
-        {eerderFout && (
-          <FormFieldErrorMessage id="eerder-in-dienst-fout">
-            {eerderFout}
-          </FormFieldErrorMessage>
-        )}
-        <FormFieldRadio
-          name="eerder-in-dienst"
-          value="ja"
-          label="Ja"
-          checked={a.eerderInDienst === true}
-          onChange={() => zet({ eerderInDienst: true })}
-        />
-        <FormFieldRadio
-          name="eerder-in-dienst"
-          value="nee"
-          label="Nee"
-          checked={a.eerderInDienst === false}
-          onChange={() => zet({ eerderInDienst: false })}
-        />
-      </Fieldset>
-    )}
-    {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
-    {bezig && (
-      <LoadingStatus>
-        Wij rekenen uit welke regelingen voor u kunnen gelden…
-      </LoadingStatus>
-    )}
-    {vraagJc && (
-      <Fieldset
-        id="jobcoaching-vraag"
-        legend="Wilt u jobcoaching aanvragen?"
-        info={<BegripInfo id="jobcoaching" />}
-        invalid={!!jcFout}
-        aria-describedby={jcFout ? "jobcoaching-fout" : undefined}
-      >
-        {jcFout && (
-          <FormFieldErrorMessage id="jobcoaching-fout">
-            {jcFout}
-          </FormFieldErrorMessage>
-        )}
-        <FormFieldRadio
-          name="jc"
-          value="ja"
-          label="Ja, via de gemeente"
-          checked={keuzes.jc === "ja"}
-          onChange={() => kies({ jc: "ja" })}
-        />
-        <FormFieldRadio
-          name="jc"
-          value="nee"
-          label="Nee, niet nodig"
-          checked={keuzes.jc === "nee"}
-          onChange={() => kies({ jc: "nee" })}
-        />
-      </Fieldset>
-    )}
-    {vraagWpa && (
-      <Fieldset
-        id="werkplek-vraag"
-        legend="Is er een aanpassing van de werkplek nodig?"
-        info={<BegripInfo id="werkplekaanpassing" />}
-        invalid={!!wpaFout}
-        aria-describedby={wpaFout ? "werkplek-fout" : undefined}
-      >
-        {wpaFout && (
-          <FormFieldErrorMessage id="werkplek-fout">
-            {wpaFout}
-          </FormFieldErrorMessage>
-        )}
-        <FormFieldRadio
-          name="wpa"
-          value="ja"
-          label="Ja, ik weet wat er nodig is"
-          checked={keuzes.wpa === "ja"}
-          onChange={() => kies({ wpa: "ja" })}
-        />
-        <FormFieldRadio
-          name="wpa"
-          value="later"
-          label="Weet ik nog niet, ik vraag het later aan"
-          checked={keuzes.wpa === "later"}
-          onChange={() => kies({ wpa: "later" })}
-        />
-        <FormFieldRadio
-          name="wpa"
-          value="nee"
-          label="Nee"
-          checked={keuzes.wpa === "nee"}
-          onChange={() => kies({ wpa: "nee" })}
-        />
-      </Fieldset>
-    )}
-  </div>
-);
+      />
+      {/* Dezelfde vraag als in de voorbeeldberekening, nu definitief: de
+        waarde komt uit dezelfde antwoorden (a.uren). */}
+      <RangeSlider
+        label={`Hoeveel uur per week gaat ${wie} werken?`}
+        description="Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+        min={1}
+        max={40}
+        step={1}
+        value={a.uren}
+        onChange={(uren) => zet({ uren })}
+        formatValue={(uren) => `${uren} uur`}
+        filled
+      />
+      {vraagEerderInDienst(a) && (
+        <Fieldset
+          id="eerder-in-dienst"
+          legend={`Was ${wie} in de zes maanden voor de eerste werkdag al bij u in dienst?`}
+          info={
+            <InfoToggletip label="Toelichting bij eerder in dienst">
+              <Paragraph>
+                Werkte {wie} in de zes maanden voor de eerste werkdag bij u? Dan
+                krijgt u geen loonkostenvoordeel voor een arbeidsgehandicapte
+                werknemer (Wet tegemoetkomingen loondomein, artikel 2.6).
+              </Paragraph>
+            </InfoToggletip>
+          }
+          invalid={!!eerderFout}
+          aria-describedby={eerderFout ? "eerder-in-dienst-fout" : undefined}
+        >
+          {eerderFout && (
+            <FormFieldErrorMessage id="eerder-in-dienst-fout">
+              {eerderFout}
+            </FormFieldErrorMessage>
+          )}
+          <FormFieldRadio
+            name="eerder-in-dienst"
+            value="ja"
+            label="Ja"
+            checked={a.eerderInDienst === true}
+            onChange={() => zet({ eerderInDienst: true })}
+          />
+          <FormFieldRadio
+            name="eerder-in-dienst"
+            value="nee"
+            label="Nee"
+            checked={a.eerderInDienst === false}
+            onChange={() => zet({ eerderInDienst: false })}
+          />
+        </Fieldset>
+      )}
+      {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
+      {bezig && (
+        <LoadingStatus>
+          Wij rekenen uit welke regelingen voor u kunnen gelden…
+        </LoadingStatus>
+      )}
+      {vraagJc && (
+        <Fieldset
+          id="jobcoaching-vraag"
+          legend="Wilt u jobcoaching aanvragen?"
+          info={<BegripInfo id="jobcoaching" />}
+          invalid={!!jcFout}
+          aria-describedby={jcFout ? "jobcoaching-fout" : undefined}
+        >
+          {jcFout && (
+            <FormFieldErrorMessage id="jobcoaching-fout">
+              {jcFout}
+            </FormFieldErrorMessage>
+          )}
+          <FormFieldRadio
+            name="jc"
+            value="ja"
+            label="Ja, via de gemeente"
+            checked={keuzes.jc === "ja"}
+            onChange={() => kies({ jc: "ja" })}
+          />
+          <FormFieldRadio
+            name="jc"
+            value="nee"
+            label="Nee, niet nodig"
+            checked={keuzes.jc === "nee"}
+            onChange={() => kies({ jc: "nee" })}
+          />
+        </Fieldset>
+      )}
+      {vraagWpa && (
+        <Fieldset
+          id="werkplek-vraag"
+          legend="Is er een aanpassing van de werkplek nodig?"
+          info={<BegripInfo id="werkplekaanpassing" />}
+          invalid={!!wpaFout}
+          aria-describedby={wpaFout ? "werkplek-fout" : undefined}
+        >
+          {wpaFout && (
+            <FormFieldErrorMessage id="werkplek-fout">
+              {wpaFout}
+            </FormFieldErrorMessage>
+          )}
+          <FormFieldRadio
+            name="wpa"
+            value="ja"
+            label="Ja, ik weet wat er nodig is"
+            checked={keuzes.wpa === "ja"}
+            onChange={() => kies({ wpa: "ja" })}
+          />
+          <FormFieldRadio
+            name="wpa"
+            value="later"
+            label="Weet ik nog niet, ik vraag het later aan"
+            checked={keuzes.wpa === "later"}
+            onChange={() => kies({ wpa: "later" })}
+          />
+          <FormFieldRadio
+            name="wpa"
+            value="nee"
+            label="Nee"
+            checked={keuzes.wpa === "nee"}
+            onChange={() => kies({ wpa: "nee" })}
+          />
+        </Fieldset>
+      )}
+    </div>
+  );
+};
 
 /**
  * De kandidaat kiezen of toevoegen, en het omgekeerde formulier:
@@ -300,20 +309,29 @@ const Bronnen = ({
   );
   // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is:
   // alleen termijnen uit de wet of van UWV, geen gemiddelde.
-  const duur = [
+  const duur: { zin: string; bronnen: Source[] }[] = [
     ...(situatie === "gemeente" && loonwaardeNogNiet
       ? [
-          `De loonwaarde van ${kandidaat.voornaam} is nog niet gemeten. Een deskundige van de gemeente meet die op de werkplek, als ${kandidaat.voornaam} is ingewerkt. Een vaste wachttijd daarvoor is er niet. Daarna beslist de gemeente uiterlijk acht weken na uw aanvraag (Algemene wet bestuursrecht, artikel 4:13).`,
+          {
+            zin: `De loonwaarde van ${kandidaat.voornaam} is nog niet vastgesteld. Een loonwaardedeskundige beoordeelt het werk op de werkplek. De wet noemt daarvoor geen termijn. Over uw aanvraag beslist de gemeente binnen acht weken, tenzij zij u laat weten dat het langer duurt.`,
+            bronnen: [BRON.awb],
+          },
         ]
       : []),
     ...(situatie === "wajong"
       ? [
-          "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen acht weken na uw aanvraag.",
+          {
+            zin: "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen 14 weken na uw aanvraag. Volgens UWV krijgt u meestal binnen acht weken een brief.",
+            bronnen: [BRON.wajong61],
+          },
         ]
       : []),
     ...(situatie === "wia"
       ? [
-          "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+          {
+            zin: "De werknemer vraagt de doelgroepverklaring aan bij UWV. Volgens UWV beslist UWV binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+            bronnen: [],
+          },
         ]
       : []),
   ];
@@ -483,6 +501,10 @@ const Bronnen = ({
 
   return (
     <>
+      <Stappen
+        huidige={1}
+        volgendeBereikbaar={gekozen && opgave && resultaat.bekend}
+      />
       {meldingen.length > 0 && (
         <div id="fout-samenvatting">
           <Alert type="error">
@@ -513,8 +535,7 @@ const Bronnen = ({
           Wij vragen de kandidaat eerst om toestemming.{" "}
           {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
           {meer ? "zoeken" : "zoekt"} de kandidaat op met het
-          burgerservicenummer (BSN). Werkt de kandidaat al bij u? Dan staat het
-          BSN in uw loonadministratie.
+          burgerservicenummer (BSN).
         </Paragraph>
         <Fieldset
           legend="Kandidaat"
@@ -533,7 +554,7 @@ const Bronnen = ({
               <>
                 {naam}
                 <span className="rhc-mox-regular">
-                  , BSN {kandidaat.bsnMasker}
+                  , BSN eindigt op {kandidaat.bsnMasker.slice(-4)}
                 </span>
               </>
             }
@@ -549,7 +570,7 @@ const Bronnen = ({
                 <>
                   {k.naam}
                   <span className="rhc-mox-regular">
-                    {k.bsn && `, BSN ${k.bsn}`}
+                    {k.bsn && `, BSN eindigt op ${k.bsn.slice(-4)}`}
                   </span>
                 </>
               }
@@ -603,7 +624,7 @@ const Bronnen = ({
           <div className="rhc-mox-row-gap">
             <FormFieldTextInput
               id="kandidaat-naam"
-              label="Naam van de kandidaat"
+              label="Voor- en achternaam"
               invalid={!!naamFout}
               errorMessage={naamFout}
               // Not the user's own data: the browser must not fill in the
@@ -634,15 +655,18 @@ const Bronnen = ({
               onBlur={() => setBsnGezien(true)}
             />
             <Paragraph className="rhc-mox-small-text">
-              Vraag het BSN pas als u de kandidaat wilt aannemen. Gebruik het
-              alleen voor deze aanvraag.
+              Vraag het BSN pas als u de kandidaat wilt aannemen. Werkt de
+              kandidaat al bij u? Dan staat het BSN in uw loonadministratie.
+              Gebruik het alleen voor deze aanvraag.
             </Paragraph>
             {fout("toestemming") && (
               <FormFieldErrorMessage id="toestemming-fout">
                 U hebt nog geen toestemming gevraagd. Kies{" "}
-                <strong>Toestemming vragen</strong>.
+                <strong>Toestemming vragen aan kandidaat</strong>.
               </FormFieldErrorMessage>
             )}
+            {/* TODO: uitleggen hoe en waar de kandidaat het toestemmingsverzoek
+                krijgt. Tekst nog te bepalen door het team. */}
             <ActionGroup>
               <Button
                 id="toestemming-vragen"
@@ -654,19 +678,19 @@ const Bronnen = ({
                 }
                 onClick={voegToe}
               >
-                Toestemming vragen
+                Toestemming vragen aan kandidaat
               </Button>
             </ActionGroup>
+            {/* TODO: het kanaal van de melding noemen (bijvoorbeeld de
+                berichtenbox). Nog te bevestigen door het team. */}
             <Paragraph id="toestemming-melding" className="rhc-mox-small-text">
               U krijgt een melding zodra de kandidaat toestemming heeft gegeven.
             </Paragraph>
           </div>
         )}
-        {gekozen && (
+        {gekozen && !geenAanvraag && (
           <Paragraph className="rhc-mox-small-text">
-            {geenAanvraag
-              ? "U ziet alleen de laatste vier cijfers van het BSN."
-              : "Het BSN gaat mee met de aanvraag. U ziet alleen de laatste vier cijfers."}
+            Het BSN gaat mee met de aanvraag.
           </Paragraph>
         )}
         {gekozen && (
@@ -719,8 +743,11 @@ const Bronnen = ({
           <Heading level={2} id="hoe-lang">
             Hoe lang het kan duren
           </Heading>
-          {duur.map((zin) => (
-            <Paragraph key={zin}>{zin}</Paragraph>
+          {duur.map(({ zin, bronnen }) => (
+            <Fragment key={zin}>
+              <Paragraph>{zin}</Paragraph>
+              <SourceLinks sources={bronnen} />
+            </Fragment>
           ))}
         </section>
       )}
@@ -729,13 +756,15 @@ const Bronnen = ({
         <Paragraph role="status">
           {wachtend
             ? `Wacht op toestemming van ${wachtend.naam}.`
-            : !gekozen
-              ? ""
-              : !opgave
-                ? vraagEerderInDienst(antwoorden)
-                  ? `Vul uw eigen opgave in: de eerste werkdag en of ${kandidaat.voornaam} al eerder bij u werkte.`
-                  : "Vul uw eigen opgave in: de eerste werkdag."
-                : "Wij vullen de aanvraag voor u in. In de volgende stap controleert u die."}
+            : keuze === NIEUW
+              ? "U kunt verder als de kandidaat toestemming heeft gegeven."
+              : !gekozen
+                ? ""
+                : !opgave
+                  ? vraagEerderInDienst(antwoorden)
+                    ? `Vul uw eigen opgave in: de eerste werkdag en of ${kandidaat.voornaam} al eerder bij u werkte.`
+                    : "Vul uw eigen opgave in: de eerste werkdag."
+                  : "Wij vullen de aanvraag voor u in. In de volgende stap controleert u die."}
         </Paragraph>
         <StepNavigation
           back="/personeel/iemand-aannemen/voorbeeldberekening"
