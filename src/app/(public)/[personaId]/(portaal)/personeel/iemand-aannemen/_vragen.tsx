@@ -268,7 +268,7 @@ const VragenMetStaat = ({
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <Fieldset
-              legend="1. Staat de persoon in het doelgroepregister?"
+              legend="1. Staat de kandidaat in het doelgroepregister?"
               info={<BegripInfo id="doelgroepregister" />}
             >
               {(
@@ -296,19 +296,19 @@ const VragenMetStaat = ({
                   target="_blank"
                   rel="external noopener noreferrer"
                 >
-                  Controleer bij UWV of de persoon in het doelgroepregister
+                  Controleer bij UWV of de kandidaat in het doelgroepregister
                   staat (opent in een nieuw tabblad)
                 </a>
                 .
                 {/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
                 {uitkering !== "wajong" &&
-                  " Tot dan rekenen wij alsof de persoon er niet in staat."}
+                  " Tot dan rekenen wij alsof de kandidaat er niet in staat."}
               </Paragraph>
             )}
           </div>
           {metBeschut && (
             <Fieldset
-              legend="2. Is de persoon door de gemeente aangewezen op beschut werk?"
+              legend="2. Is de kandidaat door de gemeente aangewezen op beschut werk?"
               info={
                 <InfoToggletip label="Toelichting bij beschut werk">
                   <Paragraph>
@@ -343,7 +343,7 @@ const VragenMetStaat = ({
               />
             </Fieldset>
           )}
-          <Fieldset legend={`${nr(2)}. Heeft de persoon een uitkering?`}>
+          <Fieldset legend={`${nr(2)}. Heeft de kandidaat een uitkering?`}>
             {UITKERINGEN.map(([waarde, label]) => (
               <FormFieldRadio
                 key={waarde}
@@ -361,7 +361,7 @@ const VragenMetStaat = ({
             ))}
           </Fieldset>
           <RangeSlider
-            label={`${nr(3)}. Hoeveel uur per week gaat de persoon werken?`}
+            label={`${nr(3)}. Hoeveel uur per week gaat de kandidaat werken?`}
             min={1}
             max={40}
             step={1}
@@ -372,7 +372,7 @@ const VragenMetStaat = ({
           />
           <div className="rhc-mox-stack rhc-mox-stack--sm">
             <RangeSlider
-              label={`${nr(4)}. Hoeveel procent van het werk van een collega in dezelfde functie kan de persoon doen?`}
+              label={`${nr(4)}. Hoeveel procent van het werk van een collega in dezelfde functie kan de kandidaat doen?`}
               min={0}
               max={100}
               step={5}
@@ -386,9 +386,9 @@ const VragenMetStaat = ({
               }
               filled
               info={
-                <InfoToggletip label="Toelichting bij hoeveel werk uw werknemer kan doen">
+                <InfoToggletip label="Toelichting bij hoeveel werk de kandidaat kan doen">
                   <Paragraph>
-                    Dit heet de loonwaarde: hoeveel de persoon kan doen,
+                    Dit heet de loonwaarde: hoeveel de kandidaat kan doen,
                     vergeleken met een collega in dezelfde functie. De gemeente
                     of UWV meet de loonwaarde later op de werkplek.
                   </Paragraph>
@@ -410,7 +410,7 @@ const VragenMetStaat = ({
             {wajong && (
               <Paragraph className="rhc-mox-small-text">
                 Bij een Wajong-uitkering stelt UWV vast welk deel van het
-                minimumloon de werknemer aankan.
+                minimumloon de kandidaat aankan.
               </Paragraph>
             )}
           </div>
@@ -438,7 +438,7 @@ const VragenMetStaat = ({
                   <Paragraph>
                     Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per
                     uur, voor iemand van 21 jaar of ouder. Voor een jongere
-                    werknemer is het minimumloon lager.
+                    kandidaat is het minimumloon lager.
                   </Paragraph>
                   <Paragraph>
                     Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
@@ -459,7 +459,7 @@ const VragenMetStaat = ({
                 <Paragraph>
                   Dit uurloon is lager dan het wettelijk minimumloon van{" "}
                   {euro(WML_UUR_EUROCENT)} voor iemand van 21 jaar of ouder. Is
-                  de werknemer jonger? Dan geldt een lager minimumloon.
+                  de kandidaat jonger? Dan geldt een lager minimumloon.
                   {wajong
                     ? " Bij loondispensatie stelt UWV vast hoeveel u minder mag betalen."
                     : " Anders mag u niet minder betalen dan het minimumloon."}
