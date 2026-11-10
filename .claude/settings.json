@@ -18,5 +18,18 @@
     "additionalDirectories": [
       "/Users/rogierbarendregt/Documents/GitHub/moza-portaal"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/no-css-comments.mjs\""
+          }
+        ]
+      }
+    ]
   }
 }
