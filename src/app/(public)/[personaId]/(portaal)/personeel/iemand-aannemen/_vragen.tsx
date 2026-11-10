@@ -2,9 +2,15 @@
 
 import StepNavigation from "@/components/StepNavigation";
 import type { ReactNode } from "react";
-import { Fieldset, FormFieldRadio, Paragraph } from "@/components/rhc";
+import {
+  Fieldset,
+  FormFieldRadio,
+  Paragraph,
+  UnorderedList,
+  UnorderedListItem,
+} from "@/components/rhc";
 import InfoToggletip from "@/components/InfoToggletip";
-import { BegripInfo } from "./_begrippen";
+import { BEGRIP, BegripInfo, NAAM } from "./_begrippen";
 import RangeSlider from "@/components/RangeSlider";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import Balans from "./_balans";
@@ -19,6 +25,7 @@ import {
   type Regel,
   type Uitkering,
 } from "./_uitkomsten";
+import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
 import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
@@ -229,9 +236,9 @@ const VragenMetStaat = ({
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
   const resultaat = useUitkomsten(a);
-  // Verder kan pas als de voorbeeldberekening een bedrag oplevert, of als een
-  // regeling geldt die we niet meetellen: loonkostensubsidie bij beschut werk
-  // (de gemeente beoordeelt die) en loondispensatie boven het minimumloon.
+  // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
+  // we niet meetellen (loonkostensubsidie bij beschut werk, die de gemeente
+  // beoordeelt, en loondispensatie boven het minimumloon).
   const nietMeegeteld = resultaat.uitkomsten.aannames.some(
     (id) => id === "beschut_lks" || id === "ld_cao",
   );
@@ -242,7 +249,13 @@ const VragenMetStaat = ({
     balansRegels(resultaat.uitkomsten, loonkostenPerJaar(a)).every(
       (r) => r.bedrag <= 0,
     );
-  const kanVerder = resultaat.bekend && !resultaat.fout && !geenBedrag;
+  // Verder kan als er een bedrag uitkomt of als er iets aan te vragen is.
+  // Anders staat onder de berekening wat zonder aanvraag wel geldt (zoals de
+  // no-riskpolis), en kan de ondernemer terug naar Personeel en rollen.
+  const route = routeVoor(a.doelgroepen, resultaat.uitkomsten);
+  const nietsAanTeVragen = geenBedrag && route.panelen.length === 0;
+  const watGeldt = nietsAanTeVragen ? [...route.vanzelf, ...route.taken] : [];
+  const kanVerder = resultaat.bekend && !resultaat.fout && !nietsAanTeVragen;
   // Register, beschut werk en uitkering; oudere opslag kent alleen de
   // doelgroepen, of nog de uitkering "andere" (die rekende als geen).
   const afgeleid = vragenUit(a.doelgroepen);
@@ -472,14 +485,32 @@ const VragenMetStaat = ({
             ? "De berekening is niet gelukt. Laad de pagina opnieuw."
             : !resultaat.bekend
               ? "De berekening is nog bezig."
-              : geenBedrag
-                ? "Bij deze antwoorden komt er geen bedrag uit. Pas uw antwoorden aan om verder te gaan."
+              : nietsAanTeVragen
+                ? "Bij deze antwoorden komt er geen bedrag uit. U hoeft niets aan te vragen."
                 : ""}
         </Paragraph>
+        {watGeldt.length > 0 && (
+          <>
+            <Paragraph>Wel gelden deze regelingen:</Paragraph>
+            <UnorderedList>
+              {watGeldt.map((id) => (
+                <UnorderedListItem key={id}>
+                  {NAAM[id]}{" "}
+                  {BEGRIP[id].map((b) => (
+                    <BegripInfo key={b} id={b} />
+                  ))}
+                </UnorderedListItem>
+              ))}
+            </UnorderedList>
+          </>
+        )}
       </div>
 
-      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al weet. */}
+      {/* Elke route begint bij de gegevens: toestemming en wat de overheid al
+          weet. Zonder iets aan te vragen kan de ondernemer hier stoppen. */}
       <StepNavigation
+        back={nietsAanTeVragen ? "/personeel" : undefined}
+        backLabel="Terug naar Personeel en rollen"
         next={{
           label: "Ja, ik wil doorgaan",
           href: "/personeel/iemand-aannemen/gegevens",

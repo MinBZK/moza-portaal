@@ -370,7 +370,7 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
-          Wij dienen de kandidaat eerst om te vragen.{" "}
+          Wij vragen de kandidaat eerst om toestemming.{" "}
           {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
           {meer ? "zoeken" : "zoekt"} de kandidaat op met het
           burgerservicenummer (BSN). Werkt de kandidaat al bij u? Dan staat het
