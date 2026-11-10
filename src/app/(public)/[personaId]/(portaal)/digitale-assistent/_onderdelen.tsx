@@ -250,7 +250,7 @@ export const Deelverzoek = ({
   onNietDelen: () => void;
 }) => (
   <section
-    className="rhc-mox-chat-card"
+    className="rhc-mox-card rhc-mox-card--compact rhc-mox-card--info"
     data-kaart={item.id}
     aria-labelledby={`${item.id}-kop`}
   >

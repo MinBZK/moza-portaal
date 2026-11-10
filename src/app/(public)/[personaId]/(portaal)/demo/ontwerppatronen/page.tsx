@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { DataSummary, Heading, Paragraph } from "@/components/rhc";
-import DataSummaryLinkItem from "@/components/DataSummaryLinkItem";
+import {
+  DataSummary,
+  DataSummaryItem,
+  Heading,
+  Paragraph,
+} from "@/components/rhc";
 import { PATTERNS, TextLink } from "./_parts";
 
 export const metadata: Metadata = { title: "Ontwerppatronen" };
@@ -18,11 +22,11 @@ const PatternsPage = () => (
       </Paragraph>
       <DataSummary className="rhc-mox-summary-rows">
         {PATTERNS.map(({ slug, title, description }) => (
-          <DataSummaryLinkItem
+          <DataSummaryItem
             key={slug}
             itemKey={title}
             itemValue={description}
-            href={`/demo/ontwerppatronen/${slug}`}
+            keyHref={`/demo/ontwerppatronen/${slug}`}
           />
         ))}
       </DataSummary>

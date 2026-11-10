@@ -11,7 +11,6 @@ export {
   Card,
   DataBadgeButton,
   DataSummary,
-  DataSummaryItem,
   DotBadge,
   Drawer,
   ExpandableCheckboxGroup,
@@ -74,6 +73,7 @@ export {
 export { Alert } from "./Alert";
 // RHC Fieldset with optional info (such as an InfoToggletip) next to the legend.
 export { ActionGroup } from "./ActionGroup";
+export { DataSummaryItem } from "./DataSummaryItem";
 export { Fieldset } from "./Fieldset";
 // RHC AccordionProvider with a decorative chevron without ids.
 export { AccordionProvider } from "./AccordionProvider";
