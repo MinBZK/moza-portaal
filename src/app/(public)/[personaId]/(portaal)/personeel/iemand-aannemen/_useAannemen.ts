@@ -110,6 +110,12 @@ export type AannemenStaat = {
   verstStap?: number;
   /** Afgerond zonder iets te versturen; de bedankpagina zegt wat er nu gebeurt. */
   afgerond?: boolean;
+  /**
+   * De huidige aanvraag is ingediend; daarna is die niet meer te wijzigen.
+   * Niet `ingediend`: zo heette een los veld van een eerdere versie, dat
+   * lees() weghaalt.
+   */
+  aanvraagIngediend?: boolean;
 };
 
 /** In het register, zonder uitkering: de gemeente ondersteunt (doelgroepenUit). */
@@ -131,12 +137,17 @@ const LEEG: AannemenStaat = {
 
 const NIEUWE_ZAAK: ZaakStand = { ingediend: false, fase: "ontvangst" };
 
-/** De zaak van een situatie; zonder zaak is de aanvraag nog niet verstuurd. */
-/** De aanvraag is ingediend of afgerond: de stappen zijn dan niet meer te wijzigen. */
+/**
+ * De huidige aanvraag is ingediend of afgerond: de stappen zijn dan niet meer
+ * te wijzigen. Een sessie van voor de vlag `aanvraagIngediend` kijkt naar de
+ * zaken.
+ */
 export const isIngediend = (staat: AannemenStaat) =>
   !!staat.afgerond ||
-  Object.values(staat.zaken).some((zaak) => zaak?.ingediend);
+  (staat.aanvraagIngediend ??
+    Object.values(staat.zaken).some((zaak) => zaak?.ingediend));
 
+/** De zaak van een situatie; zonder zaak is de aanvraag nog niet verstuurd. */
 export const zaakVan = (staat: AannemenStaat, situatie: Situatie): ZaakStand =>
   staat.zaken[situatie] ?? NIEUWE_ZAAK;
 
@@ -245,6 +256,23 @@ const schrijf = (staat: AannemenStaat) => {
   luisteraars.forEach((luisteraar) => luisteraar());
 };
 
+/**
+ * Een nieuwe aanvraag, na een ingediende of afgeronde: leeg, of met de
+ * antwoorden van de voorbeeldberekening. De zaken en taken blijven staan,
+ * want Lopende zaken leest daaruit.
+ */
+export const nieuweAanvraag = (antwoorden?: Antwoorden) => {
+  const nu = lees();
+  schrijf({
+    ...LEEG,
+    zaken: nu.zaken,
+    taken: nu.taken,
+    aanvraagIngediend: false,
+    ...(antwoorden ? { antwoorden } : {}),
+  });
+};
+
+/** Alles weg, ook de zaken: voor een nieuwe sessie in een onderzoek. */
 export const wisAannemen = () => {
   try {
     window.sessionStorage.removeItem(SLEUTEL);

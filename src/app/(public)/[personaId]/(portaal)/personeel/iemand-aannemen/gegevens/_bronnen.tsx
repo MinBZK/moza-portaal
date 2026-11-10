@@ -497,7 +497,13 @@ const Bronnen = ({
     setBsnGezien(false);
   };
 
-  if (staat && isIngediend(staat)) return <AlIngediend />;
+  if (staat && isIngediend(staat))
+    return (
+      <>
+        <Stappen huidige={1} volgendeBereikbaar={false} />
+        <AlIngediend />
+      </>
+    );
 
   return (
     <>

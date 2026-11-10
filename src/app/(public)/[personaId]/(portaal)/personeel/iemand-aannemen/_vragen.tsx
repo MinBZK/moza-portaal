@@ -35,6 +35,7 @@ import { euro, euroHeel } from "./_werkgever";
 import {
   WML_UUR_EUROCENT,
   isIngediend,
+  nieuweAanvraag,
   useAannemen,
   type Antwoorden,
 } from "./_useAannemen";
@@ -198,21 +199,32 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
 const Vragen = () => {
   const { staat, werkBij } = useAannemen();
   if (!staat) return null;
-  if (isIngediend(staat)) return <AlIngediend />;
+  // Na het indienen blijft rekenen mogen; doorgaan start een nieuwe aanvraag
+  // met deze antwoorden. De ingediende aanvraag verandert niet.
+  const ingediend = isIngediend(staat);
   return (
-    <VragenMetStaat
-      a={staat.antwoorden}
-      zet={(deel) => werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })}
-    />
+    <>
+      {ingediend && <AlIngediend knop={false} />}
+      <VragenMetStaat
+        nieuw={ingediend}
+        a={staat.antwoorden}
+        zet={(deel) =>
+          werkBij({ antwoorden: { ...staat.antwoorden, ...deel } })
+        }
+      />
+    </>
   );
 };
 
 const VragenMetStaat = ({
   a,
   zet,
+  nieuw = false,
 }: {
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
+  /** De aanvraag is al ingediend: doorgaan start een nieuwe. */
+  nieuw?: boolean;
 }) => {
   const router = useRouter();
   const resultaat = useUitkomsten(a);
@@ -537,13 +549,18 @@ const VragenMetStaat = ({
           nietsAanTeVragen
             ? undefined
             : {
-                label: "Ja, ik wil doorgaan",
+                label: nieuw
+                  ? "Nieuwe aanvraag starten"
+                  : "Ja, ik wil doorgaan",
                 busy: !resultaat.bekend && !resultaat.fout,
                 describedBy: kanVerder ? undefined : "aanvragen-bezig",
                 onClick: () => {
-                  if (kanVerder)
-                    router.push("/personeel/iemand-aannemen/gegevens");
-                  else document.getElementById("aanvragen-bezig")?.focus();
+                  if (!kanVerder) {
+                    document.getElementById("aanvragen-bezig")?.focus();
+                    return;
+                  }
+                  if (nieuw) nieuweAanvraag(a);
+                  router.push("/personeel/iemand-aannemen/gegevens");
                 },
               }
         }

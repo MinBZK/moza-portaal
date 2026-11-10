@@ -471,6 +471,8 @@ const AanvraagInhoud = ({
       situatie,
       nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
     );
+    // Deze aanvraag is nu ingediend; een volgende begint opnieuw.
+    werkBij({ aanvraagIngediend: true });
     zaakAanmaken(
       situatie,
       demo.zaak,
