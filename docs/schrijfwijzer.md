@@ -67,6 +67,8 @@ We gebruiken overal dezelfde termen voor dezelfde begrippen.
 | Aanvraag vóór het versturen            | Aanvraag                                                                  | Concept-aanvraag, Verzoek                                                         |
 | Aanvraag na het versturen              | Dossier                                                                   | Zaak, Verzoek                                                                     |
 | Persoon die wordt aangenomen           | Kandidaat (tot de eerste werkdag), Werknemer (daarna)                     | Medewerker, Persoon                                                               |
+| De gebruiker als werkgever             | u, uw                                                                     | De werkgever                                                                      |
+| Onbetaald werk op proef                | Proefplaatsing                                                            | Proefplaats                                                                       |
 | Bron laten gebruiken door de assistent | Toestemming geven, Geen toestemming geven                                 | Delen, Akkoord, Deelverzoek                                                       |
 | Item weer tonen                        | Terugzetten                                                               | Zet terug, Weer zichtbaar maken                                                   |
 | Item uit Bewaarde items halen          | Niet meer bewaren                                                         | Verwijderen                                                                       |
@@ -79,6 +81,8 @@ We gebruiken overal dezelfde termen voor dezelfde begrippen.
 | Adres van het bedrijf                  | vestigingsadres                                                           | bedrijfsadres                                                                     |
 | Nummer van een dossier                 | Zaaknummer                                                                | Kenmerk                                                                           |
 | Overig                                 | vakantiegeld, dienstverband, hoogstens, informatieplicht energiebesparing | vakantiebijslag, dienstbetrekking, ten hoogste, energiebesparingsinformatieplicht |
+
+**Kandidaat of werknemer?** Tot de eerste werkdag heet de persoon **kandidaat**, daarna **werknemer**: “Staat de kandidaat in het doelgroepregister?”, “Wordt de werknemer ziek? Meld dat bij UWV.” Gaat een tekst over wat na de start gebeurt, dan is het ook vóór de start al “werknemer”: “Is de werknemer al begonnen?” In de wettelijke omschrijving van een regeling blijft het “werknemer”: “Voor een werknemer uit de doelgroep banenafspraak.” Zo doet UWV het ook. “Iemand” gebruiken we alleen in de naam van een taak.
 
 **Bewaren, Opslaan of Versturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
 

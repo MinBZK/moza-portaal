@@ -38,7 +38,7 @@ const ZONDER_AANVRAAG: Record<
   vz_wia: (voornaam) =>
     `${voornaam} vraagt een jobcoach of een aangepaste werkplek zelf aan bij UWV.`,
   pp: (voornaam) =>
-    `${voornaam} vraagt de gemeente om toestemming voor de proefplaatsing.`,
+    `${voornaam} vraagt de gemeente om toestemming voor de proefplaats.`,
 };
 
 /** Organisatie en datum komen uit de zaak van de situatie. */

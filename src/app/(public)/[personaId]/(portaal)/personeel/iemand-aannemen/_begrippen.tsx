@@ -42,7 +42,7 @@ export const BEGRIPPEN = {
     door: "de gemeente of UWV",
   },
   proefplaatsing: {
-    vraag: "Wat is een proefplaatsing?",
+    vraag: "Wat is een proefplaats?",
     uitleg:
       "De kandidaat werkt eerst op proef bij u, zonder dat u loon betaalt.",
     door: "de gemeente of UWV",
@@ -50,7 +50,7 @@ export const BEGRIPPEN = {
   doelgroepregister: {
     vraag: "Wat is het doelgroepregister?",
     uitleg:
-      "UWV houdt een lijst bij van mensen die door een ziekte of beperking niet zelfstandig het minimumloon kunnen verdienen. Staat uw werknemer op deze lijst? Dan kunt u loonkostenvoordeel krijgen.",
+      "UWV houdt een lijst bij van mensen die door een ziekte of beperking niet zelfstandig het minimumloon kunnen verdienen. Staat de kandidaat op deze lijst? Dan kunt u loonkostenvoordeel krijgen.",
     door: "UWV",
   },
   doelgroepverklaring: {
