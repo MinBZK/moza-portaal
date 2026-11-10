@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import {
+  DataSummary,
+  DataSummaryItem,
   Heading,
   Paragraph,
-  UnorderedList,
-  UnorderedListItem,
 } from "@/components/rhc";
 import { PATTERNS, TextLink } from "./_parts";
 
@@ -20,14 +20,16 @@ const PatternsPage = () => (
         Storybook van moza-poc. De componenten zelf staan op{" "}
         <TextLink href="/demo">Componenten</TextLink>.
       </Paragraph>
-      <UnorderedList>
+      <DataSummary className="rhc-mox-summary-rows">
         {PATTERNS.map(({ slug, title, description }) => (
-          <UnorderedListItem key={slug}>
-            <TextLink href={`/demo/ontwerppatronen/${slug}`}>{title}</TextLink>:{" "}
-            {description}
-          </UnorderedListItem>
+          <DataSummaryItem
+            key={slug}
+            itemKey={title}
+            itemValue={description}
+            keyHref={`/demo/ontwerppatronen/${slug}`}
+          />
         ))}
-      </UnorderedList>
+      </DataSummary>
     </div>
   </>
 );

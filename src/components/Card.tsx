@@ -16,6 +16,8 @@ const Card = ({
   headingLevel = 2,
   collapsible = false,
   defaultOpen = true,
+  compact = false,
+  info = false,
   action,
   className,
   children,
@@ -26,6 +28,10 @@ const Card = ({
   collapsible?: boolean;
   /** Open at first; only with `collapsible`. */
   defaultOpen?: boolean;
+  /** Less padding and less space between the parts, such as in a chat. */
+  compact?: boolean;
+  /** Info background, to make the card stand out. */
+  info?: boolean;
   /** Always at the bottom, open or collapsed, such as an ActionGroup. */
   action?: ReactNode;
   className?: string;
@@ -42,6 +48,8 @@ const Card = ({
       className={[
         "rhc-mox-card",
         collapsible && "rhc-mox-card--collapsible",
+        compact && "rhc-mox-card--compact",
+        info && "rhc-mox-card--info",
         className,
       ]
         .filter(Boolean)

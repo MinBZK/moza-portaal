@@ -13,6 +13,8 @@ type Next = {
   onClick?: () => void;
   /** Not yet possible; the button stays focusable (aria-disabled). */
   disabled?: boolean;
+  /** Waiting for something, such as a calculation: a spinner before the text. */
+  busy?: boolean;
   /** When the button is clicked while disabled, such as focus the field to fill in. */
   onBlocked?: () => void;
   /** Id of the text that says why the button does not work yet. */
@@ -82,6 +84,7 @@ const StepNavigation = ({
             href={next.href}
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             aria-disabled={next.disabled || undefined}
+            aria-busy={next.busy || undefined}
             aria-describedby={next.describedBy}
             onClick={(event) => {
               if (!next.disabled) return;
@@ -97,6 +100,7 @@ const StepNavigation = ({
             // Utrecht only greys out :disabled; aria-disabled needs the class.
             className={next.disabled ? "utrecht-button--disabled" : undefined}
             aria-disabled={next.disabled || undefined}
+            aria-busy={next.busy || undefined}
             aria-describedby={next.describedBy}
             onClick={() => {
               if (next.disabled) next.onBlocked?.();

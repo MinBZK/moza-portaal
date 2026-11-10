@@ -1,6 +1,7 @@
 "use client";
 
 import StepNavigation from "@/components/StepNavigation";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import {
   Alert,
@@ -206,6 +207,7 @@ const VragenMetStaat = ({
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
 }) => {
+  const router = useRouter();
   const resultaat = useUitkomsten(a);
   const termijnen = termijnenVoor(resultaat.uitkomsten.regels);
   // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
@@ -491,7 +493,7 @@ const VragenMetStaat = ({
       </div>
 
       <div className="rhc-mox-stack">
-        <Paragraph role="status" id="aanvragen-bezig">
+        <Paragraph role="status" id="aanvragen-bezig" tabIndex={-1}>
           {resultaat.fout
             ? "De berekening is niet gelukt. Laad de pagina opnieuw."
             : !resultaat.bekend
@@ -518,16 +520,26 @@ const VragenMetStaat = ({
       </div>
 
       {/* Elke route begint bij de gegevens: toestemming en wat de overheid al
-          weet. Zonder iets aan te vragen kan de ondernemer hier stoppen. */}
+          weet. Zonder iets aan te vragen kan de ondernemer hier stoppen; dan
+          is er geen knop om door te gaan. Kan het nog niet, dan zegt de
+          statusmelding waarom. */}
       <StepNavigation
         back={nietsAanTeVragen ? "/personeel" : undefined}
         backLabel="Terug naar Personeel en rollen"
-        next={{
-          label: "Ja, ik wil doorgaan",
-          href: "/personeel/iemand-aannemen/gegevens",
-          disabled: !kanVerder,
-          describedBy: kanVerder ? undefined : "aanvragen-bezig",
-        }}
+        next={
+          nietsAanTeVragen
+            ? undefined
+            : {
+                label: "Ja, ik wil doorgaan",
+                busy: !resultaat.bekend && !resultaat.fout,
+                describedBy: kanVerder ? undefined : "aanvragen-bezig",
+                onClick: () => {
+                  if (kanVerder)
+                    router.push("/personeel/iemand-aannemen/gegevens");
+                  else document.getElementById("aanvragen-bezig")?.focus();
+                },
+              }
+        }
       />
     </>
   );
