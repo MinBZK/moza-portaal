@@ -31,14 +31,27 @@ const U = await import("../" + MAP + "_uitkomsten.ts");
 
 // Stap 2 vraagt register, beschut werk en uitkering los; de engine krijgt
 // dezelfde doelgroepen als bij de vinkjes (doelgroepenUit).
-test("vragen: register ja zonder uitkering is register", () => {
-  assert.deepEqual(U.doelgroepenUit("ja", false, "geen"), ["register"]);
+test("vragen: register ja zonder uitkering is register en gemeente (Pwet 7 lid 1 a)", () => {
+  assert.deepEqual(U.doelgroepenUit("ja", false, "geen"), ["register", "nug"]);
 });
 
-test("vragen: beschut werk telt als beschut, niet als register", () => {
-  assert.deepEqual(U.doelgroepenUit("ja", true, "bijstand"), [
+test("vragen: zonder uitkering en zonder register naar de gemeente", () => {
+  assert.deepEqual(U.doelgroepenUit("nee", false, "geen"), ["nug"]);
+  assert.deepEqual(U.doelgroepenUit("onbekend", false, "geen"), ["nug"]);
+});
+
+test("vragen: beschut werk telt alleen buiten het register (Wfsv 38b lid 1 aanhef)", () => {
+  assert.deepEqual(U.doelgroepenUit("nee", true, "bijstand"), [
     "bijstand",
     "beschut",
+  ]);
+  assert.deepEqual(U.doelgroepenUit("onbekend", true, "geen"), [
+    "nug",
+    "beschut",
+  ]);
+  assert.deepEqual(U.doelgroepenUit("ja", true, "bijstand"), [
+    "register",
+    "bijstand",
   ]);
 });
 
@@ -66,7 +79,7 @@ test("vragen: oudere opslag terug naar de vragen", () => {
     uitkering: "wia",
   });
   assert.deepEqual(U.vragenUit(["bijstand", "beschut"]), {
-    register: "ja",
+    register: "nee",
     beschut: true,
     uitkering: "bijstand",
   });
@@ -119,13 +132,14 @@ test("vraag 1: geen van deze sluit de rest uit", () => {
   ]);
 });
 
-test("vraag 1: zes opties, WIA zonder WAO, geen Wsw of weet ik nog niet", () => {
+test("doelgroepen: zeven, WIA zonder WAO, geen Wsw of weet ik nog niet", () => {
   const ids = U.DOELGROEPEN.map(([id]) => id);
   assert.deepEqual(ids, [
     "register",
     "wajong",
     "wia",
     "bijstand",
+    "nug",
     "beschut",
     "geen",
   ]);
@@ -192,6 +206,24 @@ test("register op 60 procent: geen loonkostensubsidie zonder gemeente", () => {
   const u = reken(["register"], 60);
   assert.equal(regel(u, "lks"), undefined);
   assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
+});
+
+// Niet-uitkeringsgerechtigden horen bij de gemeente (Pwet 7 lid 1 a, 10 lid 1);
+// de loonkostensubsidie vraagt geen bijstand (10d, 6 lid 1 e). De proefplaatsing wel.
+test("geen uitkering (60): loonkostensubsidie via de gemeente, geen proefplaatsing", () => {
+  for (const d of [["nug"], ["register", "nug"]]) {
+    const u = reken(d, 60);
+    assert.equal(regel(u, "lks").bedragPerJaar, LKS_GEMEENTE_60_JAAR, d);
+    assert.equal(regel(u, "lkv").categorie, "banenafspraak", d);
+    assert.equal(overig(u, "begeleiding").geldt, true, d);
+    assert.equal(overig(u, "pp_pwet").geldt, false, d);
+  }
+});
+
+test("geen uitkering + beschut werk: gemeente rekent, geen voorbehoud", () => {
+  const u = reken(["nug", "beschut"], 60);
+  assert.equal(regel(u, "lks").bedragPerJaar, LKS_GEMEENTE_60_JAAR);
+  assert.ok(!u.aannames.includes("beschut_lks"));
 });
 
 test("Wajong 70 procent", () => {
@@ -363,6 +395,8 @@ test("route: situatie volgt de volgorde wajong, wia, bijstand, register, uitleg"
   assert.equal(s(["register", "wajong", "wia"]), "wajong");
   assert.equal(s(["register", "wia"]), "wia");
   assert.equal(s(["register"]), "register");
+  assert.equal(s(["nug"]), "gemeente");
+  assert.equal(s(["register", "nug"]), "gemeente");
   for (const d of ["beschut", "geen"]) assert.equal(s([d]), "uitleg");
   assert.equal(s([]), "uitleg");
 });

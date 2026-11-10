@@ -187,7 +187,7 @@ const AanvraagInhoud = ({
         <>
           <Paragraph>
             U vraagt de gemeente {kandidaat.gemeente} om loonkostensubsidie
-            (Participatiewet, artikel 10d).
+            (Participatiewet, artikel 10d). De gemeente beslist of u die krijgt.
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Paragraph>
@@ -253,7 +253,8 @@ const AanvraagInhoud = ({
         <>
           <Paragraph>
             Begeleiding op de werkplek door een jobcoach. De werknemer heeft
-            daar recht op (Participatiewet, artikel 10da).
+            daar recht op als die bij de doelgroep loonkostensubsidie hoort
+            (Participatiewet, artikel 10da). Dat stelt de gemeente vast.
           </Paragraph>
           {waarom(
             "participatiewet",
