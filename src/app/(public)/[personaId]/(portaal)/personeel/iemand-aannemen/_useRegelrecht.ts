@@ -132,8 +132,43 @@ const vraag = <T>(
     pomp();
   });
 
-export const bereken = (invoer: Invoer, geldig?: () => boolean) =>
-  vraag<Berekening>({ soort: "bereken", invoer }, geldig);
+/**
+ * Berekeningen die al gedaan zijn, per invoer. De engine geeft bij dezelfde
+ * invoer altijd dezelfde uitkomst, dus een volgende stap met dezelfde
+ * antwoorden hoeft niet opnieuw te rekenen. Het geheugen blijft zolang de
+ * pagina niet herlaadt. Een volledige berekening (met model en afleiding)
+ * is tot zo'n 200 KB, de uitkomsten alleen zijn klein: daarom blijven de
+ * uitkomsten langer bewaard dan de volledige berekening.
+ */
+const MAX_UITKOMSTEN = 500;
+const MAX_VOLLEDIG = 20;
+const uitkomsten = new Map<string, Berekening["outputs"]>();
+const volledig = new Map<string, Berekening>();
+
+/** Bewaart, en haalt de oudste weg boven het maximum. */
+const bewaar = <T>(
+  lijst: Map<string, T>,
+  max: number,
+  sleutel: string,
+  waarde: T,
+) => {
+  lijst.delete(sleutel);
+  lijst.set(sleutel, waarde);
+  if (lijst.size > max) lijst.delete(lijst.keys().next().value as string);
+};
+
+export const bereken = (invoer: Invoer, geldig?: () => boolean) => {
+  const sleutel = JSON.stringify(invoer);
+  const al = volledig.get(sleutel);
+  if (al) return Promise.resolve(al);
+  return vraag<Berekening>({ soort: "bereken", invoer }, geldig).then(
+    (waarde) => {
+      bewaar(volledig, MAX_VOLLEDIG, sleutel, waarde);
+      bewaar(uitkomsten, MAX_UITKOMSTEN, sleutel, waarde.outputs);
+      return waarde;
+    },
+  );
+};
 
 export type Stand<T> =
   | { status: "laden"; vorige?: T }
@@ -184,6 +219,8 @@ export const useBerekening = (invoer: Invoer | null): Stand<Berekening> => {
     };
   }, [sleutel]);
   if (uitkomst && uitkomst.sleutel === sleutel) return uitkomst.stand;
+  const al = sleutel ? volledig.get(sleutel) : undefined;
+  if (al) return { status: "klaar", waarde: al };
   return {
     status: "laden",
     vorige:
@@ -224,7 +261,13 @@ export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
       () => {
         for (const invoer of lijst) {
           const id = `${invoer.wet}:${invoer.output}`;
-          bereken(invoer, () => actueel).then(
+          // Al bekend: niet opnieuw naar de worker, wel in de eigen stand, zodat
+          // de uitkomst blijft staan als hij later uit het geheugen valt.
+          const al = uitkomsten.get(JSON.stringify(invoer));
+          (al
+            ? Promise.resolve({ outputs: al })
+            : bereken(invoer, () => actueel)
+          ).then(
             (waarde) => {
               if (!actueel) return;
               setStand((s) => ({
@@ -259,7 +302,17 @@ export const useBerekeningen = (invoeren: Invoer[]): Berekeningen => {
   }, [sleutel]);
 
   const ids = invoeren.map((i) => `${i.wet}:${i.output}`);
-  const nu = stand?.sleutel === sleutel ? stand.uit : {};
+  // Al berekend (bijvoorbeeld in de vorige stap): meteen bekend, zonder wachten.
+  const alBerekend = Object.fromEntries(
+    invoeren.flatMap((i) => {
+      const al = uitkomsten.get(JSON.stringify(i));
+      return al ? [[`${i.wet}:${i.output}`, al]] : [];
+    }),
+  );
+  const nu = {
+    ...alBerekend,
+    ...(stand?.sleutel === sleutel ? stand.uit : {}),
+  };
   return {
     ...samenvoegen(ids, nu, stand?.alle ?? {}),
     fout: stand?.sleutel === sleutel ? stand.fout : undefined,
