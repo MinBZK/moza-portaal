@@ -50,8 +50,8 @@ const WetPage = async ({ params }: { params: Promise<{ id: string }> }) => {
             >
               Vraag aan de digitale assistent
             </Link>
-            . Bijvoorbeeld: geldt deze regeling voor uw bedrijf, en wat moet u
-            dan doen?
+            . Bijvoorbeeld: geldt deze regel voor uw bedrijf, en wat moet u dan
+            doen?
           </Paragraph>
 
           <WetActies wet={wet} />

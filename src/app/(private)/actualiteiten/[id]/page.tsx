@@ -37,7 +37,7 @@ const ArtikelDetailPage = async ({
     return (
       <>
         <Heading level={1}>
-          {error ? "Fout bij ophalen artikel" : "Artikel niet gevonden"}
+          {error ? "Artikel niet beschikbaar" : "Artikel niet gevonden"}
         </Heading>
         <div className="rhc-mox-card">
           <Paragraph>
@@ -51,7 +51,7 @@ const ArtikelDetailPage = async ({
               className="utrecht-link utrecht-link--html-a"
             >
               <Icon icon="chevron-left" />
-              Terug naar actualiteiten
+              Terug naar Actualiteiten
             </Link>
           </Paragraph>
         </div>
@@ -84,7 +84,7 @@ const ArtikelDetailPage = async ({
           className="utrecht-link utrecht-link--html-a"
         >
           <Icon icon="chevron-left" />
-          Terug naar actualiteiten
+          Terug naar Actualiteiten
         </Link>
       </Paragraph>
 

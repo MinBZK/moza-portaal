@@ -30,6 +30,7 @@ import {
   type Uitkering,
 } from "./_uitkomsten";
 import { routeVoor } from "./_route";
+import { verderNaar } from "./_stappen";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
 import { WML_UUR_EUROCENT, useAannemen, type Antwoorden } from "./_useAannemen";
@@ -81,11 +82,11 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lks" as const,
-            kort: "Loonkostensubsidie: de gemeente beslist binnen vijf weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
+            kort: "Loonkostensubsidie: de gemeente beslist binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
             tekst:
-              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de start van het dienstverband.",
+              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen 6 maanden na de start van het dienstverband.",
             wanneer:
-              "Is de werknemer nog niet begonnen? Dan beslist de gemeente binnen vijf weken nadat zij de loonwaarde heeft vastgesteld, of nadat zij heeft besloten die later vast te stellen. Is de werknemer al begonnen? Dan beslist de gemeente binnen acht weken na uw aanvraag, tenzij zij u laat weten dat het langer duurt.",
+              "Is de kandidaat nog niet begonnen? Dan beslist de gemeente binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Besluit de gemeente de loonwaarde later vast te stellen? Dan beslist zij binnen 5 weken na dat besluit. Is de werknemer al begonnen? Dan beslist de gemeente binnen 8 weken na uw aanvraag. Duurt het langer, dan laat de gemeente u dat weten.",
             bronnen: [BRON.pwet10dLid2en12, BRON.awb],
           },
         ]
@@ -94,11 +95,11 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "ld" as const,
-            kort: "Loondispensatie: UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen acht weken een brief.",
+            kort: "Loondispensatie: UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
             wanneer:
-              "UWV beslist binnen 14 weken na uw aanvraag, tenzij UWV u laat weten dat het langer duurt. Volgens UWV krijgt u meestal binnen acht weken een brief.",
+              "UWV beslist binnen 14 weken na uw aanvraag, tenzij UWV u laat weten dat het langer duurt. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
             bronnen: [BRON.besluitLd4, BRON.wajong61],
           },
         ]
@@ -107,13 +108,13 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lkv" as const,
-            kort: "Loonkostenvoordeel: u krijgt het het jaar na de start. De Belastingdienst beslist vóór 1 augustus.",
+            kort: "Loonkostenvoordeel: u krijgt het bedrag in het jaar na de start. De Belastingdienst beslist vóór 1 augustus.",
             tekst: arbeidsgehandicapt
-              ? "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
+              ? "De werknemer vraagt de doelgroepverklaring aan binnen 3 maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
               : "U vraagt het loonkostenvoordeel aan in de loonaangifte.",
             wanneer: arbeidsgehandicapt
-              ? "UWV beslist binnen acht weken over de doelgroepverklaring, tenzij UWV laat weten dat het langer duurt. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen zes weken na dat besluit."
-              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen zes weken na dat besluit.",
+              ? "UWV beslist binnen 8 weken over de doelgroepverklaring, tenzij UWV laat weten dat het langer duurt. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken na dat besluit."
+              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken na dat besluit.",
             bronnen: [
               ...(arbeidsgehandicapt ? [BRON.wtl27, BRON.awb] : []),
               BRON.wtl42en44,
@@ -129,7 +130,7 @@ const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
   lks: () =>
     "De gemeente bepaalt in overleg met u en de werknemer wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
   ld: () =>
-    "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, ten hoogste vijf jaar. Daarna kan UWV die verlengen.",
+    "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, hoogstens 5 jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>
     regel.categorie === "arbeidsgehandicapte_werknemer"
       ? "U bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
@@ -149,7 +150,7 @@ const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
       ? `Per jaar betaalt u ongeveer ${euroHeel(bedrag)} minder aan loon.`
       : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euroHeel(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
   const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
-  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ongeveer ${euroHeel(bedrag)} per jaar.`;
+  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, hoogstens ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ongeveer ${euroHeel(bedrag)} per jaar.`;
 };
 
 /**
@@ -495,9 +496,9 @@ const VragenMetStaat = ({
       <div className="rhc-mox-stack">
         <Paragraph role="status" id="aanvragen-bezig" tabIndex={-1}>
           {resultaat.fout
-            ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+            ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
             : !resultaat.bekend
-              ? "De berekening is nog bezig."
+              ? "Wij berekenen de bedragen…"
               : nietsAanTeVragen
                 ? "Bij deze antwoorden komt er geen bedrag uit. U hoeft niets aan te vragen."
                 : ""}
@@ -530,7 +531,7 @@ const VragenMetStaat = ({
           nietsAanTeVragen
             ? undefined
             : {
-                label: "Ja, ik wil doorgaan",
+                label: verderNaar(1),
                 busy: !resultaat.bekend && !resultaat.fout,
                 describedBy: kanVerder ? undefined : "aanvragen-bezig",
                 onClick: () => {

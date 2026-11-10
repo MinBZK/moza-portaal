@@ -24,7 +24,7 @@ const PublicatieDetailPage = async ({
   if (!publicatie) {
     return (
       <>
-        <Heading level={1}>Publicatie niet gevonden</Heading>
+        <Heading level={1}>Bericht niet beschikbaar</Heading>
         <div className="rhc-mox-card">
           <Paragraph>
             Wij kunnen dit bericht nu niet ophalen. Probeer het later opnieuw.
@@ -35,7 +35,7 @@ const PublicatieDetailPage = async ({
               className="utrecht-link utrecht-link--html-a"
             >
               <Icon icon="chevron-left" />
-              Terug naar berichten over uw buurt
+              Terug naar Berichten over uw buurt
             </Link>
           </Paragraph>
         </div>
@@ -67,7 +67,7 @@ const PublicatieDetailPage = async ({
           className="utrecht-link utrecht-link--html-a"
         >
           <Icon icon="chevron-left" />
-          Terug naar berichten over uw buurt
+          Terug naar Berichten over uw buurt
         </Link>
       </Paragraph>
 

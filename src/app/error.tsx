@@ -6,7 +6,7 @@ import { ErrorBoundary, ErrorBoundaryProps } from "@/components/ErrorBoundary";
 export default function GlobalError(props: ErrorBoundaryProps) {
   return (
     <>
-      <Heading level={1}>Er is iets misgegaan</Heading>
+      <Heading level={1}>Er ging iets mis</Heading>
       <ErrorBoundary {...props} />
     </>
   );

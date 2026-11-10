@@ -12,7 +12,7 @@ export default function GlobalNotFound() {
             href="/"
             className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
           >
-            Terug naar de startpagina
+            Terug naar Home
           </Link>
         </Paragraph>
       </div>

@@ -74,7 +74,7 @@ export const NAAM: Record<RegelingId, string> = {
   doelgroepverklaring: "Doelgroepverklaring",
   vz_wajong: "Jobcoach of werkplekaanpassing",
   vz_wia: "Jobcoach of werkplekaanpassing",
-  pp: "Proefplaats",
+  pp: "Proefplaatsing",
 };
 
 /** Welke begrippen bij een regeling horen; die krijgen een (i) bij de naam. */

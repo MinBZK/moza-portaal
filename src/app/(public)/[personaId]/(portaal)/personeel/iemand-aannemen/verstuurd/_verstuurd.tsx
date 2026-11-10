@@ -30,9 +30,9 @@ const ZONDER_AANVRAAG: Record<
   lkv: () =>
     "U zet in de loonaangifte het vakje loonkostenvoordeel aan. Een aparte aanvraag is niet nodig.",
   nrp: (voornaam) =>
-    `Wordt ${voornaam} ziek? Meld dat bij UWV, uiterlijk op de eerste dag na zes weken ziekte. UWV betaalt dan ziekengeld.`,
+    `Wordt ${voornaam} ziek? Meld dat bij UWV, uiterlijk op de eerste dag na 6 weken ziekte. UWV betaalt dan ziekengeld.`,
   doelgroepverklaring: (voornaam) =>
-    `${voornaam} vraagt binnen drie maanden na de start een doelgroepverklaring aan bij UWV. Zonder die verklaring krijgt u geen loonkostenvoordeel.`,
+    `${voornaam} vraagt binnen 3 maanden na de start een doelgroepverklaring aan bij UWV. Zonder die verklaring krijgt u geen loonkostenvoordeel.`,
   vz_wajong: (voornaam) =>
     `${voornaam} vraagt een jobcoach of een aangepaste werkplek zelf aan bij UWV.`,
   vz_wia: (voornaam) =>
@@ -81,7 +81,7 @@ const Verstuurd = ({
       .map((id) => ZONDER_AANVRAAG[id](voornaam));
     return (
       <>
-        <Heading level={1}>Dossier ingediend</Heading>
+        <Heading level={1}>Iemand aannemen afgerond</Heading>
         <Alert type="ok">
           <Paragraph>
             U hoeft niets te versturen.
@@ -106,17 +106,14 @@ const Verstuurd = ({
               </OrderedList>
             </section>
           )}
-          {gegevens(
-            perSituatie[wia ? "wia" : situatie],
-            "Gegevens in uw dossier",
-          )}
+          {gegevens(perSituatie[wia ? "wia" : situatie], "Uw gegevens")}
           <ActionGroup>
             {wia && (
               <Link
                 href={perSituatie.wia.zaak.url}
                 className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
               >
-                Bekijk dit dossier in Lopende zaken
+                Bekijk het dossier in Lopende zaken
               </Link>
             )}
             <Link
@@ -136,15 +133,15 @@ const Verstuurd = ({
       <>
         <Heading level={1}>Nog niet afgerond</Heading>
         <Paragraph>
-          U hebt deze taak nog niet afgerond. Controleer uw gegevens en kies{" "}
-          <strong>Dossier indienen</strong> of <strong>Afronden</strong>.
+          U heeft deze taak nog niet afgerond. Controleer uw gegevens en kies{" "}
+          <strong>Aanvraag versturen</strong> of <strong>Afronden</strong>.
         </Paragraph>
         <Paragraph>
           <Link
             href="/personeel/iemand-aannemen/concept-aanvraag"
             className="utrecht-link utrecht-link--html-a"
           >
-            Naar de aanvraag
+            Ga naar Controleren en versturen
           </Link>
         </Paragraph>
       </>
@@ -211,7 +208,7 @@ const Verstuurd = ({
               href={zaak.url}
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
             >
-              Bekijk dit dossier in Lopende zaken
+              Bekijk het dossier in Lopende zaken
             </Link>
             <Link
               href="/personeel"

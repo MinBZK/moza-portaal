@@ -162,7 +162,7 @@ const Header = ({
           className="prototype-temp-poc-banner"
           href="https://www.mijnoverheidzakelijk.nl/"
         >
-          Proof of Concept
+          Proef
         </a>
       </header>
     </>

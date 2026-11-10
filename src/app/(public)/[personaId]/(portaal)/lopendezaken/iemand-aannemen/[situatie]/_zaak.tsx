@@ -177,12 +177,13 @@ const Zaak = ({
         <Heading level={1}>{onderwerp}</Heading>
         <Alert type="info">
           <Paragraph>
-            Deze zaak bestaat nog niet: de aanvraag is nog niet verstuurd.{" "}
+            Dit dossier bestaat nog niet: u heeft de aanvraag nog niet
+            verstuurd.{" "}
             <Link
               href="/personeel/iemand-aannemen/concept-aanvraag"
               className="utrecht-link utrecht-link--html-a"
             >
-              Bekijk de concept-aanvraag
+              Ga naar Controleren en versturen
             </Link>
             .
           </Paragraph>
@@ -283,7 +284,7 @@ const Zaak = ({
 
         <section className="rhc-mox-stack" aria-labelledby="zaak-gegevens">
           <Heading level={2} id="zaak-gegevens">
-            Over deze zaak
+            Over dit dossier
           </Heading>
           <DataSummary appearance="column">
             <DataSummaryItem
@@ -302,7 +303,7 @@ const Zaak = ({
                 itemValue={datumNL(zaakStand.verstuurdOp ?? INGEDIEND_OP)}
               />
             )}
-            <DataSummaryItem itemKey="Regel" itemValue={zaak.regel} />
+            <DataSummaryItem itemKey="Wet en artikel" itemValue={zaak.regel} />
             <DataSummaryItem
               itemKey="Status"
               itemValue={statusTekst(
@@ -325,8 +326,9 @@ const Zaak = ({
               {situatie === "gemeente"
                 ? "loonkostensubsidie"
                 : "loondispensatie"}
-              . Daarom is er geen besluit. Denkt u dat dit niet klopt? Stel uw
-              vraag bij het besluit.
+              . Daarom neemt {situatie === "gemeente" ? "de gemeente" : "UWV"}{" "}
+              geen besluit. Denkt u dat dit niet klopt? Stel dan een vraag over
+              deze aanvraag.
             </Paragraph>
           </Alert>
         )}
@@ -352,11 +354,11 @@ const Zaak = ({
                   Een deel van de momenten is een aanname.{" "}
                   <InfoToggletip label="Toelichting bij de aanname over de termijn">
                     {situatie === "wajong"
-                      ? "UWV beslist binnen een redelijke termijn. Die termijn is ten hoogste 14 weken (Wajong, artikel 6:1)."
-                      : `${situatie === "gemeente" ? "De gemeente" : "UWV"} beslist binnen een redelijke termijn. Na acht weken is die voorbij (Algemene wet bestuursrecht, artikel 4:13).`}{" "}
+                      ? "UWV beslist binnen een redelijke termijn. Die termijn is hoogstens 14 weken (Wajong, artikel 6:1)."
+                      : `${situatie === "gemeente" ? "De gemeente" : "UWV"} beslist binnen een redelijke termijn. Na 8 weken is die voorbij (Algemene wet bestuursrecht, artikel 4:13).`}{" "}
                     Lukt dat niet, dan krijgt u bericht wanneer het besluit
-                    komt. De momenten met &ldquo;aanname&rdquo; zijn voor dit
-                    prototype aangenomen.
+                    komt. De momenten met &ldquo;aanname&rdquo; zijn voor deze
+                    proef aangenomen.
                   </InfoToggletip>
                 </div>
               )}

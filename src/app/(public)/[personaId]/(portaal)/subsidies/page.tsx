@@ -47,16 +47,16 @@ const SubsidiesPage = async ({
       <Alert type="info" closable>
         <Paragraph>
           Subsidies en financiering waar u mogelijk voor in aanmerking komt,
-          geselecteerd op basis van uw bedrijfsgegevens. Door items te bewaren
-          of als niet relevant te markeren helpt u ons de aanbevelingen te
-          verbeteren.
+          geselecteerd op basis van uw bedrijfsgegevens. Kies{" "}
+          <strong>Bewaren</strong> of <strong>Niet relevant voor mij</strong>.
+          Zo helpt u ons om betere suggesties te geven.
         </Paragraph>
       </Alert>
 
       {subsidies.length === 0 && (
         <Paragraph>
           Er zijn nu geen subsidies of financieringen voor uw bedrijf. Vraag de
-          digitale assistent welke regelingen bij uw bedrijf passen.
+          digitale assistent welke subsidies bij uw bedrijf passen.
         </Paragraph>
       )}
 

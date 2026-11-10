@@ -14,10 +14,12 @@ import { useCreateSubsidie } from "@/network/mock/hooks/createSubsidie/useCreate
 
 const NewSubsidieForm = ({ kvk }: { kvk: string }) => {
   const subsidieSchema = z.object({
-    bedrijfsKvk: z.string().min(1),
-    subtype: z.string().min(1),
+    bedrijfsKvk: z.string().min(1, "Vul het KVK-nummer in"),
+    subtype: z.string().min(1, "Kies een soort subsidie"),
     motivatie: z.string(),
-    aanvragerEmail: z.string().email(),
+    aanvragerEmail: z
+      .string()
+      .email("Vul een e-mailadres in, bijvoorbeeld naam@bedrijf.nl"),
   });
 
   // TODO: Replace with actual mutation hook for subsidie aanvraag

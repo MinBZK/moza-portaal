@@ -5,6 +5,7 @@ import { ContactDetails } from "@/app/(private)/contactgegevens/[type]/_contactD
 import CopyNotificatie from "@/app/(private)/contactgegevens/[type]/copyNotificatie";
 import { useEffect, useState } from "react";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
+import { Alert, Paragraph } from "@/components/rhc";
 
 const Zakelijk = () => {
   const [kvk, setKvk] = useState<string | undefined | null>(null);
@@ -30,7 +31,14 @@ const Zakelijk = () => {
   if (status === "pending" || kvk == null) return null;
 
   if (status === "error") {
-    return <div>Server-side error occurred</div>;
+    return (
+      <Alert type="error">
+        <Paragraph>
+          Wij kunnen uw contactgegevens nu niet ophalen. Probeer het later
+          opnieuw.
+        </Paragraph>
+      </Alert>
+    );
   }
 
   return (

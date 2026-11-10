@@ -124,8 +124,8 @@ const BerichtDetail = ({
     setMeldingNummer((n) => n + 1);
     setMelding(
       ongelezen
-        ? "U hebt het bericht gemarkeerd als gelezen."
-        : "U hebt het bericht gemarkeerd als ongelezen.",
+        ? "U heeft het bericht gemarkeerd als gelezen."
+        : "U heeft het bericht gemarkeerd als ongelezen.",
     );
   };
 
@@ -144,7 +144,7 @@ const BerichtDetail = ({
     setMelding(
       naar
         ? `Het bericht staat nu in de map ${naar}.`
-        : `U hebt het bericht uit de map ${van} gehaald.`,
+        : `U heeft het bericht uit de map ${van} gehaald.`,
     );
     return null;
   };
@@ -213,8 +213,8 @@ const BerichtDetail = ({
           <>
             <Heading level={1}>Bericht verwijderd</Heading>
             <Paragraph>
-              U hebt dit bericht voorgoed verwijderd. Het staat niet meer in uw
-              Berichtenbox.
+              U heeft dit bericht voorgoed verwijderd. Het staat niet meer in uw
+              berichtenbox.
             </Paragraph>
             <Paragraph>
               <Link
@@ -370,7 +370,7 @@ const BerichtDetail = ({
               hint="danger"
               onClick={() => void verwijderDefinitief()}
             >
-              Ja, voorgoed verwijderen
+              Voorgoed verwijderen
             </Button>
             <Button
               ref={annuleerKnopRef}

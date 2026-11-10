@@ -55,10 +55,10 @@ const Content = () => (
       </UnorderedList>
     </Section>
 
-    <Section id="wat-u-ziet" title="Wat houdt onze samenwerking in">
+    <Section id="wat-u-ziet" title="Onze samenwerking">
       <Paragraph>
-        MOZa is van en voor de hele overheid. We bouwen één keer, samen, en elke
-        organisatie kan het gebruiken.
+        MOZa is van en voor de hele overheid. Wij bouwen één keer, samen, en
+        elke organisatie kan het gebruiken.
       </Paragraph>
       <Paragraph>
         <a href="https://www.mijnoverheidzakelijk.nl/over-moza/samenwerking/">

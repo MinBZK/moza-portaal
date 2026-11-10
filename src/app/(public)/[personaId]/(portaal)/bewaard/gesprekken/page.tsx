@@ -3,7 +3,9 @@ import { Heading, Paragraph, Alert, Link } from "@/components/rhc";
 import BewaardeItems from "../_bewaardeItems";
 import SavedTabs from "../_savedTabs";
 
-export const metadata: Metadata = { title: "Gesprekken - Bewaarde items" };
+export const metadata: Metadata = {
+  title: "Gesprekken met de digitale assistent - Bewaarde items",
+};
 
 const ConversationsPage = async () => {
   return (
@@ -17,11 +19,11 @@ const ConversationsPage = async () => {
           leeg={
             <Alert type="info" closable>
               <Paragraph>
-                U hebt nog geen gesprekken bewaard. Start een gesprek bij{" "}
+                U heeft nog geen gesprekken bewaard. Start een gesprek met de{" "}
                 <Link inline href="/digitale-assistent">
                   digitale assistent
-                </Link>
-                .
+                </Link>{" "}
+                en kies <strong>Gesprek bewaren</strong>.
               </Paragraph>
             </Alert>
           }

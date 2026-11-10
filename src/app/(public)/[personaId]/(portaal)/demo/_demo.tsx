@@ -501,7 +501,7 @@ const DemoStepNavigation = () => {
         checked={ticked}
         invalid={error && !ticked}
         errorMessage={
-          error && !ticked ? "U hebt nog niet alles gecontroleerd." : undefined
+          error && !ticked ? "U heeft nog niet alles gecontroleerd." : undefined
         }
         onChange={(event) => setTicked(event.target.checked)}
       />

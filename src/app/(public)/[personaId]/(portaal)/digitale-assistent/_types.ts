@@ -57,7 +57,7 @@ export type Item = { id: string } & (
       soort: "deelverzoek";
       bron: string;
       omschrijving: string;
-      /** Van de backend: "Delen" start een nieuwe beurt. */
+      /** Van de backend: "Toestemming geven" start een nieuwe beurt. */
       vanBackend: boolean;
       staat: "open" | "gedeeld" | "geweigerd";
       energie?: { data: WalletData; uitgever: string };

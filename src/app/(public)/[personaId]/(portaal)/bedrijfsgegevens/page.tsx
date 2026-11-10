@@ -36,8 +36,8 @@ const OndernemingsgegevensPage = async () => {
     <>
       <Heading level={1}>Bedrijfsgegevens</Heading>
       <Paragraph>
-        Dit weet de overheid over uw organisatie. De gegevens komen van de KVK
-        en de Belastingdienst.
+        Dit weet de overheid over uw bedrijf. De gegevens komen van de KVK en de
+        Belastingdienst.
       </Paragraph>
 
       <div className="rhc-mox-card">
@@ -66,7 +66,7 @@ const OndernemingsgegevensPage = async () => {
         </Paragraph>
       </div>
 
-      <Heading level={2}>Meer over uw onderneming</Heading>
+      <Heading level={2}>Meer over uw bedrijf</Heading>
       <div className="rhc-grid">
         {onderdelen.map(({ id, titel, beschrijving, href }) => (
           <section

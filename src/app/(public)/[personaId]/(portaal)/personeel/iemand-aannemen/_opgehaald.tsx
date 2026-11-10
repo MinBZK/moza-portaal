@@ -226,7 +226,7 @@ const Controleer = ({
                 : eerderInDienst
                   ? "Ja"
                   : "Nee",
-            extra: "In de zes maanden voor de eerste werkdag",
+            extra: "In de 6 maanden voor de eerste werkdag",
             wijzig: EIGEN_OPGAVE,
           },
         ]

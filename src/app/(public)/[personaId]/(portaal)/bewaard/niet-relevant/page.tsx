@@ -3,7 +3,9 @@ import { Heading, Paragraph, Alert } from "@/components/rhc";
 import BewaardeItems from "../_bewaardeItems";
 import SavedTabs from "../_savedTabs";
 
-export const metadata: Metadata = { title: "Niet relevant - Bewaarde items" };
+export const metadata: Metadata = {
+  title: "Niet relevant voor mij - Bewaarde items",
+};
 
 const NotRelevantPage = async () => {
   return (
@@ -13,8 +15,10 @@ const NotRelevantPage = async () => {
         <SavedTabs active="notRelevant" />
         <Alert type="info" closable>
           <Paragraph>
-            Items die u wegklikt komen hier te staan. Wij gebruiken ze niet om
-            uw profiel te verfijnen. U kunt ze hier weer zichtbaar maken.
+            Hier staan de items waarbij u{" "}
+            <strong>Niet relevant voor mij</strong> koos. Wij gebruiken die
+            keuze niet om te bepalen wat u te zien krijgt. Kies{" "}
+            <strong>Terugzetten</strong> om een item weer te tonen.
           </Paragraph>
         </Alert>
         <BewaardeItems
@@ -23,8 +27,8 @@ const NotRelevantPage = async () => {
             <Alert type="info">
               <Paragraph>
                 Hier staat nog niets. Items waarbij u{" "}
-                <strong>Niet relevant voor mij</strong> kiest, worden hier
-                bewaard.
+                <strong>Niet relevant voor mij</strong> kiest, komen hier te
+                staan.
               </Paragraph>
             </Alert>
           }

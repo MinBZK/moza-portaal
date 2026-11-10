@@ -21,7 +21,6 @@ const SubsidieDetail = async ({
     { label: "Soort subsidie", waarde: aanvraag.subtype },
     { label: "Motivatie", waarde: aanvraag.motivatie },
     { label: "Status", waarde: aanvraag.status },
-    { label: "Type", waarde: aanvraag.type },
     {
       label: "Datum aanvraag",
       waarde: format(new Date(aanvraag.timestamp!), "d MMMM yyyy", {
@@ -32,7 +31,7 @@ const SubsidieDetail = async ({
 
   return (
     <>
-      <Heading level={1}>Uw aanvraag</Heading>
+      <Heading level={1}>Aanvraag subsidie</Heading>
       <div className="rhc-mox-card">
         <DataSummary appearance="column">
           {gegevens.map(({ label, waarde }) => (

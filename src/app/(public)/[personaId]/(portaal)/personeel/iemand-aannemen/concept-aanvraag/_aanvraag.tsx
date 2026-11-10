@@ -31,7 +31,7 @@ import {
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
-import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
+import { nieuweZaakStand, vandaag, zaakAanmaken } from "../_zaakStart";
 import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
 import SourceLinks from "@/components/SourceLinks";
 import { BRON } from "../_wetsbronnen";
@@ -202,7 +202,7 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Paragraph>
-            Vraag aan binnen zes maanden na de start van het dienstverband
+            Vraag aan binnen 6 maanden na de start van het dienstverband
             (Participatiewet, artikel 10d lid 2).
           </Paragraph>
           {waarom(
@@ -225,9 +225,9 @@ const AanvraagInhoud = ({
                 </UnorderedListItem>
                 <UnorderedListItem>
                   U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
-                  begonnen? Dan binnen acht weken, tenzij de gemeente laat weten
-                  dat het langer duurt. Anders binnen vijf weken nadat de
-                  gemeente de loonwaarde heeft vastgesteld.
+                  begonnen? Dan binnen 8 weken, tenzij de gemeente laat weten
+                  dat het langer duurt. Anders binnen 5 weken nadat de gemeente
+                  de loonwaarde heeft vastgesteld.
                 </UnorderedListItem>
               </UnorderedList>
               <SourceLinks
@@ -255,7 +255,7 @@ const AanvraagInhoud = ({
           <Paragraph>
             Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
             het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
-            meestal binnen acht weken een brief.
+            meestal binnen 8 weken een brief.
           </Paragraph>
           <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
           {waarom(
@@ -308,7 +308,7 @@ const AanvraagInhoud = ({
       <>
         {id === "doelgroepverklaring" && (
           <Paragraph>
-            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen drie
+            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen 3
             maanden na de start. Zonder verklaring geen loonkostenvoordeel (Wet
             tegemoetkomingen loondomein, artikel 2.7).
           </Paragraph>
@@ -323,8 +323,8 @@ const AanvraagInhoud = ({
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
             bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
-            subsidie vragen bij UWV, als het dienstverband ten minste zes
-            maanden duurt (Wet WIA, artikel 36).
+            subsidie vragen bij UWV, als het dienstverband ten minste 6 maanden
+            duurt (Wet WIA, artikel 36).
           </Paragraph>
         )}
         {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
@@ -333,11 +333,10 @@ const AanvraagInhoud = ({
         {id === "pp" && (
           <>
             <Paragraph>
-              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt twee
-              maanden; de gemeente kan dat met ten hoogste vier maanden
-              verlengen (Participatiewet, artikel 8a lid 2 onder d). De
-              kandidaat vraagt de gemeente om toestemming; dat gaat buiten deze
-              aanvraag om.
+              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt 2 maanden;
+              de gemeente kan dat met hoogstens 4 maanden verlengen
+              (Participatiewet, artikel 8a lid 2 onder d). De kandidaat vraagt
+              de gemeente om toestemming; dat gaat buiten deze aanvraag om.
             </Paragraph>
             {waarom(
               "participatiewet",
@@ -374,7 +373,7 @@ const AanvraagInhoud = ({
           <>
             <Paragraph>
               U hoeft niets aan te vragen. Wordt de werknemer ziek? Meld dat bij
-              UWV, uiterlijk op de eerste dag na zes weken ziekte (Ziektewet,
+              UWV, uiterlijk op de eerste dag na 6 weken ziekte (Ziektewet,
               artikel 38a lid 3). UWV betaalt dan ziekengeld (Ziektewet, artikel
               29b). {duurTekst(nrp?.duurJaren)}
             </Paragraph>
@@ -463,10 +462,7 @@ const AanvraagInhoud = ({
     const eersteFase = (
       demo.fasen.find((f) => f.id === "ontvangst") ?? demo.fasen[0]
     ).id;
-    werkZaakBij(
-      situatie,
-      nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
-    );
+    werkZaakBij(situatie, nieuweZaakStand(eersteFase, a, onderwerp, vandaag()));
     zaakAanmaken(situatie, demo.zaak, "In behandeling", onderwerp);
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
@@ -503,15 +499,13 @@ const AanvraagInhoud = ({
       <div className="rhc-mox-card">
         <Stappen huidige={2} />
         {!bekend && !resultaat.fout ? (
-          <LoadingStatus>
-            Wij zoeken in de wet uit welke regelingen gelden…
-          </LoadingStatus>
+          <LoadingStatus>Wij zoeken uit welke regelingen gelden…</LoadingStatus>
         ) : (
           <Paragraph>
             {resultaat.fout
-              ? "De berekening lukt nu niet. Laad de pagina opnieuw."
+              ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
               : rijIds.length === 0
-                ? "Bij deze antwoorden is er niets aan te vragen."
+                ? "Bij deze antwoorden is er niets aan te vragen. Klopt een antwoord niet? Pas het dan aan in de voorbeeldberekening."
                 : paneelIds.length === 0
                   ? overzichtTekst(route)
                   : "Controleer de gegevens en kies de regelingen."}
@@ -548,8 +542,8 @@ const AanvraagInhoud = ({
                 <div id="kies-fout" tabIndex={-1}>
                   <Alert type="error">
                     <Paragraph>
-                      U hebt nog geen regeling gekozen. Vink ten minste één
-                      regeling aan.
+                      U heeft nog geen regeling gekozen. Kies ten minste één
+                      regeling.
                     </Paragraph>
                   </Alert>
                 </div>
@@ -577,11 +571,11 @@ const AanvraagInhoud = ({
         {bekend && paneelIds.length > 0 && bestaand?.ingediend && (
           <Alert type="info">
             <Paragraph>
-              U hebt deze aanvraag al verstuurd
+              U heeft deze aanvraag al verstuurd
               {bestaand.verstuurdOp
                 ? ` op ${datumNL(bestaand.verstuurdOp)}`
                 : ""}
-              . U volgt de aanvraag in Lopende zaken.
+              . U volgt het dossier in Lopende zaken.
             </Paragraph>
           </Alert>
         )}
@@ -598,14 +592,14 @@ const AanvraagInhoud = ({
                 U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
                 {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
                 ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
-                de zaak bij Lopende zaken.
+                het dossier in Lopende zaken.
               </Paragraph>
               <FormFieldCheckboxOption
                 id="bevestiging"
                 invalid={bevestigFout && !bevestigd}
                 errorMessage={
                   bevestigFout && !bevestigd
-                    ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+                    ? "U heeft nog niet bevestigd dat u alles naar waarheid heeft ingevuld."
                     : undefined
                 }
                 label="Ik heb alles naar waarheid ingevuld."
@@ -623,7 +617,10 @@ const AanvraagInhoud = ({
             later="/personeel"
             next={
               paneelIds.length > 0 && bestaand?.ingediend
-                ? { label: "Bekijk de zaak", href: demo.zaak.url }
+                ? {
+                    label: "Bekijk het dossier in Lopende zaken",
+                    href: demo.zaak.url,
+                  }
                 : // Afronden als er niets naar de gemeente of UWV gaat: zonder
                   // aanvraag, of met alleen regelingen zonder aanvraag gekozen.
                   // Beide gaan naar de bedankpagina.
@@ -631,7 +628,7 @@ const AanvraagInhoud = ({
                     label:
                       verstuurt.length > 0 ||
                       (!zonderAanvraag && aantalGekozen === 0)
-                        ? "Dossier indienen"
+                        ? "Aanvraag versturen"
                         : "Afronden",
                     onClick: verstuurt.length > 0 ? indienen : klaar,
                     final: true,

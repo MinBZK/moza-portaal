@@ -53,6 +53,7 @@ export const Bronnen = ({ bronnen }: { bronnen?: Bron[] }) => {
               {url ? (
                 <Link href={url} target="_blank" rel="external noopener">
                   {tekst}
+                  <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
                 </Link>
               ) : (
                 <span>{tekst}</span>
@@ -102,7 +103,7 @@ export const Fout = ({ item }: { item: ItemVan<"fout"> }) => (
 );
 
 export const VOORBEELDVRAGEN = [
-  "Geldt de energiebesparingsinformatieplicht voor mij?",
+  "Geldt de informatieplicht energiebesparing voor mij?",
   "Hoe kan ik mijn bedrijfsgegevens bekijken?",
   "Hoe bereid ik mijn belastingaangifte voor?",
 ];
@@ -142,7 +143,7 @@ export const Denkt = ({ tekst }: { tekst: string }) => (
   <div className="rhc-mox-chat-message rhc-mox-chat-message--assistant rhc-mox-chat-thinking">
     <span className="rhc-mox-wait" aria-hidden="true" />
     <Paragraph>
-      {tekst || <VisuallyHidden>Even geduld</VisuallyHidden>}
+      {tekst || <VisuallyHidden>De assistent is bezig</VisuallyHidden>}
     </Paragraph>
   </div>
 );
@@ -229,7 +230,7 @@ export const EnergieKaart = ({
         bronnen={[
           {
             label: "Business Wallet",
-            titel: `Energieverbruik-attestatie, afgegeven door ${uitgever}`,
+            titel: `Verklaring over uw energieverbruik, gemaakt door ${uitgever}`,
           },
         ]}
       />
@@ -257,7 +258,7 @@ export const Deelverzoek = ({
     {item.staat === "open" && (
       <>
         <Heading level={3} id={`${item.id}-kop`} tabIndex={-1}>
-          Deelverzoek uit {item.bron}
+          Toestemming voor {item.bron}
         </Heading>
         <Paragraph id={`${item.id}-uitleg`}>{item.omschrijving}</Paragraph>
         <ActionGroup>
@@ -266,10 +267,10 @@ export const Deelverzoek = ({
             aria-describedby={`${item.id}-kop ${item.id}-uitleg`}
             onClick={onDelen}
           >
-            Delen
+            Toestemming geven
           </Button>
           <Button appearance="secondary-action-button" onClick={onNietDelen}>
-            Niet delen
+            Geen toestemming geven
           </Button>
         </ActionGroup>
       </>
@@ -290,8 +291,8 @@ export const Deelverzoek = ({
     {item.staat === "geweigerd" && (
       <Paragraph id={`${item.id}-kop`}>
         {item.energie
-          ? "U hebt uw energieverbruik niet gedeeld. De assistent kan de informatieplicht dan niet automatisch met uw Business Wallet-gegevens controleren."
-          : `U hebt geen toestemming gegeven voor ${item.bron}. De assistent raadpleegt deze bron niet.`}
+          ? "U heeft geen toestemming gegeven om uw energieverbruik te gebruiken. De assistent kan de informatieplicht dan niet automatisch met uw Business Wallet-gegevens controleren."
+          : `U heeft geen toestemming gegeven voor ${item.bron}. De assistent raadpleegt deze bron niet.`}
       </Paragraph>
     )}
   </section>

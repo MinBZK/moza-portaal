@@ -16,7 +16,7 @@ export const footerGroups: { id: string; kop: string; links: FooterLink[] }[] =
       links: [
         {
           href: "/wat-is-mijnoverheid-zakelijk",
-          label: "Wat is MijnOverheid Zakelijk",
+          label: "Over MijnOverheid Zakelijk",
         },
         { href: "/toegankelijkheid", label: "Toegankelijkheid" },
         { href: "/sitemap", label: "Sitemap" },
@@ -106,7 +106,7 @@ const FooterLinks = () => (
             >
               {label}
               {extern && (
-                <VisuallyHidden> (opent in nieuw tabblad)</VisuallyHidden>
+                <VisuallyHidden> (opent in een nieuw tabblad)</VisuallyHidden>
               )}
             </LinkListLink>
           ))}

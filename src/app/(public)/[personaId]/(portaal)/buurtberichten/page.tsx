@@ -24,8 +24,8 @@ const OmgevingsberichtenPage = async () => {
     <>
       <Heading level={1}>Berichten over uw buurt</Heading>
       <Paragraph>
-        Berichten over de omgeving van uw bedrijfsadres. Denk aan werkzaamheden,
-        vergunningen en verkeersmaatregelen.
+        Berichten over de omgeving van uw vestigingsadres. Denk aan
+        werkzaamheden, vergunningen en verkeersmaatregelen.
       </Paragraph>
 
       {berichten.map((bericht) => {

@@ -51,19 +51,34 @@ Inhoud uit andere bronnen valt hier niet onder. Die schrijven we niet zelf en ku
 
 We gebruiken overal dezelfde termen voor dezelfde begrippen.
 
-| Begrip                                | Gebruik                 | Niet                                |
-| ------------------------------------- | ----------------------- | ----------------------------------- |
-| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer       |
-| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen  |
-| Item doorsturen                       | Delen                   | Doorsturen, Verzenden               |
-| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox                 |
-| Tab met ontvangen berichten           | Ontvangen               | Inbox, Postvak IN                   |
-| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel      |
-| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers          |
-| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed               |
-| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
-| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
-| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
+| Begrip                                 | Gebruik                                                                   | Niet                                                                              |
+| -------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Item bewaren om later terug te zien    | Bewaren                                                                   | Opslaan, Favoriet, Bladwijzer                                                     |
+| Item verbergen                         | Niet relevant voor mij                                                    | Verbergen, Verwijderen, Niet tonen                                                |
+| Item doorsturen                        | Delen                                                                     | Doorsturen, Verzenden                                                             |
+| Digitale post                          | Berichten, Berichtenbox                                                   | Post, E-mail, Inbox                                                               |
+| Tab met ontvangen berichten            | Ontvangen                                                                 | Inbox, Postvak IN                                                                 |
+| Registratiegegevens                    | Bedrijfsgegevens                                                          | Gegevens, Registratie, Profiel                                                    |
+| Openstaande aanvragen                  | Lopende zaken                                                             | Taken, Aanvragen, Dossiers                                                        |
+| Gepersonaliseerd overzicht             | Actualiteiten                                                             | Nieuws, Updates, Feed                                                             |
+| Gewijzigde gegevens vastleggen         | Opslaan                                                                   | Bewaren, Versturen, Bevestigen                                                    |
+| Formulier naar een organisatie sturen  | Versturen                                                                 | Bewaren, Opslaan, Bevestigen, Delen, Indienen, Inzenden                           |
+| Formulier afbreken                     | Annuleren                                                                 | Terug, Sluiten, Stoppen                                                           |
+| Aanvraag vóór het versturen            | Aanvraag                                                                  | Concept-aanvraag, Verzoek                                                         |
+| Aanvraag na het versturen              | Dossier                                                                   | Zaak, Verzoek                                                                     |
+| Persoon die wordt aangenomen           | Kandidaat (tot de eerste werkdag), Werknemer (daarna)                     | Medewerker, Persoon                                                               |
+| Bron laten gebruiken door de assistent | Toestemming geven, Geen toestemming geven                                 | Delen, Akkoord, Deelverzoek                                                       |
+| Item weer tonen                        | Terugzetten                                                               | Zet terug, Weer zichtbaar maken                                                   |
+| Item uit Bewaarde items halen          | Niet meer bewaren                                                         | Verwijderen                                                                       |
+| Het eigen bedrijf van de gebruiker     | uw bedrijf                                                                | uw onderneming, uw organisatie                                                    |
+| Organisatie van de overheid            | overheidsorganisatie                                                      | instantie, overheidsinstantie                                                     |
+| Item bij Berichten over uw buurt       | bericht                                                                   | publicatie                                                                        |
+| Iets uit een eigen lijst halen         | verwijderen                                                               | wissen, weghalen                                                                  |
+| Startpagina                            | Home                                                                      | startpagina                                                                       |
+| Deze website                           | proef                                                                     | Proof of Concept, PoC, prototype                                                  |
+| Adres van het bedrijf                  | vestigingsadres                                                           | bedrijfsadres                                                                     |
+| Nummer van een dossier                 | Zaaknummer                                                                | Kenmerk                                                                           |
+| Overig                                 | vakantiegeld, dienstverband, hoogstens, informatieplicht energiebesparing | vakantiebijslag, dienstbetrekking, ten hoogste, energiebesparingsinformatieplicht |
 
 **Bewaren, Opslaan of Versturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
 
@@ -93,6 +108,16 @@ Veel apps gebruiken “Opslaan” ook voor bewaren, en in het Engels is het alle
 - **KVK-nummers**: zonder punten of spaties: 12345678.
 - **Btw-nummers**: aaneen met landcode: NL00012345678.
 - **Bedragen**: euroteken en een punt als scheidingsteken voor duizendtallen: €385.000.
+- **Termijnen en aantallen** in cijfers: “binnen 8 weken”.
+- **Percentages** in lopende tekst met “procent”: “ongeveer 20 procent”, niet “20%”.
+- **Voorbeelden** met “Bijvoorbeeld” voluit, niet “bv.”, “bv:” of “bijv.”.
+
+## Meldingen bij laden en fouten
+
+- **Laden**: “Wij halen [wat] op…” of “Wij berekenen [wat]…”, altijd met een beletselteken. Dezelfde handeling heeft overal dezelfde melding.
+- **Technische fouten**: nooit `error.message` of een technische oorzaak tonen. Wel: “Wij kunnen [wat] nu niet [ophalen/opslaan]. Probeer het later opnieuw.”
+- **Validatie**: elke melding is Nederlands, in de vorm “Vul … in” of “Kies …”, met een voorbeeld als het formaat ertoe doet: “Vul een e-mailadres in, bijvoorbeeld naam@bedrijf.nl”. Nooit de standaardmelding van een library.
+- **Variabele organisatienaam**: geen lidwoord ervoor. “{naam} is nu niet bereikbaar”, niet “De {naam} …”.
 
 ## Kopteksten
 
@@ -159,6 +184,9 @@ Informatief, niet alarmerend: “Contactgegevens die u hier aanpast, worden auto
 - De linktekst staat **in beeld**. Een verborgen tekst voor schermlezers mag een link aanvullen, maar begint met de zichtbare tekst. Zo werkt spraakbediening ook.
 - Dit volgt WCAG 2.2: succescriterium 2.4.4 (het doel van een link is duidelijk) en 2.5.3 (de naam van een link begint met de zichtbare tekst).
 - Externe links zijn herkenbaar via `rel="external"`; waar nodig geven we er context bij.
+- Opent een link een nieuw tabblad, dan krijgt die de verborgen tekst “ (opent in een nieuw tabblad)”, precies zo.
+- **Terug-links** noemen de pagina zoals in het menu: “Terug naar Berichten over uw buurt”, “Terug naar Home”.
+- **Kruimelpad**: elk deel van de route heeft een eigen label. Een naam die uit de URL wordt gemaakt, is een fout.
 
 ## Leestekens
 

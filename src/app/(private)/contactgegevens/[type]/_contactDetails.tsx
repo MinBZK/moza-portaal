@@ -29,11 +29,13 @@ type Field = "salutation" | "language" | "email" | "phone";
 type Values = Record<Field, string>;
 
 const schemas = {
-  email: z.string().email("Voer een geldig e-mailadres in"),
+  email: z
+    .string()
+    .email("Vul een e-mailadres in, bijvoorbeeld naam@bedrijf.nl"),
   phone: z
     .string() // could be stricter with a regex for Dutch numbers
-    .min(8, "Voer een geldig Nederlands telefoonnummer in")
-    .max(18, "Voer een geldig Nederlands telefoonnummer in"),
+    .min(8, "Vul een telefoonnummer in, bijvoorbeeld 06 12 34 56 78")
+    .max(18, "Vul een telefoonnummer in, bijvoorbeeld 06 12 34 56 78"),
 };
 
 /**
@@ -226,7 +228,7 @@ export const ContactDetails = ({
           <FormFieldTextInput
             label="Aanhef"
             inputRef={salutationRef}
-            placeholder="bv: Geachte R. Vogel"
+            placeholder="Bijvoorbeeld Geachte R. Vogel"
             value={values.salutation}
             invalid={!!errors.salutation}
             errorMessage={errors.salutation}

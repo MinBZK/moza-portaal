@@ -103,8 +103,8 @@ const RecenteBerichten = ({
       <>
         <Alert type="error">
           <Paragraph>
-            Er gaat iets mis met het ophalen van berichten bij de organisaties.
-            Probeer het later opnieuw.
+            Wij kunnen nu geen berichten ophalen bij de organisaties. Probeer
+            het later opnieuw.
           </Paragraph>
         </Alert>
         {children}
@@ -130,8 +130,8 @@ const RecenteBerichten = ({
       )}
       {recent.length === 0 ? (
         <Paragraph>
-          Er staan geen berichten in uw berichtenbox Oudere berichten vindt u in
-          uw berichtenbox.
+          Er zijn geen recente berichten. Oudere berichten vindt u in uw
+          berichtenbox.
         </Paragraph>
       ) : (
         <div className="rhc-mox-table-container">

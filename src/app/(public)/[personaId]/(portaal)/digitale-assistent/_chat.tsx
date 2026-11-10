@@ -8,12 +8,8 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import {
-  ActionGroup,
-  Button,
-  Paragraph,
-  VisuallyHidden,
-} from "@/components/rhc";
+import { ActionGroup, Button, Paragraph } from "@/components/rhc";
+import FieldLabel from "@/components/FieldLabel";
 import { Icon } from "@rijkshuisstijl-community/icon-react";
 import {
   ASSISTENT_DEMO_EVENT,
@@ -83,7 +79,7 @@ const ONBOARDING = [
 ];
 
 const TEST_VRAAG =
-  "Geldt de energiebesparingsinformatieplicht voor mijn bedrijf?";
+  "Geldt de informatieplicht energiebesparing voor mijn bedrijf?";
 const TEST_ANTWOORD =
   "Ja, die geldt voor uw bedrijf. U gebruikt per jaar meer dan 50.000 kWh elektriciteit of 25.000 m³ aardgas, en dan bent u verplicht energie te besparen én te rapporteren welke maatregelen u heeft genomen.\n\nVoor uw branche staan 5 erkende maatregelen op de lijst. U rapporteert uiterlijk 1 december 2026 bij de RVO.\n\nControleer dit bij twijfel bij uw omgevingsdienst: die houdt toezicht op deze plicht.";
 const TEST_BRONNEN: Bron[] = [
@@ -288,7 +284,7 @@ const Chat = ({
               soort: "deelverzoek",
               bron: "uw Business Wallet",
               omschrijving:
-                "De assistent wil uw energieverbruik-attestatie uit uw Business Wallet gebruiken (afgegeven door uw netbeheerder). U bepaalt zelf of u deze gegevens deelt.",
+                "De assistent wil de verklaring over uw energieverbruik uit uw Business Wallet gebruiken. Uw netbeheerder heeft die verklaring gemaakt. U bepaalt zelf of u daarvoor toestemming geeft.",
               vanBackend: false,
               staat: "open",
               energie: wallet,
@@ -516,7 +512,7 @@ const Chat = ({
             bron: beurt.verzoek.bron ?? "uw Business Wallet",
             omschrijving:
               beurt.verzoek.omschrijving ??
-              "De assistent wil uw energieverbruik-attestatie gebruiken (afgegeven door uw netbeheerder). Er wordt niets opgehaald voordat u hier akkoord geeft.",
+              "De assistent wil de verklaring over uw energieverbruik gebruiken. Uw netbeheerder heeft die verklaring gemaakt. De assistent haalt niets op voordat u toestemming geeft.",
             vanBackend: true,
             staat: "open",
           },
@@ -736,7 +732,7 @@ const Chat = ({
             soort: "deelverzoek",
             bron: "uw Business Wallet",
             omschrijving:
-              "De assistent wil uw energieverbruik-attestatie uit uw Business Wallet gebruiken (afgegeven door uw netbeheerder). U bepaalt zelf of u deze gegevens deelt.",
+              "De assistent wil de verklaring over uw energieverbruik uit uw Business Wallet gebruiken. Uw netbeheerder heeft die verklaring gemaakt. U bepaalt zelf of u daarvoor toestemming geeft.",
             vanBackend: false,
             staat: "open",
             energie: {
@@ -891,9 +887,7 @@ const Chat = ({
       </div>
 
       <form ref={formRef} className="rhc-mox-chat-input" onSubmit={verzend}>
-        <label htmlFor="chat-invoer">
-          <VisuallyHidden>Uw vraag</VisuallyHidden>
-        </label>
+        <FieldLabel htmlFor="chat-invoer">Uw vraag</FieldLabel>
         {/* RHC Textarea geeft geen ref door; dezelfde classes op een textarea. */}
         <textarea
           ref={invoerRef}
@@ -949,9 +943,10 @@ const Chat = ({
 
       <Paragraph className="rhc-mox-chat-disclaimer">
         <Icon icon="info-circle" />
-        De antwoorden van deze assistent worden door AI gemaakt en kunnen fouten
-        bevatten. De assistent gebruikt onder meer het KVK Handelsregister, de
-        KOOP Regelingenbank, RegelRecht en de RVO. Controleer belangrijke
+        Deze assistent maakt de antwoorden met kunstmatige intelligentie (AI).
+        Daardoor kunnen ze fouten bevatten. De assistent gebruikt onder meer het
+        KVK Handelsregister, de KOOP Regelingenbank, RegelRecht en de
+        Rijksdienst voor Ondernemend Nederland (RVO). Controleer belangrijke
         informatie altijd bij de oorspronkelijke bron. Heeft u juridisch advies
         nodig? Vraag het dan aan een adviseur of de organisatie die erover gaat.
       </Paragraph>

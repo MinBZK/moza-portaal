@@ -49,7 +49,7 @@ export const ketenFoutTekst: Record<KetenFoutReden, string> = {
   onbereikbaar:
     "Het ophalen van uw berichten is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
   bezig:
-    "Uw berichten worden op dit moment al opgehaald. Wacht 2 minuten en ververs dan de pagina.",
+    "Wij halen uw berichten op dit moment al op. Wacht 2 minuten en ververs dan de pagina.",
   afgebroken:
     "Het ophalen van uw berichten is halverwege gestopt. Daardoor ziet u niet al uw berichten. Ververs de pagina om het opnieuw te proberen.",
   geenSessie:

@@ -110,12 +110,12 @@ export const EmailVerification = ({
       )}
       {resendError && <Alert type="error">{resendError}</Alert>}
       <Alert type="warning">
-        {`Uw e-mailadres is nog niet bevestigd. U ontvangt nog geen meldingen. Er is een verificatiecode gestuurd naar ${email}.\nBekijk uw Ongewenste e-mail wanneer u niets binnen heeft gekregen.`}
+        {`Uw e-mailadres is nog niet bevestigd. U ontvangt nog geen meldingen. Wij hebben een code gestuurd naar ${email}. Heeft u niets gekregen? Kijk dan ook bij uw ongewenste e-mail.`}
       </Alert>
       <FormFieldTextInput
         label="Verificatiecode"
         autoComplete="one-time-code"
-        placeholder="bv: 123456"
+        placeholder="Bijvoorbeeld 123456"
         maxLength={6}
         value={code}
         invalid={!!error}
@@ -131,8 +131,8 @@ export const EmailVerification = ({
             onClick={countdown === 0 ? resend : undefined}
           >
             {countdown > 0
-              ? `Opnieuw verificatiecode aanvragen in ${countdown} seconden`
-              : "Opnieuw verificatiecode aanvragen"}
+              ? `Nieuwe code aanvragen over ${countdown} seconden`
+              : "Nieuwe code aanvragen"}
           </Button>
         </ActionGroup>
       </FormFieldTextInput>

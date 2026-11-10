@@ -5,7 +5,7 @@ const Content = () => (
   <FooterArticle title="Privacyverklaring">
     <Paragraph>
       In deze privacyverklaring leest u welke gegevens wij gebruiken en waarom.
-      Ook leest u welke rechten u hebt.
+      Ook leest u welke rechten u heeft.
     </Paragraph>
 
     <Section id="waarvoor" title="Waarvoor wij uw gegevens gebruiken">

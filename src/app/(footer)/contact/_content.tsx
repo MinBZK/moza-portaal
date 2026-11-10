@@ -3,7 +3,7 @@ import { FooterArticle, Section, TextLink } from "../_article";
 
 const Content = () => (
   <FooterArticle title="Contact">
-    <Paragraph>Hebt u een vraag? Hier leest u waar u terechtkunt.</Paragraph>
+    <Paragraph>Heeft u een vraag? Hier leest u waar u terechtkunt.</Paragraph>
 
     <Section id="zelf-zoeken" title="Zoek eerst zelf het antwoord">
       <Paragraph>
@@ -23,10 +23,10 @@ const Content = () => (
 
     <Section id="website" title="Een vraag over deze website">
       <Paragraph>
-        Deze website is een proef. Mocht u onverhoopt contact met ons op willen
-        nemen, dan kan dit{" "}
+        Deze website is een proef. Heeft u een vraag over deze website? Stel die
+        via het{" "}
         <a href="https://www.mijnoverheidzakelijk.nl/contact/" rel="external">
-          via onze informatiesite.
+          contactformulier op onze informatiesite
         </a>
         .
       </Paragraph>

@@ -124,13 +124,13 @@ const EigenOpgave = ({
       {vraagEerderInDienst(a) && (
         <Fieldset
           id="eerder-in-dienst"
-          legend={`Was ${wie} in de zes maanden voor de eerste werkdag al bij u in dienst?`}
+          legend={`Was ${wie} in de 6 maanden voor de eerste werkdag al bij u in dienst?`}
           info={
             <InfoToggletip label="Toelichting bij eerder in dienst">
               <Paragraph>
-                Werkte {wie} in de zes maanden voor de eerste werkdag bij u? Dan
-                krijgt u geen loonkostenvoordeel voor een arbeidsgehandicapte
-                werknemer (Wet tegemoetkomingen loondomein, artikel 2.6).
+                Werkte {wie} in de 6 maanden voor de eerste werkdag bij u? Dan
+                krijgt u geen loonkostenvoordeel voor een werknemer met een
+                arbeidsbeperking (Wet tegemoetkomingen loondomein, artikel 2.6).
               </Paragraph>
             </InfoToggletip>
           }
@@ -160,9 +160,7 @@ const EigenOpgave = ({
       )}
       {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
       {bezig && (
-        <LoadingStatus>
-          Wij rekenen uit welke regelingen voor u kunnen gelden…
-        </LoadingStatus>
+        <LoadingStatus>Wij zoeken uit welke regelingen gelden…</LoadingStatus>
       )}
       {vraagJc && (
         <Fieldset
@@ -273,7 +271,7 @@ const Bronnen = ({
       ? undefined
       : /^\d{9}$/.test(bsn)
         ? "Dit BSN klopt niet. Controleer het nummer."
-        : "Een BSN heeft negen cijfers. Controleer het nummer.";
+        : "Een BSN heeft 9 cijfers. Controleer het nummer.";
   const keuze = staat?.kandidaat;
   const nieuwe = staat?.kandidatenNieuw ?? [];
   const gekozen = keuze === kandidaat.bsnMasker;
@@ -292,7 +290,7 @@ const Bronnen = ({
     ...(situatie === "gemeente" && loonwaardeNogNiet
       ? [
           {
-            zin: `De loonwaarde van ${kandidaat.voornaam} is nog niet vastgesteld. Een loonwaardedeskundige beoordeelt het werk op de werkplek. De wet noemt daarvoor geen termijn. Over uw aanvraag beslist de gemeente binnen acht weken, tenzij zij u laat weten dat het langer duurt.`,
+            zin: `De loonwaarde van ${kandidaat.voornaam} is nog niet vastgesteld. Een loonwaardedeskundige beoordeelt het werk op de werkplek. De wet noemt daarvoor geen termijn. Over uw aanvraag beslist de gemeente binnen 8 weken, tenzij zij u laat weten dat het langer duurt.`,
             bronnen: [BRON.awb],
           },
         ]
@@ -300,7 +298,7 @@ const Bronnen = ({
     ...(situatie === "wajong"
       ? [
           {
-            zin: "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen 14 weken na uw aanvraag. Volgens UWV krijgt u meestal binnen acht weken een brief.",
+            zin: "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen 14 weken na uw aanvraag. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
             bronnen: [BRON.wajong61],
           },
         ]
@@ -308,7 +306,7 @@ const Bronnen = ({
     ...(situatie === "wia"
       ? [
           {
-            zin: "De werknemer vraagt de doelgroepverklaring aan bij UWV. Volgens UWV beslist UWV binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+            zin: "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist meestal binnen 8 weken. Ontbreekt er informatie? Dan beslist UWV binnen 13 weken.",
             bronnen: [],
           },
         ]
@@ -356,16 +354,16 @@ const Bronnen = ({
   const kandidaatFout = fout("kandidaat")
     ? wachtend
       ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
-      : "U hebt nog geen kandidaat gekozen."
+      : "U heeft nog geen kandidaat gekozen."
     : undefined;
   const naamFout = fout("naam")
-    ? "U hebt nog geen naam van de kandidaat ingevuld."
+    ? "U heeft nog geen naam van de kandidaat ingevuld."
     : undefined;
   const aanvangFout = fout("aanvang")
-    ? "U hebt nog geen eerste werkdag ingevuld."
+    ? "U heeft nog geen eerste werkdag ingevuld."
     : undefined;
   const eerderFout = fout("eerder")
-    ? `Kies of ${kandidaat.voornaam} de afgelopen zes maanden al bij u in dienst was.`
+    ? `Kies of ${kandidaat.voornaam} in de 6 maanden voor de eerste werkdag al bij u in dienst was.`
     : undefined;
   const jcFout = fout("jc")
     ? "Kies of u jobcoaching wilt aanvragen."
@@ -375,7 +373,7 @@ const Bronnen = ({
     : undefined;
   const bsnVeldFout =
     fout("bsn") && bsn === ""
-      ? "U hebt nog geen BSN ingevuld."
+      ? "U heeft nog geen BSN ingevuld."
       : fout("bsn") || bsnGezien
         ? bsnFout
         : undefined;
@@ -430,9 +428,9 @@ const Bronnen = ({
         : veld === "naam"
           ? naamFout
           : veld === "bsn"
-            ? (bsnVeldFout ?? "U hebt nog geen geldig BSN ingevuld.")
+            ? (bsnVeldFout ?? "U heeft nog geen geldig BSN ingevuld.")
             : veld === "toestemming"
-              ? "U hebt nog geen toestemming gevraagd."
+              ? "U heeft nog geen toestemming gevraagd."
               : veld === "aanvang"
                 ? aanvangFout
                 : veld === "eerder"
@@ -592,7 +590,7 @@ const Bronnen = ({
             </Paragraph>
             {fout("toestemming") && (
               <FormFieldErrorMessage id="toestemming-fout">
-                U hebt nog geen toestemming gevraagd. Kies{" "}
+                U heeft nog geen toestemming gevraagd. Kies{" "}
                 <strong>Toestemming vragen aan kandidaat</strong>.
               </FormFieldErrorMessage>
             )}
@@ -663,8 +661,8 @@ const Bronnen = ({
             {meer ? "kijken" : "kijkt"} {wie} met het BSN in {eigen}.
           </Paragraph>
           <Paragraph>
-            Tot {wachtend.naam} toestemming geeft, kunt u hier niet verder. Uw
-            antwoorden blijven bewaard tot u dit tabblad sluit.
+            Tot {wachtend.naam} toestemming geeft, kunt u hier niet verder. Wij
+            onthouden uw antwoorden tot u dit tabblad sluit.
           </Paragraph>
         </section>
       )}
@@ -693,8 +691,8 @@ const Bronnen = ({
                 ? ""
                 : !opgave
                   ? vraagEerderInDienst(antwoorden)
-                    ? `Vul uw eigen opgave in: de eerste werkdag en of ${kandidaat.voornaam} al eerder bij u werkte.`
-                    : "Vul uw eigen opgave in: de eerste werkdag."
+                    ? `Vul de eerste werkdag van ${kandidaat.voornaam} in. Kies ook of ${kandidaat.voornaam} al eerder bij u werkte.`
+                    : `Vul de eerste werkdag van ${kandidaat.voornaam} in.`
                   : "Wij vullen de aanvraag voor u in. In de volgende stap controleert u die."}
         </Paragraph>
         <StepNavigation

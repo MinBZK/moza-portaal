@@ -14,7 +14,7 @@ const binnenkort: Record<string, DemoBinnenkort> = {
     samenvatting:
       "Straks vindt u hier uw belastingzaken overzichtelijk bij elkaar.",
     verwachtingen: [
-      "Zien welke aangiften u hebt gedaan en wanneer",
+      "Zien welke aangiften u heeft gedaan en wanneer",
       "Ontvangen aanslagen en beschikkingen bekijken",
       "Bijhouden of er nog iets openstaat",
     ],
@@ -32,7 +32,7 @@ const binnenkort: Record<string, DemoBinnenkort> = {
       {
         vraag: "Ik ben het niet eens met een aanslag. Wat kan ik doen?",
         antwoord:
-          "U maakt binnen zes weken na de datum op de aanslag bezwaar bij de Belastingdienst. Dat doet u op belastingdienst.nl of per post. De datum van elke aanslag vindt u in uw overzicht.",
+          "U maakt binnen 6 weken na de datum op de aanslag bezwaar bij de Belastingdienst. Dat doet u op belastingdienst.nl of per post. De datum van elke aanslag vindt u in uw overzicht.",
       },
     ],
   },

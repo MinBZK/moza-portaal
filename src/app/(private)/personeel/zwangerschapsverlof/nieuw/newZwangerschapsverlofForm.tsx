@@ -17,12 +17,12 @@ const datumWaarde = (waarde: string) =>
 
 const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
   const zwangerschapsverlofSchema = z.object({
-    bsn: z.string().min(1),
-    naam: z.string().min(1),
-    startDatum: z.string().min(1),
-    eindDatum: z.string().min(1),
-    bedrijfsKvk: z.string().min(1),
-    opmerking: z.string().min(1),
+    bsn: z.string().min(1, "Vul het burgerservicenummer in"),
+    naam: z.string().min(1, "Vul de naam van de werknemer in"),
+    startDatum: z.string().min(1, "Vul een begindatum in"),
+    eindDatum: z.string().min(1, "Vul een einddatum in"),
+    bedrijfsKvk: z.string().min(1, "Vul het KVK-nummer in"),
+    opmerking: z.string().min(1, "Vul een opmerking in"),
   });
 
   const { mutate } = useCreateZwangerschapsverlof();
@@ -66,12 +66,20 @@ const NewZwangerschapsverlofForm = ({ kvk }: { kvk: string }) => {
         >
           <form.Field name="bsn">
             {(field) => (
-              <FormField label={"BSN"} field={field} autoComplete="off" />
+              <FormField
+                label={"Burgerservicenummer (BSN) van de werknemer"}
+                field={field}
+                autoComplete="off"
+              />
             )}
           </form.Field>
           <form.Field name="naam">
             {(field) => (
-              <FormField label={"Naam"} field={field} autoComplete="off" />
+              <FormField
+                label={"Naam van de werknemer"}
+                field={field}
+                autoComplete="off"
+              />
             )}
           </form.Field>
           <form.Field name="startDatum">

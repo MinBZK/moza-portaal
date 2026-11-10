@@ -1191,6 +1191,7 @@ small,
 }
 
 .rhc-mox-card-grid--stacked {
+	gap: var(--rhc-space-xl);
 	grid-template-columns: minmax(0, 1fr);
 	> li {
 		max-inline-size: unset;

@@ -135,7 +135,7 @@ const Page = () => (
         </UnorderedListItem>
         <UnorderedListItem>
           Zeg wat er nodig is, niet dat het formaat ongeldig is: “Een KVK-nummer
-          heeft 8 cijfers. U hebt er 7 ingevuld.” Niet: “Ongeldig formaat.”
+          heeft 8 cijfers. U heeft er 7 ingevuld.” Niet: “Ongeldig formaat.”
           (WCAG 3.3.3)
         </UnorderedListItem>
         <UnorderedListItem>

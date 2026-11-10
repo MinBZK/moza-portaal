@@ -242,7 +242,7 @@ const Page = () => (
         </UnorderedListItem>
         <UnorderedListItem>
           <strong>Waarom staat dit hier?</strong> Elke taak zegt waarom die voor
-          deze onderneming geldt, bijvoorbeeld “U hebt personeel in dienst” of
+          deze onderneming geldt, bijvoorbeeld “U heeft personeel in dienst” of
           “Uw energieverbruik is meer dan 50.000 kWh”. Zie ook{" "}
           <TextLink href="/demo/ontwerppatronen/interactie-op-inhoud">
             Interactie op inhoud

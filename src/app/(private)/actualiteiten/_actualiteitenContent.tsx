@@ -137,7 +137,7 @@ const ActualiteitenContent = () => {
             </Paragraph>
             <VoorkeurenTopbar />
 
-            <Fieldset legend="Secties">
+            <Fieldset legend="Onderdelen tonen">
               {(Object.keys(SECTION_LABELS) as SectionKey[]).map((key) => {
                 const count = data.sectionCounts[key];
                 return (

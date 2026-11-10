@@ -81,8 +81,8 @@ const PersoneelPage = async () => {
             Ziekte en verlof
           </Heading>
           <Paragraph>
-            Een werknemer ziek melden, en zien welk verlof uw personeel kan
-            opnemen.
+            Binnenkort ziet u hier de ziekmeldingen bij UWV en welk verlof uw
+            personeel kan opnemen.
           </Paragraph>
           <ActionGroup>
             <Link
@@ -101,7 +101,7 @@ const PersoneelPage = async () => {
             Loon en loonaangifte
           </Heading>
           <Paragraph>
-            Elke maand of elke vier weken doet u loonaangifte bij de
+            Elke maand of elke 4 weken doet u loonaangifte bij de
             Belastingdienst. Daar leest u ook wat u moet regelen voor het loon.
           </Paragraph>
           <Paragraph>

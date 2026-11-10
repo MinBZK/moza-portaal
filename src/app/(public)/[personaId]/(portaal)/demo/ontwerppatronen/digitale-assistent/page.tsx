@@ -139,7 +139,7 @@ const Page = () => (
               id: "voorbeeld-antwoord",
               soort: "assistent",
               tekst:
-                "Ja, die geldt voor uw bedrijf. U gebruikt per jaar meer dan 50.000 kWh stroom. Dan moet u energie besparen en melden welke maatregelen u hebt genomen.\n\nU meldt dit uiterlijk 1 december 2026 bij de RVO.",
+                "Ja, die geldt voor uw bedrijf. U gebruikt per jaar meer dan 50.000 kWh stroom. Dan moet u energie besparen en melden welke maatregelen u heeft genomen.\n\nU meldt dit uiterlijk 1 december 2026 bij de RVO.",
               bronnen: [
                 {
                   label: "KOOP Regelingenbank",

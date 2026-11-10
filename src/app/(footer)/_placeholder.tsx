@@ -21,7 +21,7 @@ const Placeholder = ({ slug }: { slug: string }) => (
       <Paragraph>
         <Link href="/" className="utrecht-link utrecht-link--html-a">
           <Icon icon="chevron-left" />
-          Terug naar de startpagina
+          Terug naar Home
         </Link>
       </Paragraph>
     </div>

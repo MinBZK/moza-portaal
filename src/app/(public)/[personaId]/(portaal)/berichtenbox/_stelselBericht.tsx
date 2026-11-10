@@ -60,7 +60,7 @@ const StelselBericht = ({
         if (!actueel) return;
         setInhoudFout(
           fout instanceof KetenFout && fout.reden === "weg"
-            ? "Dit bericht konden we niet ophalen bij de organisatie die het stuurde. Ververs de pagina om het opnieuw te proberen, of ga terug naar uw berichtenbox."
+            ? "Wij konden dit bericht niet ophalen bij de organisatie die het stuurde. Ververs de pagina om het opnieuw te proberen, of ga terug naar uw berichtenbox."
             : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
         );
       });

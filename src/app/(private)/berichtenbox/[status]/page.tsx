@@ -83,7 +83,7 @@ const BerichtenboxPage = async ({
   // staat een redirect in proxy.ts dat /berichtenbox -> /berichtenbox/inbox gaat
   return (
     <>
-      <Heading level={1}>Mijn Berichtenbox</Heading>
+      <Heading level={1}>Berichtenbox</Heading>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-d-8 rhc-mox-row-gap">
           <div className="rhc-mox-card">
@@ -124,7 +124,7 @@ const BerichtenboxPage = async ({
                 </TableBody>
               </Table>
             </div>
-            <FormFieldCheckboxOption label="(de)selecteer alle berichten" />
+            <FormFieldCheckboxOption label="Alle berichten selecteren" />
             <ActionGroup direction="row">
               <Button appearance="subtle-button" disabled>
                 <Icon icon="inbox" />
@@ -139,14 +139,13 @@ const BerichtenboxPage = async ({
 
             <Alert type="info">
               <Paragraph>
-                Meer informatie over de berichtenbox. Uw zakelijke brievenbus
-                van de overheid.
+                De berichtenbox is uw zakelijke brievenbus van de overheid.
               </Paragraph>
             </Alert>
           </div>
 
           <div className="rhc-mox-card">
-            <Heading level={2}>Uw e-mailadres(sen) aanpassen</Heading>
+            <Heading level={2}>E-mailadressen voor meldingen</Heading>
             <Paragraph>
               Wilt u uw e-mailadressen voor meldingen aanpassen? Of kiezen welke
               organisaties u digitaal berichten mogen sturen? Dit regelt u bij
