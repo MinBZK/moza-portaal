@@ -26,13 +26,15 @@ import { balansRegels, invoerVoor, type Feiten } from "../_uitkomsten";
 import { useUitkomsten } from "../_useUitkomsten";
 import Waarom from "../_waarom";
 import {
+  isIngediend,
   useAannemen,
   vraagEerderInDienst,
   type AannemenStaat,
   type RegelingId,
 } from "../_useAannemen";
+import AlIngediend from "../_alIngediend";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
-import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
+import { euroHeel, type Werkgever } from "../_werkgever";
 import SourceLinks from "@/components/SourceLinks";
 import { BRON } from "../_wetsbronnen";
 
@@ -411,6 +413,8 @@ const AanvraagInhoud = ({
         "wia",
         perSituatie.wia.zaak,
         "Wacht op de aanvraag van de werknemer",
+        undefined,
+        perSituatie.wia.kandidaat.bsnMasker,
       );
     }
     // Zonder keuze gelden alle regelingen: de bedankpagina noemt ze allemaal.
@@ -433,7 +437,6 @@ const AanvraagInhoud = ({
   const uwv = situatie === "wajong";
   const demo = perSituatie[uwv ? "wajong" : "gemeente"];
   const naarWie = uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
-  const bestaand = staat.zaken[situatie];
   const verstuurt = paneelIds
     .filter(gekozen)
     .map((id) => NAAM[id].toLowerCase());
@@ -467,9 +470,28 @@ const AanvraagInhoud = ({
       situatie,
       nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
     );
-    zaakAanmaken(situatie, demo.zaak, "In behandeling", onderwerp);
+    // Deze aanvraag is nu ingediend; een volgende begint opnieuw.
+    werkBij({ aanvraagIngediend: true });
+    zaakAanmaken(
+      situatie,
+      demo.zaak,
+      "In behandeling",
+      onderwerp,
+      kandidaat.bsnMasker,
+    );
     router.push("/personeel/iemand-aannemen/verstuurd");
   };
+
+  if (isIngediend(staat))
+    return (
+      <>
+        <Heading level={1}>{TAAK_TITEL}</Heading>
+        <div className="rhc-mox-card">
+          <Stappen huidige={2} />
+          <AlIngediend />
+        </div>
+      </>
+    );
 
   // Via de stappenbalk kan stap 2 open gaan zonder gekozen kandidaat of eerste
   // werkdag, zoals na een andere situatie in de voorbeeldberekening. Dan is er
@@ -477,7 +499,6 @@ const AanvraagInhoud = ({
   if (
     bekend &&
     route.zaak !== null &&
-    !bestaand?.ingediend &&
     (staat.kandidaat !== kandidaat.bsnMasker || !a.aanvang)
   )
     return (
@@ -574,47 +595,32 @@ const AanvraagInhoud = ({
           />
         )}
 
-        {bekend && paneelIds.length > 0 && bestaand?.ingediend && (
-          <Alert type="info">
+        {bekend && paneelIds.length > 0 && verstuurt.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="versturen">
+            <Heading level={2} id="versturen">
+              Versturen
+            </Heading>
             <Paragraph>
-              U hebt deze aanvraag al verstuurd
-              {bestaand.verstuurdOp
-                ? ` op ${datumNL(bestaand.verstuurdOp)}`
-                : ""}
-              . U volgt de aanvraag in Lopende zaken.
+              U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
+              {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
+              ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt de
+              zaak bij Lopende zaken.
             </Paragraph>
-          </Alert>
+            <FormFieldCheckboxOption
+              id="bevestiging"
+              invalid={bevestigFout && !bevestigd}
+              errorMessage={
+                bevestigFout && !bevestigd
+                  ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+                  : undefined
+              }
+              label="Ik heb alles naar waarheid ingevuld."
+              name="bevestiging"
+              checked={bevestigd}
+              onChange={(event) => setBevestigd(event.target.checked)}
+            />
+          </section>
         )}
-
-        {bekend &&
-          paneelIds.length > 0 &&
-          !bestaand?.ingediend &&
-          verstuurt.length > 0 && (
-            <section className="rhc-mox-row-gap" aria-labelledby="versturen">
-              <Heading level={2} id="versturen">
-                Versturen
-              </Heading>
-              <Paragraph>
-                U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
-                {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
-                ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
-                de zaak bij Lopende zaken.
-              </Paragraph>
-              <FormFieldCheckboxOption
-                id="bevestiging"
-                invalid={bevestigFout && !bevestigd}
-                errorMessage={
-                  bevestigFout && !bevestigd
-                    ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
-                    : undefined
-                }
-                label="Ik heb alles naar waarheid ingevuld."
-                name="bevestiging"
-                checked={bevestigd}
-                onChange={(event) => setBevestigd(event.target.checked)}
-              />
-            </section>
-          )}
 
         {bekend && (
           <StepNavigation
@@ -622,21 +628,21 @@ const AanvraagInhoud = ({
             backLabel={terugNaar(1)}
             later="/personeel"
             next={
-              paneelIds.length > 0 && bestaand?.ingediend
-                ? { label: "Bekijk de zaak", href: demo.zaak.url }
-                : // Afronden als er niets naar de gemeente of UWV gaat: zonder
-                  // aanvraag, of met alleen regelingen zonder aanvraag gekozen.
-                  // Beide gaan naar de bedankpagina.
-                  {
-                    label:
-                      verstuurt.length > 0 ||
-                      (!zonderAanvraag && aantalGekozen === 0)
-                        ? "Dossier indienen"
-                        : "Afronden",
-                    onClick: verstuurt.length > 0 ? indienen : klaar,
-                    final: true,
-                    noIcon: true,
-                  }
+              // Afronden als er niets naar de gemeente of UWV gaat: zonder
+              // aanvraag, of met alleen regelingen zonder aanvraag gekozen.
+              // Beide gaan naar de bedankpagina. Een ingediende aanvraag komt
+              // hier niet (isIngediend hierboven); een nieuwe aanvraag voor
+              // dezelfde situatie mag weer worden ingediend.
+              {
+                label:
+                  verstuurt.length > 0 ||
+                  (!zonderAanvraag && aantalGekozen === 0)
+                    ? "Dossier indienen"
+                    : "Afronden",
+                onClick: verstuurt.length > 0 ? indienen : klaar,
+                final: true,
+                noIcon: true,
+              }
             }
           />
         )}
