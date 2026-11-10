@@ -15,8 +15,12 @@ export const BRON = {
     label: "Participatiewet, artikel 10c",
     url: `${WET}BWBR0015703#Artikel10c`,
   },
-  pwet10dLid2en12: {
-    label: "Participatiewet, artikel 10d lid 2 en lid 12",
+  pwet10dLid2: {
+    label: "Participatiewet, artikel 10d lid 2",
+    url: `${WET}BWBR0015703#Artikel10d`,
+  },
+  pwet10dLid5: {
+    label: "Participatiewet, artikel 10d lid 1 onder b en lid 5",
     url: `${WET}BWBR0015703#Artikel10d`,
   },
   pwet10dLid12: {

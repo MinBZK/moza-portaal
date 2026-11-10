@@ -37,7 +37,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   lks_lid4: {
     kort: "Gerekend met een loonwaarde die de gemeente vaststelt.",
     uitleg:
-      "Gerekend met een loonwaarde die de gemeente vaststelt. De gemeente kan ook met u afspreken dat zij de loonwaarde eerst niet vaststelt. Dan krijgt u de eerste 6 maanden hoogstens 50 procent van het minimumloon met vakantiegeld. Werkt de kandidaat minder of meer dan 36 uur? Dan is het bedrag naar verhouding lager of hoger. Het geldt voor hoogstens de volledige werkweek in uw sector. Daarna stelt de gemeente de loonwaarde alsnog vast. Bovenop de loonkostensubsidie krijgt u een vergoeding voor werkgeverslasten. Die is 25 procent van de loonkosten waarover u loonkostensubsidie krijgt. De vergoeding is niet meegeteld in deze voorbeeldberekening.",
+      "Gerekend met een loonwaarde die de gemeente vaststelt. De vergoeding voor werkgeverslasten (25 procent) komt erbovenop en is niet meegeteld.",
   },
   ld_cao: {
     kort: "Loondispensatie niet meegeteld.",
@@ -47,7 +47,7 @@ export const AANNAMES: Record<AannameId, { kort: string; uitleg: string }> = {
   wia_nieuw: {
     kort: "Gerekend alsof de kandidaat nieuw bij u in dienst komt.",
     uitleg:
-      "Gerekend alsof de kandidaat bij u nieuw in dienst komt. Het loonkostenvoordeel geldt dan hoogstens 3 jaar vanaf de start. Werkt de kandidaat al bij u en heeft die een WIA-uitkering? En gaat die weer aan het werk in het eigen werk of in een andere functie? Dan geldt een ander loonkostenvoordeel, hoogstens 1 jaar.",
+      "Gerekend alsof de kandidaat nieuw bij u in dienst komt. Komt een eigen werknemer met een WIA-uitkering terug in het werk? Dan geldt een ander loonkostenvoordeel, hoogstens 1 jaar.",
   },
   beschut_lks: {
     kort: "Loonkostensubsidie bij beschut werk niet meegeteld.",
@@ -137,9 +137,9 @@ export const duurTekst = (jaren: number | undefined) =>
  * de regeling bij deze antwoorden niet geldt, zodat de ondernemer ziet waarom.
  */
 const WANNEER: Record<BalansRegel["id"], string> = {
-  lks: "Voor een werknemer die bij de doelgroep van de gemeente hoort en niet het minimumloon kan verdienen. De gemeente betaalt het verschil tussen het minimumloon en de loonwaarde, hoogstens 70 procent van het minimumloon met vakantiegeld. Daarbovenop betaalt de gemeente een vergoeding voor werkgeverslasten (Participatiewet, artikel 10d).",
+  lks: "Voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen. De gemeente betaalt het verschil met de loonwaarde, hoogstens 70 procent van het minimumloon met vakantiegeld (Participatiewet, artikel 10d).",
   ld: "Voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk, voor ten minste 6 maanden. U betaalt minder loon; UWV stelt vast hoeveel (Wajong, artikel 2:20; Besluit loondispensatie Wajong, artikelen 1 en 2).",
-  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring. Iemand met bijstand of zonder uitkering hoort bij de banenafspraak als de gemeente een loonwaarde onder het minimumloon vaststelt (Wet financiering sociale verzekeringen, artikel 38b). U krijgt een vast bedrag per verloond uur, via de loonaangifte (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
+  lkv: "Voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10). Iemand die bij de gemeente hoort, telt mee als de gemeente een loonwaarde onder het minimumloon vaststelt (Wet financiering sociale verzekeringen, artikel 38b).",
 };
 
 /** Loondispensatie is geen betaling (Wajong 2:20); het bedrag schat het portaal. */

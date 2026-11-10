@@ -65,13 +65,18 @@ const standVan = (cent: number) =>
     0,
   );
 
-/** Per regeling: de termijn voor de werkgever, wanneer die weet waar die aan toe is, en waar het staat. */
+/**
+ * Per regeling: wanneer er een besluit is (kort, in de lijst onder de
+ * berekening) en wat de werkgever zelf op tijd moet doen (in de uitklap),
+ * elk met de eigen bronnen.
+ */
 type Termijn = {
   id: Regel["id"];
   /** Eén zin voor de lijst onder de berekening: wanneer er een besluit is. */
   kort: string;
+  bronnenKort: Source[];
+  /** In de uitklap: de aanvraagtermijn of wat de werkgever zelf doet. */
   tekst: string;
-  wanneer: string;
   bronnen: Source[];
 };
 
@@ -90,11 +95,12 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
           {
             id: "lks" as const,
             kort: "Loonkostensubsidie: de gemeente beslist binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
+            bronnenKort: [BRON.pwet10dLid12],
+            // Pwet 10d lid 2 onder b: wie in de 6 maanden voor de start bij de
+            // gemeente hoorde (art. 7 lid 1 onder a: bijstand, geen uitkering).
             tekst:
-              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen 6 maanden na de start van het dienstverband.",
-            wanneer:
-              "Is de kandidaat nog niet begonnen? Dan beslist de gemeente binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Besluit de gemeente de loonwaarde later vast te stellen? Dan beslist zij binnen 5 weken na dat besluit. Is de werknemer al begonnen? Dan beslist de gemeente binnen 8 weken na uw aanvraag. Duurt het langer, dan laat de gemeente u dat weten.",
-            bronnen: [BRON.pwet10dLid2en12, BRON.awb],
+              "Is de werknemer al begonnen? Vraag dan aan binnen 6 maanden na de start. Dat kan als de werknemer in de 6 maanden daarvoor bij de gemeente hoorde, bijvoorbeeld met bijstand of zonder uitkering.",
+            bronnen: [BRON.pwet10dLid2],
           },
         ]
       : []),
@@ -103,11 +109,10 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
           {
             id: "ld" as const,
             kort: "Loondispensatie: UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
+            bronnenKort: [BRON.wajong61],
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
-            wanneer:
-              "UWV beslist binnen 14 weken na uw aanvraag, tenzij UWV u laat weten dat het langer duurt. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
-            bronnen: [BRON.besluitLd4, BRON.wajong61],
+            bronnen: [BRON.besluitLd4],
           },
         ]
       : []),
@@ -115,17 +120,12 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lkv" as const,
-            kort: "Loonkostenvoordeel: u krijgt het bedrag in het jaar na de start. De Belastingdienst beslist vóór 1 augustus.",
+            kort: "Loonkostenvoordeel: u krijgt het bedrag in het jaar na de start. De Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken daarna.",
+            bronnenKort: [BRON.wtl42en44],
             tekst: arbeidsgehandicapt
               ? "De werknemer vraagt de doelgroepverklaring aan binnen 3 maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
               : "U vraagt het loonkostenvoordeel aan in de loonaangifte.",
-            wanneer: arbeidsgehandicapt
-              ? "UWV beslist binnen 8 weken over de doelgroepverklaring, tenzij UWV laat weten dat het langer duurt. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken na dat besluit."
-              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken na dat besluit.",
-            bronnen: [
-              ...(arbeidsgehandicapt ? [BRON.wtl27, BRON.awb] : []),
-              BRON.wtl42en44,
-            ],
+            bronnen: arbeidsgehandicapt ? [BRON.wtl27] : [],
           },
         ]
       : []),
@@ -135,7 +135,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
   lks: () =>
-    "De gemeente bepaalt in overleg met u en de werknemer wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
+    "De gemeente bepaalt in overleg met u wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Wijzigingen geeft u door zoals uw gemeente dat vraagt.",
   ld: () =>
     "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, hoogstens 5 jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>
@@ -183,7 +183,7 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
       {termijn && (
         <>
           <Paragraph>
-            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer}
+            <strong>Termijn.</strong> {termijn.tekst}
           </Paragraph>
           <SourceLinks sources={termijn.bronnen} />
         </>
@@ -416,14 +416,6 @@ const VragenMetStaat = ({
                     Wij rekenen met het percentage dat u kiest. Het echte bedrag
                     kan hoger of lager zijn.
                   </Paragraph>
-                  <Paragraph>
-                    De gemeente betaalt u het verschil tussen het minimumloon en
-                    de loonwaarde. Dat heet loonkostensubsidie. U krijgt
-                    hoogstens 70 procent van het minimumloon met vakantiegeld.
-                    Daarbovenop krijgt u een vergoeding voor werkgeverslasten.
-                    Betaalt u meer dan het minimumloon? Dan wordt de subsidie
-                    niet hoger.
-                  </Paragraph>
                 </InfoToggletip>
               }
             />
@@ -506,6 +498,14 @@ const VragenMetStaat = ({
                     <UnorderedListItem key={t.id}>{t.kort}</UnorderedListItem>
                   ))}
                 </UnorderedList>
+                <SourceLinks
+                  sources={termijnen
+                    .flatMap((t) => t.bronnenKort)
+                    .filter(
+                      (b, i, alle) =>
+                        alle.findIndex((x) => x.label === b.label) === i,
+                    )}
+                />
               </div>
             )}
           </StickyInfoBox>
