@@ -1099,19 +1099,20 @@ small,
 		background-color: var(--rhc-color-info-50);
 	}
 
-	.rhc-mox-card--compact.rhc-mox-card--collapsible .nl-heading {
+	.rhc-mox-card--compact.rhc-mox-card--collapsible
+		> .utrecht-accordion__header {
 		margin-block: calc(-1 * var(--rhc-space-sm));
 		margin-inline: calc(-1 * var(--rhc-space-lg));
 	}
 
 	.rhc-mox-card--collapsible {
-		.nl-heading {
+		> .utrecht-accordion__header {
 			margin-block-end: calc(-1 * var(--rhc-space-xl));
 			margin-block-start: calc(-1 * var(--rhc-space-xl));
 			margin-inline-end: calc(-1 * var(--rhc-space-3xl));
 			margin-inline-start: calc(-1 * var(--rhc-space-3xl));
 		}
-		.utrecht-accordion__button {
+		> .utrecht-accordion__header > .utrecht-accordion__button {
 			--utrecht-button-subtle-active-background-color: transparent;
 			--utrecht-button-subtle-focus-background-color: transparent;
 			--utrecht-button-subtle-hover-background-color: transparent;
@@ -1125,15 +1126,17 @@ small,
 			}
 		}
 
-		&:has(.utrecht-accordion__button:hover) {
+		&:has(> .utrecht-accordion__header > .utrecht-accordion__button:hover) {
 			background-color: var(--utrecht-accordion-button-hover-background-color);
 		}
 
-		&:has(.utrecht-accordion__button:active) {
+		&:has(> .utrecht-accordion__header > .utrecht-accordion__button:active) {
 			background-color: var(--utrecht-accordion-button-active-background-color);
 		}
 
-		&:has(.utrecht-accordion__button:focus-visible) {
+		&:has(
+			> .utrecht-accordion__header > .utrecht-accordion__button:focus-visible
+		) {
 			outline: var(--utrecht-focus-outline-width)
 				var(--utrecht-focus-outline-style) var(--utrecht-focus-outline-color);
 			outline-offset: var(--utrecht-focus-outline-offset);
@@ -1166,6 +1169,9 @@ small,
 
 .rhc-mox-card-grid--stacked {
 	grid-template-columns: minmax(0, 1fr);
+	> li {
+		max-inline-size: unset;
+	}
 }
 
 .mox-card-topic-list {
