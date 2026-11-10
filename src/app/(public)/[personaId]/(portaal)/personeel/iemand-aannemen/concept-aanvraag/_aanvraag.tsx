@@ -210,7 +210,7 @@ const AanvraagInhoud = ({
         <>
           <Paragraph>
             U vraagt de gemeente {kandidaat.gemeente} om loonkostensubsidie
-            (Participatiewet, artikel 10d).
+            (Participatiewet, artikel 10d). De gemeente beslist of u die krijgt.
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Paragraph>
@@ -276,7 +276,8 @@ const AanvraagInhoud = ({
         <>
           <Paragraph>
             Begeleiding op de werkplek door een jobcoach. De werknemer heeft
-            daar recht op (Participatiewet, artikel 10da).
+            daar recht op als die bij de doelgroep loonkostensubsidie hoort
+            (Participatiewet, artikel 10da). Dat stelt de gemeente vast.
           </Paragraph>
           {waarom(
             "participatiewet",
@@ -517,6 +518,11 @@ const AanvraagInhoud = ({
             <Heading level={2} id="regelingen">
               Kies de regelingen
             </Heading>
+            <Paragraph>
+              Deze regelingen passen bij uw antwoorden in de
+              voorbeeldberekening. Of een regeling echt geldt, beslist de
+              organisatie die de regeling uitvoert.
+            </Paragraph>
             <Paragraph>Kies ten minste één regeling.</Paragraph>
             {kiesFout > 0 && aantalGekozen === 0 && (
               <div id="kies-fout" tabIndex={-1}>
