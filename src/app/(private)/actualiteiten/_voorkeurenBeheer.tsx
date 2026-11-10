@@ -106,7 +106,11 @@ function FilterGroup({
   const [open, setOpen] = useState(activeCount > 0);
 
   return (
-    <details open={open} onToggle={(e) => setOpen(e.currentTarget.open)}>
+    <details
+      className="rhc-mox-disclosure"
+      open={open}
+      onToggle={(e) => setOpen(e.currentTarget.open)}
+    >
       <summary>
         {label}
         {activeCount > 0 && (

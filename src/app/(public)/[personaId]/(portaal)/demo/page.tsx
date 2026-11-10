@@ -77,6 +77,7 @@ import PageNumberNavigation from "@/components/pageNumberNavigation";
 import ProgressBar from "@/components/ProgressBar";
 import RangeSlider from "@/components/RangeSlider";
 import ChangedValue from "@/components/ChangedValue";
+import Card from "@/components/Card";
 import StepNavigation from "@/components/StepNavigation";
 import Spinner from "@/components/Spinner";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -84,6 +85,7 @@ import FieldLabel from "@/components/FieldLabel";
 import ShareButton from "@/components/ShareButton";
 import StepIndicator from "@/components/StepIndicator";
 import StatusTrack, { type StatusStep } from "@/components/StatusTrack";
+import TimelineItem from "@/components/TimelineItem";
 import StickyInfoBox from "@/components/StickyInfoBox";
 import { BewaarKnop, NietRelevantKnop } from "@/components/save/saveActions";
 import type { BewaarItem } from "@/components/save/useSaved";
@@ -2477,10 +2479,6 @@ const ComponentsDemoPage = () => {
       "Kolomkop van een tabel die op die kolom sorteert (sortKey, sorting, onSort).",
     ],
     [
-      "TimelineItem",
-      "Eén gebeurtenis op een tijdlijn, met datum en status (title, date, status, open).",
-    ],
-    [
       "LogoutButton",
       "Knop om uit te loggen, ook zonder werkende Keycloak (children, className).",
     ],
@@ -3414,24 +3412,65 @@ const ComponentsDemoPage = () => {
           "–",
           "Geef de sectie een toegankelijke naam via de koptekst",
         ],
+        [
+          "<Card>",
+          "component",
+          "–",
+          "Dezelfde kaart met heading en headingLevel; de sectie krijgt de kop als naam",
+        ],
+        [
+          "collapsible",
+          "boolean",
+          "false",
+          "De kop wordt een knop die de inhoud toont en verbergt (aria-expanded)",
+        ],
+        ["defaultOpen", "boolean", "true", "Bij collapsible: eerst open"],
+        [
+          "action",
+          "ReactNode",
+          "–",
+          "Altijd onderaan, open en dicht, zoals een ActionGroup",
+        ],
       ],
       example: (
-        <section className="rhc-mox-card" aria-labelledby="demo-card-kop">
-          <Heading level={4} id="demo-card-kop">
-            Subsidies en financiering
-          </Heading>
-          <Paragraph>
-            Er is 1 nieuwe subsidie die interessant kan zijn.
-          </Paragraph>
-          <ActionGroup>
-            <NextLink
-              href="/subsidies"
-              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-            >
-              Naar Subsidies en financiering
-            </NextLink>
-          </ActionGroup>
-        </section>
+        <>
+          <Card
+            heading="Lopende aanvraag"
+            headingLevel={4}
+            collapsible
+            defaultOpen={false}
+            action={
+              <ActionGroup>
+                <NextLink
+                  href="/lopendezaken"
+                  className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
+                >
+                  Naar Lopende zaken
+                </NextLink>
+              </ActionGroup>
+            }
+          >
+            <Paragraph>
+              De gemeente beoordeelt uw aanvraag voor loonkostensubsidie.
+            </Paragraph>
+          </Card>
+          <section className="rhc-mox-card" aria-labelledby="demo-card-kop">
+            <Heading level={4} id="demo-card-kop">
+              Subsidies en financiering
+            </Heading>
+            <Paragraph>
+              Er is 1 nieuwe subsidie die interessant kan zijn.
+            </Paragraph>
+            <ActionGroup>
+              <NextLink
+                href="/subsidies"
+                className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+              >
+                Naar Subsidies en financiering
+              </NextLink>
+            </ActionGroup>
+          </section>
+        </>
       ),
     },
     {
@@ -3663,6 +3702,72 @@ const ComponentsDemoPage = () => {
         ],
       ],
       example: <StatusTrack stappen={DEMO_STEPS} />,
+    },
+    {
+      name: "TimelineItem",
+      file: "src/components/TimelineItem.tsx",
+      description:
+        'Eén gebeurtenis op een tijdlijn, zoals de contactmomenten bij een zaak. Een markering met een status-icoon en een titel die de details uitklapt. Zet de items in een <ol className="rhc-mox-timeline">.',
+      options: [
+        ["title", "ReactNode", "–", "Titel; klapt de details uit"],
+        [
+          "date",
+          "ReactNode",
+          "–",
+          "Datum met een kalender-icoon, liefst een <time>",
+        ],
+        [
+          "status",
+          '"info" | "ok" | "warning" | "error" | "neutral"',
+          '"info"',
+          "Kleur en icoon van de markering; verborgen voor schermlezers",
+        ],
+        ["open", "boolean", "false", "Eerst uitgeklapt"],
+        [
+          "replaced",
+          "boolean",
+          "false",
+          "Vervangen door een latere correctie: titel doorgestreept",
+        ],
+        ["children", "ReactNode", "–", "De details"],
+      ],
+      example: (
+        <ol className="rhc-mox-timeline">
+          <TimelineItem
+            title="Aanvraag ontvangen"
+            status="ok"
+            date={<time dateTime="2026-09-08">8 september 2026</time>}
+          >
+            <Paragraph>De gemeente heeft uw aanvraag ontvangen.</Paragraph>
+          </TimelineItem>
+          <TimelineItem
+            title="Gegevens nodig"
+            status="warning"
+            open
+            date={<time dateTime="2026-09-15">15 september 2026</time>}
+          >
+            <Paragraph>
+              De gemeente vraagt om de arbeidsovereenkomst. Stuur die binnen
+              twee weken.
+            </Paragraph>
+          </TimelineItem>
+          <TimelineItem
+            title="Eerste werkdag 1 oktober"
+            status="neutral"
+            replaced
+            date={<time dateTime="2026-09-10">10 september 2026</time>}
+          >
+            <Paragraph>Later gecorrigeerd naar 6 oktober.</Paragraph>
+          </TimelineItem>
+          <TimelineItem
+            title="Besluit verwacht"
+            status="info"
+            date={<time dateTime="2026-11-03">3 november 2026</time>}
+          >
+            <Paragraph>De gemeente beslist binnen acht weken.</Paragraph>
+          </TimelineItem>
+        </ol>
+      ),
     },
     {
       name: "Paginagrid",
