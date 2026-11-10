@@ -264,6 +264,7 @@ body {
 
 	> .utrecht-page-body {
 		flex: 1 0 auto;
+		margin-block-start: var(--rhc-space-xl);
 	}
 }
 
@@ -687,6 +688,10 @@ small,
 	h1 {
 		margin-block-end: 0;
 	}
+}
+
+.utrecht-accordion__header {
+	max-inline-size: unset;
 }
 
 .utrecht-accordion__panel:not([hidden]) {
