@@ -176,8 +176,12 @@ test("gemeente (bijstand, 60)", () => {
 });
 
 test("loonwaarde onder 30 procent: loonkostensubsidie groeit door tot het plafond", () => {
-  // Pwet 10d lid 4 en 5: verschil tussen minimumloon en loonwaarde; het
-  // plafond is 70 procent van het minimumloon plus 25 procent werkgeverslasten.
+  // Pwet 10d lid 4 en 5: verschil tussen minimumloon en loonwaarde. Het
+  // gebundelde corpus (regelrecht-corpus 42054d7d) legt het plafond op 70
+  // procent van het minimumloon plus 25 procent werkgeverslasten. Volgens de
+  // jurist (10 november 2026) is het plafond 70 procent van het minimumloon met
+  // vakantiebijslag en komt de vergoeding werkgeverslasten daar bovenop; deze
+  // test volgt de engine en verandert pas met een nieuw corpus.
   const lks = (lw) => regel(reken(["bijstand"], lw), "lks").bedragPerJaar;
   const op30 = lks(30);
   assert.ok(op30 > LKS_GEMEENTE_60_JAAR);

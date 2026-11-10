@@ -421,9 +421,10 @@ const VragenMetStaat = ({
                   <Paragraph>
                     De gemeente betaalt u het verschil tussen het minimumloon en
                     de loonwaarde. Dat heet loonkostensubsidie. U krijgt
-                    hoogstens 70 procent van het minimumloon, plus een
-                    vergoeding voor werkgeverslasten. Betaalt u meer dan het
-                    minimumloon? Dan wordt de subsidie niet hoger.
+                    hoogstens 70 procent van het minimumloon met vakantiegeld.
+                    Daarbovenop krijgt u een vergoeding voor werkgeverslasten.
+                    Betaalt u meer dan het minimumloon? Dan wordt de subsidie
+                    niet hoger.
                   </Paragraph>
                 </InfoToggletip>
               }
