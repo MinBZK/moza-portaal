@@ -177,7 +177,7 @@
       "bedragLabel": "€897,41 per maand",
       "bedragToelichting": "Bij een loonwaarde van 60 procent en 32 uur per week. De gemeente stelt de loonwaarde vast na een meting op de werkplek; het bedrag volgt daaruit.",
       "bedragEurocent": 89740.8,
-      "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen zes maanden na de eerste werkdag.",
+      "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen zes maanden na de start van het dienstverband.",
       "grond": "Participatiewet 10d, tweede lid, onderdeel b, en vierde lid; Wet minimumloon 8 en 15; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
       "trace": "participatiewet:heeft_recht_op_lks",
       "actie": null
@@ -409,7 +409,7 @@
       "actor": "U",
       "soort": "uitvoering",
       "titel": "Aanvraag loonkostensubsidie verstuurd",
-      "tekst": "De concept-aanvraag is verstuurd naar de gemeente Rotterdam, binnen zes maanden na de eerste werkdag.",
+      "tekst": "De concept-aanvraag is verstuurd naar de gemeente Rotterdam, binnen zes maanden na de start van het dienstverband.",
       "grond": "Pwet 10d lid 2",
       "stap": "ontvangst"
     },

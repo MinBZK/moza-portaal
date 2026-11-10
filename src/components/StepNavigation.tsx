@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ActionGroup, Button, Icon } from "@/components/rhc";
+import { ActionGroup, Alert, Button, Icon, Paragraph } from "@/components/rhc";
 import { CheckIcon } from "@/components/icons/checkIcon";
 
 type Next = {
@@ -66,6 +67,10 @@ const StepNavigation = ({
   /** Save and leave the task: go to this address. */
   later?: string;
 }) => {
+  // Clicked while busy: say that it is still loading, until it is done.
+  const [clickedWhileBusy, setClickedWhileBusy] = useState(false);
+  if (clickedWhileBusy && !next?.busy) setClickedWhileBusy(false);
+  const waiting = clickedWhileBusy && !!next?.busy;
   const label = (
     <>
       {next?.final &&
@@ -77,58 +82,76 @@ const StepNavigation = ({
   );
 
   return (
-    <ActionGroup className="rhc-mox-step-navigation">
-      {next &&
-        (next.href && !next.onClick ? (
+    <>
+      <div role="status">
+        {waiting && (
+          <Alert type="warning">
+            <Paragraph>
+              Even geduld, wij zijn nog bezig. Kies daarna opnieuw{" "}
+              <strong>{next?.label ?? "Verder"}</strong>.
+            </Paragraph>
+          </Alert>
+        )}
+      </div>
+      <ActionGroup className="rhc-mox-step-navigation">
+        {next &&
+          (next.href && !next.onClick ? (
+            <Link
+              href={next.href}
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+              aria-disabled={next.disabled || undefined}
+              aria-busy={next.busy || undefined}
+              aria-describedby={next.describedBy}
+              onClick={(event) => {
+                if (next.busy) {
+                  event.preventDefault();
+                  setClickedWhileBusy(true);
+                  return;
+                }
+                if (!next.disabled) return;
+                event.preventDefault();
+                next.onBlocked?.();
+              }}
+            >
+              {label}
+            </Link>
+          ) : (
+            <Button
+              appearance="primary-action-button"
+              // Utrecht only greys out :disabled; aria-disabled needs the class.
+              className={next.disabled ? "utrecht-button--disabled" : undefined}
+              aria-disabled={next.disabled || undefined}
+              aria-busy={next.busy || undefined}
+              aria-describedby={next.describedBy}
+              onClick={() => {
+                if (next.busy) setClickedWhileBusy(true);
+                else if (next.disabled) next.onBlocked?.();
+                else next.onClick?.();
+              }}
+            >
+              {label}
+            </Button>
+          ))}
+        {later && (
           <Link
-            href={next.href}
-            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
-            aria-disabled={next.disabled || undefined}
-            aria-busy={next.busy || undefined}
-            aria-describedby={next.describedBy}
-            onClick={(event) => {
-              if (!next.disabled) return;
-              event.preventDefault();
-              next.onBlocked?.();
-            }}
+            href={later}
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
           >
-            {label}
+            <Icon icon="save" />
+            Opslaan en later verder
           </Link>
-        ) : (
-          <Button
-            appearance="primary-action-button"
-            // Utrecht only greys out :disabled; aria-disabled needs the class.
-            className={next.disabled ? "utrecht-button--disabled" : undefined}
-            aria-disabled={next.disabled || undefined}
-            aria-busy={next.busy || undefined}
-            aria-describedby={next.describedBy}
-            onClick={() => {
-              if (next.disabled) next.onBlocked?.();
-              else next.onClick?.();
-            }}
+        )}
+        {back && (
+          <Link
+            href={back}
+            className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
           >
-            {label}
-          </Button>
-        ))}
-      {later && (
-        <Link
-          href={later}
-          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-        >
-          <Icon icon="save" />
-          Opslaan en later verder
-        </Link>
-      )}
-      {back && (
-        <Link
-          href={back}
-          className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
-        >
-          {backIcon && <Icon icon="chevron-left" />}
-          {withHiddenPrefix(backLabel)}
-        </Link>
-      )}
-    </ActionGroup>
+            {backIcon && <Icon icon="chevron-left" />}
+            {withHiddenPrefix(backLabel)}
+          </Link>
+        )}
+      </ActionGroup>
+    </>
   );
 };
 

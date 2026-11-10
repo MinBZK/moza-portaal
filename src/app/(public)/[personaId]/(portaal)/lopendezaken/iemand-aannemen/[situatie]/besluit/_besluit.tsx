@@ -207,9 +207,9 @@ const Besluit = ({
                 mogelijk.{" "}
                 <InfoToggletip label="Toelichting bij de termijn van het besluit">
                   UWV beslist binnen een redelijke termijn. Die termijn is ten
-                  hoogste acht weken. Lukt dat niet, dan laat UWV weten wanneer
-                  het besluit komt. De datum van dit besluit is voor het
-                  prototype aangenomen.
+                  hoogste 14 weken (Wajong, artikel 6:1). Lukt dat niet, dan
+                  laat UWV weten wanneer het besluit komt. De datum van dit
+                  besluit is voor het prototype aangenomen.
                 </InfoToggletip>
               </div>
             </>
