@@ -34,7 +34,9 @@ import {
 } from "../_useAannemen";
 import AlIngediend from "../_alIngediend";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
-import { datumNL, euroHeel, type Werkgever } from "../_werkgever";
+import { euroHeel, type Werkgever } from "../_werkgever";
+import SourceLinks from "@/components/SourceLinks";
+import { BRON } from "../_wetsbronnen";
 
 type Props = {
   perSituatie: Record<"gemeente" | "wajong" | "wia", DemoAannemen>;
@@ -202,8 +204,8 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Paragraph>
-            Vraag aan binnen zes maanden na de eerste werkdag (Participatiewet,
-            artikel 10d lid 2).
+            Vraag aan binnen zes maanden na de start van het dienstverband
+            (Participatiewet, artikel 10d lid 2).
           </Paragraph>
           {waarom(
             "participatiewet",
@@ -216,21 +218,28 @@ const AanvraagInhoud = ({
               <UnorderedList>
                 <UnorderedListItem>
                   De gemeente beoordeelt of {kandidaat.voornaam} met een
-                  volledige baan het minimumloon niet kan verdienen
-                  (Participatiewet, artikel 10c).
+                  volledige baan het minimumloon niet kan verdienen.
                 </UnorderedListItem>
                 <UnorderedListItem>
-                  Een deskundige meet de loonwaarde op de werkplek (Besluit
-                  loonkostensubsidie Participatiewet, artikel 2). Daarna weet u
-                  het precieze bedrag.
+                  Een loonwaardedeskundige beoordeelt het werk op de werkplek.
+                  Met dat rapport stelt de gemeente de loonwaarde vast. Daarna
+                  weet u het precieze bedrag.
                 </UnorderedListItem>
                 <UnorderedListItem>
                   U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
-                  begonnen? Dan binnen acht weken (Algemene wet bestuursrecht,
-                  artikel 4:13). Anders binnen vijf weken na de meting
-                  (Participatiewet, artikel 10d lid 12).
+                  begonnen? Dan binnen acht weken, tenzij de gemeente laat weten
+                  dat het langer duurt. Anders binnen vijf weken nadat de
+                  gemeente de loonwaarde heeft vastgesteld.
                 </UnorderedListItem>
               </UnorderedList>
+              <SourceLinks
+                sources={[
+                  BRON.pwet10c,
+                  BRON.besluitLks3,
+                  BRON.awb,
+                  BRON.pwet10dLid12,
+                ]}
+              />
             </>,
           )}
         </>,
@@ -246,10 +255,11 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("ld")}
           <Paragraph>
-            Loondispensatie geldt vanaf de maand waarin u aanvraagt (Besluit
-            loondispensatie Wajong, artikel 4). UWV stelt het percentage vast en
-            beslist binnen acht weken.
+            Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
+            het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
+            meestal binnen acht weken een brief.
           </Paragraph>
+          <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
           {waarom(
             "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
             "heeft_recht_op_loondispensatie",
@@ -315,7 +325,8 @@ const AanvraagInhoud = ({
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
             bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
-            subsidie vragen bij UWV (Wet WIA, artikel 36).
+            subsidie vragen bij UWV, als het dienstverband ten minste zes
+            maanden duurt (Wet WIA, artikel 36).
           </Paragraph>
         )}
         {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
@@ -324,14 +335,16 @@ const AanvraagInhoud = ({
         {id === "pp" && (
           <>
             <Paragraph>
-              Onbetaald werk bij u vóór de eerste werkdag, twee maanden
-              (Participatiewet, artikel 8a). De kandidaat vraagt de gemeente om
-              toestemming; dat gaat buiten deze aanvraag om.
+              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt twee
+              maanden; de gemeente kan dat met ten hoogste vier maanden
+              verlengen (Participatiewet, artikel 8a lid 2 onder d). De
+              kandidaat vraagt de gemeente om toestemming; dat gaat buiten deze
+              aanvraag om.
             </Paragraph>
             {waarom(
               "participatiewet",
               "mag_proefplaatsing_aangaan",
-              "Proefplaatsing",
+              "Proefplaats",
             )}
           </>
         )}
@@ -362,9 +375,10 @@ const AanvraagInhoud = ({
           "UWV, geen aanvraag nodig",
           <>
             <Paragraph>
-              U hoeft niets aan te vragen. Wordt de werknemer ziek, dan meldt u
-              dat bij UWV en betaalt UWV u ziekengeld (Ziektewet, artikel 29b).{" "}
-              {duurTekst(nrp?.duurJaren)}
+              U hoeft niets aan te vragen. Wordt de werknemer ziek? Meld dat bij
+              UWV, uiterlijk op de eerste dag na zes weken ziekte (Ziektewet,
+              artikel 38a lid 3). UWV betaalt dan ziekengeld (Ziektewet, artikel
+              29b). {duurTekst(nrp?.duurJaren)}
             </Paragraph>
             {waarom(
               "ziektewet",
@@ -423,7 +437,6 @@ const AanvraagInhoud = ({
   const uwv = situatie === "wajong";
   const demo = perSituatie[uwv ? "wajong" : "gemeente"];
   const naarWie = uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
-  const bestaand = staat.zaken[situatie];
   const verstuurt = paneelIds
     .filter(gekozen)
     .map((id) => NAAM[id].toLowerCase());
@@ -457,6 +470,8 @@ const AanvraagInhoud = ({
       situatie,
       nieuweZaakStand(eersteFase, a, onderwerp, INGEDIEND_OP),
     );
+    // Deze aanvraag is nu ingediend; een volgende begint opnieuw.
+    werkBij({ aanvraagIngediend: true });
     zaakAanmaken(
       situatie,
       demo.zaak,
@@ -484,7 +499,6 @@ const AanvraagInhoud = ({
   if (
     bekend &&
     route.zaak !== null &&
-    !bestaand?.ingediend &&
     (staat.kandidaat !== kandidaat.bsnMasker || !a.aanvang)
   )
     return (
@@ -581,47 +595,32 @@ const AanvraagInhoud = ({
           />
         )}
 
-        {bekend && paneelIds.length > 0 && bestaand?.ingediend && (
-          <Alert type="info">
+        {bekend && paneelIds.length > 0 && verstuurt.length > 0 && (
+          <section className="rhc-mox-row-gap" aria-labelledby="versturen">
+            <Heading level={2} id="versturen">
+              Versturen
+            </Heading>
             <Paragraph>
-              U hebt deze aanvraag al verstuurd
-              {bestaand.verstuurdOp
-                ? ` op ${datumNL(bestaand.verstuurdOp)}`
-                : ""}
-              . U volgt de aanvraag in Lopende zaken.
+              U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
+              {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
+              ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt de
+              zaak bij Lopende zaken.
             </Paragraph>
-          </Alert>
+            <FormFieldCheckboxOption
+              id="bevestiging"
+              invalid={bevestigFout && !bevestigd}
+              errorMessage={
+                bevestigFout && !bevestigd
+                  ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+                  : undefined
+              }
+              label="Ik heb alles naar waarheid ingevuld."
+              name="bevestiging"
+              checked={bevestigd}
+              onChange={(event) => setBevestigd(event.target.checked)}
+            />
+          </section>
         )}
-
-        {bekend &&
-          paneelIds.length > 0 &&
-          !bestaand?.ingediend &&
-          verstuurt.length > 0 && (
-            <section className="rhc-mox-row-gap" aria-labelledby="versturen">
-              <Heading level={2} id="versturen">
-                Versturen
-              </Heading>
-              <Paragraph>
-                U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
-                {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
-                ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
-                de zaak bij Lopende zaken.
-              </Paragraph>
-              <FormFieldCheckboxOption
-                id="bevestiging"
-                invalid={bevestigFout && !bevestigd}
-                errorMessage={
-                  bevestigFout && !bevestigd
-                    ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
-                    : undefined
-                }
-                label="Ik heb alles naar waarheid ingevuld."
-                name="bevestiging"
-                checked={bevestigd}
-                onChange={(event) => setBevestigd(event.target.checked)}
-              />
-            </section>
-          )}
 
         {bekend && (
           <StepNavigation
@@ -629,21 +628,21 @@ const AanvraagInhoud = ({
             backLabel={terugNaar(1)}
             later="/personeel"
             next={
-              paneelIds.length > 0 && bestaand?.ingediend
-                ? { label: "Bekijk de zaak", href: demo.zaak.url }
-                : // Afronden als er niets naar de gemeente of UWV gaat: zonder
-                  // aanvraag, of met alleen regelingen zonder aanvraag gekozen.
-                  // Beide gaan naar de bedankpagina.
-                  {
-                    label:
-                      verstuurt.length > 0 ||
-                      (!zonderAanvraag && aantalGekozen === 0)
-                        ? "Dossier indienen"
-                        : "Afronden",
-                    onClick: verstuurt.length > 0 ? indienen : klaar,
-                    final: true,
-                    noIcon: true,
-                  }
+              // Afronden als er niets naar de gemeente of UWV gaat: zonder
+              // aanvraag, of met alleen regelingen zonder aanvraag gekozen.
+              // Beide gaan naar de bedankpagina. Een ingediende aanvraag komt
+              // hier niet (isIngediend hierboven); een nieuwe aanvraag voor
+              // dezelfde situatie mag weer worden ingediend.
+              {
+                label:
+                  verstuurt.length > 0 ||
+                  (!zonderAanvraag && aantalGekozen === 0)
+                    ? "Dossier indienen"
+                    : "Afronden",
+                onClick: verstuurt.length > 0 ? indienen : klaar,
+                final: true,
+                noIcon: true,
+              }
             }
           />
         )}

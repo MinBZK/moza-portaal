@@ -19,7 +19,7 @@ Inhoud uit andere bronnen valt hier niet onder. Die schrijven we niet zelf en ku
 - Bij een persoonlijke begroeting mogen we de **voornaam** gebruiken: “Welkom Robin Vogel”.
 - We vermijden het benoemen van geslacht. We gebruiken **“de ondernemer”** of **“u”** in plaats van “hij”, “zij” of “hij/zij”.
 - Waar een verwijswoord nodig is, gebruiken we **“die”** of **“diegene”**.
-- We schrijven **“u hebt”**, niet “u heeft”: “U hebt nog geen items bewaard.”
+- We schrijven **“u heeft”**, niet “u hebt”: “U heeft nog geen items bewaard.” Ook in een vraag: “Heeft u een KVK-nummer?”
 - Spreekt de organisatie over zichzelf, dan schrijven we **“wij”**, niet “we”: “Wij halen uw berichten op.”
 
 ## Schrijfstijl
@@ -64,6 +64,12 @@ We gebruiken overal dezelfde termen voor dezelfde begrippen.
 | Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
 | Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
 | Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
+| De gebruiker als werkgever            | u, uw                   | De werkgever                        |
+| Wie u wilt aannemen, tot de start     | Kandidaat               | De persoon, Iemand, Medewerker      |
+| Wie bij u in dienst is                | Werknemer               | Medewerker, Personeelslid           |
+| Onbetaald werk op proef               | Proefplaats             | Proefplaatsing                      |
+
+**Kandidaat of werknemer?** Tot de eerste werkdag heet de persoon **kandidaat**, daarna **werknemer**: “Staat de kandidaat in het doelgroepregister?”, “Wordt de werknemer ziek? Meld dat bij UWV.” Gaat een tekst over wat na de start gebeurt, dan is het ook vóór de start al “werknemer”: “Is de werknemer al begonnen?” In de wettelijke omschrijving van een regeling blijft het “werknemer”: “Voor een werknemer uit de doelgroep banenafspraak.” Zo doet UWV het ook. “Iemand” gebruiken we alleen in de naam van een taak.
 
 **Bewaren, Opslaan of Versturen?** Het zijn drie verschillende handelingen, en de knop zegt welke:
 
@@ -109,7 +115,7 @@ Kopteksten bestaan uit een enkele zin en hebben **geen punt** aan het einde.
 
 ### Knopteksten
 
-- **Kort en met een werkwoord**: “Opslaan”, “Versturen”, “Annuleren”, “Inloggen”.
+- **Kort en met een werkwoord**: “Opslaan”, “Versturen”, “Annuleren”, “Inloggen”. Liever met een object als dat duidelijker is: “Aanvraag versturen”. Geen “OK” of “Doorgaan” zonder te zeggen wat er gebeurt.
 - **Acties bij inhoud**: “Bewaren”, “Delen”, “Niet relevant voor mij”.
 - **Navigatie**: “Volgende”, “Vorige”, “Meer Subsidies en financiering”.
 
@@ -119,11 +125,19 @@ Noemen we in een tekst een knop, tab of optie, dan zetten we de naam **vet**, zo
 
 ### Lege staten
 
-We zeggen wat er nog niet is en geven een suggestie: “U hebt nog geen items bewaard. Gebruik **Bewaren** bij Subsidies en financiering, Wetten en regelgeving, en Berichten over uw buurt om items hier te verzamelen.”
+We zeggen wat er nog niet is en geven een suggestie: “U heeft nog geen items bewaard. Gebruik **Bewaren** bij Subsidies en financiering, Wetten en regelgeving, en Berichten over uw buurt om items hier te verzamelen.”
 
 ### Foutmeldingen
 
 Opbouwend en gericht op wat de gebruiker kan doen. We zeggen wat nodig is om de fout te herstellen, niet wat er fout ging: “Kies minimaal één manier waarop u berichten over taken wilt krijgen.”
+
+### Labels en plaatshouders
+
+Een veld heeft altijd een label boven het veld. Een plaatshouder vervangt het label niet: die verdwijnt bij het typen en heeft weinig contrast. Gebruik een plaatshouder hoogstens voor een voorbeeld: “Bijvoorbeeld 06 12 34 56 78”.
+
+### Bevestigingen
+
+Noem de actie en het gevolg, niet “Weet u het zeker?”: “Aanvraag intrekken? U kunt die daarna niet meer wijzigen.” De knop heet zoals de actie: **Aanvraag intrekken** en **Annuleren**.
 
 ### Informatie en terugkoppeling
 
@@ -170,10 +184,20 @@ Informatief, niet alarmerend: “Contactgegevens die u hier aanpast, worden auto
   - Enkel: ‘ en ’, ook in samentrekkingen zoals mkb’er en komma’s
   - Rechte quotes alleen in code en HTML-attributen
 
+## Toon
+
+- **Niet kleinerend**: geen “gewoon”, “simpelweg”, “even” of “makkelijk”. Wat voor de een makkelijk is, is dat voor de ander niet.
+- **Geen uitroeptekens** in de interface.
+- **Apparaatneutraal**: “kies” of “selecteer”, niet “klik” of “tik”. Niet iedereen gebruikt een muis.
+
 ## Inclusief taalgebruik
 
 - **Genderneutraal**: “u”, “de gebruiker”, “de ondernemer”, “die”, “diegene” vermijd “hij”, “zij”, “zijn”, “haar”.
-- Geen uitsluitend mannelijke of vrouwelijke voornaamwoorden.
+- Geen uitsluitend mannelijke of vrouwelijke voornaamwoorden. Leid geen geslacht af uit een voornaam.
+- **Neutrale functienamen**: “medewerker”, niet “medewerkster”.
+- **De persoon eerst**: “iemand met een arbeidsbeperking”, niet “een gehandicapte”.
+- **Niemand als afwijkend neerzetten**: niet “een normale collega”, wel “een collega in dezelfde functie”.
+- “Mensen in Nederland” als nationaliteit niet bedoeld is, niet “Nederlanders”.
 - We schrijven niets wat een **beperking** veronderstelt.
   - Niet: “U kunt dit niet zien.”
   - Wel: “Dit is niet zichtbaar.”
