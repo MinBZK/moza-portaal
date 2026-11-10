@@ -63,7 +63,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 	/* ==== Layout ============================================================= */
 
-	/* --- Pagina --- */
+	/* ==== Pagina ============================================================= */
 	& {
 		row-gap: 0;
 	}
@@ -91,7 +91,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		gap: var(--rhc-space-xl);
 	}
 
-	/* --- Header --- */
+	/* ==== Header ============================================================= */
 	.rhc-nav-bar__container {
 		border-block-end-width: 0;
 	}
@@ -216,7 +216,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Navigatie --- */
+	/* ==== Navigatie ========================================================== */
 	.rhc-side-nav__link {
 		border-radius: var(--rhc-border-radius-md);
 		color: var(--rhc-color-light-cool-grey-900);
@@ -236,14 +236,14 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Footer --- */
+	/* ==== Footer ============================================================= */
 	.rhc-page-footer {
 		background-color: var(--rhc-color-light-cool-grey-800);
 	}
 
 	/* ==== Componenten ======================================================== */
 
-	/* --- Accordion --- */
+	/* ==== Accordion ========================================================== */
 	.utrecht-accordion {
 		padding: var(--rhc-space-max-xl);
 	}
@@ -257,7 +257,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		padding-inline-start: var(--rhc-space-4xl);
 	}
 
-	/* --- Badges --- */
+	/* ==== Badges ============================================================= */
 	.rhc-number-badge {
 		--nl-number-badge-background-color: var(--rhc-color-light-rood-600);
 		font-size: var(--rhc-text-font-size-xs);
@@ -270,7 +270,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		line-height: 0;
 	}
 
-	/* --- Kaarten --- */
+	/* ==== Kaarten ============================================================ */
 	.rhc-mox-card,
 	.mox-faq-card,
 	.rhc-table {
@@ -331,7 +331,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		);
 	}
 
-	/* --- Meldingen --- */
+	/* ==== Meldingen ========================================================== */
 	.utrecht-alert {
 		border-color: var(--rhc-color-hemelblauw-100);
 		border-width: var(--rhc-border-width-sm);
@@ -353,7 +353,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		inline-size: 95%;
 	}
 
-	/* --- Paginering --- */
+	/* ==== Paginering ========================================================= */
 	.ams-pagination__link {
 		align-items: center;
 		background-color: var(--rhc-color-wit);
@@ -379,7 +379,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Tekst --- */
+	/* ==== Tekst ============================================================== */
 	.mox-line-clamp {
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
@@ -428,7 +428,7 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 		}
 	}
 
-	/* --- Toggletip --- */
+	/* ==== Toggletip ========================================================== */
 	.mox-toggletip {
 		--rhc-toggletip-icon-size: 1.125rem;
 		--rhc-toggletip-size: 1.125rem;

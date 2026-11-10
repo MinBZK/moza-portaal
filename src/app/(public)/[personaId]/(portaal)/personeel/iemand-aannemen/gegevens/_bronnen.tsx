@@ -568,6 +568,7 @@ const Bronnen = ({
           next={{
             label: verderNaar(2),
             disabled: !gekozen || !opgave || !resultaat.bekend,
+            busy: !resultaat.bekend,
             onBlocked: naarInvoer,
             // Stap 2 heeft één vorm, ook als er niets te versturen is.
             onClick: () =>

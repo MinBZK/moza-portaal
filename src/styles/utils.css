@@ -5,7 +5,7 @@
 
 /* ==== Hulpmiddelen voor het prototype ==================================== */
 
-/* --- Flags- en persona-paneel --- */
+/* ==== Flags- en persona-paneel =========================================== */
 
 /* Knoppen rechtsonder die het Flags- en persona-paneel openen. */
 .prototype-options {
@@ -269,7 +269,7 @@ dialog.prototype-side-overlay[open] {
 	margin-block-start: var(--rhc-space-sm);
 }
 
-/* --- PoC-banner --- */
+/* ==== PoC-banner ========================================================= */
 
 .prototype-temp-poc-banner {
 	/* Top right, over the header. Note: it covers part of the language

@@ -140,6 +140,7 @@ const UitlegTaalmodel = ({
           appearance="secondary-action-button"
           onClick={vraag}
           aria-disabled={stand.status === "bezig"}
+          busy={stand.status === "bezig"}
         >
           {stand.status === "bezig"
             ? "Het taalmodel schrijft…"

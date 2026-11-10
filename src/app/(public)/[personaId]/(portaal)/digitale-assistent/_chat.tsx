@@ -915,6 +915,7 @@ const Chat = ({
             type="submit"
             appearance="primary-action-button"
             aria-disabled={bezig || undefined}
+            busy={bezig}
           >
             Vraag stellen
           </Button>

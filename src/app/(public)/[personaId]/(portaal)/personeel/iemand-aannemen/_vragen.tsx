@@ -537,6 +537,7 @@ const VragenMetStaat = ({
           label: "Ja, ik wil doorgaan",
           href: "/personeel/iemand-aannemen/gegevens",
           disabled: !kanVerder,
+          busy: !resultaat.bekend && !resultaat.fout,
           describedBy: kanVerder ? undefined : "aanvragen-bezig",
         }}
       />
