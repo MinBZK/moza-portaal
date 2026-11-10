@@ -13,10 +13,9 @@ const VoorbeeldberekeningPage = () => (
     <Heading level={1}>{TAAK_TITEL}</Heading>
     <div className="rhc-mox-card rhc-mox-row-gap">
       <Paragraph>
-        Bereken wat regelingen u opleveren als u iemand met afstand tot de
-        arbeidsmarkt aanneemt. Dit is een schatting. Nadat u de regelingen hebt
-        aangevraagd, berekenen gemeente, UWV en Belastingdienst het echte
-        bedrag.
+        Bereken wat regelingen u kunnen opleveren. Dit is een schatting. Het
+        echte bedrag stellen de gemeente, UWV en de Belastingdienst vast. Er
+        kunnen ook regelingen voor u gelden die hier niet staan.
       </Paragraph>
       <Vragen />
     </div>
