@@ -68,19 +68,20 @@ Het MijnOverheid Zakelijk portaal is een overheidsportaal gebouwd met Next.js, R
 
 ## Schrijfwijzer (kernregels)
 
-Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Geldt voor de teksten die we zelf schrijven, niet voor inhoud uit andere bronnen (berichten van organisaties, regelgeving, antwoorden van de assistent).
+Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Laat teksten nalopen met de skill `/copywriter` (in `.claude/skills/copywriter/`), ook op termen die door elkaar lopen. Geldt voor de teksten die we zelf schrijven, niet voor inhoud uit andere bronnen (berichten van organisaties, regelgeving, antwoorden van de assistent).
 
 ### Aanspreking en toon
 
 - Spreek de gebruiker aan met "u" en "uw", nooit "je" of "jij". Bij een begroeting mag de voornaam ("Welkom Robin Vogel").
 - Genderneutraal: "de ondernemer" of "u", en "die" of "diegene" als verwijswoord.
-- Schrijf "u hebt", niet "u heeft". Spreekt de organisatie over zichzelf, dan "wij", niet "we": "Wij halen uw berichten op."
+- Schrijf "u heeft", niet "u hebt"; ook "Heeft u …?". Spreekt de organisatie over zichzelf, dan "wij", niet "we": "Wij halen uw berichten op."
 - Formeel maar toegankelijk, B1-niveau, geen jargon zonder uitleg en geen onnodige Engelse termen.
 - Actief boven passief en noem wie iets doet: "De RVO heeft uw aanvraag ontvangen", niet "Uw aanvraag is ontvangen".
 - Zeg wat de gebruiker kan doen, niet wat het systeem doet.
 - Bij lege staten en fouten: zeg wat de gebruiker kan doen, niet alleen wat er misgaat.
 - Zinnen van 8 tot 16 woorden, hoogstens één bijzin. Splits lange zinnen.
-- Veronderstel geen beperking: "Dit is niet zichtbaar", niet "U kunt dit niet zien".
+- Veronderstel geen beperking: "Dit is niet zichtbaar", niet "U kunt dit niet zien". Zet de persoon eerst ("iemand met een arbeidsbeperking") en leid geen geslacht af uit een voornaam.
+- Niet kleinerend ("gewoon", "even", "simpelweg"), geen uitroeptekens, en apparaatneutraal: "kies", niet "klik".
 
 ### Terminologie
 
@@ -118,6 +119,8 @@ De digitale assistent en de berichtenbox schrijf je in lopende tekst met kleine 
 - Noem je een knop, tab of optie in een tekst, zet de naam dan in `<strong>`, zonder aanhalingstekens: "Kies bij een bericht <strong>Archiveren</strong>."
 - Lege staat: zeg wat er nog niet is én wat de gebruiker kan doen.
 - Foutmelding: zeg wat nodig is om de fout te herstellen.
+- Label altijd boven het veld; een plaatshouder is hoogstens een voorbeeld, nooit het label.
+- Bevestiging: noem de actie en het gevolg, en laat de knop zo heten ("Aanvraag intrekken"), niet "Weet u het zeker?".
 - Linkteksten beschrijvend: zeg waar de link heen gaat of wat die doet. Nooit "klik hier", "meer info", "lees meer" of een kale URL. Dezelfde tekst gaat naar dezelfde plek. De zichtbare tekst staat vooraan in de toegankelijke naam (WCAG 2.4.4, 2.5.3).
 - Gebruik dezelfde termen in navigatie, kruimelpad, pagina's en formulieren.
 
