@@ -70,7 +70,6 @@ import {
   UnorderedListItem,
   VisuallyHidden,
 } from "@/components/rhc";
-import DataSummaryLinkItem from "@/components/DataSummaryLinkItem";
 import BarGraph from "@/components/BarGraph";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import CountdownBar from "@/components/CountdownBar";
@@ -803,37 +802,6 @@ const berichtenboxEntries: Entry[] = [
     ),
   },
   {
-    name: "Wat kunt u doen?",
-    file: "rhc-mox-message-actions in src/styles/rhc.css",
-    description:
-      "Blok onder een bericht met de acties die de ondernemer nu kan doen (variant C).",
-    options: [
-      [
-        "rhc-mox-message-actions",
-        "class",
-        "",
-        "Kader om kop, uitleg en knoppen",
-      ],
-    ],
-    example: (
-      <section
-        aria-labelledby="demo-wat-kunt-u-doen"
-        className="rhc-mox-message-actions"
-      >
-        <Heading level={5} id="demo-wat-kunt-u-doen">
-          Wat kunt u doen?
-        </Heading>
-        <Paragraph>Betaal de aanslag voor 1 december.</Paragraph>
-        <ActionGroup role="group">
-          <Button appearance="primary-action-button">Nu betalen</Button>
-          <Button appearance="secondary-action-button">
-            Betalingsregeling aanvragen
-          </Button>
-        </ActionGroup>
-      </section>
-    ),
-  },
-  {
     name: "MapDialog",
     file: "src/app/(public)/[personaId]/(portaal)/berichtenbox/_mapDialog.tsx",
     description:
@@ -998,8 +966,14 @@ const assistantEntries: Entry[] = [
   {
     name: "Deelverzoek",
     file: "src/app/(public)/[personaId]/(portaal)/digitale-assistent/_onderdelen.tsx",
-    description:
+    description: [
       "Vraag om toestemming om gegevens uit een bron te gebruiken. Na delen of weigeren toont de kaart de uitkomst.",
+      <>
+        Gebruikt de gewone <NextLink href="/demo/card">Card</NextLink> (
+        <code>rhc-mox-card</code>) met de varianten <code>compact</code> en{" "}
+        <code>info</code>.
+      </>,
+    ],
     options: [
       [
         "item",
@@ -2854,8 +2828,8 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
       ),
     },
     {
-      name: "DataSummary en DataSummaryItem",
-      file: "@/components/rhc",
+      name: "DataSummary",
+      file: "@/components/rhc; src/components/DataSummaryItem.tsx",
       description:
         "Gegevens als naam en waarde, zoals bij een wet of subsidie.",
       options: [
@@ -2872,12 +2846,27 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "Naam en waarde",
         ],
         ["DataSummaryItem href", "string", "–", "Waarde als link"],
+        [
+          "DataSummaryItem keyHref",
+          "string",
+          "–",
+          "Naam als link (next/link), zoals in de overzichten van Componenten en Ontwerppatronen",
+        ],
       ],
       example: (
-        <DataSummary appearance="row">
-          <DataSummaryItem itemKey="Bron" itemValue="Rijksoverheid" />
-          <DataSummaryItem itemKey="In werking" itemValue="1 juli 2023" />
-        </DataSummary>
+        <>
+          <DataSummary appearance="row">
+            <DataSummaryItem itemKey="Bron" itemValue="Rijksoverheid" />
+            <DataSummaryItem itemKey="In werking" itemValue="1 juli 2023" />
+          </DataSummary>
+          <DataSummary className="rhc-mox-summary-rows">
+            <DataSummaryItem
+              keyHref="/demo/card"
+              itemKey="Card"
+              itemValue="Witte kaart met rand en schaduw, voor een blok inhoud."
+            />
+          </DataSummary>
+        </>
       ),
     },
     {
@@ -3459,6 +3448,18 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
         ],
         ["defaultOpen", "boolean", "true", "Bij collapsible: eerst open"],
         [
+          "rhc-mox-card--compact / compact",
+          "class / boolean",
+          "false",
+          "Minder padding en minder ruimte tussen de onderdelen, zoals in een gesprek",
+        ],
+        [
+          "rhc-mox-card--info / info",
+          "class / boolean",
+          "false",
+          "Info-achtergrond, om de kaart te laten opvallen",
+        ],
+        [
           "action",
           "ReactNode",
           "–",
@@ -3485,6 +3486,16 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           >
             <Paragraph>
               De gemeente beoordeelt uw aanvraag voor loonkostensubsidie.
+            </Paragraph>
+          </Card>
+          <Card
+            heading="Deelverzoek uit uw EU Business Wallet"
+            headingLevel={4}
+            compact
+            info
+          >
+            <Paragraph>
+              De assistent wil uw energieverbruik van 2025 gebruiken.
             </Paragraph>
           </Card>
           <section className="rhc-mox-card" aria-labelledby="demo-card-kop">
@@ -4061,11 +4072,11 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           {DEMO_COMPONENT_NAMES.map((name) => byName.get(name))
             .filter((entry) => entry !== undefined)
             .map((entry) => (
-              <DataSummaryLinkItem
+              <DataSummaryItem
                 key={entry.name}
                 itemKey={entry.name}
                 itemValue={summaryOf(entry) ?? ""}
-                href={`/demo/${demoId(entry.name)}`}
+                keyHref={`/demo/${demoId(entry.name)}`}
               />
             ))}
         </DataSummary>
@@ -4076,11 +4087,11 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
         </Heading>
         <DataSummary className="rhc-mox-summary-rows">
           {DEMO_LISTS.map((list) => (
-            <DataSummaryLinkItem
+            <DataSummaryItem
               key={list.id}
               itemKey={list.name}
               itemValue={lists[list.id].intro}
-              href={`/demo/${list.id}`}
+              keyHref={`/demo/${list.id}`}
             />
           ))}
         </DataSummary>

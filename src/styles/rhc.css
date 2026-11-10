@@ -1081,6 +1081,20 @@ small,
 		margin-block-start: auto;
 	}
 
+	.rhc-mox-card.rhc-mox-card--compact {
+		gap: var(--rhc-space-lg);
+		padding: var(--rhc-space-lg);
+	}
+
+	.rhc-mox-card.rhc-mox-card--info {
+		background-color: var(--rhc-color-info-50);
+	}
+
+	.rhc-mox-card--compact.rhc-mox-card--collapsible .nl-heading {
+		margin-block: calc(-1 * var(--rhc-space-sm));
+		margin-inline: calc(-1 * var(--rhc-space-lg));
+	}
+
 	.rhc-mox-card--collapsible {
 		.nl-heading {
 			margin-block-end: calc(-1 * var(--rhc-space-xl));
@@ -2858,17 +2872,6 @@ small,
 
 /* --- Message box --- */
 .rhc-theme.mox-theme {
-	/* Berichtenbox A/B/C-test, variant C: uitleg en directe acties. */
-	.rhc-mox-message-actions {
-		background-color: var(--rhc-color-cool-grey-50);
-		border: var(--rhc-border-width-sm) solid var(--rhc-color-cool-grey-200);
-		border-radius: var(--rhc-border-radius-md);
-		display: flex;
-		flex-direction: column;
-		gap: var(--rhc-space-lg);
-		padding: var(--rhc-space-lg);
-	}
-
 	/* Variant B: het bericht als pdf in de pagina. */
 	.rhc-mox-pdf-preview {
 		display: flex;
