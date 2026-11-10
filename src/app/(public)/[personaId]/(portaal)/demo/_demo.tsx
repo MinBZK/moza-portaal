@@ -1,8 +1,8 @@
 "use client";
 
-// Overview of the project's own components (src/components, not RHC), with
-// their options and a live example. Prototype page: delete the folder
-// (demo) when it is no longer needed; nothing else links to it.
+// The components (own and RHC) with their options and a live example: an
+// overview on /demo and one page per component on /demo/<id>. Prototype
+// pages: delete the folder (demo) when it is no longer needed.
 import {
   useEffect,
   useOptimistic,
@@ -11,7 +11,7 @@ import {
   useTransition,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { setFeatureFlag } from "@/app/actions";
 import { useFlag } from "@/app/(public)/_flags/flagsContext";
 import {
@@ -70,6 +70,7 @@ import {
   UnorderedListItem,
   VisuallyHidden,
 } from "@/components/rhc";
+import DataSummaryLinkItem from "@/components/DataSummaryLinkItem";
 import BarGraph from "@/components/BarGraph";
 import { Dropdown, DropdownItem } from "@/components/Dropdown";
 import CountdownBar from "@/components/CountdownBar";
@@ -136,6 +137,15 @@ type Entry = {
   description: ReactNode | ReactNode[];
   options: Option[];
   example?: ReactNode;
+  /** One sentence for the overview, when the description starts with JSX. */
+  summary?: string;
+};
+
+/** The first sentence of the description, for the overview. */
+const summaryOf = ({ summary, description }: Entry) => {
+  if (summary) return summary;
+  const first = Array.isArray(description) ? description[0] : description;
+  return typeof first === "string" ? first.split(/(?<=\.)\s/)[0] : undefined;
 };
 
 const Options = ({ options }: { options: Option[] }) => (
@@ -555,36 +565,43 @@ const DemoSiteSearch = () => {
   );
 };
 
-/** Card per component: kind, description, options and an example. */
-const card = ({ name, file, description, options, example }: Entry) => (
-  <section
-    key={name}
-    id={demoId(name)}
-    className="rhc-mox-card"
-    aria-labelledby={`${demoId(name)}-kop`}
-  >
-    <Heading level={2} id={`${demoId(name)}-kop`}>
-      {name}
-    </Heading>
+/** One component: kind, file, description, options and an example. */
+const ComponentDetails = ({
+  name,
+  file,
+  description,
+  options,
+  example,
+}: Entry) => (
+  <>
+    <Heading level={1}>{name}</Heading>
     <Paragraph>
       <TextBadge>{KIND_LABELS[DEMO_COMPONENTS[name]]}</TextBadge>
     </Paragraph>
-    <Paragraph>
-      <code>{file}</code>
-    </Paragraph>
-    {(Array.isArray(description) ? description : [description]).map(
-      (text, index) => (
-        <Paragraph key={index}>{text}</Paragraph>
-      ),
-    )}
-    <Options options={options} />
+    <section className="rhc-mox-card" aria-labelledby="demo-beschrijving">
+      <Heading level={2} id="demo-beschrijving">
+        Beschrijving
+      </Heading>
+      <Paragraph>
+        <code>{file}</code>
+      </Paragraph>
+      {(Array.isArray(description) ? description : [description]).map(
+        (text, index) => (
+          <Paragraph key={index}>{text}</Paragraph>
+        ),
+      )}
+      <Heading level={2}>Opties</Heading>
+      <Options options={options} />
+    </section>
     {example && (
-      <>
-        <Heading level={3}>Voorbeeld</Heading>
+      <section className="rhc-mox-card" aria-labelledby="demo-voorbeeld">
+        <Heading level={2} id="demo-voorbeeld">
+          Voorbeeld
+        </Heading>
         {example}
-      </>
+      </section>
     )}
-  </section>
+  </>
 );
 
 const SimpleTable = ({ rows }: { rows: [string, string][] }) => (
@@ -1472,7 +1489,11 @@ const layoutEntries: Entry[] = [
   },
 ];
 
-const ComponentsDemoPage = () => {
+/**
+ * Without `id`: the overview with a link to each component. With `id`: the
+ * page of that component, or of one of the lists without an example.
+ */
+const ComponentsDemo = ({ id }: { id?: string }) => {
   const [organisation, setOrganisation] = useState("Bloemenkwekerij");
   const [slider, setSlider] = useState(32);
   const countdownRef = useRef<{ reset: () => void }>(null);
@@ -1491,6 +1512,8 @@ const ComponentsDemoPage = () => {
     {
       name: "Alert",
       file: "src/components/Alert.tsx",
+      summary:
+        "Melding van RHC, met een sluitknop en de mogelijkheid om vanzelf te verdwijnen.",
       description: (
         <>
           Uitbereiding op{" "}
@@ -1801,6 +1824,8 @@ const ComponentsDemoPage = () => {
     {
       name: "ChangedValue en ChangedValueGroup",
       file: "src/components/ChangedValue.tsx",
+      summary:
+        "Een waarde die verandert door wat de gebruiker invult, wordt even vet en groter.",
       description: [
         <>
           Een waarde die verandert door wat de gebruiker invult, wordt even vet
@@ -1874,6 +1899,8 @@ const ComponentsDemoPage = () => {
     {
       name: "InfoToggletip, FieldLabel en Fieldset",
       file: "src/components/InfoToggletip.tsx, FieldLabel.tsx en Fieldset.tsx",
+      summary:
+        "Een knop met een i-icoon die korte uitleg opent, als laag onder de knop.",
       description: [
         <>
           Een knop met een i-icoon die korte uitleg opent, als laag onder de
@@ -1984,6 +2011,7 @@ const ComponentsDemoPage = () => {
     {
       name: "PageNumberNavigation",
       file: "src/components/pageNumberNavigation.tsx",
+      summary: "Paginering met een link per paginanummer.",
       description: (
         <>
           Paginering met next/link, gebouwd op{" "}
@@ -2218,6 +2246,7 @@ const ComponentsDemoPage = () => {
     {
       name: "StepNavigation",
       file: "src/components/StepNavigation.tsx",
+      summary: "Terug en Verder onderaan een stap in een taak.",
       description: [
         <>
           Terug en Verder onderaan een stap in een taak. Voor het patroon{" "}
@@ -2297,6 +2326,8 @@ const ComponentsDemoPage = () => {
     {
       name: "SiteSearch",
       file: "src/components/SiteSearch.tsx",
+      summary:
+        "Eén veld om in het hele portaal te zoeken of een vraag te stellen.",
       description: [
         <>
           Eén veld om in het hele portaal te zoeken of een vraag te stellen.
@@ -2537,6 +2568,8 @@ const ComponentsDemoPage = () => {
     {
       name: "Kleine tekst",
       file: "rhc-mox-small-text en --rhc-text-font-size-xs in src/styles/rhc.css",
+      summary:
+        "Kleine, rustige tekst onder of naast andere inhoud, zoals een notitie.",
       description: [
         <>
           <code>rhc-mox-small-text</code> is kleine, rustige tekst onder of
@@ -3880,6 +3913,7 @@ const ComponentsDemoPage = () => {
     {
       name: "Lay-outhulpen",
       file: "rhc-mox-stack, rhc-mox-main-container in src/styles/rhc.css",
+      summary: "Classes voor verticale ruimte met gap op de container.",
       description: [
         <>
           Verticale ruimte komt van <code>gap</code> op de container, niet van
@@ -3953,78 +3987,106 @@ const ComponentsDemoPage = () => {
     ].map((entry) => [entry.name, entry]),
   );
 
+  const brandSwitch = (
+    // Sticky and without height of its own: the switch sits next to the
+    // heading and stays in view while you scroll.
+    <div className="prototype-demo-brand-switch">
+      <div className="prototype-demo-brand-switch__box">
+        <BrandSwitch />
+      </div>
+    </div>
+  );
+
+  const lists = {
+    [DEMO_LISTS[0].id]: {
+      intro: "Voor één plek of voor het prototype; zonder voorbeeld.",
+      rows: others,
+    },
+    [DEMO_LISTS[1].id]: {
+      intro: "Gebruikt in header, menu en footer; zonder voorbeeld.",
+      rows: rhcLayout,
+    },
+    [DEMO_LISTS[2].id]: {
+      intro: "Wel beschikbaar via @/components/rhc; zonder voorbeeld.",
+      rows: rhcUnused,
+    },
+  };
+
+  if (id) {
+    const entry = DEMO_COMPONENT_NAMES.map((name) => byName.get(name)).find(
+      (e) => e && demoId(e.name) === id,
+    );
+    const list = DEMO_LISTS.find((l) => l.id === id);
+    if (!entry && !list) notFound();
+    return (
+      <>
+        {brandSwitch}
+        {entry ? (
+          <ComponentDetails {...entry} />
+        ) : (
+          list && (
+            <>
+              <Heading level={1}>{list.name}</Heading>
+              <section className="rhc-mox-card" aria-label={list.name}>
+                <Paragraph>{lists[list.id].intro}</Paragraph>
+                <SimpleTable rows={lists[list.id].rows} />
+              </section>
+            </>
+          )
+        )}
+      </>
+    );
+  }
+
   return (
     <>
-      {/* Sticky and without height of its own: the switch sits next to the
-          heading and stays in view while you scroll. */}
-      <div className="prototype-demo-brand-switch">
-        <div className="prototype-demo-brand-switch__box">
-          <BrandSwitch />
-        </div>
-      </div>
+      {brandSwitch}
       <Heading level={1}>Componenten</Heading>
-      <Paragraph>
-        Voor oplossingen voor een hele taak, zie de{" "}
-        <NextLink
-          href="/demo/ontwerppatronen"
-          className="utrecht-link utrecht-link--html-a"
-        >
-          ontwerppatronen
-        </NextLink>
-        .
-      </Paragraph>
-
-      <Paragraph>
-        Alle componenten op alfabet. Bij elke component staat of het een eigen
-        component is, een RHC-component of een aangepaste RHC-component.
-      </Paragraph>
-
-      <div className="rhc-mox-main-container">
-        {DEMO_COMPONENT_NAMES.map((name) => byName.get(name))
-          .filter((entry) => entry !== undefined)
-          .map(card)}
-        <section
-          id={DEMO_LISTS[0].id}
-          className="rhc-mox-card"
-          aria-labelledby={`${DEMO_LISTS[0].id}-kop`}
-        >
-          <Heading level={2} id={`${DEMO_LISTS[0].id}-kop`}>
-            {DEMO_LISTS[0].name}
-          </Heading>
-          <Paragraph>
-            Voor één plek of voor het prototype; zonder voorbeeld.
-          </Paragraph>
-          <SimpleTable rows={others} />
-        </section>
-        <section
-          id={DEMO_LISTS[1].id}
-          className="rhc-mox-card"
-          aria-labelledby={`${DEMO_LISTS[1].id}-kop`}
-        >
-          <Heading level={2} id={`${DEMO_LISTS[1].id}-kop`}>
-            {DEMO_LISTS[1].name}
-          </Heading>
-          <Paragraph>
-            Gebruikt in header, menu en footer; zonder voorbeeld.
-          </Paragraph>
-          <SimpleTable rows={rhcLayout} />
-        </section>
-        <section
-          id={DEMO_LISTS[2].id}
-          className="rhc-mox-card"
-          aria-labelledby={`${DEMO_LISTS[2].id}-kop`}
-        >
-          <Heading level={2} id={`${DEMO_LISTS[2].id}-kop`}>
-            {DEMO_LISTS[2].name}
-          </Heading>
-          <Paragraph>
-            Wel beschikbaar via <code>@/components/rhc</code>; zonder voorbeeld.
-          </Paragraph>
-          <SimpleTable rows={rhcUnused} />
-        </section>
+      <div className="rhc-mox-card">
+        <Paragraph>
+          Voor oplossingen voor een hele taak, zie de{" "}
+          <NextLink
+            href="/demo/ontwerppatronen"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            ontwerppatronen
+          </NextLink>
+          .
+        </Paragraph>
+        <Paragraph>
+          Alle componenten op alfabet. Elke component heeft een eigen pagina met
+          de opties en een voorbeeld.
+        </Paragraph>
+        <DataSummary className="rhc-mox-summary-rows">
+          {DEMO_COMPONENT_NAMES.map((name) => byName.get(name))
+            .filter((entry) => entry !== undefined)
+            .map((entry) => (
+              <DataSummaryLinkItem
+                key={entry.name}
+                itemKey={entry.name}
+                itemValue={summaryOf(entry) ?? ""}
+                href={`/demo/${demoId(entry.name)}`}
+              />
+            ))}
+        </DataSummary>
       </div>
+      <section className="rhc-mox-card" aria-labelledby="demo-lijsten">
+        <Heading level={2} id="demo-lijsten">
+          Lijsten zonder voorbeeld
+        </Heading>
+        <DataSummary className="rhc-mox-summary-rows">
+          {DEMO_LISTS.map((list) => (
+            <DataSummaryLinkItem
+              key={list.id}
+              itemKey={list.name}
+              itemValue={lists[list.id].intro}
+              href={`/demo/${list.id}`}
+            />
+          ))}
+        </DataSummary>
+      </section>
     </>
   );
 };
 
-export default ComponentsDemoPage;
+export default ComponentsDemo;
