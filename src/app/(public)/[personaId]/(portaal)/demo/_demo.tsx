@@ -3029,23 +3029,73 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "1 (!)",
           "Kopniveau van de labels; zet dit altijd, anders worden het h1's",
         ],
+        [
+          "exclusive",
+          "boolean",
+          "false",
+          "Hoogstens één onderdeel open: een ander openen sluit het vorige",
+        ],
       ],
       example: (
-        <AccordionProvider
-          headingLevel={5}
-          sections={[
-            {
-              label: "Wat is MijnOverheid Zakelijk?",
-              body: (
-                <Paragraph>De plek voor uw zaken met de overheid.</Paragraph>
-              ),
-            },
-            {
-              label: "Hoe log ik in?",
-              body: <Paragraph>Met eHerkenning.</Paragraph>,
-            },
-          ]}
-        />
+        <>
+          <Heading level={3}>Standaard: meerdere onderdelen open</Heading>
+          <AccordionProvider
+            headingLevel={4}
+            sections={[
+              {
+                label: "Wat is MijnOverheid Zakelijk?",
+                body: (
+                  <Paragraph>De plek voor uw zaken met de overheid.</Paragraph>
+                ),
+              },
+              {
+                label: "Hoe log ik in?",
+                body: <Paragraph>Met eHerkenning.</Paragraph>,
+              },
+              {
+                label: "Wie kan mijn gegevens zien?",
+                body: (
+                  <Paragraph>
+                    Alleen u en de organisaties die u toestemming geeft.
+                  </Paragraph>
+                ),
+              },
+            ]}
+          />
+          <Heading level={3}>Met exclusive: één onderdeel tegelijk</Heading>
+          <AccordionProvider
+            headingLevel={4}
+            exclusive
+            sections={[
+              {
+                label: "Loonkostensubsidie",
+                expanded: true,
+                body: (
+                  <Paragraph>
+                    De gemeente betaalt u het verschil tussen het minimumloon en
+                    de loonwaarde.
+                  </Paragraph>
+                ),
+              },
+              {
+                label: "Loondispensatie",
+                body: (
+                  <Paragraph>
+                    U betaalt minder loon dan het minimumloon. UWV vult het aan.
+                  </Paragraph>
+                ),
+              },
+              {
+                label: "No-riskpolis",
+                body: (
+                  <Paragraph>
+                    Wordt de werknemer ziek, dan betaalt UWV u ziekengeld.
+                  </Paragraph>
+                ),
+              },
+            ]}
+          />
+        </>
       ),
     },
     {
