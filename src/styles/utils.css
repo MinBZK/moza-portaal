@@ -444,3 +444,12 @@ kbd {
 
 /* Card with tools for the researcher, such as starting a scenario again. The
   orange edge sets it apart from the content of the product. */
+
+.prototype-code-block {
+	background-color: var(--rhc-color-cool-grey-100);
+	border-radius: var(--rhc-border-radius-md);
+	font-size: var(--rhc-text-font-size-sm);
+	line-height: var(--rhc-text-line-height-md);
+	overflow-x: auto;
+	padding: var(--rhc-space-lg);
+}

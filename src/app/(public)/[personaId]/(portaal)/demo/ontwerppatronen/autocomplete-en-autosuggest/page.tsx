@@ -223,7 +223,7 @@ const Page = () => (
         <TextLink href="/demo/ontwerppatronen/zoeken-en-hulp">
           Zoeken en hulp op elke pagina
         </TextLink>{" "}
-        en het component <TextLink href="/demo#sitesearch">SiteSearch</TextLink>
+        en het component <TextLink href="/demo/sitesearch">SiteSearch</TextLink>
         . SiteSearch herkent een streepje als spatie en letters met en zonder
         accent als gelijk: “btw nummer” vindt “btw-nummer”. Echte typefouten en
         andere woorden voor hetzelfde, zoals “inschrijvingsnummer” voor
