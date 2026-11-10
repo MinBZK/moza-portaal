@@ -76,8 +76,8 @@ export type Antwoorden = {
 };
 
 /**
- * Elke regeling in de aanvraag: wat de werkgever indient (gecontroleerd), en
- * wat vanzelf gaat of een taak van de werknemer is (gelezen).
+ * Elke regeling in de aanvraag: wat de werkgever indient, wat vanzelf gaat en
+ * de taken van de werknemer.
  */
 export type RegelingId = PaneelId | VanzelfId | TaakId;
 
@@ -90,13 +90,11 @@ export type AannemenStaat = {
   /** Zelf toegevoegde kandidaten, in afwachting van hun toestemming. */
   kandidatenNieuw?: {
     naam: string;
-    /** Alleen bij kandidaten uit een eerdere versie. */
-    geboortedatum?: string;
     /** Het BSN, afgeschermd tot de laatste vier cijfers. */
     bsn?: string;
     gevraagdOp: string;
   }[];
-  /** Per regeling in de aanvraag: gecontroleerd. */
+  /** Per regeling in de aanvraag: gekozen (het vinkje), of bij Afronden zonder aanvraag: geldt. */
   gecontroleerd: Partial<Record<RegelingId, boolean>>;
   /** Keuzes bij de regelingen die niet vanzelf gelden. */
   keuzes: {
@@ -110,7 +108,7 @@ export type AannemenStaat = {
   taken: Partial<Record<TaakId, TaakStand>>;
   /** The furthest step (1 to 4) the user has reached in this session. */
   verstStap?: number;
-  /** Dossier ingediend zonder iets te versturen; de bedankpagina zegt wat er nu gebeurt. */
+  /** Afgerond zonder iets te versturen; de bedankpagina zegt wat er nu gebeurt. */
   afgerond?: boolean;
 };
 
@@ -302,6 +300,10 @@ export const useAannemen = () => {
       ...nu,
       ...wijziging,
       ...(anders && !wijziging.gecontroleerd ? { gecontroleerd: {} } : {}),
+      // Afgerond hoort bij de antwoorden van toen.
+      ...(anders && wijziging.afgerond === undefined
+        ? { afgerond: false }
+        : {}),
     });
   }, []);
   const werkZaakBij = useCallback(

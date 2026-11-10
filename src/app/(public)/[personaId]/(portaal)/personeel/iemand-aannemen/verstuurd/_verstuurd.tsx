@@ -57,7 +57,7 @@ const Verstuurd = ({
   const organisatie =
     situatie === "wajong" ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
 
-  // Dossier ingediend zonder iets te versturen.
+  // Afgerond zonder iets te versturen.
   if (!stand.ingediend && staat.afgerond) {
     const wia = situatieVan(staat.antwoorden.doelgroepen) === "wia";
     const { voornaam } = perSituatie[wia ? "wia" : situatie].kandidaat;
@@ -66,26 +66,31 @@ const Verstuurd = ({
       .map((id) => ZONDER_AANVRAAG[id](voornaam));
     return (
       <>
-        <Heading level={1}>Bedankt, uw dossier is ingediend</Heading>
+        <Heading level={1}>Iemand aannemen afgerond</Heading>
         <Alert type="ok">
           <Paragraph>
-            U hoeft niets te versturen. Hieronder staat wat er nu gebeurt.
+            U hoeft niets te versturen.
+            {gekozen.length > 0
+              ? " Hieronder staat wat er nu gebeurt."
+              : " Bij uw antwoorden geldt geen regeling."}
           </Paragraph>
         </Alert>
         <div className="rhc-mox-card rhc-mox-row-gap">
-          <section
-            className="rhc-mox-row-gap"
-            aria-labelledby="wat-er-nu-gebeurt"
-          >
-            <Heading level={2} id="wat-er-nu-gebeurt">
-              Wat er nu gebeurt
-            </Heading>
-            <OrderedList>
-              {gekozen.map((tekst) => (
-                <OrderedListItem key={tekst}>{tekst}</OrderedListItem>
-              ))}
-            </OrderedList>
-          </section>
+          {gekozen.length > 0 && (
+            <section
+              className="rhc-mox-row-gap"
+              aria-labelledby="wat-er-nu-gebeurt"
+            >
+              <Heading level={2} id="wat-er-nu-gebeurt">
+                Wat er nu gebeurt
+              </Heading>
+              <OrderedList>
+                {gekozen.map((tekst) => (
+                  <OrderedListItem key={tekst}>{tekst}</OrderedListItem>
+                ))}
+              </OrderedList>
+            </section>
+          )}
           <ActionGroup>
             {wia && (
               <Link
@@ -110,10 +115,10 @@ const Verstuurd = ({
   if (!stand.ingediend)
     return (
       <>
-        <Heading level={1}>Nog niets ingediend</Heading>
+        <Heading level={1}>Nog niet afgerond</Heading>
         <Paragraph>
-          U hebt uw dossier nog niet ingediend. Controleer uw gegevens en kies{" "}
-          <strong>Dossier indienen</strong>.
+          U hebt deze taak nog niet afgerond. Controleer uw gegevens en kies{" "}
+          <strong>Dossier indienen</strong> of <strong>Afronden</strong>.
         </Paragraph>
         <Paragraph>
           <Link

@@ -28,7 +28,6 @@ import {
 } from "../_useAannemen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
-import { datumNL } from "../_werkgever";
 import { verderNaar } from "../_stappen";
 
 const NIEUW = "nieuw";
@@ -371,7 +370,7 @@ const Bronnen = ({
           Wie wilt u aannemen?
         </Heading>
         <Paragraph>
-          Wij dienen de kandidaat eerst om te vragen.{" "}
+          Wij vragen de kandidaat eerst om toestemming.{" "}
           {wie.charAt(0).toUpperCase() + wie.slice(1)}{" "}
           {meer ? "zoeken" : "zoekt"} de kandidaat op met het
           burgerservicenummer (BSN). Werkt de kandidaat al bij u? Dan staat het
@@ -394,8 +393,7 @@ const Bronnen = ({
               <>
                 {naam}
                 <span className="rhc-mox-regular">
-                  , geboren {datumNL(kandidaat.geboortedatum)}, BSN{" "}
-                  {kandidaat.bsnMasker}
+                  , BSN {kandidaat.bsnMasker}
                 </span>
               </>
             }
@@ -411,7 +409,6 @@ const Bronnen = ({
                 <>
                   {k.naam}
                   <span className="rhc-mox-regular">
-                    {k.geboortedatum && `, geboren ${k.geboortedatum}`}
                     {k.bsn && `, BSN ${k.bsn}`}
                   </span>
                 </>

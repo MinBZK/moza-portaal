@@ -1,5 +1,6 @@
 import InfoToggletip from "@/components/InfoToggletip";
 import { Paragraph } from "@/components/rhc";
+import type { RegelingId } from "./_useAannemen";
 
 /**
  * Begrippen van Iemand aannemen, met een korte uitleg. Een begrip krijgt een
@@ -61,6 +62,34 @@ export const BEGRIPPEN = {
 } as const;
 
 export type BegripId = keyof typeof BEGRIPPEN;
+
+/** De naam van elke regeling in de aanvraag. */
+export const NAAM: Record<RegelingId, string> = {
+  lks: "Loonkostensubsidie",
+  ld: "Loondispensatie",
+  jc: "Jobcoaching",
+  wpa: "Werkplekaanpassing",
+  lkv: "Loonkostenvoordeel",
+  nrp: "No-riskpolis",
+  doelgroepverklaring: "Doelgroepverklaring",
+  vz_wajong: "Jobcoach of werkplekaanpassing",
+  vz_wia: "Jobcoach of werkplekaanpassing",
+  pp: "Proefplaats",
+};
+
+/** Welke begrippen bij een regeling horen; die krijgen een (i) bij de naam. */
+export const BEGRIP: Record<RegelingId, BegripId[]> = {
+  lks: ["loonkostensubsidie"],
+  ld: ["loondispensatie"],
+  jc: ["jobcoaching"],
+  wpa: ["werkplekaanpassing"],
+  lkv: ["loonkostenvoordeel"],
+  nrp: ["noRiskpolis"],
+  doelgroepverklaring: ["doelgroepverklaring"],
+  vz_wajong: ["jobcoaching", "werkplekaanpassing"],
+  vz_wia: ["jobcoaching", "werkplekaanpassing"],
+  pp: ["proefplaatsing"],
+};
 
 /** De (i) met de uitleg van een begrip. */
 export const BegripInfo = ({ id }: { id: BegripId }) => {
