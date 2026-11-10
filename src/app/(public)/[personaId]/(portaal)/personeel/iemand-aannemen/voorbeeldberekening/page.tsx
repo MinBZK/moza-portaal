@@ -7,15 +7,16 @@ export const metadata: Metadata = {
   title: "Voorbeeldberekening - Iemand aannemen - Personeel en rollen",
 };
 
-/** De voorbeeldberekening: de disclaimer, de vragen en de berekening. Begrippen hebben een (i). */
+/** De voorbeeldberekening: de inleiding, de vragen en de berekening. Begrippen hebben een (i). */
 const VoorbeeldberekeningPage = () => (
   <>
     <Heading level={1}>{TAAK_TITEL}</Heading>
     <div className="rhc-mox-card rhc-mox-row-gap">
       <Paragraph>
-        Deze berekening is een voorbeeld. Na uw aanvraag berekenen gemeente, UWV
-        en Belastingdienst het echte bedrag. Er kunnen ook regelingen voor u
-        gelden die hier niet staan.
+        Bereken wat regelingen u opleveren als u iemand met afstand tot de
+        arbeidsmarkt aanneemt. Dit is een schatting. Nadat u de regelingen hebt
+        aangevraagd, berekenen gemeente, UWV en Belastingdienst het echte
+        bedrag.
       </Paragraph>
       <Vragen />
     </div>
