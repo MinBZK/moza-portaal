@@ -157,6 +157,7 @@ const FlagsPaneel = ({
             appearance="secondary-action-button"
             hint="danger"
             disabled={bezig}
+            busy={bezig}
             onClick={hardReset}
           >
             Alles wissen

@@ -2761,7 +2761,10 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
     {
       name: "Button, IconButton en ActionGroup",
       file: "@/components/rhc",
-      description: "Knoppen voor een actie, gegroepeerd in een <ActionGroup>.",
+      description: [
+        "Knoppen voor een actie, gegroepeerd in een <ActionGroup>.",
+        "Vermijd een uitgeschakelde knop. Die heeft weinig contrast, en de gebruiker ziet vaak niet waarom de knop niet werkt. Laat de knop werken en zeg na een klik wat er nog nodig is, zoals een foutmelding bij het veld dat ontbreekt. Moet een knop toch even niet werken, gebruik dan aria-disabled en zeg ernaast waarom.",
+      ],
       options: [
         [
           "Button appearance",
@@ -2779,7 +2782,7 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
           "Button disabled / busy",
           "boolean",
           "false",
-          "Niet te bedienen / bezig",
+          "Niet te bedienen / bezig. Gebruik aria-disabled in plaats van disabled, zodat de knop focusbaar blijft; zet dan ook de class utrecht-button--disabled, want Utrecht maakt alleen :disabled grijs. Met busy staat er een spinner voor de tekst (aria-busy).",
         ],
         ["Button pressed", "boolean", "–", "Ingedrukt (aria-pressed)"],
         [
@@ -2803,6 +2806,16 @@ const ComponentsDemo = ({ id }: { id?: string }) => {
             Destructieve actie
           </Button>
           <Button appearance="subtle-button">Subtiele knop</Button>
+          <Button
+            appearance="primary-action-button"
+            aria-disabled
+            className="utrecht-button--disabled"
+          >
+            Uitgeschakelde actie
+          </Button>
+          <Button appearance="primary-action-button" aria-disabled busy>
+            Actie in laadstaat
+          </Button>
           <IconButton icon="kruis" label="Sluiten" />
         </ActionGroup>
       ),

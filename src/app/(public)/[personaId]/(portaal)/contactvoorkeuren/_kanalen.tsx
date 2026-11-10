@@ -202,6 +202,7 @@ const Formulier = ({
           type="submit"
           appearance="primary-action-button"
           aria-disabled={bezig || undefined}
+          busy={bezig}
         >
           Opslaan
         </Button>
