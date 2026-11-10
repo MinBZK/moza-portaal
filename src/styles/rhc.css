@@ -3118,6 +3118,10 @@ small,
 .mox-landing-quicklinks {
 	padding-block-end: var(--rhc-hero-message-padding-block-end);
 	padding-inline: var(--rhc-hero-message-padding-inline-start);
+
+	div.rhc-navigation-list__item:hover {
+		background-color: inherit;
+	}
 }
 
 .mox-landing-quicklinks-heading {

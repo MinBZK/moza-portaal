@@ -7,10 +7,37 @@ import {
   DataSummary,
   DataSummaryItem,
   NavigationList,
-  NavigationListItem,
 } from "@/components/rhc";
 import Image from "next/image";
 import Link from "next/link";
+
+/** Prototype: what the portal offers, without links, before logging in. */
+const SNEL_NAAR = [
+  {
+    label: "Berichtenbox",
+    description: "Lees de berichten van de overheid aan uw onderneming",
+  },
+  {
+    label: "Lopende zaken",
+    description: "Volg uw aanvragen en zaken bij de overheid",
+  },
+  {
+    label: "Bedrijfsgegevens",
+    description: "Bekijk wat de overheid over uw onderneming weet",
+  },
+  {
+    label: "Subsidies en financiering",
+    description: "Vind regelingen die passen bij uw onderneming",
+  },
+  {
+    label: "Personeel en rollen",
+    description: "Regel zaken rond uw personeel, zoals iemand aannemen",
+  },
+  {
+    label: "Wetten en regelgeving",
+    description: "Zie welke regels gelden voor uw onderneming",
+  },
+];
 
 const PublicPage = () => {
   return (
@@ -117,48 +144,30 @@ const PublicPage = () => {
       </Heading>
       <div className="mox-landing-quicklinks">
         <NavigationList className="rhc-mox-navigation-grid">
-          <NavigationListItem
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-            href="#"
-            icon=""
-            label="Lorem ipsum"
-          />
-          <NavigationListItem
-            description="Pellentesque at lobortis erat, in egestas turpis"
-            href="#"
-            icon=""
-            label="Quisque pharetra"
-          />
-          <NavigationListItem
-            description="Proin imperdiet, tellus eu condimentum cursus"
-            href="#"
-            icon=""
-            label="Integer porttitor massa"
-          />
-          <NavigationListItem
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-            href="#"
-            icon=""
-            label="Phasellus sodales interdum"
-          />
-          <NavigationListItem
-            description="Ut tincidunt fringilla tortor, ut venenatis erat"
-            href="#"
-            icon=""
-            label="Etiam egestas"
-          />
-          <NavigationListItem
-            description="Nullam eget risus eu odio ultrices commodo"
-            href="#"
-            icon=""
-            label="Quisque tempor egestas"
-          />
+          {SNEL_NAAR.map(({ label, description }) => (
+            <li key={label}>
+              <div className="rhc-navigation-list__item">
+                <span className="rhc-navigation-list__item-content">
+                  <Paragraph className="rhc-navigation-list__item__label">
+                    {label}
+                  </Paragraph>
+                  <Paragraph className="rhc-navigation-list__item__description">
+                    {description}
+                  </Paragraph>
+                  <Icon
+                    icon="chevron-right"
+                    className="rhc-navigation-list__item__end-icon"
+                  />
+                </span>
+              </div>
+            </li>
+          ))}
         </NavigationList>
       </div>
 
       <details className="prototype-landing-demo-info">
         <summary>
-          <Heading level={2}>
+          <Heading level={2} appearanceLevel={5}>
             Dit is een prototype van het MijnOverheid Zakelijk portaal
           </Heading>
           <Icon icon="chevron-right" />
@@ -242,7 +251,6 @@ const PublicPage = () => {
           </section>
         </div>
       </details>
-      <code>hash: fd56283526f0e41dacd90da912afaa065fa32f5f</code>
     </div>
   );
 };

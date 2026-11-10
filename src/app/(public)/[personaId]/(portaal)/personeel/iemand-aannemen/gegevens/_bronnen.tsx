@@ -5,7 +5,7 @@ import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import InfoToggletip from "@/components/InfoToggletip";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { BegripInfo } from "../_begrippen";
 import { overKandidaat } from "../_opgehaald";
 import {
@@ -33,6 +33,8 @@ import {
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import Stappen, { verderNaar } from "../_stappen";
+import SourceLinks, { type Source } from "@/components/SourceLinks";
+import { BRON } from "../_wetsbronnen";
 
 const NIEUW = "nieuw";
 
@@ -286,20 +288,29 @@ const Bronnen = ({
   );
   // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is:
   // alleen termijnen uit de wet of van UWV, geen gemiddelde.
-  const duur = [
+  const duur: { zin: string; bronnen: Source[] }[] = [
     ...(situatie === "gemeente" && loonwaardeNogNiet
       ? [
-          `De loonwaarde van ${kandidaat.voornaam} is nog niet gemeten. Een deskundige van de gemeente meet die op de werkplek, als ${kandidaat.voornaam} is ingewerkt. Een vaste wachttijd daarvoor is er niet. Daarna beslist de gemeente uiterlijk acht weken na uw aanvraag (Algemene wet bestuursrecht, artikel 4:13).`,
+          {
+            zin: `De loonwaarde van ${kandidaat.voornaam} is nog niet vastgesteld. Een loonwaardedeskundige beoordeelt het werk op de werkplek. De wet noemt daarvoor geen termijn. Over uw aanvraag beslist de gemeente binnen acht weken, tenzij zij u laat weten dat het langer duurt.`,
+            bronnen: [BRON.awb],
+          },
         ]
       : []),
     ...(situatie === "wajong"
       ? [
-          "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen acht weken na uw aanvraag.",
+          {
+            zin: "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen 14 weken na uw aanvraag. Volgens UWV krijgt u meestal binnen acht weken een brief.",
+            bronnen: [BRON.wajong61],
+          },
         ]
       : []),
     ...(situatie === "wia"
       ? [
-          "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+          {
+            zin: "De werknemer vraagt de doelgroepverklaring aan bij UWV. Volgens UWV beslist UWV binnen acht weken, of binnen dertien weken als er informatie ontbreekt.",
+            bronnen: [],
+          },
         ]
       : []),
   ];
@@ -663,8 +674,11 @@ const Bronnen = ({
           <Heading level={2} id="hoe-lang">
             Hoe lang het kan duren
           </Heading>
-          {duur.map((zin) => (
-            <Paragraph key={zin}>{zin}</Paragraph>
+          {duur.map(({ zin, bronnen }) => (
+            <Fragment key={zin}>
+              <Paragraph>{zin}</Paragraph>
+              <SourceLinks sources={bronnen} />
+            </Fragment>
           ))}
         </section>
       )}
