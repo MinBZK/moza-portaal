@@ -226,6 +226,13 @@ const AanvraagInhoud = ({
                   weet u het precieze bedrag.
                 </UnorderedListItem>
                 <UnorderedListItem>
+                  Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
+                  in overleg met u besluiten de loonwaarde eerst niet vast te
+                  stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
+                  van het minimumloon met vakantiegeld, naar verhouding van de
+                  uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
+                </UnorderedListItem>
+                <UnorderedListItem>
                   U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
                   begonnen? Dan binnen 8 weken, tenzij de gemeente laat weten
                   dat het langer duurt. Anders binnen 5 weken nadat de gemeente
@@ -236,6 +243,7 @@ const AanvraagInhoud = ({
                 sources={[
                   BRON.pwet10c,
                   BRON.besluitLks3,
+                  BRON.pwet10dLid5,
                   BRON.awb,
                   BRON.pwet10dLid12,
                 ]}
