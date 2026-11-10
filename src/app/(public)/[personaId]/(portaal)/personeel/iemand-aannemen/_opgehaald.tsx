@@ -166,6 +166,8 @@ const Controleer = ({
   uren,
   vraagEerder = false,
   eerderInDienst,
+  kop = "Controleer gegevens",
+  wijzigbaar = true,
 }: {
   bronnen: Bron[];
   kandidaat: {
@@ -179,6 +181,10 @@ const Controleer = ({
   /** Alleen bij WIA: de vraag of de kandidaat al eerder bij de werkgever werkte. */
   vraagEerder?: boolean;
   eerderInDienst?: boolean;
+  /** De kop boven de gegevens; na het indienen zijn ze niet meer te controleren. */
+  kop?: string;
+  /** Met de links Wijzigen; uit na het indienen. */
+  wijzigbaar?: boolean;
 }) => {
   const bronTekst = (b: Bron) =>
     `${b.organisatie}, opgehaald ${datumNL(b.opgehaald)}`;
@@ -193,7 +199,7 @@ const Controleer = ({
   const loopt = opgehaald.find(
     ({ g }) => g.parameter === "registratie_nog_niet_geeindigd",
   );
-  const kandidaatRijen: Rij[] = [
+  const alleRijen: Rij[] = [
     {
       label: "Naam",
       waarde: `${kandidaat.voornaam} ${kandidaat.achternaam}`,
@@ -240,6 +246,9 @@ const Controleer = ({
         ]
       : []),
   ];
+  const kandidaatRijen = wijzigbaar
+    ? alleRijen
+    : alleRijen.map((r) => ({ ...r, wijzig: undefined }));
 
   const rij = ({ b, g }: (typeof opgehaald)[number]): Rij => {
     const waarde = g.waarde.replace("{uren}", String(uren));
@@ -272,7 +281,7 @@ const Controleer = ({
     <section className="rhc-mox-row-gap" aria-labelledby="controleer">
       <Separator></Separator>
       <Heading level={2} id="controleer">
-        Controleer gegevens
+        {kop}
       </Heading>
       {groep("controleer-kandidaat", "Kandidaat", kandidaatRijen)}
       {groep("controleer-beide", "Kandidaat en onderneming", beideRijen)}
