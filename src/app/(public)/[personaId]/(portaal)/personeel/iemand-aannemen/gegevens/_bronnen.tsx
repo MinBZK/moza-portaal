@@ -64,12 +64,15 @@ const EigenOpgave = ({
   zet,
   aanvangFout,
   eerderFout,
+  overgenomen,
 }: {
   voornaam: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
   aanvangFout?: string;
   eerderFout?: string;
+  /** De uren komen uit de voorbeeldberekening (niet bij Regelingen aanvragen). */
+  overgenomen: boolean;
 }) => {
   // Zonder ingevulde naam heet de kandidaat "de kandidaat".
   // Die variant is in de huidige flow niet te zien.
@@ -100,7 +103,11 @@ const EigenOpgave = ({
         waarde komt uit dezelfde antwoorden (a.uren). */}
       <RangeSlider
         label={`Hoeveel uur per week gaat ${wie} werken?`}
-        description="Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+        description={
+          overgenomen
+            ? "Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+            : undefined
+        }
         min={1}
         max={40}
         step={1}
@@ -575,6 +582,7 @@ const Bronnen = ({
             zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
             aanvangFout={aanvangFout}
             eerderFout={eerderFout}
+            overgenomen={staat?.voorbeeldBerekend !== false}
           />
         )}
       </section>

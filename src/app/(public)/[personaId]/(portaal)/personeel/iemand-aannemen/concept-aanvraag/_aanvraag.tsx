@@ -645,9 +645,11 @@ const AanvraagInhoud = ({
               {zonderAanvraag ? "Wat er geldt" : "Kies de regelingen"}
             </Heading>
             <Paragraph>
-              Deze regelingen passen bij uw antwoorden in de
-              voorbeeldberekening. Of een regeling echt geldt, beslist de
-              organisatie die de regeling uitvoert.
+              {staat.voorbeeldBerekend === false
+                ? "Deze regelingen passen bij uw antwoorden."
+                : "Deze regelingen passen bij uw antwoorden in de voorbeeldberekening."}{" "}
+              Of een regeling echt geldt, beslist de organisatie die de regeling
+              uitvoert.
             </Paragraph>
             {!zonderAanvraag && (
               <Paragraph>Kies ten minste één regeling.</Paragraph>
