@@ -275,6 +275,11 @@ const AanvraagInhoud = ({
           {BEGRIP[id].map((b) => (
             <Paragraph key={b}>{BEGRIPPEN[b].uitleg}</Paragraph>
           ))}
+          {id === "lkv" && (
+            <Paragraph>
+              Dit wordt tijdens de loonaangifte afgehandeld.
+            </Paragraph>
+          )}
           {(id === "lks" || id === "ld" || id === "lkv") && voorbeeldbedrag(id)}
           <Paragraph className="rhc-mox-small-text">
             Uitgevoerd door {UITVOERDER[id]}.
