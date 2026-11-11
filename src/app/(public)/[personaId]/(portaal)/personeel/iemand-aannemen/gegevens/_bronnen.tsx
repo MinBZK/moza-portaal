@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
 import RangeSlider from "@/components/RangeSlider";
 import InfoToggletip from "@/components/InfoToggletip";
@@ -11,8 +10,7 @@ import {
   veld as zaakVeld,
   zaakRoute,
 } from "../../../lopendezaken/_assistentZaken";
-import { Fragment, useEffect, useState } from "react";
-import { BegripInfo } from "../_begrippen";
+import { useEffect, useState } from "react";
 import { overKandidaat } from "../_opgehaald";
 import {
   ActionGroup,
@@ -34,7 +32,6 @@ import {
   STANDAARD_ANTWOORDEN,
   useAannemen,
   vraagEerderInDienst,
-  type AannemenStaat,
   type Antwoorden,
 } from "../_useAannemen";
 import AlIngediend from "../_alIngediend";
@@ -42,8 +39,6 @@ import DoelgroepVragen from "../_doelgroepVragen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import Stappen, { verderNaar } from "../_stappen";
-import SourceLinks, { type Source } from "@/components/SourceLinks";
-import { BRON } from "../_wetsbronnen";
 
 const NIEUW = "nieuw";
 
@@ -67,30 +62,14 @@ const EigenOpgave = ({
   voornaam,
   a,
   zet,
-  keuzes,
-  kies,
-  vraagJc,
-  vraagWpa,
   aanvangFout,
   eerderFout,
-  jcFout,
-  wpaFout,
-  bezig,
 }: {
   voornaam: string;
   a: Antwoorden;
   zet: (deel: Partial<Antwoorden>) => void;
-  keuzes: AannemenStaat["keuzes"];
-  kies: (deel: AannemenStaat["keuzes"]) => void;
-  /** Alleen als jobcoaching of werkplekaanpassing bij de aanvraag hoort. */
-  vraagJc: boolean;
-  vraagWpa: boolean;
   aanvangFout?: string;
   eerderFout?: string;
-  jcFout?: string;
-  wpaFout?: string;
-  /** The calculation is still running: the questions for the request follow. */
-  bezig: boolean;
 }) => {
   // Zonder ingevulde naam heet de kandidaat "de kandidaat".
   // Die variant is in de huidige flow niet te zien.
@@ -167,75 +146,6 @@ const EigenOpgave = ({
           />
         </Fieldset>
       )}
-      {/* Keuzes voor de aanvraag horen hier; stap 2 controleert alleen. */}
-      {bezig && (
-        <LoadingStatus>Wij zoeken uit welke regelingen gelden…</LoadingStatus>
-      )}
-      {vraagJc && (
-        <Fieldset
-          id="jobcoaching-vraag"
-          legend="Wilt u jobcoaching aanvragen?"
-          info={<BegripInfo id="jobcoaching" />}
-          invalid={!!jcFout}
-          aria-describedby={jcFout ? "jobcoaching-fout" : undefined}
-        >
-          {jcFout && (
-            <FormFieldErrorMessage id="jobcoaching-fout">
-              {jcFout}
-            </FormFieldErrorMessage>
-          )}
-          <FormFieldRadio
-            name="jc"
-            value="ja"
-            label="Ja, via de gemeente"
-            checked={keuzes.jc === "ja"}
-            onChange={() => kies({ jc: "ja" })}
-          />
-          <FormFieldRadio
-            name="jc"
-            value="nee"
-            label="Nee, niet nodig"
-            checked={keuzes.jc === "nee"}
-            onChange={() => kies({ jc: "nee" })}
-          />
-        </Fieldset>
-      )}
-      {vraagWpa && (
-        <Fieldset
-          id="werkplek-vraag"
-          legend="Is er een aanpassing van de werkplek nodig?"
-          info={<BegripInfo id="werkplekaanpassing" />}
-          invalid={!!wpaFout}
-          aria-describedby={wpaFout ? "werkplek-fout" : undefined}
-        >
-          {wpaFout && (
-            <FormFieldErrorMessage id="werkplek-fout">
-              {wpaFout}
-            </FormFieldErrorMessage>
-          )}
-          <FormFieldRadio
-            name="wpa"
-            value="ja"
-            label="Ja, ik weet wat er nodig is"
-            checked={keuzes.wpa === "ja"}
-            onChange={() => kies({ wpa: "ja" })}
-          />
-          <FormFieldRadio
-            name="wpa"
-            value="later"
-            label="Weet ik nog niet, ik vraag het later aan"
-            checked={keuzes.wpa === "later"}
-            onChange={() => kies({ wpa: "later" })}
-          />
-          <FormFieldRadio
-            name="wpa"
-            value="nee"
-            label="Nee"
-            checked={keuzes.wpa === "nee"}
-            onChange={() => kies({ wpa: "nee" })}
-          />
-        </Fieldset>
-      )}
     </div>
   );
 };
@@ -264,7 +174,6 @@ const Bronnen = ({
     ? routeVoor(antwoorden.doelgroepen, resultaat.uitkomsten)
     : undefined;
   const geenAanvraag = !!route?.overzicht;
-  const paneelIds = route?.panelen.flatMap((p) => p.ids) ?? [];
   const situatieSleutel =
     situatie === "wajong" || situatie === "wia" ? situatie : "gemeente";
   const { bronnen, kandidaat } = perSituatie[situatieSleutel];
@@ -298,43 +207,6 @@ const Bronnen = ({
   const [dubbelOk, setDubbelOk] = useState<string>();
   const dubbel = !!lopend && dubbelOk !== kandidaat.bsnMasker;
   const wachtend = nieuwe.find((k) => k.naam === keuze);
-  // De loonwaarde is nog niet gemeten als de gemeente dat zo opgeeft.
-  const loonwaardeNogNiet = bronnen.some((b) =>
-    b.gegevens.some(
-      (g) =>
-        g.parameter === "college_heeft_loonwaarde_vastgesteld" &&
-        g.waarde.startsWith("Nog niet"),
-    ),
-  );
-  // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is:
-  // termijnen uit de wet of van UWV. Voor het meten van de loonwaarde noemt
-  // de wet geen termijn; daarom alleen "vaak een paar maanden".
-  const duur: { zin: string; bronnen: Source[] }[] = [
-    ...(situatie === "gemeente" && loonwaardeNogNiet
-      ? [
-          {
-            zin: `Een aanvraag duurt vaak een paar maanden. Eerst komt een loonwaardedeskundige kijken naar het werk van ${kandidaat.voornaam} op de werkplek. Daarna beslist de gemeente.`,
-            bronnen: [BRON.besluitLks3, BRON.awb],
-          },
-        ]
-      : []),
-    ...(situatie === "wajong"
-      ? [
-          {
-            zin: "Voor loondispensatie komt een arbeidsdeskundige van UWV meestal op de werkplek. UWV beslist binnen 14 weken na uw aanvraag. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
-            bronnen: [BRON.wajong61],
-          },
-        ]
-      : []),
-    ...(situatie === "wia"
-      ? [
-          {
-            zin: "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist meestal binnen 8 weken. Ontbreekt er informatie? Dan beslist UWV binnen 13 weken.",
-            bronnen: [],
-          },
-        ]
-      : []),
-  ];
   const opgave = eigenOpgaveCompleet(antwoorden);
   const naam = `${kandidaat.voornaam} ${kandidaat.achternaam}`;
   const { wie, meer, eigen } = overKandidaat(bronnen, situatie);
@@ -347,10 +219,7 @@ const Bronnen = ({
     | "bsn"
     | "toestemming"
     | "aanvang"
-    | "eerder"
-    | "jc"
-    | "wpa";
-  const keuzes = staat?.keuzes ?? {};
+    | "eerder";
   const ontbrekend: Veld[] = gekozen
     ? [
         ...(dubbel ? (["dubbel"] as const) : []),
@@ -359,8 +228,6 @@ const Bronnen = ({
         antwoorden.eerderInDienst === undefined
           ? (["eerder"] as const)
           : []),
-        ...(paneelIds.includes("jc") && !keuzes.jc ? (["jc"] as const) : []),
-        ...(paneelIds.includes("wpa") && !keuzes.wpa ? (["wpa"] as const) : []),
       ]
     : keuze !== NIEUW
       ? ["kandidaat"]
@@ -393,12 +260,6 @@ const Bronnen = ({
   const eerderFout = fout("eerder")
     ? `Kies of ${kandidaat.voornaam} in de 6 maanden voor de eerste werkdag al bij u in dienst was.`
     : undefined;
-  const jcFout = fout("jc")
-    ? "Kies of u jobcoaching wilt aanvragen."
-    : undefined;
-  const wpaFout = fout("wpa")
-    ? "Kies of er een aanpassing van de werkplek nodig is."
-    : undefined;
   const bsnVeldFout =
     fout("bsn") && bsn === ""
       ? "U heeft nog geen BSN ingevuld."
@@ -414,8 +275,6 @@ const Bronnen = ({
     toestemming: "toestemming-vragen",
     aanvang: "eerste-werkdag",
     eerder: "eerder-in-dienst",
-    jc: "jobcoaching-vraag",
-    wpa: "werkplek-vraag",
   };
   const veldVan = (veld: Veld) =>
     veld === "dubbel"
@@ -428,9 +287,9 @@ const Bronnen = ({
             ? document.getElementById("toestemming-vragen")
             : veld === "aanvang"
               ? document.querySelector<HTMLElement>("#eerste-werkdag input")
-              : veld === "eerder" || veld === "jc" || veld === "wpa"
+              : veld === "eerder"
                 ? document.querySelector<HTMLElement>(
-                    `input[name="${veld === "eerder" ? "eerder-in-dienst" : veld}"]`,
+                    'input[name="eerder-in-dienst"]',
                   )
                 : (document.querySelector<HTMLElement>(
                     'input[name="kandidaat"]:checked',
@@ -468,11 +327,7 @@ const Bronnen = ({
                 ? "U heeft nog geen toestemming gevraagd."
                 : veld === "aanvang"
                   ? aanvangFout
-                  : veld === "eerder"
-                    ? eerderFout
-                    : veld === "jc"
-                      ? jcFout
-                      : wpaFout,
+                  : eerderFout,
   }));
 
   const voegToe = () => {
@@ -718,26 +573,8 @@ const Bronnen = ({
             voornaam={kandidaat.voornaam}
             a={antwoorden}
             zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
-            keuzes={staat?.keuzes ?? {}}
-            kies={(deel) =>
-              werkBij({
-                keuzes: { ...(staat?.keuzes ?? {}), ...deel },
-                // Een andere keuze is een andere aanvraag: controleer die opnieuw.
-                gecontroleerd: {
-                  ...(staat?.gecontroleerd ?? {}),
-                  ...Object.fromEntries(
-                    Object.keys(deel).map((id) => [id, false]),
-                  ),
-                },
-              })
-            }
-            vraagJc={paneelIds.includes("jc")}
-            vraagWpa={paneelIds.includes("wpa")}
             aanvangFout={aanvangFout}
             eerderFout={eerderFout}
-            jcFout={jcFout}
-            wpaFout={wpaFout}
-            bezig={!resultaat.bekend && !resultaat.fout}
           />
         )}
       </section>
@@ -758,20 +595,6 @@ const Bronnen = ({
         </section>
       )}
 
-      {gekozen && duur.length > 0 && (
-        <section className="rhc-mox-stack" aria-labelledby="hoe-lang">
-          <Heading level={2} id="hoe-lang">
-            Hoe lang het kan duren
-          </Heading>
-          {duur.map(({ zin, bronnen }) => (
-            <Fragment key={zin}>
-              <Paragraph>{zin}</Paragraph>
-              <SourceLinks sources={bronnen} />
-            </Fragment>
-          ))}
-        </section>
-      )}
-
       <div className="rhc-mox-stack">
         <Paragraph role="status">
           {wachtend
@@ -781,9 +604,8 @@ const Bronnen = ({
               : !gekozen
                 ? ""
                 : !opgave
-                  ? vraagEerderInDienst(antwoorden)
-                    ? `Vul de eerste werkdag van ${kandidaat.voornaam} in. Kies ook of ${kandidaat.voornaam} al eerder bij u werkte.`
-                    : `Vul de eerste werkdag van ${kandidaat.voornaam} in.`
+                  ? // Wat nog ontbreekt, zegt de foutsamenvatting bij Verder.
+                    ""
                   : "Wij vullen de aanvraag voor u in. In de volgende stap controleert u die."}
         </Paragraph>
         <StepNavigation

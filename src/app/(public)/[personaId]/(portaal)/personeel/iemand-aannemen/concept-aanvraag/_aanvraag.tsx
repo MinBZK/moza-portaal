@@ -8,7 +8,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   Alert,
+  Fieldset,
   FormFieldCheckboxOption,
+  FormFieldRadio,
   Heading,
   Paragraph,
   UnorderedList,
@@ -36,7 +38,7 @@ import {
 import AlIngediend from "../_alIngediend";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { euroHeel, type Werkgever } from "../_werkgever";
-import SourceLinks from "@/components/SourceLinks";
+import SourceLinks, { type Source } from "@/components/SourceLinks";
 import { BRON } from "../_wetsbronnen";
 
 type Props = {
@@ -106,15 +108,59 @@ const AanvraagInhoud = ({
     if (kiesFout) document.getElementById("kies-fout")?.focus();
   }, [kiesFout]);
   const kies = (id: RegelingId, aan: boolean) => {
-    werkBij({
-      gecontroleerd: { ...g, [id]: aan },
-      // Jobcoaching en werkplekaanpassing gaan mee als de keuze "ja" is.
-      ...(id === "jc" || id === "wpa"
-        ? { keuzes: { ...k, [id]: aan ? "ja" : "nee" } }
-        : {}),
-    });
+    werkBij({ gecontroleerd: { ...g, [id]: aan } });
     if (aan) setKiesFout(0);
   };
+  // Jobcoaching en werkplekaanpassing: een vraag in de kaart in plaats van
+  // een vinkje. Bij "ja" gaat de regeling mee met de aanvraag.
+  const kiesKeuze = (deel: AannemenStaat["keuzes"]) => {
+    const [id, waarde] = Object.entries(deel)[0] as ["jc" | "wpa", string];
+    werkBij({
+      keuzes: { ...k, ...deel },
+      gecontroleerd: { ...g, [id]: waarde === "ja" },
+    });
+    if (waarde === "ja") setKiesFout(0);
+  };
+  const keuzeVraag = (
+    id: "jc" | "wpa",
+    legend: string,
+    opties: readonly (readonly [string, string])[],
+  ) => (
+    <Fieldset
+      id={id === "jc" ? "jobcoaching-vraag" : "werkplek-vraag"}
+      legend={legend}
+      className="rhc-mox-card__action"
+    >
+      {opties.map(([waarde, label]) => (
+        <FormFieldRadio
+          key={waarde}
+          name={id}
+          value={waarde}
+          label={label}
+          checked={k[id] === waarde}
+          onChange={() => kiesKeuze({ [id]: waarde })}
+        />
+      ))}
+    </Fieldset>
+  );
+  // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is.
+  // Voor het meten van de loonwaarde noemt de wet geen termijn; daarom alleen
+  // "vaak een paar maanden". De loonwaarde is nog niet gemeten als de
+  // gemeente dat zo opgeeft.
+  const loonwaardeNogNiet = bronnen.some((b) =>
+    b.gegevens.some(
+      (gegeven) =>
+        gegeven.parameter === "college_heeft_loonwaarde_vastgesteld" &&
+        gegeven.waarde.startsWith("Nog niet"),
+    ),
+  );
+  const hoeLang = (zin: string, bronnenVanZin: Source[]) => (
+    <>
+      <Heading level={4}>Hoe lang het kan duren</Heading>
+      <Paragraph>{zin}</Paragraph>
+      <SourceLinks sources={bronnenVanZin} />
+    </>
+  );
 
   const waarom = (
     wet: string,
@@ -142,7 +188,12 @@ const AanvraagInhoud = ({
   // Eén inklapbare kaart per regeling: de naam als kop, wie de regeling
   // uitvoert en wat het is, en onderaan altijd een vinkje om te kiezen (niet
   // zonder aanvraag).
-  const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
+  const rij = (
+    id: RegelingId,
+    wie: string,
+    kind: ReactNode,
+    eigenActie?: ReactNode,
+  ) => (
     <li key={id} id={`regeling-${id}`}>
       <Card
         heading={NAAM[id]}
@@ -155,7 +206,8 @@ const AanvraagInhoud = ({
         action={
           // De naam van de regeling alleen voor schermlezers: elk vinkje heet
           // anders, ook buiten de kaart, zoals in een lijst met formuliervelden.
-          !zonderAanvraag && (
+          eigenActie ??
+          (!zonderAanvraag && (
             <FormFieldCheckboxOption
               className="rhc-mox-card__action"
               label={
@@ -168,7 +220,7 @@ const AanvraagInhoud = ({
               checked={gekozen(id)}
               onChange={(event) => kies(id, event.target.checked)}
             />
-          )
+          ))
         }
       >
         <div className="rhc-mox-cluster">
@@ -206,7 +258,8 @@ const AanvraagInhoud = ({
   };
 
   const paneel = (id: PaneelId): ReactNode => {
-    const kop = (note: string, kind: ReactNode) => rij(id, note, kind);
+    const kop = (note: string, kind: ReactNode, actie?: ReactNode) =>
+      rij(id, note, kind, actie);
     const gemeente = `Gemeente ${kandidaat.gemeente}, waar ${kandidaat.voornaam} woont`;
 
     if (id === "lks")
@@ -222,6 +275,11 @@ const AanvraagInhoud = ({
             Vraag aan binnen 6 maanden na de start van het dienstverband
             (Participatiewet, artikel 10d lid 2).
           </Paragraph>
+          {loonwaardeNogNiet &&
+            hoeLang(
+              `Een aanvraag duurt vaak een paar maanden. Eerst komt een loonwaardedeskundige kijken naar het werk van ${kandidaat.voornaam} op de werkplek. Daarna beslist de gemeente.`,
+              [BRON.besluitLks3, BRON.awb],
+            )}
           {waarom(
             "participatiewet",
             "heeft_recht_op_lks",
@@ -278,8 +336,9 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("ld")}
           <Paragraph>
-            Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
-            het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
+            Loondispensatie geldt vanaf de maand waarin u aanvraagt. Een
+            arbeidsdeskundige van UWV komt meestal op de werkplek. UWV stelt het
+            percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
             meestal binnen 8 weken een brief.
           </Paragraph>
           <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
@@ -306,6 +365,10 @@ const AanvraagInhoud = ({
             "Jobcoaching",
           )}
         </>,
+        keuzeVraag("jc", "Wilt u jobcoaching aanvragen?", [
+          ["ja", "Ja, via de gemeente"],
+          ["nee", "Nee, niet nodig"],
+        ]),
       );
 
     return kop(
@@ -316,6 +379,11 @@ const AanvraagInhoud = ({
           beslist of dat nodig is (Participatiewet, artikel 10).
         </Paragraph>
       </>,
+      keuzeVraag("wpa", "Is er een aanpassing van de werkplek nodig?", [
+        ["ja", "Ja, ik weet wat er nodig is"],
+        ["later", "Weet ik nog niet, ik vraag het later aan"],
+        ["nee", "Nee"],
+      ]),
     );
   };
 
@@ -338,6 +406,12 @@ const AanvraagInhoud = ({
             tegemoetkomingen loondomein, artikel 2.7).
           </Paragraph>
         )}
+        {id === "doelgroepverklaring" &&
+          situatie === "wia" &&
+          hoeLang(
+            "De werknemer vraagt de doelgroepverklaring aan bij UWV. UWV beslist meestal binnen 8 weken. Ontbreekt er informatie? Dan beslist UWV binnen 13 weken.",
+            [],
+          )}
         {id === "vz_wajong" && (
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
