@@ -67,8 +67,6 @@ const standVan = (cent: number) =>
 /** Per regeling: de termijn voor de werkgever, wanneer die weet waar die aan toe is, en waar het staat. */
 type Termijn = {
   id: Regel["id"];
-  /** Eén zin voor de lijst onder de berekening: wanneer er een besluit is. */
-  kort: string;
   tekst: string;
   wanneer: string;
   bronnen: Source[];
@@ -88,7 +86,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lks" as const,
-            kort: "Loonkostensubsidie: de gemeente beslist binnen vijf weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
             tekst:
               "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de start van het dienstverband.",
             wanneer:
@@ -101,7 +98,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "ld" as const,
-            kort: "Loondispensatie: UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen acht weken een brief.",
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
             wanneer:
@@ -114,7 +110,6 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lkv" as const,
-            kort: "Loonkostenvoordeel: u krijgt het het jaar na de start. De Belastingdienst beslist vóór 1 augustus.",
             tekst: arbeidsgehandicapt
               ? "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
               : "U vraagt het loonkostenvoordeel aan in de loonaangifte.",
@@ -228,7 +223,6 @@ const VragenMetStaat = ({
 }) => {
   const router = useRouter();
   const resultaat = useUitkomsten(a);
-  const termijnen = termijnenVoor(resultaat.uitkomsten.regels);
   // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
   // we niet meetellen (loonkostensubsidie bij beschut werk, die de gemeente
   // beoordeelt, en loondispensatie boven het minimumloon).
@@ -494,19 +488,6 @@ const VragenMetStaat = ({
               resultaat={resultaat}
               meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
             />
-            {/* Wanneer er een besluit is, ook zonder uitklappen: alleen termijnen uit de wet of van UWV. */}
-            {resultaat.bekend && !resultaat.fout && termijnen.length > 0 && (
-              <div className="rhc-mox-stack rhc-mox-stack--sm">
-                <Paragraph>
-                  <strong>Wanneer u een besluit krijgt</strong>
-                </Paragraph>
-                <UnorderedList className="rhc-mox-small-text">
-                  {termijnen.map((t) => (
-                    <UnorderedListItem key={t.id}>{t.kort}</UnorderedListItem>
-                  ))}
-                </UnorderedList>
-              </div>
-            )}
           </StickyInfoBox>
         </div>
       </div>
