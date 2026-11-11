@@ -54,6 +54,9 @@ type Props = {
  * kiest de ondernemer de regelingen met een vinkje; zonder panelen is er
  * niets te versturen en tonen de kaarten wat er geldt, met Afronden.
  */
+/** De uitkomst van Participatiewet artikel 10 voor werkplekaanpassing. */
+const WPA_OUTPUT = "heeft_aanspraak_op_voorziening_arbeidsinschakeling";
+
 /**
  * Wat de werkgever met een regeling doet, als label rechts in de kaart: een
  * actie (blauw) of niets (grijs). Zonder actie is er niets te kiezen.
@@ -175,13 +178,35 @@ const AanvraagInhoud = ({
     </>
   );
 
+  // Werkplekaanpassing (Pwet 10) zit niet in de oriëntatie; de uitleg rekent
+  // met de invoer van jobcoaching (zelfde wet en situatie) en de feiten die
+  // artikel 10 daarnaast vraagt. Wat de gemeente nog beoordeelt, telt als ja,
+  // net als bij de andere regelingen.
+  const jcInvoer = invoer(
+    "participatiewet",
+    "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+  );
+  const wpaInvoer = jcInvoer && {
+    ...jcInvoer,
+    output: WPA_OUTPUT,
+    uitleggen: [],
+    parameters: {
+      college_acht_voorziening_noodzakelijk: true,
+      is_wia_uitstromer_artikel_34a_35_36: false,
+      heeft_nabestaandenuitkering_anw: false,
+      is_niet_uitkeringsgerechtigde: a.doelgroepen.includes("nug"),
+      valt_onder_lid_2_wegens_voorziening: false,
+      ...jcInvoer.parameters,
+    },
+  };
+
   const waarom = (
     wet: string,
     output: string,
     regeling: string,
     voorAf?: ReactNode,
   ) => {
-    const i = invoer(wet, output);
+    const i = output === WPA_OUTPUT ? wpaInvoer : invoer(wet, output);
     if (!i) return null;
     return (
       <Waarom
@@ -220,6 +245,20 @@ const AanvraagInhoud = ({
       </Paragraph>
     );
   };
+
+  // Waarom de no-riskpolis hier geldt, volgens de engine: lid 2 (zonder
+  // einde) of lid 1 (5 jaar). Binnen lid 2 Wajong (a) of onderdeel e: de
+  // banenafspraak, of bij beschut werk de loonkostensubsidie.
+  const nrpGrond =
+    nrp?.duurJaren === -1
+      ? a.doelgroepen.includes("wajong")
+        ? `Geldt hier omdat ${kandidaat.voornaam} een Wajong-uitkering heeft (Ziektewet, artikel 29b lid 2).`
+        : a.doelgroepen.includes("beschut")
+          ? `Geldt hier omdat u voor ${kandidaat.voornaam} loonkostensubsidie krijgt (Ziektewet, artikel 29b lid 2 onder e).`
+          : `Geldt hier omdat ${kandidaat.voornaam} bij de doelgroep banenafspraak hoort (Ziektewet, artikel 29b lid 2 onder e).`
+      : nrp?.duurJaren === 5 && a.doelgroepen.includes("wia")
+        ? `Geldt hier omdat ${kandidaat.voornaam} vlak voor dit werk een WIA-uitkering had (Ziektewet, artikel 29b lid 1).`
+        : undefined;
 
   // Wie de regeling uitvoert.
   const deGemeente = `de gemeente ${kandidaat.gemeente}`;
@@ -275,6 +314,7 @@ const AanvraagInhoud = ({
           {BEGRIP[id].map((b) => (
             <Paragraph key={b}>{BEGRIPPEN[b].uitleg}</Paragraph>
           ))}
+          {id === "nrp" && nrpGrond && <Paragraph>{nrpGrond}</Paragraph>}
           {id === "lkv" && (
             <Paragraph>
               Dit wordt tijdens de loonaangifte afgehandeld.
@@ -401,6 +441,7 @@ const AanvraagInhoud = ({
           De gemeente beslist of een aanpassing van de werkplek nodig is
           (Participatiewet, artikel 10).
         </Paragraph>,
+        ["participatiewet", WPA_OUTPUT, "Werkplekaanpassing"],
       ),
     );
   };
