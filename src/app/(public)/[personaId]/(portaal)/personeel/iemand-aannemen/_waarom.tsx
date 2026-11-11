@@ -138,11 +138,11 @@ const Waarom = ({
                 );
               })}
               <Paragraph className="rhc-mox-small-text">
-                Deze uitleg volgt uit de wetten zoals die gelden op{" "}
-                {datumNL(PEILDATUM)}, de eerste werkdag in dit voorbeeld. Elke
-                zin komt rechtstreeks uit een stap van de wet. Wat de gemeente
-                of UWV nog moet vaststellen, staat hier als ‘ja’: zo rekent het
-                voorbeeld.
+                {/* De peildatum staat vast (AANVANG); de eerste werkdag die de
+                    werkgever opgeeft, gaat niet naar de engine. */}
+                Deze uitleg komt rechtstreeks uit de wet, zoals die geldt op{" "}
+                {datumNL(PEILDATUM)}. Wat de gemeente of UWV nog moet
+                beoordelen, telt in dit voorbeeld als ‘ja’.
               </Paragraph>
               <UitlegTaalmodel
                 berekening={stand.waarde}
