@@ -73,6 +73,7 @@ const EigenOpgave = ({
   vraagWpa,
   aanvangFout,
   eerderFout,
+  overgenomen,
   jcFout,
   wpaFout,
   bezig,
@@ -87,6 +88,8 @@ const EigenOpgave = ({
   vraagWpa: boolean;
   aanvangFout?: string;
   eerderFout?: string;
+  /** De uren komen uit de voorbeeldberekening (niet bij Regelingen aanvragen). */
+  overgenomen: boolean;
   jcFout?: string;
   wpaFout?: string;
   /** The calculation is still running: the questions for the request follow. */
@@ -121,7 +124,11 @@ const EigenOpgave = ({
         waarde komt uit dezelfde antwoorden (a.uren). */}
       <RangeSlider
         label={`Hoeveel uur per week gaat ${wie} werken?`}
-        description="Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+        description={
+          overgenomen
+            ? "Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+            : undefined
+        }
         min={1}
         max={40}
         step={1}
@@ -735,6 +742,7 @@ const Bronnen = ({
             vraagWpa={paneelIds.includes("wpa")}
             aanvangFout={aanvangFout}
             eerderFout={eerderFout}
+            overgenomen={staat?.voorbeeldBerekend !== false}
             jcFout={jcFout}
             wpaFout={wpaFout}
             bezig={!resultaat.bekend && !resultaat.fout}
