@@ -468,7 +468,7 @@ const VragenMetStaat = ({
             />
             <Paragraph className="rhc-mox-small-text">
               {a.uurloon === WML_UUR_EUROCENT &&
-                "Dit is het wettelijk minimumloon. "}
+                "Dit is het wettelijk minimumloon voor iemand van 21 jaar of ouder. "}
               Bij {a.uren} uur per week is dat ongeveer {euroHeel(maandloon)}{" "}
               bruto per maand. De loonkosten zijn ongeveer{" "}
               {euroHeel(loonkostenPerJaar(a))} per jaar.
