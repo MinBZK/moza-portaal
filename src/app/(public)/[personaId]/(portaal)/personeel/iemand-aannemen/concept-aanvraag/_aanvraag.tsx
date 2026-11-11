@@ -533,6 +533,21 @@ const AanvraagInhoud = ({
           ),
         );
 
+  // Eerst de regelingen met een bedrag, als laatste die met een keuze;
+  // daartussen de rest, in de volgorde van de route.
+  const volgorde = (id: RegelingId) =>
+    id === "lks" || id === "ld" || id === "lkv"
+      ? 0
+      : id === "jc" || id === "wpa"
+        ? 2
+        : 1;
+  const kaart = (id: RegelingId): ReactNode =>
+    (paneelIds as RegelingId[]).includes(id)
+      ? paneel(id as PaneelId)
+      : (route.vanzelf as RegelingId[]).includes(id)
+        ? vanzelf(id as VanzelfId)
+        : taak(id as TaakId);
+
   // Afronden zonder iets te versturen. Bij WIA maakt dat de zaak aan (de
   // werknemer vraagt de verklaring aan). Daarna altijd de bedankpagina.
   const klaar = () => {
@@ -715,9 +730,9 @@ const AanvraagInhoud = ({
                 </div>
               )}
               <ul className="rhc-mox-card-grid rhc-mox-card-grid--stacked">
-                {paneelIds.map(paneel)}
-                {route.vanzelf.map(vanzelf)}
-                {route.taken.map(taak)}
+                {[...rijIds]
+                  .sort((x, y) => volgorde(x) - volgorde(y))
+                  .map(kaart)}
               </ul>
             </div>
           </section>
