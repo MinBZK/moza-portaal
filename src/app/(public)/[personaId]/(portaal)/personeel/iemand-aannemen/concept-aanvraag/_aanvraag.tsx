@@ -54,6 +54,20 @@ type Props = {
  * kiest de ondernemer de regelingen met een vinkje; zonder panelen is er
  * niets te versturen en tonen de kaarten wat er geldt, met Afronden.
  */
+/**
+ * Wanneer een regeling wel geldt, voor de lijst met regelingen die bij deze
+ * antwoorden niet gelden. Zelfde strekking als de (i) in de voorbeeldberekening.
+ */
+const ALLEEN_VOOR: Partial<Record<RegelingId, string>> = {
+  lks: "Alleen voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen (Participatiewet, artikel 10d).",
+  ld: "Alleen voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk (Wajong, artikel 2:20).",
+  lkv: "Alleen voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
+  nrp: "Alleen voor bepaalde werknemers, bijvoorbeeld met een Wajong- of WIA-uitkering, uit de doelgroep banenafspraak of in beschut werk (Ziektewet, artikel 29b).",
+  pp: "Alleen voor een kandidaat met bijstand van de gemeente (Participatiewet, artikel 8a).",
+  jc: "Alleen voor een werknemer die bij de doelgroep loonkostensubsidie hoort (Participatiewet, artikel 10da).",
+  wpa: "Alleen voor een werknemer die bij de gemeente hoort (Participatiewet, artikel 10).",
+};
+
 /** De uitkomst van Participatiewet artikel 10 voor werkplekaanpassing. */
 const WPA_OUTPUT = "heeft_aanspraak_op_voorziening_arbeidsinschakeling";
 
@@ -536,6 +550,15 @@ const AanvraagInhoud = ({
           ),
         );
 
+  // De regelingen die bij deze antwoorden niet gelden. Jobcoaching en
+  // werkplekaanpassing van de gemeente niet als UWV die al regelt.
+  const viaUwv = rijIds.includes("vz_wajong") || rijIds.includes("vz_wia");
+  const nietGeldend = (
+    ["lks", "ld", "lkv", "nrp", "pp", "jc", "wpa"] as RegelingId[]
+  ).filter(
+    (id) => !rijIds.includes(id) && !(viaUwv && (id === "jc" || id === "wpa")),
+  );
+
   // Eerst de regelingen met een bedrag, als laatste die met een keuze;
   // daartussen de rest, in de volgorde van de route.
   const volgorde = (id: RegelingId) =>
@@ -736,6 +759,18 @@ const AanvraagInhoud = ({
                   .sort((x, y) => volgorde(x) - volgorde(y))
                   .map(kaart)}
               </ul>
+              {nietGeldend.length > 0 && (
+                <div className="rhc-mox-stack rhc-mox-stack--sm">
+                  <Heading level={3}>Geldt niet bij uw antwoorden</Heading>
+                  <UnorderedList>
+                    {nietGeldend.map((id) => (
+                      <UnorderedListItem key={id}>
+                        <strong>{NAAM[id]}.</strong> {ALLEEN_VOOR[id]}
+                      </UnorderedListItem>
+                    ))}
+                  </UnorderedList>
+                </div>
+              )}
             </div>
           </section>
         )}
