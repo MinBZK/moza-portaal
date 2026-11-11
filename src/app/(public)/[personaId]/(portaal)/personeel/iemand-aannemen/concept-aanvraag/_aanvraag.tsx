@@ -11,9 +11,7 @@ import {
   Accordion,
   AccordionSection,
   Alert,
-  Fieldset,
   FormFieldCheckboxOption,
-  FormFieldRadio,
   Heading,
   Paragraph,
   UnorderedList,
@@ -149,41 +147,15 @@ const AanvraagInhoud = ({
     if (kiesFout) document.getElementById("kies-fout")?.focus();
   }, [kiesFout]);
   const kies = (id: RegelingId, aan: boolean) => {
-    werkBij({ gecontroleerd: { ...g, [id]: aan } });
+    werkBij({
+      gecontroleerd: { ...g, [id]: aan },
+      // Jobcoaching en werkplekaanpassing gaan mee als de keuze "ja" is.
+      ...(id === "jc" || id === "wpa"
+        ? { keuzes: { ...k, [id]: aan ? "ja" : "nee" } }
+        : {}),
+    });
     if (aan) setKiesFout(0);
   };
-  // Jobcoaching en werkplekaanpassing: een vraag in de kaart in plaats van
-  // een vinkje. Bij "ja" gaat de regeling mee met de aanvraag.
-  const kiesKeuze = (deel: AannemenStaat["keuzes"]) => {
-    const [id, waarde] = Object.entries(deel)[0] as ["jc" | "wpa", string];
-    werkBij({
-      keuzes: { ...k, ...deel },
-      gecontroleerd: { ...g, [id]: waarde === "ja" },
-    });
-    if (waarde === "ja") setKiesFout(0);
-  };
-  const keuzeVraag = (
-    id: "jc" | "wpa",
-    legend: string,
-    opties: readonly (readonly [string, string])[],
-  ) => (
-    <Fieldset
-      id={id === "jc" ? "jobcoaching-vraag" : "werkplek-vraag"}
-      legend={legend}
-      className="rhc-mox-card__action"
-    >
-      {opties.map(([waarde, label]) => (
-        <FormFieldRadio
-          key={waarde}
-          name={id}
-          value={waarde}
-          label={label}
-          checked={k[id] === waarde}
-          onChange={() => kiesKeuze({ [id]: waarde })}
-        />
-      ))}
-    </Fieldset>
-  );
   // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is.
   // Voor het meten van de loonwaarde noemt de wet geen termijn; daarom alleen
   // "vaak een paar maanden". De loonwaarde is nog niet gemeten als de
@@ -268,7 +240,7 @@ const AanvraagInhoud = ({
   // doet, wat de regeling is, het voorbeeldbedrag en wie die uitvoert. De wet,
   // de termijnen en de afleiding staan onder Waarom deze uitkomst?. Onderaan
   // de actie: een vinkje of een vraag, alleen als er iets te doen is.
-  const rij = (id: RegelingId, meer: ReactNode, eigenActie?: ReactNode) => {
+  const rij = (id: RegelingId, meer: ReactNode) => {
     const doen = ACTIE[id].doen && !zonderAanvraag;
     return (
       <li key={id} id={`regeling-${id}`}>
@@ -282,8 +254,7 @@ const AanvraagInhoud = ({
           }
           className={doen && gekozen(id) ? "rhc-mox-card--selected" : undefined}
           action={
-            doen &&
-            (eigenActie ?? (
+            doen && (
               // De naam van de regeling alleen voor schermlezers: elk vinkje
               // heet anders, zoals in een lijst met formuliervelden.
               <FormFieldCheckboxOption
@@ -298,7 +269,7 @@ const AanvraagInhoud = ({
                 checked={gekozen(id)}
                 onChange={(event) => kies(id, event.target.checked)}
               />
-            ))
+            )
           }
         >
           {BEGRIP[id].map((b) => (
@@ -421,10 +392,6 @@ const AanvraagInhoud = ({
             "Jobcoaching",
           ],
         ),
-        keuzeVraag("jc", "Wilt u jobcoaching aanvragen?", [
-          ["ja", "Ja, via de gemeente"],
-          ["nee", "Nee, niet nodig"],
-        ]),
       );
 
     return rij(
@@ -435,11 +402,6 @@ const AanvraagInhoud = ({
           (Participatiewet, artikel 10).
         </Paragraph>,
       ),
-      keuzeVraag("wpa", "Is er een aanpassing van de werkplek nodig?", [
-        ["ja", "Ja, ik weet wat er nodig is"],
-        ["later", "Weet ik nog niet, ik vraag het later aan"],
-        ["nee", "Nee"],
-      ]),
     );
   };
 
