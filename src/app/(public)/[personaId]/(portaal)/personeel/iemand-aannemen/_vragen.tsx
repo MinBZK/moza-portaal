@@ -66,13 +66,12 @@ const standVan = (cent: number) =>
   );
 
 /**
- * Per regeling: wanneer er een besluit is (kort, in de lijst onder de
- * berekening) en wat de werkgever zelf op tijd moet doen (in de uitklap),
- * elk met de eigen bronnen.
+ * Per regeling, voor het blok Termijn in de uitklap: wat de werkgever zelf op
+ * tijd doet, en wanneer er een besluit is. Elk met de eigen bronnen.
  */
 type Termijn = {
   id: Regel["id"];
-  /** Eén zin voor de lijst onder de berekening: wanneer er een besluit is. */
+  /** Wanneer er een besluit is, in één zin, na wat de werkgever zelf doet. */
   kort: string;
   bronnenKort: Source[];
   /** In de uitklap: de aanvraagtermijn of wat de werkgever zelf doet. */
@@ -94,7 +93,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lks" as const,
-            kort: "Loonkostensubsidie: de gemeente beslist binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
+            kort: "De gemeente beslist binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
             bronnenKort: [BRON.pwet10dLid12],
             // Pwet 10d lid 2 onder b: wie in de 6 maanden voor de start bij de
             // gemeente hoorde (art. 7 lid 1 onder a: bijstand, geen uitkering).
@@ -108,7 +107,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "ld" as const,
-            kort: "Loondispensatie: UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
+            kort: "UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
             bronnenKort: [BRON.wajong61],
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
@@ -120,7 +119,7 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lkv" as const,
-            kort: "Loonkostenvoordeel: u krijgt het bedrag in het jaar na de start. De Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken daarna.",
+            kort: "U krijgt het bedrag in het jaar na de start. De Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken daarna.",
             bronnenKort: [BRON.wtl42en44],
             tekst: arbeidsgehandicapt
               ? "De werknemer vraagt de doelgroepverklaring aan binnen 3 maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
@@ -183,9 +182,9 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
       {termijn && (
         <>
           <Paragraph>
-            <strong>Termijn.</strong> {termijn.tekst}
+            <strong>Termijn.</strong> {termijn.tekst} {termijn.kort}
           </Paragraph>
-          <SourceLinks sources={termijn.bronnen} />
+          <SourceLinks sources={[...termijn.bronnen, ...termijn.bronnenKort]} />
         </>
       )}
     </>
@@ -229,7 +228,6 @@ const VragenMetStaat = ({
 }) => {
   const router = useRouter();
   const resultaat = useUitkomsten(a);
-  const termijnen = termijnenVoor(resultaat.uitkomsten.regels);
   // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
   // we niet meetellen (loonkostensubsidie bij beschut werk, die de gemeente
   // beoordeelt, en loondispensatie boven het minimumloon).
@@ -461,7 +459,7 @@ const VragenMetStaat = ({
             />
             <Paragraph className="rhc-mox-small-text">
               {a.uurloon === WML_UUR_EUROCENT &&
-                "Dit is het wettelijk minimumloon. "}
+                "Dit is het wettelijk minimumloon voor iemand van 21 jaar of ouder. "}
               Bij {a.uren} uur per week is dat ongeveer {euroHeel(maandloon)}{" "}
               bruto per maand. De loonkosten zijn ongeveer{" "}
               {euroHeel(loonkostenPerJaar(a))} per jaar.
@@ -487,27 +485,6 @@ const VragenMetStaat = ({
               resultaat={resultaat}
               meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
             />
-            {/* Wanneer er een besluit is, ook zonder uitklappen: alleen termijnen uit de wet of van UWV. */}
-            {resultaat.bekend && !resultaat.fout && termijnen.length > 0 && (
-              <div className="rhc-mox-stack rhc-mox-stack--sm">
-                <Paragraph>
-                  <strong>Wanneer u een besluit krijgt</strong>
-                </Paragraph>
-                <UnorderedList className="rhc-mox-small-text">
-                  {termijnen.map((t) => (
-                    <UnorderedListItem key={t.id}>{t.kort}</UnorderedListItem>
-                  ))}
-                </UnorderedList>
-                <SourceLinks
-                  sources={termijnen
-                    .flatMap((t) => t.bronnenKort)
-                    .filter(
-                      (b, i, alle) =>
-                        alle.findIndex((x) => x.label === b.label) === i,
-                    )}
-                />
-              </div>
-            )}
           </StickyInfoBox>
         </div>
       </div>
