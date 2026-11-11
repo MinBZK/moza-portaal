@@ -1,12 +1,15 @@
 "use client";
 
 import Card from "@/components/Card";
+import TextBadge from "@/components/TextBadge";
 import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
+  Accordion,
+  AccordionSection,
   Alert,
   FormFieldCheckboxOption,
   Heading,
@@ -19,7 +22,7 @@ import basis from "../_basisfeiten.json";
 import { Aanname, duurTekst } from "../_balans";
 import type { PaneelId, TaakId, VanzelfId } from "../_route";
 import { onderwerpVoor, overzichtTekst, routeVoor } from "../_route";
-import { BegripInfo, BEGRIP, NAAM } from "../_begrippen";
+import { BEGRIP, BEGRIPPEN, NAAM } from "../_begrippen";
 import Controleer from "../_opgehaald";
 import Stappen, { TAAK_TITEL, terugNaar } from "../_stappen";
 import { loonkostenPerJaar } from "../_engine";
@@ -36,7 +39,7 @@ import {
 import AlIngediend from "../_alIngediend";
 import { INGEDIEND_OP, nieuweZaakStand, zaakAanmaken } from "../_zaakStart";
 import { euroHeel, type Werkgever } from "../_werkgever";
-import SourceLinks from "@/components/SourceLinks";
+import SourceLinks, { type Source } from "@/components/SourceLinks";
 import { BRON } from "../_wetsbronnen";
 
 type Props = {
@@ -51,6 +54,56 @@ type Props = {
  * kiest de ondernemer de regelingen met een vinkje; zonder panelen is er
  * niets te versturen en tonen de kaarten wat er geldt, met Afronden.
  */
+/**
+ * Wanneer een regeling wel geldt, voor de lijst met regelingen die bij deze
+ * antwoorden niet gelden. Zelfde strekking als de (i) in de voorbeeldberekening.
+ */
+const ALLEEN_VOOR: Partial<Record<RegelingId, string>> = {
+  lks: "Alleen voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen (Participatiewet, artikel 10d).",
+  ld: "Alleen voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk (Wajong, artikel 2:20).",
+  lkv: "Alleen voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
+  nrp: "Alleen voor bepaalde werknemers, bijvoorbeeld met een Wajong- of WIA-uitkering, uit de doelgroep banenafspraak of in beschut werk (Ziektewet, artikel 29b).",
+  pp: "Alleen voor een kandidaat met bijstand van de gemeente (Participatiewet, artikel 8a).",
+  jc: "Alleen voor een werknemer die bij de doelgroep loonkostensubsidie hoort (Participatiewet, artikel 10da).",
+  wpa: "Alleen voor een werknemer die bij de gemeente hoort (Participatiewet, artikel 10).",
+};
+
+/**
+ * Wat de werkgever met een regeling doet, als label rechts in de kaart: een
+ * actie (blauw) of niets (grijs). Zonder actie is er niets te kiezen.
+ */
+const ACTIE: Record<RegelingId, { label: string; doen: boolean }> = {
+  lks: { label: "Controleren", doen: true },
+  ld: { label: "Controleren", doen: true },
+  jc: { label: "Kiezen", doen: true },
+  wpa: { label: "Kiezen", doen: true },
+  lkv: { label: "Nu geen actie nodig", doen: false },
+  nrp: { label: "Nu geen actie nodig", doen: false },
+  doelgroepverklaring: { label: "Werknemer vraagt aan", doen: false },
+  vz_wajong: { label: "Werknemer vraagt aan", doen: false },
+  vz_wia: { label: "Werknemer vraagt aan", doen: false },
+  pp: { label: "Kandidaat vraagt aan", doen: false },
+};
+
+/** Waarom deze uitkomst? zonder afleiding: voor regelingen die de engine niet rekent. */
+const AlleenUitleg = ({ children }: { children: ReactNode }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Accordion>
+      <AccordionSection
+        headingLevel={4}
+        label="Waarom deze uitkomst?"
+        // Het type eist `body`, de component rendert alleen `children`.
+        body={null}
+        expanded={open}
+        onActivate={() => setOpen(!open)}
+      >
+        <div className="rhc-mox-stack">{children}</div>
+      </AccordionSection>
+    </Accordion>
+  );
+};
+
 const Aanvraag = (props: Props) => {
   const { staat } = useAannemen();
   // De inhoud rekent met de engine; dat mag pas als de opslag gelezen is.
@@ -98,7 +151,9 @@ const AanvraagInhoud = ({
   const zonderAanvraag = paneelIds.length === 0;
   // Welke regelingen de ondernemer kiest: de kaarten met een vinkje.
   const gekozen = (id: RegelingId) => !!g[id];
-  const aantalGekozen = rijIds.filter(gekozen).length;
+  const aantalGekozen = rijIds.filter(
+    (id) => ACTIE[id].doen && gekozen(id),
+  ).length;
   // Hoe vaak versturen zonder keuze is geprobeerd: elke poging zet de focus
   // op de melding, zodat die wordt voorgelezen.
   const [kiesFout, setKiesFout] = useState(0);
@@ -115,6 +170,24 @@ const AanvraagInhoud = ({
     });
     if (aan) setKiesFout(0);
   };
+  // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is.
+  // Voor het meten van de loonwaarde noemt de wet geen termijn; daarom alleen
+  // "vaak een paar maanden". De loonwaarde is nog niet gemeten als de
+  // gemeente dat zo opgeeft.
+  const loonwaardeNogNiet = bronnen.some((b) =>
+    b.gegevens.some(
+      (gegeven) =>
+        gegeven.parameter === "college_heeft_loonwaarde_vastgesteld" &&
+        gegeven.waarde.startsWith("Nog niet"),
+    ),
+  );
+  const hoeLang = (zin: string, bronnenVanZin: Source[]) => (
+    <>
+      <Heading level={5}>Hoe lang het kan duren</Heading>
+      <Paragraph>{zin}</Paragraph>
+      <SourceLinks sources={bronnenVanZin} />
+    </>
+  );
 
   const waarom = (
     wet: string,
@@ -139,49 +212,6 @@ const AanvraagInhoud = ({
   const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
-  // Eén inklapbare kaart per regeling: de naam als kop, wie de regeling
-  // uitvoert en wat het is, en onderaan altijd een vinkje om te kiezen (niet
-  // zonder aanvraag).
-  const rij = (id: RegelingId, wie: string, kind: ReactNode) => (
-    <li key={id} id={`regeling-${id}`}>
-      <Card
-        heading={NAAM[id]}
-        headingLevel={3}
-        collapsible
-        defaultOpen={false}
-        className={
-          !zonderAanvraag && gekozen(id) ? "rhc-mox-card--selected" : undefined
-        }
-        action={
-          // De naam van de regeling alleen voor schermlezers: elk vinkje heet
-          // anders, ook buiten de kaart, zoals in een lijst met formuliervelden.
-          !zonderAanvraag && (
-            <FormFieldCheckboxOption
-              className="rhc-mox-card__action"
-              label={
-                <>
-                  Kies deze regeling
-                  <span className="rhc-visually-hidden">: {NAAM[id]}</span>
-                </>
-              }
-              name={`kies-${id}`}
-              checked={gekozen(id)}
-              onChange={(event) => kies(id, event.target.checked)}
-            />
-          )
-        }
-      >
-        <div className="rhc-mox-cluster">
-          <Paragraph className="rhc-mox-small-text">{wie}</Paragraph>
-          {BEGRIP[id].map((b) => (
-            <BegripInfo key={b} id={b} />
-          ))}
-        </div>
-        {kind}
-      </Card>
-    </li>
-  );
-
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
     const bedrag = bedragVan(id);
     // Direct via Regelingen aanvragen: loonwaarde en uurloon zijn nog niet
@@ -205,210 +235,302 @@ const AanvraagInhoud = ({
     );
   };
 
-  const paneel = (id: PaneelId): ReactNode => {
-    const kop = (note: string, kind: ReactNode) => rij(id, note, kind);
-    const gemeente = `Gemeente ${kandidaat.gemeente}, waar ${kandidaat.voornaam} woont`;
+  // Wie de regeling uitvoert.
+  const deGemeente = `de gemeente ${kandidaat.gemeente}`;
+  const UITVOERDER: Record<RegelingId, string> = {
+    lks: deGemeente,
+    ld: "UWV",
+    jc: deGemeente,
+    wpa: deGemeente,
+    lkv: "de Belastingdienst",
+    nrp: "UWV",
+    doelgroepverklaring: "UWV",
+    vz_wajong: "UWV",
+    vz_wia: "UWV",
+    pp: deGemeente,
+  };
 
-    if (id === "lks")
-      return kop(
-        gemeente,
-        <>
-          <Paragraph>
-            U vraagt de gemeente {kandidaat.gemeente} om loonkostensubsidie
-            (Participatiewet, artikel 10d). De gemeente beslist of u die krijgt.
-          </Paragraph>
-          {voorbeeldbedrag("lks")}
-          <Paragraph>
-            Vraag aan binnen 6 maanden na de start van het dienstverband
-            (Participatiewet, artikel 10d lid 2).
-          </Paragraph>
-          {waarom(
-            "participatiewet",
-            "heeft_recht_op_lks",
-            "Loonkostensubsidie",
-            <>
-              <Heading level={5}>
-                Hoe de gemeente {kandidaat.gemeente} beslist
-              </Heading>
-              <UnorderedList>
-                <UnorderedListItem>
-                  De gemeente beoordeelt of {kandidaat.voornaam} met een
-                  volledige baan het minimumloon niet kan verdienen.
-                </UnorderedListItem>
-                <UnorderedListItem>
-                  Een loonwaardedeskundige beoordeelt het werk op de werkplek.
-                  Met dat rapport stelt de gemeente de loonwaarde vast. Daarna
-                  weet u het precieze bedrag.
-                </UnorderedListItem>
-                <UnorderedListItem>
-                  Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
-                  in overleg met u besluiten de loonwaarde eerst niet vast te
-                  stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
-                  van het minimumloon met vakantiegeld, naar verhouding van de
-                  uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
-                </UnorderedListItem>
-                <UnorderedListItem>
-                  U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
-                  begonnen? Dan binnen 8 weken, tenzij de gemeente laat weten
-                  dat het langer duurt. Anders binnen 5 weken nadat de gemeente
-                  de loonwaarde heeft vastgesteld.
-                </UnorderedListItem>
-              </UnorderedList>
-              <SourceLinks
-                sources={[
-                  BRON.pwet10c,
-                  BRON.besluitLks3,
-                  BRON.pwet10dLid5,
-                  BRON.awb,
-                  BRON.pwet10dLid12,
-                ]}
+  // Eén kaart per regeling, altijd open: de naam met rechts wat de werkgever
+  // doet, wat de regeling is, het voorbeeldbedrag en wie die uitvoert. De wet,
+  // de termijnen en de afleiding staan onder Waarom deze uitkomst?. Onderaan
+  // de actie: een vinkje of een vraag, alleen als er iets te doen is.
+  const rij = (id: RegelingId, meer: ReactNode) => {
+    const doen = ACTIE[id].doen && !zonderAanvraag;
+    return (
+      <li key={id} id={`regeling-${id}`}>
+        <Card
+          heading={NAAM[id]}
+          headingLevel={3}
+          label={
+            <TextBadge variant={ACTIE[id].doen ? "info" : "neutral"}>
+              {ACTIE[id].label}
+            </TextBadge>
+          }
+          action={
+            doen && (
+              // De naam van de regeling alleen voor schermlezers: elk vinkje
+              // heet anders, zoals in een lijst met formuliervelden.
+              <FormFieldCheckboxOption
+                className="rhc-mox-card__action"
+                label={
+                  <>
+                    Kies deze regeling
+                    <span className="rhc-visually-hidden">: {NAAM[id]}</span>
+                  </>
+                }
+                name={`kies-${id}`}
+                checked={gekozen(id)}
+                onChange={(event) => kies(id, event.target.checked)}
               />
-            </>,
+            )
+          }
+        >
+          {BEGRIP[id].map((b) => (
+            <Paragraph key={b}>{BEGRIPPEN[b].uitleg}</Paragraph>
+          ))}
+          {id === "lkv" && (
+            <Paragraph>
+              Dit wordt tijdens de loonaangifte afgehandeld.
+            </Paragraph>
           )}
-        </>,
-      );
-
-    if (id === "ld")
-      return kop(
-        "UWV",
-        <>
-          <Paragraph>
-            U vraagt UWV om loondispensatie: u betaalt minder loon dan het
-            minimumloon (Wajong, artikel 2:20).
+          {(id === "lks" || id === "ld" || id === "lkv") && voorbeeldbedrag(id)}
+          <Paragraph className="rhc-mox-small-text">
+            Uitgevoerd door {UITVOERDER[id]}.
           </Paragraph>
-          {voorbeeldbedrag("ld")}
-          <Paragraph>
-            Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
-            het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
-            meestal binnen 8 weken een brief.
-          </Paragraph>
-          <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
-          {waarom(
-            "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
-            "heeft_recht_op_loondispensatie",
-            "Loondispensatie",
-          )}
-        </>,
-      );
-
-    if (id === "jc")
-      return kop(
-        gemeente,
-        <>
-          <Paragraph>
-            Begeleiding op de werkplek door een jobcoach. De werknemer heeft
-            daar recht op als die bij de doelgroep loonkostensubsidie hoort
-            (Participatiewet, artikel 10da). Dat stelt de gemeente vast.
-          </Paragraph>
-          {waarom(
-            "participatiewet",
-            "heeft_aanspraak_op_begeleiding_op_de_werkplek",
-            "Jobcoaching",
-          )}
-        </>,
-      );
-
-    return kop(
-      gemeente,
-      <>
-        <Paragraph>
-          Vergoeding voor een aangepaste werkplek of een hulpmiddel. De gemeente
-          beslist of dat nodig is (Participatiewet, artikel 10).
-        </Paragraph>
-      </>,
+          {meer}
+        </Card>
+      </li>
     );
   };
 
-  const TAAK_WIE: Record<TaakId, string> = {
-    doelgroepverklaring: "De werknemer vraagt aan bij UWV",
-    vz_wajong: "De werknemer vraagt aan bij UWV",
-    vz_wia: "De werknemer vraagt aan bij UWV",
-    pp: `De kandidaat vraagt toestemming aan de gemeente ${kandidaat.gemeente}`,
+  // Waarom deze uitkomst?: met de afleiding van regelrecht als de engine de
+  // regeling rekent, anders alleen de uitleg uit de wet.
+  const uitleg = (
+    voorAf: ReactNode,
+    engine?: [wet: string, output: string, regeling: string],
+  ) =>
+    (engine && waarom(engine[0], engine[1], engine[2], voorAf)) ?? (
+      <AlleenUitleg>{voorAf}</AlleenUitleg>
+    );
+
+  const paneel = (id: PaneelId): ReactNode => {
+    if (id === "lks")
+      return rij(
+        id,
+        uitleg(
+          <>
+            <Paragraph>
+              U vraagt de gemeente {kandidaat.gemeente} om loonkostensubsidie
+              (Participatiewet, artikel 10d). Vraag aan binnen 6 maanden na de
+              start van het dienstverband (Participatiewet, artikel 10d lid 2).
+            </Paragraph>
+            <Heading level={5}>
+              Hoe de gemeente {kandidaat.gemeente} beslist
+            </Heading>
+            <UnorderedList>
+              <UnorderedListItem>
+                De gemeente beoordeelt of {kandidaat.voornaam} met een volledige
+                baan het minimumloon niet kan verdienen.
+              </UnorderedListItem>
+              <UnorderedListItem>
+                Een loonwaardedeskundige beoordeelt het werk op de werkplek. Met
+                dat rapport stelt de gemeente de loonwaarde vast. Daarna weet u
+                het precieze bedrag.
+              </UnorderedListItem>
+              <UnorderedListItem>
+                Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
+                in overleg met u besluiten de loonwaarde eerst niet vast te
+                stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
+                van het minimumloon met vakantiegeld, naar verhouding van de
+                uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
+              </UnorderedListItem>
+              <UnorderedListItem>
+                U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
+                begonnen? Dan binnen 8 weken, tenzij de gemeente laat weten dat
+                het langer duurt. Anders binnen 5 weken nadat de gemeente de
+                loonwaarde heeft vastgesteld.
+              </UnorderedListItem>
+            </UnorderedList>
+            <SourceLinks
+              sources={[
+                BRON.pwet10c,
+                BRON.besluitLks3,
+                BRON.pwet10dLid5,
+                BRON.awb,
+                BRON.pwet10dLid12,
+              ]}
+            />
+          </>,
+          ["participatiewet", "heeft_recht_op_lks", "Loonkostensubsidie"],
+        ),
+      );
+
+    if (id === "ld")
+      return rij(
+        id,
+        uitleg(
+          <>
+            <Paragraph>
+              U vraagt UWV om loondispensatie: u betaalt minder loon dan het
+              minimumloon (Wajong, artikel 2:20).
+            </Paragraph>
+            <Paragraph>
+              Loondispensatie geldt vanaf de maand waarin u aanvraagt. Een
+              arbeidsdeskundige van UWV komt meestal op de werkplek. UWV stelt
+              het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt
+              u meestal binnen 8 weken een brief.
+            </Paragraph>
+            <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
+          </>,
+          [
+            "wet_arbeidsongeschiktheidsvoorziening_jonggehandicapten",
+            "heeft_recht_op_loondispensatie",
+            "Loondispensatie",
+          ],
+        ),
+      );
+
+    if (id === "jc")
+      return rij(
+        id,
+        uitleg(
+          <Paragraph>
+            De werknemer heeft recht op jobcoaching als die bij de doelgroep
+            loonkostensubsidie hoort (Participatiewet, artikel 10da). Dat stelt
+            de gemeente vast.
+          </Paragraph>,
+          [
+            "participatiewet",
+            "heeft_aanspraak_op_begeleiding_op_de_werkplek",
+            "Jobcoaching",
+          ],
+        ),
+      );
+
+    return rij(
+      id,
+      uitleg(
+        <Paragraph>
+          De gemeente beslist of een aanpassing van de werkplek nodig is
+          (Participatiewet, artikel 10).
+        </Paragraph>,
+      ),
+    );
   };
 
-  const taak = (id: TaakId): ReactNode =>
-    rij(
-      id,
-      TAAK_WIE[id],
-      <>
-        {id === "doelgroepverklaring" && (
-          <Paragraph>
-            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen 3
-            maanden na de start. Zonder verklaring geen loonkostenvoordeel (Wet
-            tegemoetkomingen loondomein, artikel 2.7).
-          </Paragraph>
-        )}
-        {id === "vz_wajong" && (
+  const taak = (id: TaakId): ReactNode => {
+    if (id === "doelgroepverklaring")
+      return rij(
+        id,
+        uitleg(
+          <>
+            <Paragraph>
+              De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen 3
+              maanden na de start. Zonder verklaring geen loonkostenvoordeel
+              (Wet tegemoetkomingen loondomein, artikel 2.7).
+            </Paragraph>
+            {situatie === "wia" &&
+              hoeLang(
+                "UWV beslist meestal binnen 8 weken. Ontbreekt er informatie? Dan beslist UWV binnen 13 weken.",
+                [],
+              )}
+          </>,
+        ),
+      );
+    if (id === "vz_wajong")
+      return rij(
+        id,
+        uitleg(
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
             bij UWV (Wajong, artikel 2:22).
-          </Paragraph>
-        )}
-        {id === "vz_wia" && (
+          </Paragraph>,
+        ),
+      );
+    if (id === "vz_wia")
+      return rij(
+        id,
+        uitleg(
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
             bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
             subsidie vragen bij UWV, als het dienstverband ten minste 6 maanden
             duurt (Wet WIA, artikel 36).
-          </Paragraph>
-        )}
-        {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
-            toestemming gaat naar de kandidaat (8a lid 2 d): geen deel van de
-            aanvraag, die van een vaste eerste werkdag uitgaat. */}
-        {id === "pp" && (
-          <>
-            <Paragraph>
-              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt 2 maanden;
-              de gemeente kan dat met hoogstens 4 maanden verlengen
-              (Participatiewet, artikel 8a lid 2 onder d). De kandidaat vraagt
-              de gemeente om toestemming; dat gaat buiten deze aanvraag om.
-            </Paragraph>
-            {waarom(
-              "participatiewet",
-              "mag_proefplaatsing_aangaan",
-              "Proefplaatsing",
-            )}
-          </>
-        )}
-      </>,
+          </Paragraph>,
+        ),
+      );
+    // De proefplaatsing ligt vóór de dienstbetrekking (Pwet 6 h) en de
+    // toestemming gaat naar de kandidaat (8a lid 2 d): geen deel van de
+    // aanvraag, die van een vaste eerste werkdag uitgaat.
+    return rij(
+      id,
+      uitleg(
+        <Paragraph>
+          Onbetaald werk bij u vóór de eerste werkdag. Dat duurt 2 maanden; de
+          gemeente kan dat met hoogstens 4 maanden verlengen (Participatiewet,
+          artikel 8a lid 2 onder d). De kandidaat vraagt de gemeente om
+          toestemming; dat gaat buiten deze aanvraag om.
+        </Paragraph>,
+        ["participatiewet", "mag_proefplaatsing_aangaan", "Proefplaatsing"],
+      ),
     );
+  };
 
   const vanzelf = (id: VanzelfId): ReactNode =>
     id === "lkv"
       ? rij(
           id,
-          "Belastingdienst, via de loonaangifte",
-          <>
-            <Paragraph>
-              U zet het vakje loonkostenvoordeel aan in de loonaangifte; een
-              aparte aanvraag is niet nodig (Wet tegemoetkomingen loondomein).
-            </Paragraph>
-            {voorbeeldbedrag("lkv")}
-            {lkv?.aanname && <Aanname id={lkv.aanname} />}
-            {waarom(
+          uitleg(
+            <>
+              <Paragraph>
+                U zet het vakje loonkostenvoordeel aan in de loonaangifte; een
+                aparte aanvraag is niet nodig (Wet tegemoetkomingen loondomein).
+              </Paragraph>
+              {lkv?.aanname && <Aanname id={lkv.aanname} />}
+            </>,
+            [
               "wet_tegemoetkomingen_loondomein",
               "heeft_recht_op_lkv",
               "Loonkostenvoordeel",
-            )}
-          </>,
+            ],
+          ),
         )
       : rij(
           id,
-          "UWV, geen aanvraag nodig",
-          <>
+          uitleg(
             <Paragraph>
-              U hoeft niets aan te vragen. Wordt de werknemer ziek? Meld dat bij
-              UWV, uiterlijk op de eerste dag na 6 weken ziekte (Ziektewet,
-              artikel 38a lid 3). UWV betaalt dan ziekengeld (Ziektewet, artikel
-              29b). {duurTekst(nrp?.duurJaren)}
-            </Paragraph>
-            {waarom(
-              "ziektewet",
-              "heeft_recht_op_no_risk_polis",
-              "No-riskpolis",
-            )}
-          </>,
+              Wordt de werknemer ziek? Meld dat bij UWV, uiterlijk op de eerste
+              dag na 6 weken ziekte (Ziektewet, artikel 38a lid 3). UWV betaalt
+              dan ziekengeld (Ziektewet, artikel 29b).{" "}
+              {duurTekst(nrp?.duurJaren)}
+            </Paragraph>,
+            ["ziektewet", "heeft_recht_op_no_risk_polis", "No-riskpolis"],
+          ),
         );
+
+  // De regelingen die bij deze antwoorden niet gelden. Jobcoaching en
+  // werkplekaanpassing van de gemeente niet als UWV die al regelt.
+  const viaUwv = rijIds.includes("vz_wajong") || rijIds.includes("vz_wia");
+  const nietGeldend = (
+    ["lks", "ld", "lkv", "nrp", "pp", "jc", "wpa"] as RegelingId[]
+  ).filter(
+    (id) => !rijIds.includes(id) && !(viaUwv && (id === "jc" || id === "wpa")),
+  );
+
+  // Eerst de regelingen met een bedrag, als laatste die met een keuze;
+  // daartussen de rest, in de volgorde van de route.
+  const volgorde = (id: RegelingId) =>
+    id === "lks" || id === "ld" || id === "lkv"
+      ? 0
+      : id === "jc" || id === "wpa"
+        ? 2
+        : 1;
+  const kaart = (id: RegelingId): ReactNode =>
+    (paneelIds as RegelingId[]).includes(id)
+      ? paneel(id as PaneelId)
+      : (route.vanzelf as RegelingId[]).includes(id)
+        ? vanzelf(id as VanzelfId)
+        : taak(id as TaakId);
 
   // Afronden zonder iets te versturen. Bij WIA maakt dat de zaak aan (de
   // werknemer vraagt de verklaring aan). Daarna altijd de bedankpagina.
@@ -458,7 +580,6 @@ const AanvraagInhoud = ({
   // bevestiging. Geen aparte pagina en geen nieuwe berekening.
   const uwv = situatie === "wajong";
   const demo = perSituatie[uwv ? "wajong" : "gemeente"];
-  const naarWie = uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
   const verstuurt = paneelIds
     .filter(gekozen)
     .map((id) => NAAM[id].toLowerCase());
@@ -548,21 +669,16 @@ const AanvraagInhoud = ({
         {!bekend && !resultaat.fout ? (
           <LoadingStatus>Wij zoeken uit welke regelingen gelden…</LoadingStatus>
         ) : (
-          <Paragraph>
-            {resultaat.fout
-              ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
-              : rijIds.length === 0
-                ? "Bij deze antwoorden is er niets aan te vragen. Klopt een antwoord niet? Pas het dan aan in de voorbeeldberekening."
-                : paneelIds.length === 0
-                  ? overzichtTekst(route)
-                  : "Controleer de gegevens en kies de regelingen."}
-          </Paragraph>
-        )}
-        {paneelIds.length > 0 && (
-          <Paragraph className="rhc-mox-small-text">
-            Alleen u ziet deze aanvraag. Er gaat pas iets naar de gemeente of
-            UWV als u verstuurt.
-          </Paragraph>
+          // Met iets te versturen staat de uitleg onder Kies de regelingen.
+          (resultaat.fout || paneelIds.length === 0) && (
+            <Paragraph>
+              {resultaat.fout
+                ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
+                : rijIds.length === 0
+                  ? "Bij deze antwoorden is er niets aan te vragen. Klopt een antwoord niet? Pas het dan aan in de voorbeeldberekening."
+                  : overzichtTekst(route)}
+            </Paragraph>
+          )
         )}
 
         {bekend && rijIds.length > 0 && (
@@ -570,15 +686,14 @@ const AanvraagInhoud = ({
             <Heading level={2} id="regelingen">
               {zonderAanvraag ? "Wat er geldt" : "Kies de regelingen"}
             </Heading>
-            <Paragraph>
-              {staat.voorbeeldBerekend === false
-                ? "Deze regelingen passen bij uw antwoorden."
-                : "Deze regelingen passen bij uw antwoorden in de voorbeeldberekening."}{" "}
-              Of een regeling echt geldt, beslist de organisatie die de regeling
-              uitvoert.
-            </Paragraph>
-            {!zonderAanvraag && (
-              <Paragraph>Kies ten minste één regeling.</Paragraph>
+            {/* Direct via Regelingen aanvragen: geen voorbeeldbedragen. */}
+            {(!zonderAanvraag || staat.voorbeeldBerekend !== false) && (
+              <Paragraph>
+                {!zonderAanvraag &&
+                  "Er gaat pas iets naar de gemeente of UWV als u verstuurt. "}
+                {staat.voorbeeldBerekend !== false &&
+                  "De voorbeeldbedragen zijn op basis van de voorbeeldberekening, de uitvoeringsorganisatie bepaalt het daadwerkelijke bedrag."}
+              </Paragraph>
             )}
             <div
               className={
@@ -598,10 +713,22 @@ const AanvraagInhoud = ({
                 </div>
               )}
               <ul className="rhc-mox-card-grid rhc-mox-card-grid--stacked">
-                {paneelIds.map(paneel)}
-                {route.vanzelf.map(vanzelf)}
-                {route.taken.map(taak)}
+                {[...rijIds]
+                  .sort((x, y) => volgorde(x) - volgorde(y))
+                  .map(kaart)}
               </ul>
+              {nietGeldend.length > 0 && (
+                <div className="rhc-mox-stack rhc-mox-stack--sm">
+                  <Heading level={3}>Geldt niet bij uw antwoorden</Heading>
+                  <UnorderedList>
+                    {nietGeldend.map((id) => (
+                      <UnorderedListItem key={id}>
+                        <strong>{NAAM[id]}.</strong> {ALLEEN_VOOR[id]}
+                      </UnorderedListItem>
+                    ))}
+                  </UnorderedList>
+                </div>
+              )}
             </div>
           </section>
         )}
@@ -623,10 +750,10 @@ const AanvraagInhoud = ({
               Versturen
             </Heading>
             <Paragraph>
-              U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
-              {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
-              ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
-              het dossier in Lopende zaken.
+              U verstuurt de aanvraag {opsomming}. De organisatie die de
+              regeling uitvoert, beslist. U krijgt een ontvangstbevestiging met
+              zaaknummer in uw berichtenbox en volgt het dossier in Lopende
+              zaken.
             </Paragraph>
             <FormFieldCheckboxOption
               id="bevestiging"
@@ -641,6 +768,15 @@ const AanvraagInhoud = ({
               checked={bevestigd}
               onChange={(event) => setBevestigd(event.target.checked)}
             />
+            {/* Vlak voor Versturen: hoe lang het duurt. Geen gemiddelde; bij
+                de gemeente noemt de wet geen termijn voor de meting. */}
+            {(uwv || loonwaardeNogNiet) && (
+              <Paragraph className="rhc-mox-small-text">
+                {uwv
+                  ? "UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief."
+                  : `Een aanvraag duurt vaak een paar maanden. Eerst komt een loonwaardedeskundige kijken naar het werk van ${kandidaat.voornaam} op de werkplek. Daarna beslist de gemeente.`}
+              </Paragraph>
+            )}
           </section>
         )}
 

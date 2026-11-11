@@ -18,6 +18,7 @@ const Card = ({
   defaultOpen = true,
   compact = false,
   info = false,
+  label,
   action,
   className,
   children,
@@ -32,6 +33,8 @@ const Card = ({
   compact?: boolean;
   /** Info background, to make the card stand out. */
   info?: boolean;
+  /** At the right of the heading, such as a TextBadge with the action. */
+  label?: ReactNode;
   /** Always at the bottom, open or collapsed, such as an ActionGroup. */
   action?: ReactNode;
   className?: string;
@@ -75,11 +78,13 @@ const Card = ({
               <ChevronDownIcon />
             </span>
             <span className="utrecht-accordion__button-label">{heading}</span>
+            {label && <span className="rhc-mox-card__label">{label}</span>}
           </Button>
         </Heading>
       ) : (
         <Heading level={headingLevel} id={headingId}>
           {heading}
+          {label && <span className="rhc-mox-card__label">{label}</span>}
         </Heading>
       )}
       <div id={contentId} className="rhc-mox-card__content" hidden={!expanded}>

@@ -1175,6 +1175,18 @@ small,
 	.rhc-mox-card.rhc-mox-card--selected {
 		border-color: var(--rhc-color-core-500);
 	}
+
+	/* The label at the right of the heading, such as the action. */
+	.rhc-mox-card__label {
+		flex-shrink: 0;
+		margin-inline-start: auto;
+	}
+
+	.rhc-mox-card > :is(h1, h2, h3, h4, h5):has(> .rhc-mox-card__label) {
+		align-items: center;
+		display: flex;
+		gap: var(--rhc-space-lg);
+	}
 }
 
 .rhc-mox-card-grid {

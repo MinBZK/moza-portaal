@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import InfoToggletip from "@/components/InfoToggletip";
-import { Heading, Separator } from "@/components/rhc";
+import { Heading, Icon, Separator } from "@/components/rhc";
 import type { DemoAannemen } from "@/demo";
 import { BegripInfo, type BegripId } from "./_begrippen";
 import { datumNL } from "./_werkgever";
@@ -145,6 +145,7 @@ const Rijen = ({ rijen }: { rijen: Rij[] }) => (
               className="utrecht-link utrecht-link--html-a"
               aria-label={`Wijzigen: ${r.label.toLowerCase()}`}
             >
+              <Icon icon="bewerken" />
               Wijzigen
             </Link>
           </dd>
