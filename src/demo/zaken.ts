@@ -96,7 +96,7 @@ export type DemoConceptAanvraag = {
  */
 const iemandAannemen: DemoConceptAanvraag = {
   id: "iemand-aannemen-met-afstand-tot-de-arbeidsmarkt",
-  titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
+  titel: "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
   organisatie: "UWV, Belastingdienst en gemeente",
   tijdsduur: "Ongeveer 15 minuten",
   overgenomen:

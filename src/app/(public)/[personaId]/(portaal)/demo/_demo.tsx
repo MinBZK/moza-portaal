@@ -552,7 +552,9 @@ const DemoSiteSearch = () => {
           "subsidie energiebesparing",
           "personeel aannemen",
         ]}
-        recentSearches={["Iemand aannemen met afstand tot de arbeidsmarkt"]}
+        recentSearches={[
+          "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
+        ]}
         onSearch={setSearched}
       />
       {searched && (
