@@ -305,7 +305,6 @@ const AanvraagInhoud = ({
               {ACTIE[id].label}
             </TextBadge>
           }
-          className={doen && gekozen(id) ? "rhc-mox-card--selected" : undefined}
           action={
             doen && (
               // De naam van de regeling alleen voor schermlezers: elk vinkje
