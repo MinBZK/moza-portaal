@@ -25,7 +25,7 @@ const vragen = [
   {
     vraag: "Hoe vraag ik een subsidie aan via MijnOverheid Zakelijk?",
     antwoord:
-      "Via MijnOverheid Zakelijk vindt u een overzicht van subsidies. De aanvraag doet u bij de organisatie die de subsidie geeft, zoals RVO of uw gemeente. Bij elke subsidie staat een link naar de aanvraagpagina.",
+      "Via MijnOverheid Zakelijk vindt u een overzicht van subsidies. De aanvraag doet u bij de organisatie die de subsidie geeft, zoals de Rijksdienst voor Ondernemend Nederland (RVO) of uw gemeente. Bij elke subsidie staat een link naar de aanvraagpagina.",
   },
   {
     vraag: "Welk betrouwbaarheidsniveau van DigiD heb ik nodig?",

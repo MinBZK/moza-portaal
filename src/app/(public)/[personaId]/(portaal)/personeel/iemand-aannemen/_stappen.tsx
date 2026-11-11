@@ -13,13 +13,14 @@ export const STAPPEN = [
     href: "/personeel/iemand-aannemen/gegevens",
   },
   {
-    name: "Controleren en indienen",
+    name: "Controleren en versturen",
     href: "/personeel/iemand-aannemen/concept-aanvraag",
   },
 ];
 
 /** Text of the forward button: "Verder naar" and the name of the next step. */
-export const verderNaar = (stap: 2) => `Verder naar ${STAPPEN[stap - 1].name}`;
+export const verderNaar = (stap: 1 | 2) =>
+  `Verder naar ${STAPPEN[stap - 1].name}`;
 
 /** Text of the back button: "Terug naar" and the name of the previous step. */
 export const terugNaar = (stap: 1) => `Terug naar ${STAPPEN[stap - 1].name}`;

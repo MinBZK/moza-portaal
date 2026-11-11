@@ -23,7 +23,7 @@ const Content = () => (
           Log uit als u klaar bent, zeker op een computer die u deelt
         </UnorderedListItem>
         <UnorderedListItem>
-          Houd uw browser en computer up-to-date
+          Houd uw browser en computer bijgewerkt
         </UnorderedListItem>
         <UnorderedListItem>
           Deel uw inloggegevens met niemand, ook niet met collega’s

@@ -29,7 +29,7 @@ const Content = () => (
 
     <Section id="twijfel" title="Twijfelt u?">
       <Paragraph>
-        Klik dan niet op de link. Ga zelf naar MijnOverheid Zakelijk en log in.
+        Open de link dan niet. Ga zelf naar MijnOverheid Zakelijk en log in.
         Echte berichten van de overheid staan in uw berichtenbox.
       </Paragraph>
     </Section>
@@ -37,7 +37,7 @@ const Content = () => (
     <Section id="opgelicht" title="Bent u opgelicht?">
       <UnorderedList>
         <UnorderedListItem>
-          Hebt u betaald? Neem dan meteen contact op met uw bank
+          Heeft u betaald? Neem dan meteen contact op met uw bank
         </UnorderedListItem>
         <UnorderedListItem>Doe aangifte bij de politie</UnorderedListItem>
         <UnorderedListItem>

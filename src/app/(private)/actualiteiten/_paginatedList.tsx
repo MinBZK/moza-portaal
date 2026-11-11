@@ -5,9 +5,9 @@ import { ActionGroup, Alert, Button, Paragraph } from "@/components/rhc";
 
 export type QueryStatus = "pending" | "error" | "success";
 
-const LOADING_MESSAGE = "Laden…";
+const LOADING_MESSAGE = "Wij halen de actualiteiten op…";
 const ERROR_MESSAGE =
-  "Er ging iets mis bij het laden. Probeer het later opnieuw.";
+  "Wij kunnen de actualiteiten nu niet ophalen. Probeer het later opnieuw.";
 
 const PaginatedList = <T,>({
   items,

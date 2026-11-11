@@ -9,6 +9,23 @@ const MEDIUM: Record<components["schemas"]["NotificationTypes"], string> = {
   Unknown: "Onbekend",
 };
 
+/** Visible name per delivery status; the API gives an English code. */
+const STATUS_LABEL: Record<components["schemas"]["DeliveryStatuses"], string> =
+  {
+    Unknown: "Onbekend",
+    Created: "Wordt verstuurd",
+    Sending: "Wordt verstuurd",
+    Pending: "Wordt verstuurd",
+    Sent: "Verstuurd",
+    Accepted: "Verstuurd",
+    Delivered: "Afgeleverd",
+    Received: "Afgeleverd",
+    Cancelled: "Geannuleerd",
+    PermanentFailure: "Mislukt",
+    TemporaryFailure: "Tijdelijk mislukt",
+    TechnicalFailure: "Mislukt",
+  };
+
 /** Delivery statuses with their own state; the rest is info. */
 const STATUS: Partial<
   Record<components["schemas"]["DeliveryStatuses"], TimelineStatus>
@@ -38,7 +55,11 @@ const ContactMoment = ({
 
   return (
     <TimelineItem
-      title="Scenario 8 met kanaalherstel"
+      title={
+        notification.type && notification.type !== "Unknown"
+          ? `Bericht via ${MEDIUM[notification.type].toLowerCase()}`
+          : "Bericht"
+      }
       open={open}
       date={<time dateTime={notification.createdAt}>{sendAt}</time>}
       status={(notification.status && STATUS[notification.status]) || "info"}
@@ -46,10 +67,12 @@ const ContactMoment = ({
       <DataSummary appearance="column">
         <DataSummaryItem
           itemKey="Status"
-          itemValue={notification.status ?? "Onbekend"}
+          itemValue={
+            notification.status ? STATUS_LABEL[notification.status] : "Onbekend"
+          }
         />
         <DataSummaryItem
-          itemKey="Medium"
+          itemKey="Kanaal"
           itemValue={notification.type ? MEDIUM[notification.type] : "Onbekend"}
         />
         <DataSummaryItem itemKey="Organisatie" itemValue="UWV" />

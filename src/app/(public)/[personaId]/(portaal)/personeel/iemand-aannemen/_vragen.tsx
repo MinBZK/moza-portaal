@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import {
   Alert,
-  Fieldset,
-  FormFieldRadio,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
@@ -19,16 +17,7 @@ import SourceLinks, { type Source } from "@/components/SourceLinks";
 import { BRON } from "./_wetsbronnen";
 import Balans from "./_balans";
 import { loonkostenPerJaar } from "./_engine";
-import {
-  balansRegels,
-  doelgroepenUit,
-  UITKERINGEN,
-  vragenUit,
-  type BalansRegel,
-  type InRegister,
-  type Regel,
-  type Uitkering,
-} from "./_uitkomsten";
+import { balansRegels, type BalansRegel, type Regel } from "./_uitkomsten";
 import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
@@ -40,10 +29,10 @@ import {
   type Antwoorden,
 } from "./_useAannemen";
 import AlIngediend from "./_alIngediend";
-
-/** De check bij UWV of iemand in het doelgroepregister staat. */
-const UWV_REGISTER =
-  "https://www.uwv.nl/nl/doelgroepregister/staat-werknemer-in-doelgroepregister";
+import DoelgroepVragen, {
+  doelgroepVragenVan,
+  vraagBeschut,
+} from "./_doelgroepVragen";
 
 /**
  * De standen van de schuifregelaar voor het uurloon, in eurocent: van €4,50
@@ -64,11 +53,17 @@ const standVan = (cent: number) =>
     0,
   );
 
-/** Per regeling: de termijn voor de werkgever, wanneer die weet waar die aan toe is, en waar het staat. */
+/**
+ * Per regeling, voor het blok Termijn in de uitklap: wat de werkgever zelf op
+ * tijd doet, en wanneer er een besluit is. Elk met de eigen bronnen.
+ */
 type Termijn = {
   id: Regel["id"];
+  /** Wanneer er een besluit is, in één zin, na wat de werkgever zelf doet. */
+  kort: string;
+  bronnenKort: Source[];
+  /** In de uitklap: de aanvraagtermijn of wat de werkgever zelf doet. */
   tekst: string;
-  wanneer: string;
   bronnen: Source[];
 };
 
@@ -86,11 +81,13 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lks" as const,
+            kort: "De gemeente beslist binnen 5 weken nadat zij de loonwaarde heeft vastgesteld. Voor het meten van de loonwaarde geldt geen termijn.",
+            bronnenKort: [BRON.pwet10dLid12],
+            // Pwet 10d lid 2 onder b: wie in de 6 maanden voor de start bij de
+            // gemeente hoorde (art. 7 lid 1 onder a: bijstand, geen uitkering).
             tekst:
-              "Is de werknemer al begonnen? Vraag loonkostensubsidie dan aan binnen zes maanden na de start van het dienstverband.",
-            wanneer:
-              "Is de werknemer nog niet begonnen? Dan beslist de gemeente binnen vijf weken nadat zij de loonwaarde heeft vastgesteld, of nadat zij heeft besloten die later vast te stellen. Is de werknemer al begonnen? Dan beslist de gemeente binnen acht weken na uw aanvraag, tenzij zij u laat weten dat het langer duurt.",
-            bronnen: [BRON.pwet10dLid2en12, BRON.awb],
+              "Is de werknemer al begonnen? Vraag dan aan binnen 6 maanden na de start. Dat kan als de werknemer in de 6 maanden daarvoor bij de gemeente hoorde, bijvoorbeeld met bijstand of zonder uitkering.",
+            bronnen: [BRON.pwet10dLid2],
           },
         ]
       : []),
@@ -98,11 +95,11 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "ld" as const,
+            kort: "UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief.",
+            bronnenKort: [BRON.wajong61],
             tekst:
               "Loondispensatie geldt vanaf de eerste dag van de maand waarin u die aanvraagt.",
-            wanneer:
-              "UWV beslist binnen 14 weken na uw aanvraag, tenzij UWV u laat weten dat het langer duurt. Volgens UWV krijgt u meestal binnen acht weken een brief.",
-            bronnen: [BRON.besluitLd4, BRON.wajong61],
+            bronnen: [BRON.besluitLd4],
           },
         ]
       : []),
@@ -110,16 +107,12 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
       ? [
           {
             id: "lkv" as const,
+            kort: "U krijgt het bedrag in het jaar na de start. De Belastingdienst beslist vóór 1 augustus en betaalt binnen 6 weken daarna.",
+            bronnenKort: [BRON.wtl42en44],
             tekst: arbeidsgehandicapt
-              ? "De werknemer vraagt de doelgroepverklaring aan binnen drie maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
+              ? "De werknemer vraagt de doelgroepverklaring aan binnen 3 maanden na de start. U vraagt het loonkostenvoordeel aan in de loonaangifte."
               : "U vraagt het loonkostenvoordeel aan in de loonaangifte.",
-            wanneer: arbeidsgehandicapt
-              ? "UWV beslist binnen acht weken over de doelgroepverklaring, tenzij UWV laat weten dat het langer duurt. Het loonkostenvoordeel zelf krijgt u het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen zes weken na dat besluit."
-              : "U krijgt het loonkostenvoordeel het jaar daarna: de Belastingdienst beslist vóór 1 augustus en betaalt binnen zes weken na dat besluit.",
-            bronnen: [
-              ...(arbeidsgehandicapt ? [BRON.wtl27, BRON.awb] : []),
-              BRON.wtl42en44,
-            ],
+            bronnen: arbeidsgehandicapt ? [BRON.wtl27] : [],
           },
         ]
       : []),
@@ -129,9 +122,9 @@ const termijnenVoor = (regels: Regel[]): Termijn[] => {
 /** Wat de werkgever doet bij een regeling met een bedrag; het geld komt niet zonder iets. */
 const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
   lks: () =>
-    "De gemeente bepaalt in overleg met u en de werknemer wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
+    "De gemeente bepaalt in overleg met u wanneer zij de loonwaarde opnieuw vaststelt (Participatiewet, artikel 10d lid 6). Welke wijzigingen u doorgeeft, staat in de verordening van uw gemeente.",
   ld: () =>
-    "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, ten hoogste vijf jaar. Daarna kan UWV die verlengen.",
+    "U betaalt ten minste het loon dat UWV vaststelt; een lager loon afspreken mag niet. UWV bepaalt hoe lang de loondispensatie geldt, hoogstens 5 jaar. Daarna kan UWV die verlengen.",
   lkv: (regel) =>
     regel.categorie === "arbeidsgehandicapte_werknemer"
       ? "U bewaart de doelgroepverklaring van de werknemer bij uw loonadministratie."
@@ -151,7 +144,7 @@ const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
       ? `Per jaar betaalt u ongeveer ${euroHeel(bedrag)} minder aan loon.`
       : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euroHeel(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
   const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
-  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, ten hoogste ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ongeveer ${euroHeel(bedrag)} per jaar.`;
+  return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, hoogstens ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ongeveer ${euroHeel(bedrag)} per jaar.`;
 };
 
 /**
@@ -177,9 +170,9 @@ const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
       {termijn && (
         <>
           <Paragraph>
-            <strong>Termijn.</strong> {termijn.tekst} {termijn.wanneer}
+            <strong>Termijn.</strong> {termijn.tekst} {termijn.kort}
           </Paragraph>
-          <SourceLinks sources={termijn.bronnen} />
+          <SourceLinks sources={[...termijn.bronnen, ...termijn.bronnenKort]} />
         </>
       )}
     </>
@@ -222,6 +215,7 @@ const VragenMetStaat = ({
   nieuw?: boolean;
 }) => {
   const router = useRouter();
+  const { werkBij } = useAannemen();
   const resultaat = useUitkomsten(a);
   // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
   // we niet meetellen (loonkostensubsidie bij beschut werk, die de gemeente
@@ -243,32 +237,10 @@ const VragenMetStaat = ({
   const nietsAanTeVragen = geenBedrag && route.panelen.length === 0;
   const watGeldt = nietsAanTeVragen ? [...route.vanzelf, ...route.taken] : [];
   const kanVerder = resultaat.bekend && !resultaat.fout && !nietsAanTeVragen;
-  // Register, beschut werk en uitkering; oudere opslag kent alleen de
-  // doelgroepen, of nog de uitkering "andere" (die rekende als geen).
-  const afgeleid = vragenUit(a.doelgroepen);
-  const register = a.register ?? afgeleid.register;
-  const beschut = a.beschut ?? afgeleid.beschut;
-  const uitkering =
-    UITKERINGEN.find(([w]) => w === a.uitkering)?.[0] ?? afgeleid.uitkering;
   // Beschut werk en het register sluiten elkaar uit (Wfsv 38b lid 1 aanhef):
-  // de vraag naar beschut werk staat er niet bij Ja. De nummers erna schuiven mee.
-  const metBeschut = register !== "ja";
-  const nr = (n: number) => (metBeschut ? n + 1 : n);
-  const zetVraag = (deel: {
-    register?: InRegister;
-    beschut?: boolean;
-    uitkering?: Uitkering;
-  }) => {
-    const r = deel.register ?? register;
-    const b = (deel.beschut ?? beschut) && r !== "ja";
-    const u = deel.uitkering ?? uitkering;
-    zet({
-      register: r,
-      beschut: b,
-      uitkering: u,
-      doelgroepen: doelgroepenUit(r, b, u),
-    });
-  };
+  // zonder de vraag naar beschut werk schuiven de nummers erna een op.
+  const { uitkering } = doelgroepVragenVan(a);
+  const nr = (n: number) => (vraagBeschut(a) ? n + 1 : n);
   const wajong = uitkering === "wajong";
   // Werkgevers denken in uurloon of maandloon: de vraag gaat over het uurloon,
   // het maandloon en de loonkosten staan eronder.
@@ -279,100 +251,7 @@ const VragenMetStaat = ({
     <>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-          <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <Fieldset
-              legend="1. Staat de kandidaat in het doelgroepregister?"
-              info={<BegripInfo id="doelgroepregister" />}
-            >
-              {(
-                [
-                  ["ja", "Ja"],
-                  ["nee", "Nee"],
-                  ["onbekend", "Weet ik niet"],
-                ] as const
-              ).map(([waarde, label]) => (
-                <FormFieldRadio
-                  key={waarde}
-                  name="register"
-                  value={waarde}
-                  label={label}
-                  checked={register === waarde}
-                  onChange={() => zetVraag({ register: waarde })}
-                />
-              ))}
-            </Fieldset>
-            {register === "onbekend" && (
-              <Paragraph className="rhc-mox-small-text">
-                <a
-                  href={UWV_REGISTER}
-                  className="utrecht-link utrecht-link--html-a"
-                  target="_blank"
-                  rel="external noopener noreferrer"
-                >
-                  Controleer bij UWV of de kandidaat in het doelgroepregister
-                  staat (opent in een nieuw tabblad)
-                </a>
-                .
-                {/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
-                {uitkering !== "wajong" &&
-                  " Tot dan rekenen wij alsof de kandidaat er niet in staat."}
-              </Paragraph>
-            )}
-          </div>
-          {metBeschut && (
-            <Fieldset
-              legend="2. Is de kandidaat door de gemeente aangewezen op beschut werk?"
-              info={
-                <InfoToggletip label="Toelichting bij beschut werk">
-                  <Paragraph>
-                    Beschut werk is werk in een beschutte omgeving, onder
-                    aangepaste omstandigheden. Het is voor iemand die alleen zo
-                    kan werken.
-                  </Paragraph>
-                  <Paragraph>
-                    De gemeente beslist of iemand beschut werk nodig heeft. UWV
-                    geeft daarover advies (Participatiewet, artikel 10b).
-                  </Paragraph>
-                  <Paragraph>
-                    Wie beschut werkt, telt niet mee voor de banenafspraak (Wet
-                    financiering sociale verzekeringen, artikel 38b lid 1).
-                  </Paragraph>
-                </InfoToggletip>
-              }
-            >
-              <FormFieldRadio
-                name="beschut"
-                value="ja"
-                label="Ja"
-                checked={beschut}
-                onChange={() => zetVraag({ beschut: true })}
-              />
-              <FormFieldRadio
-                name="beschut"
-                value="nee"
-                label="Nee"
-                checked={!beschut}
-                onChange={() => zetVraag({ beschut: false })}
-              />
-            </Fieldset>
-          )}
-          <Fieldset legend={`${nr(2)}. Heeft de kandidaat een uitkering?`}>
-            {UITKERINGEN.map(([waarde, label]) => (
-              <FormFieldRadio
-                key={waarde}
-                name="uitkering"
-                value={waarde}
-                label={label}
-                checked={uitkering === waarde}
-                description={
-                  waarde === "wajong" && register !== "ja" && !beschut
-                    ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
-                    : undefined
-                }
-                onChange={() => zetVraag({ uitkering: waarde })}
-              />
-            ))}
-          </Fieldset>
+          <DoelgroepVragen a={a} zet={zet} nummer={(n) => `${n}. `} />
           <RangeSlider
             label={`${nr(3)}. Hoeveel uur per week gaat de kandidaat werken?`}
             min={1}
@@ -408,14 +287,6 @@ const VragenMetStaat = ({
                   <Paragraph>
                     Wij rekenen met het percentage dat u kiest. Het echte bedrag
                     kan hoger of lager zijn.
-                  </Paragraph>
-                  <Paragraph>
-                    De gemeente betaalt u het verschil tussen het minimumloon en
-                    de loonwaarde. Dat heet loonkostensubsidie. U krijgt
-                    hoogstens 70 procent van het minimumloon met vakantiegeld.
-                    Daarbovenop krijgt u een vergoeding voor werkgeverslasten.
-                    Betaalt u meer dan het minimumloon? Dan wordt de subsidie
-                    niet hoger.
                   </Paragraph>
                 </InfoToggletip>
               }
@@ -495,9 +366,9 @@ const VragenMetStaat = ({
       <div className="rhc-mox-stack">
         <Paragraph role="status" id="aanvragen-bezig" tabIndex={-1}>
           {resultaat.fout
-            ? "De berekening is niet gelukt. Laad de pagina opnieuw."
+            ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
             : !resultaat.bekend
-              ? "De berekening is nog bezig."
+              ? "Wij berekenen de bedragen…"
               : nietsAanTeVragen
                 ? "Bij deze antwoorden komt er geen bedrag uit. U hoeft niets aan te vragen."
                 : ""}
@@ -532,7 +403,7 @@ const VragenMetStaat = ({
             : {
                 label: nieuw
                   ? "Nieuwe aanvraag starten"
-                  : "Ja, ik wil doorgaan",
+                  : "Ja, ik wil regelingen aanvragen",
                 busy: !resultaat.bekend && !resultaat.fout,
                 describedBy: kanVerder ? undefined : "aanvragen-bezig",
                 onClick: () => {
@@ -541,6 +412,7 @@ const VragenMetStaat = ({
                     return;
                   }
                   if (nieuw) nieuweAanvraag(a);
+                  werkBij({ voorbeeldBerekend: true });
                   router.push("/personeel/iemand-aannemen/gegevens");
                 },
               }

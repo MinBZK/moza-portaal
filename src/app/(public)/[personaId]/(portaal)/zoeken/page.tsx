@@ -14,8 +14,9 @@ type SearchParams = Promise<{ q?: string | string[] }>;
 const RESULTATEN = [
   {
     href: "/personeel/iemand-aannemen",
-    titel: "Iemand aannemen met afstand tot de arbeidsmarkt",
-    soort: "Aanvragen",
+    titel:
+      "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
+    soort: "Informeren en aanvragen",
     tekst:
       "Beantwoord vier vragen en zie wat het u kost en oplevert. Daarna vullen wij de aanvragen bij UWV, de Belastingdienst en de gemeente voor u in.",
   },

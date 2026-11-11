@@ -150,7 +150,7 @@
           "grond": "Pwet 10d lid 4"
         },
         {
-          "vraag": "Wanneer begint de dienstbetrekking?",
+          "vraag": "Wanneer begint het dienstverband?",
           "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
           "parameter": "datum_aanvang_dienstbetrekking",
           "waarde": "1 oktober 2026",
@@ -172,12 +172,12 @@
       "naam": "Loonkostensubsidie",
       "organisatie": "Gemeente Rotterdam",
       "soort": "concept-aanvraag",
-      "soortLabel": "Concept-aanvraag staat klaar",
+      "soortLabel": "Aanvraag staat klaar",
       "uitkomst": "Kan gelden",
       "bedragLabel": "€897,41 per maand",
       "bedragToelichting": "Bij een loonwaarde van 60 procent en 32 uur per week. De gemeente stelt de loonwaarde vast na een meting op de werkplek; het bedrag volgt daaruit.",
       "bedragEurocent": 89740.8,
-      "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen zes maanden na de start van het dienstverband.",
+      "tekst": "De gemeente betaalt u het verschil tussen het minimumloon en wat Koen volgens de gemeente kan verdienen (de loonwaarde). U vraagt de subsidie aan binnen 6 maanden na de start van het dienstverband.",
       "grond": "Participatiewet 10d, tweede lid, onderdeel b, en vierde lid; Wet minimumloon 8 en 15; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
       "trace": "participatiewet:heeft_recht_op_lks",
       "actie": null
@@ -190,7 +190,7 @@
       "soortLabel": "Via uw loonaangifte",
       "uitkomst": "Kan gelden",
       "bedragLabel": "€1.680,64 per jaar",
-      "bedragToelichting": "€1,01 per verloond uur, bij 1.664 uur per jaar; ten hoogste €2.000 per jaar. De Belastingdienst berekent het na afloop van het kalenderjaar.",
+      "bedragToelichting": "€1,01 per verloond uur, bij 1.664 uur per jaar; hoogstens €2.000 per jaar. De Belastingdienst berekent het na afloop van het kalenderjaar.",
       "bedragEurocent": 168064,
       "tekst": "Een tegemoetkoming in de loonkosten voor een werknemer uit het doelgroepregister banenafspraak. U vraagt het aan door in de loonaangifte het vakje loonkostenvoordeel aan te zetten; een aparte verklaring is niet nodig.",
       "grond": "Wet tegemoetkomingen loondomein 2.10 en 2.13; Wfsv 38b",
@@ -205,7 +205,7 @@
       "soortLabel": "Regelt de overheid zelf",
       "uitkomst": "Geldt",
       "bedragLabel": "Bij ziekte: ziekengeld van UWV",
-      "bedragToelichting": "70 procent van het dagloon. In de eerste 52 weken van de ziekte kunt u UWV vragen om het hele dagloon, tot ten hoogste het loon. De no-riskpolis hoeft u niet aan te vragen. Bij ziekte meldt u Koen ziek bij UWV.",
+      "bedragToelichting": "70 procent van het dagloon. In de eerste 52 weken van de ziekte kunt u UWV vragen om het hele dagloon, tot hoogstens het loon. De no-riskpolis hoeft u niet aan te vragen. Bij ziekte meldt u Koen ziek bij UWV.",
       "bedragEurocent": null,
       "tekst": "Wordt Koen ziek, dan betaalt u het loon door. UWV betaalt u dan ziekengeld. Dit geldt bij ziekte die begint na de eerste werkdag. De gemeente begeleidt Koen naar dit werk en Koen staat in het doelgroepregister.",
       "tekstAlgemeen": "Wordt uw werknemer ziek, dan betaalt u het loon door. UWV betaalt u dan ziekengeld. Dit kan gelden als de kandidaat in het doelgroepregister staat. Het geldt bij ziekte die begint na de eerste werkdag.",
@@ -231,16 +231,16 @@
     },
     {
       "id": "proefplaatsing",
-      "naam": "Proefplaats",
+      "naam": "Proefplaatsing",
       "organisatie": "Gemeente Rotterdam",
       "soort": "optioneel",
       "soortLabel": "Mogelijk, vóór de eerste werkdag",
       "uitkomst": "Mogelijk",
-      "bedragLabel": "Twee maanden onbetaald werk, vóór de eerste werkdag",
-      "bedragToelichting": "Verlengen kan met ten hoogste vier maanden. Alleen vóór de dienstbetrekking begint; in dit verhaal is daar geen gebruik van gemaakt.",
+      "bedragLabel": "2 maanden onbetaald werk, vóór de eerste werkdag",
+      "bedragToelichting": "Verlengen kan met hoogstens 4 maanden. Alleen vóór het dienstverband begint; in dit verhaal is daar geen gebruik van gemaakt.",
       "bedragEurocent": null,
-      "tekst": "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. Koen vraagt de gemeente om toestemming.",
-      "tekstAlgemeen": "Een proefplaats is onbetaald werk bij u, vóór de eerste werkdag. De proefplaats duurt twee maanden. Verlengen kan met ten hoogste vier maanden. De kandidaat vraagt de gemeente om toestemming.",
+      "tekst": "Een proefplaatsing is onbetaald werk bij u, vóór de eerste werkdag. De proefplaatsing duurt 2 maanden. Verlengen kan met hoogstens 4 maanden. Koen vraagt de gemeente om toestemming.",
+      "tekstAlgemeen": "Een proefplaatsing is onbetaald werk bij u, vóór de eerste werkdag. De proefplaatsing duurt 2 maanden. Verlengen kan met hoogstens 4 maanden. De kandidaat vraagt de gemeente om toestemming.",
       "grond": "Participatiewet 8a, tweede lid, onderdeel d",
       "trace": "participatiewet:mag_proefplaatsing_aangaan",
       "actie": null
@@ -266,7 +266,7 @@
     "toelichting": "Zoals de engine het uitrekent (trace participatiewet:heeft_recht_op_lks), in de volgorde van artikel 10d.",
     "stappen": [
       {
-        "label": "Minimumloon per maand met 8 procent vakantiebijslag",
+        "label": "Minimumloon per maand met 8 procent vakantiegeld",
         "waarde": "€2.523,96",
         "grond": "Wet minimumloon 8 lid 1 b en 15",
         "parameter": "minimumloon_plus_vakantiebijslag_eurocent_per_maand"
@@ -284,7 +284,7 @@
         "parameter": "bruto_subsidie_eurocent_per_maand"
       },
       {
-        "label": "Grondslag van het maximum: minimumloon met vakantiebijslag plus 25 procent vergoeding werkgeverslasten",
+        "label": "Grondslag van het maximum: minimumloon met vakantiegeld plus 25 procent vergoeding werkgeverslasten",
         "waarde": "€3.154,95",
         "grond": "Pwet 10d lid 4; Regeling loonkostensubsidie Participatiewet 2021, artikel 1",
         "parameter": "grondslag_maximum_eurocent_per_maand"
@@ -397,7 +397,7 @@
       "tijd": "09:00",
       "actor": "U",
       "soort": "uitvoering",
-      "titel": "Dienstbetrekking begonnen",
+      "titel": "Dienstverband begonnen",
       "tekst": "Koen is gestart voor {uren} uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
       "grond": "Wtl 2.1",
       "stap": "ontvangst"
@@ -409,7 +409,7 @@
       "actor": "U",
       "soort": "uitvoering",
       "titel": "Aanvraag loonkostensubsidie verstuurd",
-      "tekst": "De concept-aanvraag is verstuurd naar de gemeente Rotterdam, binnen zes maanden na de start van het dienstverband.",
+      "tekst": "De aanvraag is verstuurd naar de gemeente Rotterdam, binnen 6 maanden na de start van het dienstverband.",
       "grond": "Pwet 10d lid 2",
       "stap": "ontvangst"
     },
@@ -477,7 +477,7 @@
       "actor": "College van Rotterdam",
       "soort": "besluit",
       "titel": "Besluit: loonkostensubsidie toegekend, {lksPerMaand} per maand vanaf 1 oktober 2026",
-      "tekst": "Het college kent loonkostensubsidie toe. De berekening staat bij het besluit; u kunt binnen zes weken bezwaar maken.",
+      "tekst": "Het college kent loonkostensubsidie toe. De berekening staat bij het besluit; u kunt binnen 6 weken bezwaar maken.",
       "grond": "Pwet 10d lid 4; Awb 6:7",
       "stap": "besluit",
       "url": "/lopendezaken/iemand-aannemen/gemeente/besluit"
@@ -500,7 +500,7 @@
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Antwoord op uw vraag",
-      "tekst": "In artikel 10d, vierde lid, staat de vergoeding voor werkgeverslasten in de zin over het maximum van 70 procent. De berekening telt de vergoeding alleen mee voor dat maximum. Of de vergoeding ook bij de subsidie zelf hoort, staat nog niet vast. Dat wordt nagegaan. Verandert het bedrag daardoor, dan hoort u dat. U hoeft daar niet op te wachten. Bent u het niet eens met het besluit? Dan kunt u bezwaar maken binnen zes weken na 17 december 2026.",
+      "tekst": "In artikel 10d, vierde lid, staat de vergoeding voor werkgeverslasten in de zin over het maximum van 70 procent. De berekening telt de vergoeding alleen mee voor dat maximum. Of de vergoeding ook bij de subsidie zelf hoort, staat nog niet vast. Dat wordt nagegaan. Verandert het bedrag daardoor, dan hoort u dat. U hoeft daar niet op te wachten. Bent u het niet eens met het besluit? Dan kunt u bezwaar maken binnen 6 weken na 17 december 2026.",
       "grond": "Pwet 10d lid 4; Regeling loonkostensubsidie Participatiewet 2021, artikel 1; Awb 6:7",
       "stap": "antwoord",
       "verwijstNaar": "g13"
@@ -512,7 +512,7 @@
       "actor": "Gemeente Rotterdam",
       "soort": "uitvoering",
       "titel": "Betaling loonkostensubsidie oktober en november: {lksTweeMaanden}",
-      "tekst": "Twee maanden loonkostensubsidie, overgemaakt naar {iban}.",
+      "tekst": "2 maanden loonkostensubsidie, overgemaakt naar {iban}.",
       "grond": "Pwet 10d",
       "stap": "betaling"
     }
@@ -537,7 +537,7 @@
     "is_uitgesloten_lid_3": "Uitgesloten: Wsw-dienstbetrekking (lid 3)",
     "heeft_recht_op_lks_lid_1": "Recht via lid 1 (loonwaarde vooraf vastgesteld)",
     "voorafgaand_relevante_onderwijsroute_of_doelgroep": "Kwam uit de doelgroep of een onderwijsroute (lid 2 a tot en met c)",
-    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen zes maanden na de eerste werkdag (lid 2)",
+    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen 6 maanden na de eerste werkdag (lid 2)",
     "heeft_recht_op_lks_lid_2": "Recht via lid 2",
     "heeft_recht_op_lks": "Recht op loonkostensubsidie",
     "volgt_de_vijftig_procent_route": "Vijftigprocentroute (lid 5)",
@@ -574,6 +574,6 @@
   "besluit": {
     "organisatie": "College van burgemeester en wethouders van Rotterdam",
     "datum": "2026-12-17",
-    "bezwaar": "zes weken"
+    "bezwaar": "6 weken"
   }
 }

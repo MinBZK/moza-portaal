@@ -4,8 +4,8 @@ import { FooterArticle, Section, TextLink } from "../_article";
 const Content = () => (
   <FooterArticle title="Toegankelijkheid">
     <Paragraph>
-      Iedereen moet MijnOverheid Zakelijk kunnen gebruiken. Ook als u slecht
-      ziet, slecht hoort of geen muis gebruikt.
+      Iedereen moet MijnOverheid Zakelijk kunnen gebruiken. Ook mensen die
+      slecht zien, slecht horen of geen muis gebruiken.
     </Paragraph>
 
     <Section id="eisen" title="Waar wij ons aan houden">

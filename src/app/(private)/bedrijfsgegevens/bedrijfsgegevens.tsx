@@ -33,9 +33,9 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
           <Heading level={2}>Algemeen</Heading>
           <Paragraph>
             Dit zijn de gegevens die bij de overheid bekend zijn over uw
-            organisatie.
+            bedrijf.
           </Paragraph>
-          <Paragraph role="status">Wij halen uw bedrijfsgegevens op.</Paragraph>
+          <Paragraph role="status">Wij halen uw bedrijfsgegevens op…</Paragraph>
         </div>
       </>
     );
@@ -73,8 +73,7 @@ const Bedrijfsgegevens = ({ kvk }: { kvk: string }) => {
       <div className="rhc-mox-card">
         <Heading level={2}>Algemene gegevens</Heading>
         <Paragraph>
-          Dit zijn de gegevens die bij de overheid bekend zijn over uw
-          organisatie.
+          Dit zijn de gegevens die bij de overheid bekend zijn over uw bedrijf.
         </Paragraph>
         <DataSummary appearance="column" className="rhc-data-summary--columns">
           {gegevens.map(({ label, waarde }) => (

@@ -9,7 +9,7 @@ import { z } from "zod";
 
 const PatchZwangerschapsverlofForm = ({ zaakId }: { zaakId: string }) => {
   const zwangerschapsverlofSchema = z.object({
-    opmerking: z.string().min(1),
+    opmerking: z.string().min(1, "Vul een opmerking in"),
   });
 
   const { mutate } = useUpdateZwangerschapsverlof();

@@ -42,7 +42,7 @@ export const BEGRIPPEN = {
     door: "de gemeente of UWV",
   },
   proefplaatsing: {
-    vraag: "Wat is een proefplaats?",
+    vraag: "Wat is een proefplaatsing?",
     uitleg:
       "De kandidaat werkt eerst op proef bij u, zonder dat u loon betaalt.",
     door: "de gemeente of UWV",
@@ -74,7 +74,7 @@ export const NAAM: Record<RegelingId, string> = {
   doelgroepverklaring: "Doelgroepverklaring",
   vz_wajong: "Jobcoach of werkplekaanpassing",
   vz_wia: "Jobcoach of werkplekaanpassing",
-  pp: "Proefplaats",
+  pp: "Proefplaatsing",
 };
 
 /** Welke begrippen bij een regeling horen; die krijgen een (i) bij de naam. */

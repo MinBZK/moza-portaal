@@ -112,7 +112,7 @@ const Besluit = ({
           <Paragraph>
             Er is nog geen besluit op deze aanvraag.{" "}
             <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
-              Bekijk de voortgang van de zaak
+              Bekijk het dossier in Lopende zaken
             </Link>
             .
           </Paragraph>
@@ -128,18 +128,20 @@ const Besluit = ({
       return;
     }
     werkZaakBij(situatie, { vraag });
-    setMelding("Uw vraag is verstuurd en staat in de zaak.");
+    setMelding(
+      "U heeft uw vraag verstuurd. U ziet uw vraag nu in het dossier.",
+    );
   };
 
   const ingangLd = datumNL(
     ingangLoondispensatie(zaakStand.verstuurdOp ?? INGEDIEND_OP),
   );
-  const dienstverbandTekst = `een dienstbetrekking van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden)})`;
+  const dienstverbandTekst = `een dienstverband van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden)})`;
 
   return (
     <div className="rhc-mox-card rhc-mox-row-gap">
       <Link href={zaak.url} className="utrecht-link utrecht-link--html-a">
-        Terug naar de zaak
+        Terug naar het dossier
       </Link>
       {kop}
 
@@ -149,8 +151,8 @@ const Besluit = ({
           itemValue={besluit.organisatie}
         />
         <DataSummaryItem itemKey="Datum" itemValue={datumNL(besluit.datum)} />
-        <DataSummaryItem itemKey="Kenmerk" itemValue={zaak.nummer} />
-        <DataSummaryItem itemKey="Regel" itemValue={zaak.regel} />
+        <DataSummaryItem itemKey="Zaaknummer" itemValue={zaak.nummer} />
+        <DataSummaryItem itemKey="Wet en artikel" itemValue={zaak.regel} />
         <DataSummaryItem
           itemKey={situatie === "gemeente" ? "Loonwaarde" : "Percentage"}
           itemValue={`${w.loonwaarde} van het wettelijk minimumloon${vastgesteldOp ? `, vastgesteld op ${datumNL(vastgesteldOp.datum)}` : ""}`}
@@ -203,13 +205,12 @@ const Besluit = ({
                 {/* Besluit loondispensatie Wajong 4: eerste dag van de maand van de aanvraag. */}
                 De loondispensatie geldt vanaf {ingangLd}. Dat is de eerste dag
                 van de maand van de aanvraag. Ze geldt voor de periode die naar
-                verwachting nodig is, ten hoogste vijf jaar. Verlenging is
-                mogelijk.{" "}
+                verwachting nodig is, hoogstens 5 jaar. Verlenging is mogelijk.{" "}
                 <InfoToggletip label="Toelichting bij de termijn van het besluit">
-                  UWV beslist binnen een redelijke termijn. Die termijn is ten
-                  hoogste 14 weken (Wajong, artikel 6:1). Lukt dat niet, dan
+                  UWV beslist binnen een redelijke termijn. Die termijn is
+                  hoogstens 14 weken (Wajong, artikel 6:1). Lukt dat niet, dan
                   laat UWV weten wanneer het besluit komt. De datum van dit
-                  besluit is voor het prototype aangenomen.
+                  besluit is voor deze proef aangenomen.
                 </InfoToggletip>
               </div>
             </>
@@ -244,18 +245,18 @@ const Besluit = ({
         {!bekend || heeftRegel ? (
           <>
             <Heading level={2} id="besluit-bezwaar">
-              Niet eens met dit besluit?
+              Bezwaar maken of een vraag stellen
             </Heading>
             <Paragraph>
               Dan kunt u bezwaar maken bij {besluit.organisatie}. Doe dat binnen{" "}
               {besluit.bezwaar} na {datumNL(besluit.datum)} (Algemene wet
               bestuursrecht, artikel 6:7). Heeft u eerst een vraag? Stel die
-              hieronder. Uw vraag komt dan in deze zaak.
+              hieronder. Uw vraag komt dan in dit dossier.
             </Paragraph>
           </>
         ) : (
           <Heading level={2} id="besluit-bezwaar">
-            Een vraag over deze aanvraag?
+            Vragen over deze aanvraag
           </Heading>
         )}
         <form
@@ -272,13 +273,13 @@ const Besluit = ({
           />
           <ActionGroup>
             <Button type="submit" appearance="primary-action-button">
-              Verstuur uw vraag
+              Vraag versturen
             </Button>
           </ActionGroup>
           <Paragraph role="status">
             {melding ||
               (zaakStand.vraag
-                ? "Uw vraag is verstuurd en staat in de zaak."
+                ? "U heeft uw vraag verstuurd. U ziet uw vraag nu in het dossier."
                 : "")}
           </Paragraph>
         </form>

@@ -3,6 +3,7 @@
 import Card from "@/components/Card";
 import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
@@ -183,6 +184,20 @@ const AanvraagInhoud = ({
 
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
     const bedrag = bedragVan(id);
+    // Direct via Regelingen aanvragen: loonwaarde en uurloon zijn nog niet
+    // gevraagd, dus geen bedrag op de standaardwaarden.
+    if (bedrag !== undefined && staat.voorbeeldBerekend === false)
+      return (
+        <Paragraph>
+          <Link
+            href="/personeel/iemand-aannemen/voorbeeldberekening"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Maak een voorbeeldberekening
+          </Link>{" "}
+          om een bedrag te zien.
+        </Paragraph>
+      );
     return bedrag === undefined ? null : (
       <Paragraph>
         Voorbeeldbedrag: <strong>{euroHeel(bedrag)}</strong> per jaar.
@@ -204,7 +219,7 @@ const AanvraagInhoud = ({
           </Paragraph>
           {voorbeeldbedrag("lks")}
           <Paragraph>
-            Vraag aan binnen zes maanden na de start van het dienstverband
+            Vraag aan binnen 6 maanden na de start van het dienstverband
             (Participatiewet, artikel 10d lid 2).
           </Paragraph>
           {waarom(
@@ -226,16 +241,24 @@ const AanvraagInhoud = ({
                   weet u het precieze bedrag.
                 </UnorderedListItem>
                 <UnorderedListItem>
+                  Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
+                  in overleg met u besluiten de loonwaarde eerst niet vast te
+                  stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
+                  van het minimumloon met vakantiegeld, naar verhouding van de
+                  uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
+                </UnorderedListItem>
+                <UnorderedListItem>
                   U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
-                  begonnen? Dan binnen acht weken, tenzij de gemeente laat weten
-                  dat het langer duurt. Anders binnen vijf weken nadat de
-                  gemeente de loonwaarde heeft vastgesteld.
+                  begonnen? Dan binnen 8 weken, tenzij de gemeente laat weten
+                  dat het langer duurt. Anders binnen 5 weken nadat de gemeente
+                  de loonwaarde heeft vastgesteld.
                 </UnorderedListItem>
               </UnorderedList>
               <SourceLinks
                 sources={[
                   BRON.pwet10c,
                   BRON.besluitLks3,
+                  BRON.pwet10dLid5,
                   BRON.awb,
                   BRON.pwet10dLid12,
                 ]}
@@ -257,7 +280,7 @@ const AanvraagInhoud = ({
           <Paragraph>
             Loondispensatie geldt vanaf de maand waarin u aanvraagt. UWV stelt
             het percentage vast en beslist binnen 14 weken. Volgens UWV krijgt u
-            meestal binnen acht weken een brief.
+            meestal binnen 8 weken een brief.
           </Paragraph>
           <SourceLinks sources={[BRON.besluitLd4, BRON.wajong61]} />
           {waarom(
@@ -310,7 +333,7 @@ const AanvraagInhoud = ({
       <>
         {id === "doelgroepverklaring" && (
           <Paragraph>
-            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen drie
+            De werknemer vraagt de doelgroepverklaring aan bij UWV, binnen 3
             maanden na de start. Zonder verklaring geen loonkostenvoordeel (Wet
             tegemoetkomingen loondomein, artikel 2.7).
           </Paragraph>
@@ -325,8 +348,8 @@ const AanvraagInhoud = ({
           <Paragraph>
             De werknemer vraagt een jobcoach of een aangepaste werkplek zelf aan
             bij UWV (Wet WIA, artikel 35). Voor extra kosten kunt u zelf
-            subsidie vragen bij UWV, als het dienstverband ten minste zes
-            maanden duurt (Wet WIA, artikel 36).
+            subsidie vragen bij UWV, als het dienstverband ten minste 6 maanden
+            duurt (Wet WIA, artikel 36).
           </Paragraph>
         )}
         {/* De proefplaats ligt vóór de dienstbetrekking (Pwet 6 h) en de
@@ -335,16 +358,15 @@ const AanvraagInhoud = ({
         {id === "pp" && (
           <>
             <Paragraph>
-              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt twee
-              maanden; de gemeente kan dat met ten hoogste vier maanden
-              verlengen (Participatiewet, artikel 8a lid 2 onder d). De
-              kandidaat vraagt de gemeente om toestemming; dat gaat buiten deze
-              aanvraag om.
+              Onbetaald werk bij u vóór de eerste werkdag. Dat duurt 2 maanden;
+              de gemeente kan dat met hoogstens 4 maanden verlengen
+              (Participatiewet, artikel 8a lid 2 onder d). De kandidaat vraagt
+              de gemeente om toestemming; dat gaat buiten deze aanvraag om.
             </Paragraph>
             {waarom(
               "participatiewet",
               "mag_proefplaatsing_aangaan",
-              "Proefplaats",
+              "Proefplaatsing",
             )}
           </>
         )}
@@ -376,7 +398,7 @@ const AanvraagInhoud = ({
           <>
             <Paragraph>
               U hoeft niets aan te vragen. Wordt de werknemer ziek? Meld dat bij
-              UWV, uiterlijk op de eerste dag na zes weken ziekte (Ziektewet,
+              UWV, uiterlijk op de eerste dag na 6 weken ziekte (Ziektewet,
               artikel 38a lid 3). UWV betaalt dan ziekengeld (Ziektewet, artikel
               29b). {duurTekst(nrp?.duurJaren)}
             </Paragraph>
@@ -524,15 +546,13 @@ const AanvraagInhoud = ({
       <div className="rhc-mox-card">
         <Stappen huidige={2} />
         {!bekend && !resultaat.fout ? (
-          <LoadingStatus>
-            Wij zoeken in de wet uit welke regelingen gelden…
-          </LoadingStatus>
+          <LoadingStatus>Wij zoeken uit welke regelingen gelden…</LoadingStatus>
         ) : (
           <Paragraph>
             {resultaat.fout
-              ? "De berekening lukt nu niet. Laad de pagina opnieuw."
+              ? "Wij kunnen de bedragen nu niet berekenen. Laad de pagina opnieuw."
               : rijIds.length === 0
-                ? "Bij deze antwoorden is er niets aan te vragen."
+                ? "Bij deze antwoorden is er niets aan te vragen. Klopt een antwoord niet? Pas het dan aan in de voorbeeldberekening."
                 : paneelIds.length === 0
                   ? overzichtTekst(route)
                   : "Controleer de gegevens en kies de regelingen."}
@@ -551,9 +571,11 @@ const AanvraagInhoud = ({
               {zonderAanvraag ? "Wat er geldt" : "Kies de regelingen"}
             </Heading>
             <Paragraph>
-              Deze regelingen passen bij uw antwoorden in de
-              voorbeeldberekening. Of een regeling echt geldt, beslist de
-              organisatie die de regeling uitvoert.
+              {staat.voorbeeldBerekend === false
+                ? "Deze regelingen passen bij uw antwoorden."
+                : "Deze regelingen passen bij uw antwoorden in de voorbeeldberekening."}{" "}
+              Of een regeling echt geldt, beslist de organisatie die de regeling
+              uitvoert.
             </Paragraph>
             {!zonderAanvraag && (
               <Paragraph>Kies ten minste één regeling.</Paragraph>
@@ -569,8 +591,8 @@ const AanvraagInhoud = ({
                 <div id="kies-fout" tabIndex={-1}>
                   <Alert type="error">
                     <Paragraph>
-                      U hebt nog geen regeling gekozen. Vink ten minste één
-                      regeling aan.
+                      U heeft nog geen regeling gekozen. Kies ten minste één
+                      regeling.
                     </Paragraph>
                   </Alert>
                 </div>
@@ -603,15 +625,15 @@ const AanvraagInhoud = ({
             <Paragraph>
               U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
               {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
-              ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt de
-              zaak bij Lopende zaken.
+              ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
+              het dossier in Lopende zaken.
             </Paragraph>
             <FormFieldCheckboxOption
               id="bevestiging"
               invalid={bevestigFout && !bevestigd}
               errorMessage={
                 bevestigFout && !bevestigd
-                  ? "U hebt nog niet bevestigd dat u alles naar waarheid hebt ingevuld."
+                  ? "U heeft nog niet bevestigd dat u alles naar waarheid heeft ingevuld."
                   : undefined
               }
               label="Ik heb alles naar waarheid ingevuld."
@@ -637,7 +659,7 @@ const AanvraagInhoud = ({
                 label:
                   verstuurt.length > 0 ||
                   (!zonderAanvraag && aantalGekozen === 0)
-                    ? "Dossier indienen"
+                    ? "Aanvraag versturen"
                     : "Afronden",
                 onClick: verstuurt.length > 0 ? indienen : klaar,
                 final: true,

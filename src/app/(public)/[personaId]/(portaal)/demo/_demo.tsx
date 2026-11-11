@@ -501,7 +501,7 @@ const DemoStepNavigation = () => {
         checked={ticked}
         invalid={error && !ticked}
         errorMessage={
-          error && !ticked ? "U hebt nog niet alles gecontroleerd." : undefined
+          error && !ticked ? "U heeft nog niet alles gecontroleerd." : undefined
         }
         onChange={(event) => setTicked(event.target.checked)}
       />
@@ -552,7 +552,9 @@ const DemoSiteSearch = () => {
           "subsidie energiebesparing",
           "personeel aannemen",
         ]}
-        recentSearches={["Iemand aannemen met afstand tot de arbeidsmarkt"]}
+        recentSearches={[
+          "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
+        ]}
         onSearch={setSearched}
       />
       {searched && (

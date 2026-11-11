@@ -2,7 +2,8 @@
 
 import ContactMoment from "@/components/ContactMoment";
 import CountdownBar from "@/components/CountdownBar";
-import { Heading } from "@/components/rhc";
+import LoadingStatus from "@/components/LoadingStatus";
+import { Alert, Heading, Paragraph } from "@/components/rhc";
 import { getContactMomenten } from "@/network/omc/fetchers/getContactMomenten";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
@@ -16,11 +17,24 @@ const ContactmomentenPage = ({ kvk }: { kvk: string }) => {
   });
   const countdownRef = useRef<{ reset: () => void }>(null);
 
-  if (isLoading) {
-    <p>loading</p>;
-  }
-  if (isError) {
-    <p>error</p>;
+  if (isLoading || isError) {
+    return (
+      <>
+        <Heading level={1}>Contactmomenten</Heading>
+        <div className="rhc-mox-card">
+          {isLoading ? (
+            <LoadingStatus>Wij halen uw contactmomenten op…</LoadingStatus>
+          ) : (
+            <Alert type="error">
+              <Paragraph>
+                Wij kunnen uw contactmomenten nu niet ophalen. Probeer het later
+                opnieuw.
+              </Paragraph>
+            </Alert>
+          )}
+        </div>
+      </>
+    );
   }
 
   const handleCountdownEnd = () => {

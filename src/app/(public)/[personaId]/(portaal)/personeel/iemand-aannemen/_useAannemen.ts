@@ -116,6 +116,13 @@ export type AannemenStaat = {
    * lees() weghaalt.
    */
   aanvraagIngediend?: boolean;
+  /**
+   * Of de werkgever de voorbeeldberekening heeft gemaakt. Bij false kwam die
+   * via Regelingen aanvragen direct bij Kandidaat kiezen: dan staan uren,
+   * loonwaarde en uurloon nog op de standaardwaarden en toont het portaal
+   * geen voorbeeldbedrag. Niet gezet (een oudere sessie): wel gemaakt.
+   */
+  voorbeeldBerekend?: boolean;
 };
 
 /** In het register, zonder uitkering: de gemeente ondersteunt (doelgroepenUit). */

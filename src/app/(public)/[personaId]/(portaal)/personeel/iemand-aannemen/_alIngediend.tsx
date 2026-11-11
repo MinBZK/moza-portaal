@@ -19,8 +19,8 @@ const AlIngediend = ({ knop = true }: { knop?: boolean }) => {
     <Alert type="info">
       <Paragraph>
         {verstuurd
-          ? "U hebt deze aanvraag al ingediend. U kunt die niet meer wijzigen."
-          : "U hebt deze taak al afgerond. Er is niets verstuurd."}
+          ? "U heeft deze aanvraag al ingediend. U kunt die niet meer wijzigen."
+          : "U heeft deze taak al afgerond. Er is niets verstuurd."}
       </Paragraph>
       <Paragraph>
         Wilt u iemand anders aannemen of iets anders aanvragen? Start dan een

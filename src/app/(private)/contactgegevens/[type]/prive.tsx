@@ -2,6 +2,7 @@
 
 import { ContactDetails } from "@/app/(private)/contactgegevens/[type]/_contactDetails";
 import { useGetProfielInformation } from "@/network/profiel/hooks/getProfielInformation/useGetProfielInformation";
+import { Alert, Paragraph } from "@/components/rhc";
 import { useSession } from "next-auth/react";
 
 const Prive = () => {
@@ -26,7 +27,14 @@ const Prive = () => {
   if (sessionStatus === "loading" || status === "pending" || !bsn) return null;
 
   if (status === "error") {
-    return <div>Server-side error occurred</div>;
+    return (
+      <Alert type="error">
+        <Paragraph>
+          Wij kunnen uw contactgegevens nu niet ophalen. Probeer het later
+          opnieuw.
+        </Paragraph>
+      </Alert>
+    );
   }
 
   return (

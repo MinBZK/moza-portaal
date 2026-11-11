@@ -17,13 +17,14 @@ import {
 
 const tekst = {
   bewaard: {
-    knop: "Uit bewaarde items verwijderen",
-    melding: (titel: string) =>
-      `“${titel}” staat niet meer bij uw bewaarde items.`,
+    knop: "Niet meer bewaren",
+    melding: (item: BewaarItem) =>
+      `“${item.titel}” staat niet meer bij uw bewaarde items.`,
   },
   nietRelevant: {
-    knop: "Zet terug in overzicht",
-    melding: (titel: string) => `U ziet “${titel}” weer in het overzicht.`,
+    knop: "Terugzetten",
+    melding: (item: BewaarItem) =>
+      `“${item.titel}” staat weer bij ${item.categorie}.`,
   },
 };
 
@@ -83,7 +84,7 @@ const BewaardeItems = ({
         ? zetBewaard(item, false)
         : zetNietRelevant(item, false);
     if (!gelukt) return;
-    setMelding(tekst[soort].melding(item.titel));
+    setMelding(tekst[soort].melding(item));
     setFocusOp({ categorie: item.categorie });
   };
 

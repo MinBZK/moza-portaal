@@ -87,7 +87,7 @@ const StepNavigation = ({
         {waiting && (
           <Alert type="warning">
             <Paragraph>
-              Even geduld, wij zijn nog bezig. Kies daarna opnieuw{" "}
+              Wij zijn nog bezig. Kies daarna opnieuw{" "}
               <strong>{next?.label ?? "Verder"}</strong>.
             </Paragraph>
           </Alert>

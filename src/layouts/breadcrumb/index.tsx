@@ -19,7 +19,7 @@ const breadcrumbLabels: Record<string, string> = {
   afgehandeld: "Afgehandeld",
   aanvragen: "Aanvragen die u nog moet versturen",
   berichtenbox: "Berichtenbox",
-  inbox: "Berichtenbox",
+  inbox: "Ontvangen",
   buurtberichten: "Berichten over uw buurt",
   "verzuim-en-verlof": "Ziekte en verlof",
   subsidies: "Subsidies en financiering",
@@ -36,12 +36,13 @@ const breadcrumbLabels: Record<string, string> = {
   belastingen: "Belastingen",
   "zakelijk-vervoer": "Zakelijk vervoer",
   personeel: "Personeel en rollen",
-  "iemand-aannemen": "Iemand aannemen met afstand tot de arbeidsmarkt",
+  "iemand-aannemen":
+    "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
   gegevens: "Kandidaat kiezen",
   voorbeeldberekening: "Voorbeeldberekening",
-  versturen: "Controleren en dossier indienen",
+  versturen: "Controleren en versturen",
   overzicht: "Overzicht",
-  "concept-aanvraag": "Controleren en dossier indienen",
+  "concept-aanvraag": "Controleren en versturen",
   verstuurd: "Dossier ingediend",
   gemeente: "Loonkostensubsidie",
   wajong: "Loondispensatie",
@@ -51,6 +52,12 @@ const breadcrumbLabels: Record<string, string> = {
   dataverwerking: "Gegevensdeling en dataverwerking",
   contactvoorkeuren: "Contactvoorkeuren",
   prive: "Privé",
+  zaken: "Lopende zaken",
+  berichteninuwbuurt: "Berichten over uw buurt",
+  contactgegevens: "Contactgegevens",
+  parkeervergunning: "Parkeervergunning",
+  nieuw: "Nieuwe aanvraag",
+  zwangerschapsverlof: "Zwangerschapsverlof",
 };
 
 /**

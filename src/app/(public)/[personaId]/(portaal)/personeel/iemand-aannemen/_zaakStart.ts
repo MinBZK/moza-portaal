@@ -3,7 +3,11 @@ import { voegZaakToe } from "../../lopendezaken/_assistentZaken";
 import type { Situatie, ZaakStand } from "./_route";
 import type { Antwoorden } from "./_useAannemen";
 
-/** De dag waarop het prototype de aanvraag laat indienen. */
+/**
+ * De dag waarop deze proef de aanvraag laat indienen: vast, zodat de
+ * aanvraag klopt met de rest van de demo (de engine rekent met 18 november
+ * 2026, zie AANVRAAG in _uitkomsten.ts, en de besluiten hebben vaste datums).
+ */
 export const INGEDIEND_OP = "2026-11-18";
 
 const REGELING: Partial<Record<Situatie, string>> = {

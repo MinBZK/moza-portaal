@@ -124,7 +124,7 @@ const energieDeelverzoekBeurt = () => [
       toestemming_nodig: {
         bron: "uw Business Wallet",
         omschrijving:
-          "De assistent wil uw energieverbruik-attestatie gebruiken, afgegeven door uw netbeheerder. Er wordt niets opgehaald voordat u akkoord geeft.",
+          "De assistent wil de verklaring over uw energieverbruik gebruiken. Uw netbeheerder heeft die verklaring gemaakt. De assistent haalt niets op voordat u toestemming geeft.",
       },
     },
   ),
@@ -325,7 +325,7 @@ const bedrijfsgegevensBeurten = (bedrijf: AssistentPersona["bedrijf"] = {}) => {
           toestemming_nodig: {
             bron: "het KVK Handelsregister",
             omschrijving:
-              "De assistent wil uw naam, rechtsvorm, SBI-code en vestigingsadres ophalen uit het Handelsregister. Er wordt niets opgehaald voordat u akkoord geeft.",
+              "De assistent wil uw naam, rechtsvorm, SBI-code en vestigingsadres ophalen uit het Handelsregister. De assistent haalt niets op voordat u toestemming geeft.",
           },
         },
       ),
@@ -414,7 +414,7 @@ const nietIngelogd = () => [
   ),
 ];
 
-// "Niet delen" schuift het draaiboek niet vooruit: anders toont de demo alsnog
+// "Geen toestemming geven" schuift het draaiboek niet vooruit: anders toont de demo alsnog
 // de gegevens die de gebruiker net weigerde.
 const geweigerd = () => [
   antwoord(
@@ -434,7 +434,7 @@ const algemeen = () => [
   stap(700, "status", { message: "koop__zoek_regeling" }),
   antwoord(
     1100,
-    "In de demo-modus praat de assistent niet met een model, maar speelt die een vast draaiboek af. Probeer een van deze vragen om een volledige route te zien:\n\n- Geldt de energiebesparingsinformatieplicht voor mij?\n- Hoe kan ik mijn bedrijfsgegevens bekijken?\n- Hoe bereid ik mijn belastingaangifte voor?\n\nTyp “fout” om te zien wat er gebeurt als een bron niet bereikbaar is.",
+    "In de demo-modus praat de assistent niet met een model, maar speelt die een vast draaiboek af. Probeer een van deze vragen om een volledige route te zien:\n\n- Geldt de informatieplicht energiebesparing voor mij?\n- Hoe kan ik mijn bedrijfsgegevens bekijken?\n- Hoe bereid ik mijn belastingaangifte voor?\n\nTyp “fout” om te zien wat er gebeurt als een bron niet bereikbaar is.",
   ),
 ];
 

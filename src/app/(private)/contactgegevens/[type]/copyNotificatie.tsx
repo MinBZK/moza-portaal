@@ -82,7 +82,7 @@ const CopyNotificatie = ({ kvkNummer }: { kvkNummer: string }) => {
         appearance="secondary-action-button"
         onClick={updateZakelijkFromPrive}
       >
-        Privégegevens gebruiken
+        Privécontactgegevens gebruiken
       </Button>
     </Alert>
   );

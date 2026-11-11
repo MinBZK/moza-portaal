@@ -150,7 +150,7 @@ const Page = () => (
         </UnorderedListItem>
         <UnorderedListItem>
           Elk veld met een fout krijgt ook een foutmelding onder het label,
-          zoals “U hebt nog geen geboortedatum ingevuld.”
+          zoals “U heeft nog geen geboortedatum ingevuld.”
         </UnorderedListItem>
         <UnorderedListItem>
           De foutmelding verdwijnt zodra het veld goed is ingevuld. Een nieuwe

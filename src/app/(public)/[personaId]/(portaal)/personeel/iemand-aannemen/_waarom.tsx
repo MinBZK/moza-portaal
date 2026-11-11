@@ -82,11 +82,8 @@ const Waarom = ({
   const vooraf = trace ? (
     <>
       <Paragraph className="rhc-mox-small-text">
-        Vooraf berekend met RegelRecht op peildatum {datumNL(trace.peildatum)},
-        wetsversie 1 juli 2026
-        {stand.status === "fout" &&
-          ` (de berekening in uw browser lukt nu niet: ${stand.fout})`}
-        . Tussenstappen:
+        Wij kunnen de uitleg nu niet berekenen. Hieronder staat de berekening
+        die wij vooraf maakten, met de wet zoals die geldt op 1 juli 2026:
       </Paragraph>
       <DataSummary appearance="column">
         {Object.entries(trace.tussenuitkomsten).map(([naam, w]) => (
@@ -100,8 +97,7 @@ const Waarom = ({
     </>
   ) : (
     <Paragraph className="rhc-mox-small-text">
-      De berekening in uw browser lukt nu niet
-      {stand.status === "fout" && `: ${stand.fout}`}. Laad de pagina opnieuw.
+      Wij kunnen de uitleg nu niet berekenen. Laad de pagina opnieuw.
     </Paragraph>
   );
 
@@ -124,7 +120,7 @@ const Waarom = ({
         <div className="rhc-mox-stack">
           {voorAf}
           {stand.status === "laden" && (
-            <LoadingStatus>Wij rekenen de wet na…</LoadingStatus>
+            <LoadingStatus>Wij berekenen de uitleg…</LoadingStatus>
           )}
           {stand.status === "fout" && vooraf}
           {stand.status === "klaar" && heeftKort && (
@@ -144,9 +140,9 @@ const Waarom = ({
               <Paragraph className="rhc-mox-small-text">
                 Deze uitleg volgt uit de wetten zoals die gelden op{" "}
                 {datumNL(PEILDATUM)}, de eerste werkdag in dit voorbeeld. Elke
-                zin komt uit een stap van de wet, niet van een taalmodel. Wat de
-                gemeente of UWV nog moet vaststellen, staat hier als ‘ja’: zo
-                rekent het voorbeeld.
+                zin komt rechtstreeks uit een stap van de wet. Wat de gemeente
+                of UWV nog moet vaststellen, staat hier als ‘ja’: zo rekent het
+                voorbeeld.
               </Paragraph>
               <UitlegTaalmodel
                 berekening={stand.waarde}

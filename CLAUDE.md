@@ -85,19 +85,22 @@ Volledige versie: [docs/schrijfwijzer.md](docs/schrijfwijzer.md). Laat teksten n
 
 ### Terminologie
 
-| Handeling of begrip                   | Gebruik                 | Niet                                |
-| ------------------------------------- | ----------------------- | ----------------------------------- |
-| Item bewaren om later terug te zien   | Bewaren                 | Opslaan, Favoriet, Bladwijzer       |
-| Item verbergen                        | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen  |
-| Item doorsturen                       | Delen                   | Doorsturen, Verzenden               |
-| Digitale post                         | Berichten, Berichtenbox | Post, E-mail, Inbox                 |
-| Tab met ontvangen berichten           | Ontvangen               | Inbox, Postvak IN                   |
-| Registratiegegevens                   | Bedrijfsgegevens        | Gegevens, Registratie, Profiel      |
-| Openstaande aanvragen                 | Lopende zaken           | Taken, Aanvragen, Dossiers          |
-| Gepersonaliseerd overzicht            | Actualiteiten           | Nieuws, Updates, Feed               |
-| Gewijzigde gegevens vastleggen        | Opslaan                 | Bewaren, Versturen, Bevestigen      |
-| Formulier naar een organisatie sturen | Versturen               | Bewaren, Opslaan, Bevestigen, Delen |
-| Formulier afbreken                    | Annuleren               | Terug, Sluiten, Stoppen             |
+| Handeling of begrip                    | Gebruik                 | Niet                                          |
+| -------------------------------------- | ----------------------- | --------------------------------------------- |
+| Item bewaren om later terug te zien    | Bewaren                 | Opslaan, Favoriet, Bladwijzer                 |
+| Item verbergen                         | Niet relevant voor mij  | Verbergen, Verwijderen, Niet tonen            |
+| Item doorsturen                        | Delen                   | Doorsturen, Verzenden                         |
+| Digitale post                          | Berichten, Berichtenbox | Post, E-mail, Inbox                           |
+| Tab met ontvangen berichten            | Ontvangen               | Inbox, Postvak IN                             |
+| Registratiegegevens                    | Bedrijfsgegevens        | Gegevens, Registratie, Profiel                |
+| Openstaande aanvragen                  | Lopende zaken           | Taken, Aanvragen, Dossiers                    |
+| Gepersonaliseerd overzicht             | Actualiteiten           | Nieuws, Updates, Feed                         |
+| Gewijzigde gegevens vastleggen         | Opslaan                 | Bewaren, Versturen, Bevestigen                |
+| Formulier naar een organisatie sturen  | Versturen               | Bewaren, Opslaan, Bevestigen, Delen, Indienen |
+| Aanvraag na het versturen              | Dossier                 | Zaak                                          |
+| Bron laten gebruiken door de assistent | Toestemming geven       | Delen, Akkoord                                |
+| Het eigen bedrijf van de gebruiker     | uw bedrijf              | uw onderneming, uw organisatie                |
+| Formulier afbreken                     | Annuleren               | Terug, Sluiten, Stoppen                       |
 
 De digitale assistent en de berichtenbox schrijf je in lopende tekst met kleine letters ("Vraag het de digitale assistent", "Het bericht staat in uw berichtenbox"). Alleen aan het begin van een zin, in een kop, knop of menu-item een hoofdletter ("Digitale assistent (AI)", "Berichtenbox").
 
@@ -123,6 +126,7 @@ De digitale assistent en de berichtenbox schrijf je in lopende tekst met kleine 
 - Bevestiging: noem de actie en het gevolg, en laat de knop zo heten ("Aanvraag intrekken"), niet "Weet u het zeker?".
 - Linkteksten beschrijvend: zeg waar de link heen gaat of wat die doet. Nooit "klik hier", "meer info", "lees meer" of een kale URL. Dezelfde tekst gaat naar dezelfde plek. De zichtbare tekst staat vooraan in de toegankelijke naam (WCAG 2.4.4, 2.5.3).
 - Gebruik dezelfde termen in navigatie, kruimelpad, pagina's en formulieren.
+- Laden: "Wij halen [wat] op…"; fouten: nooit `error.message`, wel "Wij kunnen [wat] nu niet ophalen. Probeer het later opnieuw."; validatie in het Nederlands ("Vul … in", "Kies …"). Meer in de schrijfwijzer.
 
 ## Werkwijze
 

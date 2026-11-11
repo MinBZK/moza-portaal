@@ -4,7 +4,8 @@ import { TAAK_TITEL } from "../_taakTitel";
 import Vragen from "../_vragen";
 
 export const metadata: Metadata = {
-  title: "Voorbeeldberekening - Iemand aannemen - Personeel en rollen",
+  title:
+    "Voorbeeldberekening - Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt - Personeel en rollen",
 };
 
 /** De voorbeeldberekening: de inleiding, de vragen en de berekening. Begrippen hebben een (i). */

@@ -51,12 +51,12 @@ const PostcodesBeheer = () => {
     const normalized = normalizePostcode(newPostcode);
 
     if (!POSTCODE_REGEX.test(newPostcode)) {
-      toonFout("Voer een geldige postcode in (bijv. 1234 of 1234AB).");
+      toonFout("Vul een postcode in, bijvoorbeeld 1234 of 1234AB.");
       return;
     }
 
     if (postcodeVoorkeuren.some((v) => v.postcode === normalized)) {
-      toonFout("U hebt deze postcode al toegevoegd.");
+      toonFout("U heeft deze postcode al toegevoegd.");
       return;
     }
 
@@ -94,7 +94,9 @@ const PostcodesBeheer = () => {
                 }
               >
                 <Icon icon="kruis" />
-                <VisuallyHidden>Verwijder postcode {v.postcode}</VisuallyHidden>
+                <VisuallyHidden>
+                  Postcode {v.postcode} verwijderen
+                </VisuallyHidden>
               </Button>
             </UnorderedListItem>
           ))}

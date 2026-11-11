@@ -64,7 +64,9 @@ const ContactvoorkeurenPagina = async ({
       </section>
 
       <div className="rhc-mox-card">
-        <Heading level={2}>Aangesloten organisaties</Heading>
+        <Heading level={2}>
+          Organisaties die uw contactgegevens gebruiken
+        </Heading>
         <Organisaties organisaties={organisaties} />
       </div>
 

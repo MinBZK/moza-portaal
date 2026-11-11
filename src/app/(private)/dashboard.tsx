@@ -29,7 +29,7 @@ const accordionSections = [
     label: "Wat kan ik doen via MijnOverheid Zakelijk?",
     body: (
       <Paragraph>
-        Van het ontvangen van berichten van overheidsinstanties tot het lezen
+        Van het ontvangen van berichten van overheidsorganisaties tot het lezen
         van uw berichten en het regelen van lopende zaken: MijnOverheid Zakelijk
         biedt overzicht, gemak en betrouwbaarheid.
       </Paragraph>
@@ -68,15 +68,15 @@ const Dashboard = async () => {
         <Alert type="warning">
           <Heading level={2}>E-mailadres nog niet gekoppeld</Heading>
           <Paragraph>
-            U hebt nog geen zakelijk e-mailadres opgenomen in uw
-            contactgegevens. Vul uw zakelijke e-mailadres in op het tabblad
-            <strong>Contactgegevens</strong>. Dan kunnen wij uw organisatie
-            bereiken met belangrijke berichten en actualiteiten.
+            U heeft nog geen zakelijk e-mailadres ingevuld. Vul het in bij{" "}
+            <strong>Contactgegevens</strong>. Dan kunnen wij uw bedrijf bereiken
+            met belangrijke berichten en actualiteiten.
           </Paragraph>
         </Alert>
       )}
 
-      <Heading level={1}>Welkom gemachtigde voor KVK-nummer {kvk}</Heading>
+      <Heading level={1}>Welkom</Heading>
+      <Paragraph>U bent ingelogd voor KVK-nummer {kvk}.</Paragraph>
       <PageSearch />
       <div className="rhc-mox-card">
         <Heading level={2}>Recente berichten in uw berichtenbox</Heading>
@@ -106,9 +106,9 @@ const Dashboard = async () => {
           vertegenwoordigt of namens anderen werkt.
         </Paragraph>
         <Paragraph>
-          U ontvangt hier berichten van overheidsorganisaties en leest uw
-          digitale post. U ziet ook hoe het staat met uw lopende zaken. Alles
-          staat bij elkaar op één plek, speciaal voor zakelijke gebruikers.
+          U ontvangt en leest hier uw berichten van overheidsorganisaties. U
+          ziet ook hoe het staat met uw lopende zaken. Alles staat bij elkaar op
+          één plek, speciaal voor zakelijke gebruikers.
         </Paragraph>
         <Paragraph>
           Zo houdt u overzicht over uw administratie en weet u waar u aan toe

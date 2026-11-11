@@ -121,7 +121,7 @@
           "grond": "Wtl 2.13"
         },
         {
-          "vraag": "Wanneer begint de dienstbetrekking?",
+          "vraag": "Wanneer begint het dienstverband?",
           "wetsvraag": "Op welke datum vangt de dienstbetrekking aan?",
           "parameter": "datum_aanvang_dienstbetrekking",
           "waarde": "1 oktober 2026",
@@ -210,7 +210,7 @@
       "tijd": "09:00",
       "actor": "U",
       "soort": "uitvoering",
-      "titel": "Dienstbetrekking begonnen",
+      "titel": "Dienstverband begonnen",
       "tekst": "Noor is gestart voor {uren} uur per week tegen het wettelijk minimumloon. In de loonaangifte over oktober staat het verzoek om loonkostenvoordeel.",
       "grond": "Wtl 2.1",
       "stap": "ontvangst"
@@ -255,7 +255,7 @@
       "actor": "UWV",
       "soort": "uitvoering",
       "titel": "Onderzoek op de werkplek uitgevoerd",
-      "tekst": "De arbeidsdeskundige beoordeelt ook of de lagere arbeidsprestatie naar verwachting ten minste zes maanden duurt.",
+      "tekst": "De arbeidsdeskundige beoordeelt ook of de lagere arbeidsprestatie naar verwachting ten minste 6 maanden duurt.",
       "grond": "Besluit loondispensatie Wajong 2",
       "stap": "onderzoek"
     },
@@ -276,8 +276,8 @@
       "tijd": "11:41",
       "actor": "UWV",
       "soort": "besluit",
-      "titel": "Besluit: loondispensatie toegekend, {aanspraakPerUur} per uur, ten hoogste vijf jaar (aanname over de termijn)",
-      "tekst": "UWV verleent loondispensatie vanaf {ingangLoondispensatie}, de eerste dag van de maand van de aanvraag. Die geldt voor de periode die naar verwachting nodig is, ten hoogste vijf jaar. Verlenging is mogelijk. U kunt binnen zes weken bezwaar maken.",
+      "titel": "Besluit: loondispensatie toegekend, {aanspraakPerUur} per uur, hoogstens 5 jaar (aanname over de termijn)",
+      "tekst": "UWV verleent loondispensatie vanaf {ingangLoondispensatie}, de eerste dag van de maand van de aanvraag. Die geldt voor de periode die naar verwachting nodig is, hoogstens 5 jaar. Verlenging is mogelijk. U kunt binnen 6 weken bezwaar maken.",
       "grond": "Wajong 2:20; Besluit loondispensatie Wajong 4 en 5; Awb 6:7",
       "stap": "besluit",
       "url": "/lopendezaken/iemand-aannemen/wajong/besluit"
@@ -303,7 +303,7 @@
     "is_uitgesloten_lid_3": "Uitgesloten: Wsw-dienstbetrekking (lid 3)",
     "heeft_recht_op_lks_lid_1": "Recht via lid 1 (loonwaarde vooraf vastgesteld)",
     "voorafgaand_relevante_onderwijsroute_of_doelgroep": "Kwam uit de doelgroep of een onderwijsroute (lid 2 a tot en met c)",
-    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen zes maanden na de eerste werkdag (lid 2)",
+    "aanvraag_lks_binnen_zes_maanden": "Aanvraag binnen 6 maanden na de eerste werkdag (lid 2)",
     "heeft_recht_op_lks_lid_2": "Recht via lid 2",
     "heeft_recht_op_lks": "Recht op loonkostensubsidie",
     "volgt_de_vijftig_procent_route": "Vijftigprocentroute (lid 5)",
@@ -340,6 +340,6 @@
   "besluit": {
     "organisatie": "UWV",
     "datum": "2026-12-24",
-    "bezwaar": "zes weken"
+    "bezwaar": "6 weken"
   }
 }

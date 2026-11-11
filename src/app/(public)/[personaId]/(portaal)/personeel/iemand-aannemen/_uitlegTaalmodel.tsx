@@ -56,21 +56,20 @@ export const uitlegVerzoek = (
   return { regeling, graaf, samenvatting };
 };
 
+const NIET_BEREIKBAAR =
+  "De digitale assistent is nu niet bereikbaar. Probeer het later opnieuw.";
+
 const foutTekst = (status: number, json: unknown) => {
   const veld = (naam: string) =>
     json && typeof json === "object" && naam in json
       ? String((json as Record<string, unknown>)[naam])
       : "";
-  if (status === 503 || status === 502)
-    return `${veld("fout") || "De digitale assistent is niet bereikbaar."} Vraag de beheerder van de proeftuin om de digitale assistent aan te zetten.`;
+  if (status === 503 || status === 502) return NIET_BEREIKBAAR;
   if (status === 404)
     return "Uitleg in gewone taal is nu niet beschikbaar. Gebruik de uitleg stap voor stap hierboven.";
   // De catalogusfout van de backend: wat er misging en wat u kunt doen.
   const bericht = veld("message") || veld("fout") || veld("detail");
-  return (
-    bericht ||
-    `Geen uitleg gekregen (HTTP ${status}). Controleer de API-sleutel in het Flags-paneel.`
-  );
+  return bericht || NIET_BEREIKBAAR;
 };
 
 const UitlegTaalmodel = ({
@@ -124,8 +123,7 @@ const UitlegTaalmodel = ({
     } catch {
       setStand({
         status: "fout",
-        tekst:
-          "De digitale assistent is niet bereikbaar. Probeer het later opnieuw.",
+        tekst: NIET_BEREIKBAAR,
       });
     }
   };
@@ -143,15 +141,15 @@ const UitlegTaalmodel = ({
           busy={stand.status === "bezig"}
         >
           {stand.status === "bezig"
-            ? "Het taalmodel schrijft…"
+            ? "De digitale assistent schrijft…"
             : "Leg dit uit in gewone taal"}
         </Button>
       )}
       {(stand.status === "rust" || stand.status === "bezig") && (
         <Paragraph className="rhc-mox-small-text">
-          Drukt u op deze knop? Dan gaan de gegevens van deze uitkomst en uw
-          KVK-nummer naar de digitale assistent. Het taalmodel van de digitale
-          assistent schrijft daarmee de uitleg.
+          Kiest u <strong>Leg dit uit in gewone taal</strong>? Dan gaan de
+          gegevens van deze uitkomst en uw KVK-nummer naar de digitale
+          assistent. Die schrijft daarmee de uitleg.
         </Paragraph>
       )}
       {(stand.status === "fout" || stand.status === "onbeschikbaar") && (
@@ -170,12 +168,12 @@ const UitlegTaalmodel = ({
             </Paragraph>
           )}
           <Paragraph className="rhc-mox-small-text">
-            Geschreven door het taalmodel van de digitale assistent (
-            {stand.mode === "vlam" ? "VLAM" : "Claude"}), alleen uit de
-            beslisgraaf van de engine
+            Geschreven door de digitale assistent (
+            {stand.mode === "vlam" ? "VLAM" : "Claude"}), alleen op basis van de
+            berekening hierboven.
             {stand.toets.geslaagd &&
-              "; bedragen en wetsartikel zijn gecontroleerd tegen die graaf"}
-            . Dit is een hulp bij het lezen, geen besluit; bij twijfel geldt de
+              " Wij hebben de bedragen en het wetsartikel gecontroleerd."}{" "}
+            Dit is een hulp bij het lezen, geen besluit. Bij twijfel geldt de
             uitleg uit de wet.
           </Paragraph>
         </>

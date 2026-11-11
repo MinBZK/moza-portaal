@@ -36,7 +36,7 @@ const ActiveFilters = () => {
           }
         >
           {v.onderwerp}
-          <VisuallyHidden>verwijderen</VisuallyHidden>
+          <VisuallyHidden> verwijderen</VisuallyHidden>
           <Icon icon="kruis" />
         </Button>
       ))}
@@ -45,7 +45,7 @@ const ActiveFilters = () => {
         onClick={handleDeleteAll}
         disabled={deleteMutation.isPending}
       >
-        Alles wissen
+        Alle onderwerpen verwijderen
       </Button>
     </ActionGroup>
   );

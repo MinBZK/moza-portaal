@@ -47,9 +47,9 @@ const WettenPage = async ({
       <Alert type="info" closable>
         <Paragraph>
           Wetten en regelgeving die mogelijk betrekking hebben op uw bedrijf of
-          branche, geselecteerd op basis van uw bedrijfsgegevens. Door items te
-          bewaren of als niet relevant te markeren helpt u ons de aanbevelingen
-          te verbeteren.
+          branche, geselecteerd op basis van uw bedrijfsgegevens. Kies{" "}
+          <strong>Bewaren</strong> of <strong>Niet relevant voor mij</strong>.
+          Zo helpt u ons om betere suggesties te geven.
         </Paragraph>
       </Alert>
 

@@ -65,7 +65,7 @@ const legeTekst: Record<Weergave, ReactNode> = {
     "Er staan geen berichten in uw berichtenbox. Een nieuw bericht verschijnt hier zodra een organisatie u schrijft.",
   archief: (
     <>
-      U hebt nog geen berichten gearchiveerd. Kies bij een bericht{" "}
+      U heeft nog geen berichten gearchiveerd. Kies bij een bericht{" "}
       <strong>Archiveren</strong> om het naar het archief te verplaatsen.
     </>
   ),
@@ -340,8 +340,8 @@ const BerichtenLijst = ({
     setMeldingNummer((n) => n + 1);
     setMelding(
       wordtOngelezen
-        ? `U hebt het bericht “${bericht.onderwerp}” gemarkeerd als ongelezen.`
-        : `U hebt het bericht “${bericht.onderwerp}” gemarkeerd als gelezen.`,
+        ? `U heeft het bericht “${bericht.onderwerp}” gemarkeerd als ongelezen.`
+        : `U heeft het bericht “${bericht.onderwerp}” gemarkeerd als gelezen.`,
     );
   };
 
@@ -360,7 +360,7 @@ const BerichtenLijst = ({
     setMelding(
       naar
         ? `Het bericht “${bericht.onderwerp}” staat nu in de map ${naar}.`
-        : `U hebt het bericht “${bericht.onderwerp}” uit de map ${van} gehaald.`,
+        : `U heeft het bericht “${bericht.onderwerp}” uit de map ${van} gehaald.`,
     );
     return null;
   };
@@ -409,19 +409,20 @@ const BerichtenLijst = ({
       {!bezig && storing?.scenario === "een" && storing.bron && (
         <Alert type="warning">
           <Paragraph>
-            De <b>{storing.bron.naam}</b> is nu niet bereikbaar. Berichten van
+            <b>{storing.bron.naam}</b> is nu niet bereikbaar. Berichten van
             andere organisaties staan hieronder. Probeer het later opnieuw.
           </Paragraph>
           <Button appearance="secondary-action-button" onClick={herstel}>
-            {storing.bron.naam} opnieuw proberen
+            Berichten van {storing.bron.naam} opnieuw ophalen
           </Button>
         </Alert>
       )}
       {!bezig && storing?.scenario === "geen" && (
         <Alert type="error">
           <Paragraph>
-            Er gaat iets mis met het ophalen van berichten bij de organisaties.
-            Probeer het later opnieuw.
+            Wij kunnen nu geen berichten ophalen bij de organisaties. Kies{" "}
+            <strong>Opnieuw proberen</strong>. Lukt het dan nog niet, probeer
+            het later nog een keer.
           </Paragraph>
           <Button appearance="secondary-action-button" onClick={herstel}>
             Opnieuw proberen
@@ -464,7 +465,7 @@ const BerichtenLijst = ({
       {weergave === "inbox" && (
         <div className="rhc-mox-inbox-filters">
           <FormFieldTextInput
-            label="Filter berichten"
+            label="Zoeken in berichten"
             type="search"
             // No personal data, so no autocomplete token (WCAG 1.3.5 does
             // not apply); "off" says so explicitly.
@@ -523,7 +524,12 @@ const BerichtenLijst = ({
               <strong>Afzender</strong> voor <strong>Alle afzenders</strong>.
             </>
           ) : map ? (
-            "In deze map staan nu geen berichten. Een bericht dat u archiveerde of verwijderde, staat in het archief of in de prullenbak."
+            <>
+              In deze map staan nu geen berichten. Kies bij een bericht{" "}
+              <strong>Naar map verplaatsen</strong> om het hier te zetten. Een
+              bericht dat u archiveerde of verwijderde, staat in het archief of
+              in de prullenbak.
+            </>
           ) : (
             legeTekst[weergave]
           )}

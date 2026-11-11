@@ -3,10 +3,11 @@ import { getDemoIemandAannemenSituaties } from "@/demo";
 import Verstuurd from "./_verstuurd";
 
 export const metadata: Metadata = {
-  title: "Bevestiging - Iemand aannemen - Personeel en rollen",
+  title:
+    "Bevestiging - Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt - Personeel en rollen",
 };
 
-/** Bevestiging na Dossier indienen of Afronden, met of zonder iets te versturen. */
+/** Bevestiging na Aanvraag versturen of Afronden, met of zonder iets te versturen. */
 const VerstuurdPage = async () => {
   const situaties = await getDemoIemandAannemenSituaties();
   return (

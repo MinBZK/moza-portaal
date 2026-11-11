@@ -44,14 +44,14 @@ const DataverwerkingPage = async ({
       <div className="rhc-mox-card">
         <Heading level={2}>Geschiedenis</Heading>
         <Paragraph>
-          Dit is een overzicht van hoe uw bedrijfsgegevens worden gedeeld en
-          verwerkt door overheidsorganisaties.
+          Hier ziet u welke overheidsorganisatie wanneer welke gegevens van uw
+          bedrijf gebruikte.
         </Paragraph>
         <ActivityLog entries={verwerkingen} page={Number(pagina) || 1} />
       </div>
 
       <div className="rhc-mox-card">
-        <Heading level={2}>Wat kunt u straks doen?</Heading>
+        <Heading level={2}>Wat u straks kunt doen</Heading>
         <UnorderedList>
           {verwachtingen.map((verwachting) => (
             <UnorderedListItem key={verwachting}>

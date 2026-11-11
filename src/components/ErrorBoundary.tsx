@@ -7,11 +7,14 @@ export type ErrorBoundaryProps = {
   reset: () => void;
 };
 
-export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
+export function ErrorBoundary({ reset }: ErrorBoundaryProps) {
   return (
     <>
       <Alert type="error">
-        <Paragraph>{error.message}</Paragraph>
+        <Paragraph>
+          Wij kunnen deze pagina nu niet tonen. Probeer het opnieuw. Lukt het
+          niet? Probeer het later nog een keer.
+        </Paragraph>
       </Alert>
       <ActionGroup>
         <Button appearance="primary-action-button" onClick={() => reset()}>

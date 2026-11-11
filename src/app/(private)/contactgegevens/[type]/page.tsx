@@ -4,8 +4,8 @@ import Prive from "@/app/(private)/contactgegevens/[type]/prive";
 import Zakelijk from "@/app/(private)/contactgegevens/[type]/zakelijk";
 
 const tabs = [
-  { type: "prive", label: "Privé", href: "/contactgegevens/prive" },
   { type: "zakelijk", label: "Zakelijk", href: "/contactgegevens/zakelijk" },
+  { type: "prive", label: "Privé", href: "/contactgegevens/prive" },
 ] as const;
 
 const ContactgegevensPage = async ({

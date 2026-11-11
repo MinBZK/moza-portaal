@@ -9,10 +9,12 @@ import { z } from "zod";
 
 const ParkeervergunningForm = ({ kvk }: { kvk: string }) => {
   const parkeervergunningSchema = z.object({
-    bedrijfsKvk: z.string().min(1),
-    kenteken: z.string().min(1),
+    bedrijfsKvk: z.string().min(1, "Vul het KVK-nummer in"),
+    kenteken: z.string().min(1, "Vul het kenteken in"),
     motivatie: z.string(),
-    aanvragerEmail: z.string().email(),
+    aanvragerEmail: z
+      .string()
+      .email("Vul een e-mailadres in, bijvoorbeeld naam@bedrijf.nl"),
   });
 
   // TODO: Replace with actual mutation hook for parkeervergunning

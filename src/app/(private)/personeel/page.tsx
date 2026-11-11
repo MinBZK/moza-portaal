@@ -26,7 +26,7 @@ const Personeel = async () => {
       <Heading level={1}>Personeel en rollen</Heading>
       <section className="rhc-mox-card" aria-labelledby="nieuwe-meldingen">
         <Heading level={2} id="nieuwe-meldingen">
-          Nieuwe meldingen
+          Nieuwe melding
         </Heading>
         <ActionGroup>
           <Link
@@ -47,7 +47,7 @@ const Personeel = async () => {
               <TableRow>
                 <TableHeaderCell scope="col">Referentie</TableHeaderCell>
                 <TableHeaderCell scope="col">Status</TableHeaderCell>
-                <TableHeaderCell scope="col">Datum aanvraag</TableHeaderCell>
+                <TableHeaderCell scope="col">Datum melding</TableHeaderCell>
                 <TableHeaderCell scope="col">Acties</TableHeaderCell>
               </TableRow>
             </TableHeader>
@@ -68,7 +68,7 @@ const Personeel = async () => {
                     >
                       Opmerking toevoegen{" "}
                       <VisuallyHidden>
-                        bij melding{item.referentie}
+                        bij melding {item.referentie}
                       </VisuallyHidden>
                     </Link>
                   </TableCell>

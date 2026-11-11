@@ -41,9 +41,12 @@ const PublicatiesOverzicht = () => {
   const visible = publicaties.slice(0, visibleCount);
 
   return postcodes.length === 0 ? (
-    <Paragraph>Voeg een postcode toe om publicaties te zien.</Paragraph>
+    <Paragraph>
+      U heeft nog geen postcode toegevoegd. Voeg een postcode toe om berichten
+      te zien.
+    </Paragraph>
   ) : pubStatus === "pending" ? (
-    <LoadingStatus>Wij halen de publicaties op…</LoadingStatus>
+    <LoadingStatus>Wij halen de berichten op…</LoadingStatus>
   ) : pubStatus === "error" ? (
     <Alert type="error">
       Wij kunnen de berichten nu niet ophalen. Probeer het later opnieuw.
