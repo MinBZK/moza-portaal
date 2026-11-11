@@ -311,11 +311,6 @@ const AanvraagInhoud = ({
               (Participatiewet, artikel 10d). Vraag aan binnen 6 maanden na de
               start van het dienstverband (Participatiewet, artikel 10d lid 2).
             </Paragraph>
-            {loonwaardeNogNiet &&
-              hoeLang(
-                `Een aanvraag duurt vaak een paar maanden. Eerst komt een loonwaardedeskundige kijken naar het werk van ${kandidaat.voornaam} op de werkplek. Daarna beslist de gemeente.`,
-                [BRON.besluitLks3, BRON.awb],
-              )}
             <Heading level={5}>
               Hoe de gemeente {kandidaat.gemeente} beslist
             </Heading>
@@ -563,7 +558,6 @@ const AanvraagInhoud = ({
   // bevestiging. Geen aparte pagina en geen nieuwe berekening.
   const uwv = situatie === "wajong";
   const demo = perSituatie[uwv ? "wajong" : "gemeente"];
-  const naarWie = uwv ? "UWV" : `de gemeente ${kandidaat.gemeente}`;
   const verstuurt = paneelIds
     .filter(gekozen)
     .map((id) => NAAM[id].toLowerCase());
@@ -722,10 +716,10 @@ const AanvraagInhoud = ({
               Versturen
             </Heading>
             <Paragraph>
-              U verstuurt de aanvraag {opsomming} naar {naarWie}.{" "}
-              {uwv ? "UWV" : "De gemeente"} beslist. U krijgt een
-              ontvangstbevestiging met zaaknummer in uw berichtenbox en volgt
-              het dossier in Lopende zaken.
+              U verstuurt de aanvraag {opsomming}. De organisatie die de
+              regeling uitvoert, beslist. U krijgt een ontvangstbevestiging met
+              zaaknummer in uw berichtenbox en volgt het dossier in Lopende
+              zaken.
             </Paragraph>
             <FormFieldCheckboxOption
               id="bevestiging"
@@ -740,6 +734,15 @@ const AanvraagInhoud = ({
               checked={bevestigd}
               onChange={(event) => setBevestigd(event.target.checked)}
             />
+            {/* Vlak voor Versturen: hoe lang het duurt. Geen gemiddelde; bij
+                de gemeente noemt de wet geen termijn voor de meting. */}
+            {(uwv || loonwaardeNogNiet) && (
+              <Paragraph className="rhc-mox-small-text">
+                {uwv
+                  ? "UWV beslist binnen 14 weken. Volgens UWV krijgt u meestal binnen 8 weken een brief."
+                  : `Een aanvraag duurt vaak een paar maanden. Eerst komt een loonwaardedeskundige kijken naar het werk van ${kandidaat.voornaam} op de werkplek. Daarna beslist de gemeente.`}
+              </Paragraph>
+            )}
           </section>
         )}
 
