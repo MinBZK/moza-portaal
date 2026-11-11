@@ -121,7 +121,7 @@ const Page = () => (
           ],
           [
             "Personeel",
-            "Iemand aannemen met afstand tot de arbeidsmarkt, erkend leerbedrijf worden (SBB)",
+            "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt, erkend leerbedrijf worden (SBB)",
           ],
           [
             "Groeien",

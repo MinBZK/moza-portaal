@@ -62,14 +62,21 @@ const PersoneelPage = async () => {
           </Heading>
           <Paragraph>
             Neemt u iemand aan die niet zelfstandig het minimumloon kan
-            verdienen? Zie vooraf welke regelingen gelden en wat ze opleveren.
+            verdienen? Dan kunt u gebruikmaken van regelingen. Bekijk eerst wat
+            ze opleveren, of vraag ze direct aan.
           </Paragraph>
           <ActionGroup>
             <Link
               href="/personeel/iemand-aannemen"
+              className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--primary-action"
+            >
+              Maak een voorbeeldberekening
+            </Link>
+            <Link
+              href="/personeel/iemand-aannemen?naar=aanvragen"
               className="utrecht-button-link utrecht-button-link--html-a utrecht-button-link--secondary-action"
             >
-              Begin met de voorbeeldberekening
+              Regelingen aanvragen
             </Link>
           </ActionGroup>
         </section>

@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import {
   Alert,
-  Fieldset,
-  FormFieldRadio,
   Paragraph,
   UnorderedList,
   UnorderedListItem,
@@ -19,18 +17,8 @@ import SourceLinks, { type Source } from "@/components/SourceLinks";
 import { BRON } from "./_wetsbronnen";
 import Balans from "./_balans";
 import { loonkostenPerJaar } from "./_engine";
-import {
-  balansRegels,
-  doelgroepenUit,
-  UITKERINGEN,
-  vragenUit,
-  type BalansRegel,
-  type InRegister,
-  type Regel,
-  type Uitkering,
-} from "./_uitkomsten";
+import { balansRegels, type BalansRegel, type Regel } from "./_uitkomsten";
 import { routeVoor } from "./_route";
-import { verderNaar } from "./_stappen";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
 import {
@@ -41,10 +29,10 @@ import {
   type Antwoorden,
 } from "./_useAannemen";
 import AlIngediend from "./_alIngediend";
-
-/** De check bij UWV of iemand in het doelgroepregister staat. */
-const UWV_REGISTER =
-  "https://www.uwv.nl/nl/doelgroepregister/staat-werknemer-in-doelgroepregister";
+import DoelgroepVragen, {
+  doelgroepVragenVan,
+  vraagBeschut,
+} from "./_doelgroepVragen";
 
 /**
  * De standen van de schuifregelaar voor het uurloon, in eurocent: van €4,50
@@ -227,6 +215,7 @@ const VragenMetStaat = ({
   nieuw?: boolean;
 }) => {
   const router = useRouter();
+  const { werkBij } = useAannemen();
   const resultaat = useUitkomsten(a);
   // Geen bedrag: de voorbeeldberekening levert niets op, ook geen regeling die
   // we niet meetellen (loonkostensubsidie bij beschut werk, die de gemeente
@@ -248,32 +237,10 @@ const VragenMetStaat = ({
   const nietsAanTeVragen = geenBedrag && route.panelen.length === 0;
   const watGeldt = nietsAanTeVragen ? [...route.vanzelf, ...route.taken] : [];
   const kanVerder = resultaat.bekend && !resultaat.fout && !nietsAanTeVragen;
-  // Register, beschut werk en uitkering; oudere opslag kent alleen de
-  // doelgroepen, of nog de uitkering "andere" (die rekende als geen).
-  const afgeleid = vragenUit(a.doelgroepen);
-  const register = a.register ?? afgeleid.register;
-  const beschut = a.beschut ?? afgeleid.beschut;
-  const uitkering =
-    UITKERINGEN.find(([w]) => w === a.uitkering)?.[0] ?? afgeleid.uitkering;
   // Beschut werk en het register sluiten elkaar uit (Wfsv 38b lid 1 aanhef):
-  // de vraag naar beschut werk staat er niet bij Ja. De nummers erna schuiven mee.
-  const metBeschut = register !== "ja";
-  const nr = (n: number) => (metBeschut ? n + 1 : n);
-  const zetVraag = (deel: {
-    register?: InRegister;
-    beschut?: boolean;
-    uitkering?: Uitkering;
-  }) => {
-    const r = deel.register ?? register;
-    const b = (deel.beschut ?? beschut) && r !== "ja";
-    const u = deel.uitkering ?? uitkering;
-    zet({
-      register: r,
-      beschut: b,
-      uitkering: u,
-      doelgroepen: doelgroepenUit(r, b, u),
-    });
-  };
+  // zonder de vraag naar beschut werk schuiven de nummers erna een op.
+  const { uitkering } = doelgroepVragenVan(a);
+  const nr = (n: number) => (vraagBeschut(a) ? n + 1 : n);
   const wajong = uitkering === "wajong";
   // Werkgevers denken in uurloon of maandloon: de vraag gaat over het uurloon,
   // het maandloon en de loonkosten staan eronder.
@@ -284,100 +251,7 @@ const VragenMetStaat = ({
     <>
       <div className="rhc-grid">
         <div className="rhc-grid__cell rhc-grid__cell-t-7 rhc-mox-row-gap rhc-mox-stack--3xl">
-          <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <Fieldset
-              legend="1. Staat de kandidaat in het doelgroepregister?"
-              info={<BegripInfo id="doelgroepregister" />}
-            >
-              {(
-                [
-                  ["ja", "Ja"],
-                  ["nee", "Nee"],
-                  ["onbekend", "Weet ik niet"],
-                ] as const
-              ).map(([waarde, label]) => (
-                <FormFieldRadio
-                  key={waarde}
-                  name="register"
-                  value={waarde}
-                  label={label}
-                  checked={register === waarde}
-                  onChange={() => zetVraag({ register: waarde })}
-                />
-              ))}
-            </Fieldset>
-            {register === "onbekend" && (
-              <Paragraph className="rhc-mox-small-text">
-                <a
-                  href={UWV_REGISTER}
-                  className="utrecht-link utrecht-link--html-a"
-                  target="_blank"
-                  rel="external noopener noreferrer"
-                >
-                  Controleer bij UWV of de kandidaat in het doelgroepregister
-                  staat (opent in een nieuw tabblad)
-                </a>
-                .
-                {/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
-                {uitkering !== "wajong" &&
-                  " Tot dan rekenen wij alsof de kandidaat er niet in staat."}
-              </Paragraph>
-            )}
-          </div>
-          {metBeschut && (
-            <Fieldset
-              legend="2. Is de kandidaat door de gemeente aangewezen op beschut werk?"
-              info={
-                <InfoToggletip label="Toelichting bij beschut werk">
-                  <Paragraph>
-                    Beschut werk is werk in een beschutte omgeving, onder
-                    aangepaste omstandigheden. Het is voor iemand die alleen zo
-                    kan werken.
-                  </Paragraph>
-                  <Paragraph>
-                    De gemeente beslist of iemand beschut werk nodig heeft. UWV
-                    geeft daarover advies (Participatiewet, artikel 10b).
-                  </Paragraph>
-                  <Paragraph>
-                    Wie beschut werkt, telt niet mee voor de banenafspraak (Wet
-                    financiering sociale verzekeringen, artikel 38b lid 1).
-                  </Paragraph>
-                </InfoToggletip>
-              }
-            >
-              <FormFieldRadio
-                name="beschut"
-                value="ja"
-                label="Ja"
-                checked={beschut}
-                onChange={() => zetVraag({ beschut: true })}
-              />
-              <FormFieldRadio
-                name="beschut"
-                value="nee"
-                label="Nee"
-                checked={!beschut}
-                onChange={() => zetVraag({ beschut: false })}
-              />
-            </Fieldset>
-          )}
-          <Fieldset legend={`${nr(2)}. Heeft de kandidaat een uitkering?`}>
-            {UITKERINGEN.map(([waarde, label]) => (
-              <FormFieldRadio
-                key={waarde}
-                name="uitkering"
-                value={waarde}
-                label={label}
-                checked={uitkering === waarde}
-                description={
-                  waarde === "wajong" && register !== "ja" && !beschut
-                    ? "Iemand met een Wajong-uitkering staat in het doelgroepregister."
-                    : undefined
-                }
-                onChange={() => zetVraag({ uitkering: waarde })}
-              />
-            ))}
-          </Fieldset>
+          <DoelgroepVragen a={a} zet={zet} nummer={(n) => `${n}. `} />
           <RangeSlider
             label={`${nr(3)}. Hoeveel uur per week gaat de kandidaat werken?`}
             min={1}
@@ -527,7 +401,9 @@ const VragenMetStaat = ({
           nietsAanTeVragen
             ? undefined
             : {
-                label: nieuw ? "Nieuwe aanvraag starten" : verderNaar(1),
+                label: nieuw
+                  ? "Nieuwe aanvraag starten"
+                  : "Ja, ik wil regelingen aanvragen",
                 busy: !resultaat.bekend && !resultaat.fout,
                 describedBy: kanVerder ? undefined : "aanvragen-bezig",
                 onClick: () => {
@@ -536,6 +412,7 @@ const VragenMetStaat = ({
                     return;
                   }
                   if (nieuw) nieuweAanvraag(a);
+                  werkBij({ voorbeeldBerekend: true });
                   router.push("/personeel/iemand-aannemen/gegevens");
                 },
               }

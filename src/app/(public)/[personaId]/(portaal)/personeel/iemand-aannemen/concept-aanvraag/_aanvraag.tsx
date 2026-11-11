@@ -3,6 +3,7 @@
 import Card from "@/components/Card";
 import LoadingStatus from "@/components/LoadingStatus";
 import StepNavigation from "@/components/StepNavigation";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
@@ -183,6 +184,20 @@ const AanvraagInhoud = ({
 
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
     const bedrag = bedragVan(id);
+    // Direct via Regelingen aanvragen: loonwaarde en uurloon zijn nog niet
+    // gevraagd, dus geen bedrag op de standaardwaarden.
+    if (bedrag !== undefined && staat.voorbeeldBerekend === false)
+      return (
+        <Paragraph>
+          <Link
+            href="/personeel/iemand-aannemen/voorbeeldberekening"
+            className="utrecht-link utrecht-link--html-a"
+          >
+            Maak een voorbeeldberekening
+          </Link>{" "}
+          om een bedrag te zien.
+        </Paragraph>
+      );
     return bedrag === undefined ? null : (
       <Paragraph>
         Voorbeeldbedrag: <strong>{euroHeel(bedrag)}</strong> per jaar.
@@ -556,9 +571,11 @@ const AanvraagInhoud = ({
               {zonderAanvraag ? "Wat er geldt" : "Kies de regelingen"}
             </Heading>
             <Paragraph>
-              Deze regelingen passen bij uw antwoorden in de
-              voorbeeldberekening. Of een regeling echt geldt, beslist de
-              organisatie die de regeling uitvoert.
+              {staat.voorbeeldBerekend === false
+                ? "Deze regelingen passen bij uw antwoorden."
+                : "Deze regelingen passen bij uw antwoorden in de voorbeeldberekening."}{" "}
+              Of een regeling echt geldt, beslist de organisatie die de regeling
+              uitvoert.
             </Paragraph>
             {!zonderAanvraag && (
               <Paragraph>Kies ten minste één regeling.</Paragraph>

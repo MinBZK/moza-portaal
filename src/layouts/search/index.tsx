@@ -24,7 +24,9 @@ const SUGGESTIONS = [
 ];
 
 /** Prototype: the same recent search for everyone. */
-const RECENT_SEARCHES = ["Iemand aannemen met afstand tot de arbeidsmarkt"];
+const RECENT_SEARCHES = [
+  "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
+];
 
 /**
  * Search and help on the home page and the search results page, without a

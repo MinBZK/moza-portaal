@@ -38,6 +38,7 @@ import {
   type Antwoorden,
 } from "../_useAannemen";
 import AlIngediend from "../_alIngediend";
+import DoelgroepVragen from "../_doelgroepVragen";
 import { routeVoor, situatieVan } from "../_route";
 import { useUitkomsten } from "../_useUitkomsten";
 import Stappen, { verderNaar } from "../_stappen";
@@ -72,6 +73,7 @@ const EigenOpgave = ({
   vraagWpa,
   aanvangFout,
   eerderFout,
+  overgenomen,
   jcFout,
   wpaFout,
   bezig,
@@ -86,6 +88,8 @@ const EigenOpgave = ({
   vraagWpa: boolean;
   aanvangFout?: string;
   eerderFout?: string;
+  /** De uren komen uit de voorbeeldberekening (niet bij Regelingen aanvragen). */
+  overgenomen: boolean;
   jcFout?: string;
   wpaFout?: string;
   /** The calculation is still running: the questions for the request follow. */
@@ -120,7 +124,11 @@ const EigenOpgave = ({
         waarde komt uit dezelfde antwoorden (a.uren). */}
       <RangeSlider
         label={`Hoeveel uur per week gaat ${wie} werken?`}
-        description="Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+        description={
+          overgenomen
+            ? "Overgenomen uit de voorbeeldberekening. U kunt het hier aanpassen."
+            : undefined
+        }
         min={1}
         max={40}
         step={1}
@@ -306,13 +314,14 @@ const Bronnen = ({
     ),
   );
   // Hoe lang het kan duren voordat de werkgever weet waar die aan toe is:
-  // alleen termijnen uit de wet of van UWV, geen gemiddelde.
+  // termijnen uit de wet of van UWV. Voor het meten van de loonwaarde noemt
+  // de wet geen termijn; daarom alleen "vaak een paar maanden".
   const duur: { zin: string; bronnen: Source[] }[] = [
     ...(situatie === "gemeente" && loonwaardeNogNiet
       ? [
           {
-            zin: `De loonwaarde van ${kandidaat.voornaam} is nog niet vastgesteld. Een loonwaardedeskundige beoordeelt het werk op de werkplek. De wet noemt daarvoor geen termijn. Over uw aanvraag beslist de gemeente binnen 8 weken, tenzij zij u laat weten dat het langer duurt.`,
-            bronnen: [BRON.awb],
+            zin: `Een aanvraag duurt vaak een paar maanden. Eerst komt een loonwaardedeskundige kijken naar het werk van ${kandidaat.voornaam} op de werkplek. Daarna beslist de gemeente.`,
+            bronnen: [BRON.besluitLks3, BRON.awb],
           },
         ]
       : []),
@@ -531,6 +540,20 @@ const Bronnen = ({
           </Alert>
         </div>
       )}
+      {/* Direct via Regelingen aanvragen: de werkgever geeft zelf op wat
+          bepaalt welke regelingen gelden. Het portaal leidt dat niet af uit
+          gegevens over de gezondheid van de kandidaat (AVG, artikel 9). */}
+      {staat?.voorbeeldBerekend === false && (
+        <section className="rhc-mox-stack" aria-labelledby="over-kandidaat">
+          <Heading level={2} id="over-kandidaat">
+            Over de kandidaat
+          </Heading>
+          <DoelgroepVragen
+            a={antwoorden}
+            zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
+          />
+        </section>
+      )}
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
@@ -719,6 +742,7 @@ const Bronnen = ({
             vraagWpa={paneelIds.includes("wpa")}
             aanvangFout={aanvangFout}
             eerderFout={eerderFout}
+            overgenomen={staat?.voorbeeldBerekend !== false}
             jcFout={jcFout}
             wpaFout={wpaFout}
             bezig={!resultaat.bekend && !resultaat.fout}
