@@ -16,7 +16,7 @@ const RESULTATEN = [
     href: "/personeel/iemand-aannemen",
     titel:
       "Regelingen bij het aannemen van iemand met afstand tot de arbeidsmarkt",
-    soort: "Aanvragen",
+    soort: "Informeren en aanvragen",
     tekst:
       "Beantwoord vier vragen en zie wat het u kost en oplevert. Daarna vullen wij de aanvragen bij UWV, de Belastingdienst en de gemeente voor u in.",
   },

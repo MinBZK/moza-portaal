@@ -107,8 +107,7 @@ const DoelgroepVragen = ({
               Controleer bij UWV of {wie} in het doelgroepregister staat (opent
               in een nieuw tabblad)
             </a>
-            .
-            {/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
+            .{/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
             {uitkering !== "wajong" &&
               ` Tot dan rekenen wij alsof ${wie} er niet in staat.`}
           </Paragraph>
