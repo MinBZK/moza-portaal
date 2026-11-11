@@ -18,6 +18,7 @@ const Card = ({
   defaultOpen = true,
   compact = false,
   info = false,
+  summary,
   action,
   className,
   children,
@@ -32,6 +33,8 @@ const Card = ({
   compact?: boolean;
   /** Info background, to make the card stand out. */
   info?: boolean;
+  /** Under the heading, open or collapsed: what to know without opening. */
+  summary?: ReactNode;
   /** Always at the bottom, open or collapsed, such as an ActionGroup. */
   action?: ReactNode;
   className?: string;
@@ -81,6 +84,9 @@ const Card = ({
         <Heading level={headingLevel} id={headingId}>
           {heading}
         </Heading>
+      )}
+      {summary && (
+        <div className="rhc-mox-stack rhc-mox-stack--sm">{summary}</div>
       )}
       <div id={contentId} className="rhc-mox-card__content" hidden={!expanded}>
         {children}
