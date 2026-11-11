@@ -59,7 +59,7 @@ type Props = {
  * antwoorden niet gelden. Zelfde strekking als de (i) in de voorbeeldberekening.
  */
 const ALLEEN_VOOR: Partial<Record<RegelingId, string>> = {
-  lks: "Alleen voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen (Participatiewet, artikel 10d).",
+  lks: "Alleen voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen. Is de werknemer al begonnen? Dan vraagt u aan binnen 6 maanden na de start (Participatiewet, artikel 10d).",
   ld: "Alleen voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk (Wajong, artikel 2:20).",
   lkv: "Alleen voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
   nrp: "Alleen voor bepaalde werknemers, bijvoorbeeld met een Wajong- of WIA-uitkering, uit de doelgroep banenafspraak of in beschut werk (Ziektewet, artikel 29b).",
