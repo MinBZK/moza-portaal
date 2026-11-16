@@ -67,10 +67,10 @@ Schermafdrukken maakt `scripts/iemand-aannemen-schermen.mjs` (1280 en 390, conso
 
 `public/regelrecht/` bevat de WASM-kern van
 [regelrecht-uitleg](https://github.com/ravimeijerrig/regelrecht-uitleg)
-(`pkg/`), de gepinde wetversies (`wetten.json`, 59 versies van 13 regelingen,
-15 MB; gecomprimeerd 2,4 MB), de presentatielaag en `manifest.json` met de
-pins: engine `0a1a76c8` (regelrecht main) en corpus `42054d7d`
-(`traject/financieel-cv-0bc401e0`). `worker.js` laadt dat één keer in een
+(`pkg/`), de gepinde wetversies (`wetten.json`, 34 versies van 14 regelingen,
+8 MB; gecomprimeerd 1,3 MB), de presentatielaag en `manifest.json` met de
+pins: engine `181cbf53` (regelrecht main) en corpus `cb868d0`
+(MinBZK/regelrecht-corpus-FCV, `main`). `worker.js` laadt dat één keer in een
 Web Worker; `_useRegelrecht.ts` praat ermee. De kern toetst elk aangeleverd
 bestand aan zijn ingebakken pin: een ander bestand is een fout, geen stille
 afwijking.
@@ -135,9 +135,10 @@ gemeente, ld bij Wajong). De vooraf berekende traces in
 Het verhaal van het besluit is uitgewerkt voor drie kandidaten, één per
 volledige route.
 
-Bundel vernieuwen (in regelrecht-uitleg, branch `feat/engine-live`):
-`just bundel`, dan `uit/bundel/pkg` en de browserbestanden naar
-`public/regelrecht/`. Daarna `node scripts/iemand-aannemen-basisfeiten.mjs` en
+Bundel vernieuwen (in regelrecht-uitleg, branch `chore/bundel-fcv`):
+`uitleg pin-voorstel --corpus <checkout> --revisie <rev> --wet … --schrijf`,
+dan `just bundel`, dan `uit/bundel/pkg`, `uit/bundel/manifest.json` en
+`uit/bundel/browser/*.json` naar `public/regelrecht/`. Daarna `node scripts/iemand-aannemen-basisfeiten.mjs` en
 de testtabel.
 
 ## Draaien en controleren
@@ -182,9 +183,11 @@ Uitkomstenkaart en de routes per situatie met dezelfde WASM-kern in Node (ruim t
   procent van het minimumloon met vakantiebijslag; de vergoeding komt daar
   bovenop en valt buiten dat maximum. Ze is 25 procent van de loonkosten
   waarover loonkostensubsidie wordt verstrekt (Regeling loonkostensubsidie
-  Participatiewet 2021, artikel 1, sinds 1 januari 2025). Het portaal toont
-  haar nog niet als bedrag: de gebundelde engine en het corpus (regelrecht-corpus
-  `42054d7d`) rekenen de vergoeding alleen mee in de grondslag van het maximum.
+  Participatiewet 2021, artikel 1, sinds 1 januari 2025). Het gebundelde
+  corpus (regelrecht-corpus-FCV `cb868d0`, #11) rekent zo: het maximum is 70
+  procent, en de vergoeding is een eigen uitkomst
+  (`vergoeding_werkgeverslasten_eurocent_per_maand`). Het portaal toont haar
+  nog niet als bedrag.
   Bij Koen zou ze € 224,35 per maand zijn als ze over de loonkostensubsidie
   wordt berekend; of het over dat bedrag gaat of over het hele minimumloon met
   vakantiebijslag, ligt als afstempunt bij de jurist (regelrecht-corpus-FCV,

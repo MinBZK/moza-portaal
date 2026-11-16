@@ -181,6 +181,12 @@ export const DOELEN: Doel[] = [
   },
 ];
 
+/** De dag vóór een datum (jjjj-mm-dd). */
+const dagErvoor = (datum: string) =>
+  new Date(Date.parse(`${datum}T00:00:00Z`) - 86_400_000)
+    .toISOString()
+    .slice(0, 10);
+
 const aan = (...namen: string[]): Feiten =>
   Object.fromEntries(namen.map((n) => [n, true]));
 
@@ -228,12 +234,15 @@ export const feitenVoor = (a: Keuzes): Feiten => {
     f = {
       ...f,
       ...aan(
-        "was_persoon_7_lid_1_a_of_7a_in_zes_maanden_voorafgaand",
         "behoort_tot_doelgroep_artikel_7_lid_1_a",
         "college_verleent_toestemming_proefplaatsing",
         "is_pwet_toegeleid_naar_dienstbetrekking",
         "is_pwet_toegeleid_of_lks_lid_2",
       ),
+      // Pwet 10d lid 2 onder b: de laatste dag als persoon van 7 lid 1 a of
+      // 7a; tot de aanvang dus de dag ervoor. Het corpus toetst zelf of die
+      // dag in de zes maanden voor de dienstbetrekking valt.
+      datum_laatst_persoon_7_lid_1_a_of_7a_lid_2_b: dagErvoor(AANVANG),
       ontvangt_algemene_bijstand: d.has("bijstand"),
     };
     if (onderWml)
@@ -278,6 +287,9 @@ export const feitenVoor = (a: Keuzes): Feiten => {
         "aanvraag_werkplekaanpassing_ingediend",
         "ondersteuning_is_noodzakelijk_en_compenseert_beperkingen",
         "voorziening_is_meeneembaar_en_individueel_afgestemd",
+        // Reïntegratiebesluit 4 via WIA 35 lid 5: de jobcoaching is in
+        // overwegende mate op het individu gericht.
+        "ondersteuning_is_in_overwegende_mate_op_individu_gericht",
       ),
       // WGA: wachttijd van 104 weken doorlopen, verdiencapaciteit ten hoogste 65 procent.
       eerste_dag_wachttijd: "2023-01-02",

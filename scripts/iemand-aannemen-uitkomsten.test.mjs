@@ -175,20 +175,16 @@ test("gemeente (bijstand, 60)", () => {
   assert.equal(overig(u, "begeleiding").geldt, true);
 });
 
-test("loonwaarde onder 30 procent: loonkostensubsidie groeit door tot het plafond", () => {
-  // Pwet 10d lid 4 en 5: verschil tussen minimumloon en loonwaarde. Het
-  // gebundelde corpus (regelrecht-corpus 42054d7d) legt het plafond op 70
-  // procent van het minimumloon plus 25 procent werkgeverslasten. Volgens de
-  // jurist (10 november 2026) is het plafond 70 procent van het minimumloon met
-  // vakantiebijslag en komt de vergoeding werkgeverslasten daar bovenop; deze
-  // test volgt de engine en verandert pas met een nieuw corpus.
+test("loonwaarde onder 30 procent: loonkostensubsidie blijft op het maximum", () => {
+  // Pwet 10d lid 4: verschil tussen minimumloon en loonwaarde, ten hoogste 70
+  // procent van het minimumloon met vakantiebijslag. Bij loonwaarde 30 is dat
+  // verschil precies 70 procent; daaronder geldt het maximum. De vergoeding
+  // werkgeverslasten komt erbovenop en valt buiten dat maximum (jurist 10
+  // november 2026, regelrecht-corpus-FCV #11); het portaal toont haar nog niet.
   const lks = (lw) => regel(reken(["bijstand"], lw), "lks").bedragPerJaar;
   const op30 = lks(30);
   assert.ok(op30 > LKS_GEMEENTE_60_JAAR);
-  assert.ok(lks(15) > lks(25));
-  assert.ok(lks(25) > op30);
-  const plafond = Math.round(op30 * 1.25);
-  for (const lw of [0, 5, 10]) assert.equal(lks(lw), plafond);
+  for (const lw of [0, 5, 10, 15, 25]) assert.equal(lks(lw), op30);
 });
 
 test("wajong onder 30 procent: loondispensatie groeit door", () => {
