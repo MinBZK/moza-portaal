@@ -71,15 +71,17 @@ const Besluit = ({
   const antwoorden = staat
     ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
     : STANDAARD_ANTWOORDEN;
-  const { uitkomsten, bekend, fout } = useUitkomsten(antwoorden);
+  const { uitkomsten, bekend, fout, keuzes, minimumloon } =
+    useUitkomsten(antwoorden);
   const invoer = useMemo(
     () =>
-      invoerVoor(antwoorden, basis as Feiten).find(
+      keuzes &&
+      invoerVoor(keuzes, basis as Feiten).find(
         (i) =>
           i.wet === REGELING[situatie].wet &&
           i.output === REGELING[situatie].output,
       ),
-    [antwoorden, situatie],
+    [keuzes, situatie],
   );
   const [melding, setMelding] = useState("");
   const [tekst, setTekst] = useState("");
@@ -136,7 +138,7 @@ const Besluit = ({
   const ingangLd = datumNL(
     ingangLoondispensatie(zaakStand.verstuurdOp ?? INGEDIEND_OP),
   );
-  const dienstverbandTekst = `een dienstverband van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden)})`;
+  const dienstverbandTekst = `een dienstverband van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden, minimumloon ?? 0)})`;
 
   return (
     <div className="rhc-mox-card rhc-mox-row-gap">

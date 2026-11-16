@@ -29,6 +29,14 @@ test("basis: elk doel rekent en alle routes staan dicht", () => {
 
 const U = await import("../" + MAP + "_uitkomsten.ts");
 
+// Het minimumloon komt uit de engine, net als in de browser (_useUitkomsten.ts).
+const WML = bereken({
+  wet: "wet_minimumloon_en_minimumvakantiebijslag",
+  output: "minimumloon_per_uur_eurocent",
+  peildatum: U.PEILDATUM,
+  parameters: { bsn: basis.bsn },
+}).outputs.minimumloon_per_uur_eurocent;
+
 // Stap 2 vraagt register, beschut werk en uitkering los; de engine krijgt
 // dezelfde doelgroepen als bij de vinkjes (doelgroepenUit).
 test("vragen: register ja zonder uitkering is register en gemeente (Pwet 7 lid 1 a)", () => {
@@ -150,8 +158,8 @@ test("doelgroepen: zeven, WIA zonder WAO, geen Wsw of weet ik nog niet", () => {
 });
 
 /** Rekent een geval zoals de browser: invoer per doel, engine, schermmodel. */
-const reken = (doelgroepen, loonwaarde, uren = 32, uurloon = 1499) => {
-  const a = { doelgroepen, uren, loonwaarde, uurloon };
+const reken = (doelgroepen, loonwaarde, uren = 32, uurloon = WML) => {
+  const a = { doelgroepen, uren, loonwaarde, uurloon, minimumloon: WML };
   const uit = {};
   for (const invoer of U.invoerVoor(a, basis))
     uit[`${invoer.wet}:${invoer.output}`] = bereken(invoer).outputs;
@@ -236,7 +244,7 @@ test("Wajong 70 procent", () => {
   assert.equal(ld.aanspraakPerUur, 1049.3);
   assert.equal(
     ld.bedragPerJaar,
-    Math.round((1499 - 1049.3) * 32 * 52 * 1.08 * 1.2),
+    Math.round((WML - 1049.3) * 32 * 52 * 1.08 * 1.2),
   );
   assert.equal(regel(u, "lkv").bedragPerJaar, 168064);
   assert.equal(regel(u, "lks"), undefined);
@@ -289,7 +297,8 @@ test("Wajong + beschut werk: zonder register, geen loonkostenvoordeel banenafspr
     doelgroepen: ["wajong", "beschut"],
     uren: 32,
     loonwaarde: 70,
-    uurloon: 1499,
+    uurloon: WML,
+    minimumloon: WML,
   });
   assert.equal(f.was_arbeidsbeperkte_lid_1_of_2, undefined);
   assert.equal(f.datum_eerste_opname_doelgroepregister, undefined);
@@ -344,7 +353,13 @@ test("lkv-voorbehoud: zes maanden alleen bij arbeidsgehandicapte, samenloop alti
 test("alleen aanroepen die iets kunnen opleveren, bedragen eerst", () => {
   const doelen = (d) =>
     U.invoerVoor(
-      { doelgroepen: d, uren: 32, loonwaarde: 60, uurloon: 1499 },
+      {
+        doelgroepen: d,
+        uren: 32,
+        loonwaarde: 60,
+        uurloon: WML,
+        minimumloon: WML,
+      },
       basis,
     ).map((i) => i.output);
   assert.deepEqual(doelen(["bijstand"]), [
@@ -827,7 +842,14 @@ test("eigenaar: opslag van een ander telt als leeg, oude opslag zonder eigenaar 
 // dienst was, geeft geen loonkostenvoordeel arbeidsgehandicapte werknemer. De
 // banenafspraak (Wtl 2.10) kent die voorwaarde niet.
 const lkvMet = (doelgroepen, extra) => {
-  const a = { doelgroepen, uren: 32, loonwaarde: 100, uurloon: 1499, ...extra };
+  const a = {
+    doelgroepen,
+    uren: 32,
+    loonwaarde: 100,
+    uurloon: WML,
+    minimumloon: WML,
+    ...extra,
+  };
   const invoer = U.invoerVoor(a, basis).find(
     (i) => i.output === "heeft_recht_op_lkv",
   );
