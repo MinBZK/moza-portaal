@@ -96,6 +96,8 @@ export type Keuzes = {
   uurloon: number;
   /** Zonder antwoord (de voorbeeldberekening): nee, met het voorbehoud zes_maanden. */
   eerderInDienst?: boolean;
+  /** De eerste werkdag (jjjj-mm-dd) uit stap 1; zonder (de voorbeeldberekening): AANVANG. */
+  aanvang?: string;
 };
 
 export type Feiten = Record<string, boolean | number | string | null>;
@@ -191,6 +193,13 @@ const aan = (...namen: string[]): Feiten =>
  */
 export const feitenVoor = (a: Keuzes): Feiten => {
   const d = new Set(a.doelgroepen);
+  // De eerste werkdag gaat naar de engine: die rekent de termijnen (Pwet 10d,
+  // ZW 29b, Wtl 2.6). Ligt de start na de aanvraag, dan vraagt de werkgever
+  // aan voordat de dienstbetrekking begint (Pwet 10d lid 1); anders na de
+  // start, binnen 6 maanden (lid 2).
+  const start =
+    a.aanvang && /^\d{4}-\d{2}-\d{2}$/.test(a.aanvang) ? a.aanvang : AANVANG;
+  const voorDeStart = start > AANVRAAG;
   const onderWml = a.loonwaarde < 100;
   const uwvUitkering = d.has("wajong") || d.has("wia");
   const verloond = a.uren * 52;
@@ -203,8 +212,8 @@ export const feitenVoor = (a: Keuzes): Feiten => {
       "heeft_arbeidsverhouding_of_voorbereiding",
       "dienstbetrekking_aangevangen_na_aanvang_referteperiode",
     ),
-    datum_aanvang_dienstbetrekking: AANVANG,
-    datum_aanvang_eerste_dienstbetrekking_2_6: AANVANG,
+    datum_aanvang_dienstbetrekking: start,
+    datum_aanvang_eerste_dienstbetrekking_2_6: start,
     was_in_dienst_bij_werkgever_binnen_zes_maanden: a.eerderInDienst === true,
     overeengekomen_arbeidsduur_uren_per_week: a.uren,
     loonwaarde_percentage: a.loonwaarde,
@@ -244,6 +253,9 @@ export const feitenVoor = (a: Keuzes): Feiten => {
           "kan_minimumloon_niet_verdienen",
           "college_heeft_loonwaarde_vastgesteld_conform_10d",
         ),
+        // Lid 1: de gemeente stelt de loonwaarde vast vóór de start. Wat de
+        // gemeente nog vaststelt, telt in het voorbeeld als ja.
+        college_heeft_loonwaarde_vastgesteld: voorDeStart,
         datum_aanvraag_lks: AANVRAAG,
       };
   }
