@@ -1,12 +1,9 @@
-name: Deploy preview
+name: Deploy to ZAD
 
-# Elke pull request krijgt een eigen preview-omgeving op ZAD (project "MOZa demo").
-# Bij het sluiten van de PR wordt de omgeving weer opgeruimd.
-# De vaste omgeving "ux-fork" is proef.moza.rijksapp.nl (publish-on-web in ZAD).
-# Het prototype staat nu op moza.mijnoverheidzakelijk.nl; proef toont alleen
-# nog een verhuismelding (src/app/_movedNotice.tsx). Een push naar main zet
-# daarom niets meer op proef. Opnieuw uitrollen kan met de hand:
-# Actions > Deploy preview > Run workflow, op main.
+# Elke pull request krijgt een eigen preview-omgeving op ZAD.
+# Bij het sluiten van de PR wordt die omgeving weer opgeruimd.
+# De vaste ZAD-deployment "main" werkt u handmatig bij vanuit GitHub Actions.
+# De deployment en het domein proef.mijnoverheidzakelijk.nl moeten in ZAD zijn ingesteld.
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -18,17 +15,17 @@ env:
   REGISTRY: ghcr.io
   ZAD_PROJECT_ID: md-a8y
   ZAD_COMPONENT: proef
-  # pr-<nr> bij een pull request, de vaste omgeving ux-fork bij een handmatige run.
-  DEPLOYMENT_NAME: ${{ github.event_name == 'workflow_dispatch' && 'ux-fork' || format('pr-{0}', github.event.number) }}
+  # Iedere PR krijgt een eigen deployment; handmatige runs gebruiken main.
+  DEPLOYMENT_NAME: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'main' }}
 
-# Twee pushes kort na elkaar: de tweede wacht, zodat een oudere build niet als
-# laatste online komt.
+# Twee builds van dezelfde deployment volgen elkaar op, zodat een oudere build
+# niet als laatste online komt.
 concurrency:
-  group: deploy-${{ github.event_name == 'workflow_dispatch' && 'ux-fork' || format('pr-{0}', github.event.number) }}
+  group: deploy-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'main' }}
 
 jobs:
   build:
-    if: github.event.action != 'closed'
+    if: github.event.action != 'closed' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     permissions:
       contents: read # code uitchecken
@@ -81,8 +78,7 @@ jobs:
       contents: read
       pull-requests: write # URL van de preview als PR-comment plaatsen
     environment:
-      # De env-context is hier niet beschikbaar, vandaar dezelfde expressie.
-      name: ${{ github.event_name == 'workflow_dispatch' && 'ux-fork' || format('pr-{0}', github.event.number) }}
+      name: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'main' }}
       url: ${{ steps.deploy.outputs.url }}
     steps:
       - name: Deploy to ZAD
