@@ -73,8 +73,8 @@ const ALLEEN_VOOR: Partial<Record<RegelingId, string>> = {
  * actie (blauw) of niets (grijs). Zonder actie is er niets te kiezen.
  */
 const ACTIE: Record<RegelingId, { label: string; doen: boolean }> = {
-  lks: { label: "Controleren", doen: true },
-  ld: { label: "Controleren", doen: true },
+  lks: { label: "Kiezen", doen: true },
+  ld: { label: "Kiezen", doen: true },
   jc: { label: "Kiezen", doen: true },
   wpa: { label: "Kiezen", doen: true },
   lkv: { label: "Nu geen actie nodig", doen: false },
