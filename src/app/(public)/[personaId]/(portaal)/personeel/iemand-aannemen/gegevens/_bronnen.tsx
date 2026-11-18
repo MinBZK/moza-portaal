@@ -395,19 +395,20 @@ const Bronnen = ({
           </Alert>
         </div>
       )}
-      {/* De werkgever geeft zelf op wat bepaalt welke regelingen gelden. Het
-          portaal leidt dat niet af uit gegevens over de gezondheid van de
-          kandidaat (AVG, artikel 9). Langs elke route zichtbaar; na de
-          voorbeeldberekening staan die antwoorden er al in. */}
-      <section className="rhc-mox-stack" aria-labelledby="over-kandidaat">
-        <Heading level={2} id="over-kandidaat">
-          Over de kandidaat
-        </Heading>
-        <DoelgroepVragen
-          a={antwoorden}
-          zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
-        />
-      </section>
+      {/* Direct via Regelingen aanvragen: de werkgever geeft zelf op wat
+          bepaalt welke regelingen gelden. Het portaal leidt dat niet af uit
+          gegevens over de gezondheid van de kandidaat (AVG, artikel 9). */}
+      {staat?.voorbeeldBerekend === false && (
+        <section className="rhc-mox-stack" aria-labelledby="over-kandidaat">
+          <Heading level={2} id="over-kandidaat">
+            Over de kandidaat
+          </Heading>
+          <DoelgroepVragen
+            a={antwoorden}
+            zet={(deel) => werkBij({ antwoorden: { ...antwoorden, ...deel } })}
+          />
+        </section>
+      )}
       <section className="rhc-mox-stack" aria-labelledby="kandidaat">
         <Heading level={2} id="kandidaat">
           Wie wilt u aannemen?
