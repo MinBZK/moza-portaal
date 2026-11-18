@@ -77,4 +77,10 @@ export const PATTERNS = [
     description:
       "Knoppen onderaan een stap: tekst, volgorde voor het toetsenbord, en wat er gebeurt als de ondernemer nog niet verder kan.",
   },
+  {
+    slug: "aanvragen-met-regelrecht",
+    title: "Aanvragen met RegelRecht",
+    description:
+      "Eerst uitrekenen wat een regeling oplevert, daarna aanvragen met de gegevens uit de bron, met bij elke uitkomst waarom.",
+  },
 ] as const;
