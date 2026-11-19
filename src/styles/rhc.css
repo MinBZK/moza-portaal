@@ -2320,7 +2320,6 @@ small,
 	}
 }
 
-/* A row that opens something, such as a side panel. */
 .rhc-mox-icon-list button.rhc-mox-icon-list__item {
 	background: none;
 	border: 0;
@@ -2330,7 +2329,6 @@ small,
 	text-align: start;
 }
 
-/* --- Side panel: slides in from the right, for extra explanation --- */
 dialog.rhc-mox-side-panel {
 	--utrecht-drawer-background-color: var(--rhc-color-wit);
 	--utrecht-drawer-max-inline-size: min(40rem, calc(100vw - 44px));
