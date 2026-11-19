@@ -623,7 +623,8 @@ const AanvraagInhoud = ({
       onderwerp,
       kandidaat.bsnMasker,
     );
-    router.push("/personeel/iemand-aannemen/verstuurd");
+    // Na Versturen direct naar de lopende zaak.
+    router.push(demo.zaak.url);
   };
 
   if (isIngediend(staat))
