@@ -193,10 +193,22 @@ const Zaak = ({
     );
 
   // Zonder de regel van de situatie in de uitkomsten (bijvoorbeeld loonwaarde
-  // 100 bij de gemeente) toont de zaak geen besluit en niets daarna.
+  // 100 bij de gemeente) volgt een afwijzing. Ook dat is een besluit (Awb 1:3
+  // lid 2); de zaak stopt na het besluit.
   const geldt = !bekend || besluitGeldt(situatie, uitkomsten);
   const besluitNr = faseIndex("besluit", fasen);
-  const grens = geldt || !besluit ? fasen.length : besluitNr;
+  const grens = geldt || !besluit ? fasen.length : besluitNr + 1;
+  const regelingNaam =
+    situatie === "gemeente" ? "loonkostensubsidie" : "loondispensatie";
+  const alsAfwijzing = (g: DemoAannemenGebeurtenis): DemoAannemenGebeurtenis =>
+    geldt || g.stap !== "besluit" || g.soort !== "besluit"
+      ? g
+      : {
+          ...g,
+          titel: `Besluit: ${regelingNaam} afgewezen`,
+          tekst: `Bij de antwoorden in de aanvraag is er geen recht op ${regelingNaam}. U kunt binnen ${besluit?.bezwaar ?? "6 weken"} bezwaar maken.`,
+          grond: "Awb 1:3 lid 2; Awb 6:7",
+        };
   const toonFase = (faseId: string) => faseIndex(faseId, fasen) < grens;
 
   // Geeft de engine geen loonkostenvoordeel (zoals bij beschut werk, Wtl 2.2
@@ -223,13 +235,13 @@ const Zaak = ({
         g.stap === "vooraf" ||
         (faseIndex(g.stap, fasen) <= i && toonFase(g.stap)),
     )
-    .map(zonderLkv);
+    .map(zonderLkv)
+    .map(alsAfwijzing);
   // De vraag bij het besluit staat ook in de tijdlijn als het demo-bestand
   // er geen eigen gebeurtenis voor heeft (alleen bij een zichtbaar besluit).
   if (
     zaakStand.vraag &&
     besluit &&
-    geldt &&
     i >= besluitNr &&
     !gebeurtenissen.some((g) => g.id === VRAAG_ID)
   ) {
@@ -274,7 +286,7 @@ const Zaak = ({
     };
   });
 
-  const besluitBereikt = besluit !== undefined && geldt && i >= besluitNr;
+  const besluitBereikt = besluit !== undefined && i >= besluitNr;
 
   return (
     <>
@@ -322,13 +334,11 @@ const Zaak = ({
         {!geldt && (
           <Alert type="warning">
             <Paragraph>
-              Met uw antwoorden krijgt u geen{" "}
-              {situatie === "gemeente"
-                ? "loonkostensubsidie"
-                : "loondispensatie"}
-              . Daarom neemt {situatie === "gemeente" ? "de gemeente" : "UWV"}{" "}
-              geen besluit. Denkt u dat dit niet klopt? Stel dan een vraag over
-              deze aanvraag.
+              Met uw antwoorden krijgt u geen {regelingNaam}.{" "}
+              {situatie === "gemeente" ? "De gemeente" : "UWV"} wijst de
+              aanvraag dan af. Ook dat is een besluit: daartegen kunt u bezwaar
+              maken. Denkt u dat dit niet klopt? Stel dan een vraag over deze
+              aanvraag.
             </Paragraph>
           </Alert>
         )}
@@ -355,7 +365,9 @@ const Zaak = ({
                   <InfoToggletip label="Toelichting bij de aanname over de termijn">
                     {situatie === "wajong"
                       ? "UWV beslist binnen een redelijke termijn. Die termijn is hoogstens 14 weken (Wajong, artikel 6:1)."
-                      : `${situatie === "gemeente" ? "De gemeente" : "UWV"} beslist binnen een redelijke termijn. Na 8 weken is die voorbij (Algemene wet bestuursrecht, artikel 4:13).`}{" "}
+                      : situatie === "gemeente"
+                        ? "De gemeente beslist binnen 5 weken nadat zij de loonwaarde heeft vastgesteld (Participatiewet, artikel 10d lid 12)."
+                        : "UWV beslist binnen een redelijke termijn. Na 8 weken is die voorbij (Algemene wet bestuursrecht, artikel 4:13)."}{" "}
                     Lukt dat niet, dan krijgt u bericht wanneer het besluit
                     komt. De momenten met &ldquo;aanname&rdquo; zijn voor deze
                     proef aangenomen.
@@ -435,7 +447,7 @@ const Zaak = ({
               </ol>
             </section>
 
-            {hierna.length > 0 && (
+            {geldt && hierna.length > 0 && (
               <section className="rhc-mox-stack" aria-labelledby="zaak-hierna">
                 <Heading level={2} id="zaak-hierna">
                   Komt hierna

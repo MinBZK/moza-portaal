@@ -340,9 +340,10 @@ const AanvraagInhoud = ({
               <UnorderedListItem>
                 Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
                 in overleg met u besluiten de loonwaarde eerst niet vast te
-                stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
-                van het minimumloon met vakantiegeld, naar verhouding van de
-                uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
+                stellen. U krijgt dan hoogstens de eerste 6 maanden 50 procent
+                van het minimumloon met vakantiegeld, plus een vergoeding voor
+                werkgeverslasten, naar verhouding van de uren. Daarna stelt de
+                gemeente de loonwaarde alsnog vast.
               </UnorderedListItem>
               <UnorderedListItem>
                 U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
