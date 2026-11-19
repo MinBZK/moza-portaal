@@ -158,6 +158,12 @@ const Header = ({
             )}
           </NavBar>
         </div>
+        <a
+          className="prototype-temp-poc-banner"
+          href="https://www.mijnoverheidzakelijk.nl/"
+        >
+          Proef
+        </a>
       </header>
     </>
   );
