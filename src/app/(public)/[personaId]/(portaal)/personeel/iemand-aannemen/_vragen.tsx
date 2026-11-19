@@ -1,6 +1,7 @@
 "use client";
 
 import StepNavigation from "@/components/StepNavigation";
+import LoadingStatus from "@/components/LoadingStatus";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import {
@@ -22,8 +23,8 @@ import { routeVoor } from "./_route";
 import { useUitkomsten } from "./_useUitkomsten";
 import { euro, euroHeel } from "./_werkgever";
 import {
-  WML_UUR_EUROCENT,
   isIngediend,
+  uurloonVan,
   nieuweAanvraag,
   useAannemen,
   type Antwoorden,
@@ -40,13 +41,14 @@ import DoelgroepVragen, {
  * €30, per 50 cent. De stand het dichtst bij het minimumloon is het
  * minimumloon zelf, zodat de vooringevulde waarde een stand is.
  */
-const UURLONEN = Array.from({ length: (3000 - 450) / 50 + 1 }, (_, i) => {
-  const cent = 450 + i * 50;
-  return Math.abs(cent - WML_UUR_EUROCENT) < 25 ? WML_UUR_EUROCENT : cent;
-});
+const uurlonenBij = (minimumloon: number) =>
+  Array.from({ length: (3000 - 450) / 50 + 1 }, (_, i) => {
+    const cent = 450 + i * 50;
+    return Math.abs(cent - minimumloon) < 25 ? minimumloon : cent;
+  });
 
 /** De stand van de schuifregelaar die het dichtst bij een uurloon ligt. */
-const standVan = (cent: number) =>
+const standVan = (UURLONEN: number[], cent: number) =>
   UURLONEN.reduce(
     (beste, waarde, i) =>
       Math.abs(waarde - cent) < Math.abs(UURLONEN[beste] - cent) ? i : beste,
@@ -136,13 +138,18 @@ const WAT_U_DOET: Record<Regel["id"], (regel: Regel) => string | undefined> = {
  * in gewone woorden. De wet rekent per maand of per uur; het portaal rekent
  * om naar een jaar.
  */
-const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
+const naarJaar = (
+  r: Regel,
+  bedrag: number,
+  a: Antwoorden,
+  minimumloon: number,
+) => {
   if (r.id === "lks")
     return `De gemeente betaalt per maand ongeveer ${euroHeel(r.bedragPerJaar / 12)}. Per jaar is dat ongeveer ${euroHeel(bedrag)}.`;
   if (r.id === "ld")
     return r.aanspraakPerUur === undefined
       ? `Per jaar betaalt u ongeveer ${euroHeel(bedrag)} minder aan loon.`
-      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(WML_UUR_EUROCENT)}. Over een jaar is dat ongeveer ${euroHeel(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
+      : `U betaalt ${euro(r.aanspraakPerUur)} per uur in plaats van ${euro(minimumloon)}. Over een jaar is dat ongeveer ${euroHeel(bedrag)} minder, met vakantiegeld en werkgeverslasten.`;
   const arbeidsgehandicapt = r.categorie === "arbeidsgehandicapte_werknemer";
   return `${arbeidsgehandicapt ? "€3,05" : "€1,01"} per verloond uur keer ${a.uren * 52} uur per jaar, hoogstens ${arbeidsgehandicapt ? "€6.000" : "€2.000"}: ongeveer ${euroHeel(bedrag)} per jaar.`;
 };
@@ -153,14 +160,20 @@ const naarJaar = (r: Regel, bedrag: number, a: Antwoorden) => {
  * de bron. De uitleg staat zo bij het bedrag, en alleen als de ondernemer
  * erom vraagt.
  */
-const meerBij = (a: Antwoorden, regels: Regel[], r: BalansRegel): ReactNode => {
+const meerBij = (
+  a: Antwoorden,
+  regels: Regel[],
+  r: BalansRegel,
+  minimumloon: number,
+): ReactNode => {
   if (!r.regel || r.bedrag <= 0) return null;
   const doet = WAT_U_DOET[r.id](r.regel);
   const termijn = termijnenVoor(regels).find((t) => t.id === r.id);
   return (
     <>
       <Paragraph>
-        <strong>Zo berekend.</strong> {naarJaar(r.regel, r.bedrag, a)}
+        <strong>Zo berekend.</strong>{" "}
+        {naarJaar(r.regel, r.bedrag, a, minimumloon)}
       </Paragraph>
       {doet && (
         <Paragraph>
@@ -227,9 +240,10 @@ const VragenMetStaat = ({
     resultaat.bekend &&
     !resultaat.fout &&
     !nietMeegeteld &&
-    balansRegels(resultaat.uitkomsten, loonkostenPerJaar(a)).every(
-      (r) => r.bedrag <= 0,
-    );
+    balansRegels(
+      resultaat.uitkomsten,
+      loonkostenPerJaar(a, resultaat.minimumloon ?? 0),
+    ).every((r) => r.bedrag <= 0);
   // Verder kan als er een bedrag uitkomt of als er iets aan te vragen is.
   // Anders staat onder de berekening wat zonder aanvraag wel geldt (zoals de
   // no-riskpolis), en kan de ondernemer terug naar Personeel en rollen.
@@ -244,8 +258,12 @@ const VragenMetStaat = ({
   const wajong = uitkering === "wajong";
   // Werkgevers denken in uurloon of maandloon: de vraag gaat over het uurloon,
   // het maandloon en de loonkosten staan eronder.
-  const maandloon = (a.uurloon * a.uren * 52) / 12;
-  const onderWml = a.uurloon < WML_UUR_EUROCENT;
+  // Het minimumloon komt uit de engine; tot die gerekend heeft, wacht de vraag.
+  const wml = resultaat.minimumloon;
+  const UURLONEN = wml === undefined ? [] : uurlonenBij(wml);
+  const uurloon = wml === undefined ? undefined : uurloonVan(a, wml);
+  const maandloon = ((uurloon ?? 0) * a.uren * 52) / 12;
+  const onderWml = wml !== undefined && (uurloon ?? 0) < wml;
 
   return (
     <>
@@ -298,66 +316,70 @@ const VragenMetStaat = ({
               </Paragraph>
             )}
           </div>
-          <div className="rhc-mox-stack rhc-mox-stack--sm">
-            <RangeSlider
-              label={`${nr(5)}. Wat wordt het bruto uurloon?`}
-              min={0}
-              max={UURLONEN.length - 1}
-              step={1}
-              value={standVan(a.uurloon)}
-              onChange={(stand) => zet({ uurloon: UURLONEN[stand] })}
-              formatValue={(stand) => euro(UURLONEN[stand])}
-              formatValueText={(stand) =>
-                UURLONEN[stand] === WML_UUR_EUROCENT
-                  ? `${euro(UURLONEN[stand])} per uur: het wettelijk minimumloon`
-                  : `${euro(UURLONEN[stand])} per uur`
-              }
-              filled
-              info={
-                <InfoToggletip label="Toelichting bij het uurloon">
+          {wml === undefined || uurloon === undefined ? (
+            <LoadingStatus>Wij halen het minimumloon op…</LoadingStatus>
+          ) : (
+            <div className="rhc-mox-stack rhc-mox-stack--sm">
+              <RangeSlider
+                label={`${nr(5)}. Wat wordt het bruto uurloon?`}
+                min={0}
+                max={UURLONEN.length - 1}
+                step={1}
+                value={standVan(UURLONEN, uurloon)}
+                onChange={(stand) => zet({ uurloon: UURLONEN[stand] })}
+                formatValue={(stand) => euro(UURLONEN[stand])}
+                formatValueText={(stand) =>
+                  UURLONEN[stand] === wml
+                    ? `${euro(UURLONEN[stand])} per uur: het wettelijk minimumloon`
+                    : `${euro(UURLONEN[stand])} per uur`
+                }
+                filled
+                info={
+                  <InfoToggletip label="Toelichting bij het uurloon">
+                    <Paragraph>
+                      Het bruto uurloon is het loon per uur vóór belasting,
+                      zonder vakantiegeld.
+                    </Paragraph>
+                    <Paragraph>
+                      Het wettelijk minimumloon is {euro(wml)} per uur, voor
+                      iemand van 21 jaar of ouder. Voor een jongere kandidaat is
+                      het minimumloon lager.
+                    </Paragraph>
+                    <Paragraph>
+                      Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
+                      en ongeveer 20 procent werkgeverslasten.
+                    </Paragraph>
+                  </InfoToggletip>
+                }
+              />
+              <Paragraph className="rhc-mox-small-text">
+                {uurloon === wml &&
+                  "Dit is het wettelijk minimumloon voor iemand van 21 jaar of ouder. "}
+                Bij {a.uren} uur per week is dat ongeveer {euroHeel(maandloon)}{" "}
+                bruto per maand. De loonkosten zijn ongeveer{" "}
+                {euroHeel(loonkostenPerJaar(a, wml))} per jaar.
+              </Paragraph>
+              {onderWml && (
+                <Alert type="warning">
                   <Paragraph>
-                    Het bruto uurloon is het loon per uur vóór belasting, zonder
-                    vakantiegeld.
+                    Dit uurloon is lager dan het wettelijk minimumloon van{" "}
+                    {euro(wml)} voor iemand van 21 jaar of ouder. Is de
+                    kandidaat jonger? Dan geldt een lager minimumloon.
+                    {wajong
+                      ? " Bij loondispensatie stelt UWV vast hoeveel u minder mag betalen."
+                      : " Anders mag u niet minder betalen dan het minimumloon."}
                   </Paragraph>
-                  <Paragraph>
-                    Het wettelijk minimumloon is {euro(WML_UUR_EUROCENT)} per
-                    uur, voor iemand van 21 jaar of ouder. Voor een jongere
-                    kandidaat is het minimumloon lager.
-                  </Paragraph>
-                  <Paragraph>
-                    Loonkosten zijn het brutoloon, plus 8 procent vakantiegeld
-                    en ongeveer 20 procent werkgeverslasten.
-                  </Paragraph>
-                </InfoToggletip>
-              }
-            />
-            <Paragraph className="rhc-mox-small-text">
-              {a.uurloon === WML_UUR_EUROCENT &&
-                "Dit is het wettelijk minimumloon voor iemand van 21 jaar of ouder. "}
-              Bij {a.uren} uur per week is dat ongeveer {euroHeel(maandloon)}{" "}
-              bruto per maand. De loonkosten zijn ongeveer{" "}
-              {euroHeel(loonkostenPerJaar(a))} per jaar.
-            </Paragraph>
-            {onderWml && (
-              <Alert type="warning">
-                <Paragraph>
-                  Dit uurloon is lager dan het wettelijk minimumloon van{" "}
-                  {euro(WML_UUR_EUROCENT)} voor iemand van 21 jaar of ouder. Is
-                  de kandidaat jonger? Dan geldt een lager minimumloon.
-                  {wajong
-                    ? " Bij loondispensatie stelt UWV vast hoeveel u minder mag betalen."
-                    : " Anders mag u niet minder betalen dan het minimumloon."}
-                </Paragraph>
-              </Alert>
-            )}
-          </div>
+                </Alert>
+              )}
+            </div>
+          )}
         </div>
         <div className="rhc-grid__cell rhc-grid__cell-t-5">
           <StickyInfoBox title="Voorbeeldberekening">
             <Balans
               antwoorden={a}
               resultaat={resultaat}
-              meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r)}
+              meer={(r) => meerBij(a, resultaat.uitkomsten.regels, r, wml ?? 0)}
             />
           </StickyInfoBox>
         </div>

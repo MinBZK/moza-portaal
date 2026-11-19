@@ -130,7 +130,11 @@ const AanvraagInhoud = ({
     () => routeVoor(a.doelgroepen, uitkomsten),
     [a.doelgroepen, uitkomsten],
   );
-  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
+  const { keuzes } = resultaat;
+  const invoeren = useMemo(
+    () => (keuzes ? invoerVoor(keuzes, basis as Feiten) : []),
+    [keuzes],
+  );
   const invoer = (wet: string, output: string) =>
     invoeren.find((i) => i.wet === wet && i.output === output);
 
@@ -209,7 +213,10 @@ const AanvraagInhoud = ({
     );
   };
 
-  const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
+  const balans = balansRegels(
+    uitkomsten,
+    loonkostenPerJaar(a, resultaat.minimumloon ?? 0),
+  );
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
