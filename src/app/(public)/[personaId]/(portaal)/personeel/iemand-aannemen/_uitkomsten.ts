@@ -92,11 +92,20 @@ export type Keuzes = {
   doelgroepen: Doelgroep[];
   uren: number;
   loonwaarde: number;
-  /** Bruto uurloon in eurocent. */
-  uurloon: number;
+  /** Bruto uurloon in eurocent; zonder keuze het minimumloon. */
+  uurloon?: number;
   /** Zonder antwoord (de voorbeeldberekening): nee, met het voorbehoud zes_maanden. */
   eerderInDienst?: boolean;
+  /** De eerste werkdag (jjjj-mm-dd) uit stap 1; zonder (de voorbeeldberekening): AANVANG. */
+  aanvang?: string;
 };
+
+/**
+ * De keuzes zoals de engine ze krijgt: met het uurloon ingevuld (zonder keuze
+ * het minimumloon) en het minimumloon zelf, uit de engine (Wet minimumloon en
+ * minimumvakantiebijslag, artikel 8).
+ */
+export type Rekenkeuzes = Keuzes & { uurloon: number; minimumloon: number };
 
 export type Feiten = Record<string, boolean | number | string | null>;
 
@@ -118,8 +127,6 @@ export type EngineInvoer = {
 export const AANVANG = "2026-10-01";
 const AANVRAAG = "2026-11-18";
 export const PEILDATUM = AANVANG;
-/** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
-export const WML_UUR_EUROCENT = 1499;
 
 type Doel = Omit<EngineInvoer, "peildatum" | "parameters"> & {
   /** Kan deze uitkomst bij deze keuzes iets opleveren? Zo niet, dan blijft de aanroep weg. */
@@ -195,8 +202,15 @@ const aan = (...namen: string[]): Feiten =>
  * neutrale basis (_basisfeiten.json). Waar de kaart twee lezingen toelaat,
  * de zuinigste (ontwerp: "nooit te gunstig").
  */
-export const feitenVoor = (a: Keuzes): Feiten => {
+export const feitenVoor = (a: Rekenkeuzes): Feiten => {
   const d = new Set(a.doelgroepen);
+  // De eerste werkdag gaat naar de engine: die rekent de termijnen (Pwet 10d,
+  // ZW 29b, Wtl 2.6). Ligt de start na de aanvraag, dan vraagt de werkgever
+  // aan voordat de dienstbetrekking begint (Pwet 10d lid 1); anders na de
+  // start, binnen 6 maanden (lid 2).
+  const start =
+    a.aanvang && /^\d{4}-\d{2}-\d{2}$/.test(a.aanvang) ? a.aanvang : AANVANG;
+  const voorDeStart = start > AANVRAAG;
   const onderWml = a.loonwaarde < 100;
   const uwvUitkering = d.has("wajong") || d.has("wia");
   const verloond = a.uren * 52;
@@ -209,8 +223,8 @@ export const feitenVoor = (a: Keuzes): Feiten => {
       "heeft_arbeidsverhouding_of_voorbereiding",
       "dienstbetrekking_aangevangen_na_aanvang_referteperiode",
     ),
-    datum_aanvang_dienstbetrekking: AANVANG,
-    datum_aanvang_eerste_dienstbetrekking_2_6: AANVANG,
+    datum_aanvang_dienstbetrekking: start,
+    datum_aanvang_eerste_dienstbetrekking_2_6: start,
     was_in_dienst_bij_werkgever_binnen_zes_maanden: a.eerderInDienst === true,
     overeengekomen_arbeidsduur_uren_per_week: a.uren,
     loonwaarde_percentage: a.loonwaarde,
@@ -253,6 +267,9 @@ export const feitenVoor = (a: Keuzes): Feiten => {
           "kan_minimumloon_niet_verdienen",
           "college_heeft_loonwaarde_vastgesteld_conform_10d",
         ),
+        // Lid 1: de gemeente stelt de loonwaarde vast vóór de start. Wat de
+        // gemeente nog vaststelt, telt in het voorbeeld als ja.
+        college_heeft_loonwaarde_vastgesteld: voorDeStart,
         datum_aanvraag_lks: AANVRAAG,
       };
   }
@@ -266,9 +283,9 @@ export const feitenVoor = (a: Keuzes): Feiten => {
         "aanvraag_loondispensatie_ingediend",
       ),
       arbeidsprestatie_duidelijk_minder_dan_minimumloon: onderWml,
-      gebruikelijke_beloning_per_uur_eurocent: WML_UUR_EUROCENT,
+      gebruikelijke_beloning_per_uur_eurocent: a.minimumloon,
       gerechtvaardigde_beloning_per_uur_eurocent: Math.round(
-        (WML_UUR_EUROCENT * a.loonwaarde) / 100,
+        (a.minimumloon * a.loonwaarde) / 100,
       ),
       vastgesteld_aanspraakpercentage_minimumloon: a.loonwaarde,
       verwachte_duur_verminderde_prestatie_maanden: 12,
@@ -313,7 +330,7 @@ export const feitenVoor = (a: Keuzes): Feiten => {
 };
 
 /** Eén invoer per doel, met de basis en de feiten van de keuzes. */
-export const invoerVoor = (a: Keuzes, basis: Feiten): EngineInvoer[] => {
+export const invoerVoor = (a: Rekenkeuzes, basis: Feiten): EngineInvoer[] => {
   const d = new Set(a.doelgroepen);
   const parameters = { ...basis, ...feitenVoor(a) };
   return DOELEN.filter((doel) => doel.nodig(d)).map(
@@ -404,7 +421,7 @@ const OPSLAG = 1.08 * 1.2;
 
 /** Van de engine-uitkomsten (sleutel "<wet>:<output>") naar wat het scherm toont. */
 export const uitkomstenUit = (
-  a: Keuzes,
+  a: Rekenkeuzes,
   uit: Record<string, Outputs | undefined>,
 ): Uitkomsten => {
   const d = new Set(a.doelgroepen);
@@ -430,14 +447,14 @@ export const uitkomstenUit = (
     });
   // Boven het minimumloon hangt het van de cao af of loondispensatie het loon verlaagt.
   const ldBovenWml =
-    ld.heeft_recht_op_loondispensatie === true && a.uurloon > WML_UUR_EUROCENT;
+    ld.heeft_recht_op_loondispensatie === true && a.uurloon > a.minimumloon;
   if (ld.heeft_recht_op_loondispensatie === true && !ldBovenWml) {
     const perUur = Number(ld.aanspraak_beloning_per_uur_eurocent);
     regels.push({
       id: "ld",
       aanspraakPerUur: perUur,
       bedragPerJaar: Math.round(
-        (WML_UUR_EUROCENT - perUur) * a.uren * 52 * OPSLAG,
+        (a.minimumloon - perUur) * a.uren * 52 * OPSLAG,
       ),
     });
   }

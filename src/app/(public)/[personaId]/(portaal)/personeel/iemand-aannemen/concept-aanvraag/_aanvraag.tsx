@@ -59,7 +59,7 @@ type Props = {
  * antwoorden niet gelden. Zelfde strekking als de (i) in de voorbeeldberekening.
  */
 const ALLEEN_VOOR: Partial<Record<RegelingId, string>> = {
-  lks: "Alleen voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen (Participatiewet, artikel 10d).",
+  lks: "Alleen voor een werknemer die bij de gemeente hoort en het minimumloon niet kan verdienen. Is de werknemer al begonnen? Dan vraagt u aan binnen 6 maanden na de start (Participatiewet, artikel 10d).",
   ld: "Alleen voor een werknemer met een Wajong-uitkering die ten minste 25 procent minder kan dan gebruikelijk (Wajong, artikel 2:20).",
   lkv: "Alleen voor een werknemer uit de doelgroep banenafspraak of met een doelgroepverklaring (Wet tegemoetkomingen loondomein, artikelen 2.6 en 2.10).",
   nrp: "Alleen voor bepaalde werknemers, bijvoorbeeld met een Wajong- of WIA-uitkering, uit de doelgroep banenafspraak of in beschut werk (Ziektewet, artikel 29b).",
@@ -73,8 +73,8 @@ const ALLEEN_VOOR: Partial<Record<RegelingId, string>> = {
  * actie (blauw) of niets (grijs). Zonder actie is er niets te kiezen.
  */
 const ACTIE: Record<RegelingId, { label: string; doen: boolean }> = {
-  lks: { label: "Controleren", doen: true },
-  ld: { label: "Controleren", doen: true },
+  lks: { label: "Kiezen", doen: true },
+  ld: { label: "Kiezen", doen: true },
   jc: { label: "Kiezen", doen: true },
   wpa: { label: "Kiezen", doen: true },
   lkv: { label: "Nu geen actie nodig", doen: false },
@@ -130,7 +130,11 @@ const AanvraagInhoud = ({
     () => routeVoor(a.doelgroepen, uitkomsten),
     [a.doelgroepen, uitkomsten],
   );
-  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
+  const { keuzes } = resultaat;
+  const invoeren = useMemo(
+    () => (keuzes ? invoerVoor(keuzes, basis as Feiten) : []),
+    [keuzes],
+  );
   const invoer = (wet: string, output: string) =>
     invoeren.find((i) => i.wet === wet && i.output === output);
 
@@ -209,7 +213,10 @@ const AanvraagInhoud = ({
     );
   };
 
-  const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
+  const balans = balansRegels(
+    uitkomsten,
+    loonkostenPerJaar(a, resultaat.minimumloon ?? 0),
+  );
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
@@ -340,9 +347,10 @@ const AanvraagInhoud = ({
               <UnorderedListItem>
                 Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
                 in overleg met u besluiten de loonwaarde eerst niet vast te
-                stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
-                van het minimumloon met vakantiegeld, naar verhouding van de
-                uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
+                stellen. U krijgt dan hoogstens de eerste 6 maanden 50 procent
+                van het minimumloon met vakantiegeld, plus een vergoeding voor
+                werkgeverslasten, naar verhouding van de uren. Daarna stelt de
+                gemeente de loonwaarde alsnog vast.
               </UnorderedListItem>
               <UnorderedListItem>
                 U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
@@ -622,7 +630,8 @@ const AanvraagInhoud = ({
       onderwerp,
       kandidaat.bsnMasker,
     );
-    router.push("/personeel/iemand-aannemen/verstuurd");
+    // Na Versturen direct naar de lopende zaak.
+    router.push(demo.zaak.url);
   };
 
   if (isIngediend(staat))

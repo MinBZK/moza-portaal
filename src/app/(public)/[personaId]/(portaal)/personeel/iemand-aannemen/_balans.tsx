@@ -16,6 +16,7 @@ import InfoToggletip from "@/components/InfoToggletip";
 import Spinner from "@/components/Spinner";
 import TextBadge, { type TextBadgeVariant } from "@/components/TextBadge";
 import { loonkostenPerJaar } from "./_engine";
+import { uurloonVan } from "./_useAannemen";
 import type { Antwoorden } from "./_useAannemen";
 import {
   balansRegels,
@@ -188,7 +189,9 @@ const Balans = ({
   const [open, setOpen] = useState<string>();
   const wissel = (id: string) => setOpen((nu) => (nu === id ? undefined : id));
   // Een schatting: in hele euro's, en de som klopt met de bedragen erboven.
-  const kosten = opHeleEuros(loonkostenPerJaar(antwoorden));
+  const kosten = opHeleEuros(
+    loonkostenPerJaar(antwoorden, resultaat.minimumloon ?? 0),
+  );
   const regels = balansRegels(uitkomsten, kosten).map((r) => ({
     ...r,
     bedrag: opHeleEuros(r.bedrag),
@@ -325,8 +328,9 @@ const Balans = ({
               {/* Zo volgt het bedrag uit de uren en het uurloon (loonkostenPerJaar). */}
               <InfoToggletip label="Toelichting bij de loonkosten">
                 <Paragraph>
-                  {antwoorden.uren} uur × {euro(antwoorden.uurloon)} × 52 weken,
-                  plus 8 procent vakantiegeld en ongeveer 20 procent
+                  {antwoorden.uren} uur ×{" "}
+                  {euro(uurloonVan(antwoorden, resultaat.minimumloon ?? 0))} ×
+                  52 weken, plus 8 procent vakantiegeld en ongeveer 20 procent
                   werkgeverslasten.
                 </Paragraph>
               </InfoToggletip>
