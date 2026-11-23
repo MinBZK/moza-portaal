@@ -9,6 +9,18 @@ export function proxy(req: NextRequest) {
   const url = req.nextUrl.clone();
   const pathname = url.pathname;
   const lastSegment = pathname.split("/").at(-1) ?? "";
+  const hostname =
+    req.headers.get("host")?.replace(/:\d+$/, "").toLowerCase() ?? url.hostname;
+
+  if (
+    hostname === "moza.mijnoverheidzakelijk.nl" ||
+    hostname === "proef.moza.rijksapp.nl"
+  ) {
+    url.protocol = "https:";
+    url.host = "proef.mijnoverheidzakelijk.nl";
+    url.port = "";
+    return NextResponse.redirect(url, 308);
+  }
 
   // Assets must keep their original paths, even when a persona cookie exists.
   if (
