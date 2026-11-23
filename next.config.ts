@@ -4,9 +4,6 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
   agentRules: false,
-  experimental: {
-    agentUpgrade: "security",
-  },
 
   // De inlogflow uit moza-poc staat als losse HTML in public/inloggen, met de
   // eigen CSS en bestanden van moza-poc en DigiD in public/inloggen/assets.
