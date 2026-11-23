@@ -39,4 +39,4 @@ Om iets te deployen op deze oude URL, gebruik je de branch-name `proef-moza-rijk
 We hanteren voor de proef site nu `proef` als prefix, in plaats van het verwarrende `moza`.
 Deze site wordt niet door ZAD gedeployed, maar via een pipeline in een infra-project in Gitlab. Dit is een oud overblijfsel van onze initiele werkwijze voor de MOZa-portaal.
 Zo lang het infra-project nog live is, worden updates op de `main` branch nog gedeployed naar de URL https://moza.mijnoverheidzakelijk.nl.
-Deze site redirect naar de nieuwe hoofd URL (zie **main deployment** hierboven) met behoud van pathnames.
+Deze site toont een redirect-modal naar de nieuwe hoofd URL (zie **main deployment** hierboven).

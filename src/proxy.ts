@@ -12,10 +12,7 @@ export function proxy(req: NextRequest) {
   const hostname =
     req.headers.get("host")?.replace(/:\d+$/, "").toLowerCase() ?? url.hostname;
 
-  if (
-    hostname === "moza.mijnoverheidzakelijk.nl" ||
-    hostname === "proef.moza.rijksapp.nl"
-  ) {
+  if (hostname === "proef.moza.rijksapp.nl") {
     url.protocol = "https:";
     url.host = "proef.mijnoverheidzakelijk.nl";
     url.port = "";
