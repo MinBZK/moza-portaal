@@ -3,10 +3,12 @@ name: Deploy to ZAD
 # Elke pull request krijgt een eigen preview-omgeving op ZAD.
 # Bij het sluiten van de PR wordt die omgeving weer opgeruimd.
 # De vaste ZAD-deployment "main" werkt u handmatig bij vanuit GitHub Actions.
-# De deployment en het domein proef.mijnoverheidzakelijk.nl moeten in ZAD zijn ingesteld.
+# Pushes naar proef-moza-rijksapp-nl werken de oude deployment "ux-fork" bij.
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
+  push:
+    branches: [proef-moza-rijksapp-nl]
   workflow_dispatch:
 
 permissions: {}
@@ -15,13 +17,13 @@ env:
   REGISTRY: ghcr.io
   ZAD_PROJECT_ID: md-a8y
   ZAD_COMPONENT: proef
-  # Iedere PR krijgt een eigen deployment; handmatige runs gebruiken main.
-  DEPLOYMENT_NAME: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'main' }}
+  # Iedere PR krijgt een eigen deployment; de twee vaste deployments blijven gescheiden.
+  DEPLOYMENT_NAME: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || (github.event_name == 'push' && 'ux-fork' || 'main') }}
 
 # Twee builds van dezelfde deployment volgen elkaar op, zodat een oudere build
 # niet als laatste online komt.
 concurrency:
-  group: deploy-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'main' }}
+  group: deploy-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || (github.event_name == 'push' && 'ux-fork' || 'main') }}
 
 jobs:
   build:
@@ -78,7 +80,7 @@ jobs:
       contents: read
       pull-requests: write # URL van de preview als PR-comment plaatsen
     environment:
-      name: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'main' }}
+      name: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || (github.event_name == 'push' && 'ux-fork' || 'main') }}
       url: ${{ steps.deploy.outputs.url }}
     steps:
       - name: Deploy to ZAD
