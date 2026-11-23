@@ -8,6 +8,7 @@ RUN pnpm install --frozen-lockfile
 
 FROM base AS build
 WORKDIR /app
+ARG COMMIT_SHA
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -15,10 +16,12 @@ RUN pnpm run build
 
 FROM node:22-alpine AS runner
 WORKDIR /app
+ARG COMMIT_SHA
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+ENV GIT_COMMIT_SHA=${COMMIT_SHA}
 # next-auth draait achter de ZAD-proxy en moet de host daarvan vertrouwen
 ENV AUTH_TRUST_HOST=true
 
