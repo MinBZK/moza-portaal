@@ -9,20 +9,23 @@ import {
   Paragraph,
 } from "@/components/rhc";
 
-/** The old address of the prototype; only there the notice shows. */
-const OLD_HOST = "proef.moza.rijksapp.nl";
-const NEW_URL = "https://moza.mijnoverheidzakelijk.nl/";
-/** Same key as on proef.moza.rijksapp.dev; Hard reset in Flags clears it. */
-const HIDE_KEY = "verhuismelding-niet-meer";
+/** The old addresses of the prototype; only there the notice shows. */
+const OLD_HOSTS = new Set([
+  "moza.mijnoverheidzakelijk.nl",
+  "proef.moza.rijksapp.nl",
+]);
+const NEW_URL = "https://proef.mijnoverheidzakelijk.nl/";
+/** A new key makes this address change visible to visitors who hid the old notice. */
+const HIDE_KEY = "verhuismelding-proef-nieuw-adres";
 
 const subscribe = () => () => {};
 const onOldHost = () =>
-  window.location.hostname === OLD_HOST &&
+  OLD_HOSTS.has(window.location.hostname) &&
   localStorage.getItem(HIDE_KEY) !== "ja";
 
 /**
- * Tells visitors of the old address that the prototype has moved, in a modal
- * dialog on every page load, unless they tick "Verberg deze melding".
+ * Tells visitors at an old address that the prototype has moved, in a modal
+ * dialog on every page load, unless they hide the notice.
  */
 const MovedNotice = () => {
   const show = useSyncExternalStore(subscribe, onOldHost, () => false);
@@ -37,26 +40,29 @@ const MovedNotice = () => {
       }}
     >
       <Heading level={2} id="moved-notice-title">
-        MijnOverheid Zakelijk is verhuisd
+        MijnOverheid Zakelijk heeft een nieuw adres
       </Heading>
       <Paragraph>
-        U bekijkt een oude versie van het prototype van MijnOverheid Zakelijk.
-        Deze versie werken wij niet meer bij, maar blijft bewaard ter
-        referentie.
+        U bekijkt een oude versie van het prototype. Wij werken deze versie niet
+        meer bij, maar u kunt die blijven bekijken.
       </Paragraph>
       <Paragraph>
-        De nieuwe versie staat op een ander adres. Daar gebruiken wij andere
-        technieken. Zo kunnen wij het prototype beter aansluiten op echte
-        diensten en gegevens.
+        De nieuwste versie staat op{" "}
+        <a href="https://proef.mijnoverheidzakelijk.nl">
+          proef.mijnoverheidzakelijk.nl
+        </a>
+        .
       </Paragraph>
-      <Paragraph>Het nieuwe adres is moza.mijnoverheidzakelijk.nl.</Paragraph>
       <form method="dialog">
         <FormFieldCheckboxOption
           label={
-            <>
-              Verberg deze melding{" "}
-              <small>(Hard reset in feature flags toont melding opnieuw)</small>
-            </>
+            <div>
+              <p>Verberg deze melding </p>
+              <small>
+                (Alles wissen in feature flags (<kbd>F</kbd>) toont melding
+                opnieuw)
+              </small>
+            </div>
           }
           onChange={(event) => {
             if ((event.target as HTMLInputElement).checked)
@@ -73,7 +79,7 @@ const MovedNotice = () => {
             Ga naar de nieuwe versie
           </a>
           <Button appearance="secondary-action-button" type="submit">
-            Bekijk de oude versie
+            Blijf op deze website
           </Button>
         </ActionGroup>
       </form>
