@@ -30,6 +30,8 @@ const MovedNotice = () => {
   const show = useSyncExternalStore(subscribe, shouldShowNotice, () => false);
   if (show) return null;
 
+  const newUrl = getNewAddress();
+
   return (
     <dialog
       className="rhc-mox-dialog"
@@ -43,8 +45,8 @@ const MovedNotice = () => {
       </Heading>
       <Paragraph>
         U bekijkt de oude versie van het prototype. De nieuwste versie staat op{" "}
-        <a href="https://proef.mijnoverheidzakelijk.nl">
-          proef.mijnoverheidzakelijk.nl
+        <a href={newUrl} rel="noopener noreferrer">
+          {newUrl}
         </a>
         .
       </Paragraph>

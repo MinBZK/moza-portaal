@@ -37,6 +37,7 @@ export default async function RootLayout({
     <html
       lang="nl"
       data-latest-commit={process.env.GIT_COMMIT_SHA ?? "unknown"}
+      data-build-date={process.env.BUILD_DATE ?? "unknown"}
     >
       <body className={`rhc-theme mox-theme${huisstijl}`}>
         <SkipLink href="#hoofd-inhoud">Naar de hoofdinhoud</SkipLink>
