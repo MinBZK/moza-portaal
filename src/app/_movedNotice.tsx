@@ -28,7 +28,7 @@ const getNewAddress = () => {
 
 const MovedNotice = () => {
   const show = useSyncExternalStore(subscribe, shouldShowNotice, () => false);
-  if (show) return null;
+  if (!show) return null;
 
   const newUrl = getNewAddress();
 
