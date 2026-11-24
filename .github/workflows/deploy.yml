@@ -50,6 +50,7 @@ jobs:
           base="${REGISTRY}/${GITHUB_REPOSITORY,,}"
           echo "name=${base}:${DEPLOYMENT_NAME}-${HEAD_SHA::7}" >> "$GITHUB_OUTPUT"
           echo "latest=${base}:${DEPLOYMENT_NAME}" >> "$GITHUB_OUTPUT"
+          echo "build-date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
@@ -67,6 +68,7 @@ jobs:
           context: .
           build-args: |
             COMMIT_SHA=${{ github.event.pull_request.head.sha || github.sha }}
+            BUILD_DATE=${{ steps.image.outputs.build-date }}
           push: true
           tags: |
             ${{ steps.image.outputs.name }}
