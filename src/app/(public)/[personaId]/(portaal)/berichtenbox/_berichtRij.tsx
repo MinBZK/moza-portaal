@@ -57,7 +57,7 @@ const BerichtRij = ({
     </TableCell>
     <TableCell>
       <Link
-        href={`/berichtenbox/${bericht.id}`}
+        href={`/berichtenbox/${encodeURIComponent(bericht.id)}`}
         className={`utrecht-link utrecht-link--html-a rhc-mox-row-linked__link ${ongelezen ? "rhc-mox-unread" : ""}`}
       >
         {bericht.onderwerp}

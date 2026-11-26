@@ -11,18 +11,15 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from "@/components/rhc";
-import {
-  bijlageAdres,
-  haalInhoud,
-  KetenFout,
-  type KetenInhoud,
-} from "@/network/keten/client";
+import { KetenFout, type KetenInhoud } from "@/network/keten/client";
 import type { BerichtenboxVariant } from "@/app/(private)/instellingen/_featureFlags";
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "./_berichtDetail";
 import { formatDatum } from "./_formatDatum";
+import { SessieVerlopen } from "./_ketenMeldingen";
 import PdfVoorbeeld from "./_pdfVoorbeeld";
 import {
+  haalKetenInhoud,
   ketenFoutTekst,
   useKeten,
   verplaatsKetenBericht,
@@ -40,34 +37,42 @@ const StelselBericht = ({
   variant = "a",
 }: {
   ontvanger: string;
+  /** De sleutel uit de URL: organisatie en nummer samen. */
   berichtId: string;
   /** Berichtenbox A/B/C-test; B toont de eerste pdf-bijlage in de pagina. */
   variant?: BerichtenboxVariant;
 }) => {
-  const { fase, berichten, fout } = useKeten(ontvanger);
+  const { fase, berichten, fout, verlopen } = useKeten(ontvanger);
   const bericht = berichten.find((b) => b.id === berichtId);
   const [inhoud, setInhoud] = useState<KetenInhoud | null>(null);
   const [inhoudFout, setInhoudFout] = useState<string | null>(null);
 
   const klaar = fase === "klaar";
-  const magazijnId = bericht?.magazijnId;
+  const gevonden = klaar && !!bericht;
   useEffect(() => {
-    if (!klaar || !magazijnId) return;
+    if (!gevonden) return;
+    const huidig = berichten.find((b) => b.id === berichtId);
+    if (!huidig) return;
     let actueel = true;
-    haalInhoud(berichtId, magazijnId)
+    haalKetenInhoud(huidig)
       .then((resultaat) => actueel && setInhoud(resultaat))
       .catch((fout: unknown) => {
         if (!actueel) return;
+        const reden = fout instanceof KetenFout ? fout.reden : null;
         setInhoudFout(
-          fout instanceof KetenFout && fout.reden === "weg"
+          reden === "weg"
             ? "Wij konden dit bericht niet ophalen bij de organisatie die het stuurde. Ververs de pagina om het opnieuw te proberen, of ga terug naar uw berichtenbox."
-            : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
+            : reden === "tijdelijk"
+              ? "Wij kunnen dit bericht nu even niet ophalen. Ververs de pagina over een minuut om het opnieuw te proberen."
+              : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
         );
       });
     return () => {
       actueel = false;
     };
-  }, [klaar, berichtId, magazijnId]);
+    // Alleen opnieuw bij een ander bericht, niet bij elke wijziging in de lijst.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gevonden, berichtId]);
 
   if (fout) return <Alert type="error">{ketenFoutTekst[fout]}</Alert>;
   if (!klaar)
@@ -100,7 +105,7 @@ const StelselBericht = ({
   return (
     <>
       <HuidigeKruimel
-        pad={`/berichtenbox/${bericht.id}`}
+        pad={`/berichtenbox/${encodeURIComponent(bericht.id)}`}
         label={bericht.onderwerp}
       />
       <BerichtDetail
@@ -114,6 +119,7 @@ const StelselBericht = ({
         }}
       >
         <Heading level={1}>{bericht.onderwerp}</Heading>
+        {verlopen && <SessieVerlopen />}
 
         <DataSummary appearance="column">
           <DataSummaryItem itemKey="Afzender" itemValue={bericht.afzender} />
@@ -136,15 +142,7 @@ const StelselBericht = ({
                 <Paragraph key={index}>{alinea.trim()}</Paragraph>
               ))}
 
-            {pdfBijlage && bericht && (
-              <PdfVoorbeeld
-                pdf={bijlageAdres(
-                  bericht.id,
-                  pdfBijlage.bijlageId,
-                  bericht.magazijnId,
-                )}
-              />
-            )}
+            {pdfBijlage?.adres && <PdfVoorbeeld pdf={pdfBijlage.adres} />}
 
             {inhoud.bijlagen.length > 0 && (
               <section className="rhc-mox-stack" aria-labelledby="bijlagen">
@@ -154,22 +152,23 @@ const StelselBericht = ({
                 <UnorderedList>
                   {inhoud.bijlagen.map((bijlage) => (
                     <UnorderedListItem key={bijlage.bijlageId}>
-                      <a
-                        href={bijlageAdres(
-                          bericht.id,
-                          bijlage.bijlageId,
-                          bericht.magazijnId,
-                        )}
-                        target="_blank"
-                        rel="noopener"
-                        className="utrecht-link utrecht-link--html-a"
-                      >
-                        {bijlage.naam}
-                        <span className="rhc-visually-hidden">
-                          {" "}
-                          (opent in een nieuw tabblad)
-                        </span>
-                      </a>
+                      {bijlage.adres ? (
+                        <a
+                          href={bijlage.adres}
+                          target="_blank"
+                          rel="noopener"
+                          className="utrecht-link utrecht-link--html-a"
+                        >
+                          {bijlage.naam}
+                          <span className="rhc-visually-hidden">
+                            {" "}
+                            (opent in een nieuw tabblad)
+                          </span>
+                        </a>
+                      ) : (
+                        // Het stelsel gaf geen adres dat wij kunnen volgen.
+                        <>{bijlage.naam} (nu niet te openen)</>
+                      )}
                     </UnorderedListItem>
                   ))}
                 </UnorderedList>

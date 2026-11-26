@@ -297,7 +297,7 @@ const BerichtDetail = ({
 
                 <ShareButton
                   title={bericht?.onderwerp}
-                  url={`/berichtenbox/${berichtId}`}
+                  url={`/berichtenbox/${encodeURIComponent(berichtId)}`}
                 />
 
                 {status !== "archief" && (

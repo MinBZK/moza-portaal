@@ -17,16 +17,32 @@ export const generateMetadata = async ({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
-  const [{ id }, persona] = await Promise.all([params, getActievePersona()]);
+  const [{ id: ruw }, persona] = await Promise.all([
+    params,
+    getActievePersona(),
+  ]);
+  const id = leesId(ruw);
   const bericht = await getDemoBerichtById(id, persona?.id);
   return { title: `${bericht?.onderwerp ?? "Bericht"} - Berichtenbox` };
+};
+
+/**
+ * De sleutel uit de URL. Een bericht uit het stelsel heeft er een dubbele punt
+ * in (organisatie en nummer); decoderen is veilig, want een sleutel heeft geen %.
+ */
+const leesId = (ruw: string) => {
+  try {
+    return decodeURIComponent(ruw);
+  } catch {
+    return ruw;
+  }
 };
 
 /** Ids van binnengedruppelde demo-berichten; die staan alleen in de browser. */
 const NIEUW_BERICHT = /^live-/;
 
 const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
+  const id = leesId((await params).id);
   const [persona, variant] = await Promise.all([
     getActievePersona(),
     getBerichtenboxVariant(),
@@ -64,7 +80,7 @@ const BerichtPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <>
       <HuidigeKruimel
-        pad={`/berichtenbox/${bericht.id}`}
+        pad={`/berichtenbox/${encodeURIComponent(bericht.id)}`}
         label={bericht.onderwerp}
       />
       <BerichtDetail berichten={berichten} berichtId={bericht.id}>

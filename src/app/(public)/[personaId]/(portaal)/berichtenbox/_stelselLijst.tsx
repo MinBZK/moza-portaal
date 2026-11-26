@@ -3,6 +3,7 @@
 import { Alert, Paragraph } from "@/components/rhc";
 import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
+import Volledigheidsmelding, { SessieVerlopen } from "./_ketenMeldingen";
 import {
   ketenFoutTekst,
   useKeten,
@@ -21,8 +22,21 @@ const StelselLijst = ({
   weergave: Weergave;
   pagina: number;
 }) => {
-  const { fase, berichten, voortgang, fout, nieuw, volgenGestopt } =
-    useKeten(ontvanger);
+  const {
+    fase,
+    berichten,
+    voortgang,
+    fout,
+    volledigheid,
+    verlopen,
+    nieuw,
+    volgenGestopt,
+  } = useKeten(ontvanger);
+  // Tijdens de ophaalronde groeit het mappenoverzicht mee met wat de
+  // organisaties melden. Archief en prullenbak zijn tabbladen, geen map.
+  const mappenTijdensOphalen = Object.keys(voortgang?.mappen ?? {}).filter(
+    (map) => map !== "Archief" && map !== "Prullenbak",
+  );
 
   return (
     <>
@@ -30,12 +44,20 @@ const StelselLijst = ({
         berichten={berichten}
         actief={weergave}
         metNieuwe={false}
+        extraMappen={mappenTijdensOphalen}
       />
       {/* Nieuwe berichten komen vanzelf binnen; zeg het ook tegen schermlezers. */}
       <div aria-live="polite" className="rhc-visually-hidden">
         {nieuw && `Nieuw bericht van ${nieuw.afzender}.`}
       </div>
-      {volgenGestopt && (
+      {verlopen && <SessieVerlopen />}
+      {fase === "klaar" && volledigheid && (
+        <Volledigheidsmelding
+          volledigheid={volledigheid}
+          aantal={berichten.length}
+        />
+      )}
+      {volgenGestopt && !verlopen && (
         <Alert type="info">
           <Paragraph>
             Nieuwe berichten verschijnen niet meer vanzelf. Ververs de pagina om

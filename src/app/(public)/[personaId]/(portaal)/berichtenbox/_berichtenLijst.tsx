@@ -597,7 +597,7 @@ const BerichtenLijst = ({
                         <TableCell className="rhc-mox-table-cell-actions">
                           <RijActies
                             onderwerp={bericht.onderwerp}
-                            href={`/berichtenbox/${bericht.id}`}
+                            href={`/berichtenbox/${encodeURIComponent(bericht.id)}`}
                             ongelezen={isOngelezen(
                               staat,
                               bericht.id,
