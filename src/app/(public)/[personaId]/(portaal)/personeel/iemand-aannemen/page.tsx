@@ -7,7 +7,7 @@ import { isIngediend, nieuweAanvraag, useAannemen } from "./_useAannemen";
 
 /**
  * The entry of Iemand aannemen, from Personeel en rollen and the search
- * results. It begins at Lees wat er kan, or with `?naar=aanvragen`
+ * results. It begins at the voorbeeldberekening, or with `?naar=aanvragen`
  * (Regelingen aanvragen) directly at Kandidaat kiezen. After a submitted
  * request it starts a new, empty one. The cases in Lopende zaken stay.
  */
@@ -31,12 +31,14 @@ const IemandAannemenPage = () => {
       if (nieuw || staat.voorbeeldBerekend !== true)
         werkBij({ voorbeeldBerekend: false });
       router.replace("/personeel/iemand-aannemen/gegevens");
-    } else router.replace("/personeel/iemand-aannemen/uitleg");
+    } else router.replace("/personeel/iemand-aannemen/voorbeeldberekening");
   }, [staat, router, werkBij]);
 
   return (
     <LoadingStatus>
-      {direct ? "Wij openen de aanvraag…" : "Wij openen de uitleg…"}
+      {direct
+        ? "Wij openen de aanvraag…"
+        : "Wij openen de voorbeeldberekening…"}
     </LoadingStatus>
   );
 };

@@ -38,7 +38,7 @@
           "wetsvraag": "Is de werknemer een arbeidsbeperkte als bedoeld in artikel 38b van de Wet financiering sociale verzekeringen?",
           "parameter": "is_arbeidsbeperkte",
           "waarde": "Ja, sinds 3 november 2025",
-          "grond": "Wfsv 38b lid 1 a; registratie: Wfsv 38d"
+          "grond": "Wfsv 38b lid 1 a"
         },
         {
           "vraag": "Loopt de registratie nog?",
@@ -59,7 +59,7 @@
           "wetsvraag": "Heeft de werknemer een uitkering op grond van hoofdstuk 6 van de Wet WIA?",
           "parameter": "heeft_wia_uitkering_hoofdstuk_6",
           "waarde": "Nee",
-          "grond": "Wfsv 38b lid 1 g; Wet WIA hoofdstuk 6"
+          "grond": "Wet WIA 4 en 5"
         }
       ]
     },
@@ -190,7 +190,7 @@
       "soortLabel": "Via uw loonaangifte",
       "uitkomst": "Kan gelden",
       "bedragLabel": "€1.680,64 per jaar",
-      "bedragToelichting": "€1,01 per verloond uur, bij 1.664 uur per jaar; hoogstens €2.000 per jaar. UWV berekent het na afloop van het kalenderjaar; de Belastingdienst beslist (Wtl 4.1 en 4.2).",
+      "bedragToelichting": "€1,01 per verloond uur, bij 1.664 uur per jaar; hoogstens €2.000 per jaar. De Belastingdienst berekent het na afloop van het kalenderjaar.",
       "bedragEurocent": 168064,
       "tekst": "Een tegemoetkoming in de loonkosten voor een werknemer uit het doelgroepregister banenafspraak. U vraagt het aan door in de loonaangifte het vakje loonkostenvoordeel aan te zetten; een aparte verklaring is niet nodig.",
       "grond": "Wet tegemoetkomingen loondomein 2.10 en 2.13; Wfsv 38b",
@@ -366,7 +366,7 @@
       "soort": "besluit",
       "titel": "Koen opgenomen in het doelgroepregister banenafspraak",
       "tekst": "UWV heeft op verzoek van de gemeente vastgesteld dat Koen niet in staat is het wettelijk minimumloon te verdienen.",
-      "grond": "Wfsv 38b lid 1 a; registratie: Wfsv 38d",
+      "grond": "Wfsv 38b lid 1 a",
       "stap": "vooraf"
     },
     {

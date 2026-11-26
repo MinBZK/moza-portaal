@@ -71,17 +71,15 @@ const Besluit = ({
   const antwoorden = staat
     ? antwoordenVoorZaak(staat.zaken[situatie], staat.antwoorden)
     : STANDAARD_ANTWOORDEN;
-  const { uitkomsten, bekend, fout, keuzes, minimumloon } =
-    useUitkomsten(antwoorden);
+  const { uitkomsten, bekend, fout } = useUitkomsten(antwoorden);
   const invoer = useMemo(
     () =>
-      keuzes &&
-      invoerVoor(keuzes, basis as Feiten).find(
+      invoerVoor(antwoorden, basis as Feiten).find(
         (i) =>
           i.wet === REGELING[situatie].wet &&
           i.output === REGELING[situatie].output,
       ),
-    [keuzes, situatie],
+    [antwoorden, situatie],
   );
   const [melding, setMelding] = useState("");
   const [tekst, setTekst] = useState("");
@@ -138,7 +136,7 @@ const Besluit = ({
   const ingangLd = datumNL(
     ingangLoondispensatie(zaakStand.verstuurdOp ?? INGEDIEND_OP),
   );
-  const dienstverbandTekst = `een dienstverband van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden, minimumloon ?? 0)})`;
+  const dienstverbandTekst = `een dienstverband van ${w.uren} uur per week (uurloon: ${uurloonTekst(antwoorden)})`;
 
   return (
     <div className="rhc-mox-card rhc-mox-row-gap">
@@ -170,18 +168,13 @@ const Besluit = ({
           <LoadingStatus>Wij berekenen de bedragen…</LoadingStatus>
         )
       ) : !heeftRegel ? (
-        // Ook de afwijzing van een aanvraag is een besluit (Awb 1:3 lid 2).
-        <section className="rhc-mox-stack" aria-labelledby="besluit-tekst">
-          <Heading level={2} id="besluit-tekst">
-            Besluit
-          </Heading>
+        <Alert type="warning">
           <Paragraph>
-            {situatie === "gemeente" ? "Het college" : "UWV"} wijst de aanvraag
-            voor {regeling.naam.toLowerCase()} voor {kandidaat.voornaam}{" "}
-            {kandidaat.achternaam} af. Bij de antwoorden in de aanvraag is er
-            geen recht op {regeling.naam.toLowerCase()}.
+            Bij de antwoorden in de aanvraag geeft de berekening geen{" "}
+            {regeling.naam.toLowerCase()}. Daarom is er geen besluit. Denkt u
+            dat dit niet klopt? Stel hieronder uw vraag.
           </Paragraph>
-        </section>
+        </Alert>
       ) : (
         <section className="rhc-mox-stack" aria-labelledby="besluit-tekst">
           <Heading level={2} id="besluit-tekst">
@@ -247,16 +240,25 @@ const Besluit = ({
       </section>
 
       <section className="rhc-mox-stack" aria-labelledby="besluit-bezwaar">
-        {/* Bezwaar kan tegen elk besluit, ook tegen een afwijzing. */}
-        <Heading level={2} id="besluit-bezwaar">
-          Bezwaar maken of een vraag stellen
-        </Heading>
-        <Paragraph>
-          Dan kunt u bezwaar maken bij {besluit.organisatie}. Doe dat binnen{" "}
-          {besluit.bezwaar} na {datumNL(besluit.datum)} (Algemene wet
-          bestuursrecht, artikel 6:7). Heeft u eerst een vraag? Stel die
-          hieronder. Uw vraag komt dan in dit dossier.
-        </Paragraph>
+        {/* Bezwaar kan alleen tegen een besluit; zonder besluit blijft de vraag.
+            Tijdens het rekenen blijft de kop staan, zoals de zaak (geldt). */}
+        {!bekend || heeftRegel ? (
+          <>
+            <Heading level={2} id="besluit-bezwaar">
+              Bezwaar maken of een vraag stellen
+            </Heading>
+            <Paragraph>
+              Dan kunt u bezwaar maken bij {besluit.organisatie}. Doe dat binnen{" "}
+              {besluit.bezwaar} na {datumNL(besluit.datum)} (Algemene wet
+              bestuursrecht, artikel 6:7). Heeft u eerst een vraag? Stel die
+              hieronder. Uw vraag komt dan in dit dossier.
+            </Paragraph>
+          </>
+        ) : (
+          <Heading level={2} id="besluit-bezwaar">
+            Vragen over deze aanvraag
+          </Heading>
+        )}
         <form
           onSubmit={verstuurVraag}
           className="rhc-mox-stack rhc-mox-stack--2xl"
