@@ -61,9 +61,9 @@ const PersoneelPage = async () => {
             {TAAK_TITEL}
           </Heading>
           <Paragraph>
-            Neemt u iemand aan die niet zelfstandig het minimumloon kan
-            verdienen? Dan kunt u gebruikmaken van regelingen. Bekijk eerst wat
-            ze opleveren, of vraag ze direct aan.
+            Neemt u iemand aan met een afstand tot de arbeidsmarkt? Bekijk welke
+            regelingen kunnen gelden en wat ze opleveren, of vraag ze direct
+            aan.
           </Paragraph>
           <ActionGroup>
             <Link

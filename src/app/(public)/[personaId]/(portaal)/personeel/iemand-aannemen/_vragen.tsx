@@ -289,6 +289,7 @@ const VragenMetStaat = ({
               value={a.loonwaarde}
               onChange={(loonwaarde) => zet({ loonwaarde })}
               formatValue={(loonwaarde) => `${loonwaarde} procent`}
+              description="Maak een inschatting. Denk aan hoeveel werk de kandidaat in dezelfde tijd kan doen, vergeleken met een collega in dezelfde functie."
               formatValueText={(loonwaarde) =>
                 loonwaarde === 100
                   ? "100 procent: evenveel als een collega"
@@ -423,9 +424,7 @@ const VragenMetStaat = ({
           nietsAanTeVragen
             ? undefined
             : {
-                label: nieuw
-                  ? "Nieuwe aanvraag starten"
-                  : "Ja, ik wil regelingen aanvragen",
+                label: nieuw ? "Nieuwe aanvraag starten" : "Kandidaat kiezen",
                 busy: !resultaat.bekend && !resultaat.fout,
                 describedBy: kanVerder ? undefined : "aanvragen-bezig",
                 onClick: () => {

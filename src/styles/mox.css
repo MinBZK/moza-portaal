@@ -395,7 +395,8 @@ Dit bestand bevat tijdelijke styling, om de ‘huidige MO styling’ vs. de nieu
 
 		h2,
 		h3,
-		h4 {
+		h4,
+		h5 {
 			color: var(--nl-heading-level-1-color);
 			font-weight: var(--rhc-text-font-weight-bold);
 			margin-block-start: var(--rhc-space-2xl);

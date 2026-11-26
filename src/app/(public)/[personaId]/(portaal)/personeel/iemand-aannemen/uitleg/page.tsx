@@ -78,15 +78,15 @@ const DATUM = new Intl.DateTimeFormat("nl-NL", {
 
 /**
  * Het artikel voor in het zijpaneel. Het blok met de Regelhulp Financieel CV
- * valt weg: de voorbeeldberekening doet hier hetzelfde. De koppen schuiven een
- * niveau op, onder de titel van het paneel.
+ * valt weg: de voorbeeldberekening doet hier hetzelfde. De koppen schuiven twee
+ * niveaus op, onder de titel van het paneel en de kop van de uitklap.
  */
 const naarPaneel = (a: DopArtikel | null): PaneelArtikel | null => {
   if (!a?.articleBody || !a.url) return null;
   const html = a.articleBody
     .replace(/<aside[\s\S]*?<\/aside>/g, "")
-    .replace(/<(\/?)h3\b/g, "<$1h4")
-    .replace(/<(\/?)h2\b/g, "<$1h3");
+    .replace(/<(\/?)h3\b/g, "<$1h5")
+    .replace(/<(\/?)h2\b/g, "<$1h4");
   const bijgewerkt = a.dateModified ? new Date(a.dateModified) : undefined;
   return {
     titel: a.headLine ?? "Het artikel",
