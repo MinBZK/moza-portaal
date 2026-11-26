@@ -52,6 +52,9 @@ export { DOELGROEPEN, kiesDoelgroep, type Doelgroep };
 export const registerVast = (a: Antwoorden) =>
   a.doelgroepen.includes("wajong") && !a.doelgroepen.includes("beschut");
 
+/** Wettelijk minimumloon per uur per 1 juli 2026, in eurocent. */
+export const WML_UUR_EUROCENT = 1499;
+
 /** De vier korte vragen van het eerste scherm. */
 export type Antwoorden = {
   /** Waarmee de engine rekent; volgt uit register, beschut en uitkering. */
@@ -64,11 +67,8 @@ export type Antwoorden = {
   uren: number;
   /** Geschatte loonwaarde in procent, 0 tot 100; 100 is geen verminderde loonwaarde. */
   loonwaarde: number;
-  /**
-   * Bruto uurloon in eurocent, €4,50 tot €30 (schuifregelaar in _vragen.tsx).
-   * Zonder keuze: het wettelijk minimumloon, zoals de engine dat geeft.
-   */
-  uurloon?: number;
+  /** Bruto uurloon in eurocent, €4,50 tot €30 (schuifregelaar in _vragen.tsx). */
+  uurloon: number;
   /** De eerste werkdag (jjjj-mm-dd), door de werkgever opgegeven in stap 1. */
   aanvang?: string;
   /** Alleen bij WIA: in de zes maanden voor de eerste werkdag al bij de werkgever in dienst (Wtl 2.6 lid 1 b). */
@@ -130,6 +130,7 @@ export const STANDAARD_ANTWOORDEN: Antwoorden = {
   doelgroepen: ["register", "nug"],
   uren: 32,
   loonwaarde: 60,
+  uurloon: WML_UUR_EUROCENT,
 };
 
 const LEEG: AannemenStaat = {
@@ -168,14 +169,10 @@ export const vraagEerderInDienst = (a: Antwoorden) =>
 export const eigenOpgaveCompleet = (a: Antwoorden) =>
   !!a.aanvang && (!vraagEerderInDienst(a) || a.eerderInDienst !== undefined);
 
-/** Het uurloon; zonder keuze het minimumloon uit de engine. */
-export const uurloonVan = (a: Antwoorden, minimumloon: number) =>
-  a.uurloon ?? minimumloon;
-
-export const uurloonTekst = (a: Antwoorden, minimumloon: number) =>
-  uurloonVan(a, minimumloon) === minimumloon
-    ? `wettelijk minimumloon, ${euro(minimumloon)} per uur`
-    : `${euro(uurloonVan(a, minimumloon))} per uur`;
+export const uurloonTekst = (a: Antwoorden) =>
+  a.uurloon === WML_UUR_EUROCENT
+    ? `wettelijk minimumloon, ${euro(a.uurloon)} per uur`
+    : `${euro(a.uurloon)} per uur`;
 
 const luisteraars = new Set<() => void>();
 let vorige: {

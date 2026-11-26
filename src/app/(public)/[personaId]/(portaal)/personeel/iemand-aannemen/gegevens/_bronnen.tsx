@@ -255,7 +255,7 @@ const Bronnen = ({
     : undefined;
   const kandidaatFout = fout("kandidaat")
     ? wachtend
-      ? "Deze kandidaat heeft nog geen toestemming gegeven. Zonder toestemming halen wij geen gegevens over de kandidaat op. Kies een kandidaat met toestemming."
+      ? "Deze kandidaat heeft nog geen toestemming gegeven. Kies een kandidaat met toestemming."
       : "U heeft nog geen kandidaat gekozen."
     : undefined;
   const naamFout = fout("naam")

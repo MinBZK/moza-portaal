@@ -130,11 +130,7 @@ const AanvraagInhoud = ({
     () => routeVoor(a.doelgroepen, uitkomsten),
     [a.doelgroepen, uitkomsten],
   );
-  const { keuzes } = resultaat;
-  const invoeren = useMemo(
-    () => (keuzes ? invoerVoor(keuzes, basis as Feiten) : []),
-    [keuzes],
-  );
+  const invoeren = useMemo(() => invoerVoor(a, basis as Feiten), [a]);
   const invoer = (wet: string, output: string) =>
     invoeren.find((i) => i.wet === wet && i.output === output);
 
@@ -213,10 +209,7 @@ const AanvraagInhoud = ({
     );
   };
 
-  const balans = balansRegels(
-    uitkomsten,
-    loonkostenPerJaar(a, resultaat.minimumloon ?? 0),
-  );
+  const balans = balansRegels(uitkomsten, loonkostenPerJaar(a));
   const bedragVan = (id: "lks" | "ld" | "lkv") =>
     balans.find((r) => r.id === id && r.status === "bedrag")?.bedrag;
   const voorbeeldbedrag = (id: "lks" | "ld" | "lkv") => {
@@ -347,10 +340,9 @@ const AanvraagInhoud = ({
               <UnorderedListItem>
                 Is {kandidaat.voornaam} nog niet begonnen? Dan kan de gemeente
                 in overleg met u besluiten de loonwaarde eerst niet vast te
-                stellen. U krijgt dan hoogstens de eerste 6 maanden 50 procent
-                van het minimumloon met vakantiegeld, plus een vergoeding voor
-                werkgeverslasten, naar verhouding van de uren. Daarna stelt de
-                gemeente de loonwaarde alsnog vast.
+                stellen. U krijgt dan de eerste 6 maanden hoogstens 50 procent
+                van het minimumloon met vakantiegeld, naar verhouding van de
+                uren. Daarna stelt de gemeente de loonwaarde alsnog vast.
               </UnorderedListItem>
               <UnorderedListItem>
                 U krijgt een brief met het besluit. Is {kandidaat.voornaam} al
@@ -630,8 +622,7 @@ const AanvraagInhoud = ({
       onderwerp,
       kandidaat.bsnMasker,
     );
-    // Na Versturen direct naar de lopende zaak.
-    router.push(demo.zaak.url);
+    router.push("/personeel/iemand-aannemen/verstuurd");
   };
 
   if (isIngediend(staat))

@@ -2,7 +2,7 @@
 
 import type { DemoAannemenTrace } from "@/demo";
 import type { Antwoorden } from "./_useAannemen";
-import { onderMinimumloon, uurloonVan } from "./_useAannemen";
+import { onderMinimumloon } from "./_useAannemen";
 import type { Invoer } from "./_useRegelrecht";
 
 /**
@@ -49,5 +49,5 @@ export const invoerVan = (
  * wet, een vuistregel; de engine rekent de subsidie en het voordeel, en die
  * gaan uit van het minimumloon, niet van het uurloon.
  */
-export const loonkostenPerJaar = (a: Antwoorden, minimumloon: number) =>
-  Math.round(uurloonVan(a, minimumloon) * a.uren * 52 * 1.08 * 1.2);
+export const loonkostenPerJaar = (a: Antwoorden) =>
+  Math.round(a.uurloon * a.uren * 52 * 1.08 * 1.2);

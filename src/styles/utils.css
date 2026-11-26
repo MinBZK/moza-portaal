@@ -277,8 +277,7 @@ dialog.prototype-side-overlay[open] {
 	  colour for contrast. */
 	background: var(--rhc-color-groen-700);
 	color: var(--rhc-color-wit);
-	font-size: var(--rhc-text-font-size-md);
-	font-weight: var(--rhc-text-font-weight-semibold);
+	font-weight: var(--rhc-text-font-weight-bold);
 	inline-size: 256px;
 	inset-block-start: 3rem;
 	inset-inline-end: -4rem;

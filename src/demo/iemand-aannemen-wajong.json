@@ -45,7 +45,7 @@
           "wetsvraag": "Is de werknemer een arbeidsbeperkte als bedoeld in artikel 38b van de Wet financiering sociale verzekeringen?",
           "parameter": "is_arbeidsbeperkte",
           "waarde": "Ja, sinds 14 mei 2024",
-          "grond": "Wfsv 38b lid 1; registratie: Wfsv 38d"
+          "grond": "Wfsv 38b lid 1"
         },
         {
           "vraag": "Op welke grond staat de registratie in het doelgroepregister?",
@@ -66,7 +66,7 @@
           "wetsvraag": "Heeft de werknemer een uitkering op grond van hoofdstuk 6 van de Wet WIA?",
           "parameter": "heeft_wia_uitkering_hoofdstuk_6",
           "waarde": "Nee",
-          "grond": "Wfsv 38b lid 1 g; Wet WIA hoofdstuk 6"
+          "grond": "Wet WIA 4 en 5"
         }
       ]
     },
@@ -179,7 +179,7 @@
       "soort": "besluit",
       "titel": "Noor opgenomen in het doelgroepregister banenafspraak",
       "tekst": "Op grond van Wajong met arbeidsondersteuning.",
-      "grond": "Wfsv 38b lid 1 c; registratie: Wfsv 38d",
+      "grond": "Wfsv 38b lid 1 c",
       "stap": "vooraf"
     },
     {
