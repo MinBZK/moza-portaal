@@ -324,7 +324,7 @@ const Balans = ({
         <div className="rhc-data-summary__item">
           <dt className="rhc-data-summary__item-key">
             <span>
-              Loonkosten{" "}
+              Geschatte totale loonkosten{" "}
               {/* Zo volgt het bedrag uit de uren en het uurloon (loonkostenPerJaar). */}
               <InfoToggletip label="Toelichting bij de loonkosten">
                 <Paragraph>
@@ -342,7 +342,9 @@ const Balans = ({
         </div>
         {/* De regelingen samen op één regel; per regeling de uitleg in een uitklap eronder. */}
         <div className="rhc-data-summary__item">
-          <dt className="rhc-data-summary__item-key">Regelingen</dt>
+          <dt className="rhc-data-summary__item-key">
+            Mogelijk voordeel van regelingen
+          </dt>
           <dd className="rhc-data-summary__item-value">
             <ChangedValue>
               {bekend && !fout ? `− ${euroHeel(terug)}` : bezigOfFout}
@@ -351,7 +353,7 @@ const Balans = ({
         </div>
         <div className="rhc-data-summary__item rhc-mox-sum__total">
           <dt className="rhc-data-summary__item-key">
-            Geschatte loonkosten per jaar
+            Uw geschatte loonkosten per jaar
           </dt>
           <dd className="rhc-data-summary__item-value">{bedrag(netto)}</dd>
         </div>

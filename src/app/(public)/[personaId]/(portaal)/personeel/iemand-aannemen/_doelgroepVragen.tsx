@@ -98,13 +98,14 @@ const DoelgroepVragen = ({
         </Fieldset>
         {register === "onbekend" && (
           <Paragraph className="rhc-mox-small-text">
+            Vraag het {wie}. U kunt ook{" "}
             <a
               href={UWV_REGISTER}
               className="utrecht-link utrecht-link--html-a"
               target="_blank"
               rel="external noopener noreferrer"
             >
-              Controleer bij UWV of {wie} in het doelgroepregister staat (opent
+              bij UWV controleren of {wie} in het doelgroepregister staat (opent
               in een nieuw tabblad)
             </a>
             .{/* Wajong zet het register aan (kiesDoelgroep), dus dan niet. */}
@@ -149,7 +150,17 @@ const DoelgroepVragen = ({
           />
         </Fieldset>
       )}
-      <Fieldset legend={`${nr(3)}Heeft ${wie} een uitkering?`}>
+      <Fieldset
+        legend={`${nr(3)}Heeft ${wie} een uitkering?`}
+        info={
+          <InfoToggletip label="Toelichting bij de uitkering">
+            <Paragraph>
+              Niet zeker welke uitkering het is? Kijk op de uitkeringsbrief of
+              vraag het {wie}.
+            </Paragraph>
+          </InfoToggletip>
+        }
+      >
         {UITKERINGEN.map(([waarde, label]) => (
           <FormFieldRadio
             key={waarde}
