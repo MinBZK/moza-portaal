@@ -3,6 +3,10 @@
 import { Alert, Paragraph } from "@/components/rhc";
 import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
+import Volledigheidsmelding, {
+  MeldingenRegio,
+  SessieVerlopen,
+} from "./_ketenMeldingen";
 import {
   ketenFoutTekst,
   useKeten,
@@ -21,8 +25,23 @@ const StelselLijst = ({
   weergave: Weergave;
   pagina: number;
 }) => {
-  const { fase, berichten, voortgang, fout, nieuw, volgenGestopt } =
-    useKeten(ontvanger);
+  const {
+    fase,
+    berichten,
+    voortgang,
+    fout,
+    volledigheid,
+    verlopen,
+    herstelt,
+    opgehaald,
+    nieuw,
+    volgenGestopt,
+  } = useKeten(ontvanger);
+  // Tijdens de ophaalronde groeit het mappenoverzicht mee met wat de
+  // organisaties melden. Archief en prullenbak zijn tabbladen, geen map.
+  const mappenTijdensOphalen = Object.keys(voortgang?.mappen ?? {}).filter(
+    (map) => map !== "Archief" && map !== "Prullenbak",
+  );
 
   return (
     <>
@@ -30,12 +49,22 @@ const StelselLijst = ({
         berichten={berichten}
         actief={weergave}
         metNieuwe={false}
+        extraMappen={mappenTijdensOphalen}
       />
       {/* Nieuwe berichten komen vanzelf binnen; zeg het ook tegen schermlezers. */}
       <div aria-live="polite" className="rhc-visually-hidden">
         {nieuw && `Nieuw bericht van ${nieuw.afzender}.`}
       </div>
-      {volgenGestopt && (
+      <MeldingenRegio>
+        {/* Tijdens de ronde zegt de voortgang het al. */}
+        {verlopen && !(herstelt && fase === "ophalen") && (
+          <SessieVerlopen herstelt={herstelt} />
+        )}
+        {fase === "klaar" && !herstelt && volledigheid && (
+          <Volledigheidsmelding volledigheid={volledigheid} />
+        )}
+      </MeldingenRegio>
+      {volgenGestopt && !verlopen && (
         <Alert type="info">
           <Paragraph>
             Nieuwe berichten verschijnen niet meer vanzelf. Ververs de pagina om
@@ -50,6 +79,7 @@ const StelselLijst = ({
         stelsel={{
           bezig: fase !== "klaar" && fase !== "fout",
           voortgang,
+          opgehaald,
           fout: fout ? ketenFoutTekst[fout] : null,
           verplaats: verplaatsKetenBericht,
           zetMap: zetKetenMap,

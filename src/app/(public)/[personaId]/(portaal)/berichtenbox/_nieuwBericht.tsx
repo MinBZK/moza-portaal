@@ -44,7 +44,7 @@ const NieuwBericht = ({
   return (
     <>
       <HuidigeKruimel
-        pad={`/berichtenbox/${bericht.id}`}
+        pad={`/berichtenbox/${encodeURIComponent(bericht.id)}`}
         label={bericht.onderwerp}
       />
       {/* De lijst van de server kent dit bericht niet; zonder het nieuwe bericht

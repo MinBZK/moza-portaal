@@ -70,7 +70,9 @@ const OphaalVoortgang = ({ voortgang }: { voortgang: Voortgang | null }) => {
   const { bronnen = 0, klaar = 0, gevonden = 0 } = voortgang ?? {};
 
   return (
-    <Alert type="info">
+    // Geen eigen live region: elke tussenstand zou helemaal opnieuw klinken.
+    // Begin en einde meldt de lijst.
+    <Alert type="info" role="presentation">
       <Paragraph>Wij halen uw berichten op bij de organisaties.</Paragraph>
       <Paragraph>
         <b>{klaar}</b> van <b>{bronnen}</b>{" "}

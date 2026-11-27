@@ -144,6 +144,8 @@ export type StelselBron = {
   /** Nog bezig met laden of ophalen. */
   bezig: boolean;
   voortgang: Voortgang | null;
+  /** Wat de laatste ophaalronde opleverde; de bevestiging aan het eind ervan. */
+  opgehaald?: { berichten: number; organisaties: number } | null;
   /** Tekst als het ophalen niet lukte. */
   fout: string | null;
   /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
@@ -243,9 +245,12 @@ const BerichtenLijst = ({
 
   const bezig = stelsel ? stelsel.bezig : nagebootst.bezig;
   const voortgang = stelsel ? stelsel.voortgang : nagebootst.voortgang;
+  // Haalt het stelsel opnieuw op terwijl er al een lijst staat, dan blijft die
+  // staan, met de voortgang erboven: zo raakt de focus niet kwijt.
+  const vervangt = !!stelsel && bezig && uitBron.length > 0;
 
-  if (!staat || (stelsel?.bezig && !stelsel.voortgang)) {
-    return <Paragraph role="status">Wij halen uw berichten op.</Paragraph>;
+  if (!staat || (stelsel?.bezig && !stelsel.voortgang && !vervangt)) {
+    return <Paragraph role="status">Wij halen uw berichten op…</Paragraph>;
   }
 
   const naarEerstePagina = () => {
@@ -376,7 +381,7 @@ const BerichtenLijst = ({
 
   return (
     <div className="rhc-mox-stack rhc-mox-stack--2xl">
-      {bezig ||
+      {(bezig && !vervangt) ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
         <Paragraph className="rhc-mox-notice-amount-inbox">
@@ -450,7 +455,7 @@ const BerichtenLijst = ({
 
       {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
       <div ref={meldingRef} tabIndex={-1} role="status">
-        {melding && !bezig && (
+        {melding && (!bezig || vervangt) && (
           <Alert
             key={`${meldingNummer}-${melding}`}
             type="ok"
@@ -509,10 +514,12 @@ const BerichtenLijst = ({
               ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
               : voortgang
                 ? `${meervoud(voortgang.gevonden, "bericht", "berichten")} opgehaald.`
-                : ""}
+                : stelsel?.opgehaald && !stelsel.fout
+                  ? `Wij hebben ${meervoud(stelsel.opgehaald.berichten, "bericht", "berichten")} opgehaald bij ${meervoud(stelsel.opgehaald.organisaties, "organisatie", "organisaties")}.`
+                  : ""}
       </div>
 
-      {bezig ||
+      {(bezig && !vervangt) ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : gesorteerd.length === 0 ? (
         <Paragraph>
@@ -597,7 +604,7 @@ const BerichtenLijst = ({
                         <TableCell className="rhc-mox-table-cell-actions">
                           <RijActies
                             onderwerp={bericht.onderwerp}
-                            href={`/berichtenbox/${bericht.id}`}
+                            href={`/berichtenbox/${encodeURIComponent(bericht.id)}`}
                             ongelezen={isOngelezen(
                               staat,
                               bericht.id,

@@ -2975,6 +2975,72 @@
     "homepageRegelgeving": ["milieubeheer"]
   },
   {
+    "id": "proeftuin-vier",
+    "stelsel": true,
+    "actief": false,
+    "archief": false,
+    "label": "Aangesloten onderneming, berichten in mappen",
+    "beschrijving": "Deze persona laat Demo-onderneming 4 zien, met berichten in mappen van 100 organisaties.",
+    "persoon": {
+      "voornaam": "Robin",
+      "achternaam": "Vogel"
+    },
+    "organisaties": [
+      {
+        "handelsnaam": "Demo-onderneming 4",
+        "functies": "Eigenaar",
+        "website": "",
+        "kvkNummer": "90000015",
+        "rsinNummer": "90000015",
+        "btwNummer": "NL00090000015",
+        "omzetbelastingnummer": "090000015B01",
+        "startdatum": "1 maart 2024",
+        "rechtsvorm": "Besloten vennootschap",
+        "branche": "Zakelijke dienstverlening",
+        "vestigingsadres": "Weena 500, Rotterdam",
+        "gemeente": "Rotterdam",
+        "rol": "Eigenaar",
+        "vestigingsnummer": "000090000015",
+        "iban": "",
+        "loonheffingennummer": "",
+        "werkzamePersonenFulltime": 1,
+        "werkzamePersonenParttime": 0,
+        "sbi": [
+          {
+            "code": "64202",
+            "omschrijving": "Financiële holdings"
+          }
+        ],
+        "vestigingsadresVolledig": "Weena 500, 3012 CN Rotterdam",
+        "postadres": "Weena 500, 3012 CN Rotterdam",
+        "vestigingen": [
+          {
+            "nummer": "000090000015",
+            "type": "Hoofdvestiging",
+            "adres": "Weena 500, 3012 CN Rotterdam"
+          }
+        ],
+        "ubo": [],
+        "jaarrekeningen": []
+      }
+    ],
+    "belangen": [],
+    "subsidies": [
+      "mkb-digitaliseringssubsidie",
+      "duurzaam-advies-voucher",
+      "kia"
+    ],
+    "regelgeving": [
+      "handelsregisterwet",
+      "loonbelasting",
+      "dienstenwet",
+      "milieubeheer"
+    ],
+    "buurt": "rotterdam",
+    "homepageSubsidies": ["duurzaam-advies-voucher"],
+    "homepageRegelgeving": ["milieubeheer"]
+  },
+  {
     "id": "proeftuin-garage",
     "stelsel": true,
     "actief": false,

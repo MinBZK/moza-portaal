@@ -48,6 +48,7 @@ const BerichtenboxNav = ({
   actief,
   opLijst = true,
   metNieuwe = true,
+  extraMappen = [],
 }: {
   berichten: (DemoBericht & { plek?: Weergave })[];
   /** Het tabblad waar de gebruiker nu is. Null als dat nog niet bekend is. */
@@ -56,6 +57,8 @@ const BerichtenboxNav = ({
   opLijst?: boolean;
   /** Binnengedruppelde demo-berichten meetellen. Niet bij het stelsel. */
   metNieuwe?: boolean;
+  /** Mappen die de organisaties al meldden terwijl de berichten nog komen. */
+  extraMappen?: string[];
 }) => {
   const { staat } = useBerichtenboxState();
   const zoekParams = useSearchParams();
@@ -81,6 +84,7 @@ const BerichtenboxNav = ({
             .map((bericht) => mapVanBericht(staat, bericht))
             .filter((naam): naam is string => !!naam),
           ...(metNieuwe ? staat.eigenMappen : []),
+          ...extraMappen,
         ]),
       ].sort((a, b) => a.localeCompare(b, "nl"))
     : [];
