@@ -3,7 +3,10 @@
 import { Alert, Paragraph } from "@/components/rhc";
 import BerichtenboxNav from "./_berichtenboxNav";
 import BerichtenLijst from "./_berichtenLijst";
-import Volledigheidsmelding, { SessieVerlopen } from "./_ketenMeldingen";
+import Volledigheidsmelding, {
+  MeldingenRegio,
+  SessieVerlopen,
+} from "./_ketenMeldingen";
 import {
   ketenFoutTekst,
   useKeten,
@@ -50,13 +53,15 @@ const StelselLijst = ({
       <div aria-live="polite" className="rhc-visually-hidden">
         {nieuw && `Nieuw bericht van ${nieuw.afzender}.`}
       </div>
-      {verlopen && <SessieVerlopen />}
-      {fase === "klaar" && volledigheid && (
-        <Volledigheidsmelding
-          volledigheid={volledigheid}
-          aantal={berichten.length}
-        />
-      )}
+      <MeldingenRegio>
+        {verlopen && <SessieVerlopen />}
+        {fase === "klaar" && volledigheid && (
+          <Volledigheidsmelding
+            volledigheid={volledigheid}
+            aantal={berichten.length}
+          />
+        )}
+      </MeldingenRegio>
       {volgenGestopt && !verlopen && (
         <Alert type="info">
           <Paragraph>

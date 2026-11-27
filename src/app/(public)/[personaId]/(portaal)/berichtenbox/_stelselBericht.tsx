@@ -16,7 +16,7 @@ import type { BerichtenboxVariant } from "@/app/(private)/instellingen/_featureF
 import { HuidigeKruimel } from "@/layouts/breadcrumb/huidigeKruimel";
 import BerichtDetail from "./_berichtDetail";
 import { formatDatum } from "./_formatDatum";
-import { SessieVerlopen } from "./_ketenMeldingen";
+import { MeldingenRegio, SessieVerlopen } from "./_ketenMeldingen";
 import PdfVoorbeeld from "./_pdfVoorbeeld";
 import {
   haalKetenInhoud,
@@ -55,16 +55,24 @@ const StelselBericht = ({
     if (!huidig) return;
     let actueel = true;
     haalKetenInhoud(huidig)
-      .then((resultaat) => actueel && setInhoud(resultaat))
+      .then((resultaat) => {
+        if (!actueel) return;
+        // Een eerdere fout mag een gelukte lezing niet verbergen.
+        setInhoudFout(null);
+        setInhoud(resultaat);
+      })
       .catch((fout: unknown) => {
         if (!actueel) return;
         const reden = fout instanceof KetenFout ? fout.reden : null;
+        console.error("[Berichtenbox] bericht", reden, fout);
         setInhoudFout(
           reden === "weg"
-            ? "Wij konden dit bericht niet ophalen bij de organisatie die het stuurde. Ververs de pagina om het opnieuw te proberen, of ga terug naar uw berichtenbox."
+            ? ketenFoutTekst.weg
             : reden === "tijdelijk"
-              ? "Wij kunnen dit bericht nu even niet ophalen. Ververs de pagina over een minuut om het opnieuw te proberen."
-              : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
+              ? "Wij kunnen dit bericht nu niet ophalen. Ververs de pagina over een minuut om het opnieuw te proberen."
+              : reden === "teVeelSessies" || reden === "sessieVerlopen"
+                ? ketenFoutTekst[reden]
+                : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
         );
       });
     return () => {
@@ -76,7 +84,7 @@ const StelselBericht = ({
 
   if (fout) return <Alert type="error">{ketenFoutTekst[fout]}</Alert>;
   if (!klaar)
-    return <Paragraph role="status">Wij halen uw bericht op.</Paragraph>;
+    return <Paragraph role="status">Wij halen uw bericht op…</Paragraph>;
   if (!bericht) {
     return (
       <>
@@ -119,7 +127,7 @@ const StelselBericht = ({
         }}
       >
         <Heading level={1}>{bericht.onderwerp}</Heading>
-        {verlopen && <SessieVerlopen />}
+        <MeldingenRegio>{verlopen && <SessieVerlopen />}</MeldingenRegio>
 
         <DataSummary appearance="column">
           <DataSummaryItem itemKey="Afzender" itemValue={bericht.afzender} />
@@ -132,7 +140,7 @@ const StelselBericht = ({
         {inhoudFout ? (
           <Alert type="error">{inhoudFout}</Alert>
         ) : !inhoud ? (
-          <Paragraph role="status">Wij halen de inhoud op.</Paragraph>
+          <Paragraph role="status">Wij halen de inhoud op…</Paragraph>
         ) : (
           <>
             {inhoud.inhoud
@@ -167,11 +175,19 @@ const StelselBericht = ({
                         </a>
                       ) : (
                         // Het stelsel gaf geen adres dat wij kunnen volgen.
-                        <>{bijlage.naam} (nu niet te openen)</>
+                        <>
+                          {bijlage.naam} (deze bijlage is hier niet te openen)
+                        </>
                       )}
                     </UnorderedListItem>
                   ))}
                 </UnorderedList>
+                {inhoud.bijlagen.some((bijlage) => !bijlage.adres) && (
+                  <Paragraph>
+                    Heeft u deze bijlage nodig? Neem dan contact op met{" "}
+                    {bericht.afzender}.
+                  </Paragraph>
+                )}
               </section>
             )}
           </>

@@ -23,7 +23,7 @@ const PLEK_MAPPEN = { archief: "Archief", prullenbak: "Prullenbak" } as const;
 export type KetenPlek = "inbox" | "archief" | "prullenbak";
 
 export type KetenFoutReden =
-  /** Er is (nog) geen ophaalronde geweest: eerst ophalen. */
+  /** Er is (nog) geen ophaalronde geweest, of de vorige strandde: eerst ophalen. */
   | "geenSessie"
   /** Er loopt al een ophaalronde voor deze ontvanger. */
   | "bezig"
@@ -76,6 +76,11 @@ export type Volledigheid = {
   afgekapt: Afgekapt[];
   /** De lijst was langer dan wij in één keer lezen. */
   teLang: boolean;
+  /**
+   * Wij weten niet zeker of de lijst volledig is: het stelsel zei het niet in
+   * de vorm die wij kennen, of er waren berichten die wij niet konden lezen.
+   */
+  onzeker: boolean;
 };
 
 export type KetenLijst = { berichten: KetenLijstBericht[] } & Volledigheid;
@@ -132,6 +137,28 @@ const naam = (organisatie: { naam?: unknown; magazijnId?: unknown }) =>
 const verlopen = (wat: string) =>
   new KetenFout("sessieVerlopen", `${wat}: sessie verlopen`);
 
+/** Het kenmerk van een foutantwoord van het stelsel; stuur daarop, niet op de tekst. */
+const typeVan = async (antwoord: Response) => {
+  try {
+    const lichaam = (await antwoord.json()) as { type?: unknown };
+    return typeof lichaam.type === "string" ? lichaam.type : "";
+  } catch {
+    return "";
+  }
+};
+
+/** Een 409: er loopt een ophaalronde (wachten), of er is er nog geen geweest. */
+const conflict = async (antwoord: Response, wat: string) =>
+  (await typeVan(antwoord)) === "urn:fbs:fout:ophalen-bezig"
+    ? new KetenFout("bezig", `${wat}: ophaalronde bezig`)
+    : new KetenFout("geenSessie", `${wat}: nog geen ophaalronde`);
+
+/** Een 503: de vorige ronde strandde (opnieuw ophalen), of het stelsel kan het nu niet. */
+const onbeschikbaar = async (antwoord: Response, wat: string) =>
+  (await typeVan(antwoord)) === "urn:fbs:fout:ophalen-mislukt"
+    ? new KetenFout("geenSessie", `${wat}: vorige ophaalronde mislukt`)
+    : new KetenFout("tijdelijk", `${wat}: tijdelijk niet beschikbaar`);
+
 // --- Sessie ----------------------------------------------------------------
 
 /** Start een sessie bij het stelsel. Een vorige sessie van deze browser stopt. */
@@ -152,18 +179,41 @@ export const startSessie = async () => {
     throw new KetenFout("onbereikbaar", `sessie ${antwoord.status}`);
 };
 
-/** Verlengt de sessie; false als het stelsel haar niet meer kent. */
-export const verlengSessie = async () => {
+export type SessieStand = "geldig" | "verlopen" | "onbekend";
+
+const standVan = (antwoord: Response): SessieStand =>
+  antwoord.ok ? "geldig" : antwoord.status === 401 ? "verlopen" : "onbekend";
+
+/** Verlengt de sessie. Een storing zegt niets over de sessie: dan "onbekend". */
+export const verlengSessie = async (): Promise<SessieStand> => {
   try {
     const antwoord = await metLimiet(
       `${KETEN}/sessies/huidige/_verlengen`,
       { method: "POST" },
       SESSIE_LIMIET_MS,
     );
-    return antwoord.status !== 401;
+    void antwoord.body?.cancel();
+    return standVan(antwoord);
   } catch {
-    // Niet bereikbaar zegt niets over de sessie; de volgende keer opnieuw.
-    return true;
+    return "onbekend";
+  }
+};
+
+/**
+ * Of de sessie in het cookie nog loopt, zonder haar te verlengen. Een ander
+ * tabblad kan intussen een nieuwe sessie gestart hebben.
+ */
+export const leesSessie = async (): Promise<SessieStand> => {
+  try {
+    const antwoord = await metLimiet(
+      `${KETEN}/sessies/huidige`,
+      {},
+      SESSIE_LIMIET_MS,
+    );
+    void antwoord.body?.cancel();
+    return standVan(antwoord);
+  } catch {
+    return "onbekend";
   }
 };
 
@@ -175,22 +225,65 @@ export const beeindigSessie = () =>
 
 // --- Lijst -----------------------------------------------------------------
 
+const getal = (waarde: unknown) =>
+  typeof waarde === "number" && Number.isFinite(waarde) && waarde >= 0
+    ? waarde
+    : undefined;
+
+/**
+ * Wat het stelsel over de volledigheid zegt. Die velden zijn verplicht; ontbreken
+ * ze of hebben ze een andere vorm, dan noemen wij de lijst onzeker in plaats van
+ * volledig.
+ */
 const leesVolledigheid = (
   pagina: LijstPagina,
-): Omit<Volledigheid, "teLang"> => ({
-  aantalNietGeleverd: Math.max(0, Number(pagina.aantalNietGeleverd) || 0),
-  nietGeleverd: (pagina.nietGeleverd ?? []).map((organisatie) => ({
-    magazijnId: String(organisatie.magazijnId ?? ""),
-    naam: naam(organisatie),
-    status: String(organisatie.status ?? ""),
-  })),
-  afgekapt: (pagina.afgekapt ?? []).map((organisatie) => ({
-    magazijnId: String(organisatie.magazijnId ?? ""),
-    naam: naam(organisatie),
-    aantalOpgehaald: organisatie.aantalOpgehaald,
-    totaalBeschikbaar: organisatie.totaalBeschikbaar,
-  })),
-});
+): Omit<Volledigheid, "teLang"> => {
+  const aantal = getal(pagina.aantalNietGeleverd);
+  const nietGeleverd = Array.isArray(pagina.nietGeleverd)
+    ? pagina.nietGeleverd
+    : null;
+  const afgekapt = Array.isArray(pagina.afgekapt) ? pagina.afgekapt : null;
+  const onzeker = aantal === undefined || !nietGeleverd || !afgekapt;
+  if (onzeker)
+    console.warn("[Berichtenbox] lijst zonder bruikbare volledigheid");
+  return {
+    aantalNietGeleverd: aantal ?? 0,
+    nietGeleverd: (nietGeleverd ?? []).map((organisatie) => ({
+      magazijnId: String(organisatie?.magazijnId ?? ""),
+      naam: naam(organisatie ?? {}),
+      status: String(organisatie?.status ?? ""),
+    })),
+    afgekapt: (afgekapt ?? []).map((organisatie) => ({
+      magazijnId: String(organisatie?.magazijnId ?? ""),
+      naam: naam(organisatie ?? {}),
+      aantalOpgehaald: getal(organisatie?.aantalOpgehaald),
+      totaalBeschikbaar: getal(organisatie?.totaalBeschikbaar),
+    })),
+    onzeker,
+  };
+};
+
+const TEKSTVELDEN = [
+  "afzenderNaam",
+  "onderwerp",
+  "publicatietijdstip",
+  "status",
+  "map",
+] as const;
+
+/** Een bericht dat wij kunnen tonen: met organisatie en nummer, en tekst waar tekst hoort. */
+const isLeesbaar = (bericht: unknown): bericht is KetenLijstBericht => {
+  const b = bericht as Record<string, unknown> | null;
+  return (
+    typeof b?.berichtId === "string" &&
+    typeof b.magazijnId === "string" &&
+    !!b.berichtId &&
+    !!b.magazijnId &&
+    TEKSTVELDEN.every(
+      (veld) => b[veld] === undefined || typeof b[veld] === "string",
+    )
+  );
+};
 
 /** De hele berichtenlijst, pagina voor pagina, met wat er ontbreekt. */
 export const haalLijst = async (): Promise<KetenLijst> => {
@@ -198,6 +291,7 @@ export const haalLijst = async (): Promise<KetenLijst> => {
   const gezien = new Set<string>();
   let volledigheid: Omit<Volledigheid, "teLang"> | null = null;
   let teLang = true;
+  let onleesbaar = 0;
   for (let pagina = 0; pagina < MAX_PAGINAS; pagina++) {
     let antwoord: Response;
     try {
@@ -210,8 +304,8 @@ export const haalLijst = async (): Promise<KetenLijst> => {
       throw new KetenFout("onbereikbaar", "berichtenlijst niet bereikbaar");
     }
     if (antwoord.status === 401) throw verlopen("lijst");
-    if (antwoord.status === 409)
-      throw new KetenFout("geenSessie", "nog geen ophaalronde");
+    if (antwoord.status === 409) throw await conflict(antwoord, "lijst");
+    if (antwoord.status === 503) throw await onbeschikbaar(antwoord, "lijst");
     if (!antwoord.ok)
       throw new KetenFout("onbereikbaar", `lijst ${antwoord.status}`);
     const deel = (await antwoord.json()) as LijstPagina;
@@ -222,7 +316,10 @@ export const haalLijst = async (): Promise<KetenLijst> => {
 
     // De lijst kan groeien tijdens het bladeren; dubbele berichten overslaan.
     for (const bericht of deel.berichten) {
-      if (!bericht?.berichtId || !bericht.magazijnId) continue;
+      if (!isLeesbaar(bericht)) {
+        onleesbaar++;
+        continue;
+      }
       const sleutel = berichtSleutel(bericht);
       if (gezien.has(sleutel)) continue;
       gezien.add(sleutel);
@@ -233,9 +330,13 @@ export const haalLijst = async (): Promise<KetenLijst> => {
       break;
     }
   }
+  if (onleesbaar)
+    console.warn(`[Berichtenbox] ${onleesbaar} berichten niet te lezen`);
+  const gelezen = volledigheid ?? leesVolledigheid({});
   return {
     berichten,
-    ...(volledigheid ?? leesVolledigheid({})),
+    ...gelezen,
+    onzeker: gelezen.onzeker || onleesbaar > 0,
     teLang,
   };
 };
@@ -271,7 +372,14 @@ export const leesSse = async (
           .map((regel) => regel.slice(5).replace(/^ /, ""))
           .join("\n");
         if (!data.trim()) continue;
-        if (opGebeurtenis(JSON.parse(data)) === true) return;
+        let gebeurtenis: Record<string, unknown>;
+        try {
+          gebeurtenis = JSON.parse(data);
+        } catch {
+          console.error("[Berichtenbox] onleesbaar bericht in de stroom");
+          continue;
+        }
+        if (opGebeurtenis(gebeurtenis) === true) return;
       }
     }
   } finally {
@@ -305,6 +413,7 @@ export const haalOp = async (
       throw new KetenFout("onbereikbaar", "ophalen niet bereikbaar");
     }
     if (antwoord.status === 401) throw verlopen("ophalen");
+    // Een 409 op `_ophalen` is altijd een ronde die al loopt.
     if (antwoord.status === 409)
       throw new KetenFout("bezig", "er loopt al een ophaalronde");
     if (!antwoord.ok || !antwoord.body)
@@ -382,7 +491,10 @@ export const bijlageAdres = (href: unknown): string | null => {
   } catch {
     return null;
   }
-  const pad = adres.pathname.match(/^\/api\/v1\/(berichten\/.+)$/)?.[1];
+  // Hetzelfde patroon als de route doorlaat; een ander adres tonen wij niet als link.
+  const pad = adres.pathname.match(
+    /^\/api\/v1\/(berichten\/[0-9a-fA-F-]{36}\/bijlagen\/[0-9a-fA-F-]{36})$/,
+  )?.[1];
   return pad ? `${KETEN}/${pad}${adres.search}` : null;
 };
 
@@ -407,10 +519,8 @@ export const haalInhoud = async (
   if (antwoord.status === 401) throw verlopen("inhoud");
   if (antwoord.status === 404 || antwoord.status === 410)
     throw new KetenFout("weg", "bericht niet gevonden");
-  if (antwoord.status === 409)
-    throw new KetenFout("geenSessie", "nog geen ophaalronde");
-  if (antwoord.status === 503)
-    throw new KetenFout("tijdelijk", "inhoud even niet beschikbaar");
+  if (antwoord.status === 409) throw await conflict(antwoord, "inhoud");
+  if (antwoord.status === 503) throw await onbeschikbaar(antwoord, "inhoud");
   if (!antwoord.ok)
     throw new KetenFout("onbereikbaar", `inhoud ${antwoord.status}`);
   const bericht = (await antwoord.json()) as {
@@ -454,10 +564,8 @@ const wijzig = async (
   if (antwoord.status === 401) throw verlopen("wijziging");
   if (antwoord.status === 404 || antwoord.status === 410)
     throw new KetenFout("weg", "bericht bestaat niet meer");
-  if (antwoord.status === 409)
-    throw new KetenFout("geenSessie", "nog geen ophaalronde");
-  if (antwoord.status === 503)
-    throw new KetenFout("tijdelijk", "wijziging even niet mogelijk");
+  if (antwoord.status === 409) throw await conflict(antwoord, "wijziging");
+  if (antwoord.status === 503) throw await onbeschikbaar(antwoord, "wijziging");
   if (!antwoord.ok)
     throw new KetenFout("onbereikbaar", `wijziging ${antwoord.status}`);
 };
@@ -493,6 +601,8 @@ export type VolgEinde =
   | "verlopen"
   /** 409: nog geen ophaalronde. Eerst opnieuw ophalen. */
   | "conflict"
+  /** 409: er loopt een ophaalronde, bijvoorbeeld in een ander tabblad. Wachten. */
+  | "bezig"
   /** Dit stelsel kent volgen niet. */
   | "ontbreekt"
   | "fout";
@@ -518,7 +628,10 @@ export const volg = async (
     return { einde: "fout", gezond: false };
   }
   if (antwoord.status === 401) return { einde: "verlopen", gezond: false };
-  if (antwoord.status === 409) return { einde: "conflict", gezond: false };
+  if (antwoord.status === 409) {
+    const reden = (await conflict(antwoord, "volgen")).reden;
+    return { einde: reden === "bezig" ? "bezig" : "conflict", gezond: false };
+  }
   if ([404, 405, 406].includes(antwoord.status))
     return { einde: "ontbreekt", gezond: false };
   const soort = antwoord.headers.get("content-type") ?? "";
@@ -544,7 +657,12 @@ export const volg = async (
         isVerlopen = true;
         return true;
       }
-      opGebeurtenis(gebeurtenis);
+      // Een fout bij één bericht mag de stroom niet stil afbreken.
+      try {
+        opGebeurtenis(gebeurtenis);
+      } catch (fout) {
+        console.error("[Berichtenbox] event", gebeurtenis.event, fout);
+      }
     });
   } catch {
     // Afgebroken of onleesbaar: de aanroeper verbindt opnieuw.

@@ -7,6 +7,7 @@ import { Icon, LinkButton, VisuallyHidden } from "@/components/rhc";
 import SideOverlay from "@/components/SideOverlay";
 import { useCookie } from "@/utils/useCookie";
 import { useRouter } from "next/navigation";
+import { beeindigSessie } from "@/network/keten/client";
 
 export type PersonaKeuze = {
   id: string;
@@ -61,6 +62,9 @@ const PersonaPaneel = ({
     const organisatie = persona.organisaties[0];
     if (!organisatie || persona.id === actievePersonaId) return;
 
+    // De sessie bij het berichtenstelsel hoort bij de vorige persona; ook als de
+    // nieuwe geen berichten uit het stelsel heeft, mag die niet blijven lopen.
+    void beeindigSessie();
     const maxAge = 60 * 60 * 24 * 30;
     setPersonaId(persona.id, { path: "/", maxAge });
     setOrganisatieId(organisatie.id, { path: "/", maxAge });

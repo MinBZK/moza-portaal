@@ -2979,8 +2979,8 @@
     "stelsel": true,
     "actief": false,
     "archief": false,
-    "label": "Aangesloten onderneming, mappen",
-    "beschrijving": "Deze persona laat Demo-onderneming 4 zien, met berichten in mappen bij honderd organisaties.",
+    "label": "Aangesloten onderneming, berichten in mappen",
+    "beschrijving": "Deze persona laat Demo-onderneming 4 zien, met berichten in mappen van 100 organisaties.",
     "persoon": {
       "voornaam": "Robin",
       "achternaam": "Vogel"
