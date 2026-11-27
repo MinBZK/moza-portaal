@@ -221,7 +221,10 @@ export const leesSessie = async (): Promise<SessieStand> => {
 export const beeindigSessie = () =>
   fetch(`${KETEN}/sessies/huidige`, { method: "DELETE", keepalive: true })
     .then(() => undefined)
-    .catch(() => undefined);
+    .catch((fout: unknown) => {
+      // Het stelsel ruimt een sessie zonder activiteit zelf op.
+      console.warn("[Berichtenbox] sessie beëindigen niet gelukt", fout);
+    });
 
 // --- Lijst -----------------------------------------------------------------
 
@@ -272,7 +275,7 @@ const TEKSTVELDEN = [
 ] as const;
 
 /** Een bericht dat wij kunnen tonen: met organisatie en nummer, en tekst waar tekst hoort. */
-const isLeesbaar = (bericht: unknown): bericht is KetenLijstBericht => {
+export const isLeesbaar = (bericht: unknown): bericht is KetenLijstBericht => {
   const b = bericht as Record<string, unknown> | null;
   return (
     typeof b?.berichtId === "string" &&
@@ -416,6 +419,8 @@ export const haalOp = async (
     // Een 409 op `_ophalen` is altijd een ronde die al loopt.
     if (antwoord.status === 409)
       throw new KetenFout("bezig", "er loopt al een ophaalronde");
+    if (antwoord.status === 503)
+      throw new KetenFout("tijdelijk", "ophalen tijdelijk niet mogelijk");
     if (!antwoord.ok || !antwoord.body)
       throw new KetenFout("onbereikbaar", `ophalen ${antwoord.status}`);
 

@@ -3231,3 +3231,7 @@ dialog.rhc-mox-side-panel[open] {
 		text-align: end;
 	}
 }
+
+.rhc-mox-status-region:empty {
+	position: absolute;
+}

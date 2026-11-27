@@ -73,6 +73,7 @@ export const beeindigBijStelsel = async (sessie: KetenSessie) => {
       method: "DELETE",
       headers: sessieHeaders(sessie),
       cache: "no-store",
+      redirect: "error",
       signal: AbortSignal.timeout(STELSEL_LIMIET_MS),
     });
     await antwoord.body?.cancel();
@@ -92,6 +93,7 @@ export const startBijStelsel = async (
     method: "POST",
     headers: new Headers({ "X-Ontvanger": ontvanger }),
     cache: "no-store",
+    redirect: "error",
     signal: AbortSignal.timeout(STELSEL_LIMIET_MS),
   });
   // Het lichaam gaat nooit door naar de browser: het kan het geheim bevatten.

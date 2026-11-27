@@ -59,21 +59,43 @@ const OpnieuwKnop = () => {
 };
 
 /** Een container die er altijd is, zodat wat erin verschijnt voorgelezen wordt. */
+// Niet atomair: een wijziging in de ene melding leest de andere niet opnieuw voor.
 export const MeldingenRegio = ({ children }: { children: ReactNode }) => (
-  <div role="status">{children}</div>
+  <div role="status" aria-atomic="false" className="rhc-mox-status-region">
+    {children}
+  </div>
 );
 
-export const SessieVerlopen = () => (
+export const SessieVerlopen = ({
+  herstelt,
+  opBericht = false,
+}: {
+  /** Het opnieuw ophalen loopt al. */
+  herstelt: boolean;
+  /** Op de pagina van één bericht, niet bij de lijst. */
+  opBericht?: boolean;
+}) => (
   <Alert type="info" role="presentation">
-    <Paragraph>
-      U was een tijd niet actief op deze pagina. Daarom staan hier misschien
-      niet uw nieuwste berichten. Zodra u verdergaat, halen wij uw berichten
-      opnieuw op.
-    </Paragraph>
-    <Paragraph>
-      Kies <strong>{OPNIEUW}</strong> om de lijst nu bij te werken.
-    </Paragraph>
-    <OpnieuwKnop />
+    {herstelt ? (
+      <Paragraph>Wij halen uw berichten opnieuw op…</Paragraph>
+    ) : opBericht ? (
+      <Paragraph>
+        U was een tijd niet actief op deze pagina. Zodra u verdergaat, halen wij
+        dit bericht opnieuw op.
+      </Paragraph>
+    ) : (
+      <>
+        <Paragraph>
+          U was een tijd niet actief op deze pagina. Daarom staan hier misschien
+          niet uw nieuwste berichten. Zodra u verdergaat, halen wij uw berichten
+          opnieuw op.
+        </Paragraph>
+        <Paragraph>
+          Kies <strong>{OPNIEUW}</strong> om de lijst nu bij te werken.
+        </Paragraph>
+        <OpnieuwKnop />
+      </>
+    )}
   </Alert>
 );
 
@@ -84,11 +106,8 @@ const isTeDruk = (status: string) => status === "NIET_OPGEHAALD";
 
 const Volledigheidsmelding = ({
   volledigheid,
-  aantal,
 }: {
   volledigheid: Volledigheid;
-  /** Hoeveel berichten er in de lijst staan. */
-  aantal: number;
 }) => {
   const { aantalNietGeleverd, nietGeleverd, afgekapt, teLang, onzeker } =
     volledigheid;
@@ -125,19 +144,23 @@ const Volledigheidsmelding = ({
       {teDruk.length === 1 && (
         <Paragraph>
           Bij {teDruk[0]} hebben wij uw berichten deze keer niet opgehaald. Het
-          was bij ons te druk. Bij {teDruk[0]} zelf is niets mis.
+          was bij ons te druk. Bij {teDruk[0]} zelf is niets mis. Berichten en
+          mappen van deze organisatie ontbreken daardoor.
         </Paragraph>
       )}
       {teDruk.length > 1 && (
         <Paragraph>
           Bij {noemOp(teDruk)} hebben wij uw berichten deze keer niet opgehaald.
           Het was bij ons te druk. Bij deze organisaties zelf is niets mis.
+          Berichten en mappen van deze organisaties ontbreken daardoor.
         </Paragraph>
       )}
       {anders.length > 0 && (
         <Paragraph>
           Van {noemOp(anders)} hebben wij uw berichten niet gekregen. Berichten
-          en mappen daarvan ontbreken daardoor.
+          en mappen van{" "}
+          {anders.length === 1 ? "die organisatie" : "die organisaties"}{" "}
+          ontbreken daardoor.
         </Paragraph>
       )}
       {naamloos > 0 && (
@@ -154,25 +177,23 @@ const Volledigheidsmelding = ({
         afgekapt[0].totaalBeschikbaar ? (
           <Paragraph>
             Hier staan {afgekapt[0].aantalOpgehaald} van uw{" "}
-            {afgekapt[0].totaalBeschikbaar} berichten van {afgekapt[0].naam}. De
-            andere berichten van deze organisatie staan hier niet.
+            {afgekapt[0].totaalBeschikbaar} berichten van {afgekapt[0].naam}.
           </Paragraph>
         ) : (
           <Paragraph>
-            Hier staan niet al uw berichten van {afgekapt[0].naam}. Een deel van
-            de berichten van deze organisatie staat hier niet.
+            Hier staan niet al uw berichten van {afgekapt[0].naam}.
           </Paragraph>
         ))}
       {afgekapt.length > 1 && (
         <Paragraph>
           Hier staan niet al uw berichten van deze organisaties:{" "}
-          {noemOp(afgekapt.map(metAantallen))}. Een deel van hun berichten staat
-          hier niet.
+          {noemOp(afgekapt.map(metAantallen))}.
         </Paragraph>
       )}
       {teLang && (
         <Paragraph>
-          Wij tonen {aantal} berichten. Mogelijk heeft u er meer.
+          Mogelijk staan hier niet al uw berichten. Wij tonen er niet meer,
+          omdat de lijst te lang is.
         </Paragraph>
       )}
       {onzeker && (

@@ -9,7 +9,6 @@ import {
   sessieCookie,
   sessieHeaders,
   startBijStelsel,
-  type KetenSessie,
 } from "@/network/keten/sessie";
 
 /**
@@ -44,7 +43,10 @@ const TERUG_TE_GEVEN = [
   "retry-after",
 ];
 // Wat een browser zelf mag tonen; de rest van de bijlagen komt als download.
-const ZELF_TE_TONEN = /^(application\/pdf|image\/png|image\/jpeg)\b/i;
+const ZELF_TE_TONEN = new Set(["application/pdf", "image/png", "image/jpeg"]);
+// Altijd, naast wat het stelsel zelf stuurt: twee policies gelden allebei.
+const BIJLAGE_CSP =
+  "default-src 'none'; img-src 'self'; object-src 'self'; frame-ancestors 'self'; base-uri 'none'; form-action 'none'";
 
 const ONGELDIG = {
   type: "urn:fbs:fout:sessie-ongeldig",
@@ -64,10 +66,12 @@ const bijlagePagina = (status: number) => {
   const tekst =
     status === 401
       ? "U was een tijd niet actief. Ga terug naar het tabblad met het bericht en open de bijlage opnieuw."
-      : status === 429 || status === 503
-        ? "Wij kunnen deze bijlage nu niet ophalen. Probeer het over een minuut opnieuw."
-        : "Wij kunnen deze bijlage nu niet ophalen. Probeer het later opnieuw.";
-  return `<!doctype html><html lang="nl"><meta charset="utf-8"><title>Bijlage niet beschikbaar</title><p>${tekst}</p></html>`;
+      : status === 404 || status === 410
+        ? "Deze bijlage bestaat niet meer. Neem contact op met de organisatie die het bericht stuurde."
+        : status === 429 || status === 503
+          ? "Wij kunnen deze bijlage nu niet ophalen. Probeer het over een minuut opnieuw."
+          : "Wij kunnen deze bijlage nu niet ophalen. Probeer het later opnieuw.";
+  return `<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bijlage niet beschikbaar</title><h1>Bijlage niet beschikbaar</h1><p>${tekst}</p></html>`;
 };
 
 const terugHeaders = (antwoord: Response) => {
@@ -89,12 +93,12 @@ const terugHeaders = (antwoord: Response) => {
  */
 const beveiligBijlage = (terug: Headers) => {
   terug.set("x-content-type-options", "nosniff");
-  if (!terug.has("content-security-policy"))
-    terug.set(
-      "content-security-policy",
-      "default-src 'none'; img-src 'self'; object-src 'self'; frame-ancestors 'self'",
-    );
-  if (!ZELF_TE_TONEN.test(terug.get("content-type") ?? "")) {
+  terug.append("content-security-policy", BIJLAGE_CSP);
+  // Eén type, zonder parameters; twee types (een komma) is geen type.
+  const ruw = terug.get("content-type") ?? "";
+  const type = ruw.includes(",") ? "" : ruw.split(";")[0].trim().toLowerCase();
+  terug.set("content-type", type || "application/octet-stream");
+  if (!ZELF_TE_TONEN.has(type)) {
     const naam = terug
       .get("content-disposition")
       ?.match(/filename\*?=[^;]+/)?.[0];
@@ -120,7 +124,7 @@ const wisCookie = () => ({ "set-cookie": sessieCookie(null) });
  * er is: zo laat een traag stelsel geen cookie achter dat naar een beëindigde
  * sessie wijst. Het antwoord noemt het sessie-id niet.
  */
-const startSessie = async (ontvanger: string, vorige: KetenSessie | null) => {
+const startSessie = async (ontvanger: string) => {
   let uitkomst;
   try {
     uitkomst = await startBijStelsel(ontvanger);
@@ -133,11 +137,28 @@ const startSessie = async (ontvanger: string, vorige: KetenSessie | null) => {
     if (uitkomst.wacht) headers.set("retry-after", uitkomst.wacht);
     return new Response(null, { status: uitkomst.status, headers });
   }
-  if (vorige) void beeindigBijStelsel(vorige);
+  // De vorige sessie stoppen wij niet: de browser start alleen een nieuwe als het
+  // stelsel de vorige niet meer kende, en een ander tabblad kan het cookie
+  // intussen op een nieuwere gezet hebben.
   return new Response(null, {
     status: 201,
     headers: { "set-cookie": sessieCookie(uitkomst.sessie) },
   });
+};
+
+// Wat de route van een sessie teruggeeft: nooit meer dan hoe lang ze geldt.
+const geldigheid = async (antwoord: Response) => {
+  const lichaam = (await antwoord.json().catch(() => ({}))) as Record<
+    string,
+    unknown
+  >;
+  return Response.json(
+    {
+      geldigTot: lichaam.geldigTot,
+      uiterlijkGeldigTot: lichaam.uiterlijkGeldigTot,
+    },
+    { status: antwoord.status },
+  );
 };
 
 const sessiePad = (pad: string, methode: string) =>
@@ -150,8 +171,11 @@ const stuurDoor = async (
   { params }: { params: Promise<{ pad: string[] }> },
 ) => {
   const pad = (await params).pad.join("/");
-  // HEAD is GET zonder lichaam.
-  const methode = request.method === "HEAD" ? "GET" : request.method;
+  // HEAD alleen voor een bijlage, als GET zonder lichaam. Op een stroom zou HEAD
+  // een plek bij het stelsel bezet houden.
+  const isHead = request.method === "HEAD";
+  if (isHead && !BIJLAGE.test(pad)) return new Response(null, { status: 405 });
+  const methode = isHead ? "GET" : request.method;
   const isSessiePad = sessiePad(pad, methode);
   if (
     !isSessiePad &&
@@ -161,9 +185,15 @@ const stuurDoor = async (
   )
     return Response.json({ fout: "Onbekend pad." }, { status: 404 });
 
-  // Wijzigen mag alleen vanaf deze site zelf, ook niet vanaf een buur-subdomein.
+  // Alleen vanaf deze site zelf, ook niet vanaf een buur-subdomein (andere apps
+  // op hetzelfde domein zijn same-site). Een bijlage mag ook rechtstreeks in de
+  // adresbalk geopend worden.
   const herkomst = request.headers.get("sec-fetch-site");
-  if (methode !== "GET" && herkomst && herkomst !== "same-origin")
+  const rechtstreeks =
+    herkomst === "none" &&
+    BIJLAGE.test(pad) &&
+    request.headers.get("sec-fetch-mode") === "navigate";
+  if (herkomst && herkomst !== "same-origin" && !rechtstreeks)
     return Response.json({ fout: "Niet toegestaan." }, { status: 403 });
 
   const opgeslagen = leesSessie(request.cookies.get(SESSIE_COOKIE)?.value);
@@ -186,7 +216,7 @@ const stuurDoor = async (
   const vanAnder = opgeslagen && !sessie ? opgeslagen : null;
   if (vanAnder) void beeindigBijStelsel(vanAnder);
 
-  if (pad === "sessies") return startSessie(ontvanger, sessie);
+  if (pad === "sessies") return startSessie(ontvanger);
 
   if (isSessiePad && !sessie) {
     const antwoord = probleem(ONGELDIG, 401);
@@ -213,6 +243,8 @@ const stuurDoor = async (
         headers,
         body: methode === "PATCH" ? await request.text() : undefined,
         cache: "no-store",
+        // Een omleiding nam X-Sessie mee naar een ander adres.
+        redirect: "error",
         // Sluit de bezoeker de stroom, dan stopt het stelsel ook.
         signal: request.signal,
       },
@@ -222,10 +254,16 @@ const stuurDoor = async (
     return stelselOnbereikbaar();
   }
 
+  // Bij een 401 blijft het cookie staan: een ander tabblad kan het intussen op
+  // een nieuwe sessie gezet hebben, en de volgende start overschrijft het toch.
+  if (isSessiePad) {
+    const lichaam = await geldigheid(antwoord);
+    if (vanAnder) lichaam.headers.append("set-cookie", sessieCookie(null));
+    return lichaam;
+  }
+
   const terug = terugHeaders(antwoord);
-  // Het stelsel kent de sessie niet meer: dan hoort het cookie ook weg.
-  if (antwoord.status === 401 || vanAnder)
-    terug.append("set-cookie", sessieCookie(null));
+  if (vanAnder) terug.append("set-cookie", sessieCookie(null));
 
   if (BIJLAGE.test(pad)) {
     if (!antwoord.ok) {
@@ -241,7 +279,8 @@ const stuurDoor = async (
     beveiligBijlage(terug);
   }
 
-  return new Response(request.method === "HEAD" ? null : antwoord.body, {
+  if (isHead) await antwoord.body?.cancel();
+  return new Response(isHead ? null : antwoord.body, {
     status: antwoord.status,
     headers: terug,
   });

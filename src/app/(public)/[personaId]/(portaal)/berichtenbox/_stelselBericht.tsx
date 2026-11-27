@@ -42,7 +42,7 @@ const StelselBericht = ({
   /** Berichtenbox A/B/C-test; B toont de eerste pdf-bijlage in de pagina. */
   variant?: BerichtenboxVariant;
 }) => {
-  const { fase, berichten, fout, verlopen } = useKeten(ontvanger);
+  const { fase, berichten, fout, verlopen, herstelt } = useKeten(ontvanger);
   const bericht = berichten.find((b) => b.id === berichtId);
   const [inhoud, setInhoud] = useState<KetenInhoud | null>(null);
   const [inhoudFout, setInhoudFout] = useState<string | null>(null);
@@ -72,7 +72,7 @@ const StelselBericht = ({
               ? "Wij kunnen dit bericht nu niet ophalen. Ververs de pagina over een minuut om het opnieuw te proberen."
               : reden === "teVeelSessies" || reden === "sessieVerlopen"
                 ? ketenFoutTekst[reden]
-                : "Het ophalen van dit bericht is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
+                : "Wij kunnen dit bericht nu niet ophalen. Ververs de pagina om het opnieuw te proberen.",
         );
       });
     return () => {
@@ -83,19 +83,20 @@ const StelselBericht = ({
   }, [gevonden, berichtId]);
 
   if (fout) return <Alert type="error">{ketenFoutTekst[fout]}</Alert>;
-  if (!klaar)
+  // Tijdens een herstel blijft het bericht staan, zodat de focus niet kwijtraakt.
+  if (!klaar && !bericht)
     return <Paragraph role="status">Wij halen uw bericht op…</Paragraph>;
   if (!bericht) {
     return (
       <>
         <Heading level={1}>Bericht niet gevonden</Heading>
-        <Paragraph>Dit bericht staat niet (meer) in uw berichtenbox.</Paragraph>
+        <Paragraph>Dit bericht staat niet in uw berichtenbox.</Paragraph>
         <Paragraph>
           <Link
             href="/berichtenbox"
             className="utrecht-link utrecht-link--html-a"
           >
-            Naar uw berichtenbox
+            Terug naar Berichtenbox
           </Link>
         </Paragraph>
       </>
@@ -127,7 +128,9 @@ const StelselBericht = ({
         }}
       >
         <Heading level={1}>{bericht.onderwerp}</Heading>
-        <MeldingenRegio>{verlopen && <SessieVerlopen />}</MeldingenRegio>
+        <MeldingenRegio>
+          {verlopen && <SessieVerlopen herstelt={herstelt} opBericht />}
+        </MeldingenRegio>
 
         <DataSummary appearance="column">
           <DataSummaryItem itemKey="Afzender" itemValue={bericht.afzender} />
@@ -184,8 +187,8 @@ const StelselBericht = ({
                 </UnorderedList>
                 {inhoud.bijlagen.some((bijlage) => !bijlage.adres) && (
                   <Paragraph>
-                    Heeft u deze bijlage nodig? Neem dan contact op met{" "}
-                    {bericht.afzender}.
+                    Heeft u een bijlage nodig die hier niet te openen is? Neem
+                    dan contact op met {bericht.afzender}.
                   </Paragraph>
                 )}
               </section>

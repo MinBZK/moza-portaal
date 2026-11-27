@@ -8,6 +8,7 @@ import {
   haalInhoud,
   haalLijst,
   haalOp,
+  isLeesbaar,
   KetenFout,
   leesSessie,
   plekVanMap,
@@ -60,6 +61,8 @@ type KetenStaat = {
   volledigheid: Volledigheid | null;
   /** De sessie is verlopen; bij de volgende actie halen wij opnieuw op. */
   verlopen: boolean;
+  /** Wij halen na een verlopen sessie of op verzoek opnieuw op. */
+  herstelt: boolean;
   /** Laatst binnengekomen bericht, voor de melding aan schermlezers. */
   nieuw: { id: string; afzender: string } | null;
   /** Nieuwe berichten komen niet meer vanzelf binnen. */
@@ -68,17 +71,17 @@ type KetenStaat = {
 
 export const ketenFoutTekst: Record<KetenFoutReden, string> = {
   onbereikbaar:
-    "Het ophalen van uw berichten is niet gelukt. Ververs de pagina om het opnieuw te proberen.",
+    "Wij kunnen uw berichten nu niet ophalen. Ververs de pagina om het opnieuw te proberen.",
   bezig:
     "Wij halen uw berichten op dit moment al op. Wacht 2 minuten en ververs dan de pagina.",
   afgebroken:
-    "Het ophalen van uw berichten is halverwege gestopt. Daardoor ziet u niet al uw berichten. Ververs de pagina om het opnieuw te proberen.",
+    "Het ophalen van uw berichten is halverwege gestopt. Daardoor staan hier niet al uw berichten. Ververs de pagina om het opnieuw te proberen.",
   geenSessie:
     "Uw berichten staan niet meer klaar. Ververs de pagina, dan halen wij ze opnieuw op.",
   sessieVerlopen:
     "U was een tijd niet actief. Ververs de pagina, dan halen wij uw berichten opnieuw op.",
   teVeelSessies:
-    "U bent op te veel plekken tegelijk ingelogd. Log uit op de andere computer of in de andere browser. Ververs daarna deze pagina. Of wacht 15 minuten en ververs dan de pagina.",
+    "De berichtenbox van uw bedrijf is op te veel plekken tegelijk open. Log uit op een ander apparaat of in een andere browser. Ververs daarna deze pagina. Lukt dat niet? Wacht dan 15 minuten en ververs de pagina.",
   tijdelijk:
     "Wij kunnen uw berichten nu niet ophalen. Probeer het over een minuut opnieuw.",
   weg: "Dit bericht bestaat niet meer. Het staat daarom niet meer in de lijst.",
@@ -101,6 +104,7 @@ const LEEG: KetenStaat = {
   fout: null,
   volledigheid: null,
   verlopen: false,
+  herstelt: false,
   nieuw: null,
   volgenGestopt: false,
 };
@@ -220,6 +224,11 @@ const metSessie = async <T>(taak: () => Promise<T>): Promise<T> => {
   } catch (fout) {
     if (redenVan(fout) !== "sessieVerlopen") throw fout;
   }
+  // Misschien zette een ander tabblad het cookie al op een nieuwe sessie.
+  if ((await leesSessie()) === "geldig") {
+    sessieLoopt = true;
+    return taak();
+  }
   await startSessie();
   sessieLoopt = true;
   laatstVerlengd = Date.now();
@@ -286,8 +295,8 @@ const wachtOpLijst = async () => {
     try {
       return await leesLijst();
     } catch (fout) {
-      const reden = redenVan(fout);
-      if (reden !== "geenSessie" && reden !== "bezig") throw fout;
+      // Geen ronde meer, of die van elders strandde: de aanroeper haalt zelf op.
+      if (redenVan(fout) !== "bezig") throw fout;
       if (Date.now() >= einde)
         throw new KetenFout("bezig", "ophaalronde niet op tijd klaar");
     }
@@ -302,7 +311,14 @@ const rondeEnLijst = async (gen: number) => {
     zetLijst(gen, await leesLijst());
   } catch (fout) {
     if (redenVan(fout) !== "bezig") throw fout;
-    zetLijst(gen, await wachtOpLijst());
+    try {
+      zetLijst(gen, await wachtOpLijst());
+    } catch (elders) {
+      // De ronde elders strandde; dan één keer zelf.
+      if (redenVan(elders) !== "geenSessie") throw elders;
+      await haalOp((voortgang) => zet(gen, { voortgang }));
+      zetLijst(gen, await leesLijst());
+    }
   }
 };
 
@@ -313,7 +329,14 @@ const lijstOfRonde = async (gen: number) => {
   } catch (fout) {
     const reden = redenVan(fout);
     if (reden === "geenSessie") return rondeEnLijst(gen);
-    if (reden === "bezig") return zetLijst(gen, await wachtOpLijst());
+    if (reden === "bezig") {
+      try {
+        return zetLijst(gen, await wachtOpLijst());
+      } catch (elders) {
+        if (redenVan(elders) === "geenSessie") return rondeEnLijst(gen);
+        throw elders;
+      }
+    }
     throw fout;
   }
 };
@@ -321,7 +344,13 @@ const lijstOfRonde = async (gen: number) => {
 const mislukt = (gen: number, fout: unknown) => {
   console.error("[Berichtenbox] stelsel", redenVan(fout), fout);
   if (redenVan(fout) === "sessieVerlopen") stopSessieklok();
-  zet(gen, { fase: "fout", voortgang: null, fout: redenVan(fout) });
+  zet(gen, {
+    fase: "fout",
+    voortgang: null,
+    fout: redenVan(fout),
+    verlopen: false,
+    herstelt: false,
+  });
 };
 
 /**
@@ -373,12 +402,18 @@ const herstel = (opnieuwOphalen = false) => {
   const gen = generatie;
   herstelBezig ??= (async () => {
     stopVolgen();
-    zet(gen, { volgenGestopt: false });
+    zet(gen, { volgenGestopt: false, herstelt: true });
     try {
+      // Zonder open berichtenbox (alleen de teller) geen ronde bij alle
+      // organisaties: dat laat de teller aan de berichtenbox over.
       await metSessie(() =>
-        opnieuwOphalen ? rondeEnLijst(gen) : lijstOfRonde(gen),
+        volgers === 0
+          ? leesLijst().then((lijst) => zetLijst(gen, lijst))
+          : opnieuwOphalen
+            ? rondeEnLijst(gen)
+            : lijstOfRonde(gen),
       );
-      zet(gen, { verlopen: false });
+      zet(gen, { verlopen: false, herstelt: false });
       startVolgen();
     } catch (fout) {
       mislukt(gen, fout);
@@ -422,7 +457,10 @@ function sessieVerlopen() {
       return;
     }
     zet(gen, { verlopen: true });
-    bijActiviteit(() => {
+    // Na de limiet altijd op een nieuwe actie wachten, ook als de laatste
+    // nog geen minuut oud is; anders blijft een tegenstrijdig stelsel rondgaan.
+    void wachtOpActiviteit().then(() => {
+      if (gen !== generatie) return;
       herstelPogingen = 0;
       void herstel();
     });
@@ -482,9 +520,8 @@ const sleutelUit = (gebeurtenis: Record<string, unknown>) => {
 };
 
 const voegToe = (gen: number, ruw: unknown) => {
-  const bericht = ruw as KetenLijstBericht | undefined;
-  if (!bericht?.berichtId || !bericht.magazijnId) return;
-  const nieuw = naarBericht(bericht);
+  if (!isLeesbaar(ruw)) return;
+  const nieuw = naarBericht(ruw);
   if (staat.berichten.some((b) => b.id === nieuw.id)) return;
   zet(gen, {
     berichten: sorteer([nieuw, ...staat.berichten]),
@@ -558,7 +595,9 @@ const ververs = async (gen: number, signal: AbortSignal) => {
   try {
     if (!isActief()) await wachtOpActiviteit(signal);
     if (signal.aborted || gen !== generatie) return;
-    werkLijstBij(gen, await leesLijst());
+    const lijst = await leesLijst();
+    if (signal.aborted || herstelBezig) return;
+    werkLijstBij(gen, lijst);
   } catch (fout) {
     const reden = redenVan(fout);
     if (reden === "sessieVerlopen") return sessieVerlopen();
@@ -586,7 +625,9 @@ const poll = async (gen: number, signal: AbortSignal, duurMs = Infinity) => {
     if (!isActief()) await wachtOpActiviteit(signal);
     if (signal.aborted) return;
     try {
-      werkLijstBij(gen, await leesLijst());
+      const lijst = await leesLijst();
+      if (signal.aborted || herstelBezig) return;
+      werkLijstBij(gen, lijst);
       fouten = 0;
     } catch (fout) {
       const reden = redenVan(fout);
@@ -694,7 +735,7 @@ export const useKeten = (ontvanger: string | null, ophalen = true) => {
 
   // Naar een andere pagina gaan is ook iets wat de ondernemer doet.
   useEffect(() => {
-    if (!ontvanger) return;
+    if (!ontvanger) return stopSessieklok();
     luisterNaarActiviteit();
     opActiviteit();
   }, [ontvanger, pad]);
@@ -728,6 +769,7 @@ export const useKeten = (ontvanger: string | null, ophalen = true) => {
     fout: vanDeze ? huidig.fout : null,
     volledigheid: vanDeze ? huidig.volledigheid : null,
     verlopen: vanDeze ? huidig.verlopen : false,
+    herstelt: vanDeze ? huidig.herstelt : false,
     nieuw: vanDeze ? huidig.nieuw : null,
     volgenGestopt: vanDeze ? huidig.volgenGestopt : false,
   };
@@ -794,7 +836,7 @@ export const zetKetenMap = async (
       gen,
       fout,
       id,
-      map ? "in de map zetten" : "uit de map halen",
+      map ? `in de map ${map} zetten` : "uit de map halen",
     );
   }
   zet(gen, {
@@ -843,5 +885,5 @@ const wijzigingMislukt = (
     return `Wij kunnen dit bericht nu niet ${wat}. Probeer het over een minuut opnieuw.`;
   if (reden === "teVeelSessies" || reden === "sessieVerlopen")
     return ketenFoutTekst[reden];
-  return `Wij konden dit bericht niet ${wat}. Probeer het opnieuw.`;
+  return `Wij kunnen dit bericht nu niet ${wat}. Probeer het opnieuw.`;
 };

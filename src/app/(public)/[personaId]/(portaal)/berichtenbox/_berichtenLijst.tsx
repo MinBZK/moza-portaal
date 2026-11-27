@@ -243,9 +243,12 @@ const BerichtenLijst = ({
 
   const bezig = stelsel ? stelsel.bezig : nagebootst.bezig;
   const voortgang = stelsel ? stelsel.voortgang : nagebootst.voortgang;
+  // Haalt het stelsel opnieuw op terwijl er al een lijst staat, dan blijft die
+  // staan, met de voortgang erboven: zo raakt de focus niet kwijt.
+  const vervangt = !!stelsel && bezig && uitBron.length > 0;
 
-  if (!staat || (stelsel?.bezig && !stelsel.voortgang)) {
-    return <Paragraph role="status">Wij halen uw berichten op.</Paragraph>;
+  if (!staat || (stelsel?.bezig && !stelsel.voortgang && !vervangt)) {
+    return <Paragraph role="status">Wij halen uw berichten op…</Paragraph>;
   }
 
   const naarEerstePagina = () => {
@@ -376,7 +379,7 @@ const BerichtenLijst = ({
 
   return (
     <div className="rhc-mox-stack rhc-mox-stack--2xl">
-      {bezig ||
+      {(bezig && !vervangt) ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : weergave === "inbox" ? (
         <Paragraph className="rhc-mox-notice-amount-inbox">
@@ -509,10 +512,12 @@ const BerichtenLijst = ({
               ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
               : voortgang
                 ? `${meervoud(voortgang.gevonden, "bericht", "berichten")} opgehaald.`
-                : ""}
+                : stelsel && !stelsel.fout
+                  ? `Wij hebben ${meervoud(uitBron.length, "bericht", "berichten")} opgehaald.`
+                  : ""}
       </div>
 
-      {bezig ||
+      {(bezig && !vervangt) ||
       stelsel?.fout ||
       storing?.scenario === "geen" ? null : gesorteerd.length === 0 ? (
         <Paragraph>
