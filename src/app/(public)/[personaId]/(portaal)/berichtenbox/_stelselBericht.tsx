@@ -82,7 +82,13 @@ const StelselBericht = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gevonden, berichtId]);
 
-  if (fout) return <Alert type="error">{ketenFoutTekst[fout]}</Alert>;
+  if (fout)
+    return (
+      <>
+        <Heading level={1}>{bericht?.onderwerp ?? "Bericht"}</Heading>
+        <Alert type="error">{ketenFoutTekst[fout]}</Alert>
+      </>
+    );
   // Tijdens een herstel blijft het bericht staan, zodat de focus niet kwijtraakt.
   if (!klaar && !bericht)
     return <Paragraph role="status">Wij halen uw bericht op…</Paragraph>;

@@ -161,7 +161,10 @@ const onbeschikbaar = async (antwoord: Response, wat: string) =>
 
 // --- Sessie ----------------------------------------------------------------
 
-/** Start een sessie bij het stelsel. Een vorige sessie van deze browser stopt. */
+/**
+ * Start een sessie bij het stelsel. Loopt de sessie in het cookie nog, dan
+ * gebruikt de route die en start zij geen tweede.
+ */
 export const startSessie = async () => {
   let antwoord: Response;
   try {

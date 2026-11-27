@@ -33,6 +33,7 @@ const StelselLijst = ({
     volledigheid,
     verlopen,
     herstelt,
+    opgehaald,
     nieuw,
     volgenGestopt,
   } = useKeten(ontvanger);
@@ -55,8 +56,11 @@ const StelselLijst = ({
         {nieuw && `Nieuw bericht van ${nieuw.afzender}.`}
       </div>
       <MeldingenRegio>
-        {verlopen && <SessieVerlopen herstelt={herstelt} />}
-        {fase === "klaar" && !verlopen && volledigheid && (
+        {/* Tijdens de ronde zegt de voortgang het al. */}
+        {verlopen && !(herstelt && fase === "ophalen") && (
+          <SessieVerlopen herstelt={herstelt} />
+        )}
+        {fase === "klaar" && !herstelt && volledigheid && (
           <Volledigheidsmelding volledigheid={volledigheid} />
         )}
       </MeldingenRegio>
@@ -75,6 +79,7 @@ const StelselLijst = ({
         stelsel={{
           bezig: fase !== "klaar" && fase !== "fout",
           voortgang,
+          opgehaald,
           fout: fout ? ketenFoutTekst[fout] : null,
           verplaats: verplaatsKetenBericht,
           zetMap: zetKetenMap,

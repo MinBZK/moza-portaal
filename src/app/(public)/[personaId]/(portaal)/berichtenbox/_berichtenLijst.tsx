@@ -144,6 +144,8 @@ export type StelselBron = {
   /** Nog bezig met laden of ophalen. */
   bezig: boolean;
   voortgang: Voortgang | null;
+  /** Wat de laatste ophaalronde opleverde; de bevestiging aan het eind ervan. */
+  opgehaald?: { berichten: number; organisaties: number } | null;
   /** Tekst als het ophalen niet lukte. */
   fout: string | null;
   /** Geeft null als het lukte, anders de tekst voor de gebruiker. */
@@ -453,7 +455,7 @@ const BerichtenLijst = ({
 
       {/* role="status": ook als de focus elders blijft, zoals na de mapkeuze. */}
       <div ref={meldingRef} tabIndex={-1} role="status">
-        {melding && !bezig && (
+        {melding && (!bezig || vervangt) && (
           <Alert
             key={`${meldingNummer}-${melding}`}
             type="ok"
@@ -512,8 +514,8 @@ const BerichtenLijst = ({
               ? `${meervoud(gevonden.length, "bericht", "berichten")} gevonden`
               : voortgang
                 ? `${meervoud(voortgang.gevonden, "bericht", "berichten")} opgehaald.`
-                : stelsel && !stelsel.fout
-                  ? `Wij hebben ${meervoud(uitBron.length, "bericht", "berichten")} opgehaald.`
+                : stelsel?.opgehaald && !stelsel.fout
+                  ? `Wij hebben ${meervoud(stelsel.opgehaald.berichten, "bericht", "berichten")} opgehaald bij ${meervoud(stelsel.opgehaald.organisaties, "organisatie", "organisaties")}.`
                   : ""}
       </div>
 

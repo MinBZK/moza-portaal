@@ -1,6 +1,12 @@
 "use client";
 
-import { Fragment, type MouseEvent, type ReactNode } from "react";
+import {
+  Fragment,
+  useLayoutEffect,
+  useRef,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { Alert, Button, Paragraph } from "@/components/rhc";
 import type { Afgekapt, Volledigheid } from "@/network/keten/client";
 import { haalOpnieuwOp } from "./_useKeten";
@@ -60,11 +66,46 @@ const OpnieuwKnop = () => {
 
 /** Een container die er altijd is, zodat wat erin verschijnt voorgelezen wordt. */
 // Niet atomair: een wijziging in de ene melding leest de andere niet opnieuw voor.
-export const MeldingenRegio = ({ children }: { children: ReactNode }) => (
-  <div role="status" aria-atomic="false" className="rhc-mox-status-region">
-    {children}
-  </div>
-);
+/** Zet de focus op <main>, zodat die niet op <body> belandt. */
+const naarMain = (vanaf: Element | null) => {
+  const main = vanaf?.closest("main") ?? document.querySelector("main");
+  if (!main) return;
+  if (!main.hasAttribute("tabindex")) main.setAttribute("tabindex", "-1");
+  main.focus({ preventScroll: true });
+};
+
+/**
+ * Een container die er altijd is, zodat wat erin verschijnt voorgelezen wordt.
+ * Niet atomair: een wijziging in de ene melding leest de andere niet opnieuw
+ * voor. Verdwijnt een melding met de focus erin (de knop wordt een laadtekst,
+ * of de melding gaat weg), dan gaat de focus naar <main>.
+ */
+export const MeldingenRegio = ({ children }: { children: ReactNode }) => {
+  const regio = useRef<HTMLDivElement>(null);
+  const hadFocus = useRef(false);
+  useLayoutEffect(() => {
+    if (!hadFocus.current || regio.current?.contains(document.activeElement))
+      return;
+    hadFocus.current = false;
+    naarMain(regio.current);
+  });
+  return (
+    <div
+      ref={regio}
+      role="status"
+      aria-atomic="false"
+      onFocus={() => {
+        hadFocus.current = true;
+      }}
+      onBlur={(event) => {
+        if (!regio.current?.contains(event.relatedTarget as Node | null))
+          hadFocus.current = false;
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export const SessieVerlopen = ({
   herstelt,
@@ -77,7 +118,11 @@ export const SessieVerlopen = ({
 }) => (
   <Alert type="info" role="presentation">
     {herstelt ? (
-      <Paragraph>Wij halen uw berichten opnieuw op…</Paragraph>
+      <Paragraph>
+        {opBericht
+          ? "Wij halen dit bericht opnieuw op…"
+          : "Wij halen uw berichten opnieuw op…"}
+      </Paragraph>
     ) : opBericht ? (
       <Paragraph>
         U was een tijd niet actief op deze pagina. Zodra u verdergaat, halen wij
@@ -131,14 +176,14 @@ const Volledigheidsmelding = ({
       {storing.length === 1 && (
         <Paragraph>
           {storing[0]} was niet bereikbaar toen wij uw berichten ophaalden.
-          Berichten en mappen van deze organisatie ontbreken daardoor mogelijk.
+          Berichten en mappen van deze organisatie ontbreken daardoor misschien.
         </Paragraph>
       )}
       {storing.length > 1 && (
         <Paragraph>
           Deze organisaties waren niet bereikbaar toen wij uw berichten
           ophaalden: {noemOp(storing)}. Berichten en mappen van deze
-          organisaties ontbreken daardoor mogelijk.
+          organisaties ontbreken daardoor misschien.
         </Paragraph>
       )}
       {teDruk.length === 1 && (
@@ -192,8 +237,8 @@ const Volledigheidsmelding = ({
       )}
       {teLang && (
         <Paragraph>
-          Mogelijk staan hier niet al uw berichten. Wij tonen er niet meer,
-          omdat de lijst te lang is.
+          De lijst is te lang om alles te tonen. Daarom staan hier misschien
+          niet al uw berichten.
         </Paragraph>
       )}
       {onzeker && (

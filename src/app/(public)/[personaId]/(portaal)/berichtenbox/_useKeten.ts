@@ -63,6 +63,8 @@ type KetenStaat = {
   verlopen: boolean;
   /** Wij halen na een verlopen sessie of op verzoek opnieuw op. */
   herstelt: boolean;
+  /** Wat de laatste ophaalronde opleverde, voor de bevestiging aan schermlezers. */
+  opgehaald: { berichten: number; organisaties: number } | null;
   /** Laatst binnengekomen bericht, voor de melding aan schermlezers. */
   nieuw: { id: string; afzender: string } | null;
   /** Nieuwe berichten komen niet meer vanzelf binnen. */
@@ -83,7 +85,7 @@ export const ketenFoutTekst: Record<KetenFoutReden, string> = {
   teVeelSessies:
     "De berichtenbox van uw bedrijf is op te veel plekken tegelijk open. Log uit op een ander apparaat of in een andere browser. Ververs daarna deze pagina. Lukt dat niet? Wacht dan 15 minuten en ververs de pagina.",
   tijdelijk:
-    "Wij kunnen uw berichten nu niet ophalen. Probeer het over een minuut opnieuw.",
+    "Wij kunnen uw berichten nu niet ophalen. Ververs de pagina over een minuut om het opnieuw te proberen.",
   weg: "Dit bericht bestaat niet meer. Het staat daarom niet meer in de lijst.",
 };
 
@@ -105,6 +107,7 @@ const LEEG: KetenStaat = {
   volledigheid: null,
   verlopen: false,
   herstelt: false,
+  opgehaald: null,
   nieuw: null,
   volgenGestopt: false,
 };
@@ -269,6 +272,11 @@ const leesLijst = async () => {
   lezingen++;
   try {
     return await haalLijst();
+  } catch (fout) {
+    // Een mislukte lezing vervangt niets; oude events mogen dan niet bij een
+    // veel latere lijst opnieuw meetellen.
+    if (lezingen === 1) teHerhalen = [];
+    throw fout;
   } finally {
     lezingen--;
   }
@@ -303,12 +311,24 @@ const wachtOpLijst = async () => {
   }
 };
 
+/** Eén ophaalronde; daarna de lijst, en wat de ronde opleverde. */
+const ronde = async (gen: number) => {
+  let laatste = LEGE_VOORTGANG;
+  await haalOp((voortgang) => {
+    laatste = voortgang;
+    zet(gen, { voortgang });
+  });
+  zetLijst(gen, await leesLijst());
+  zet(gen, {
+    opgehaald: { berichten: laatste.gevonden, organisaties: laatste.bronnen },
+  });
+};
+
 /** De ophaalronde, met voortgang, en daarna de lijst. */
 const rondeEnLijst = async (gen: number) => {
   zet(gen, { fase: "ophalen", voortgang: LEGE_VOORTGANG, fout: null });
   try {
-    await haalOp((voortgang) => zet(gen, { voortgang }));
-    zetLijst(gen, await leesLijst());
+    await ronde(gen);
   } catch (fout) {
     if (redenVan(fout) !== "bezig") throw fout;
     try {
@@ -316,8 +336,7 @@ const rondeEnLijst = async (gen: number) => {
     } catch (elders) {
       // De ronde elders strandde; dan één keer zelf.
       if (redenVan(elders) !== "geenSessie") throw elders;
-      await haalOp((voortgang) => zet(gen, { voortgang }));
-      zetLijst(gen, await leesLijst());
+      await ronde(gen);
     }
   }
 };
@@ -400,15 +419,26 @@ const laad = async (ontvanger: string, ophalen: boolean) => {
  */
 const herstel = (opnieuwOphalen = false) => {
   const gen = generatie;
+  // Vooraf lezen: tijdens de ronde zakt `volgers` naar 0, en een herhaling in
+  // metSessie zou anders de ronde overslaan.
+  const metBox = volgers > 0;
   herstelBezig ??= (async () => {
     stopVolgen();
     zet(gen, { volgenGestopt: false, herstelt: true });
     try {
       // Zonder open berichtenbox (alleen de teller) geen ronde bij alle
-      // organisaties: dat laat de teller aan de berichtenbox over.
+      // organisaties: dat laat de teller aan de berichtenbox over. Is er nog
+      // geen lijst, dan haalt de berichtenbox bij het openen zelf op.
       await metSessie(() =>
-        volgers === 0
-          ? leesLijst().then((lijst) => zetLijst(gen, lijst))
+        !metBox
+          ? leesLijst().then(
+              (lijst) => zetLijst(gen, lijst),
+              (fout: unknown) => {
+                const reden = redenVan(fout);
+                if (reden !== "geenSessie" && reden !== "bezig") throw fout;
+                zet(gen, { fase: "leeg", berichten: [], volledigheid: null });
+              },
+            )
           : opnieuwOphalen
             ? rondeEnLijst(gen)
             : lijstOfRonde(gen),
@@ -770,6 +800,7 @@ export const useKeten = (ontvanger: string | null, ophalen = true) => {
     volledigheid: vanDeze ? huidig.volledigheid : null,
     verlopen: vanDeze ? huidig.verlopen : false,
     herstelt: vanDeze ? huidig.herstelt : false,
+    opgehaald: vanDeze ? huidig.opgehaald : null,
     nieuw: vanDeze ? huidig.nieuw : null,
     volgenGestopt: vanDeze ? huidig.volgenGestopt : false,
   };
@@ -885,5 +916,5 @@ const wijzigingMislukt = (
     return `Wij kunnen dit bericht nu niet ${wat}. Probeer het over een minuut opnieuw.`;
   if (reden === "teVeelSessies" || reden === "sessieVerlopen")
     return ketenFoutTekst[reden];
-  return `Wij kunnen dit bericht nu niet ${wat}. Probeer het opnieuw.`;
+  return `Wij kunnen dit bericht nu niet ${wat}. Probeer het later opnieuw.`;
 };

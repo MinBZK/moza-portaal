@@ -85,6 +85,23 @@ export const beeindigBijStelsel = async (sessie: KetenSessie) => {
   }
 };
 
+/** Of de sessie bij het stelsel nog loopt. Vragen verlengt haar niet. */
+export const looptBijStelsel = async (sessie: KetenSessie) => {
+  try {
+    const antwoord = await fetch(`${KETEN_URL}/api/v1/sessies/huidige`, {
+      headers: sessieHeaders(sessie),
+      cache: "no-store",
+      redirect: "error",
+      signal: AbortSignal.timeout(STELSEL_LIMIET_MS),
+    });
+    await antwoord.body?.cancel();
+    return antwoord.status === 200;
+  } catch (fout) {
+    logStelselFout("sessie nagaan", fout);
+    return false;
+  }
+};
+
 /** Start een sessie bij het stelsel; geeft de status terug als het niet lukte. */
 export const startBijStelsel = async (
   ontvanger: string,

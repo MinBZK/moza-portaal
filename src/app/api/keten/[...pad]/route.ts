@@ -5,10 +5,12 @@ import {
   beeindigBijStelsel,
   leesSessie,
   logStelselFout,
+  looptBijStelsel,
   SESSIE_COOKIE,
   sessieCookie,
   sessieHeaders,
   startBijStelsel,
+  type KetenSessie,
 } from "@/network/keten/sessie";
 
 /**
@@ -120,11 +122,13 @@ const stelselOnbereikbaar = () =>
 const wisCookie = () => ({ "set-cookie": sessieCookie(null) });
 
 /**
- * Start een sessie. Een vorige sessie van deze browser stopt pas als de nieuwe
- * er is: zo laat een traag stelsel geen cookie achter dat naar een beëindigde
- * sessie wijst. Het antwoord noemt het sessie-id niet.
+ * Start een sessie, maar niet als de sessie in het cookie nog loopt: dan was een
+ * ander tabblad eerder, en een tweede sessie zou los blijven hangen tot het
+ * stelsel haar opruimt. Het antwoord noemt het sessie-id niet.
  */
-const startSessie = async (ontvanger: string) => {
+const startSessie = async (ontvanger: string, huidige: KetenSessie | null) => {
+  if (huidige && (await looptBijStelsel(huidige)))
+    return new Response(null, { status: 201 });
   let uitkomst;
   try {
     uitkomst = await startBijStelsel(ontvanger);
@@ -137,9 +141,6 @@ const startSessie = async (ontvanger: string) => {
     if (uitkomst.wacht) headers.set("retry-after", uitkomst.wacht);
     return new Response(null, { status: uitkomst.status, headers });
   }
-  // De vorige sessie stoppen wij niet: de browser start alleen een nieuwe als het
-  // stelsel de vorige niet meer kende, en een ander tabblad kan het cookie
-  // intussen op een nieuwere gezet hebben.
   return new Response(null, {
     status: 201,
     headers: { "set-cookie": sessieCookie(uitkomst.sessie) },
@@ -171,11 +172,11 @@ const stuurDoor = async (
   { params }: { params: Promise<{ pad: string[] }> },
 ) => {
   const pad = (await params).pad.join("/");
-  // HEAD alleen voor een bijlage, als GET zonder lichaam. Op een stroom zou HEAD
-  // een plek bij het stelsel bezet houden.
-  const isHead = request.method === "HEAD";
-  if (isHead && !BIJLAGE.test(pad)) return new Response(null, { status: 405 });
-  const methode = isHead ? "GET" : request.method;
+  // Geen HEAD: de berichtenbox gebruikt het niet, en op een stroom of een
+  // bijlage zou het bij het stelsel een plek bezet houden.
+  if (request.method === "HEAD")
+    return new Response(null, { status: 405, headers: { allow: "GET" } });
+  const methode = request.method;
   const isSessiePad = sessiePad(pad, methode);
   if (
     !isSessiePad &&
@@ -216,7 +217,7 @@ const stuurDoor = async (
   const vanAnder = opgeslagen && !sessie ? opgeslagen : null;
   if (vanAnder) void beeindigBijStelsel(vanAnder);
 
-  if (pad === "sessies") return startSessie(ontvanger);
+  if (pad === "sessies") return startSessie(ontvanger, sessie);
 
   if (isSessiePad && !sessie) {
     const antwoord = probleem(ONGELDIG, 401);
@@ -279,8 +280,7 @@ const stuurDoor = async (
     beveiligBijlage(terug);
   }
 
-  if (isHead) await antwoord.body?.cancel();
-  return new Response(isHead ? null : antwoord.body, {
+  return new Response(antwoord.body, {
     status: antwoord.status,
     headers: terug,
   });
